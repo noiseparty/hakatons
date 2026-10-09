@@ -364,7 +364,7 @@
     },
     {
       "kods": "pludi", "nr": 43, "grupa": "D", "nosaukums": "Plūdi",
-      "kategorijas": ["evakuacijas_punkts", "noturibas_punkts"], "zvanit112": true,
+      "kategorijas": ["evakuacijas_punkts", "udens_limenis", "noturibas_punkts"], "zvanit112": true,
       "padoms": "Dodies augstāk. Atslēdz elektrību, ja vari to izdarīt droši. Nebrauc un neej pa applūdušu ceļu. Ja jāpamet māja, ņem dokumentus un zāles. Seko 112.lv.",
       "atslegvardi": ["plūdi", "plūdu", "plūdos", "applūd", "pārplūd", "ūdens līmen", "pali$", "palos", "наводнен", "затоп", "паводок", "flood"]
     },
@@ -693,7 +693,7 @@
     },
     {
       "kods": "udens_celas", "nr": 98, "grupa": "I", "nosaukums": "Ūdens ceļas pagrabā vai telpā",
-      "kategorijas": ["evakuacijas_punkts"], "zvanit112": true,
+      "kategorijas": ["evakuacijas_punkts", "udens_limenis"], "zvanit112": true,
       "padoms": "Uzreiz ej augstāk. Neaiztiec elektroierīces un slēdžus ūdenī. Ja nevari izkļūt, zvani 112.",
       "atslegvardi": ["ūdens ceļ", "ūdens nāk", "applūst pagrab", "pagrabā ūden", "ūdens līmen", "вода поднима", "затопил", "water rising", "basement flood", "paaugstin", "līmenis ceļ"]
     },
