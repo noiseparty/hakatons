@@ -62,6 +62,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Status page round 2: flood check capped at 10 s, history read errors logged, grey "Nav datu" state; new rows for the LVĢMC forecast (cache age), FMI lightning, Open-Meteo soil/rain and LVC roads (grey until NAP keys) — done 2026-10-10 02:08 +03:00 by noiseparty (added 2026-10-10 02:08 +03:00 by noiseparty)
 - [x] Demo panel: right-edge "Demo" tab / phone bottom sheet with simulated scenarios, SIMULĀCIJA badges, "Beigt demo" restores the map, `?demo=<code>` links (`production/demo.js`, `notes/demo-scenariji.md`) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 1: yellow strong-wind warning over Kurzeme coast (VZD boundaries as warning polygon, banner, advice) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 2: red storm warning Rīga/Jūrmala/Mārupe + shelters, accommodation and 24/7 hospitals — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
