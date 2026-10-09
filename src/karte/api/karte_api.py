@@ -94,7 +94,9 @@ def avoti(_q):
              select a.kods, a.nosaukums, a.izdevejs, a.licence, a.licences_url, a.atverts, a.datu_kopa_url,
                     a.lejupielade, a.lietojums, a.piezime, a.kartiba,
                     (select count(*) from objekti o where o.avots = a.kods)::int as skaits,
-                    (select max(atjaunots) from objekti o where o.avots = a.kods) as ieladets
+                    (select max(atjaunots) from objekti o where o.avots = a.kods) as ieladets,
+                    -- pēdējā veiksmīgā ielāde (ielade.py); caur to_jsonb, lai darbojas arī pirms kolonnas pievienošanas
+                    (to_jsonb(a) ->> 'atjaunots')::timestamptz as atjaunots
              from avoti a) a"""
     )
 
@@ -1753,7 +1755,12 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
       "https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae", *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
+    ("datu_vecums", "Datu vecums", "Ikdienas avotu (ZVA, IeM IC, OSM, GTFS) pēdējā ielāde; hakatons-dati.timer 04:30",
+     ("Panelis „Datu avoti” kartē", "https://map.repo.lv/", None, None)),
 ]
+# Ikdienas atjaunošanas avoti (atjaunot_visu.sh); vecāks par 48 h — nedarbojas, par 30 h — traucējumi
+STATUSS_IKDIENAS_AVOTI = ("zva-fdu", "iemic-arstniecibas", "iemic-vp", "iemic-pp", "iemic-vugd", "vkcp-udens",
+                          "osm", "rs-gtfs", "atd-gtfs", "vivi-gtfs")
 STATUSS_SMAGUMS = {"nav_datu": -1, "darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
 STATUSS_PROGNOZE_VECA_H = 24  # LVĢMC prognozi atjauno vairākas reizes dienā
 
@@ -1937,6 +1944,26 @@ def _parb_robezas():
     return ("darbojas", _skaits(n, "robežpunkts", "robežpunkti")) if n else ("traucejumi", "Atbilde ir, bet robežpunktu nav")
 
 
+
+def _parb_datu_vecums():
+    # avoti.atjaunots raksta ielade.py; to_jsonb — lai pirms kolonnas pievienošanas būtu "nav datu", nevis kļūda
+    rindas = vaicat("""select coalesce(json_agg(json_build_array(kods,
+                         extract(epoch from now() - (to_jsonb(a) ->> 'atjaunots')::timestamptz)::int)), '[]')
+                       from avoti a where kods = any(%s)""", (list(STATUSS_IKDIENAS_AVOTI),), timeout="5s")
+    vecumi = {k: v for k, v in rindas if v is not None}
+    if not vecumi:
+        return "nav_datu", "Ikdienas atjaunošana vēl nav palaista (hakatons-dati.timer)"
+    trukst = [k for k, _ in rindas if k not in vecumi]
+    veci = sorted((k for k, v in vecumi.items() if v > 48 * 3600), key=lambda k: -vecumi[k])
+    vecakais = max(vecumi.values())
+    if veci:
+        return "nedarbojas", f"Vecāki par 48 h: {', '.join(veci)} (vecākais pirms {_laiks_pirms(vecakais)})"
+    if vecakais > 30 * 3600 or trukst:
+        return "traucejumi", (f"Nav ielādēti: {', '.join(trukst)}" if trukst
+                              else f"Vecākais avots ielādēts pirms {_laiks_pirms(vecakais)}")
+    return "darbojas", f"{_skaits(len(vecumi), 'avots', 'avoti')} atjaunoti; vecākais pirms {_laiks_pirms(vecakais)}"
+
+
 # kods → (pārbaude, virs cik ms "atbild lēni")
 STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
@@ -1944,7 +1971,7 @@ STATUSS_PARBAUDES = {
     "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
     "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000), "celi": (_parb_celi, 8000),
     "satiksme": (_parb_satiksme, 8000), "robezas": (_parb_robezas, 8000),
-    "osm": (_parb_osm, 5000),
+    "osm": (_parb_osm, 5000), "datu_vecums": (_parb_datu_vecums, 3000),
 }
 
 
