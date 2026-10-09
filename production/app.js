@@ -1,6 +1,6 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', transports: 'Transports', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
@@ -115,14 +115,14 @@ function attalums(m) {
 // ---- Atrašanās vieta ----
 function atrastMani(pecTam) {
   const teksts = el('vieta-teksts');
-  if (!('geolocation' in navigator)) { teksts.textContent = 'Šis pārlūks nevar noteikt atrašanās vietu. Izvēlies reģionu zemāk.'; return; }
+  if (!('geolocation' in navigator)) { teksts.textContent = 'Šis pārlūks nevar noteikt atrašanās vietu. Izvēlieties reģionu zemāk.'; return; }
   el('atrast').disabled = true;
   teksts.textContent = 'Nosaka atrašanās vietu…';
   navigator.geolocation.getCurrentPosition(poz => {
     el('atrast').disabled = false;
     const { latitude: lat, longitude: lon, accuracy } = poz.coords;
     if (!latvija.pad(0.3).contains([lat, lon])) {
-      teksts.textContent = 'Tu atrodies ārpus Latvijas, tāpēc attālumus nerādām. Izvēlies reģionu zemāk.';
+      teksts.textContent = 'Jūs atrodaties ārpus Latvijas, tāpēc attālumus nerādām. Izvēlieties reģionu zemāk.';
       return;
     }
     stavoklis.vieta = { lat, lon };
@@ -132,7 +132,7 @@ function atrastMani(pecTam) {
       L.circleMarker([lat, lon], { radius: 8, color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }).bindTooltip('Tu esi šeit')
     ]).addTo(karte);
     el('atrast').textContent = '📍 Atjaunot manu atrašanās vietu';
-    teksts.textContent = 'Meklēšanas rezultāti sakārtoti pēc attāluma no tevis (taisnā līnijā).';
+    teksts.textContent = 'Meklēšanas rezultāti sakārtoti pēc attāluma no Jums (taisnā līnijā).';
     if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
     if (!stavoklis.regions && !pecTam) karte.setView([lat, lon], 13);
     atjaunot();
@@ -141,8 +141,8 @@ function atrastMani(pecTam) {
   }, kluda => {
     el('atrast').disabled = false;
     teksts.textContent = kluda.code === kluda.PERMISSION_DENIED
-      ? 'Atrašanās vieta nav atļauta. Izvēlies reģionu vai pilsētu zemāk (vai atļauj to pārlūka iestatījumos).'
-      : 'Neizdevās noteikt atrašanās vietu. Izvēlies reģionu vai pilsētu zemāk.';
+      ? 'Atrašanās vieta nav atļauta. Izvēlieties reģionu vai pilsētu zemāk (vai atļaujiet to pārlūka iestatījumos).'
+      : 'Neizdevās noteikt atrašanās vietu. Izvēlieties reģionu vai pilsētu zemāk.';
     krizesMeklesana.vietaNav(kluda.code === kluda.PERMISSION_DENIED);  // meklesana.js: paskaidro arī rezultātos
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
 }
@@ -169,7 +169,7 @@ async function tuvakaPatvertne() {
     marker.openPopup();
     teksts.textContent = `Tuvākā patvertne: ${f.properties.adrese || nosaukums(f.properties)} · ${attalums(f.properties.attalums_m)} taisnā līnijā.`;
   } catch {
-    teksts.textContent = 'Tuvāko patvertni neizdevās ielādēt. Mēģini vēlreiz pēc brīža.';
+    teksts.textContent = 'Tuvāko patvertni neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.';
   }
 }
 el('tuvaka').addEventListener('click', tuvakaPatvertne);
@@ -223,6 +223,9 @@ function radtRegionu(kods) {
 }
 
 // ---- Kategorijas ----
+// Sākumā visi slāņi izslēgti (lietotāja lēmums 2026-10-10): karte = pamatkarte, brīdinājumi un meklēšana. Slāņus ieslēdz
+// meklēšanas rezultāts (meklesana.js), demo scenārijs (demo.js) vai lietotājs filtros; tā arī netiek ielādēti ~4 000 objektu.
+
 function aizpilditKategorijas(saraksts) {
   kategorijas = Object.fromEntries(saraksts.map(k => [k.kods, k]));
   const kaste = el('kategorijas');
@@ -235,7 +238,7 @@ function aizpilditKategorijas(saraksts) {
     div.className = 'grupa';
     div.dataset.grupa = grupa;
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
-      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? 'checked' : 'disabled'}>
+      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? '' : 'disabled'}>
         <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
         <span class="skaits">${k.skaits}</span></label>`).join('');
     kaste.append(div);
@@ -290,8 +293,11 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
+  if (p.kategorija === 'patvertne') rindas.push('<small>Ietilpība, piekļūstamība ar ratiņkrēslu, mājdzīvnieki: nav norādīts (112.lv datos šo ziņu nav)</small>');
+  if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
+  if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
-  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
+  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no Jums') + '</small>');
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
     rindas.join('<br>') + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
@@ -301,7 +307,7 @@ async function atjaunot() {
   if (pieprasijums) pieprasijums.abort();
   pieprasijums = new AbortController();
   objektuSlanis.clearLayers();
-  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Izvēlies vismaz vienu slāni.'); return; }
+  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Slāņi izslēgti'); return; }
   const q = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].join(','), limit: 20000 });
   if (stavoklis.regions) q.set('regions', stavoklis.regions);
   if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }
@@ -320,7 +326,7 @@ async function atjaunot() {
     const r = regioni[stavoklis.regions];
     statuss(`${gj.features.length} objekti${r ? ' · ' + r.nosaukums : ''}`);
   } catch (e) {
-    if (e.name !== 'AbortError') statuss('Datus neizdevās ielādēt. Mēģini vēlreiz pēc brīža.', true);
+    if (e.name !== 'AbortError') statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
   }
 }
 

@@ -20,3 +20,4 @@
 @media (max-width: 800px) {
   .izmainas { width: 100vw; max-width: 100vw; max-height: 85vh; margin: auto 0 0; border-radius: 14px 14px 0 0; }  /* no apakšas */
 }
+.galva-kreisi h1 { min-width: 0; }

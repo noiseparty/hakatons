@@ -293,18 +293,95 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .zonu-legenda i.parklajas { border-color: #dc2626; background: repeating-linear-gradient(45deg, #b91c1c 0 2px, rgba(127, 29, 29, .47) 2px 6px); }
 .zonu-legenda small { color: #57534e; }
 .zonu-legenda.paslepta { display: none; }
-@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }  /* neaizsedz pamatkartes slēdzi */
+.leaflet-bottom.leaflet-right .zonu-legenda { margin-bottom: 52px; }  /* virs pamatkartes slēdža (.pamatkarte) */
+@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }
 .zonu-popup p { margin: .3rem 0; }
 .zonu-popup .paaugstinats { color: #b91c1c; }
+
+/* Riska karte (prognozes.js): slēdzis Šodien / Rīt blakus prognožu pogai, leģenda, novada logs ar iemesliem */
+.prognozes:not(.atverts) { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; max-width: calc(100% - 70px); }
+.riski-sledzis { display: inline-flex; align-items: center; gap: 2px; padding: 3px; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.riski-nos { font-size: .8rem; font-weight: 600; color: var(--teksts2); padding: 0 .3rem; }
+.riski-sledzis button { width: auto; min-height: 36px; padding: .25rem .55rem; font-size: .82rem; border: 0; }
+.riski-sledzis button.aktiva { background: #c2410c; color: #fff; font-weight: 600; }
+.prognozes.atverts .riski-sledzis { display: none; }
+.prognozes.zem:not(.atverts) { z-index: 399; }  /* kamēr atvērts kartes logs (prognozes.js) */  /* atvērtā panelī dienu izvēlas cilnes */
+.riski-legenda { display: flex; flex-wrap: wrap; gap: .2rem .6rem; padding: .3rem .5rem; font-size: .75rem; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.riski-legenda[hidden] { display: none; }
+.riski-legenda i { display: inline-block; width: .8rem; height: .8rem; margin-right: .25rem; vertical-align: -1px; border-radius: 2px; border: 1px solid rgba(0, 0, 0, .25); }
+.riski-legenda span { white-space: nowrap; }
+.prognozes.atverts .riski-legenda { position: absolute; left: 350px; top: 0; width: max-content; pointer-events: auto; }
+.riska-limenis { display: inline-block; margin: .15rem 0 .3rem; padding: .05rem .45rem; border-radius: 4px; font-weight: 700; font-size: .8rem; background: #e7e5e4; }
+.riska-limenis.riska-1 { background: #fde68a; }
+.riska-limenis.riska-2 { background: #f97316; color: #fff; }
+.riska-limenis.riska-3 { background: #dc2626; color: #fff; }
+.riska-iemesli { margin: 0 0 .3rem; padding-left: 1rem; font-size: .8rem; }
+.popup .riska-iemesli a { display: inline; margin: 0; font-weight: 400; }
+.prog-zina.lim-1[data-veids="riski"] { border-left-color: #fbbf24; }
+@media (max-width: 800px) {
+  .riski-sledzis button { min-height: 44px; }
+  .prognozes.atverts .riski-legenda { display: none; }  /* telefonā krāsas paskaidro panelis */
+}
+
+.zonu-legenda .skala { flex-wrap: wrap; gap: .15rem .3rem; }
+.zonu-legenda .skala i { width: 10px; border: 0; }
+.robezas-ikona span { display: flex; align-items: baseline; justify-content: center; gap: 1px; height: 100%; box-sizing: border-box; padding-top: 4px; border: 2px solid #1e3a8a; border-radius: 6px; background: #fff; color: #1e3a8a; font: 700 13px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.robezas-ikona small { font-size: 9px; font-weight: 600; }
+
+/* Meklētājs: ieteikumi rakstot (meklesana.js) un balss poga "Runāt" (runa.js) */
+.populari.ieteikumi .populari-pogas { flex-direction: column; gap: 2px; }
+.meklet-rinda .populari.ieteikumi .populari-pogas button { width: 100%; min-height: 44px; text-align: left; border-radius: 6px; border-color: transparent; background: none; }
+.meklet-rinda .populari.ieteikumi .populari-pogas button:hover,
+.meklet-rinda .populari.ieteikumi .populari-pogas button:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); }
+.populari.ieteikumi small { color: var(--teksts2); }
+.meklet-rinda .runat { min-width: 44px; padding: 0 .5rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: 1.15rem; }
+.meklet-rinda .runat[hidden] { display: none; }
+.meklet-rinda .runat.klausas { background: #fee2e2; border-color: var(--sarkans); animation: runa-pulss 1.2s ease-in-out infinite; }
+@keyframes runa-pulss { 50% { box-shadow: 0 0 0 6px rgba(213, 43, 30, .25); } }
+@media (prefers-reduced-motion: reduce) { .meklet-rinda .runat.klausas { animation: none; } }
+.runa-valodas { position: absolute; right: 0; top: calc(100% + 4px); z-index: 1150; display: flex; flex-direction: column; gap: 2px; width: 230px;
+  padding: .4rem; background: var(--virsma); color: var(--teksts); border: 1px solid var(--robeza); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.runa-valodas[hidden] { display: none; }
+.meklet-rinda .runa-valodas button { width: 100%; min-height: 44px; text-align: left; background: none; color: var(--teksts); border-color: transparent; font-weight: 400; }
+.meklet-rinda .runa-valodas button[aria-checked="true"] { font-weight: 700; background: var(--zils-gaiss); }
+.runa-valodas p { margin: .3rem .2rem 0; font-size: .75rem; color: var(--teksts2); background: none; padding: 0; border-radius: 0; }
+/* ==== Saraksts (saraksts.js): kartes objekti kā teksta saraksts ==== */
+.saraksts-poga { margin: 0 0 .5rem; }
+.saraksts-dialogs { width: min(560px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); padding: 0; border: 0; border-radius: var(--radiuss); box-shadow: 0 8px 32px rgba(0, 0, 0, .3); }
+.saraksts-dialogs::backdrop { background: rgba(0, 0, 0, .45); }
+.saraksts-galva { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .6rem .85rem; background: var(--zils); color: #fff; }
+.saraksts-galva h2 { margin: 0; font-size: 1.05rem; color: #fff; }
+.saraksts-aizvert { width: 44px; height: 44px; flex: none; padding: 0; font-size: 1.1rem; background: transparent; color: #fff; border-color: rgba(255, 255, 255, .5); }
+.saraksts-dialogs > .piezime { margin: .6rem .85rem 0; }
+.saraksts-ul { list-style: none; margin: 0; padding: 0 .85rem; }
+.saraksts-ul li { padding: .7rem 0; border-bottom: 1px solid var(--robeza); }
+.saraksts-ul h3 { margin: 0; font-size: 1rem; }
+.saraksts-ul p { margin: .15rem 0 0; font-size: .9rem; }
+.saraksts-meta { color: var(--teksts2); }
+.saraksts-ul .marsruts, .saraksts-ul .popup-avots { display: block; margin-top: .3rem; }
+.saraksts-karte { width: auto; margin-top: .45rem; min-height: 44px; }
+.saraksts-vel { display: block; width: calc(100% - 1.7rem); margin: .6rem .85rem .85rem; min-height: 44px; }
+
+/* Rezultāta kartīte: lēmuma rinda (LVĢMC brīdinājums šai vietai) un pašvaldība (meklesana.js) */
+.lemums { margin: .3rem 0 .1rem; padding: .45rem .6rem; font-size: .88rem; border-radius: 4px; border-left: 4px solid #a8a29e; background: var(--fons); }
+.lemums.bridinajums-dzeltens { background: #fef9c3; border-left-color: #ca8a04; color: #1c1917; }
+.lemums.bridinajums-oranžs, .lemums.bridinajums-oranzs { background: #ffedd5; border-left-color: #c2410c; color: #1c1917; }
+.lemums.bridinajums-sarkans { background: #fee2e2; border-left-color: #b91c1c; color: #1c1917; }
+.lemums.lemums-nav { border-left-color: #287a41; background: #ecfdf3; }
+#rez-lemums .avots-rinda, #rez-pasvaldiba .avots-rinda { display: block; margin-bottom: .3rem; }
+.pasvaldiba-rinda { margin: .7rem 0 .1rem; font-size: .85rem; }
 
 /* Telefoni: pieskāriena mērķi ≥ 44 px un teksts ≥ 12 px (ierīču tests: notes/telefonu-tests.md) */
 @media (max-width: 800px) {
   .meklet-rinda input, .meklet-rinda button, #panelis-poga { min-height: 44px; }
   .kartes-rikis button { width: 44px; height: 44px; }
-  .pamatkarte button { min-height: 40px; }
+  .pamatkarte button { min-height: 44px; }
+  .grupa > summary, .kat { min-height: 44px; box-sizing: border-box; }  /* slāņu grupas un rūtiņu rindas (visa rinda ir mērķis) */
   .prog-poga, .prog-dienas button { min-height: 44px; }
   .prog-aizvert { width: 44px; height: 44px; }
-  .bridinajums summary { padding: .5rem 0; }
+  .bridinajums summary { padding: .65rem 0; min-height: 44px; box-sizing: border-box; }
+  #panelis button, #panelis select, .demo-regions select { min-height: 44px; }
+  .riski-sledzis button { min-width: 44px; }
   .marsruts a, .rez-saraksts .marsruts a, .apaksa #rezultati .marsruts a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 .7rem; font-size: .85rem; }
   .marsruts { gap: 6px; }
   .grupa-ikona b { font-size: .8rem; }

@@ -12,13 +12,19 @@
       integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
 <link rel="stylesheet" href="stils.css">
 <link rel="stylesheet" href="demo.css">
+<link rel="stylesheet" href="izmainas.css">
 </head>
 <body>
 <header>
-  <h1>Krīzes karte</h1>
+  <div class="galva-kreisi">
+    <button id="izmainas-poga" type="button" aria-label="Izmaiņu žurnāls" aria-haspopup="dialog" aria-expanded="false" title="Kas jauns">#</button>
+    <h1>Krīzes karte</h1>
+  </div>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><span aria-hidden="true">🎤</span></button>
+    <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
     <button type="submit">Meklēt</button>
     <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
       <p id="populari-virsraksts">Biežāk meklētais</p>
@@ -47,7 +53,7 @@
       </div>
       <button id="atrast" type="button" class="galvena"><span aria-hidden="true">📍</span> Rādīt tuvākos man</button>
       <button id="tuvaka" type="button" class="otra"><span aria-hidden="true">🏠</span> Tuvākā patvertne</button>
-      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
+      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot Jūsu atrašanās vietu. Tā netiek saglabāta.</p>
     </section>
 
     <section>
@@ -57,6 +63,7 @@
 
     <section>
       <h2>Slāņi</h2>
+      <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Saraksts: ieslēgto slāņu objekti</button>
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
         <span class="punkts" style="background:#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 gados)</label>
@@ -68,7 +75,7 @@
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
-        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a></p>
+        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a></p>
         <ul id="avoti-saraksts"></ul>
       </details>
     </section>
@@ -82,6 +89,14 @@
     </div>
     <div id="prognozes" class="prognozes" hidden>
       <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><span aria-hidden="true">⛅</span> <span class="prog-poga-teksts">Prognoze</span></button>
+      <div class="riski-sledzis" role="group" aria-label="Riska karte">
+        <span class="riski-nos">Riski:</span>
+        <button type="button" data-riski="sodien" aria-pressed="false">Šodien</button>
+        <button type="button" data-riski="rit" aria-pressed="false">Rīt</button>
+      </div>
+      <div class="riski-legenda" aria-label="Riska līmeņi" hidden>
+        <span><i style="background:#fde68a"></i>paaugstināts</span><span><i style="background:#f97316"></i>augsts</span><span><i style="background:#dc2626"></i>ļoti augsts</span>
+      </div>
       <section id="prog-panelis" class="prog-panelis" aria-label="Prognoze un brīdinājumi" hidden>
         <div class="prog-galva">
           <h2>Prognoze un brīdinājumi</h2>
@@ -115,11 +130,14 @@
 <script src="app.js"></script>
 <script src="zonas.js"></script>
 <script src="meklesana.js"></script>
+<script src="runa.js"></script>
 <script src="apaksa.js"></script>
+<script src="saraksts.js"></script>
 <script src="bridinajumi.js"></script>
 <script src="zibens.js"></script>
 <script src="prognozes.js"></script>
 <script src="celi.js"></script>
 <script src="demo.js"></script>
+<script src="izmainas.js"></script>
 </body>
 </html>

@@ -1,20 +1,19 @@
-# Stāvoklis 2026-10-10 02:09 (handoff between sessions and machines)
+# Stāvoklis 2026-10-10 02:26 (handoff between sessions and machines)
 
 Status for whoever picks up next (a new Claude session, a teammate, another PC). Update this file whenever the merge state changes. Tasks live in `TODO.md`; this file is the snapshot.
 
-## Open and in progress (batch 2)
+## In progress (no PR yet)
 
-| PR / branch | Terminal | What | State |
-|---|---|---|---|
-| #48 `noiseparty/zonas` | A | Flood zones as real areas with borders, warning areas, hatched overlap "paaugstināts risks"; centred warnings banner | review fixes + `git merge main` |
-| #53 `noiseparty/demo` | D | "Demo" panel: 7 simulated scenarios with `?demo=<kods>` deep links, "SIMULĀCIJA" badge, "Beigt demo" | `git merge main` |
-| #55 `noiseparty/statuss-2` | C | Status page round 2: forecast, FMI lightning, Open-Meteo, LVC roads rows; grey "Nav datu" state; review follow-ups | in review |
-| `noiseparty/avoti-panelis` | B | "Datu avoti" panel complete (forecast, FMI, Open-Meteo, LVC) + accessibility pass | in progress, no PR yet |
-| `noiseparty/apaksa` | E | Mobile: result card as a bottom sheet over the map | in progress, no PR yet |
+| Branch | Terminal | What |
+|---|---|---|
+| `noiseparty/satiksmes-zonas` | A | Traffic zones layer in `zonas.js` from `/api/satiksme` (municipality polygons coloured brīvs / lēns / sastrēgums) |
+| `noiseparty/satiksme-2` | B | Border waiting-times feed (`ROBEZAS_LAIKS`) + traffic components on the status page |
+| `noiseparty/telefoni` | D | Device-matrix test on real phones + backup demo video (`C:\Users\ZX202\kodi\demo-video`) |
+| `noiseparty/riski` | E | Risk map for today / tomorrow per region (forecast + warnings + water + soil) |
 
-Demo codes (from `production/demo/scenariji.json` on `origin/noiseparty/demo`): `vejs`, `vetra`, `drons`, `nakts`, `pludi-ogre`, `vetra-2026`, `bez-sakariem`. Link: `https://map.repo.lv/?demo=pludi-ogre` (optional `&regions=<kods>`).
+Demo codes (`production/demo/scenariji.json`): `vejs`, `vetra`, `drons`, `nakts`, `pludi-ogre`, `vetra-2026`, `bez-sakariem`. Link: `https://map.repo.lv/?demo=pludi-ogre` (optional `&regions=<kods>`, e.g. `100003470` = Ogre).
 
-## Merged tonight (batch 2)
+## Merged tonight
 
 | PR | What |
 |---|---|
@@ -22,35 +21,47 @@ Demo codes (from `production/demo/scenariji.json` on `origin/noiseparty/demo`): 
 | #44 | Public status page https://map.repo.lv/statuss.html + `GET /api/statuss` (checker thread in the API, table `statuss_parbaudes`) |
 | #45 | "Biežāk meklētais" under the empty search field + query/click counting (`POST /api/meklejumi`, `GET /api/meklejumi/top`) |
 | #46 | "Prognoze / ziņas" feed: LVĢMC place forecasts per novads (3 days) + active warnings, `GET /api/prognozes`, `/api/prognozes/robezas` |
-| #47 | Multi-session rules in CLAUDE.md (owner self-merges on the user's word) + `TODO.md merge=union` |
+| #47 | Multi-session rules in CLAUDE.md + `TODO.md merge=union` |
+| #48 | Flood zones as real areas with borders, LVĢMC warning areas, hatched overlap "paaugstināts risks"; centred warnings banner |
 | #49 | Research note `notes/research/05_avoti_parbaude_2026-10-10.md` (geolatvija, NAP, traffic APIs, lightning, senotajs, organisers) |
-| #50 | Lightning layer (FMI, last 30 min, CC BY 4.0; LVĢMC 24 h grid, CC0) + "Nokrišņi un augsne" line (Open-Meteo, CC BY 4.0); `GET /api/zibens`, `/api/augsne` |
-| #51 | Road closures / accidents / works / slippery road layer + "Ceļu satiksme" line (LVC DATEX II via NAP, CC0); `GET /api/celi` |
-| #52 | Pitch rewrite (`notes/pitch.md`): search-first demo, geolatvija 1.0 → 2.0 slide, criteria 3 and 5 |
-| #54 | "Kas notiks tālāk" block in the result card; all scenario advice in the "Jūs" form |
+| #50 | Lightning layer (FMI 30 min, CC BY 4.0; LVĢMC 24 h grid, CC0) + "Nokrišņi un augsne" line (Open-Meteo, CC BY 4.0); `/api/zibens`, `/api/augsne` |
+| #51 | Road events layer + "Ceļu satiksme" line (LVC DATEX II via NAP, CC0); `GET /api/celi` |
+| #52, #58 | Pitch (`notes/pitch.md`): search-first demo, geolatvija 1.0 → 2.0 slide, criteria 3 and 5; real `?demo=` codes, Ogre high ground ≥23 m, 19 sources |
+| #53 | Demo panel: 7 simulated scenarios, `?demo=<kods>`, "SIMULĀCIJA" badge (`notes/demo-scenariji.md`) |
+| #54 | "Kas notiks tālāk" block in the result card; all advice in the "Jūs" form |
+| #55 | Status page round 2: forecast, FMI lightning, Open-Meteo, LVC roads rows; grey "Nav datu" state |
+| #56 | "Datu avoti" panel lists every dataset (19 open + 1 ⚠) with update frequency; accessibility pass, axe-core **0 violations** |
+| #57 | stavoklis + ritdiena after batch 2 |
+| #59 | Advice texts: sirens → turn on LTV1 / Latvijas Radio (VUGD), LV-ALERT also for weather, spelling LV-ALERT |
+| #60 | Mobile: result card as a bottom sheet (`apaksa.js`: peek ≈20 % / half ≈50 % / full ≈92 %), map stays ≥65 % of the screen |
+| #61 | `/api/celi` on the real NAP keys + new `GET /api/satiksme` (LVC minute speeds → municipality zones, 77 counter sites, slippery-road stations, border times) |
+| #62 | "Svarīgi krīzē" page https://map.repo.lv/info.html: 112, sirens, LV-ALERT levels, LR1 FM frequencies (official list), 72 h checklist, no-network tips; printable |
 
 Batch 1 (#31–#42, night of 2026-10-09/10) is merged too.
 
-## Verified live (2026-10-10 ~02:00)
+## Verified live (2026-10-10 ~02:20)
 
+- `/api/satiksme` 200 in 0.2 s; every feed OK except `robezas` (the border-times feed isn't available yet).
+- `/api/celi` returns real events on the user's NAP keys.
 - `/api/prognozes` 200 (~4 s, 44 KB, warning first); `/api/statuss` 200 and statuss.html renders.
 - `/api/zibens` 200 (0 strikes); `/api/augsne` for Ogre: 56.7 mm in 26 days, "ļoti mitra".
-- `/api/celi` → `konfigurets: false` (no NAP keys yet, see VPS steps).
-- `/api/meklejumi/top` → 503 until the schema is applied (see VPS steps); the dropdown shows built-in examples meanwhile.
-- 125 scenarios, each with "Kas notiks tālāk"; 0 "tu" forms left in the advice.
+- `/api/meklejumi/top` → 503 until the schema is applied (see VPS step); the dropdown shows built-in examples meanwhile.
+- 125 scenarios, each with "Kas notiks tālāk"; 0 "tu" forms in the advice.
+
+**NAP keys on the VPS** (`/etc/hakatons/map.env`): `NAP_API_KEY_NEGADIJUMI`, `NAP_API_KEY_REMONTI`, `NAP_API_KEY_SATIKSME_SLIDENS`, `NAP_API_KEY_UZTURETAJI_SLIDENS`, `NAP_API_KEY_METEO_SLIDENS`, `NAP_API_KEY_SATIKSMES_IEKARTU_MERIJUMI`, `NAP_API_KEY_SATIKSMES_APJOMS_ATRUMS_MIN`, `NAP_API_KEY_ROBEZAS_LAIKS`. Closures and lane closures (`SLEGUMI`, `JOSLAS`) aren't subscribed and are skipped. Which env var maps to which NAP card: `notes/research/nap-satiksme.md`.
 
 ## What's live
 
-**Front door:** the "Kas Jums vajadzīgs?" search in the header (LV/RU/EN free text, 125 scenarios, no AI in the product). One query gives one result card, in this order:
+**Front door:** the "Kas Jums vajadzīgs?" search (LV/RU/EN free text, 125 scenarios, no AI in the product). One query gives one result card. On phones it's a bottom sheet that opens at half: the verdict line first, then one "🧭 Maršruts" button. The card order:
 - LVĢMC warnings for the place;
 - the decision (e.g. flood zone yes/no at the address);
-- facts: nearest river gauge with level + 24 h change, rain and soil (Open-Meteo), road events within ~5 km (once NAP keys are set);
+- facts: nearest river gauge with level + 24 h change, rain and soil (Open-Meteo), road events within ~5 km (LVC);
 - nearest places with route links and source + licence: assembly point and temporary accommodation (CA plan page link), shelter, 24/7 hospital, pharmacy;
 - the scenario's advice and "Kas notiks tālāk".
 
 An address in the query sets the reference point (e.g. "plūdi Mednieku iela 9 Ogre"). Life-threat queries show a red text line "zvaniet 112". No tel: buttons or links anywhere.
 
-**Everywhere:** LVĢMC warnings banner; "⛅ Prognoze" feed button (bottom sheet on phones); "Biežāk meklētais" on the empty search field. Basemap OSM / OpenTopoMap "Reljefs". Link in "Datu avoti": "Vai avoti darbojas?" → statuss.html.
+**Everywhere:** LVĢMC warnings banner; "⛅ Prognoze" feed; "Biežāk meklētais"; Demo panel. In "Datu avoti": 19 open + 1 ⚠ sources, links "Vai avoti darbojas?" (statuss.html) and "Svarīgi krīzē" (info.html). Basemap OSM / OpenTopoMap "Reljefs".
 
 **Map layers (live DB `map`):**
 
@@ -67,61 +78,51 @@ An address in the query sets the reference point (e.g. "plūdi Mednieku iela 9 O
 | `bankomats` / `degviela` | 802 / 588 | OpenStreetMap (ODbL) |
 | `udens_limenis` | 74 | LVĢMC (CC0), hourly via `hakatons-udens.timer` |
 
-Live overlays without the DB: flood risk zones (LVĢMC WMS), lightning (FMI + LVĢMC grid), road events (LVC, empty until keys), forecast regions and warning areas (LVĢMC). Plus 117 regions/cities and 550 685 addresses from VZD (CC BY 4.0).
+Live overlays without the DB: flood risk zones and warning areas with overlap (LVĢMC), lightning (FMI + LVĢMC grid), road events (LVC), forecast regions (LVĢMC). Traffic zones from `/api/satiksme` are coming with A's layer. Plus 117 regions/cities and 550 685 addresses from VZD (CC BY 4.0).
 
-**API** (`src/karte/api/karte_api.py`): `/api/objekti`, `/api/kategorijas`, `/api/regioni`, `/api/avoti`, `/api/adreses`, `/api/bridinajumi`, `/api/pludi`, `/api/udens`, `/api/prognozes`, `/api/prognozes/robezas`, `/api/zibens`, `/api/augsne`, `/api/celi`, `/api/meklejumi` (POST), `/api/meklejumi/top`, `/api/statuss`, `/api/veseliba`.
+**API** (`src/karte/api/karte_api.py`): `/api/objekti`, `/api/kategorijas`, `/api/regioni`, `/api/avoti`, `/api/adreses`, `/api/bridinajumi`, `/api/pludi`, `/api/udens`, `/api/prognozes`, `/api/prognozes/robezas`, `/api/zibens`, `/api/augsne`, `/api/celi`, `/api/satiksme`, `/api/meklejumi` (POST), `/api/meklejumi/top`, `/api/statuss`, `/api/veseliba`.
 
-**Pitch:** `notes/pitch.md` (10-min script, demo path, judge Q&A) and `notes/presentation_ideas.md` (verified Jūrmala error: assembly point #10 Melluži at 56.064 instead of 56.964, ~100 km off, in Lithuania). CA-plan quality report with the 41 coordinate errors: `notes/ca-plani-kvalitate.md`.
+**Pitch:** `notes/pitch.md` and `notes/presentation_ideas.md` (verified Jūrmala error: assembly point #10 Melluži at 56.064 instead of 56.964, ~100 km off, in Lithuania). CA-plan quality report with the 41 coordinate errors: `notes/ca-plani-kvalitate.md`.
 
-## VPS steps for the user (SSH as root; a Claude session can't write to the VPS)
+## VPS step still pending (the user runs it; SSH as root)
 
 ```bash
 ssh root@161.97.105.130
 cd /srv/hakatons && set -a && . /etc/hakatons/map.env && set +a
-# 1. schema: meklejumi table (#45), LVC avoti row (#51), statuss constraint with nav_datu (#55, after merge)
-psql "$MAP_DB_OWNER_DSN" -q -v ON_ERROR_STOP=1 -f src/karte/db/shema.sql
+psql "$MAP_DB_OWNER_DSN" -q -v ON_ERROR_STOP=1 -f src/karte/db/shema.sql   # meklejumi table (#45), LVC avoti row (#51)
 curl -s https://map.repo.lv/api/meklejumi/top     # 200 instead of 503
 ```
 
-2. **NAP keys for the road layer.**
-   1. Register at transportdata.gov.lv as "DATU ŅĒMĒJS".
-   2. Press ABONĒT on the 5 datasets: closures, accidents, lane closures, road works, slippery road. Card IDs are in `NAP_KOPAS` in `karte_api.py`.
-   3. Add `NAP_API_KEY_SLEGUMI`, `NAP_API_KEY_NEGADIJUMI`, `NAP_API_KEY_JOSLAS`, `NAP_API_KEY_REMONTI` and `NAP_API_KEY_SLIDENS` to `/etc/hakatons/map.env`.
-   4. Run `systemctl restart hakatons-map-api`.
-   5. Check `curl -s https://map.repo.lv/api/celi | head -c 200`, which should show `"konfigurets":true`. The status page row "Ceļu slēgumi" turns from grey to green.
-
-`shema.sql` is **not** applied automatically (`hakatons-udens.path` only runs it when the water-level category is missing). The statuss table creates and migrates itself from the API.
+`shema.sql` is **not** applied automatically (`hakatons-udens.path` only runs it when the water-level category is missing). The statuss table creates and migrates itself from the API. NAP keys are done.
 
 ## Known gaps
 
-- **No real-phone test yet** (only Playwright at 375 px).
-- **Flood WMS upstream** (LVĢMC geo-dpps) answers in 1–30 s. The status page often shows it yellow ("atbild lēni"). Warm the demo addresses right before the pitch.
-- **Road layer empty** until the NAP keys are set; the parser is tested only against a hand-written DATEX II fixture.
+- **Real phones:** D is testing now; until then only Playwright (375×740 emulation). iOS Safari `dvh` + dynamic toolbar and the Android back button with the bottom sheet are the risky parts.
+- **Flood WMS upstream** (LVĢMC geo-dpps) answers in 1–30 s; the status page often shows it yellow. Warm the demo addresses right before the pitch.
+- **Border waiting times** (`robezas`): the feed doesn't answer yet (B is on it).
+- **Traffic free-flow speed** is an estimate (highest speed seen per counter, 80 km/h until 5 readings); speed limits aren't subscribed.
+- **Riga public transport live:** no open real-time feed (see `notes/demo-scenariji.md` → "Missing data across scenarios").
 - **"Biežāk meklētais"** shows built-in examples until the schema step runs.
-- **"Datu avoti" panel** doesn't list the forecast, FMI and Open-Meteo yet (B is on it); each popup/line shows its own source and licence.
-- **Unpublished lists:** 12 municipalities don't publish their assembly-point/accommodation lists. When the nearest point is >10 km away, the result says it's in another municipality.
+- **Unpublished lists:** 12 municipalities don't publish their assembly-point/accommodation lists.
 - **Shelters licence:** 112.lv shelters have no open licence (⚠ in the UI).
 - **River-level danger thresholds** (PRIS) need LVĢMC permission, so we show level and trend only.
 
 ## Before judging (morning checklist; details in `notes/ritdiena.md`)
 
 - **Freeze `main` 1 h before the pitch:** every merge is live within ~1 min.
-- Warm `/api/prognozes` (open the map once), `/api/pludi` for Ogre ("plūdi Mednieku iela 9 Ogre") and the Jūrmala address; open the zones layer on Ogre.
-- statuss.html: everything green or explained (flood yellow = slow, roads grey = no keys).
-- Two real phones (Android + iPhone), location allowed AND denied.
-- Demo deep links `?demo=<kods>` (codes above) tested on a phone.
-- Backup screen video + screenshots in the slides.
+- Warm `/api/prognozes` (open the map once), `/api/pludi` for Ogre and the Jūrmala address; open the zones layer on Ogre.
+- statuss.html: everything green or explained (flood yellow = slow upstream).
+- Two real phones, location allowed AND denied; the 3 pitch deep links (`vetra-2026`, `pludi-ogre`, `nakts`).
+- Backup video (D) + screenshots in the slides; print info.html once as a handout.
 
 ## How we work (parallel sessions)
 
-Rules are in CLAUDE.md "Multi-session" (#47). Summary:
+Rules are in CLAUDE.md "Multi-session" (#47). Since 2026-10-10 ~02:10 the user's instruction is **no PR reviews**: the owner opens the PR with `origin/main` merged in, sends the orchestrator one line, and the orchestrator merges right away.
 - **One git worktree per session**, branch from `origin/main`:
   ```bash
   git fetch
   git worktree add ../hakatons-<topic> -b noiseparty/<topic> origin/main
   git worktree remove ../hakatons-<topic>   # when merged
   ```
-- **The owner merges its own PR** once the user has said so (the user also has an allow rule for `gh pr merge`). Before merging: `git merge main`, re-test, `gh pr merge N --squash --delete-branch`.
-- **API/schema PRs** (`karte_api.py`, `shema.sql`) get a ~5 min subagent review from the orchestrator first. Front-end-only PRs are self-checked (Playwright 375×740, no JS errors, no `tel:`, "Jūs").
 - **Shared files:** each PR adds its own delimited section in `karte_api.py` / `shema.sql` and says up front which shared lines it touches (`MARSRUTI`, `main()`, `index.html`, `app.js`). `TODO.md` merges with `merge=union` locally.
 - `git worktree list` shows what's still checked out on this PC.

@@ -255,7 +255,8 @@
         "Taupiet telefona akumulatoru: lidmašīnas režīms, ieslēdziet reizi stundā. 112 var savienot arī caur cita operatora tīklu.",
         "Ja telefons nestrādā un vajag palīdzību, ejiet uz tuvāko VUGD depo vai policiju (saraksts zemāk).",
         "Ja jāatstāj māja, ejiet uz pašvaldības pulcēšanās vietu (saraksts zemāk).",
-        "Krājumi vismaz 3 dienām: 3 l ūdens dienā cilvēkam, pārtika bez gatavošanas, zāles, skaidra nauda."
+        "Krājumi vismaz 3 dienām: 3 l ūdens dienā cilvēkam, pārtika bez gatavošanas, zāles, skaidra nauda.",
+        "Radio frekvences un krājumu sarakstu izdrukājiet jau tagad: map.repo.lv/info.html."
       ],
       "druka": true,
       "zvanit112": "teksts",
