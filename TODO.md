@@ -4,6 +4,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 `main` is protected — change this file via a branch + PR, never by pushing to `main`.
 
 ## Pending
+- [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
+- [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
+- [ ] Check licenses before using: Esri satellite basemap (map redesign; Esri terms, not open data) and `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Load the team's interest-point datasets into the map DB (how-to: `src/karte/README.md`) — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Incidents layer: LVC live road events (closures, ice, accidents) into `objekti` with `derigs_lidz`; needs NAP API key — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Pick the problem/user and the 3–6 step flow for our prototype — added 2026-10-09 17:13 +03:00 by noiseparty
@@ -24,6 +27,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Map data sources: `avoti` table with license/publisher/links, shown in the map (Datu avoti panel, each popup, attribution); pharmacies, hospitals, police, fire stations switched from OSM to official CC0 data (ZVA, IeM IC) — done 2026-10-09 19:09 +03:00 by noiseparty
 - [x] Map layer: 37 hospitals with 24/7 emergency care (VM disaster medicine plan, annex 12), addresses checked, coordinates from VZD address register — done 2026-10-09 18:46 +03:00 by noiseparty
 - [x] Research crisis-map services & open data (taxonomy, ~55 Latvian sources, intl feeds + case studies, top-15 layers) → `notes/research/` — done 2026-10-09 18:36 +03:00 by noiseparty (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Map DB + API + filters: PostGIS db `map` on the VPS, `/api` (`src/karte/`), regions/cities from VZD, OSM ATMs/pharmacies/hospitals/police/fire/fuel, "nearest to me" with geolocation allowed for map.repo.lv — done 2026-10-09 18:11 +03:00 by noiseparty

@@ -9,7 +9,6 @@ L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19,
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
 }).addTo(karte);
-karte.attributionControl.addAttribution('Dati: <a href="https://www.112.lv/lv/patvertnes">VUGD / 112.lv</a>, VZD, OSM');
 L.control.scale({ imperial: false }).addTo(karte);
 
 const el = id => document.getElementById(id);
@@ -119,7 +118,7 @@ function aizpilditKategorijas(saraksts) {
     div.className = 'grupa';
     div.innerHTML = `<div class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</div>` + k.map(k => `
       <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? 'checked' : 'disabled'}>
-        <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}
+        <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
         <span class="skaits">${k.skaits}</span></label>`).join('');
     kaste.append(div);
   }
@@ -154,7 +153,7 @@ function popupSaturs(p, ll) {
   const marsruts = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no}%3B${ll.lat}%2C${ll.lng}`;
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
-    rindas.join('<br>') + `<br><a href="${marsruts}" target="_blank" rel="noopener">Maršruts ↗</a></div>`;
+    rindas.join('<br>') + `<br><a href="${marsruts}" target="_blank" rel="noopener">Maršruts ↗</a><br>${Avoti.rinda(p.avots)}</div>`;
 }
 
 function zimetSarakstu(features) {
@@ -207,6 +206,9 @@ async function atjaunot() {
   }
 }
 
-Promise.all([iegut('/kategorijas'), iegut('/regioni')])
-  .then(([k, r]) => { aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); })
+Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
+  .then(([k, r]) => {
+    karte.attributionControl.addAttribution(Avoti.atsauce());
+    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot();
+  })
   .catch(() => statuss('Datus neizdevās ielādēt. Mēģini vēlreiz pēc brīža.', true));

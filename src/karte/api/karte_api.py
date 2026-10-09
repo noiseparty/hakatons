@@ -1,7 +1,8 @@
 """map.repo.lv API: lasa datubāzi `map` un atgriež JSON / GeoJSON. Caddy to pieslēdz zem /api/.
 
 Galapunkti:
-  GET /api/kategorijas                 slāņi ar objektu skaitu
+  GET /api/kategorijas                 slāņi ar objektu skaitu un to avotiem
+  GET /api/avoti                       datu avoti: izdevējs, licence, saites, skaits, ielādes laiks
   GET /api/regioni                     pašvaldības un pilsētas (bez ģeometrijas, ar bbox)
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
   GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..
@@ -43,10 +44,22 @@ def vaicat(sql, params=()):
 def kategorijas(_q):
     return vaicat(
         """select coalesce(json_agg(k order by kartiba, nosaukums), '[]') from (
-             select k.kods, k.nosaukums, k.grupa, k.krasa, k.kartiba, count(o.id)::int as skaits
+             select k.kods, k.nosaukums, k.grupa, k.krasa, k.kartiba, count(o.id)::int as skaits,
+                    coalesce(array_agg(distinct o.avots) filter (where o.avots is not null), '{}') as avoti
              from kategorijas k left join objekti o on o.kategorija = k.kods
                and (o.derigs_lidz is null or o.derigs_lidz > now())
              group by k.kods) k"""
+    )
+
+
+def avoti(_q):
+    return vaicat(
+        """select coalesce(json_agg(a order by a.kartiba), '[]') from (
+             select a.kods, a.nosaukums, a.izdevejs, a.licence, a.licences_url, a.atverts, a.datu_kopa_url,
+                    a.lejupielade, a.lietojums, a.piezime, a.kartiba,
+                    (select count(*) from objekti o where o.avots = a.kods)::int as skaits,
+                    (select max(atjaunots) from objekti o where o.avots = a.kods) as ieladets
+             from avoti a) a"""
     )
 
 
@@ -132,6 +145,7 @@ def veseliba(_q):
 
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
+    (re.compile(r"^/api/avoti/?$"), avoti, 300),
     (re.compile(r"^/api/regioni/?$"), regioni, 3600),
     (re.compile(r"^/api/regioni/([^/]+)$"), regions, 3600),
     (re.compile(r"^/api/objekti/?$"), objekti, 60),
