@@ -34,6 +34,7 @@ const krizesMeklesana = (() => {
     try {
       const noteikumi = await (await fetch('scenariji.json')).json();
       klasifikators = Klasifikators.izveidot(noteikumi, regioniSaraksts);
+      izveidotIndeksu(noteikumi);
       talakGimenes = noteikumi.talak_gimenes || {};
     } catch {
       el('jautajums').disabled = true;
@@ -86,16 +87,28 @@ const krizesMeklesana = (() => {
       await popIelade;
       if (lauks.value.trim() || !populari.contains(document.activeElement) && document.activeElement !== lauks) return;
     }
+    populari.classList.remove('ieteikumi');
+    el('populari-virsraksts').textContent = 'Biežāk meklētais';
     popPogas.innerHTML = popularie.map(p =>
       `<button type="button" data-teksts="${esc(p.teksts)}" data-kods="${esc(p.kods)}">${esc(p.nos)}</button>`).join('');
     populari.hidden = false;
   }
   function aizvertPopularos() {
+    clearTimeout(ieteikumuTaimeris);
     populari.hidden = true;
   }
   el('jautajums').addEventListener('focus', atvertPopularos);
   el('jautajums').addEventListener('click', atvertPopularos);
-  el('jautajums').addEventListener('input', () => { if (el('jautajums').value.trim()) aizvertPopularos(); else atvertPopularos(); });
+  let ieteikumuTaimeris = null;
+  el('jautajums').addEventListener('input', () => {
+    clearTimeout(ieteikumuTaimeris);
+    ieteikumuTaimeris = setTimeout(() => {
+      const t = el('jautajums').value.trim();
+      if (!t) atvertPopularos();
+      else if (t.length >= 2) raditIeteikumus(t);
+      else aizvertPopularos();
+    }, 80);
+  });
   popPogas.addEventListener('click', e => {
     const poga = e.target.closest('button[data-kods]');
     const scenarijs = klasifikators?.scenariji.find(s => s.kods === poga?.dataset.kods);
@@ -125,6 +138,120 @@ const krizesMeklesana = (() => {
   el('meklet-forma').addEventListener('focusout', e => {
     if (e.relatedTarget && !el('jautajums').contains(e.relatedTarget) && !populari.contains(e.relatedTarget)) aizvertPopularos();
   });
+
+  // ---- Drukas kļūdas, vārdu formas, latīņu burtiem rakstīta krievu valoda (pirms klasifikatora) ----
+  // Klasifikators salīdzina vārdu sākumus bez garumzīmēm. Ja tas neko neatrod (vai tikai aptuveni), mēģinām vēlreiz ar
+  // labotu tekstu: katru vārdu, kas nesākas ne ar vienu atslēgvārdu, aizstājam ar tuvāko atslēgvārdu — pēc galotnes
+  // noņemšanas vai ar vienu burta kļūdu (Damerau-Levenšteins ≤ 1, vārdiem no 5 burtiem). Vieta paliek no oriģinālā.
+  const vienk = s => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const GALOTNES = ['iem', 'am', 'as', 'os', 'us', 'ai', 'ei', 'em', 'im', 'is', 'es', 'a', 'e', 'i', 'u', 's'];
+  // Krieviski, bet latīņu burtiem (translitā) → latviskais atslēgvārds; kirilicu atslēgvārdi jau saprot
+  const TRANSLITS = [
+    ['pozhar', 'ugunsgrēks'], ['pozar', 'ugunsgrēks'], ['navodnen', 'plūdi'], ['zatop', 'plūdi'], ['potop', 'plūdi'],
+    ['ukryt', 'patvertne'], ['ubezhish', 'patvertne'], ['bomboubezh', 'patvertne'], ['bolnic', 'slimnīca'], ['bolnits', 'slimnīca'],
+    ['apteka', 'aptieka'], ['apteki', 'aptieka'], ['skoraya', 'ātrā palīdzība'], ['skoraja', 'ātrā palīdzība'], ['vrach', 'ārsts'],
+    ['policiy', 'policija'], ['policij', 'policija'], ['militsi', 'policija'], ['evakuac', 'evakuācija'],
+    ['elektrichestv', 'elektrība'], ['sveta net', 'nav elektrības'], ['net sveta', 'nav elektrības'],
+    ['vody net', 'nav ūdens'], ['net vody', 'nav ūdens'], ['uragan', 'vētra'], ['shtorm', 'vētra'], ['burya', 'vētra'],
+    ['vzryv', 'sprādziens'], ['trevog', 'trauksme'], ['sirena', 'trauksme'], ['benzin', 'degviela'], ['bankomat', 'bankomāts'],
+  ];
+  let indekss = [];  // [{ k: atslēgvārds bez garumzīmēm, orig }] — viena vārda, latīņu burtiem, no 3 burtiem
+
+  function izveidotIndeksu(noteikumi) {
+    const redzets = new Set();
+    for (const sc of noteikumi.scenariji) for (const a of sc.atslegvardi) {
+      const k = vienk(a.replace(/\$$/, '')).trim();
+      if (k.length < 3 || /\s/.test(k) || !/^[a-z]+$/.test(k) || redzets.has(k)) continue;
+      redzets.add(k);
+      indekss.push({ k, vesels: a.endsWith('$') });
+    }
+    indekss.sort((a, b) => b.k.length - a.k.length);  // garākie (precīzākie) pirmie
+  }
+
+  // Optimālā virknes salīdzināšana (Damerau-Levenšteins ar blakus burtu apmaiņu); pārtrauc, ja > 1
+  function dl1(a, b) {
+    if (Math.abs(a.length - b.length) > 1) return 2;
+    const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
+    for (let j = 1; j <= b.length; j++) d[0][j] = j;
+    for (let i = 1; i <= a.length; i++) {
+      let min = Infinity;
+      for (let j = 1; j <= b.length; j++) {
+        const c = a[i - 1] === b[j - 1] ? 0 : 1;
+        d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + c);
+        if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+        min = Math.min(min, d[i][j]);
+      }
+      if (min > 1) return 2;
+    }
+    return d[a.length][b.length];
+  }
+
+  function labotVardu(v) {
+    if (!/^[a-z]+$/.test(v) || v.length < 4) return v;
+    if (indekss.some(x => x.vesels ? v === x.k : v.startsWith(x.k))) return v;  // jau atpazīstams
+    // galotne nost: "plūdos" → "plud" → atslēgvārds, kas sākas ar to
+    for (const g of GALOTNES) {
+      if (!v.endsWith(g) || v.length - g.length < 4) continue;
+      const sakne = v.slice(0, -g.length);
+      const x = indekss.find(x => x.k.startsWith(sakne) || sakne.startsWith(x.k));
+      if (x) return x.k;
+    }
+    if (v.length < 5) return v;
+    // viena burta kļūda atslēgvārda garumā (± 1 burts), garākiem atslēgvārdiem no 5 burtiem
+    for (const x of indekss) {
+      if (x.k.length < 5) continue;
+      for (const garums of [x.k.length, x.k.length + 1, x.k.length - 1]) {
+        if (garums > v.length || garums < 4) continue;
+        if ((x.vesels ? dl1(v, x.k) : dl1(v.slice(0, garums), x.k)) <= 1) return x.k;
+      }
+    }
+    return v;
+  }
+
+  function labot(teksts) {
+    let t = ' ' + vienk(teksts).replace(/[^\p{L}\p{N}]+/gu, ' ').trim() + ' ';
+    for (const [no, uz] of TRANSLITS) t = t.replace(new RegExp(' ' + no + '[a-z]*', 'g'), ' ' + vienk(uz));
+    return t.trim().split(' ').map(labotVardu).join(' ');
+  }
+
+  // Oriģinālais teksts, ja tas jau ir atpazīts; citādi labotais (vieta un 112 — no abiem)
+  function klasificetLabots(teksts) {
+    const rez = klasifikators.klasificet(teksts);
+    if (rez.scenariji.length && !rez.aptuveni) return rez;
+    const labots = labot(teksts);
+    if (labots === vienk(teksts).trim()) return rez;
+    const r2 = klasifikators.klasificet(labots);
+    if (!r2.scenariji.length || r2.aptuveni && rez.scenariji.length) return rez;
+    return { ...r2, vieta: rez.vieta || r2.vieta, dzivibas_draudi: rez.dzivibas_draudi || r2.dzivibas_draudi,
+      zvanit112: rez.zvanit112 || r2.zvanit112, labots };
+  }
+
+  // ---- Ieteikumi rakstot: līdz 6 situācijām (+ atpazītā vieta); Enter / klikšķis meklē ar izvēlēto situāciju ----
+  function ieteikumi(teksts) {
+    const k = klasificetLabots(teksts);
+    const rez = [...k.scenariji];
+    const vardi = vienk(teksts).replace(/[^\p{L}\p{N}]+/gu, ' ').trim().split(' ');
+    const pedejais = vardi[vardi.length - 1] || '';
+    if (pedejais.length >= 2) {
+      const sc = klasifikators.scenariji;
+      // atslēgvārds sākas ar rakstāmo vārdu ("plū" → plūdi), tad nosaukumā ir šis vārds
+      const pecAtslegas = sc.filter(s => s.atslegvardi.some(a => vienk(a).startsWith(pedejais)));
+      const pecNosaukuma = sc.filter(s => vienk(s.nosaukums).split(/[^a-z]+/).some(v => v.startsWith(pedejais)));
+      for (const s of [...pecAtslegas, ...pecNosaukuma]) if (!rez.includes(s)) rez.push(s);
+    }
+    return { scenariji: rez.slice(0, 6), vieta: k.vieta };
+  }
+
+  function raditIeteikumus(teksts) {
+    if (!klasifikators || el('jautajums').disabled) return;
+    const { scenariji, vieta } = ieteikumi(teksts);
+    if (!scenariji.length) { aizvertPopularos(); return; }
+    populari.classList.add('ieteikumi');
+    el('populari-virsraksts').textContent = 'Ieteikumi';
+    popPogas.innerHTML = scenariji.map(s => `<button type="button" data-teksts="${esc(teksts)}" data-kods="${esc(s.kods)}">` +
+      `${esc(s.nosaukums)}${vieta ? ` <small>· ${esc(vieta.nosaukums)}</small>` : ''}</button>`).join('');
+    populari.hidden = false;
+  }
 
   // Uzskaite: atpazītu vaicājumu (situācija vai slānis) vienreiz pēc meklēšanas un vienreiz, kad atver rezultātu.
   // Sūta tikai tekstu bez adreses; bez lietotāja datiem. Kļūdas klusi ignorē.
@@ -219,7 +346,7 @@ const krizesMeklesana = (() => {
   async function meklet(teksts, scenarijs = null) {
     if (!klasifikators) return;
     pedejais = { teksts, scenarijs };
-    let rez = klasifikators.klasificet(teksts);
+    let rez = klasificetLabots(teksts);
     if (scenarijs) {
       rez.scenariji = [scenarijs];
       rez.zvanit112 = rez.dzivibas_draudi || !!scenarijs.zvanit112;
@@ -241,7 +368,7 @@ const krizesMeklesana = (() => {
       try { adrese = await atrastAdresi(teksts, signal); } catch { return; }  // atcelts ar jaunu meklēšanu
       if (adrese && !scenarijs) {
         const draudiBija = rez.dzivibas_draudi;
-        rez = klasifikators.klasificet(adrese.atlikums);
+        rez = klasificetLabots(adrese.atlikums);
         rez.dzivibas_draudi ||= draudiBija;
         rez.zvanit112 ||= draudiBija;
       }
@@ -280,7 +407,8 @@ const krizesMeklesana = (() => {
       (bezDatiem ? '<p class="piezime kluda">Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.</p>' : '');
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
-    const beigas = talakBloks(galvenais) + vaiDomaji + notiritPoga();
+    const beigas = talakBloks(galvenais) + vaiDomaji +
+      '<button type="button" class="otra" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Visi kartes objekti sarakstā</button>' + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
     if (!galvenais && !kurTeksts) {
@@ -510,5 +638,5 @@ const krizesMeklesana = (() => {
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
-  return { sakt, atkartot, meklet, vietaNav };
+  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi };
 })();
