@@ -20,6 +20,7 @@ Galapunkti:
   POST /api/meklejumi {vaicajums, atpazits, klikskis}
                                        biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāja datiem); 204
   GET /api/meklejumi/top?n=3           biežāk meklētie pēdējās 14 dienās (kešs 60 s)
+  GET /api/statuss                     statusa lapa: vietnes, API un datu avotu stāvoklis, 24 h pa 15 min, 7 dienu pieejamība
 
 Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
 
@@ -770,6 +771,276 @@ def meklejumi_top(q):
     return {"vaicajumi": _kesots("meklejumi_top", 60, ielade)[:n]}
 
 
+# ==== Statuss (production/statuss.html) — sākums ====
+# Fona pavediens API procesā ik 15 min pārbauda vietni, API/DB un katru datu avotu (visas pārbaudes reizē, katrai
+# ≤ 10 s; pieprasījumus tas nebloķē) un ieraksta vienu rindu par katru komponentu tabulā statuss_parbaudes.
+# Raksta ar MAP_DB_OWNER_DSN (tabulu izveido pats, ja shēma vēl nav palaista), glabā 8 dienas. Ja rakstīt nevar,
+# vēsture ir tikai atmiņā līdz pārstartēšanai. GET /api/statuss: stāvoklis + pēdējie 96 intervāli + pieejamība 7 dienās.
+
+STATUSS_DSN = os.environ.get("MAP_DB_OWNER_DSN", "")
+STATUSS_VIETNE = os.environ.get("STATUSS_VIETNE", "https://map.repo.lv/")
+STATUSS_OSM_FLIZE = "https://tile.openstreetmap.org/7/72/39.png"  # Latvija; viena flīze ik 15 min
+STATUSS_INTERVALS = 15 * 60
+STATUSS_TAIMAUTS = 10
+STATUSS_JOSLAS = 96  # 24 h
+STATUSS_SHEMA = """
+create table if not exists statuss_parbaudes (
+  id         bigserial primary key,
+  komponents text not null,
+  laiks      timestamptz not null default now(),
+  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  zinojums   text,
+  ilgums_ms  int
+);
+create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+grant select on statuss_parbaudes to map_api;
+"""  # tas pats bloks ir src/karte/db/shema.sql
+
+_CC0 = ("CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/")
+STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa, licence, licences saite)
+    ("vietne", "Karte (map.repo.lv)", "Vai lapa atveras", ("map.repo.lv pirmkods", "https://github.com/noiseparty/hakatons", None, None)),
+    ("api", "API un datubāze", "Kartes objekti, slāņi un avoti", None),
+    ("adreses", "Adrešu meklēšana", "VZD adrešu reģistrs kartes datubāzē",
+     ("VZD Valsts adrešu reģistra atvērtie dati", "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
+    ("bridinajumi", "LVĢMC brīdinājumi", "data.gov.lv datne ir pieejama un nolasāma",
+     ("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", *_CC0)),
+    ("pludi", "Plūdu riska zonas", "LVĢMC karšu serviss (ĢeoLatvija.lv)",
+     ("LVĢMC 3. cikla plūdu riska kartes",
+      "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1", *_CC0)),
+    ("udens", "Ūdens līmenis upēs", "Jaunākā LVĢMC mērījuma vecums",
+     ("LVĢMC hidroloģiskie operatīvie dati", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi", *_CC0)),
+    ("ca_plani", "Evakuācijas un izmitināšanas vietas", "No pašvaldību civilās aizsardzības plāniem",
+     ("Pašvaldību CA plāni", "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons",
+      "Oficiāls dokuments, nav autortiesību objekts", "https://likumi.lv/ta/id/5138-autortiesibu-likums")),
+    ("patvertnes", "Patvertnes", "VUGD / 112.lv patvertņu saraksts kartes datubāzē",
+     ("Publiskās patvertnes (112.lv)", "https://www.112.lv/lv/patvertnes", "Licence nav norādīta", None)),
+    ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
+     ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
+]
+STATUSS_SMAGUMS = {"darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
+
+
+def _sekundes(ms):
+    return f"{ms / 1000:.1f}".replace(".", ",") + " s"
+
+
+def _skaits(n, viens, vairaki):  # 1, 21, 31… → vienskaitlis (bet ne 11)
+    return f"{n} {viens if n % 10 == 1 and n % 100 != 11 else vairaki}"
+
+
+def _laiks_pirms(sekundes):
+    return f"{round(sekundes / 60)} min" if sekundes < 5400 else f"{round(sekundes / 3600)} h"
+
+
+def _parb_vietne():
+    lapa = _lejupieladet(STATUSS_VIETNE, timeout=STATUSS_TAIMAUTS).decode("utf-8", "replace")
+    return ("darbojas", None) if "Krīzes karte" in lapa else ("nedarbojas", "Lapa atveras, bet tās saturs nav pareizs")
+
+
+def _parb_api():
+    n = vaicat("select count(*)::int from objekti where derigs_lidz is null or derigs_lidz > now()", timeout="5s")
+    return ("darbojas", _skaits(n, "objekts", "objekti") + " kartē") if n else ("nedarbojas", "Datubāzē nav neviena objekta")
+
+
+def _parb_adreses():
+    atrastas = adreses({"q": ["brivibas iela 1 riga"]})
+    return ("darbojas", None) if atrastas else ("nedarbojas", "Pārbaudes adrese netika atrasta")
+
+
+def _parb_bridinajumi():
+    tagad, speka = _riga_tagad(), 0
+    for url, kolonnas in ((BRIDINAJUMI_META, {"WEATHER_WARNING_EV_ID", "INTENSITY_LV", "TIME_FROM", "TIME_TILL"}),
+                          (BRIDINAJUMI_POLIGONI, {"WEATHER_WARNING_EV_ID", "POLIGON_ID", "LAT", "LON"})):
+        lasitajs = csv.DictReader(io.StringIO(_lejupieladet(url, timeout=STATUSS_TAIMAUTS).decode("utf-8-sig")))
+        rindas = list(lasitajs)
+        if not kolonnas <= set(lasitajs.fieldnames or ()):
+            return "nedarbojas", "Datnes formāts ir mainījies"
+        if url == BRIDINAJUMI_META:
+            speka = sum(1 for r in rindas if not (_lv_laiks(r["TIME_TILL"]) or tagad) < tagad)
+    return "darbojas", "Spēkā " + _skaits(speka, "brīdinājums", "brīdinājumi") if speka else "Spēkā esošu brīdinājumu nav"
+
+
+def _parb_pludi():
+    _pludu_serviss(*PLUDU_SERVISI[0], 56.816, 24.605)  # Ogre; derīga ir arī atbilde "nav zonā"
+    return "darbojas", None
+
+
+def _parb_udens():
+    n, vecums = vaicat("""select json_build_array(count(*), extract(epoch from now() - max(derigs_no))::int)
+                          from objekti where kategorija = 'udens_limenis'""", timeout="5s")
+    if not n or vecums is None:
+        return "nedarbojas", "Datubāzē nav mērījumu"
+    zinojums = f"{_skaits(n, 'stacija', 'stacijas')}, jaunākais mērījums pirms {_laiks_pirms(max(vecums, 0))}"
+    return ("traucejumi" if vecums > udens_limenis.DERIGS_H * 3600 else "darbojas"), zinojums
+
+
+def _parb_ca_plani():
+    skaits = vaicat("""select coalesce(json_object_agg(kategorija, n), '{}') from (
+                         select kategorija, count(*)::int n from objekti where avots = 'ca-plani' group by 1) x""",
+                    timeout="5s")
+    p, i = skaits.get("evakuacijas_punkts", 0), skaits.get("izmitinasana", 0)
+    zinojums = f"{_skaits(p, 'pulcēšanās vieta', 'pulcēšanās vietas')}, {_skaits(i, 'izmitināšanas vieta', 'izmitināšanas vietas')}"
+    return ("darbojas" if p and i else "traucejumi" if p or i else "nedarbojas"), zinojums
+
+
+def _parb_patvertnes():
+    n = vaicat("select count(*)::int from objekti where kategorija = 'patvertne'", timeout="5s")
+    return ("darbojas", _skaits(n, "patvertne", "patvertnes")) if n else ("nedarbojas", "Datubāzē nav patvertņu")
+
+
+def _parb_osm():
+    if not _lejupieladet(STATUSS_OSM_FLIZE, timeout=STATUSS_TAIMAUTS).startswith(b"\x89PNG"):
+        return "nedarbojas", "Atbilde nav kartes attēls"
+    return "darbojas", None
+
+
+# kods → (pārbaude, virs cik ms "atbild lēni")
+STATUSS_PARBAUDES = {
+    "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
+    "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
+    "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "osm": (_parb_osm, 5000),
+}
+
+
+def _statuss_kluda(e):
+    import socket
+    import urllib.error
+    if isinstance(e, urllib.error.HTTPError):
+        return f"Avots atbild ar kļūdu (HTTP {e.code})"
+    if isinstance(e, (TimeoutError, socket.timeout)) or isinstance(getattr(e, "reason", None), (TimeoutError, socket.timeout)):
+        return f"Neatbildēja {STATUSS_TAIMAUTS} s laikā"
+    if isinstance(e, urllib.error.URLError):
+        return "Avots nav sasniedzams"
+    if isinstance(e, psycopg.Error):
+        return "Datubāze nav pieejama"
+    if isinstance(e, Kluda):
+        return str(e)
+    if isinstance(e, (ValueError, KeyError, TypeError)):
+        return "Atbildes formāts nav nolasāms"
+    return f"Kļūda ({type(e).__name__})"
+
+
+_statuss_atmina = []  # [(komponents, laiks, stavoklis, zinojums, ilgums_ms)] — šī procesa pārbaudes (ja DB nav)
+_statuss_tabula = [False]  # vai STATUSS_SHEMA jau palaista šajā procesā
+
+
+def _statuss_parbaudit_visu():
+    laiks = datetime.now(timezone.utc)
+
+    def viena(funkcija, leni_ms):
+        sakums = time.monotonic()
+        try:
+            stavoklis, zinojums = funkcija()
+        except Exception as e:
+            stavoklis, zinojums = "nedarbojas", _statuss_kluda(e)
+        ms = round((time.monotonic() - sakums) * 1000)
+        if stavoklis == "darbojas" and ms > leni_ms:
+            stavoklis, zinojums = "traucejumi", f"Atbild lēni ({_sekundes(ms)})"
+        return stavoklis, zinojums or f"Atbild {_sekundes(ms)}", ms
+
+    pavedieni = ThreadPoolExecutor(max_workers=len(STATUSS_PARBAUDES))
+    darbi = {kods: pavedieni.submit(viena, *p) for kods, p in STATUSS_PARBAUDES.items()}
+    pavedieni.shutdown(wait=False)  # kas nav beidzis līdz termiņam, beigsies pats (ar savu taimautu)
+    termins = time.monotonic() + STATUSS_TAIMAUTS + 2
+    rindas = []
+    for kods, darbs in darbi.items():
+        try:
+            rindas.append((kods, laiks, *darbs.result(timeout=max(0.0, termins - time.monotonic()))))
+        except Exception:  # termiņš
+            # plūdu WMS mēdz atbildēt 1–30 s; lēns, bet strādājošs serviss — traucējumi, nevis "nedarbojas"
+            stavoklis = "traucejumi" if kods == "pludi" else "nedarbojas"
+            rindas.append((kods, laiks, stavoklis, f"Neatbildēja {STATUSS_TAIMAUTS} s laikā", None))
+
+    with _kesas_slots:
+        _statuss_atmina.extend(rindas)
+        robeza = laiks - timedelta(days=8)
+        _statuss_atmina[:] = [r for r in _statuss_atmina if r[1] > robeza]
+        _kesa.pop("statuss", None)
+    if not STATUSS_DSN:
+        return
+    try:
+        with psycopg.connect(STATUSS_DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '10s'")
+            if not _statuss_tabula[0]:
+                cur.execute(STATUSS_SHEMA)
+                _statuss_tabula[0] = True
+            cur.executemany("""insert into statuss_parbaudes (komponents, laiks, stavoklis, zinojums, ilgums_ms)
+                               values (%s, %s, %s, %s, %s)""", rindas)
+            cur.execute("delete from statuss_parbaudes where laiks < now() - interval '8 days'")
+    except psycopg.Error as e:
+        print(f"statuss: neizdevās saglabāt: {e}", file=sys.stderr)
+
+
+def _statuss_cikls():
+    time.sleep(5)  # lai serveris paspēj sākt
+    while True:
+        try:
+            _statuss_parbaudit_visu()
+        except Exception as e:  # pavediens nedrīkst apstāties
+            print(f"statuss: {e!r}", file=sys.stderr)
+        time.sleep(STATUSS_INTERVALS - time.time() % STATUSS_INTERVALS + 20)  # :00:20, :15:20, …
+
+
+def _statuss_dati():
+    tagad = datetime.now(timezone.utc)
+    rindas = {}
+    try:
+        no_db = vaicat("""select coalesce(json_agg(json_build_array(komponents, laiks, stavoklis, zinojums, ilgums_ms)
+                                            order by laiks), '[]')
+                          from statuss_parbaudes where laiks > now() - interval '7 days'""", timeout="5s")
+        for k, iso, s, z, ms in no_db:
+            laiks = datetime.fromisoformat(iso)
+            rindas[(k, laiks.replace(microsecond=0))] = (k, laiks, s, z, ms)
+    except psycopg.Error:
+        pass  # tabulas vēl nav vai DB nav pieejama — rāda šī procesa pārbaudes
+    robeza = tagad - timedelta(days=7)
+    with _kesas_slots:
+        for r in _statuss_atmina:
+            if r[1] > robeza:
+                rindas.setdefault((r[0], r[1].replace(microsecond=0)), r)
+
+    pec_komponenta = {}
+    for r in sorted(rindas.values(), key=lambda r: r[1]):
+        pec_komponenta.setdefault(r[0], []).append(r)
+    sis = int(tagad.timestamp()) // STATUSS_INTERVALS
+    komponenti = []
+    for kods, nosaukums, apraksts, avots in STATUSS_KOMPONENTI:
+        parbaudes = pec_komponenta.get(kods, [])
+        sliktakais = {}  # intervāla nr → sliktākais stāvoklis tajā
+        for _, laiks, s, _z, _ms in parbaudes:
+            nr = int(laiks.timestamp()) // STATUSS_INTERVALS
+            if STATUSS_SMAGUMS[s] >= STATUSS_SMAGUMS.get(sliktakais.get(nr), -1):
+                sliktakais[nr] = s
+        pedeja = parbaudes[-1] if parbaudes else None
+        if pedeja is None:
+            stavoklis, zinojums = "nav_datu", "Vēl nav pārbaudīts"
+        elif tagad - pedeja[1] > timedelta(seconds=2.5 * STATUSS_INTERVALS):
+            stavoklis, zinojums = "nav_datu", f"Pēdējā pārbaude pirms {_laiks_pirms((tagad - pedeja[1]).total_seconds())}"
+        else:
+            stavoklis, zinojums = pedeja[2], pedeja[3]
+        ar_datiem = list(sliktakais.values())
+        komponenti.append({
+            "kods": kods, "nosaukums": nosaukums, "apraksts": apraksts,
+            "avots": dict(zip(("nosaukums", "url", "licence", "licences_url"), avots)) if avots else None,
+            "stavoklis": stavoklis, "zinojums": zinojums,
+            "parbaudits": pedeja[1].isoformat(timespec="seconds") if pedeja else None,
+            "ilgums_ms": pedeja[4] if pedeja else None,
+            "joslas": [{"sakums": datetime.fromtimestamp(nr * STATUSS_INTERVALS, timezone.utc).isoformat(),
+                        "stavoklis": sliktakais.get(nr)} for nr in range(sis - STATUSS_JOSLAS + 1, sis + 1)],
+            "pieejamiba_7d": round(100 * sum(s != "nedarbojas" for s in ar_datiem) / len(ar_datiem), 2)
+            if ar_datiem else None,
+        })
+    return {"laiks": tagad.isoformat(timespec="seconds"), "intervals_min": STATUSS_INTERVALS // 60,
+            "komponenti": komponenti}
+
+
+def statuss(_q):
+    return _kesots("statuss", 60, _statuss_dati)
+
+# ==== Statuss — beigas ====
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -783,6 +1054,7 @@ MARSRUTI = [
     (re.compile(r"^/api/prognozes/?$"), prognozes, 300),
     (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
+    (re.compile(r"^/api/statuss/?$"), statuss, 60),
     (re.compile(r"^/api/meklejumi/top/?$"), meklejumi_top, 60),
 ]
 POST_MARSRUTI = [
@@ -846,6 +1118,7 @@ def main():
     if not DSN:
         sys.exit("Nav MAP_DB_DSN")
     ports = int(sys.argv[1]) if len(sys.argv) > 1 else 8920
+    threading.Thread(target=_statuss_cikls, name="statuss", daemon=True).start()
     ThreadingHTTPServer(("127.0.0.1", ports), Apstradatajs).serve_forever()
 
 

@@ -218,3 +218,17 @@ grant usage on sequence meklejumi_id_seq to map_api;
 insert into meklejumi (vaicajums, skaits) values
   ('nav elektrības', 12), ('plūdi ogrē', 9), ('tuvākā patvertne', 7), ('nav ūdens', 5), ('evakuācija', 4)
 on conflict (vaicajums) do nothing;
+
+-- ==== Statuss (production/statuss.html) ====
+-- Fona pārbaužu rezultāti: karte_api.py ik 15 min ieraksta vienu rindu par katru komponentu (vietne, API, datu avoti),
+-- glabā 8 dienas. Tabulu izveido arī pats API (tas pats bloks STATUSS_SHEMA failā karte_api.py), ja shēma nav palaista.
+create table if not exists statuss_parbaudes (
+  id         bigserial primary key,
+  komponents text not null,
+  laiks      timestamptz not null default now(),
+  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  zinojums   text,
+  ilgums_ms  int
+);
+create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+grant select on statuss_parbaudes to map_api;
