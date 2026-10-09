@@ -470,20 +470,20 @@ def _prognozu_regioni():
 
 
 def _prognozu_dati():
-    pieprasijums = urllib.request.Request(PROGNOZU_DIENAS, headers={"User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
-    with urllib.request.urlopen(pieprasijums, timeout=60) as r:
-        teksts = r.read().decode("utf-8-sig")
-        mainits = r.headers.get("Last-Modified")
     vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
     lauki = {"14": "brazmas", "17": "nokrisni", "15": "tmax", "16": "tmin", "18": "varbutiba", "20": "ikona"}
     vertibas = {}  # (datums, reģions) → lauks → [(vērtība, vietas nosaukums)]
-    for r in csv.DictReader(io.StringIO(teksts)):
-        lauks = lauki.get(r["PARA_ID"])
-        vieta = vietas.get(r["CITY_ID"])
-        if not lauks or not vieta or not vieta[3] or not r["VERTIBA"]:
-            continue
-        vertibas.setdefault((r["DATUMS"][:10], vieta[3]), {}).setdefault(lauks, []).append(
-            (float(r["VERTIBA"]), vieta[0]))
+    pieprasijums = urllib.request.Request(PROGNOZU_DIENAS, headers={"User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
+    with urllib.request.urlopen(pieprasijums, timeout=60) as atbilde:
+        mainits = atbilde.headers.get("Last-Modified")
+        # 16,6 MB: lasa plūsmā, nevis visu tekstu atmiņā
+        for r in csv.DictReader(io.TextIOWrapper(atbilde, encoding="utf-8-sig")):
+            lauks = lauki.get(r["PARA_ID"])
+            vieta = vietas.get(r["CITY_ID"])
+            if not lauks or not vieta or not vieta[3] or not r["VERTIBA"]:
+                continue
+            vertibas.setdefault((r["DATUMS"][:10], vieta[3]), {}).setdefault(lauks, []).append(
+                (float(r["VERTIBA"]), vieta[0]))
     kopsavilkums = {}  # datums → reģions → rādītāji
     for (datums, kods), v in vertibas.items():
         def maks(lauks):
@@ -635,7 +635,10 @@ def prognozes(_q):
 
 def _prognozes():
     tagad = _riga_tagad()
-    regioni_ = _kesots("prognozu_regioni", 86400, _prognozu_regioni)
+    try:
+        regioni_ = _kesots("prognozu_regioni", 86400, _prognozu_regioni)
+    except Kluda:  # bez DB: brīdinājumi vēl var tikt parādīti
+        regioni_ = {}
     try:
         vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
     except Kluda:
@@ -658,13 +661,17 @@ def _prognozes():
         if any(z["datums"] == datums and z["limenis"] >= 1 for z in zinas):
             continue
         r = dati["kopsavilkums"][datums].values()
+        def robeza(f, lauks):
+            return f((x[lauks] for x in r if x[lauks] is not None), default=None)
+        tmin, tmax, brazmas, nokrisni = robeza(min, "tmin"), robeza(max, "tmax"), robeza(max, "brazmas"), robeza(max, "nokrisni")
+        if None in (tmin, tmax, brazmas, nokrisni):
+            continue
         zinas.append({
             "veids": "kopsavilkums", "paradiba": "Laiks", "limenis": 0, "datums": datums,
             "diena": _dienas_nosaukums(datums, sodien),
             "virsraksts": f"{_dienas_nosaukums(datums, sodien)} Latvijā bīstami laika apstākļi nav gaidāmi",
-            "teksts": f"Temperatūra {_skaitlis_lv(min(x['tmin'] for x in r))}…{_skaitlis_lv(max(x['tmax'] for x in r))} °C, "
-                      f"brāzmas līdz {_skaitlis_lv(max(x['brazmas'] for x in r))} m/s, "
-                      f"nokrišņi līdz {_skaitlis_lv(max(x['nokrisni'] for x in r))} mm.",
+            "teksts": f"Temperatūra {_skaitlis_lv(tmin)}…{_skaitlis_lv(tmax)} °C, "
+                      f"brāzmas līdz {_skaitlis_lv(brazmas)} m/s, nokrišņi līdz {_skaitlis_lv(nokrisni)} mm.",
             "regioni": [], "bbox": None, "avots": PROGNOZU_AVOTS,
         })
     zinas.sort(key=lambda z: (z["veids"] != "bridinajums", z["datums"], -z["limenis"], z["virsraksts"]))
@@ -706,7 +713,7 @@ MARSRUTI = [
     (re.compile(r"^/api/bridinajumi/?$"), bridinajumi, 300),
     (re.compile(r"^/api/pludi/?$"), pludi, 3600),
     (re.compile(r"^/api/udens/?$"), udens, 600),
-    (re.compile(r"^/api/prognozes/?$"), prognozes, 900),
+    (re.compile(r"^/api/prognozes/?$"), prognozes, 300),
     (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
 ]

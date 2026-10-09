@@ -137,6 +137,9 @@ const Prognozes = (() => {
   kaste.querySelector('.prog-saturs').addEventListener('click', izveleties);
   kaste.querySelector('.prog-saturs').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); izveleties(e); } });
 
+  // Meklējot rezultāts ir galvenais: lente aizveras, lai neaizsedz karti
+  document.getElementById('meklet-forma')?.addEventListener('submit', () => atvert(false));
+
   ieladet().then(() => { if (dati && !matchMedia('(max-width: 800px)').matches) atvert(true); });
   setInterval(ieladet, 15 * 60 * 1000);
   return { atvert, ieladet };
