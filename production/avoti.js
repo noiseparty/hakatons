@@ -42,7 +42,8 @@ const Avoti = (() => {
   // Īsā atsauce kartes stūrī: izdevēji ar licencēm + saite uz pilno sarakstu.
   function atsauce() {
     const dati = Object.values(pecKoda).filter(a => a.skaits || a.kods === 'vzd-varis');
-    return '<a href="#avoti">Dati</a>: ' + dati.map(a => `${esc(a.izdevejs)} (${esc(a.atverts ? a.licence.split(' (')[0] : 'licence nav norādīta')})`).join(', ');
+    const unikali = [...new Set(dati.map(a => `${esc(a.izdevejs)} (${esc(a.atverts ? a.licence.split(',')[0] : 'licence nav norādīta')})`))];
+    return '<a href="#avoti">Dati</a>: ' + unikali.join(', ');
   }
 
   const atverts = kods => pecKoda[kods]?.atverts !== false;
