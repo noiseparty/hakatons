@@ -1,6 +1,6 @@
 # SCENARIJI — dzīves, katastrofu un krīzes situācijas
 
-Produkta meklēšanas scenāriju saraksts (110 varianti). Katrs scenārijs = viena
+Produkta meklēšanas scenāriju saraksts (112 varianti). Katrs scenārijs = viena
 lietotāja situācija, kurā viņš meklē palīdzību. Kolonna **Atslēgvārdi** domāta
 meklēšanas / klasifikācijas funkcionalitātei — pēc tās scenāriju sasaista ar
 lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
@@ -119,6 +119,8 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 78 | Laupīšana uz ielas | Jārīkojas mierīgi, jāpaziņo policijai | laupīšana, uzbrukums, iela, policija |
 | 79 | Panika tirdzniecības centrā | Masveida evakuācija bez skaidras informācijas | panika, evakuācija, tirdzniecības centrs |
 | 80 | Draudi skolā | Evakuācija, bērnu drošība, komunikācija | skola, draudi, evakuācija, bērni |
+| 111 | Troksnis — kaimiņš trokšņo | Kaimiņš trokšņo naktī, nevar gulēt — kā risināt ar pašvaldību vai policiju | troksnis, kaimiņš, nakts, mūzika, dauzīšana |
+| 112 | Huligāni uz ielas | Agresīvi jaunieši tuvumā, jāapiet vai jāziņo policijai | huligāni, uz ielas, bars, agresīvi, pusaudži |
 
 ## H. Enerģija, tehnika un infrastruktūra
 

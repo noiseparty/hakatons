@@ -46,6 +46,10 @@
 
   {"q": "man nozaga somu", "scenarijs": "policija"},
   {"q": "kaimiņš draud ar nazi", "scenarijs": "policija"},
+  {"q": "kaimiņš trokšņo naktī", "scenarijs": "policija"},
+  {"q": "huligāni uz ielas", "scenarijs": "policija"},
+  {"q": "сосед шумит ночью", "scenarijs": "policija"},
+  {"q": "noisy neighbours", "scenarijs": "policija"},
   {"q": "pazudis bērns", "scenarijs": "policija"},
   {"q": "меня ограбили", "scenarijs": "policija"},
   {"q": "someone stole my car", "scenarijs": "policija"},
