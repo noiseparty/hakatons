@@ -42,3 +42,6 @@ scratch/
 
 # demo Playwright ekrānuzņēmumi (src/demo/parbaude.py)
 ekr-demo/
+
+# NAP atbilžu paraugi (lokāli; saīsinātas kopijas: notes/research/paraugi/nap_*.xml)
+api-data-samples/
