@@ -22,14 +22,16 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Use the 22–23.08.2026 storm (~277k customers without power) as the demo scenario in the pitch — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Establish the full list of crisis scenarios our platform covers (user need → map categories → urgency/112 → advice); base it on the CA plans' "kā rīkoties" annexes (e.g. `markdown/augsdaugavas-novads/cap_12_*`) and use it as the crisis-search classifier's taxonomy — added 2026-10-09 18:46 +03:00 by noiseparty
 - [ ] Crisis search: test on a real phone, and show "Ko tev vajag?" above the map on mobile (panel is below it now) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
+- [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `evakuacijas_punkts`, `uzlades_stacija` — added 2026-10-09 20:20 +03:00 by noiseparty
+- [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — added 2026-10-09 19:11 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Crisis scenarios: all 119 from `notes/SCENARIJI.md` in the search classifier (own advice, map layers, 112), rare keywords weigh more, "Vai domāji…?" alternatives; #72/#73 not implemented as written (profiling) — done 2026-10-09 20:20 +03:00 by noiseparty (added 2026-10-09 18:46 +03:00 by noiseparty)
 - [x] Papildināt scenārijus: aizsalušas caurules, kanalizācija nestrādā, lifts nedarbojas, izsists logs, auto ceļa malā, trauma var/nevar kustēties — `notes/SCENARIJI.md` Nr 113–119, `production/scenariji.json` atslēgvārdi + "nevar kustēt" dzīvības draudos, 6 testi (70/70 ok) — done 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia)
 - [x] Papildināt scenārijus: troksnis kaimiņš, huligāni uz ielas — `notes/SCENARIJI.md` (Nr 111–112), `production/scenariji.json` policijas atslēgvārdi (troksn/kaimiņ/шум/сосед/nois/neighbor/hooligan) + 4 testi `src/meklesana/testi.json` (64/64 ok) — done 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia)
 - [x] Izveidot `notes/SCENARIJI.md` — 110 dzīves/katastrofas/krīzes scenāriji ar meklēšanas atslēgvārdiem (pirmais melnraksts krīzes-meklēšanas klasifikatoram) — done 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia)

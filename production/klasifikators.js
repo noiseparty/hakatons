@@ -75,28 +75,42 @@ const Klasifikators = (() => {
   // noteikumi: scenariji.json saturs. Atgriež sagatavotu klasifikatoru.
   function izveidot(noteikumi, regioni = []) {
     const scenariji = noteikumi.scenariji.map(s => ({ ...s, raksti: s.atslegvardi.map(raksts) }));
+    // Atslēgvārds, kas ir daudzos scenārijos ("dūm", "evaku"), sver mazāk nekā rets ("kūl"): svars / √(scenāriju skaits).
+    const biezums = {};
+    for (const s of scenariji) for (const t of new Set(s.raksti.map(r => r.teksts))) biezums[t] = (biezums[t] || 0) + 1;
+    for (const s of scenariji) for (const r of s.raksti) r.svars /= Math.sqrt(biezums[r.teksts]);
     const draudi = noteikumi.dzivibas_draudi.map(raksts);
     const vietas = sagatavotVietas(regioni, noteikumi.vietu_sinonimi);
 
     function klasificet(vaicajums) {
       const t = normalizet(vaicajums);
       const vardi = t.trim().split(' ').filter(Boolean);
-      const punkti = s => s.raksti.reduce((sum, r) => sum + (t.includes(r.teksts) ? r.svars : 0), 0);
+      // Katrs vaicājuma vārds scenārijam dod punktus vienreiz: no labākā atslēgvārda, kas sākas tajā
+      // ("ugunsgrēks" atbilst gan 'ugun', gan 'ugunsgrēk' — skaitām tikai vienu).
+      const punkti = s => {
+        const pecVieta = {};
+        for (const r of s.raksti) {
+          const i = t.indexOf(r.teksts);
+          if (i >= 0 && !(pecVieta[i] >= r.svars)) pecVieta[i] = r.svars;
+        }
+        return Object.values(pecVieta).reduce((a, b) => a + b, 0);
+      };
       let rez = scenariji.map(s => ({ s, punkti: punkti(s), aptuveni: false }));
-      if (rez.every(x => !x.punkti)) {
+      const draudiAtrasti = draudi.some(r => t.includes(r.teksts));
+      // Aptuveno (ar drukas kļūdu) meklējam tikai tad, ja nekas cits nav atrasts — arī dzīvības draudi.
+      if (!draudiAtrasti && rez.every(x => !x.punkti)) {
         rez = scenariji.map(s => ({ s, punkti: s.raksti.some(r => vardi.some(v => lidzigs(v, r))) ? 1 : 0, aptuveni: true }));
       }
       const max = Math.max(...rez.map(x => x.punkti));
-      // otrs scenārijs tikai, ja tas ir vairāk nekā pusē tik stiprs kā labākais
-      const atrasti = rez.filter(x => x.punkti && x.punkti * 2 > max).sort((a, b) => b.punkti - a.punkti).slice(0, 3);
-      const draudiAtrasti = draudi.some(r => t.includes(r.teksts));
+      // Pirmais = galvenais; citi ("Vai domāji…?") tikai, ja vairāk nekā pusē tik stipri. Vienādiem paliek secība failā.
+      const atrasti = rez.filter(x => x.punkti && x.punkti * 2 > max).sort((a, b) => b.punkti - a.punkti).slice(0, 4);
       // "cilvēks neelpo" bez cita scenārija → noklusētais (medicīna)
       const noklusets = scenariji.find(s => s.kods === noteikumi.dzivibas_draudi_scenarijs);
       if (draudiAtrasti && !atrasti.length && noklusets) atrasti.push({ s: noklusets, aptuveni: false });
       return {
         scenariji: atrasti.map(x => x.s),
         aptuveni: atrasti.some(x => x.aptuveni),
-        zvanit112: draudiAtrasti || atrasti.some(x => x.s.zvanit112),
+        zvanit112: draudiAtrasti || !!atrasti[0]?.s.zvanit112,
         dzivibas_draudi: draudiAtrasti,
         vieta: atrastVietu(t, vietas),
       };
