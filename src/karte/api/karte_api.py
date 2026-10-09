@@ -788,11 +788,15 @@ create table if not exists statuss_parbaudes (
   id         bigserial primary key,
   komponents text not null,
   laiks      timestamptz not null default now(),
-  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  stavoklis  text not null,
   zinojums   text,
   ilgums_ms  int
 );
 create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+-- nav_datu: avots vēl nav ielādēts vai nav konfigurēts (pelēks, neskaitās pieejamībā)
+alter table statuss_parbaudes drop constraint if exists statuss_parbaudes_stavoklis_check;
+alter table statuss_parbaudes add constraint statuss_parbaudes_stavoklis_check
+  check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas', 'nav_datu'));
 grant select on statuss_parbaudes to map_api;
 """  # tas pats bloks ir src/karte/db/shema.sql
 
@@ -815,10 +819,14 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
       "Oficiāls dokuments, nav autortiesību objekts", "https://likumi.lv/ta/id/5138-autortiesibu-likums")),
     ("patvertnes", "Patvertnes", "VUGD / 112.lv patvertņu saraksts kartes datubāzē",
      ("Publiskās patvertnes (112.lv)", "https://www.112.lv/lv/patvertnes", "Licence nav norādīta", None)),
+    ("prognozes", "Laika prognoze", "Cik sena ir LVĢMC prognoze kartes lentē",
+     ("LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+      "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam", *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
 ]
-STATUSS_SMAGUMS = {"darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
+STATUSS_SMAGUMS = {"nav_datu": -1, "darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
+STATUSS_PROGNOZE_VECA_H = 24  # LVĢMC prognozi atjauno vairākas reizes dienā
 
 
 def _sekundes(ms):
@@ -862,8 +870,34 @@ def _parb_bridinajumi():
 
 
 def _parb_pludi():
-    _pludu_serviss(*PLUDU_SERVISI[0], 56.816, 24.605)  # Ogre; derīga ir arī atbilde "nav zonā"
+    # tas pats GetFeatureInfo kā _pludu_serviss, bet ar STATUSS_TAIMAUTS (tur 25 s); Ogre, derīga ir arī "nav zonā"
+    _veids, cels, slani = PLUDU_SERVISI[0]
+    lat, lon, d = 56.816, 24.605, 0.0002
+    parametri = {
+        "service": "WMS", "version": "1.3.0", "request": "GetFeatureInfo", "styles": "", "crs": "EPSG:4326",
+        "layers": ",".join(slani), "query_layers": ",".join(slani), "info_format": "application/geojson",
+        "bbox": f"{lat - d},{lon - d},{lat + d},{lon + d}", "width": 11, "height": 11, "i": 5, "j": 5,
+        "feature_count": 10,
+    }
+    url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
+    if "features" not in json.loads(_lejupieladet(url, timeout=STATUSS_TAIMAUTS)):
+        return "nedarbojas", "Atbildes formāts nav nolasāms"
     return "darbojas", None
+
+
+def _parb_prognozes():
+    # bez jauna lejupielādes pieprasījuma: tikai /api/prognozes kešs (16,6 MB datne; to ielādē kartes atvēršana)
+    from email.utils import parsedate_to_datetime
+    with _kesas_slots:
+        ieraksts = _kesa.get("prognozes")
+    if not ieraksts:
+        return "nav_datu", "Kopš API pārstartēšanas prognoze vēl nav ielādēta"
+    mainits = ieraksts[1].get("mainits")
+    if not mainits:
+        return "traucejumi", "Prognozes datnei nav norādīts atjaunošanas laiks"
+    vecums = (datetime.now(timezone.utc) - parsedate_to_datetime(mainits)).total_seconds()
+    zinojums = f"Prognoze atjaunota pirms {_laiks_pirms(max(vecums, 0))}"
+    return ("traucejumi" if vecums > STATUSS_PROGNOZE_VECA_H * 3600 else "darbojas"), zinojums
 
 
 def _parb_udens():
@@ -899,7 +933,8 @@ def _parb_osm():
 STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
     "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
-    "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "osm": (_parb_osm, 5000),
+    "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
+    "osm": (_parb_osm, 5000),
 }
 
 
@@ -992,8 +1027,8 @@ def _statuss_dati():
         for k, iso, s, z, ms in no_db:
             laiks = datetime.fromisoformat(iso)
             rindas[(k, laiks.replace(microsecond=0))] = (k, laiks, s, z, ms)
-    except psycopg.Error:
-        pass  # tabulas vēl nav vai DB nav pieejama — rāda šī procesa pārbaudes
+    except Exception as e:  # tabulas vēl nav vai DB nav pieejama — rāda šī procesa pārbaudes
+        print(f"statuss: vēsturi neizdevās nolasīt: {e!r}", file=sys.stderr)
     robeza = tagad - timedelta(days=7)
     with _kesas_slots:
         for r in _statuss_atmina:
@@ -1019,7 +1054,7 @@ def _statuss_dati():
             stavoklis, zinojums = "nav_datu", f"Pēdējā pārbaude pirms {_laiks_pirms((tagad - pedeja[1]).total_seconds())}"
         else:
             stavoklis, zinojums = pedeja[2], pedeja[3]
-        ar_datiem = list(sliktakais.values())
+        ar_datiem = [s for s in sliktakais.values() if s != "nav_datu"]
         komponenti.append({
             "kods": kods, "nosaukums": nosaukums, "apraksts": apraksts,
             "avots": dict(zip(("nosaukums", "url", "licence", "licences_url"), avots)) if avots else None,
@@ -1027,7 +1062,7 @@ def _statuss_dati():
             "parbaudits": pedeja[1].isoformat(timespec="seconds") if pedeja else None,
             "ilgums_ms": pedeja[4] if pedeja else None,
             "joslas": [{"sakums": datetime.fromtimestamp(nr * STATUSS_INTERVALS, timezone.utc).isoformat(),
-                        "stavoklis": sliktakais.get(nr)} for nr in range(sis - STATUSS_JOSLAS + 1, sis + 1)],
+                        "stavoklis": None if sliktakais.get(nr) == "nav_datu" else sliktakais.get(nr)} for nr in range(sis - STATUSS_JOSLAS + 1, sis + 1)],
             "pieejamiba_7d": round(100 * sum(s != "nedarbojas" for s in ar_datiem) / len(ar_datiem), 2)
             if ar_datiem else None,
         })
