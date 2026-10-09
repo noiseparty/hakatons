@@ -43,7 +43,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
 - [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
-- [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
 - [ ] Risk map: add river level / flood-forecast and ice to the per-region risk (needs gauge thresholds — PRIS not open) — added 2026-10-10 02:28 +03:00 by noiseparty
 - [ ] Satiksme: get real responses of the minute speed feed (ed1f0d2c) and border waiting times (cb730ba2) and check `_datex_merijumi` / `_satiksmes_robezas` against them (parsers follow the DATEX II v3 standard, no sample yet) — added 2026-10-10 02:22 +03:00 by noiseparty
@@ -52,6 +51,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] Email info@rigassatiksme.lv asking for a GTFS-RT (live vehicle positions / delays) feed under an open licence; today only static GTFS (CC0) is open — added 2026-10-10 02:27 +03:00 by noiseparty
 - [ ] Storm replay (`vetra-2026`): use real LVC road events from `/api/celi` instead of the simulated A7/P103 closure — added 2026-10-10 02:27 +03:00 by noiseparty
+- [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
+
+- [ ] Shelters: the 112.lv data has **no** capacity, wheelchair/step-free, pets or operator fields (only building type, address, entrance coordinates, an empty comment). Ask VUGD to add them when publishing on data.gov.lv; until then the popup says "nav norādīts" and there is no wheelchair filter — added 2026-10-10 02:42 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -60,6 +62,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Search bar: suggestions while typing (up to 6 situations + place), typo / word-form / Latin-typed Russian tolerance before the classifier, voice input "Runāt" (lv/ru/en) — done 2026-10-10 02:43 +03:00 by noiseparty (added 2026-10-10 02:43 +03:00 by noiseparty)
+- [x] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — done 2026-10-10 02:42 +03:00 by noiseparty: `saraksts.js` dialog from the "Slāņi" panel and the result card; name, layer, distance, address, source, route links, "Rādīt kartē" (added 2026-10-10 02:09 +03:00 by noiseparty)
 - [x] Fire-water intake points (VKCP IĢIS, CC0; 1 117 open intakes, hydrants left out) as `udens_nemsana`, and public-transport stops as evacuation pick-up points from 3 CC0 GTFS feeds (Rīgas satiksme 1 643, ATD buses 10 179, vivi trains 138) as `pietura` with route counts; both off by default, linked to the fire / evacuation scenarios — done 2026-10-10 02:32 +03:00 by noiseparty; DB load is a VPS step (added 2026-10-09 20:48 +03:00 by noiseparty)
 - [x] Traffic as zones (zonas.js): novadi coloured by LVC traffic level (`/api/satiksme`), 77 counter sites as dots, border waits as markers, slippery-road 15 km zones (hatched) in the overlap logic, toggles + legend, result-card line "Satiksme šajā apvidū" — done 2026-10-10 02:31 +03:00 by noiseparty (added 2026-10-10 02:31 +03:00 by noiseparty)
 - [x] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — done 2026-10-10 02:28 +03:00 by noiseparty: risk map today/tomorrow in the Prognoze panel (`riski` in `/api/prognozes`: LVĢMC warnings, gusts, rain, FMI lightning +1, LVC slippery roads +1; ice and river levels not yet) (added 2026-10-09 23:20 +03:00 by noiseparty)
