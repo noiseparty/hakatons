@@ -61,12 +61,10 @@ const krizesMeklesana = (() => {
     if (pedejais) meklet(pedejais.teksts, pedejais.scenarijs);
   }
 
-  // Kur meklēt: vietvārds vaicājumā → mana atrašanās vieta → izvēlētais reģions. Reģionam ņem bbox centru.
+  // Kur meklēt: vietvārds vaicājumā (reģionu meklet() jau izvēlējās) → mana atrašanās vieta → izvēlētais reģions.
+  // Reģionam ņem bbox centru.
   function izcelsme(vieta) {
-    if (vieta) {
-      if (stavoklis.regions !== vieta.kods) radtRegionu(vieta.kods);
-      return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true };
-    }
+    if (vieta) return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true };
     if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: 'no tevis' };
     const r = regioni[stavoklis.regions];
     if (r) return { ...centrs(r), apraksts: `no centra (${r.nosaukums})`, regions: true };
@@ -86,8 +84,15 @@ const krizesMeklesana = (() => {
     kaste.hidden = false;
     rezultatuSlanis.clearLayers();
 
+    // Vietvārds vaicājumā ("lācis Ogrē", "Rēzekne") — karti pārvietojam uz to vienmēr, arī ja scenārijs
+    // nav atpazīts vai tam nav slāņu kartē (tad zemāk iznākam agrāk un izcelsme() netiek izsaukta).
+    const jaunsRegions = rez.vieta && stavoklis.regions !== rez.vieta.kods;
+    if (rez.vieta) radtRegionu(rez.vieta.kods);
+
     if (!rez.scenariji.length) {
-      kaste.innerHTML = zvanit(rez) + `<p class="piezime">Nesapratu, ko tev vajag. Izvēlies kādu no pogām augstāk
+      if (jaunsRegions) atjaunot();
+      kaste.innerHTML = zvanit(rez) + (rez.vieta ? `<p class="sapratu">Vieta: <b>${esc(rez.vieta.nosaukums)}</b></p>` : '') +
+        `<p class="piezime">Nesapratu, ko tev vajag. Izvēlies kādu no pogām augstāk
         vai uzraksti citiem vārdiem, piem., „patvertne”, „ārsts”, „aptieka”.</p>` + (rez.zvanit112 ? '' : zvanit({ zvanit112: true }, true)) + notiritPoga();
       return;
     }
@@ -102,7 +107,11 @@ const krizesMeklesana = (() => {
 
     // Slāņi, kuru vēl nav kartē (piem., noturības punkti), tiek izlaisti; ja nepaliek neviens — tikai padoms.
     const kodi = galvenais.kategorijas.filter(k => kategorijas[k]?.skaits);
-    if (!kodi.length) { kaste.innerHTML = galva + vaiDomaji + notiritPoga(); return; }
+    if (!kodi.length) {
+      if (jaunsRegions) atjaunot();
+      kaste.innerHTML = galva + vaiDomaji + notiritPoga();
+      return;
+    }
 
     stavoklis.kategorijas = new Set(kodi);
     document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
@@ -125,7 +134,7 @@ const krizesMeklesana = (() => {
       grupas.forEach(g => { g.features = izveleties(g.features); });
       kaste.innerHTML = galva + kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + vaiDomaji + notiritPoga();
-      zimetKarte(grupas.flatMap(g => g.features), no);
+      zimetKarte(grupas.map(g => g.features), no, rez.vieta);
     } catch (e) {
       if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģini vēlreiz pēc brīža.</p>';
     }
@@ -160,15 +169,18 @@ const krizesMeklesana = (() => {
     return `<h3><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</h3><ol class="rez-saraksts">${vienumi}</ol>`;
   }
 
-  function zimetKarte(features, no) {
+  // Karti pietuvina sākumpunktam (un vaicājuma vietai) + tuvākajai vietai katrā kategorijā; tālākās (piem., 24/7
+  // slimnīca citā novadā) tikai uzzīmē, citādi pilsēta paliek mazā stūrītī.
+  function zimetKarte(grupas, no, vieta) {
     const punkti = [[no.lat, no.lon]];
-    for (const f of features) {
+    if (vieta) punkti.push([vieta.bbox[1], vieta.bbox[0]], [vieta.bbox[3], vieta.bbox[2]]);
+    for (const g of grupas) if (g[0]) punkti.push([...g[0].geometry.coordinates].reverse());
+    for (const f of grupas.flat()) {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
       L.circleMarker([lat, lon], { radius: 10, color: '#1c1917', weight: 2.5, fillColor: k.krasa || '#57534e', fillOpacity: 1 })
         .bindPopup(() => popupSaturs(no.regions ? { ...f.properties, attalums_m: null } : f.properties, { lat, lng: lon }))
         .addTo(rezultatuSlanis);
-      punkti.push([lat, lon]);
     }
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
       .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
