@@ -13,21 +13,42 @@
 <header>
   <h1>Latvijas karte</h1>
   <p id="statuss" role="status">Ielādē…</p>
+  <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
 </header>
 <main>
   <aside id="panelis">
+    <section id="meklesana">
+      <form id="meklet-forma" role="search">
+        <h2><label for="jautajums">Ko tev vajag?</label></h2>
+        <div class="meklet-rinda">
+          <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
+                 placeholder="Piem.: patvertne Ogrē, bērnam augsta temperatūra">
+          <button type="submit">Meklēt</button>
+        </div>
+      </form>
+      <div id="atras-pogas" class="atras-pogas"></div>
+      <div id="rezultati" aria-live="polite" hidden></div>
+    </section>
+
     <section id="vieta">
-      <button id="atrast" type="button">📍 Rādīt tuvākos man</button>
+      <h2>Meklēt</h2>
+      <div class="meklesana">
+        <input id="meklet" type="search" placeholder="Nosaukums vai adrese…" autocomplete="off"
+               aria-label="Meklēt kartē parādītos objektus" aria-controls="mekl-rezultati">
+        <ul id="mekl-rezultati" role="listbox" hidden></ul>
+      </div>
+      <button id="atrast" type="button" class="galvena">📍 Rādīt tuvākos man</button>
+      <button id="tuvaka" type="button" class="otra">🏠 Tuvākā patvertne</button>
       <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
     </section>
 
     <section>
-      <label for="regions" class="virsraksts">Reģions vai pilsēta</label>
+      <h2><label for="regions">Reģions vai pilsēta</label></h2>
       <select id="regions"><option value="">Visa Latvija</option></select>
     </section>
 
     <section>
-      <span class="virsraksts">Ko rādīt</span>
+      <h2>Slāņi</h2>
       <div id="kategorijas"></div>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
@@ -37,16 +58,29 @@
     </section>
 
     <section>
-      <span class="virsraksts" id="saraksts-virsraksts">Saraksts</span>
+      <h2 id="saraksts-virsraksts">Saraksts</h2>
       <ol id="saraksts"></ol>
     </section>
   </aside>
-  <div id="karte" role="application" aria-label="Karte"></div>
+  <div id="kartes-laukums">
+    <div id="karte" role="application" aria-label="Karte"></div>
+    <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
+      <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
+      <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
+      <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta">◎</button>
+    </div>
+    <div class="pamatkarte" role="group" aria-label="Pamatkarte">
+      <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
+      <button type="button" data-pamats="satelits" aria-pressed="false">Satelīts</button>
+    </div>
+  </div>
 </main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="avoti.js"></script>
+<script src="klasifikators.js"></script>
 <script src="app.js"></script>
+<script src="meklesana.js"></script>
 </body>
 </html>

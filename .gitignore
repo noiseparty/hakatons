@@ -36,3 +36,6 @@ scratch/
 *.parquet
 *.sqlite
 *.db
+
+# Non-public data (e.g. critical infrastructure lists from organisers) — never commit
+/dati/

@@ -4,14 +4,40 @@ const SARAKSTA_GARUMS = 100;
 const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
-const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true }).fitBounds(latvija);
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
-}).addTo(karte);
-L.control.scale({ imperial: false }).addTo(karte);
+const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
+const pamatkartes = {
+  karte: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
+  }),
+  satelits: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Attēli: Esri, Maxar, Earthstar Geographics'
+  })
+};
+pamatkartes.karte.addTo(karte);
+L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(karte);
 
 const el = id => document.getElementById(id);
+
+// ---- Kartes vadība (tuvināšana, pamatkarte, panelis mobilajā) ----
+el('tuvinat').addEventListener('click', () => karte.zoomIn());
+el('talinat').addEventListener('click', () => karte.zoomOut());
+el('mana-vieta').addEventListener('click', () => atrastMani());
+document.querySelectorAll('[data-pamats]').forEach(b => b.addEventListener('click', () => {
+  for (const [kods, slanis] of Object.entries(pamatkartes)) {
+    if (kods === b.dataset.pamats) slanis.addTo(karte); else slanis.remove();
+  }
+  document.querySelectorAll('[data-pamats]').forEach(x => {
+    x.classList.toggle('aktiva', x === b);
+    x.setAttribute('aria-pressed', x === b);
+  });
+}));
+el('panelis-poga').addEventListener('click', () => {
+  const atverts = !document.body.classList.toggle('panelis-slegts');
+  el('panelis-poga').setAttribute('aria-expanded', atverts);
+  setTimeout(() => karte.invalidateSize(), 200);
+});
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const statuss = (t, kluda) => { el('statuss').textContent = t; el('statuss').classList.toggle('kluda', !!kluda); };
 
@@ -21,7 +47,9 @@ let regioni = {};
 const objektuSlanis = L.featureGroup().addTo(karte);
 let robezaSlanis = null;
 let vietasSlanis = null;
+let tuvakaSlanis = null;
 let pieprasijums = null;
+let redzamie = [];  // pēdējā ielāde; pa tiem meklē meklēšanas lauks
 
 async function iegut(cels, signal) {
   const r = await fetch(API + cels, { signal });
@@ -35,7 +63,7 @@ function attalums(m) {
 }
 
 // ---- Atrašanās vieta ----
-function atrastMani() {
+function atrastMani(pecTam) {
   const teksts = el('vieta-teksts');
   if (!('geolocation' in navigator)) { teksts.textContent = 'Šis pārlūks nevar noteikt atrašanās vietu. Izvēlies reģionu zemāk.'; return; }
   el('atrast').disabled = true;
@@ -55,8 +83,11 @@ function atrastMani() {
     ]).addTo(karte);
     el('atrast').textContent = '📍 Atjaunot manu atrašanās vietu';
     teksts.textContent = 'Saraksts sakārtots pēc attāluma no tevis (taisnā līnijā).';
-    if (!stavoklis.regions) karte.setView([lat, lon], 13);
+    if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
+    if (!stavoklis.regions && !pecTam) karte.setView([lat, lon], 13);
     atjaunot();
+    krizesMeklesana.atkartot();  // meklesana.js
+    if (pecTam) pecTam();
   }, kluda => {
     el('atrast').disabled = false;
     teksts.textContent = kluda.code === kluda.PERMISSION_DENIED
@@ -64,7 +95,33 @@ function atrastMani() {
       : 'Neizdevās noteikt atrašanās vietu. Izvēlies reģionu vai pilsētu zemāk.';
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
 }
-el('atrast').addEventListener('click', atrastMani);
+el('atrast').addEventListener('click', () => atrastMani());
+
+// ---- Tuvākā patvertne: neatkarīgi no filtriem, ar līniju no tevis līdz tai ----
+async function tuvakaPatvertne() {
+  if (!stavoklis.vieta) { atrastMani(tuvakaPatvertne); return; }
+  const { lat, lon } = stavoklis.vieta;
+  const teksts = el('vieta-teksts');
+  try {
+    const q = new URLSearchParams({ kategorijas: 'patvertne', lat: lat.toFixed(5), lon: lon.toFixed(5), limit: 1 });
+    const f = (await iegut('/objekti?' + q)).features[0];
+    if (!f) { teksts.textContent = 'Patvertņu datus neizdevās atrast.'; return; }
+    const [plon, plat] = f.geometry.coordinates;
+    if (tuvakaSlanis) tuvakaSlanis.remove();
+    const marker = L.circleMarker([plat, plon], { radius: 10, color: '#fff', weight: 3, fillColor: kategorijas.patvertne?.krasa || '#b91c1c', fillOpacity: 1 })
+      .bindPopup(() => popupSaturs(f.properties, { lat: plat, lng: plon }));
+    tuvakaSlanis = L.layerGroup([
+      L.polyline([[lat, lon], [plat, plon]], { color: '#0077c8', weight: 3, dashArray: '6 6', interactive: false }),
+      marker
+    ]).addTo(karte);
+    karte.fitBounds(L.latLngBounds([[lat, lon], [plat, plon]]), { padding: [60, 60], maxZoom: 16 });
+    marker.openPopup();
+    teksts.textContent = `Tuvākā patvertne: ${f.properties.adrese || nosaukums(f.properties)} · ${attalums(f.properties.attalums_m)} taisnā līnijā.`;
+  } catch {
+    teksts.textContent = 'Tuvāko patvertni neizdevās ielādēt. Mēģini vēlreiz pēc brīža.';
+  }
+}
+el('tuvaka').addEventListener('click', tuvakaPatvertne);
 
 // Ja atļauja jau dota iepriekš, nosakām vietu uzreiz (bez jauna jautājuma).
 navigator.permissions?.query({ name: 'geolocation' }).then(p => { if (p.state === 'granted') atrastMani(); }).catch(() => {});
@@ -86,8 +143,16 @@ function aizpilditRegionus(saraksts) {
   }
 }
 
-el('regions').addEventListener('change', async e => {
-  stavoklis.regions = e.target.value;
+el('regions').addEventListener('change', e => {
+  radtRegionu(e.target.value);
+  atjaunot();
+  krizesMeklesana.atkartot();  // meklesana.js
+});
+
+// Arī krīzes meklēšana (meklesana.js), kad vaicājumā ir vietvārds ("patvertne Ogrē").
+function radtRegionu(kods) {
+  stavoklis.regions = kods;
+  el('regions').value = kods;
   if (robezaSlanis) { robezaSlanis.remove(); robezaSlanis = null; }
   const r = regioni[stavoklis.regions];
   if (r) {
@@ -102,8 +167,7 @@ el('regions').addEventListener('change', async e => {
   } else {
     karte.fitBounds(latvija);
   }
-  atjaunot();
-});
+}
 
 // ---- Kategorijas ----
 function aizpilditKategorijas(saraksts) {
@@ -196,7 +260,7 @@ async function atjaunot() {
   if (pieprasijums) pieprasijums.abort();
   pieprasijums = new AbortController();
   objektuSlanis.clearLayers();
-  if (!stavoklis.kategorijas.size) { zimetSarakstu([]); statuss('Izvēlies vismaz vienu slāni.'); return; }
+  if (!stavoklis.kategorijas.size) { redzamie = []; zimetSarakstu([]); statuss('Izvēlies vismaz vienu slāni.'); return; }
   const q = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].join(','), limit: 20000 });
   if (stavoklis.regions) q.set('regions', stavoklis.regions);
   if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }
@@ -211,6 +275,7 @@ async function atjaunot() {
         .addTo(objektuSlanis);
     }
     if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
+    redzamie = gj.features;
     zimetSarakstu(gj.features);
     const r = regioni[stavoklis.regions];
     statuss(`${gj.features.length} objekti${r ? ' · ' + r.nosaukums : ''}`);
@@ -219,8 +284,51 @@ async function atjaunot() {
   }
 }
 
+// ---- Meklēšana pa kartē ielādētajiem objektiem (bez garumzīmēm, pēc nosaukuma, adreses, slāņa) ----
+const MEKL_GARUMS = 8;
+const vienkarsot = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+function atvertObjektu(f) {
+  karte.setView(f._slanis.getLatLng(), Math.max(karte.getZoom(), 16));
+  f._slanis.openPopup();
+}
+
+function meklet() {
+  const ul = el('mekl-rezultati');
+  const vardi = vienkarsot(el('meklet').value).split(/\s+/).filter(Boolean);
+  ul.innerHTML = '';
+  if (!vardi.length || vardi.join('').length < 2) { ul.hidden = true; return; }
+  const atrasti = [];
+  for (const f of redzamie) {
+    const p = f.properties;
+    const teksts = vienkarsot([nosaukums(p), p.adrese, kategorijas[p.kategorija]?.nosaukums].join(' '));
+    if (vardi.every(v => teksts.includes(v)) && atrasti.push(f) >= MEKL_GARUMS) break;
+  }
+  for (const f of atrasti) {
+    const p = f.properties;
+    const k = kategorijas[p.kategorija] || {};
+    const li = document.createElement('li');
+    li.tabIndex = 0;
+    li.setAttribute('role', 'option');
+    li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
+      <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc(p.adrese || k.nosaukums)}</small></span>`;
+    const izveleties = () => { ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f); };
+    li.addEventListener('click', izveleties);
+    li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
+    ul.append(li);
+  }
+  if (!atrasti.length) ul.innerHTML = '<li class="piezime">Nekas netika atrasts ieslēgtajos slāņos.</li>';
+  ul.hidden = false;
+}
+el('meklet').addEventListener('input', meklet);
+el('meklet').addEventListener('keydown', e => {
+  if (e.key === 'Escape') el('mekl-rezultati').hidden = true;
+  if (e.key === 'ArrowDown') el('mekl-rezultati').querySelector('li[tabindex]')?.focus();
+});
+document.addEventListener('click', e => { if (!e.target.closest('.meklesana')) el('mekl-rezultati').hidden = true; });
+
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
-    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot();
+    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); krizesMeklesana.sakt(r);
   })
   .catch(() => statuss('Datus neizdevās ielādēt. Mēģini vēlreiz pēc brīža.', true));
