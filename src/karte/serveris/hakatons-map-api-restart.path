@@ -4,6 +4,7 @@ Description=Restart map.repo.lv API when its code changes
 
 [Path]
 PathChanged=/srv/hakatons/src/karte/api/karte_api.py
+PathChanged=/srv/hakatons/src/karte/db/udens_limenis.py
 Unit=hakatons-map-api-restart.service
 
 [Install]

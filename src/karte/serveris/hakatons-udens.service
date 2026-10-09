@@ -1,0 +1,20 @@
+# /etc/systemd/system/hakatons-udens.service — ūdens līmenis (LVĢMC, CC0) → datubāze map (src/karte/db/udens_limenis.sh).
+# Palaiž hakatons-udens.timer (katru stundu) un hakatons-udens.path (kad main maina ielādes kodu).
+[Unit]
+Description=map.repo.lv: LVĢMC water levels into map DB
+After=network-online.target postgresql.service
+Wants=network-online.target
+ConditionPathExists=/srv/hakatons/src/karte/db/udens_limenis.sh
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+EnvironmentFile=/etc/hakatons/map.env
+WorkingDirectory=/srv/hakatons
+ExecStart=/usr/bin/bash src/karte/db/udens_limenis.sh
+TimeoutStartSec=300
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true

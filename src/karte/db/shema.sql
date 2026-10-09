@@ -32,7 +32,8 @@ insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
   ('bankomats',  'Bankomāti',                'infrastruktura', '#1d4ed8', 20),
   ('policija',   'Policija',                 'infrastruktura', '#1e3a8a', 50),
   ('ugunsdzeseji', 'Ugunsdzēsēji (VUGD)',    'infrastruktura', '#c2410c', 60),
-  ('degviela',   'Degvielas uzpildes stacijas', 'infrastruktura', '#a16207', 70)
+  ('degviela',   'Degvielas uzpildes stacijas', 'infrastruktura', '#a16207', 70),
+  ('udens_limenis', 'Ūdens līmenis upēs un ezeros (LVĢMC)', 'vide', '#0891b2', 80)
 on conflict (kods) do update set
   nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
 
@@ -95,7 +96,23 @@ insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, da
   ('vzd-varis', 'Valsts adrešu reģistra informācijas sistēmas atvērtie dati', 'Valsts zemes dienests',
    'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', true,
    'https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati', 'aw_shp.zip (robežas), aw_eka.csv (adrešu koordinātas)',
-   'Novadu, valstspilsētu un pilsētu robežas; 24/7 slimnīcu adreses un koordinātas', null, 80),
+   'Novadu, valstspilsētu un pilsētu robežas; adrešu meklēšana; 24/7 slimnīcu adreses un koordinātas', null, 80),
+  ('lvgmc-hidro', 'Hidrometeoroloģiskie novērojumi (hidroloģiskie operatīvie dati)', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi',
+   'hidro_stacijas.csv + hidro_operativie_dati.csv (katru stundu, src/karte/db/udens_limenis.py)',
+   'Ūdens līmenis un ūdens temperatūra hidroloģiskajās stacijās',
+   'Līmenis cm virs posteņa nulles (m LAS-2000,5 = nulle + cm/100); laiks UTC. Bīstamības līmeņi (PRIS) nav atvērtie dati, tāpēc netiek rādīti. Mērījums vecāks par 6 h kartē netiek rādīts.', 75),
+  ('lvgmc-bridinajumi', 'Hidrometeoroloģiskie brīdinājumi', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi',
+   'bridinajumu_metadata.csv + bridinajumu_poligoni.csv (karte_api.py /api/bridinajumi, kešs 10 min)',
+   'Brīdinājumu josla lapas augšā; vai brīdinājums attiecas uz izvēlēto adresi', 'Laiks — Latvijas vietējais.', 76),
+  ('lvgmc-pludi', '3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes (2026–2031)', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs / ĢeoLatvija.lv',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1',
+   'WMS geo-dpps.viss.gov.lv (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 %), GetFeatureInfo /api/pludi',
+   'Plūdu riska zonu slānis kartē; vai adrese ir applūstošā teritorijā', 'Applūstošo teritoriju ārējās robežas; ūdens dziļuma klases ir maksas dati.', 77),
   ('osm-karte', 'OpenStreetMap karšu fons', 'OpenStreetMap Foundation',
    'ODbL 1.0 (dati), CC BY-SA 2.0 (attēli); flīžu lietošanas noteikumi', 'https://operations.osmfoundation.org/policies/tiles/', true,
    'https://www.openstreetmap.org/copyright', 'https://tile.openstreetmap.org',
@@ -147,9 +164,21 @@ do $$ begin
 exception when duplicate_object then null;
 end $$;
 
+-- Adrešu meklēšana: ēku adreses ar koordinātām (VZD adrešu reģistrs, aw_eka.csv; ielāde: adreses.sh).
+-- meklesanai = adrese mazajiem burtiem bez garumzīmēm; trigrammu indekss ļauj meklēt pēc vārdu daļām.
+create extension if not exists pg_trgm;
+create extension if not exists unaccent;
+create table if not exists adreses (
+  kods       text primary key,                  -- VZD adrešu reģistra kods
+  adrese     text not null,                     -- pilnā adrese (STD), piem. "Brīvības iela 15, Ogre, Ogres nov., LV-5001"
+  meklesanai text not null,
+  geom       geometry(Point, 4326) not null
+);
+create index if not exists adreses_meklesanai_idx on adreses using gin (meklesanai gin_trgm_ops);
+
 -- Publiskais API lieto map_api: tikai lasīšana.
 grant usage on schema public to map_api;
-grant select on regioni, kategorijas, objekti, avoti to map_api;
+grant select on regioni, kategorijas, objekti, avoti, adreses to map_api;
 
 -- Pašvaldību CA plānu slāņi (src/karte/db/ca_plani.py). Katram punktam ipasibas satur plāna lappusi
 -- (lpp), saiti (plans_url), gatavu atsauces tekstu (avots_teksts) un pārbaudes karodziņus (karodzini).

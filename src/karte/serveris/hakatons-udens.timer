@@ -1,0 +1,10 @@
+# /etc/systemd/system/hakatons-udens.timer — katru stundu :45 (LVĢMC fails atjaunojas ap :30).
+[Unit]
+Description=Hourly LVĢMC water level refresh (map.repo.lv)
+
+[Timer]
+OnCalendar=*-*-* *:45:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,6 +1,6 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
@@ -9,11 +9,22 @@ const pamatkartes = {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
   }),
-  satelits: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19,
-    attribution: 'Attēli: Esri, Maxar, Earthstar Geographics'
+  // reljefs (augstumi, upju ielejas): OSM dati + SRTM, atvērta licence (Esri satelītattēli nav atvērtie dati)
+  reljefs: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki, SRTM · stils &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC BY-SA)'
   })
 };
+// Ja fona attēli neielādējas (nav interneta, serviss nepieejams) — skaidrs paziņojums, nevis pelēks laukums
+let flizesIeladetas = false, flizuKludas = 0;
+for (const slanis of Object.values(pamatkartes)) {
+  slanis.on('tileload', () => { flizesIeladetas = true; });
+  slanis.on('tileerror', () => {
+    if (++flizuKludas !== 8 || flizesIeladetas) return;
+    el('kartes-kluda').textContent = 'Kartes fona attēli neielādējas. Pārbaudiet interneta savienojumu; punkti un "Mana adrese krīzē" strādā arī bez fona.';
+    el('kartes-kluda').hidden = false;
+  });
+}
 pamatkartes.karte.addTo(karte);
 L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(karte);
 
@@ -37,6 +48,11 @@ el('panelis-poga').addEventListener('click', () => {
   el('panelis-poga').setAttribute('aria-expanded', atverts);
   setTimeout(() => karte.invalidateSize(), 200);
 });
+// Telefonā filtru panelis sākumā aizvērts: karte visā augstumā; meklēšanas rezultāti to atver (meklesana.js)
+if (matchMedia('(max-width: 800px)').matches) {
+  document.body.classList.add('panelis-slegts');
+  el('panelis-poga').setAttribute('aria-expanded', 'false');
+}
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const statuss = (t, kluda) => { el('statuss').textContent = t; el('statuss').classList.toggle('kluda', !!kluda); };
 
@@ -249,17 +265,30 @@ const pecNosaukuma = (a, b) => {
   return !x - !y || x.localeCompare(y, 'lv');  // bez nosaukuma — beigās
 };
 
+// Ūdens līmenis (LVĢMC): cm virs posteņa nulles un m LAS-2000,5; mērījuma laiks UTC → vietējais
+const komats = x => String(x).replace('.', ',');
+function udensLimenis(i) {
+  const izm = i.izmaina_24h_cm;
+  const r = [`Ūdens līmenis: <strong>${i.limenis_cm} cm</strong>` + (i.limenis_m != null ? ` (${komats(i.limenis_m)} m LAS)` : '')];
+  if (izm != null) r.push(`<small>Pēdējās 24 h: ${izm > 0 ? '↑ +' : izm < 0 ? '↓ −' : '→ '}${Math.abs(izm)} cm</small>`);
+  if (i.udens_temp != null) r.push(`<small>Ūdens temperatūra: ${komats(i.udens_temp)} °C</small>`);
+  if (i.laiks) r.push(`<small>Mērīts ${new Date(i.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</small>`);
+  return r.join('<br>');
+}
+
 function popupSaturs(p, ll) {
   const k = kategorijas[p.kategorija] || {};
   const i = p.ipasibas || {};
   const rindas = [];
   if (p.adrese) rindas.push(esc(p.adrese));
+  if (i.limenis_cm != null) rindas.push(udensLimenis(i));
   if (i.piezime) rindas.push('<small>' + esc(i.piezime) + '</small>');
   if (i.opening_hours) rindas.push('<small>Darba laiks: ' + esc(i.opening_hours) + '</small>');
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
-  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' no tevis</small>');
+  if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
+  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
     rindas.join('<br>') + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
@@ -303,11 +332,76 @@ function atvertObjektu(f) {
   L.popup().setLatLng(ll).setContent(popupSaturs(f.properties, ll)).openOn(karte);
 }
 
+// ---- Adreses (VZD adrešu reģistrs caur /api/adreses): izvēlētā adrese kļūst par atskaites punktu ----
+const isaAdrese = a => a.split(', ').slice(0, 2).join(', ');  // "Brīvības iela 15, Ogre"
+let adresuPieprasijums = null;
+let adresuTaimeris = null;
+
+function izveletiesAdresi(a) {
+  stavoklis.vieta = { lat: a.lat, lon: a.lon, adrese: a.adrese };
+  if (vietasSlanis) vietasSlanis.remove();
+  vietasSlanis = L.layerGroup([
+    L.circleMarker([a.lat, a.lon], { radius: 9, color: '#fff', weight: 3, fillColor: '#0077c8', fillOpacity: 1 })
+      .bindTooltip(isaAdrese(a.adrese), { permanent: true, direction: 'top', offset: [0, -8] })
+  ]).addTo(karte);
+  if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
+  el('atrast').textContent = '📍 Rādīt tuvākos man';
+  el('vieta-teksts').textContent = `Saraksts sakārtots pēc attāluma no adreses ${isaAdrese(a.adrese)} (taisnā līnijā).`;
+  karte.setView([a.lat, a.lon], 16);
+  atjaunot();
+  krizesMeklesana.atkartot();  // meklesana.js
+}
+
+function meklesanasRinda(krasa, virsraksts, apaksa, izveleties) {
+  const li = document.createElement('li');
+  li.tabIndex = 0;
+  li.setAttribute('role', 'option');
+  li.innerHTML = `<span class="punkts" style="background:${esc(krasa)}"></span>
+    <span class="teksts"><b>${esc(virsraksts)}</b><small>${esc(apaksa)}</small></span>`;
+  li.addEventListener('click', izveleties);
+  li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
+  return li;
+}
+
 function meklet() {
   const ul = el('mekl-rezultati');
-  const vardi = vienkarsot(el('meklet').value).split(/\s+/).filter(Boolean);
+  const vaicajums = el('meklet').value.trim();
+  const vardi = vienkarsot(vaicajums).split(/\s+/).filter(Boolean);
   ul.innerHTML = '';
+  clearTimeout(adresuTaimeris);
+  if (adresuPieprasijums) adresuPieprasijums.abort();
   if (!vardi.length || vardi.join('').length < 2) { ul.hidden = true; return; }
+
+  const adresuGrupa = document.createElement('li');
+  adresuGrupa.className = 'mekl-grupa';
+  adresuGrupa.textContent = 'Adreses';
+  if (vardi.join('').length >= 3) {
+    adresuGrupa.textContent = 'Adreses · meklē…';
+    adresuTaimeris = setTimeout(async () => {
+      adresuPieprasijums = new AbortController();
+      try {
+        const adreses = await iegut('/adreses?' + new URLSearchParams({ q: vaicajums, limit: 5 }), adresuPieprasijums.signal);
+        adresuGrupa.textContent = adreses.length ? 'Adreses' : 'Adreses · nav atrasta';
+        let pec = adresuGrupa;
+        for (const a of adreses) {
+          const li = meklesanasRinda('#0077c8', isaAdrese(a.adrese), a.adrese, () => {
+            ul.hidden = true; el('meklet').value = isaAdrese(a.adrese); izveletiesAdresi(a);
+          });
+          pec.after(li);
+          pec = li;
+        }
+      } catch (e) {
+        // kamēr /api/adreses nav pieejams (404), adrešu grupu vienkārši nerādām
+        if (e.name !== 'AbortError') adresuGrupa.remove();
+      }
+    }, 250);
+  }
+  ul.append(adresuGrupa);
+
+  const objektuGrupa = document.createElement('li');
+  objektuGrupa.className = 'mekl-grupa';
+  objektuGrupa.textContent = 'Kartē';
+  ul.append(objektuGrupa);
   const atrasti = [];
   for (const f of redzamie) {
     const p = f.properties;
@@ -317,17 +411,11 @@ function meklet() {
   for (const f of atrasti) {
     const p = f.properties;
     const k = kategorijas[p.kategorija] || {};
-    const li = document.createElement('li');
-    li.tabIndex = 0;
-    li.setAttribute('role', 'option');
-    li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
-      <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc(p.adrese || k.nosaukums)}</small></span>`;
-    const izveleties = () => { ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f); };
-    li.addEventListener('click', izveleties);
-    li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
-    ul.append(li);
+    ul.append(meklesanasRinda(k.krasa, nosaukums(p) || k.nosaukums, p.adrese || k.nosaukums, () => {
+      ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f);
+    }));
   }
-  if (!atrasti.length) ul.innerHTML = '<li class="piezime">Nekas netika atrasts ieslēgtajos slāņos.</li>';
+  if (!atrasti.length) objektuGrupa.textContent = 'Kartē · nekas ieslēgtajos slāņos';
   ul.hidden = false;
 }
 el('meklet').addEventListener('input', meklet);
@@ -336,6 +424,60 @@ el('meklet').addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') el('mekl-rezultati').querySelector('li[tabindex]')?.focus();
 });
 document.addEventListener('click', e => { if (!e.target.closest('.meklesana')) el('mekl-rezultati').hidden = true; });
+
+// ---- Plūdu riska zonas (LVĢMC 3. cikla kartes 2026–2031, CC0): WMS pārklājums; serviss prot tikai EPSG:4326 ----
+const PLUDU_WMS = 'https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/';
+const pluduSlanis = L.layerGroup(['3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092', '3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea']
+  .map(cels => L.tileLayer.wms(PLUDU_WMS + cels + '?', {
+    layers: '1', format: 'image/png', transparent: true, version: '1.3.0', crs: L.CRS.EPSG4326, opacity: .6, minZoom: 8,
+    attribution: 'Plūdu riska zonas: <a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1">LVĢMC</a> (CC0)'
+  })));
+function radtPludus(ieslegt) {
+  el('pludu-slanis').checked = ieslegt;
+  if (ieslegt) pluduSlanis.addTo(karte); else pluduSlanis.remove();
+}
+el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked));
+
+// ---- Saskarne plūsmai "Mana adrese krīzē" (plusma.js): vieta un kopsavilkuma vietas kartē ----
+const plusmasSlanis = L.layerGroup().addTo(karte);
+// Telefonā karte plūsmas laikā ir paslēpta (0 px), tāpēc skatu iestata, kad karte kļūst redzama.
+let plusmasSkats = null;
+function plusmasSkatam(f) {
+  plusmasSkats = f;
+  if (karte.getSize().x) { karte.invalidateSize(); f(); plusmasSkats = null; }
+}
+window.PlusmasKarte = {
+  vieta(v) {
+    stavoklis.vieta = { lat: v.lat, lon: v.lon, adrese: v.avots === 'gps' ? undefined : v.pilna || v.nosaukums };
+    if (vietasSlanis) vietasSlanis.remove();
+    vietasSlanis = L.layerGroup([
+      L.circleMarker([v.lat, v.lon], { radius: 9, color: '#fff', weight: 3, fillColor: '#0077c8', fillOpacity: 1 })
+        .bindTooltip(v.avots === 'gps' ? 'Jūs esat šeit' : isaAdrese(v.nosaukums), { permanent: true, direction: 'top', offset: [0, -8] })
+    ]).addTo(karte);
+    plusmasSlanis.clearLayers();
+    plusmasSkatam(() => karte.setView([v.lat, v.lon], 14));
+    atjaunot();
+  },
+  // rez: { vieta, vietas: { kategorija: { f, aizstats } }, pludi, situacija }
+  radit(rez) {
+    if (!rez) return;
+    plusmasSlanis.clearLayers();
+    const punkti = [[rez.vieta.lat, rez.vieta.lon]];
+    for (const r of Object.values(rez.vietas)) {
+      if (!r) continue;
+      const [lon, lat] = r.f.geometry.coordinates;
+      const k = kategorijas[r.f.properties.kategorija] || {};
+      if (r.f.properties.attalums_m < 30000) punkti.push([lat, lon]);  // tālu slimnīcu tikai uzzīmē
+      L.circleMarker([lat, lon], { radius: 11, color: '#1c1917', weight: 2.5, fillColor: k.krasa || '#57534e', fillOpacity: 1 })
+        .bindPopup(() => popupSaturs(r.f.properties, { lat, lng: lon })).addTo(plusmasSlanis);
+    }
+    if (rez.situacija === 'pludi' || rez.pludi?.zona) radtPludus(true);
+    plusmasSkatam(() => karte.fitBounds(L.latLngBounds(punkti), { padding: [40, 40], maxZoom: 15 }));
+  },
+  paradita() {
+    setTimeout(() => { karte.invalidateSize(); if (plusmasSkats) { plusmasSkats(); plusmasSkats = null; } }, 50);
+  }
+};
 
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {

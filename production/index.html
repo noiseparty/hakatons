@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Latvijas karte · map.repo.lv</title>
-<meta name="description" content="Patvertnes, bankomāti, aptiekas, slimnīcas un citi objekti Latvijas kartē, tuvākie tev.">
+<title>Mana adrese krīzē · map.repo.lv</title>
+<meta name="description" content="4 soļos: kur esat, kas notiek un ko darīt. Tuvākās drošās vietas, LVĢMC brīdinājumi un plūdu risks Jūsu adresē no atvērtajiem datiem.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
       integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
 <link rel="stylesheet" href="stils.css">
 </head>
-<body>
+<body class="rezims-plusma">
 <header>
-  <h1>Latvijas karte</h1>
+  <h1><a href="#/1">Mana adrese krīzē</a></h1>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Ko tev vajag?" placeholder="Ko tev vajag? Piem.: patvertne Ogrē">
@@ -21,10 +21,25 @@
   </form>
   <div class="galva-labi">
     <p id="statuss" role="status">Ielādē…</p>
+    <a class="galva-112" href="tel:112" aria-label="Zvanīt 112">📞 112</a>
+    <button id="rezims-poga" type="button">🗺 Karte</button>
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
   </div>
 </header>
+<div id="bridinajums" class="bridinajums" role="status" hidden></div>
+<div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <main>
+  <section id="plusma" aria-label="Mana adrese krīzē">
+    <ol class="soli" aria-label="Soļi">
+      <li>Vieta</li><li>Kas notiek</li><li>Situācija</li><li>Rezultāts</li>
+    </ol>
+    <p id="solis-nr" class="solis-nr">Solis 1 no 4</p>
+    <div id="zvanit-josla" role="alert" hidden>
+      <a class="zvanit112" href="tel:112">📞 Zvanīt 112</a>
+      <p class="piezime">Izklausās, ka apdraudēta dzīvība. Zvaniet tūlīt: dispečers palīdzēs.</p>
+    </div>
+    <div id="solis"><p class="piezime">Ielādē…</p></div>
+  </section>
   <aside id="panelis">
     <section id="meklesana">
       <div id="rezultati" aria-live="polite" hidden></div>
@@ -32,8 +47,8 @@
 
     <section id="vieta">
       <div class="meklesana">
-        <input id="meklet" type="search" placeholder="Nosaukums vai adrese…" autocomplete="off"
-               aria-label="Meklēt kartē parādītos objektus" aria-controls="mekl-rezultati">
+        <input id="meklet" type="search" placeholder="Adrese vai nosaukums, piem. Brīvības 15 Ogre" autocomplete="off"
+               aria-label="Meklēt adresi (VZD adrešu reģistrs) vai kartē parādītos objektus" aria-controls="mekl-rezultati">
         <ul id="mekl-rezultati" role="listbox" hidden></ul>
       </div>
       <button id="atrast" type="button" class="galvena">📍 Rādīt tuvākos man</button>
@@ -49,6 +64,8 @@
     <section>
       <h2>Slāņi</h2>
       <div id="kategorijas"></div>
+      <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
+        <span class="punkts" style="background:#38bdf8"></span>Plūdu riska zonas (LVĢMC, 1 % un 10 %)</label>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
@@ -65,7 +82,7 @@
     </div>
     <div class="pamatkarte" role="group" aria-label="Pamatkarte">
       <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
-      <button type="button" data-pamats="satelits" aria-pressed="false">Satelīts</button>
+      <button type="button" data-pamats="reljefs" aria-pressed="false">Reljefs</button>
     </div>
   </div>
 </main>
@@ -74,9 +91,18 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
         integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
+<script>
+  // Ja Leaflet (unpkg.com) neielādējas, karte nestrādā, bet plūsma "Mana adrese krīzē" strādā (plusma.js no tās neatkarīga)
+  if (!window.L || !L.markerClusterGroup) {
+    var kluda = document.getElementById('kartes-kluda');
+    kluda.textContent = 'Karti neizdevās ielādēt. "Mana adrese krīzē" strādā arī bez kartes; lai redzētu karti, pārlādējiet lapu vēlāk.';
+    kluda.hidden = false;
+  }
+</script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
 <script src="app.js"></script>
 <script src="meklesana.js"></script>
+<script src="plusma.js"></script>
 </body>
 </html>
