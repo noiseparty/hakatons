@@ -44,10 +44,14 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] Flood zones: server-side cached tile proxy for the LVĢMC WMS (upstream answers in 5–7 s per tile, first view takes 5–20 s) and warm Ogre/Jūrmala before the pitch — added 2026-10-10 01:50 +03:00 by noiseparty
+- [ ] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — added 2026-10-10 01:50 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Warnings banner stays centred (70ch column) when expanded on desktop — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
+- [x] Flood risk zones drawn as filled areas with a clear border (WMS recoloured on canvas, EPSG:3857, 512 px tiles; spring floods + ice jams + sea surge) + `production/zonas.js` zone registry with overlap = "paaugstināts risks" (hatched, popup with sources); LVĢMC warning areas as a second zone layer (`/api/bridinajumi?poligoni=1`) — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
 - [x] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — done 2026-10-10 01:01 +03:00 by noiseparty: all of tonight's PRs merged in order (#31–#41) (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Consolidated TODO.md pass and `notes/stavoklis.md` rewrite after the merges — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Check that `ielade_visu.sh` reloads the CA-plan layers (`--avots ca-plani`, both categories in one call) — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)

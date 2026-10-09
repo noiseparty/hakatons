@@ -427,16 +427,10 @@ el('meklet').addEventListener('keydown', e => {
 });
 document.addEventListener('click', e => { if (!e.target.closest('.meklesana')) el('mekl-rezultati').hidden = true; });
 
-// ---- Plūdu riska zonas (LVĢMC 3. cikla kartes 2026–2031, CC0): WMS pārklājums; serviss prot tikai EPSG:4326 ----
-const PLUDU_WMS = 'https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/';
-const pluduSlanis = L.layerGroup(['3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092', '3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea']
-  .map(cels => L.tileLayer.wms(PLUDU_WMS + cels + '?', {
-    layers: '1', format: 'image/png', transparent: true, version: '1.3.0', crs: L.CRS.EPSG4326, opacity: .6, minZoom: 8,
-    attribution: 'Plūdu riska zonas: <a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1">LVĢMC</a> (CC0)'
-  })));
+// ---- Plūdu riska zonas (LVĢMC 3. cikla kartes 2026–2031, CC0): zīmē zonas.js (laukumi ar robežu, pārklāšanās) ----
 function radtPludus(ieslegt) {
   el('pludu-slanis').checked = ieslegt;
-  if (ieslegt) pluduSlanis.addTo(karte); else pluduSlanis.remove();
+  Zonas.radit('pludi', ieslegt);
 }
 el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked));
 
