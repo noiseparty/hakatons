@@ -14,6 +14,9 @@ Galapunkti:
                                        ?poligoni=1 — arī brīdinājumu apgabali [[lat, lon], ...] (zonas.js)
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
   GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
+  GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
+                                       novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
+  GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
   GET /api/veseliba                    pārbaude
 
 Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
@@ -404,6 +407,300 @@ def udens(q):
     return {"avots": "lvgmc-hidro", "stacijas": rez[:limit]}
 
 
+# ---- Prognoze / ziņas: /api/prognozes, /api/prognozes/robezas ----
+# LVĢMC "Meteoroloģiskās prognozes apdzīvotām vietām" (data.gov.lv, CC0 1.0): 6427 vietas, 7 dienas. Vietas
+# piesaistām novadam / valstspilsētai (PostGIS, tuvākais reģions), apkopojam pa dienām un izceļam to, kas
+# pārsniedz mūsu sliekšņus (tuvināti LVĢMC brīdinājumu kritērijiem; tie NAV oficiāli brīdinājumi).
+PROGNOZES = "https://data.gov.lv/dati/dataset/01519599-fd66-4d60-8735-51b1c294c417/resource"
+PROGNOZU_VIETAS = PROGNOZES + "/f692fae6-99cd-4bee-95ec-f158a595873a/download/cities.csv"
+PROGNOZU_DIENAS = PROGNOZES + "/4b8172da-9ea3-4206-81fe-d7023a6a1f78/download/forecast_cities_day.csv"
+PROGNOZU_KODI = PROGNOZES + "/cd79bc98-b956-41f3-b428-5a2a11693784/download/weather_codes.csv"
+PROGNOZU_AVOTS = {
+    "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām", "licence": "CC0 1.0",
+    "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa",
+}
+BRIDINAJUMU_AVOTS = {
+    "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi", "licence": "CC0 1.0",
+    "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi",
+}
+# Plānošanas reģioni (MK 22.06.2021. noteikumi Nr. 418): novadi un valstspilsētas pēc nosaukuma regioni tabulā
+PLANOSANAS_REGIONI = {
+    "Kurzemē": ["Dienvidkurzemes novads", "Kuldīgas novads", "Saldus novads", "Talsu novads", "Tukuma novads",
+                "Ventspils novads", "Liepāja", "Ventspils"],
+    "Zemgalē": ["Aizkraukles novads", "Bauskas novads", "Dobeles novads", "Jelgavas novads", "Jēkabpils novads",
+                "Jelgava"],
+    "Vidzemē": ["Alūksnes novads", "Cēsu novads", "Gulbenes novads", "Limbažu novads", "Madonas novads",
+                "Ogres novads", "Smiltenes novads", "Valkas novads", "Valmieras novads"],
+    "Latgalē": ["Augšdaugavas novads", "Balvu novads", "Krāslavas novads", "Līvānu novads", "Ludzas novads",
+                "Preiļu novads", "Rēzeknes novads", "Daugavpils", "Rēzekne"],
+    "Rīgā un Pierīgā": ["Rīga", "Jūrmala", "Ādažu novads", "Ķekavas novads", "Mārupes novads", "Olaines novads",
+                        "Ropažu novads", "Salaspils novads", "Saulkrastu novads", "Siguldas novads"],
+}
+# (parametrs, slieksnis, līmenis): 0 — ievērībai, 1 — ~ LVĢMC dzeltenais, 2 — ~ oranžais, 3 — ~ sarkanais
+PROGNOZU_SLIEKSNI = {
+    "brazmas": [(15, 0), (20, 1), (25, 2), (33, 3)],    # diennakts maks. brāzmas, m/s
+    "nokrisni": [(10, 0), (15, 1), (30, 2), (50, 3)],   # diennakts nokrišņu summa, mm
+    "karstums": [(27, 0), (30, 1), (33, 2)],             # maks. temperatūra, °C
+    "sals": [(0, 0), (-20, 1), (-25, 2), (-30, 3)],      # min. temperatūra, °C (≤)
+}
+NEDELAS_DIENAS = ["pirmdien", "otrdien", "trešdien", "ceturtdien", "piektdien", "sestdien", "svētdien"]
+
+
+def _prognozu_vietas():
+    """CITY_ID → (nosaukums, lat, lon, reģiona kods). Reģions — novads vai valstspilsēta, kurā vieta ir (vai tuvākais)."""
+    vietas = [r for r in _csv(PROGNOZU_VIETAS) if r["LAT"] and r["LON"]]
+    piesaiste = vaicat(
+        """select coalesce(json_object_agg(p.id, r.kods), '{}') from unnest(%s::text[], %s::float8[], %s::float8[])
+             as p(id, lat, lon)
+           cross join lateral (select kods from regioni where tips in ('novads', 'valstspilseta')
+                               order by geom <-> st_setsrid(st_makepoint(p.lon, p.lat), 4326) limit 1) r""",
+        ([v["CITY_ID"] for v in vietas], [float(v["LAT"]) for v in vietas], [float(v["LON"]) for v in vietas]),
+        timeout="30s",
+    )
+    return {v["CITY_ID"]: (v["NOSAUKUMS"], float(v["LAT"]), float(v["LON"]), piesaiste.get(v["CITY_ID"]))
+            for v in vietas}
+
+
+def _prognozu_regioni():
+    rindas = vaicat(
+        """select coalesce(json_agg(json_build_object('kods', kods, 'nosaukums', nosaukums, 'bbox', json_build_array(
+                  round(st_xmin(geom)::numeric, 4), round(st_ymin(geom)::numeric, 4),
+                  round(st_xmax(geom)::numeric, 4), round(st_ymax(geom)::numeric, 4)))), '[]')
+           from regioni where tips in ('novads', 'valstspilseta')""")
+    pr = {n: p for p, nosaukumi in PLANOSANAS_REGIONI.items() for n in nosaukumi}
+    return {r["kods"]: {**r, "planosanas_regions": pr.get(r["nosaukums"])} for r in rindas}
+
+
+def _prognozu_dati():
+    vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
+    lauki = {"14": "brazmas", "17": "nokrisni", "15": "tmax", "16": "tmin", "18": "varbutiba", "20": "ikona"}
+    vertibas = {}  # (datums, reģions) → lauks → [(vērtība, vietas nosaukums)]
+    pieprasijums = urllib.request.Request(PROGNOZU_DIENAS, headers={"User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
+    with urllib.request.urlopen(pieprasijums, timeout=60) as atbilde:
+        mainits = atbilde.headers.get("Last-Modified")
+        # 16,6 MB: lasa plūsmā, nevis visu tekstu atmiņā
+        for r in csv.DictReader(io.TextIOWrapper(atbilde, encoding="utf-8-sig")):
+            lauks = lauki.get(r["PARA_ID"])
+            vieta = vietas.get(r["CITY_ID"])
+            if not lauks or not vieta or not vieta[3] or not r["VERTIBA"]:
+                continue
+            vertibas.setdefault((r["DATUMS"][:10], vieta[3]), {}).setdefault(lauks, []).append(
+                (float(r["VERTIBA"]), vieta[0]))
+    kopsavilkums = {}  # datums → reģions → rādītāji
+    for (datums, kods), v in vertibas.items():
+        def maks(lauks):
+            return max(v.get(lauks, []), default=(None, None))
+        ikonas = [int(x) for x, _ in v.get("ikona", [])]
+        kopsavilkums.setdefault(datums, {})[kods] = {
+            "brazmas": maks("brazmas")[0], "brazmas_vieta": maks("brazmas")[1],
+            "nokrisni": maks("nokrisni")[0], "nokrisni_vieta": maks("nokrisni")[1],
+            "tmax": maks("tmax")[0], "tmin": min(v.get("tmin", []), default=(None, None))[0],
+            "varbutiba": maks("varbutiba")[0],
+            "ikona": max(set(ikonas), key=ikonas.count) if ikonas else None,
+            "vietas": len(v.get("tmax", [])),
+        }
+    try:
+        kodi = {r["DIENA"]: r["APRAKSTS"] for r in _kesots("prognozu_kodi", 86400, lambda: _csv(PROGNOZU_KODI))}
+    except Kluda:
+        kodi = {}
+    for regioni_ in kopsavilkums.values():
+        for k in regioni_.values():
+            k["laiks"] = kodi.get(str(k["ikona"]))
+    return {"kopsavilkums": kopsavilkums, "mainits": mainits}
+
+
+def _limenis(veids, vertiba):
+    if vertiba is None:
+        return None
+    rez = None
+    for slieksnis, limenis in PROGNOZU_SLIEKSNI[veids]:
+        if (vertiba <= slieksnis) if veids == "sals" else (vertiba >= slieksnis):
+            rez = limenis
+    return rez
+
+
+def _dienas_nosaukums(datums, sodien):
+    d = datetime.strptime(datums, "%Y-%m-%d").date()
+    starpiba = (d - sodien).days
+    return "Šodien" if starpiba == 0 else "Rīt" if starpiba == 1 else "Parīt" if starpiba == 2 else \
+        NEDELAS_DIENAS[d.weekday()].capitalize()
+
+
+def _bbox(regioni_, kodi):
+    kastes = [regioni_[k]["bbox"] for k in kodi if k in regioni_]
+    return [min(b[0] for b in kastes), min(b[1] for b in kastes), max(b[2] for b in kastes), max(b[3] for b in kastes)] \
+        if kastes else None
+
+
+def _skaitlis_lv(x):
+    return f"{x:.0f}" if abs(x) >= 10 or x == int(x) else f"{x:.1f}".replace(".", ",")
+
+
+def _prognozu_zinas(dati, regioni_, sodien, dienas):
+    """Ziņas pa plānošanas reģioniem: katrai dienai un parādībai — viena ziņa ar visiem skartajiem novadiem."""
+    zinas = []
+    paradibas = [
+        ("brazmas", "brazmas", "Vējš", lambda v: f"brāzmas līdz {_skaitlis_lv(v)} m/s"),
+        ("nokrisni", "nokrisni", "Nokrišņi", lambda v: f"nokrišņi līdz {_skaitlis_lv(v)} mm diennaktī"),
+        ("karstums", "tmax", "Karstums", lambda v: f"gaisa temperatūra līdz +{_skaitlis_lv(v)} °C"),
+        ("sals", "tmin", "Sals", lambda v: f"naktī {'salna, ' if v > -5 else 'sals, '}līdz {_skaitlis_lv(v)} °C"),
+    ]
+    for datums in dienas:
+        diena = _dienas_nosaukums(datums, sodien)
+        regionu_dati = dati["kopsavilkums"].get(datums, {})
+        for veids, lauks, paradiba, apraksts in paradibas:
+            for pr, nosaukumi in PLANOSANAS_REGIONI.items():
+                skarti = []
+                for kods, r in regioni_.items():
+                    if r["planosanas_regions"] != pr or kods not in regionu_dati:
+                        continue
+                    lim = _limenis(veids, regionu_dati[kods][lauks])
+                    if lim is not None:
+                        skarti.append((lim, regionu_dati[kods][lauks], kods))
+                if not skarti:
+                    continue
+                limenis = max(s[0] for s in skarti)
+                ekstrems = (min if veids == "sals" else max)(s[1] for s in skarti)
+                kodi = [s[2] for s in sorted(skarti, key=lambda s: s[1], reverse=veids != "sals")]
+                vieta_lauks = {"brazmas": "brazmas_vieta", "nokrisni": "nokrisni_vieta"}.get(lauks)
+                virsotne = next((regionu_dati[k] for k in kodi if regionu_dati[k][lauks] == ekstrems), {})
+                nosaukumi_ = [regioni_[k]["nosaukums"].replace(" novads", " nov.") for k in kodi]
+                zinas.append({
+                    "veids": "prognoze", "paradiba": paradiba, "limenis": limenis, "datums": datums, "diena": diena,
+                    "virsraksts": f"{diena} {pr} {apraksts(ekstrems)}",
+                    "teksts": ("Visvairāk: " + virsotne[vieta_lauks] + ". " if vieta_lauks and virsotne.get(vieta_lauks)
+                               else "") + "Skartie: " + ", ".join(nosaukumi_[:6]) +
+                              (f" un vēl {len(nosaukumi_) - 6}" if len(nosaukumi_) > 6 else "") +
+                              ("" if nosaukumi_[min(len(nosaukumi_), 6) - 1].endswith(".") and len(nosaukumi_) <= 6 else "."),
+                    "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": PROGNOZU_AVOTS,
+                })
+    return zinas
+
+
+def _vienkarsot_liniju(punkti, pielaide=0.01):
+    """Ramera–Duglasa–Pekera vienkāršošana (pielaide grādos, ~1 km). Brīdinājums "Latvija" ir ~42 000 virsotņu."""
+    if len(punkti) < 4:
+        return punkti
+    paturet = {0, len(punkti) - 1}
+    darbi = [(0, len(punkti) - 1)]
+    while darbi:
+        a, b = darbi.pop()
+        (y1, x1), (y2, x2) = punkti[a], punkti[b]
+        garums = math.hypot(x2 - x1, y2 - y1)
+        talakais, max_d = None, pielaide
+        for i in range(a + 1, b):
+            y, x = punkti[i]
+            d = abs((x2 - x1) * (y1 - y) - (x1 - x) * (y2 - y1)) / garums if garums else math.hypot(x - x1, y - y1)
+            if d > max_d:
+                talakais, max_d = i, d
+        if talakais is not None:
+            paturet.add(talakais)
+            darbi += [(a, talakais), (talakais, b)]
+    return [punkti[i] for i in sorted(paturet)]
+
+
+def _bridinajumu_skartie(b, vietas):
+    """Brīdinājuma vienkāršotie poligoni un novadi, kuros ir kāda prognožu vieta poligonā (kešots pēc id)."""
+    def aprekinat():
+        poligoni = [_vienkarsot_liniju(p) for p in b["poligoni"]]
+        return poligoni, sorted({v[3] for v in vietas.values() if v[3] and any(
+            _punkts_poligona(v[1], v[2], p) for p in poligoni)})
+    return _kesots(("bridinajuma_novadi", b["id"], len(vietas)), 86400, aprekinat)
+
+
+def _bridinajumu_zinas(regioni_, vietas, tagad):
+    zinas, poligoni = [], []
+    for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
+        if b["lidz"] and b["lidz"] < tagad:
+            continue
+        b_poligoni, skarti = _bridinajumu_skartie(b, vietas)
+        punkti = [x for p in b_poligoni for x in p]
+        lidz = b["lidz"].strftime("%d.%m. %H:%M") if b["lidz"] else None
+        zinas.append({
+            "veids": "bridinajums", "id": b["id"], "paradiba": b["paradiba"], "limenis": b["limenis"],
+            "datums": (b["no"] or tagad).strftime("%Y-%m-%d"), "diena": None,
+            "virsraksts": f"{b['krasa']} brīdinājums: {b['paradiba'].lower()}" +
+                          (f" ({b['regioni']})" if b["regioni"] else "") + (f", līdz {lidz}" if lidz else ""),
+            "teksts": b["teksts"], "regioni": skarti,
+            "bbox": [min(p[1] for p in punkti), min(p[0] for p in punkti), max(p[1] for p in punkti),
+                     max(p[0] for p in punkti)] if punkti else _bbox(regioni_, skarti),
+            "avots": BRIDINAJUMU_AVOTS,
+        })
+        poligoni += [{"id": b["id"], "limenis": b["limenis"], "paradiba": b["paradiba"],
+                      "poligons": [[round(lat, 4), round(lon, 4)] for lat, lon in p]} for p in b_poligoni]
+    return zinas, poligoni
+
+
+def prognozes(_q):
+    return _kesots("prognozes_atbilde", 300, _prognozes)
+
+
+def _prognozes():
+    tagad = _riga_tagad()
+    try:
+        regioni_ = _kesots("prognozu_regioni", 86400, _prognozu_regioni)
+    except Kluda:  # bez DB: brīdinājumi vēl var tikt parādīti
+        regioni_ = {}
+    try:
+        vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
+    except Kluda:
+        vietas = {}
+    try:
+        dati = _kesots("prognozes", 1800, _prognozu_dati)
+    except Kluda:
+        dati = {"kopsavilkums": {}, "mainits": None}
+    try:
+        bridinajumu_zinas, poligoni = _bridinajumu_zinas(regioni_, vietas, tagad)
+    except Kluda:
+        bridinajumu_zinas, poligoni = [], []
+    if not dati["kopsavilkums"] and not bridinajumu_zinas and not poligoni:
+        raise Kluda(503, "prognozes pašlaik nav pieejamas")
+    sodien = tagad.date()
+    dienas = [d for d in sorted(dati["kopsavilkums"]) if d >= sodien.isoformat()][:3]
+    zinas = bridinajumu_zinas + _prognozu_zinas(dati, regioni_, sodien, dienas)
+    # Ja dienā nekas nepārsniedz sliekšņus — viena mierīga ziņa, lai lente nav tukša
+    for datums in dienas:
+        if any(z["datums"] == datums and z["limenis"] >= 1 for z in zinas):
+            continue
+        r = dati["kopsavilkums"][datums].values()
+        def robeza(f, lauks):
+            return f((x[lauks] for x in r if x[lauks] is not None), default=None)
+        tmin, tmax, brazmas, nokrisni = robeza(min, "tmin"), robeza(max, "tmax"), robeza(max, "brazmas"), robeza(max, "nokrisni")
+        if None in (tmin, tmax, brazmas, nokrisni):
+            continue
+        zinas.append({
+            "veids": "kopsavilkums", "paradiba": "Laiks", "limenis": 0, "datums": datums,
+            "diena": _dienas_nosaukums(datums, sodien),
+            "virsraksts": f"{_dienas_nosaukums(datums, sodien)} Latvijā bīstami laika apstākļi nav gaidāmi",
+            "teksts": f"Temperatūra {_skaitlis_lv(tmin)}…{_skaitlis_lv(tmax)} °C, "
+                      f"brāzmas līdz {_skaitlis_lv(brazmas)} m/s, nokrišņi līdz {_skaitlis_lv(nokrisni)} mm.",
+            "regioni": [], "bbox": None, "avots": PROGNOZU_AVOTS,
+        })
+    zinas.sort(key=lambda z: (z["veids"] != "bridinajums", z["datums"], -z["limenis"], z["virsraksts"]))
+    return {
+        "laiks_lv": tagad.isoformat(timespec="minutes"),
+        "prognoze_mainita": dati["mainits"],
+        "dienas": [{"datums": d, "nosaukums": _dienas_nosaukums(d, sodien)} for d in dienas],
+        "zinas": zinas,
+        "regioni": {k: {"nosaukums": r["nosaukums"], "planosanas_regions": r["planosanas_regions"],
+                        "dienas": {d: dati["kopsavilkums"][d].get(k) for d in dienas}} for k, r in regioni_.items()},
+        "bridinajumu_poligoni": poligoni,
+        "sliekshni": PROGNOZU_SLIEKSNI,
+    }
+
+
+def prognozu_robezas(_q):
+    """Novadu un valstspilsētu robežas, stipri vienkāršotas (~500 m), lai telefonā ielādējas ātri."""
+    return _kesots("prognozu_robezas", 86400, lambda: vaicat(
+        """select json_build_object('type', 'FeatureCollection', 'features', coalesce(json_agg(json_build_object(
+                  'type', 'Feature', 'id', kods, 'properties', json_build_object('kods', kods, 'nosaukums', nosaukums),
+                  'geometry', st_asgeojson(st_simplifypreservetopology(geom_vienk, 0.004), 3)::json)), '[]'))
+           from regioni where tips in ('novads', 'valstspilseta')""", timeout="20s"))
+
+
+# ---- /Prognoze / ziņas ----
+
+
 def veseliba(_q):
     return {"ok": vaicat("select true")}
 
@@ -418,6 +715,8 @@ MARSRUTI = [
     (re.compile(r"^/api/bridinajumi/?$"), bridinajumi, 300),
     (re.compile(r"^/api/pludi/?$"), pludi, 3600),
     (re.compile(r"^/api/udens/?$"), udens, 600),
+    (re.compile(r"^/api/prognozes/?$"), prognozes, 300),
+    (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
 ]
 

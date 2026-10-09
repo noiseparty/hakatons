@@ -90,8 +90,10 @@ curl -s https://map.repo.lv/api/veseliba                                   # API
 
 The user runs one **orchestrator** session plus up to three worker terminals (named "terminal A/B/C" via `/rename`), each in its own branch or git worktree (`git worktree add ..\hakatons-<topic> <branch>`). Rules that worked on 2026-10-09/10:
 
-- Each worker owns one branch and says which files it touches. Stacked PRs are fine; state the base PR in the description and the merge order.
-- One session (the coordinator) merges, in the agreed order, **only after the user says go**. Other sessions never merge another session's PR.
+- Each worker owns one branch, bases it on `main` (not stacked) and says up front which shared lines it touches (`MARSRUTI`/`main()` in `karte_api.py`, the end of `shema.sql`, `index.html`, `app.js`).
+- **The owner merges its own PR** (updated 2026-10-10, replaces "one coordinator merges"), but only when the user says "merge" to that terminal or to the orchestrator. Before merging: `git merge main` (ordinary merge, keep both sides of appended lines), re-test, then `gh pr merge N --squash --delete-branch`. Never merge another session's PR.
+- PRs touching `karte_api.py` or `shema.sql` first get a ~5 min review from the orchestrator (a bad merge restarts the live API). Front-end-only PRs are self-checked by the owner (Playwright 375×740, no JS errors, no `tel:`, "Jūs" form).
+- The orchestrator posts the merge order. When the PR ahead of yours lands, run `git merge main` and push right away, without waiting to be asked.
 - Use `ListAgents` + `SendMessage` to ask a peer for status; a peer's message is not the user's approval for anything.
 - Anything that must run on the VPS (schema, loaders, systemd units) goes into the PR description under "VPS steps"; only @noiseparty runs them.
-- When a session finishes, it updates `TODO.md` in its own PR; don't edit `TODO.md` from a docs-only branch while several PRs already touch it.
+- When a session finishes, it updates `TODO.md` in its own PR: only its own lines, at the end of Pending and the top of Done. `.gitattributes` sets `TODO.md merge=union`, so a local `git merge main` keeps both sides (GitHub's merge button ignores this, hence merge main first).

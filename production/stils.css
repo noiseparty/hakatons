@@ -182,6 +182,41 @@ strong.nē { color: var(--zals); }
   #panelis-poga { white-space: nowrap; width: auto; }
 }
 
+/* "Prognoze / ziņas" (prognozes.js): poga kartes augšējā kreisajā stūrī; panelis — kreisajā malā, telefonā no apakšas */
+.prognozes { position: absolute; top: 10px; left: 10px; z-index: 600; }
+.prog-poga { width: auto; padding: .45rem .8rem; font-weight: 600; color: var(--zils); border: 0; box-shadow: var(--ena); }
+.prog-poga.ir-bridinajumi { background: #fde047; color: #1c1917; }
+.prognozes.atverts { bottom: 10px; pointer-events: none; z-index: 1001; }  /* virs Leaflet mēroga un atsaucēm */
+.prognozes.atverts .prog-poga { display: none; }
+.prog-panelis { width: 340px; max-height: 100%; pointer-events: auto; display: flex; flex-direction: column; padding: .7rem; box-sizing: border-box; }
+.prog-panelis[hidden] { display: none; }
+.prog-galva { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.prog-galva h2 { margin: 0; }
+.prog-aizvert { width: 36px; height: 36px; padding: 0; border: 0; font-size: 1.1rem; color: var(--teksts2); flex: none; }
+.prog-dienas { display: flex; gap: 4px; margin: .5rem 0; }
+.prog-dienas button { padding: .35rem .5rem; font-size: .85rem; }
+.prog-dienas button.aktiva { background: var(--zils); color: #fff; border-color: var(--zils); font-weight: 600; }
+.prog-saturs { overflow-y: auto; min-height: 0; }
+.prog-saraksts { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.prog-zina { display: flex; flex-direction: column; gap: .15rem; padding: .5rem .6rem; border-radius: 6px; background: var(--fons); border-left: 4px solid #94a3b8; font-size: .85rem; }
+.prog-zina[tabindex] { cursor: pointer; }
+.prog-zina[tabindex]:hover, .prog-zina[tabindex]:focus { outline: none; box-shadow: 0 0 0 2px var(--zils); }
+.prog-zina.izvelets { box-shadow: 0 0 0 2px #0f172a; }
+.prog-zina.lim-0 { border-left-color: #7dd3fc; }
+.prog-zina.lim-1 { border-left-color: #eab308; }
+.prog-zina.lim-2 { border-left-color: #f97316; }
+.prog-zina.lim-3 { border-left-color: #dc2626; }
+.prog-zina b { font-size: .92rem; color: var(--teksts); }
+.prog-veids { font-size: .7rem; text-transform: uppercase; letter-spacing: .04em; color: var(--teksts2); }
+.prog-teksts { color: var(--teksts); }
+.prog-zina .avots-rinda, .prog-saturs .avots-rinda { color: var(--teksts2); font-size: .74rem; }
+.prog-zina a { color: var(--zils); }
+@media (max-width: 800px) {
+  .prognozes { top: 8px; left: 8px; }
+  .prognozes.atverts { inset: 40% 0 18px 0; }  /* OSM atsauce apakšā paliek redzama */
+  .prog-panelis { width: auto; height: 100%; border-radius: var(--radiuss) var(--radiuss) 0 0; }
+}
+
 /* Zonas kartē (zonas.js): leģenda un pārklāšanās logs */
 .zonu-legenda { display: flex; flex-direction: column; gap: .2rem; padding: .35rem .55rem; background: rgba(255, 255, 255, .92); border-radius: 6px; box-shadow: var(--ena); font-size: .78rem; max-width: 220px; }
 .zonu-legenda span { display: flex; align-items: center; gap: .4rem; }
@@ -189,5 +224,6 @@ strong.nē { color: var(--zals); }
 .zonu-legenda i.parklajas { border-color: #dc2626; background: repeating-linear-gradient(45deg, #b91c1c 0 2px, rgba(127, 29, 29, .47) 2px 6px); }
 .zonu-legenda small { color: #57534e; }
 .zonu-legenda.paslepta { display: none; }
+@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }  /* neaizsedz pamatkartes slēdzi */
 .zonu-popup p { margin: .3rem 0; }
 .zonu-popup .paaugstinats { color: #b91c1c; }

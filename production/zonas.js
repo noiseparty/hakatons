@@ -28,8 +28,10 @@ const Zonas = (() => {
     {
       kods: 'bridinajumi', nosaukums: 'LVĢMC brīdinājuma apgabals',
       avots: saite('https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi', 'LVĢMC hidrometeoroloģiskie brīdinājumi') + ' · CC0',
-      poligoni: [],  // [{ punkti: [[lat, lon], ...], v: līmenis 1–3, teksts }]
-      krasas: v => v >= 3 ? [[220, 38, 38, 45], [185, 28, 28]] : v === 2 ? [[234, 88, 12, 45], [194, 65, 12]] : [[234, 179, 8, 45], [161, 98, 7]],
+      poligoni: [],  // [{ punkti: [[lat, lon], ...], v: līmenis 1–3 (+4, ja hidroloģisks), teksts }]
+      // pārklāšanos veido tikai oranžie/sarkanie vai ar ūdeni saistītie brīdinājumi — visas Latvijas dzeltenais vējš ne
+      skaitit: v => (v & 3) >= 2 || (v & 4) > 0,
+      krasas: v => (v &= 3) >= 3 ? [[220, 38, 38, 45], [185, 28, 28]] : v === 2 ? [[234, 88, 12, 45], [194, 65, 12]] : [[234, 179, 8, 45], [161, 98, 7]],
     },
   ];
   const PARKLAJUMS = { aizp: [127, 29, 29, 120], svitra: [185, 28, 28, 210], robeza: [220, 38, 38] };
@@ -92,7 +94,7 @@ const Zonas = (() => {
     const ctx = kanva.getContext('2d', { willReadFrequently: true });
     const sakums = coords.scaleBy(L.point(LIELUMS, LIELUMS));
     const maska = new Uint8Array(LIELUMS * LIELUMS);
-    for (const p of [...zona.poligoni].sort((a, b) => a.v - b.v)) {
+    for (const p of [...zona.poligoni].sort((a, b) => (a.v & 3) - (b.v & 3) || a.v - b.v)) {
       ctx.clearRect(0, 0, LIELUMS, LIELUMS);
       ctx.beginPath();
       p.punkti.forEach(([lat, lon], i) => {
@@ -118,7 +120,7 @@ const Zonas = (() => {
     const ctx = kanva.getContext('2d');
     const img = ctx.createImageData(LIELUMS, LIELUMS), d = img.data;
     const skaits = new Uint8Array(LIELUMS * LIELUMS);
-    for (const [, m] of saraksts) for (let i = 0; i < m.length; i++) if (m[i]) skaits[i]++;
+    for (const [z, m] of saraksts) for (let i = 0; i < m.length; i++) if (m[i] && (!z.skaitit || z.skaitit(m[i]))) skaits[i]++;
     const krasot = (i, [r, g, b, a = 255]) => { d[i * 4] = r; d[i * 4 + 1] = g; d[i * 4 + 2] = b; d[i * 4 + 3] = a; };
     for (let y = 0; y < LIELUMS; y++) for (let x = 0; x < LIELUMS; x++) {
       const i = y * LIELUMS + x;
@@ -165,7 +167,7 @@ const Zonas = (() => {
   });
 
   // Leģenda kartes stūrī, kamēr kāda zona ieslēgta
-  const legenda = L.control({ position: 'topleft' });  // apakšā ir pamatkartes slēdzis un mērogs
+  const legenda = L.control({ position: 'bottomleft' });  // augšā kreisajā stūrī ir "Prognoze" poga (prognozes.js)
   legenda.onAdd = () => L.DomUtil.create('div', 'zonu-legenda');
   function atjaunotLegendu() {
     const div = legenda.getContainer();
@@ -215,9 +217,9 @@ const Zonas = (() => {
     const atrastas = [];
     for (const zona of ZONAS) {
       if (!ieslegtas.has(zona.kods)) continue;
-      if (zona.wms) { if (kese[zona.kods]?.[i]) atrastas.push({ zona, teksts: zona.apraksts }); continue; }
+      if (zona.wms) { if (kese[zona.kods]?.[i]) atrastas.push({ zona, teksts: zona.apraksts, skaitas: true }); continue; }
       const sheit = zona.poligoni.filter(pp => punktsPoligona(ll.lat, ll.lng, pp.punkti));
-      if (sheit.length) atrastas.push({ zona, teksts: sheit.map(pp => pp.teksts).join('; ') });
+      if (sheit.length) atrastas.push({ zona, teksts: sheit.map(pp => pp.teksts).join('; '), skaitas: sheit.some(pp => !zona.skaitit || zona.skaitit(pp.v)) });
     }
     return atrastas;
   }
@@ -231,10 +233,10 @@ const Zonas = (() => {
       if (Date.now() - pedejaisPopup < 400) return;  // klikšķis bija uz objekta punkta — tā logs svarīgāks
       const atrastas = zonasVieta(e.latlng);
       if (!atrastas.length) return;
-      const augsts = new Set(atrastas.map(a => a.zona.kods)).size >= 2;
+      const augsts = new Set(atrastas.filter(a => a.skaitas).map(a => a.zona.kods)).size >= 2;
       L.popup({ maxWidth: Math.min(300, karte.getSize().x - 70) }).setLatLng(e.latlng).setContent(
         '<div class="popup zonu-popup">' +
-        (augsts ? `<b class="paaugstinats">Paaugstināts risks</b><p>Šeit pārklājas: ${atrastas.map(a => esc(a.zona.nosaukums)).join(' + ')}; ieteicams izvairīties.</p>` : '') +
+        (augsts ? `<b class="paaugstinats">Paaugstināts risks</b><p>Šeit pārklājas: ${atrastas.filter(a => a.skaitas).map(a => esc(a.zona.nosaukums)).join(' + ')}; ieteicams izvairīties.</p>` : '') +
         atrastas.map(a => `<p>${augsts ? '' : '<b>' + esc(a.zona.nosaukums[0].toUpperCase() + a.zona.nosaukums.slice(1)) + '</b><br>'}${esc(a.teksts)}` +
           `<br><small class="popup-avots">Avots: ${a.zona.avots}</small></p>`).join('') +
         '</div>').openOn(karte);
@@ -248,7 +250,7 @@ const Zonas = (() => {
     if (!r.ok) throw new Error(r.status);
     const zona = ZONAS.find(z => z.kods === 'bridinajumi');
     zona.poligoni = (await r.json()).bridinajumi.flatMap(b => (b.poligoni || []).map(punkti => ({
-      punkti, v: b.limenis,
+      punkti, v: b.limenis | (/lietus|plūd|vējuzplūd|pali|sastrēg|ūdens/i.test(b.paradiba) ? 4 : 0),
       teksts: `${LIMENI[b.limenis] || esc(b.krasa)} brīdinājums: ${b.paradiba.toLowerCase()}` +
         (b.lidz ? `, līdz ${new Date(b.lidz).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : ''),
     })));

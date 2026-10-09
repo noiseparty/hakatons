@@ -1,10 +1,24 @@
-# Stāvoklis 2026-10-10 01:01 (handoff between sessions and machines)
+# Stāvoklis 2026-10-10 (handoff between sessions and machines)
 
 Status for whoever picks up next (a new Claude session, a teammate, another PC). Update this file whenever the merge state changes. Tasks live in `TODO.md`; this file is the snapshot.
 
-## Nothing open
+## In progress: batch 2 (started 2026-10-10 morning, orchestrator + terminals A–E)
 
-All of tonight's PRs (#31–#41) are merged into `main` and live on https://map.repo.lv. No open PRs and no unmerged work branches.
+VPS cleanup from batch 1 is done (map_test dropped, restart watcher updated). Five branches, one per terminal, merge order **B → C → E → A → D** (B, C, E all add delimited sections to `karte_api.py` / `shema.sql`; A and D add hooks to `app.js`). Each PR says what was tested and lists VPS steps; the coordinator merges only after the user's OK, without `--delete-branch`.
+
+| Terminal | Branch | What | Own files |
+|---|---|---|---|
+| A | `noiseparty/zonas` | Warnings banner collapses left on desktop when expanded → fix. Flood-risk zones render as dots → real polygons with borders; new `zonas.js` registry, overlapping zones = "paaugstināts risks" | `bridinajumi.js`, `zonas.js`, `stils.css`, flood section of `app.js` |
+| B | `noiseparty/popularie` | Click on the empty search bar → "Biežāk meklētais": top 3 queries by popularity; table `meklejumi`, `POST /api/meklejumi`, `GET /api/meklejumi/top`, seeded demo queries | `meklesana.js`, API + schema section |
+| C | `noiseparty/statuss` | Public status page `statuss.html`: site, API/DB, VZD, LVĢMC warnings, flood WMS, water levels (stale >6 h), CA points, shelters, OSM tiles; 15-min uptime bars for 24 h, 7-day %; `GET /api/statuss`, table `statuss_parbaudes`, in-process checker | `statuss.html/js`, API + schema section, link in `avoti.js` |
+| D | `noiseparty/demo` | Right-side hideable "Demo" sidebar with simulated scenarios (yellow wind, red storm, drone no-go zone + shelter, night cut hand → 24/7 ER, Ogre flood → ground ≥15 m from open DEM, 2026-08-22/23 storm replay, phone + grid down for a region); "SIMULĀCIJA" badge, "Beigt demo"; report `notes/demo-scenariji.md` on missing data | `demo.js`, `demo.css`, `demo/scenariji.json`, tiny hooks |
+| E | `noiseparty/lvgmc` | Phase 1: research of LVĢMC + other official open data → `notes/research/04_lvgmc_un_oficialie_dati.md`. Phase 2: "Prognoze / ziņas" feed (today/tomorrow per region from LVĢMC forecasts + warnings, regions highlighted), `GET /api/prognozes` | `prognozes.js`, API section |
+
+Still queued (user's wording, not yet assigned): more zone types for the overlap logic; whatever the user adds next.
+
+## Batch 1 (night of 2026-10-09/10): all merged
+
+PRs #31–#42 are merged into `main` and live on https://map.repo.lv.
 
 ## What's live
 
@@ -40,19 +54,9 @@ Plus a flood risk zones toggle (LVĢMC WMS), and 117 regions/cities and 550 685 
 
 **Pitch:** `notes/pitch.md` (10-min script, demo path, judge Q&A) and `notes/presentation_ideas.md`. The latter has the verified Jūrmala error: assembly point #10 Melluži is at 56.064 instead of 56.964 in the official plan, ~100 km off, in Lithuania (checked against the original PDF by sha256 and against VZD). CA-plan quality report with the 41 coordinate errors: `notes/ca-plani-kvalitate.md`.
 
-## Still to do on the VPS (user runs these; SSH as root)
+## VPS
 
-```bash
-ssh root@161.97.105.130
-# 1. remove the integration-test leftovers (test API, test DB, files)
-pkill -f "[m]ap_test-src/src/karte/api/karte_api.py"
-sudo -u postgres dropdb map_test
-rm -rf /tmp/map_test-src /tmp/map_test-api.log
-sudo -u postgres psql -Atc "select datname from pg_database"   # map_test gone; map and aimr_main untouched
-# 2. the API restart watcher now also watches udens_limenis.py
-cp /srv/hakatons/src/karte/serveris/hakatons-map-api-restart.path /etc/systemd/system/
-systemctl daemon-reload && systemctl restart hakatons-map-api-restart.path
-```
+Batch-1 VPS steps are done (2026-10-10 morning): test DB/API removed, `hakatons-map-api-restart.path` re-copied and active. New VPS steps come from the batch-2 PR descriptions.
 
 Writing to the live server from a Claude session is blocked by the permission classifier ("production deploy"). Read-only SSH checks work. So the user runs these steps, or approves them explicitly.
 

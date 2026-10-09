@@ -5,6 +5,9 @@
 *.bat text eol=crlf
 *.cmd text eol=crlf
 
+# Team task log: parallel PRs append lines in the same places; a local merge keeps both sides
+TODO.md merge=union
+
 *.pdf binary
 *.png binary
 *.jpg binary
