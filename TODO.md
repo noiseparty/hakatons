@@ -29,7 +29,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Transport layer: blocked / congested roads — check Waze for Cities (CCP) feed and transportdata.gov.lv (NAP) — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — added 2026-10-09 23:20 +03:00 by noiseparty
-- [ ] Show current weather from LVĢMC on the map (observations + forecast) — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
@@ -48,6 +47,11 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Load LVĢMC observations (data.gov.lv `hidrometeorologiskie-noverojumi`, CC0) to show real gust maxima, e.g. for the 22–23.08.2026 storm replay — added 2026-10-10 01:58 +03:00 by noiseparty
 - [ ] Offline mode: service worker + cached data/tiles for the user's area (demo 7 can only say "print it now") — added 2026-10-10 01:58 +03:00 by noiseparty
 - [ ] Verify the pitch figure "~277 000 households" for the August storm (verified: ~245 000 at 23.08 13:00, ~260 000 affected; `notes/demo-scenariji.md`) — added 2026-10-10 01:58 +03:00 by noiseparty
+- [ ] Result card: "next 24 h at your place" from the LVĢMC hourly place forecast (nearest of 6 427 places; via CKAN datastore_search_sql, not the 70 MB CSV) — added 2026-10-10 01:39 +03:00 by noiseparty
+- [ ] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — added 2026-10-10 01:39 +03:00 by noiseparty
+- [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
+- [ ] LVC road closures / slippery roads via NAP (keys exist; DATEX II parsing in the API, server-side only) — added 2026-10-10 01:39 +03:00 by noiseparty
+- [ ] After merging the forecast feed: check `/api/prognozes` and `/api/prognozes/robezas` live (first call ~10 s, robezas size) — added 2026-10-10 01:39 +03:00 by noiseparty
 
 ## In progress
 
@@ -60,6 +64,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [x] Demo 5: Ogre flood high ground from LĢIA DTM 20 m (CC BY 4.0), ≥23 m polygons via `src/demo/augstumi.py` (≥15 m covers 99.6 % of Ogre) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 6: 22–23.08.2026 storm replay (Bauska): outage areas, ATMs/fuel greyed with nearest working one, fallen trees/closed roads, real figures with sources — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 7: no power + no mobile network for a chosen city: live-status layers "status nezināms", where to go without a phone, printable card — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] "Prognoze / ziņas" feed on the map: `/api/prognozes` (LVĢMC place forecasts aggregated per novads, 3 days, + active warnings with polygons) and `prognozes.js` (feed panel, day tabs, novadi coloured, tap zooms); research catalogue `notes/research/04_lvgmc_un_oficialie_dati.md` — done 2026-10-10 01:39 +03:00 by noiseparty (forecast part of "Show current weather from LVĢMC on the map (observations + forecast)", added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — done 2026-10-10 01:01 +03:00 by noiseparty: all of tonight's PRs merged in order (#31–#41) (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Consolidated TODO.md pass and `notes/stavoklis.md` rewrite after the merges — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Check that `ielade_visu.sh` reloads the CA-plan layers (`--avots ca-plani`, both categories in one call) — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)

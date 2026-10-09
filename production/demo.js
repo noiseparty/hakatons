@@ -114,6 +114,7 @@ const Demo = (() => {
     history.replaceState(null, '', '?' + new URLSearchParams(regions ? { demo: kods, regions } : { demo: kods }));
     slanis.clearLayers();
     karte.closePopup();
+    aizvertPrognozi();
 
     // Slāņi: scenārija īstie slāņi kartē; plūdu riska zonas
     if (sc.slani) {
@@ -159,7 +160,10 @@ const Demo = (() => {
     for (const p of bloki.punkti) robezas.extend(p);
     skats = sc.skats === 'regioni' || regions || !robezas.isValid() ? regRobezas : robezas;
     radit();
+    aizvertPrognozi();  // prognozes.js datorā atveras pats pēc ielādes; saitē ?demo= tas var notikt tikai tagad
   }
+  // Īstā LVĢMC prognožu un brīdinājumu lente (prognozes.js) demo laikā aizvērta un paslēpta (demo.css), lai nejaucas ar simulāciju
+  const aizvertPrognozi = () => { if (typeof Prognozes !== 'undefined') Prognozes.atvert(false); };
   const radit = () => { if (aktivs && skats?.isValid()) karte.fitBounds(skats, { maxZoom: 15, ...atstarpes() }); };
   // app.js: slāņu izvēles rūtiņas un grupu skaiti panelī
   function raditSlanus() {

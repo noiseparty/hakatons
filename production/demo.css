@@ -8,7 +8,7 @@
   box-shadow: var(--ena); transition: right .25s; }
 #demo-cilne:hover { background: #9a3412; }
 body.demo-aktivs #demo-cilne::before { content: '● '; color: #fca5a5; }
-#demo-karte-zime { position: absolute; z-index: 600; top: 10px; left: 10px; pointer-events: none; }
+#demo-karte-zime { position: absolute; z-index: 600; top: 10px; left: 10px; pointer-events: none; }  /* prognožu poga (tajā pašā stūrī) demo laikā paslēpta */
 #demo-karte-zime .demo-zime { font-size: .8rem; padding: .25rem .6rem; box-shadow: var(--ena); }
 
 #demo-panelis { position: absolute; z-index: 700; top: 0; right: 0; bottom: 0; width: 360px; max-width: 92%; box-sizing: border-box;
@@ -52,8 +52,8 @@ body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
 .demo-ikona.demo-es span { border-color: #0077c8; }
 .demo-ikona.demo-pelekots span { width: 22px; height: 22px; margin: 4px; background: #a8a29e; color: #fff; font-size: 12px; font-weight: 800; border: 2px solid #fff; }
 
-/* Demo laikā īstā LVĢMC josla paslēpta (tā atgriežas pēc "Beigt demo") */
-body.demo-aktivs #bridinajums { display: none; }
+/* Demo laikā īstā LVĢMC josla un prognožu lente paslēptas (atgriežas pēc "Beigt demo") */
+body.demo-aktivs #bridinajums, body.demo-aktivs #prognozes { display: none; }
 
 @media (max-width: 800px) {
   #demo-cilne { top: 150px; padding: .6rem .35rem; }

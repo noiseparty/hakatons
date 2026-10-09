@@ -73,6 +73,7 @@ Written 2026-10-10. Licences: as stated by the publisher. "Not open" means no li
 - Everything injected carries a visible **SIMULĀCIJA** badge: the map corner, banner, card, and tooltips/popups of zones and markers.
 - No `tel:` links (phone numbers are plain text; Playwright checks there are 0 `a[href^="tel:"]`). "Jūs" form.
 - Only open-licence data on the map, the same sources as the live map. The DTM is CC BY 4.0, credited in the polygon popup and the card.
+- While a demo runs, the real LVĢMC banner and the forecast/warnings panel (`prognozes.js`, #46) are hidden so they don't mix with the simulation. Both come back on "Beigt demo" (the forecast panel stays closed until opened).
 - `app.js` is untouched. The only hook is 2 lines in `index.html` (`demo.css`, `demo.js`); `demo.js` uses `app.js` globals.
 
 ## Check
