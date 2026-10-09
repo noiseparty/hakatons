@@ -6,27 +6,21 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## Pending
 - [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
-- [ ] Esri satellite basemap is LIVE on map.repo.lv (came with the redesign, #18) but Esri imagery is not open data: remove it or replace with an open basemap — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Check the license of `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` before putting it on the map — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Load the team's interest-point datasets into the map DB (how-to: `src/karte/README.md`) — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Incidents layer: LVC live road events (closures, ice, accidents) into `objekti` with `derigs_lidz`; needs NAP API key — added 2026-10-09 18:11 +03:00 by noiseparty
-- [ ] Pick the problem/user and the 3–6 step flow for our prototype — added 2026-10-09 17:13 +03:00 by noiseparty
 - [ ] "Noturības punkti" (resilience points) layer: culture centres/libraries/schools with heat/charging/water/wifi/generator flags + status & `last_updated` — see `notes/research/` — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Live power-outage layer from Sadales tīkls JSON (`karte.sadalestikls.lv/lv/atslegumi-elektrotikla/unplanned`), cached; ask ST for permission (no licence) — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Live weather/flood warnings banner + polygons (LVĢMC on data.gov.lv / MeteoAlarm Atom feed for Latvia) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Ogre river gauge (LVĢMC live level) vs 22.15 m threshold + flood zones → highlight affected addresses — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Remaining official CC0 layers: fire-water intake points (VKCP IĢIS `vkcp-igis-atklatas-udens-nemsanas-vietas`); refresh ZVA + IeM IC data daily (`valsts_dati.py` + `ielade_visu.sh`) — added 2026-10-09 20:48 +03:00 by noiseparty
-- [ ] Test the whole map on a real phone (location prompt, dropdowns, list, popups) — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Public info card: LR1 FM frequency, 112, cell broadcast, sirens, 72h checklist — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Commission-only layers: social-care providers (LM register), vulnerable-population density (GEOSTAT 1 km), Seveso/hazard sites, HES dams — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Status freshness rule: any status older than 6 h (operational) / 24 h (static) shows "unknown" — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Use the 22–23.08.2026 storm (~277k customers without power) as the demo scenario in the pitch — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Crisis search: test on a real phone (search bar is now in the header, above the map) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
-- [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `evakuacijas_punkts`, `uzlades_stacija` — added 2026-10-09 20:20 +03:00 by noiseparty
+- [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Accessibility for blind & disabled users: screen-reader labels, keyboard navigation, contrast, text alternative to the map (list view); check against WCAG 2.1 AA / VDAA guidelines — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show wheelchair access (ramp / step-free entrance) in popups and as a filter — added 2026-10-09 23:20 +03:00 by noiseparty
@@ -39,22 +33,36 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
-- [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
-- [ ] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Test on a phone after merge: address search ("Brīvības 15 Ogre"), a water level popup, "Tuvākā patvertne"; nothing new was browser-tested yet — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Pitch: "Datu avoti" slide (~10 sources with licences) and how AI was used (crisis search itself runs without AI) — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Work in separate git worktrees per session (`git worktree add ../hakatons-<topic> -b <branch> origin/main`); sessions sharing one folder mixed commits today — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Rewrite the 119 scenario advice texts in `production/scenariji.json` to the "Jūs" form (the flow's "Cits" path shows them; the 4 main situations in `plusma.json` already use "Jūs") — added 2026-10-10 00:21 +03:00 by noiseparty
-- [ ] Flow: municipality civil-protection phone / plan link in the result card (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
-- [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the flow card — added 2026-10-10 00:21 +03:00 by noiseparty
-- [ ] Map popup: show `ipasibas.plans_url` as a link next to „Avots: … CA plāns, lpp. N” for `evakuacijas_punkts` / `izmitinasana` (needs production/app.js) — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] Rewrite the 119 scenario advice texts in `production/scenariji.json` to the "Jūs" form (the search result card shows them; the UI texts already use "Jūs") — added 2026-10-10 00:21 +03:00 by noiseparty
+- [ ] Result card: municipality civil-protection phone / plan link (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
+- [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the result card — added 2026-10-10 00:21 +03:00 by noiseparty
 - [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] "Kas notiks tālāk" block in the search result card: concrete next steps and what happens next (judging criterion 3) — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — done 2026-10-10 01:01 +03:00 by noiseparty: all of tonight's PRs merged in order (#31–#41) (added 2026-10-09 20:56 +03:00 by noiseparty)
+- [x] Consolidated TODO.md pass and `notes/stavoklis.md` rewrite after the merges — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
+- [x] Check that `ielade_visu.sh` reloads the CA-plan layers (`--avots ca-plani`, both categories in one call) — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
+- [x] Esri satellite basemap is LIVE on map.repo.lv (came with the redesign, #18) but Esri imagery is not open data: remove it or replace with an open basemap — done 2026-10-10 01:01 +03:00 by noiseparty: replaced with OpenTopoMap "Reljefs" (open licence) (#37) (added 2026-10-09 20:48 +03:00 by noiseparty)
+- [x] Pick the problem/user and the 3–6 step flow for our prototype — done 2026-10-10 01:01 +03:00 by noiseparty: built as 4 steps (#36), then replaced by search-first at the user's request: one query → one result card (#38) (added 2026-10-09 17:13 +03:00 by noiseparty)
+- [x] Live weather/flood warnings banner + polygons (LVĢMC on data.gov.lv / MeteoAlarm Atom feed for Latvia) — done 2026-10-10 01:01 +03:00 by noiseparty: LVĢMC warnings banner, `/api/bridinajumi`, flood-zone check `/api/pludi` + flood layer (#35, #38) (added 2026-10-09 18:36 +03:00 by noiseparty)
+- [x] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — done 2026-10-10 01:01 +03:00 by noiseparty: address in "Ko tev vajag?" works (#38); phone test → see the real-phone test task (added 2026-10-09 20:15 +03:00 by noiseparty)
+- [x] Map popup: show `ipasibas.plans_url` as a link next to „Avots: … CA plāns, lpp. N” for `evakuacijas_punkts` / `izmitinasana` (needs production/app.js) — done 2026-10-10 01:01 +03:00 by noiseparty: "Atvērt CA plānu (lpp. N)" link in popups (added 2026-10-10 00:08 +03:00 by noiseparty)
+- [x] Use the 22–23.08.2026 storm (~277k customers without power) as the demo scenario in the pitch — done 2026-10-10 01:01 +03:00 by noiseparty: opening of the pitch draft (`notes/pitch.md`, #31) (added 2026-10-09 18:36 +03:00 by noiseparty)
+- [x] Pitch: "Datu avoti" slide (~10 sources with licences) and how AI was used (crisis search itself runs without AI) — done 2026-10-10 01:01 +03:00 by noiseparty: slides 6–7 in `notes/pitch.md` (#31) (added 2026-10-09 20:56 +03:00 by noiseparty)
+- [x] Work in separate git worktrees per session (`git worktree add ../hakatons-<topic> -b <branch> origin/main`); sessions sharing one folder mixed commits today — done 2026-10-10 01:01 +03:00 by noiseparty: adopted for all sessions; how-to in `notes/stavoklis.md` (added 2026-10-09 20:56 +03:00 by noiseparty)
+- [x] Pitch draft + verified Jūrmala error: assembly point #10 Melluži at 56.064 instead of 56.964 (original PDF sha256 + VZD) — `notes/pitch.md`, `notes/presentation_ideas.md` — done 2026-10-10 00:16 +03:00 by noiseparty (#31) (added 2026-10-09 23:52 +03:00 by noiseparty)
+- [x] ~~Test the whole map on a real phone (location prompt, dropdowns, list, popups)~~ — dropped 2026-10-10 01:01 +03:00 by noiseparty: merged into the real-phone test task in Pending (added 2026-10-09 20:48 +03:00 by noiseparty)
+- [x] ~~Crisis search: test on a real phone (search bar is now in the header, above the map)~~ — dropped 2026-10-10 01:01 +03:00 by noiseparty: merged into the real-phone test task in Pending (added 2026-10-09 19:11 +03:00 by noiseparty)
+- [x] ~~Test on a phone after merge: address search ("Brīvības 15 Ogre"), a water level popup, "Tuvākā patvertne"; nothing new was browser-tested yet~~ — dropped 2026-10-10 01:01 +03:00 by noiseparty: merged into the real-phone test task in Pending (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Search is the front door again (one query: advice, safe places from CA plans with capacity and plan link, shelter, 24/7 hospital, flood zone + river level for floods, LVĢMC banner); 4-step flow, 112 buttons and header map button removed — done 2026-10-10 00:36 +03:00 by noiseparty (added 2026-10-10 00:36 +03:00 by noiseparty)
 - [x] Demo fixes: stale search hint, results scroll into view on phones, status pill not truncated, filter panel closed on phones, map/tile load errors shown, Esri imagery → OpenTopoMap (open) — done 2026-10-10 00:23 +03:00 by noiseparty (added 2026-10-10 00:23 +03:00 by noiseparty)
 - [x] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
