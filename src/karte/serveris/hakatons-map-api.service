@@ -1,0 +1,20 @@
+# /etc/systemd/system/hakatons-map-api.service — map.repo.lv API (src/karte/api/karte_api.py).
+# Kods tiek ņemts tieši no /srv/hakatons (main), hakatons-map-api-restart.path to pārstartē pēc izmaiņām.
+[Unit]
+Description=map.repo.lv API (hakatons)
+After=network.target postgresql.service
+StartLimitIntervalSec=0
+
+[Service]
+User=deploy
+EnvironmentFile=/etc/hakatons/map.env
+ExecStart=/usr/bin/python3 /srv/hakatons/src/karte/api/karte_api.py 8920
+Restart=always
+RestartSec=3
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

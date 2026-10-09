@@ -1,0 +1,10 @@
+# /etc/systemd/system/hakatons-map-api-restart.path — pārstartē API, kad main maina karte_api.py.
+[Unit]
+Description=Restart map.repo.lv API when its code changes
+
+[Path]
+PathChanged=/srv/hakatons/src/karte/api/karte_api.py
+Unit=hakatons-map-api-restart.service
+
+[Install]
+WantedBy=multi-user.target

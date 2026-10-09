@@ -3,18 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>map.repo.lv</title>
-<style>
-  body { font-family: system-ui, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f5f5f4; color: #1c1917; }
-  main { padding: 2rem; text-align: center; max-width: 32rem; }
-  h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
-  p { color: #57534e; line-height: 1.5; }
-</style>
+<title>Latvijas karte · map.repo.lv</title>
+<meta name="description" content="Patvertnes, bankomāti, aptiekas, slimnīcas un citi objekti Latvijas kartē, tuvākie tev.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+      integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
+<link rel="stylesheet" href="stils.css">
 </head>
 <body>
+<header>
+  <h1>Latvijas karte</h1>
+  <p id="statuss" role="status">Ielādē…</p>
+  <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
+</header>
 <main>
-  <h1>Drīzumā</h1>
-  <p>AI Open Data 2026 hakatons, krīzes vadības virziens. Prototips tiek gatavots.</p>
+  <aside id="panelis">
+    <section id="meklesana">
+      <form id="meklet-forma" role="search">
+        <h2><label for="jautajums">Ko tev vajag?</label></h2>
+        <div class="meklet-rinda">
+          <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
+                 placeholder="Piem.: patvertne Ogrē, bērnam augsta temperatūra">
+          <button type="submit">Meklēt</button>
+        </div>
+      </form>
+      <div id="atras-pogas" class="atras-pogas"></div>
+      <div id="rezultati" aria-live="polite" hidden></div>
+    </section>
+
+    <section id="vieta">
+      <h2>Meklēt</h2>
+      <div class="meklesana">
+        <input id="meklet" type="search" placeholder="Nosaukums vai adrese…" autocomplete="off"
+               aria-label="Meklēt kartē parādītos objektus" aria-controls="mekl-rezultati">
+        <ul id="mekl-rezultati" role="listbox" hidden></ul>
+      </div>
+      <button id="atrast" type="button" class="galvena">📍 Rādīt tuvākos man</button>
+      <button id="tuvaka" type="button" class="otra">🏠 Tuvākā patvertne</button>
+      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
+    </section>
+
+    <section>
+      <h2><label for="regions">Reģions vai pilsēta</label></h2>
+      <select id="regions"><option value="">Visa Latvija</option></select>
+    </section>
+
+    <section>
+      <h2>Slāņi</h2>
+      <div id="kategorijas"></div>
+      <details class="grupa" id="avoti">
+        <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
+        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
+        <ul id="avoti-saraksts"></ul>
+      </details>
+    </section>
+
+    <section>
+      <h2 id="saraksts-virsraksts">Saraksts</h2>
+      <ol id="saraksts"></ol>
+    </section>
+  </aside>
+  <div id="kartes-laukums">
+    <div id="karte" role="application" aria-label="Karte"></div>
+    <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
+      <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
+      <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
+      <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta">◎</button>
+    </div>
+    <div class="pamatkarte" role="group" aria-label="Pamatkarte">
+      <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
+      <button type="button" data-pamats="satelits" aria-pressed="false">Satelīts</button>
+    </div>
+  </div>
 </main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+        integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
+<script src="avoti.js"></script>
+<script src="klasifikators.js"></script>
+<script src="app.js"></script>
+<script src="meklesana.js"></script>
 </body>
 </html>

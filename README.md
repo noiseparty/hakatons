@@ -9,9 +9,9 @@ Team repo for the **AI Open Data 2026 hackathon** — track: **crisis prevention
 **Whatever is in `production/` on `main` is the live website.** Merge a PR that changes `production/`
 and it's online within about a minute — nothing else to do.
 
-- Static files only (HTML/CSS/JS/images/GeoJSON). Frameworks: build locally, commit the build output into `production/`.
+- Static files only (HTML/CSS/JS/images/GeoJSON), plus the map API. Frameworks: build locally, commit the build output into `production/`.
 - Only `production/` is public. Copy any data the page needs into it.
-- The browser's location API (`navigator.geolocation`) is currently **blocked** by the server's security headers. Ask @noiseparty if you need it.
+- The map API is at `/api/*` (`src/karte/`). "Use my location" (`navigator.geolocation`) works; camera and microphone are blocked.
 
 Full guide (publishing, builds, limits, troubleshooting): [`notes/deploy.md`](notes/deploy.md).
 

@@ -1,0 +1,7 @@
+# /etc/systemd/system/hakatons-map-api-restart.service — palaiž hakatons-map-api-restart.path.
+[Unit]
+Description=Restart map.repo.lv API
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart hakatons-map-api.service

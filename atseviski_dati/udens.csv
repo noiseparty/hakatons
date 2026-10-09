@@ -1,0 +1,101 @@
+id,nosaukums,adrese,vieta,veids,darba_laiks,lat,lon
+udens-1,"Dzeramā ūdens uzpildes vieta — Rīga","Tirgus iela 35, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.94201,24.11605
+udens-2,"Dzeramā ūdens uzpildes vieta — Rīga","Pils iela 40, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","07:00–22:00",56.95376,24.11463
+udens-3,"Piepildes krāns uz ūdensvada — Rīga","Pils iela 21, Rīga","Rīga","Piepildes krāns uz ūdensvada","07:00–22:00",56.95707,24.09873
+udens-4,"Publisks ūdens bruninis — Rīga","Tirgus iela 18, Rīga","Rīga","Publisks ūdens bruninis","08:00–20:00",56.94864,24.10339
+udens-5,"Publisks ūdens bruninis — Rīga","Jūras iela 14, Rīga","Rīga","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.95046,24.09890
+udens-6,"Publisks ūdens bruninis — Rīga","Rīgas iela 38, Rīga","Rīga","Publisks ūdens bruninis","07:00–22:00",56.94749,24.09801
+udens-7,"Publisks ūdens bruninis — Rīga","Lielā iela 25, Rīga","Rīga","Publisks ūdens bruninis","08:00–20:00",56.95491,24.09481
+udens-8,"Dzeramā ūdens uzpildes vieta — Rīga","Jūras iela 32, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","07:00–22:00",56.94241,24.11401
+udens-9,"Piepildes krāns uz ūdensvada — Rīga","Lielā iela 10, Rīga","Rīga","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",56.94288,24.11491
+udens-10,"Dzeramā ūdens uzpildes vieta — Rīga","Meža iela 42, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.94846,24.10908
+udens-11,"Dzeramā ūdens uzpildes vieta — Rīga","Meža iela 28, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.95569,24.10509
+udens-12,"Piepildes krāns uz ūdensvada — Rīga","Skolas iela 19, Rīga","Rīga","Piepildes krāns uz ūdensvada","07:00–22:00",56.95077,24.10830
+udens-13,"Piepildes krāns uz ūdensvada — Rīga","Jūras iela 19, Rīga","Rīga","Piepildes krāns uz ūdensvada","08:00–20:00",56.94713,24.09451
+udens-14,"Publisks ūdens bruninis — Rīga","Lielā iela 23, Rīga","Rīga","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.95376,24.09840
+udens-15,"Dzeramā ūdens uzpildes vieta — Rīga","Brīvības iela 34, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.95066,24.10202
+udens-16,"Dzeramā ūdens uzpildes vieta — Rīga","Tirgus iela 20, Rīga","Rīga","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.94780,24.11054
+udens-17,"Piepildes krāns uz ūdensvada — Rīga","Domes iela 25, Rīga","Rīga","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",56.94407,24.10141
+udens-18,"Publisks ūdens bruninis — Rīga","Lielā iela 3, Rīga","Rīga","Publisks ūdens bruninis","24/7",56.95690,24.09891
+udens-19,"Publisks ūdens bruninis — Rīga","Tirgus iela 21, Rīga","Rīga","Publisks ūdens bruninis","08:00–20:00",56.94452,24.10889
+udens-20,"Piepildes krāns uz ūdensvada — Daugavpils","Domes iela 31, Daugavpils","Daugavpils","Piepildes krāns uz ūdensvada","24/7",55.87671,26.54223
+udens-21,"Publisks ūdens bruninis — Daugavpils","Stacijas iela 31, Daugavpils","Daugavpils","Publisks ūdens bruninis","08:00–20:00",55.87060,26.52609
+udens-22,"Dzeramā ūdens uzpildes vieta — Daugavpils","Parka iela 26, Daugavpils","Daugavpils","Dzeramā ūdens uzpildes vieta","07:00–22:00",55.87033,26.54114
+udens-23,"Publisks ūdens bruninis — Daugavpils","Daugavas iela 11, Daugavpils","Daugavpils","Publisks ūdens bruninis","07:00–22:00",55.86929,26.53162
+udens-24,"Piepildes krāns uz ūdensvada — Daugavpils","Stacijas iela 30, Daugavpils","Daugavpils","Piepildes krāns uz ūdensvada","08:00–20:00",55.87811,26.54209
+udens-25,"Piepildes krāns uz ūdensvada — Daugavpils","Jūras iela 7, Daugavpils","Daugavpils","Piepildes krāns uz ūdensvada","24/7",55.87736,26.53432
+udens-26,"Dzeramā ūdens uzpildes vieta — Liepāja","Brīvības iela 44, Liepāja","Liepāja","Dzeramā ūdens uzpildes vieta","24/7",56.50648,21.00554
+udens-27,"Publisks ūdens bruninis — Liepāja","Domes iela 39, Liepāja","Liepāja","Publisks ūdens bruninis","24/7",56.50933,21.00787
+udens-28,"Publisks ūdens bruninis — Liepāja","Skolas iela 22, Liepāja","Liepāja","Publisks ūdens bruninis","07:00–22:00",56.51145,21.02024
+udens-29,"Publisks ūdens bruninis — Liepāja","Lielā iela 31, Liepāja","Liepāja","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.50895,21.01913
+udens-30,"Publisks ūdens bruninis — Liepāja","Rīgas iela 8, Liepāja","Liepāja","Publisks ūdens bruninis","24/7",56.50812,21.02377
+udens-31,"Piepildes krāns uz ūdensvada — Liepāja","Skolas iela 18, Liepāja","Liepāja","Piepildes krāns uz ūdensvada","24/7",56.51427,21.01739
+udens-32,"Dzeramā ūdens uzpildes vieta — Jelgava","Tirgus iela 23, Jelgava","Jelgava","Dzeramā ūdens uzpildes vieta","07:00–22:00",56.65860,23.70103
+udens-33,"Piepildes krāns uz ūdensvada — Jelgava","Parka iela 23, Jelgava","Jelgava","Piepildes krāns uz ūdensvada","07:00–22:00",56.65027,23.70794
+udens-34,"Publisks ūdens bruninis — Jelgava","Brīvības iela 18, Jelgava","Jelgava","Publisks ūdens bruninis","08:00–20:00",56.65380,23.71390
+udens-35,"Publisks ūdens bruninis — Jelgava","Daugavas iela 29, Jelgava","Jelgava","Publisks ūdens bruninis","24/7",56.65523,23.70448
+udens-36,"Piepildes krāns uz ūdensvada — Jelgava","Domes iela 45, Jelgava","Jelgava","Piepildes krāns uz ūdensvada","24/7",56.65620,23.70621
+udens-37,"Piepildes krāns uz ūdensvada — Jūrmala","Brīvības iela 30, Jūrmala","Jūrmala","Piepildes krāns uz ūdensvada","07:00–22:00",56.96680,23.76829
+udens-38,"Publisks ūdens bruninis — Jūrmala","Pils iela 12, Jūrmala","Jūrmala","Publisks ūdens bruninis","07:00–22:00",56.96815,23.75308
+udens-39,"Piepildes krāns uz ūdensvada — Jūrmala","Meža iela 9, Jūrmala","Jūrmala","Piepildes krāns uz ūdensvada","24/7",56.96603,23.76216
+udens-40,"Dzeramā ūdens uzpildes vieta — Jūrmala","Meža iela 1, Jūrmala","Jūrmala","Dzeramā ūdens uzpildes vieta","24/7",56.97733,23.75828
+udens-41,"Publisks ūdens bruninis — Ventspils","Domes iela 19, Ventspils","Ventspils","Publisks ūdens bruninis","24/7",57.38634,21.56513
+udens-42,"Piepildes krāns uz ūdensvada — Ventspils","Parka iela 43, Ventspils","Ventspils","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",57.38978,21.55167
+udens-43,"Piepildes krāns uz ūdensvada — Ventspils","Tirgus iela 34, Ventspils","Ventspils","Piepildes krāns uz ūdensvada","07:00–22:00",57.38217,21.57396
+udens-44,"Piepildes krāns uz ūdensvada — Rēzekne","Rīgas iela 29, Rēzekne","Rēzekne","Piepildes krāns uz ūdensvada","07:00–22:00",56.50587,27.32403
+udens-45,"Publisks ūdens bruninis — Rēzekne","Pils iela 14, Rēzekne","Rēzekne","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.51752,27.33846
+udens-46,"Publisks ūdens bruninis — Rēzekne","Daugavas iela 24, Rēzekne","Rēzekne","Publisks ūdens bruninis","24/7",56.51792,27.33477
+udens-47,"Piepildes krāns uz ūdensvada — Valmiera","Tirgus iela 15, Valmiera","Valmiera","Piepildes krāns uz ūdensvada","07:00–22:00",57.53483,25.42808
+udens-48,"Publisks ūdens bruninis — Valmiera","Tirgus iela 38, Valmiera","Valmiera","Publisks ūdens bruninis","07:00–22:00",57.53038,25.42270
+udens-49,"Piepildes krāns uz ūdensvada — Valmiera","Meža iela 26, Valmiera","Valmiera","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",57.53252,25.42890
+udens-50,"Dzeramā ūdens uzpildes vieta — Jēkabpils","Pils iela 23, Jēkabpils","Jēkabpils","Dzeramā ūdens uzpildes vieta","24/7",56.50647,25.86978
+udens-51,"Piepildes krāns uz ūdensvada — Jēkabpils","Jūras iela 25, Jēkabpils","Jēkabpils","Piepildes krāns uz ūdensvada","08:00–20:00",56.50549,25.84611
+udens-52,"Piepildes krāns uz ūdensvada — Jēkabpils","Lielā iela 3, Jēkabpils","Jēkabpils","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",56.49219,25.84771
+udens-53,"Publisks ūdens bruninis — Ogre","Meža iela 26, Ogre","Ogre","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.82184,24.61430
+udens-54,"Publisks ūdens bruninis — Ogre","Brīvības iela 1, Ogre","Ogre","Publisks ūdens bruninis","07:00–22:00",56.82262,24.59879
+udens-55,"Dzeramā ūdens uzpildes vieta — Ogre","Pils iela 13, Ogre","Ogre","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.81775,24.60414
+udens-56,"Piepildes krāns uz ūdensvada — Cēsis","Pils iela 2, Cēsis","Cēsis","Piepildes krāns uz ūdensvada","08:00–20:00",57.31591,25.26772
+udens-57,"Piepildes krāns uz ūdensvada — Cēsis","Pils iela 4, Cēsis","Cēsis","Piepildes krāns uz ūdensvada","24/7",57.30212,25.27919
+udens-58,"Publisks ūdens bruninis — Cēsis","Domes iela 29, Cēsis","Cēsis","Publisks ūdens bruninis","24/7",57.31558,25.26838
+udens-59,"Publisks ūdens bruninis — Sigulda","Stacijas iela 6, Sigulda","Sigulda","Publisks ūdens bruninis","24/7",57.15524,24.84482
+udens-60,"Dzeramā ūdens uzpildes vieta — Sigulda","Brīvības iela 31, Sigulda","Sigulda","Dzeramā ūdens uzpildes vieta","24/7",57.16349,24.85990
+udens-61,"Piepildes krāns uz ūdensvada — Tukums","Rīgas iela 6, Tukums","Tukums","Piepildes krāns uz ūdensvada","24/7",56.96666,23.16508
+udens-62,"Piepildes krāns uz ūdensvada — Tukums","Brīvības iela 31, Tukums","Tukums","Piepildes krāns uz ūdensvada","07:00–22:00",56.96595,23.14443
+udens-63,"Dzeramā ūdens uzpildes vieta — Salaspils","Skolas iela 39, Salaspils","Salaspils","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.86799,24.35837
+udens-64,"Dzeramā ūdens uzpildes vieta — Salaspils","Rīgas iela 24, Salaspils","Salaspils","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.85911,24.35205
+udens-65,"Dzeramā ūdens uzpildes vieta — Kuldīga","Parka iela 26, Kuldīga","Kuldīga","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.97104,21.66301
+udens-66,"Piepildes krāns uz ūdensvada — Kuldīga","Rīgas iela 29, Kuldīga","Kuldīga","Piepildes krāns uz ūdensvada","07:00–22:00",56.97457,21.66522
+udens-67,"Publisks ūdens bruninis — Saldus","Pils iela 42, Saldus","Saldus","Publisks ūdens bruninis","08:00–20:00",56.66687,22.49670
+udens-68,"Dzeramā ūdens uzpildes vieta — Saldus","Brīvības iela 21, Saldus","Saldus","Dzeramā ūdens uzpildes vieta","24/7",56.66681,22.48197
+udens-69,"Publisks ūdens bruninis — Gulbene","Daugavas iela 42, Gulbene","Gulbene","Publisks ūdens bruninis","24/7 (ārpus telpām)",57.17608,26.74748
+udens-70,"Piepildes krāns uz ūdensvada — Gulbene","Meža iela 5, Gulbene","Gulbene","Piepildes krāns uz ūdensvada","08:00–20:00",57.18400,26.76773
+udens-71,"Dzeramā ūdens uzpildes vieta — Balvi","Tirgus iela 9, Balvi","Balvi","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",57.13135,27.26182
+udens-72,"Piepildes krāns uz ūdensvada — Balvi","Meža iela 1, Balvi","Balvi","Piepildes krāns uz ūdensvada","24/7",57.13276,27.27235
+udens-73,"Publisks ūdens bruninis — Ludza","Jūras iela 24, Ludza","Ludza","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.54619,27.72753
+udens-74,"Dzeramā ūdens uzpildes vieta — Ludza","Stacijas iela 10, Ludza","Ludza","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.54055,27.72919
+udens-75,"Piepildes krāns uz ūdensvada — Krāslava","Tirgus iela 5, Krāslava","Krāslava","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",55.88927,27.15966
+udens-76,"Publisks ūdens bruninis — Krāslava","Rīgas iela 24, Krāslava","Krāslava","Publisks ūdens bruninis","08:00–20:00",55.88806,27.17436
+udens-77,"Dzeramā ūdens uzpildes vieta — Dobele","Stacijas iela 34, Dobele","Dobele","Dzeramā ūdens uzpildes vieta","08:00–20:00",56.62538,23.27816
+udens-78,"Dzeramā ūdens uzpildes vieta — Dobele","Daugavas iela 34, Dobele","Dobele","Dzeramā ūdens uzpildes vieta","24/7 (ārpus telpām)",56.63147,23.27284
+udens-79,"Piepildes krāns uz ūdensvada — Bauska","Pils iela 1, Bauska","Bauska","Piepildes krāns uz ūdensvada","08:00–20:00",56.41670,24.18488
+udens-80,"Dzeramā ūdens uzpildes vieta — Bauska","Parka iela 9, Bauska","Bauska","Dzeramā ūdens uzpildes vieta","07:00–22:00",56.41238,24.19593
+udens-81,"Dzeramā ūdens uzpildes vieta — Limbaži","Pils iela 22, Limbaži","Limbaži","Dzeramā ūdens uzpildes vieta","08:00–20:00",57.51547,24.72966
+udens-82,"Publisks ūdens bruninis — Limbaži","Rīgas iela 20, Limbaži","Limbaži","Publisks ūdens bruninis","24/7 (ārpus telpām)",57.51120,24.71429
+udens-83,"Dzeramā ūdens uzpildes vieta — Alūksne","Domes iela 26, Alūksne","Alūksne","Dzeramā ūdens uzpildes vieta","24/7",57.43141,27.04624
+udens-84,"Dzeramā ūdens uzpildes vieta — Alūksne","Parka iela 41, Alūksne","Alūksne","Dzeramā ūdens uzpildes vieta","08:00–20:00",57.42089,27.06983
+udens-85,"Piepildes krāns uz ūdensvada — Smiltene","Tirgus iela 13, Smiltene","Smiltene","Piepildes krāns uz ūdensvada","07:00–22:00",57.12834,25.70292
+udens-86,"Piepildes krāns uz ūdensvada — Smiltene","Tirgus iela 11, Smiltene","Smiltene","Piepildes krāns uz ūdensvada","08:00–20:00",57.12613,25.68826
+udens-87,"Piepildes krāns uz ūdensvada — Madona","Rīgas iela 20, Madona","Madona","Piepildes krāns uz ūdensvada","24/7 (ārpus telpām)",56.85083,26.21251
+udens-88,"Piepildes krāns uz ūdensvada — Madona","Tirgus iela 20, Madona","Madona","Piepildes krāns uz ūdensvada","07:00–22:00",56.84239,26.22134
+udens-89,"Dzeramā ūdens uzpildes vieta — Preiļi","Daugavas iela 32, Preiļi","Preiļi","Dzeramā ūdens uzpildes vieta","24/7",56.29495,26.65836
+udens-90,"Piepildes krāns uz ūdensvada — Preiļi","Skolas iela 7, Preiļi","Preiļi","Piepildes krāns uz ūdensvada","07:00–22:00",56.28254,26.66499
+udens-91,"Piepildes krāns uz ūdensvada — Varakļāni","Daugavas iela 39, Varakļāni","Varakļāni","Piepildes krāns uz ūdensvada","24/7",56.61277,26.18081
+udens-92,"Dzeramā ūdens uzpildes vieta — Līvāni","Rīgas iela 36, Līvāni","Līvāni","Dzeramā ūdens uzpildes vieta","24/7",56.34563,26.17558
+udens-93,"Publisks ūdens bruninis — Aizkraukle","Stacijas iela 26, Aizkraukle","Aizkraukle","Publisks ūdens bruninis","24/7 (ārpus telpām)",56.90273,25.26053
+udens-94,"Publisks ūdens bruninis — Aizkraukle","Daugavas iela 14, Aizkraukle","Aizkraukle","Publisks ūdens bruninis","08:00–20:00",56.91546,25.27721
+udens-95,"Piepildes krāns uz ūdensvada — Pļaviņas","Jūras iela 33, Pļaviņas","Pļaviņas","Piepildes krāns uz ūdensvada","08:00–20:00",56.60638,25.72402
+udens-96,"Dzeramā ūdens uzpildes vieta — Ādaži","Tirgus iela 14, Ādaži","Ādaži","Dzeramā ūdens uzpildes vieta","24/7",57.07360,24.32522
+udens-97,"Piepildes krāns uz ūdensvada — Olaine","Daugavas iela 30, Olaine","Olaine","Piepildes krāns uz ūdensvada","08:00–20:00",56.80572,23.94933
+udens-98,"Piepildes krāns uz ūdensvada — Olaine","Pils iela 18, Olaine","Olaine","Piepildes krāns uz ūdensvada","24/7",56.79180,23.94848
+udens-99,"Piepildes krāns uz ūdensvada — Ikšķile","Brīvības iela 26, Ikšķile","Ikšķile","Piepildes krāns uz ūdensvada","08:00–20:00",56.83319,24.69866
+udens-100,"Publisks ūdens bruninis — Ķegums","Jūras iela 23, Ķegums","Ķegums","Publisks ūdens bruninis","07:00–22:00",56.70849,24.92820

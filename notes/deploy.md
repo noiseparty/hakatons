@@ -14,8 +14,8 @@ Taking the site down or rolling back = a PR that changes `production/` back. Nev
 
 ## What gets served
 
-- Only static files: HTML, CSS, JS, images, GeoJSON/JSON, fonts. No PHP, Node or Python runs on the server,
-  and there is no database. Anything dynamic must happen in the browser (or call an outside API).
+- Only static files: HTML, CSS, JS, images, GeoJSON/JSON, fonts. The one exception is the map API at
+  `/api/*` (see below); anything else dynamic must happen in the browser (or call an outside API).
 - Only `production/` is public. The rest of the repo (data kit, `src/`, `notes/`) is **not** reachable
   through map.repo.lv, so copy any data the page needs into `production/` (e.g. `production/dati/patvertnes.geojson`).
 - Clean URLs work: `/par` serves `production/par.html` or `production/par/index.html`.
@@ -43,7 +43,7 @@ check `git status` before saving. Keep source code in `src/`, and only build out
 
 | Header | Effect on our app |
 |---|---|
-| `Permissions-Policy: camera=(), microphone=(), geolocation=()` | **The browser's location API is blocked**: `navigator.geolocation` fails. Camera and microphone too. If the prototype needs "use my location", ask @noiseparty to allow it for map.repo.lv (one-line server change). |
+| `Permissions-Policy: camera=(), microphone=(), geolocation=(self)` | "Use my location" works on map.repo.lv; camera and microphone are blocked. |
 | `X-Frame-Options: DENY` | The site can't be embedded in an `<iframe>` on another site. Linking to it is fine. |
 | `Strict-Transport-Security` | Browsers always use HTTPS. |
 
@@ -70,3 +70,13 @@ VPS `161.97.105.130` (Ubuntu 24.04, Caddy). Root SSH by key only; teammates don'
   (the server is case-sensitive: `Karte.html` ≠ `karte.html`).
 - **Works locally, broken live:** usually an absolute path to your own disk (`C:\...`) or a file outside
   `production/`. Open the browser dev tools (F12) → Console/Network to see which file 404s.
+
+## Map API (`/api/*`)
+
+`/api/*` is proxied to the map API (`src/karte/api/karte_api.py`, `hakatons-map-api.service`
+on 127.0.0.1:8920), which reads the PostGIS database `map`. It also follows `main`: a change to
+`karte_api.py` restarts the service automatically. Data is loaded into the DB by hand on the VPS;
+how-to in `src/karte/README.md`. Credentials live only in `/etc/hakatons/map.env` on the VPS.
+
+`map.repo.lv` allows `geolocation=(self)` (the shared Caddy `common` block blocks it for other sites).
+The live Caddy and systemd files are copied in `src/karte/serveris/`; keep them in sync when changing the server.
