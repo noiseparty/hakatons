@@ -199,3 +199,22 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- Biežāk meklētais (meklesana.js → POST /api/meklejumi; GET /api/meklejumi/top) ----
+-- Tikai normalizēts vaicājuma teksts un skaitītāji: bez IP, laika pa lietotājiem vai citiem lietotāja datiem.
+-- Vaicājumus ar cipariem (mājas numuri = adreses) API neskaita; klienti sūta vaicājumu bez adreses.
+create table if not exists meklejumi (
+  id         bigserial primary key,
+  vaicajums  text not null unique check (length(vaicajums) between 1 and 100),  -- mazie burti, viena atstarpe
+  skaits     int  not null default 1,            -- cik reižu meklēts ar atpazītu situāciju vai slāni
+  klikski    int  not null default 0,            -- cik reižu pēc tā atvērts rezultāts
+  pedejais   timestamptz not null default now()
+);
+create index if not exists meklejumi_pedejais_idx on meklejumi (pedejais);
+grant select, insert, update on meklejumi to map_api;
+grant usage on sequence meklejumi_id_seq to map_api;
+
+-- Demo: lai "Biežāk meklētais" nekad nav tukšs
+insert into meklejumi (vaicajums, skaits) values
+  ('nav elektrības', 12), ('plūdi ogrē', 9), ('tuvākā patvertne', 7), ('nav ūdens', 5), ('evakuācija', 4)
+on conflict (vaicajums) do nothing;

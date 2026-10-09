@@ -17,8 +17,13 @@
   <h1>Krīzes karte</h1>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
-           aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+           aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē"
+           aria-controls="populari" aria-expanded="false">
     <button type="submit">Meklēt</button>
+    <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
+      <p id="populari-virsraksts">Biežāk meklētais</p>
+      <div class="populari-pogas"></div>
+    </div>
   </form>
   <div class="galva-labi">
     <p id="statuss" role="status">Ielādē…</p>

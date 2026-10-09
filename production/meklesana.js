@@ -41,9 +41,77 @@ const krizesMeklesana = (() => {
 
   el('meklet-forma').addEventListener('submit', e => {
     e.preventDefault();
+    aizvertPopularos();
     const teksts = el('jautajums').value.trim();
     if (teksts) { meklet(teksts); raditRezultatus(); } else notirit();
   });
+
+  // Biežāk meklētais: tukšajā laukā ieklikšķinot — 3 populārākie atpazītie vaicājumi (/api/meklejumi/top, kešs 60 s).
+  // Ja API nav pieejams — šie paši piemēri, lai nekad nav tukšs.
+  const POPULARI_REZERVE = ['nav elektrības', 'plūdi ogrē', 'tuvākā patvertne'];
+  const populari = el('populari');
+  const popPogas = populari.querySelector('.populari-pogas');
+  let popularie = null, popularieLaiks = 0, popIelade = null;
+
+  async function atvertPopularos() {
+    const lauks = el('jautajums');
+    if (lauks.value.trim() || lauks.disabled || !klasifikators) return;
+    if (!popularie || Date.now() - popularieLaiks > 60000) {
+      popIelade ||= iegut('/meklejumi/top?n=3').then(d => d.vaicajumi, () => null).then(v => {
+        popularie = v?.length ? v : POPULARI_REZERVE;
+        popularieLaiks = Date.now();
+        popIelade = null;
+      });
+      await popIelade;
+      if (lauks.value.trim() || !populari.contains(document.activeElement) && document.activeElement !== lauks) return;
+    }
+    popPogas.innerHTML = popularie.map(v =>
+      `<button type="button" data-vaicajums="${esc(v)}">${esc(v.charAt(0).toUpperCase() + v.slice(1))}</button>`).join('');
+    populari.hidden = false;
+    lauks.setAttribute('aria-expanded', 'true');
+  }
+  function aizvertPopularos() {
+    populari.hidden = true;
+    el('jautajums').setAttribute('aria-expanded', 'false');
+  }
+  el('jautajums').addEventListener('focus', atvertPopularos);
+  el('jautajums').addEventListener('click', atvertPopularos);
+  el('jautajums').addEventListener('input', () => { if (el('jautajums').value.trim()) aizvertPopularos(); else atvertPopularos(); });
+  popPogas.addEventListener('click', e => {
+    const v = e.target.closest('button[data-vaicajums]')?.dataset.vaicajums;
+    if (!v) return;
+    aizvertPopularos();
+    el('jautajums').value = v;
+    meklet(v);
+    raditRezultatus();
+  });
+  // Tastatūra: ↓ no lauka uz pirmo, ←/→/↑/↓ starp pogām, Escape aizver un atgriežas laukā
+  el('meklet-forma').addEventListener('keydown', e => {
+    if (populari.hidden) return;
+    const pogas = [...popPogas.querySelectorAll('button')];
+    const i = pogas.indexOf(document.activeElement);
+    if (e.key === 'Escape') { aizvertPopularos(); el('jautajums').focus(); e.preventDefault(); return; }
+    if (e.key === 'ArrowDown' && i < 0 && document.activeElement === el('jautajums')) { pogas[0]?.focus(); e.preventDefault(); return; }
+    if (i < 0) return;
+    const solis = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!solis) return;
+    e.preventDefault();
+    if (i + solis < 0) el('jautajums').focus();
+    else pogas[Math.min(i + solis, pogas.length - 1)].focus();
+  });
+  // Klikšķis vai fokuss ārpus lauka un saraksta aizver
+  document.addEventListener('pointerdown', e => { if (!el('meklet-forma').contains(e.target)) aizvertPopularos(); });
+  el('meklet-forma').addEventListener('focusout', e => {
+    if (e.relatedTarget && !el('jautajums').contains(e.relatedTarget) && !populari.contains(e.relatedTarget)) aizvertPopularos();
+  });
+
+  // Uzskaite: atpazītu vaicājumu (situācija vai slānis) vienreiz pēc meklēšanas un vienreiz, kad atver rezultātu.
+  // Sūta tikai tekstu bez adreses; bez lietotāja datiem. Kļūdas klusi ignorē.
+  let uzskaite = null;
+  function zinot(vaicajums, klikskis = false) {
+    fetch(API + '/meklejumi', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vaicajums, atpazits: true, klikskis }) }).catch(() => {});
+  }
 
   // Telefonā rezultāti ir zem kartes (un panelis var būt aizvērts): atveram to un ritinām līdz rezultātiem
   function raditRezultatus() {
@@ -59,6 +127,7 @@ const krizesMeklesana = (() => {
     const cits = klasifikators?.scenariji.find(s => s.kods === e.target.closest('[data-cits]')?.dataset.cits);
     if (cits && pedejais) meklet(pedejais.teksts, cits);
     const li = e.target.closest('li[data-lat]');
+    if (li && uzskaite && !uzskaite.klikskis) { uzskaite.klikskis = true; zinot(uzskaite.vaicajums, true); }
     if (li && !e.target.closest('a')) {
       const ll = { lat: +li.dataset.lat, lng: +li.dataset.lon };
       karte.setView(ll, Math.max(karte.getZoom(), 16));
@@ -68,6 +137,7 @@ const krizesMeklesana = (() => {
 
   function notirit() {
     pedejais = null;
+    uzskaite = null;
     if (pieprasijums) pieprasijums.abort();
     rezultatuSlanis.clearLayers();
     kaste.hidden = true;
@@ -171,6 +241,10 @@ const krizesMeklesana = (() => {
     bridinajumi(no, no?.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
+    if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
+      uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
+      if (uzskaite) zinot(uzskaite.vaicajums);
+    }
     const kurTeksts = adrese ? isaAdrese(adrese.adrese) : vieta?.nosaukums;
     const galva = draudi +
       (galvenais
