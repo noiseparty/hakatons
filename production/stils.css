@@ -17,8 +17,16 @@ button, select { font: inherit; width: 100%; padding: .55rem .6rem; border-radiu
 #atrast { background: #1d4ed8; color: #fff; border-color: #1d4ed8; font-weight: 600; cursor: pointer; }
 #atrast:disabled { opacity: .6; cursor: default; }
 
-.grupa { margin: .3rem 0 .5rem; }
-.grupa-nos { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: #78716c; margin-bottom: .2rem; }
+.grupa { border: 1px solid #e7e5e4; border-radius: .4rem; background: #fff; margin: 0 0 .4rem; }
+.grupa > summary { display: flex; align-items: center; gap: .5rem; padding: .55rem .6rem; cursor: pointer; list-style: none; }
+.grupa > summary::-webkit-details-marker { display: none; }
+.grupa > summary::after { content: '▾'; margin-left: .25rem; color: #78716c; transition: transform .15s; }
+.grupa[open] > summary::after { transform: rotate(180deg); }
+.grupa > summary .skaits { margin-left: auto; color: #78716c; font-size: .8rem; font-variant-numeric: tabular-nums; }
+.grupa[open] > summary { border-bottom: 1px solid #f0efed; }
+.grupa > .kat, .grupa > p, .grupa > ul { margin-left: .6rem; margin-right: .6rem; }
+.grupa > .kat:last-child, .grupa > ul { margin-bottom: .3rem; }
+.grupa-nos { font-size: .85rem; font-weight: 600; color: #1c1917; }
 .kat { display: flex; align-items: center; gap: .45rem; padding: .25rem 0; font-size: .9rem; cursor: pointer; }
 .kat input { margin: 0; width: 1.1rem; height: 1.1rem; }
 .kat .skaits { margin-left: auto; color: #78716c; font-size: .8rem; }
