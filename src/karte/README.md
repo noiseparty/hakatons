@@ -66,6 +66,7 @@ bash src/karte/db/regioni.sh            # VPS: robežas (reizi mēnesī pietiek)
 ```
 
 `ielade.py` papildus: `--srid 3059` (LKS-92 TM koordinātas), `--kodejums cp1257`, `--atdalitajs ";"`.
+`--apvienot 35` izmet viena avota dublikātus ≤ 35 m (tā pati kategorija, saderīgs nosaukums/adrese/operator/brand, garumzīmes neņem vērā); izmesto ID paliek īpašībā `dublikati`. Lieto patvertnēm un OSM.
 
 ## API izmaiņas
 
