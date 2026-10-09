@@ -1247,9 +1247,17 @@ def _parb_zibens():
     return "darbojas", (_skaits(n, "zibens", "zibeņi") + " Latvijā" if n else "Pēdējās 30 min zibens nav reģistrēts")
 
 
+_statuss_augsne = [None, 0.0]  # [pēdējā atbilde, kad tā parādījās]: _kesots kļūdas gadījumā atdod veco vērtību
+
+
 def _parb_augsne():
     # caur /api/augsne kešu (1 h vienai vietai): viens Open-Meteo pieprasījums stundā
     dati = augsne({"lat": ["56.82"], "lon": ["24.6"]})
+    if dati is not _statuss_augsne[0]:
+        _statuss_augsne[:] = [dati, time.time()]
+    vecums = time.time() - _statuss_augsne[1]
+    if vecums > 2 * 3600:  # kešs ir 1 h; ja atbilde 2 h nav mainījusies, Open-Meteo neatbild
+        return "nedarbojas", f"Open-Meteo neatbild; pēdējie dati pirms {_laiks_pirms(vecums)}"
     if dati["augsne"] is None:
         return "traucejumi", "Augsnes mitruma vērtības nav"
     return "darbojas", f"Ogrē augsne {dati['augsne']}, {dati['dienas_pagatne']} dienās {_skaitlis_lv(dati['nokrisni_pagatne_mm'])} mm"
@@ -1263,7 +1271,12 @@ def _parb_celi():
     nepieejamas = sum(n is None for _, n in kopas)
     if nepieejamas == len(kopas):
         return "nedarbojas", "Neviena LVC datu kopa neatbild"
-    aktivi = sum(1 for _, n in kopas if n for x in n if x.get("aktivs"))
+    tagad = datetime.now(timezone.utc)
+
+    def speka(x):  # kā celi(): sācies un nav beidzies (celu_notikumi_visi dod rindas bez "aktivs")
+        no, lidz = _datex_laiks(x.get("no")), _datex_laiks(x.get("lidz"))
+        return (not no or no <= tagad) and (not lidz or lidz >= tagad)
+    aktivi = sum(1 for _, n in kopas if n for x in n if speka(x))
     zinojums = "Spēkā " + _skaits(aktivi, "notikums", "notikumi") if aktivi else "Spēkā esošu notikumu nav"
     if nepieejamas:
         return "traucejumi", f"{zinojums}; {nepieejamas} no {len(kopas)} datu kopām neatbild"
