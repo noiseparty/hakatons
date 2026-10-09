@@ -1,0 +1,38 @@
+# Secrets / local config
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+
+# Claude Code — personal (shared .claude/settings.json and CLAUDE.md ARE committed)
+.claude/settings.local.json
+CLAUDE.local.md
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.ipynb_checkpoints/
+.pytest_cache/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Large / generated artifacts — keep out of git, share via drive instead
+scratch/
+*.parquet
+*.sqlite
+*.db
