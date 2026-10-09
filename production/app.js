@@ -114,19 +114,32 @@ function aizpilditKategorijas(saraksts) {
   for (const grupa of grupas) {
     const k = saraksts.filter(k => k.grupa === grupa);
     if (!k.length) continue;
-    const div = document.createElement('div');
+    const div = document.createElement('details');
     div.className = 'grupa';
-    div.innerHTML = `<div class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</div>` + k.map(k => `
+    div.dataset.grupa = grupa;
+    div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
       <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? 'checked' : 'disabled'}>
         <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
         <span class="skaits">${k.skaits}</span></label>`).join('');
     kaste.append(div);
   }
   kaste.querySelectorAll('input').forEach(i => { if (i.checked) stavoklis.kategorijas.add(i.value); });
+  kopsavilkumi();
   kaste.addEventListener('change', e => {
     if (e.target.checked) stavoklis.kategorijas.add(e.target.value); else stavoklis.kategorijas.delete(e.target.value);
+    kopsavilkumi();
     atjaunot();
   });
+}
+
+// Aizvērtas grupas virsrakstā: cik slāņu ieslēgti un cik tajos objektu.
+function kopsavilkumi() {
+  for (const d of el('kategorijas').querySelectorAll('details.grupa')) {
+    const k = Object.values(kategorijas).filter(k => k.grupa === d.dataset.grupa && k.skaits);
+    const iesl = k.filter(k => stavoklis.kategorijas.has(k.kods));
+    d.querySelector('summary .skaits').textContent =
+      `${iesl.length}/${k.length} · ${iesl.reduce((s, k) => s + k.skaits, 0)}`;
+  }
 }
 
 // ---- Objekti ----
@@ -208,7 +221,6 @@ async function atjaunot() {
 
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
-    karte.attributionControl.addAttribution(Avoti.atsauce());
     aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot();
   })
   .catch(() => statuss('Datus neizdevās ielādēt. Mēģini vēlreiz pēc brīža.', true));

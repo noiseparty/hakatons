@@ -1,5 +1,5 @@
-// Datu avoti (/api/avoti → tabula avoti, src/karte/db/shema.sql): sadaļa "Datu avoti" panelī,
-// avota rinda katra punkta logā un kartes atsauce. Avots bez atvērtas licences tiek brīdināts.
+// Datu avoti (/api/avoti → tabula avoti, src/karte/db/shema.sql): nolaižamā sadaļa "Datu avoti" panelī zem slāņiem
+// un avota rinda katra punkta logā. Avots bez atvērtas licences tiek brīdināts. Kartes stūrī — tikai OSM fona kartes atsauce.
 const Avoti = (() => {
   let pecKoda = {};
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -11,6 +11,8 @@ const Avoti = (() => {
   function zimet(saraksts) {
     const ul = document.getElementById('avoti-saraksts');
     if (!ul) return;
+    const sk = document.getElementById('avoti-skaits');
+    if (sk) sk.textContent = saraksts.length + (saraksts.some(a => !a.atverts) ? ' · ⚠' : '');
     ul.innerHTML = saraksts.map(a => `
       <li class="avots${a.atverts ? '' : ' bez-licences'}" id="avots-${esc(a.kods)}">
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
@@ -39,14 +41,7 @@ const Avoti = (() => {
       `${saite(a.licences_url, a.licence)}${a.atverts ? '' : `<br><span class="bez-licences">${bridinajums}</span>`}</small>`;
   }
 
-  // Īsā atsauce kartes stūrī: izdevēji ar licencēm + saite uz pilno sarakstu.
-  function atsauce() {
-    const dati = Object.values(pecKoda).filter(a => a.skaits || a.kods === 'vzd-varis');
-    const unikali = [...new Set(dati.map(a => `${esc(a.izdevejs)} (${esc(a.atverts ? a.licence.split(',')[0] : 'licence nav norādīta')})`))];
-    return '<a href="#avoti">Dati</a>: ' + unikali.join(', ');
-  }
-
   const atverts = kods => pecKoda[kods]?.atverts !== false;
 
-  return { ieladet, rinda, atsauce, atverts };
+  return { ieladet, rinda, atverts };
 })();
