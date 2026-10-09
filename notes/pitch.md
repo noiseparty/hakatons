@@ -76,7 +76,7 @@ VZD adrešu reģistrs (CC BY) · pašvaldību CA plāni (42) · VUGD/112.lv patv
 - [ ] Run the exact demo path on 2 real phones (Android + iPhone), with location allowed AND denied.
 - [ ] Record a screen video of the full demo as a backup; put screenshots in the slides.
 - [ ] Check `/api/veseliba`, address search, water level, warnings banner just before going on stage.
-- [ ] Fill in all **[A]** numbers from `notes/ca-plani-kvalitate.md` (PR #32: 728 assembly points, 578 accommodation sites, 103 323 places, 41 coordinate errors, 12 municipalities with unpublished lists). Jūrmala error: verified ✓ (`notes/presentation_ideas.md`).
+- [ ] Fill in all **[A]** numbers from `notes/ca-plani-kvalitate.md` (PR #32: 730 assembly points, 579 accommodation sites, 104 213 places, 41 coordinate errors, 12 municipalities with unpublished lists). Jūrmala error: verified ✓ (`notes/presentation_ideas.md`).
 - [ ] Screenshot of the Jūrmala plan page 85 (original PDF) + map with the point in Lithuania vs the real one.
 - [ ] QR code to map.repo.lv on the last slide.
 - [ ] Decide who speaks which part (3 people: problem+solution / demo / AI+data+next).
