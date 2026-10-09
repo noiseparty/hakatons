@@ -3,18 +3,67 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>map.repo.lv</title>
+<title>Latvijas karte · map.repo.lv</title>
+<meta name="description" content="OpenStreetMap karte ar Latvijas publiskajām patvertnēm (VUGD / 112.lv).">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <style>
-  body { font-family: system-ui, sans-serif; margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f5f5f4; color: #1c1917; }
-  main { padding: 2rem; text-align: center; max-width: 32rem; }
-  h1 { font-size: 1.5rem; margin: 0 0 .5rem; }
-  p { color: #57534e; line-height: 1.5; }
+  html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; color: #1c1917; }
+  body { display: flex; flex-direction: column; }
+  header { padding: .5rem .75rem; background: #fff; border-bottom: 1px solid #e7e5e4; display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
+  header h1 { font-size: 1.05rem; margin: 0; }
+  header p { margin: 0; font-size: .85rem; color: #57534e; }
+  #karte { flex: 1; min-height: 0; }
+  .popup b { display: block; margin-bottom: .2rem; }
+  .popup small { color: #57534e; }
 </style>
 </head>
 <body>
-<main>
-  <h1>Drīzumā</h1>
-  <p>AI Open Data 2026 hakatons, krīzes vadības virziens. Prototips tiek gatavots.</p>
-</main>
+<header>
+  <h1>Latvijas karte</h1>
+  <p id="statuss">Ielādē patvertnes…</p>
+</header>
+<div id="karte" role="application" aria-label="Latvijas karte"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+  const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
+  const karte = L.map('karte', {
+    maxBounds: latvija.pad(0.3),
+    minZoom: 6,
+    preferCanvas: true
+  }).fitBounds(latvija);
+
+  const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
+  }).addTo(karte);
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+  const patvertnes = L.geoJSON(null, {
+    pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 6, color: '#fff', weight: 1.5, fillColor: '#b91c1c', fillOpacity: .9 }),
+    onEachFeature: (f, layer) => {
+      const p = f.properties;
+      const adrese = [p.iela, p.nr].filter(Boolean).join(' ');
+      layer.bindPopup(
+        '<div class="popup"><b>' + esc(p.veids || 'Patvertne') + '</b>' +
+        esc(adrese) + (adrese ? '<br>' : '') + '<small>' + esc(p.vieta) + '</small>' +
+        (p.komentars ? '<br><small>' + esc(p.komentars) + '</small>' : '') + '</div>'
+      );
+    }
+  }).addTo(karte);
+
+  L.control.layers({ 'OpenStreetMap': osm }, { 'Publiskās patvertnes': patvertnes }, { collapsed: false }).addTo(karte);
+  L.control.scale({ imperial: false }).addTo(karte);
+  karte.attributionControl.addAttribution('Patvertnes: <a href="https://www.112.lv/lv/patvertnes">VUGD / 112.lv</a>');
+
+  const statuss = document.getElementById('statuss');
+  fetch('dati/patvertnes.geojson')
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(gj => { patvertnes.addData(gj); statuss.textContent = gj.features.length + ' publiskās patvertnes (VUGD / 112.lv)'; })
+    .catch(() => { statuss.textContent = 'Patvertņu datus neizdevās ielādēt.'; });
+</script>
 </body>
 </html>
