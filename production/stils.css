@@ -9,15 +9,16 @@
 
 html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--teksts); background: var(--fons); }
 body { display: flex; flex-direction: column; }
-header { padding: .6rem 1rem; background: var(--zils); color: #fff; display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; box-shadow: var(--ena); position: relative; z-index: 1000; }
+header { padding: .6rem 1rem; background: var(--zils); color: #fff; display: grid; grid-template-columns: 1fr minmax(0, 560px) 1fr; gap: .75rem; align-items: center; box-shadow: var(--ena); position: relative; z-index: 1000; }
+.galva-labi { justify-self: end; display: flex; gap: .75rem; align-items: center; }
 header h1 { font-size: 1.1rem; margin: 0; }
 header p { margin: 0; font-size: .82rem; padding: .2rem .65rem; border-radius: 999px; background: rgba(255, 255, 255, .18); }
 header p.kluda { background: var(--sarkans); color: #fff; }
-#panelis-poga { display: none; margin-left: auto; width: auto; background: rgba(255, 255, 255, .15); color: #fff; border-color: rgba(255, 255, 255, .4); }
+#panelis-poga { display: none; width: auto; background: rgba(255, 255, 255, .15); color: #fff; border-color: rgba(255, 255, 255, .4); }
 
 main { flex: 1; min-height: 0; display: flex; gap: 12px; padding: 12px; }
 #panelis { width: 320px; flex: none; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
-#kartes-laukums { flex: 1; min-height: 0; position: relative; border-radius: var(--radiuss); overflow: hidden; box-shadow: var(--ena); }
+#kartes-laukums { flex: 1; align-self: flex-start; height: 85%; position: relative; border-radius: var(--radiuss); overflow: hidden; box-shadow: var(--ena); }
 #karte { position: absolute; inset: 0; }
 
 section { padding: .85rem; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
@@ -74,17 +75,6 @@ button.otra:hover { background: var(--zils-gaiss); }
 .kat:has(input:disabled) .skaits { background: var(--teksts2); }
 .punkts { width: .75rem; height: .75rem; border-radius: 50%; flex: none; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .25); }
 
-/* Saraksts */
-#saraksts { list-style: none; margin: 0; padding: 0; }
-#saraksts li { padding: .5rem .3rem; border-bottom: 1px solid #f0f0f0; cursor: pointer; display: flex; gap: .5rem; align-items: flex-start; border-radius: 4px; }
-#saraksts li:last-child { border-bottom: 0; }
-#saraksts li:hover, #saraksts li:focus { background: var(--zils-gaiss); outline: none; }
-#saraksts .punkts { margin-top: .3rem; }
-#saraksts .teksts { flex: 1; min-width: 0; }
-#saraksts b { display: block; font-size: .9rem; font-weight: 600; }
-#saraksts small { color: var(--teksts2); font-size: .8rem; }
-#saraksts .attalums { font-size: .8rem; color: var(--zils); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; }
-
 /* Peldošā kartes vadība */
 .kartes-rikis { position: absolute; top: 10px; right: 10px; z-index: 500; display: flex; flex-direction: column; gap: 8px; }
 .kartes-rikis button { width: 38px; height: 38px; padding: 0; font-size: 1.25rem; line-height: 1; color: var(--zils); background: var(--virsma); border: 0; box-shadow: var(--ena); }
@@ -111,10 +101,10 @@ button.otra:hover { background: var(--zils-gaiss); }
 
 /* Krīzes meklēšana "Ko tev vajag?" (meklesana.js) */
 #meklesana { border-top: 4px solid var(--sarkans); }
-.meklet-rinda { display: flex; gap: 6px; }
-.meklet-rinda input { flex: 1; min-width: 0; font-size: 1rem; }
+.meklet-rinda { display: flex; gap: 6px; margin: 0; }
+.meklet-rinda input { flex: 1; min-width: 0; font-size: 1rem; border-color: transparent; }
 .meklet-rinda button { width: auto; flex: none; background: var(--sarkans); color: #fff; border-color: var(--sarkans); font-weight: 600; }
-.atras-pogas { display: flex; flex-wrap: wrap; gap: 6px; margin-top: .6rem; }
+.atras-pogas { display: flex; flex-wrap: wrap; gap: 6px; }
 .atras-pogas button { width: auto; padding: .35rem .6rem; font-size: .85rem; border-radius: 999px; }
 .atras-pogas button:hover { background: var(--zils-gaiss); border-color: var(--zils); }
 #rezultati { margin-top: .75rem; border-top: 1px solid var(--robeza); padding-top: .6rem; }
@@ -133,8 +123,14 @@ button.otra:hover { background: var(--zils-gaiss); }
 
 @media (max-width: 800px) {
   #panelis-poga { display: block; }
+  header { grid-template-columns: minmax(0, 1fr) auto; padding: .5rem .6rem; gap: .5rem; }
+  header h1 { font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .galva-labi { gap: .4rem; min-width: 0; }
+  #statuss { max-width: 30vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #panelis-poga { padding: .4rem .55rem; }
+  header .meklet-rinda { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
   main { flex-direction: column-reverse; padding: 8px; gap: 8px; }
-  #kartes-laukums { flex: none; height: 55vh; }
+  #kartes-laukums { flex: none; align-self: stretch; height: 48vh; }
   #panelis { width: auto; flex: 1; gap: 8px; }
   body.panelis-slegts #panelis { display: none; }
   body.panelis-slegts #kartes-laukums { flex: 1; height: auto; }

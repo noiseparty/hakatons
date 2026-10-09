@@ -1,6 +1,5 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const SARAKSTA_GARUMS = 100;
 const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
@@ -117,7 +116,7 @@ function atrastMani(pecTam) {
       L.circleMarker([lat, lon], { radius: 8, color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }).bindTooltip('Tu esi šeit')
     ]).addTo(karte);
     el('atrast').textContent = '📍 Atjaunot manu atrašanās vietu';
-    teksts.textContent = 'Saraksts sakārtots pēc attāluma no tevis (taisnā līnijā).';
+    teksts.textContent = 'Meklēšanas rezultāti sakārtoti pēc attāluma no tevis (taisnā līnijā).';
     if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
     if (!stavoklis.regions && !pecTam) karte.setView([lat, lon], 13);
     atjaunot();
@@ -266,34 +265,11 @@ function popupSaturs(p, ll) {
     rindas.join('<br>') + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
 
-function zimetSarakstu(features) {
-  const ol = el('saraksts');
-  ol.innerHTML = '';
-  const radit = features.slice(0, SARAKSTA_GARUMS);
-  el('saraksts-virsraksts').textContent = stavoklis.vieta
-    ? `Tuvākie (${radit.length} no ${features.length})`
-    : `Saraksts (${radit.length} no ${features.length})`;
-  for (const f of radit) {
-    const p = f.properties;
-    const k = kategorijas[p.kategorija] || {};
-    const li = document.createElement('li');
-    li.tabIndex = 0;
-    li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
-      <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc([nosaukums(p) ? k.nosaukums : '', p.adrese].filter(Boolean).join(' · '))}</small></span>
-      <span class="attalums">${attalums(p.attalums_m)}</span>`;
-    const atvert = () => atvertObjektu(f);
-    li.addEventListener('click', atvert);
-    li.addEventListener('keydown', e => { if (e.key === 'Enter') atvert(); });
-    ol.append(li);
-  }
-  if (!features.length) ol.innerHTML = '<li class="piezime">Nekas neatbilst izvēlētajiem filtriem.</li>';
-}
-
 async function atjaunot() {
   if (pieprasijums) pieprasijums.abort();
   pieprasijums = new AbortController();
   objektuSlanis.clearLayers();
-  if (!stavoklis.kategorijas.size) { redzamie = []; zimetSarakstu([]); statuss('Izvēlies vismaz vienu slāni.'); return; }
+  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Izvēlies vismaz vienu slāni.'); return; }
   const q = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].join(','), limit: 20000 });
   if (stavoklis.regions) q.set('regions', stavoklis.regions);
   if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }
@@ -309,7 +285,6 @@ async function atjaunot() {
     objektuSlanis.addLayers(gj.features.map(f => f._slanis));
     if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
     redzamie = gj.features;
-    zimetSarakstu(gj.features);
     const r = regioni[stavoklis.regions];
     statuss(`${gj.features.length} objekti${r ? ' · ' + r.nosaukums : ''}`);
   } catch (e) {
