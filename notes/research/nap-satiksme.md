@@ -52,3 +52,14 @@ parsētājs to labo (ja „platums” ir 20–29 un „garums” 55–59). Īsta
   (5a1e9a81), kas nav abonēta — lauki ir `null`.
 
 Paraugi (saīsināti): `notes/research/paraugi/nap_*.xml`.
+
+## Diagnostika (pēc #61)
+
+- Dzīvajā API minūšu ātrumi un pašvaldību zonas darbojas (30 zonas, 77 iekārtas). Neatbild tikai robežu kopa.
+- `/api/satiksme` → `kopas.<kods>.kluda`: pēdējās kļūdas īss apraksts (piem., `HTTP 403: Invalid api key!`,
+  `HTTP 422: …`, `atbilde nav XML`), bez atslēgas.
+- Lejupielāde kā kit `datubaze.py`: ja `file_id: "1"` ar `format: "xml"` dod 4xx (izņemot 401/403), faila id ņem no
+  `GET /api/v1/metadata/file/info` (`files[0].file_id`) un mēģina vēlreiz, tad bez `format`. JSON atbildi robežām parsē
+  vispārīgi (objekti ar lat/lon un gaidīšanas laiku: lauka nosaukumā `wait`/`delay`/`queue`/`time`; sekundes, ja nosaukumā `sec`).
+- `GET /api/satiksme?debug=1` dod katras kopas atbildes pirmos 2 KB, **tikai** ja VPS vidē `MAP_DEBUG=1`
+  (pēc tam API jāpārstartē). Pēc noskaidrošanas `MAP_DEBUG` noņemt.
