@@ -9,6 +9,16 @@ Claude Code reads `CLAUDE.md`; everyone else starts here.
 2. Read `CLAUDE.md` for project context (hackathon track, data kit layout, commands). It applies to all agents.
 3. Read `TODO.md` to see what is pending, in progress and done.
 
+## Saving and updating (preferred — teammates are not git experts)
+
+- User says "save", "commit", "push", "upload" or similar → run
+  `powershell -NoProfile -ExecutionPolicy Bypass -File easy\save.ps1 "<one-sentence summary of the work>"`.
+  It branches, commits, rebases on `main`, logs the task in `TODO.md`, opens a PR and merges it.
+- User says "update", "get latest", "pull" → run
+  `powershell -NoProfile -ExecutionPolicy Bypass -File easy\update.ps1`.
+- If a script prints a red error (e.g. a merge conflict), explain it in plain words and help fix it.
+- Don't run the `.cmd` files yourself: they wait for a keypress.
+
 ## Hard rules
 
 - `main` is protected. `git push` to `main` is rejected. Work on a branch `<github-username>/<topic>`,

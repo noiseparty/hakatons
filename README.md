@@ -2,6 +2,8 @@
 
 Team repo for the **AI Open Data 2026 hackathon** — track: **crisis prevention**.
 
+> **Not into git? Use [easy mode](easy/README.md)** — one-time setup, then just double-click `update` and `save`.
+
 ## Layout
 
 | Path | What |
@@ -44,7 +46,10 @@ cd hakatons
    Without the `gh` CLI: open the link that `git push` prints → **Create pull request** → **Squash and merge**.
 4. Go back to `main` and pull: `git switch main; git pull`. Start the next task on a new branch (step 1).
 
-Never force-push, never rewrite `main`'s history, never delete `main`.
+Never force-push to `main`, never rewrite `main`'s history, never delete `main`.
+
+Shortcut: `easy\save.ps1 "what I did"` does steps 1–4 (plus the `TODO.md` entry) in one go, and
+`easy\update.ps1` pulls the latest `main`. See `easy/README.md`.
 
 ### Task log: `TODO.md`
 
