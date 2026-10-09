@@ -1,0 +1,638 @@
+{
+ "100003003": {
+  "nosaukums": "Rīga",
+  "tips": "valstspilsēta",
+  "atvk": "0001000",
+  "majas_lapa": "https://www.riga.lv/lv",
+  "ca_plans_url": "https://www.riga.lv/lv/media/56912/download?attachment",
+  "ca_lapa": "https://www.riga.lv/lv/rigas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ },
+ "100003011": {
+  "nosaukums": "Daugavpils",
+  "tips": "valstspilsēta",
+  "atvk": "0002000",
+  "majas_lapa": "https://daugavpils.lv/",
+  "ca_plans_url": "https://www.daugavpils.lv/assets/upload/dokumenti/normativie/2026/05/317_lem_public-v001.pdf",
+  "ca_lapa": "https://www.daugavpils.lv/pasvaldiba/dokumenti/civilas-aizsardzibas-plans",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ },
+ "100003028": {
+  "nosaukums": "Jelgava",
+  "tips": "valstspilsēta",
+  "atvk": "0003000",
+  "majas_lapa": "https://www.jelgava.lv/",
+  "ca_plans_url": "https://www.jelgava.lv/wp-content/uploads/2023/03/12_5_pielikums2.pdf",
+  "ca_lapa": "https://www.jelgava.lv/dokumenti/planosanas-dokumenti/jelgavas-pilsetas-un-jelgavas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Jaunjelgava",
+   "nosaukums": "Aizkraukles novada Jaunjelgavas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Jaunjelgavas pilsētas VPVKAC)",
+   "adrese": "Uzvaras iela 1, Jaunjelgavas pilsēta, Aizkraukles nov., LV-5134",
+   "talrunis": "66954888",
+   "epasts": "jaunjelgava@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 15
+ },
+ "100003036": {
+  "nosaukums": "Jūrmala",
+  "tips": "valstspilsēta",
+  "atvk": "0004000",
+  "majas_lapa": "https://www.jurmala.lv/lv",
+  "ca_plans_url": "https://dokumenti.jurmala.lv/docs/l22/x/L0004_pielikums.pdf",
+  "ca_lapa": "https://www.jurmala.lv/lv/jurmalas-pilsetas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ },
+ "100003044": {
+  "nosaukums": "Liepāja",
+  "tips": "valstspilsēta",
+  "atvk": "0005000",
+  "majas_lapa": "https://www.liepaja.lv/",
+  "ca_plans_url": "https://faili.liepaja.lv/CAP/Liepajas-DKN-ST-CAP_2023ATJ.pdf",
+  "ca_lapa": "https://www.liepaja.lv/civila-aizsardziba/liepajas-valstspilsetas-un-dienvidkurzemes-novada-civilas-aizsardzibas-plans/",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ },
+ "100003052": {
+  "nosaukums": "Rēzekne",
+  "tips": "valstspilsēta",
+  "atvk": "0006000",
+  "majas_lapa": "https://rezekne.lv/",
+  "ca_plans_url": "https://rezeknesnovads.lv/wp-content/uploads/2024/08/71_paragrafs_Rezeknes_STCA_plans_2024_07032024.docx",
+  "ca_lapa": "https://rezekne.lv/civila-aizsardziba/",
+  "vpvkac": {
+   "punkts": "Viļāni",
+   "nosaukums": "Rēzeknes novada Viļānu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Viļānu VPVKAC)",
+   "adrese": "Kultūras laukums 1 A, Viļānu pilsēta, Rēzeknes nov., LV-4650",
+   "talrunis": "66954859",
+   "epasts": "vilani@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 5
+ },
+ "100003060": {
+  "nosaukums": "Ventspils",
+  "tips": "valstspilsēta",
+  "atvk": "0007000",
+  "majas_lapa": "https://www.ventspils.lv/",
+  "ca_plans_url": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf",
+  "ca_lapa": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ },
+ "100016630": {
+  "nosaukums": "Aizkraukles novads",
+  "tips": "novads",
+  "atvk": "0020000",
+  "majas_lapa": "https://www.aizkraukle.lv/lv",
+  "ca_plans_url": "https://www.aizkraukle.lv/lv/media/69197/download?attachment",
+  "ca_lapa": "https://www.aizkraukle.lv/lv/aizkraukles-novada-civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Aizkraukle",
+   "nosaukums": "Aizkraukles novada Aizkraukles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Aizkraukles VPVKAC)",
+   "adrese": "Lāčplēša iela 1, Aizkraukles pilsēta, Aizkraukles nov., LV-5101",
+   "talrunis": "66954880, 65133925",
+   "epasts": "aizkraukle@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 14
+ },
+ "100015694": {
+  "nosaukums": "Alūksnes novads",
+  "tips": "novads",
+  "atvk": "0021000",
+  "majas_lapa": "https://aluksne.lv/",
+  "ca_plans_url": "https://aluksne.lv/09_03/CAP_PLANS_2025.pdf",
+  "ca_lapa": "https://aluksne.lv/index.php/pasvaldiba/dokumenti/civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Alūksne",
+   "nosaukums": "Alūksnes novada Alūksnes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Alūksnes pilsētas VPVKAC)",
+   "adrese": "Dārza iela 11, Alūksnes pilsēta, Alūksnes nov., LV-4301",
+   "talrunis": "66954904",
+   "epasts": "aluksne@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016462": {
+  "nosaukums": "Augšdaugavas novads",
+  "tips": "novads",
+  "atvk": "0022000",
+  "majas_lapa": "https://www.augsdaugavasnovads.lv/lv",
+  "ca_plans_url": "https://www.daugavpils.lv/assets/upload/dokumenti/normativie/2026/08/08_13-07-2018_nolikums_kons_30-07-2026-v001.pdf",
+  "ca_lapa": "https://www.daugavpils.lv/pasvaldiba/dokumenti/civilas-aizsardzibas-plans (VUGD sarakstā kopīgs Daugavpils un Augšdaugavas novada plāns)",
+  "vpvkac": {
+   "punkts": "Ilūkste",
+   "nosaukums": "Augšdaugavas novada Ilūkstes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ilūkstes pilsētas VPVKAC)",
+   "adrese": "Brīvības iela 7, Ilūkste, Ilūkstes pilsēta, Augšdaugavas nov., LV-5447",
+   "talrunis": "66954819",
+   "epasts": "ilukste@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016501": {
+  "nosaukums": "Ādažu novads",
+  "tips": "novads",
+  "atvk": "0023000",
+  "majas_lapa": "https://www.adazunovads.lv/lv",
+  "ca_plans_url": "https://www.adazunovads.lv/lv/media/26445/download?attachment",
+  "ca_lapa": "https://www.adazunovads.lv/lv/media/25821/download?attachment",
+  "vpvkac": {
+   "punkts": "Ādaži",
+   "nosaukums": "Ādažu novada Ādažu pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ādažu VPVKAC)",
+   "adrese": "Gaujas iela 33a, Ādaži, Ādažu pag., Ādažu nov., LV-2164",
+   "talrunis": "66954800",
+   "epasts": "adazi@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016438": {
+  "nosaukums": "Balvu novads",
+  "tips": "novads",
+  "atvk": "0024000",
+  "majas_lapa": "https://www.balvi.lv/lv",
+  "ca_plans_url": "https://www.balvi.lv/lv/media/21408/download?attachment",
+  "ca_lapa": "https://www.balvi.lv/lv/civila-aizsardziba",
+  "vpvkac": {
+   "punkts": "Balvi",
+   "nosaukums": "Balvu novada Balvu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Balvu pilsētas VPVKAC)",
+   "adrese": "Partizānu iela 14, Balvu pilsēta, Balvu nov., LV-4501",
+   "talrunis": "66954809",
+   "epasts": "balvi@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 6
+ },
+ "100016575": {
+  "nosaukums": "Bauskas novads",
+  "tips": "novads",
+  "atvk": "0025000",
+  "majas_lapa": "https://www.bauskasnovads.lv/lv",
+  "ca_plans_url": "https://www.bauskasnovads.lv/lv/media/2665/download?attachment",
+  "ca_lapa": "https://www.bauskasnovads.lv/lv/operativa-riciba-civila-aizsardziba#civila-aizsardziba",
+  "vpvkac": {
+   "punkts": "Bauska",
+   "nosaukums": "Bauskas novada Bauskas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Bauskas VPVKAC)",
+   "adrese": "Uzvaras iela 1, Bauskas pilsēta, Bauskas nov., LV-3901",
+   "talrunis": "66954885",
+   "epasts": "bauska@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 5
+ },
+ "100016487": {
+  "nosaukums": "Cēsu novads",
+  "tips": "novads",
+  "atvk": "0026000",
+  "majas_lapa": "https://www.cesis.lv/lv/",
+  "ca_plans_url": "https://www.cesis.lv/images/userfiles/Civil%C4%81s_aizsardz%C4%ABbas_pl%C4%81ns_%28bez_pielikumiem%29.pdf",
+  "ca_lapa": "https://www.cesis.lv/lv/attistiba/dokumenti/nozaru-attistibas-strategijas/civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Cēsis",
+   "nosaukums": "Cēsu novada Cēsu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Cēsu VPVKAC)",
+   "adrese": "Raunas iela 4, Cēsu pilsēta, Cēsu nov., LV-4101",
+   "talrunis": "66954884",
+   "epasts": "cesis@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 9
+ },
+ "100016495": {
+  "nosaukums": "Dienvidkurzemes novads",
+  "tips": "novads",
+  "atvk": "0027000",
+  "majas_lapa": "https://www.dkn.lv/lv",
+  "ca_plans_url": null,
+  "ca_lapa": "https://www.liepaja.lv/civila-aizsardziba/liepajas-valstspilsetas-un-dienvidkurzemes-novada-civilas-aizsardzibas-plans/ (VUGD sarakstā kopīgs Liepājas un Dienvidkurzemes novada plāns)",
+  "vpvkac": {
+   "punkts": "Aizpute",
+   "nosaukums": "Dienvidkurzemes novada Aizputes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Aizputes VPVKAC)",
+   "adrese": "Atmodas iela 22, Aizputes pilsēta, Dienvidkurzemes nov., LV-3456",
+   "talrunis": "66954862",
+   "epasts": "aizpute@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 7
+ },
+ "100016622": {
+  "nosaukums": "Dobeles novads",
+  "tips": "novads",
+  "atvk": "0028000",
+  "majas_lapa": "https://www.dobele.lv/lv",
+  "ca_plans_url": "https://www.dobele.lv/lv/media/45693/download?attachment",
+  "ca_lapa": "https://dobele.lv/lv/content/civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Dobele",
+   "nosaukums": "Dobeles novada Dobeles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Dobeles VPVKAC)",
+   "adrese": "Brīvības iela 15, Dobeles pilsēta, Dobeles nov., LV-3701",
+   "talrunis": "66954922",
+   "epasts": "dobele@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 3
+ },
+ "100015854": {
+  "nosaukums": "Gulbenes novads",
+  "tips": "novads",
+  "atvk": "0029000",
+  "majas_lapa": "https://www.gulbene.lv/lv",
+  "ca_plans_url": "https://www.gulbene.lv/lv/media/36615/download?attachment",
+  "ca_lapa": "https://www.gulbene.lv/lv/media/36615/download?attachment",
+  "vpvkac": {
+   "punkts": "Gulbene",
+   "nosaukums": "Gulbenes novada Gulbenes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Gulbenes VPVKAC)",
+   "adrese": "Ābeļu iela 2, Gulbenes pilsēta, Gulbenes nov., LV-4401",
+   "talrunis": "66954879",
+   "epasts": "gulbene@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016534": {
+  "nosaukums": "Jelgavas novads",
+  "tips": "novads",
+  "atvk": "0030000",
+  "majas_lapa": "https://www.jelgavasnovads.lv/lv",
+  "ca_plans_url": "https://www.jelgavasnovads.lv/lv/media/48489/download?attachment",
+  "ca_lapa": "https://www.jelgava.lv/dokumenti/planosanas-dokumenti/jelgavas-pilsetas-un-jelgavas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans/ (VUGD sarakstā kopīgs Jelgavas pilsētas un Jelgavas novada plāns)",
+  "vpvkac": {
+   "punkts": "Jelgava",
+   "nosaukums": "Jelgavas novada Jelgavas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Jelgavas VPVKAC)",
+   "adrese": "Lielā iela 5/7, Jelgava, Jelgavas nov., LV-3001",
+   "talrunis": "66954909",
+   "epasts": "jelgava@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 14
+ },
+ "100016421": {
+  "nosaukums": "Jēkabpils novads",
+  "tips": "novads",
+  "atvk": "0031000",
+  "majas_lapa": "https://www.jekabpils.lv/lv",
+  "ca_plans_url": "https://www.jekabpils.lv/lv/media/8386/download?attachment",
+  "ca_lapa": "https://www.jekabpils.lv/lv/civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Aknīste",
+   "nosaukums": "Jēkabpils novada Aknīstes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Aknīstes VPVKAC)",
+   "adrese": "Skolas iela 7, Aknīstes pilsēta, Jēkabpils nov., LV-5208",
+   "talrunis": "66954802",
+   "epasts": "akniste@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 4
+ },
+ "100016743": {
+  "nosaukums": "Krāslavas novads",
+  "tips": "novads",
+  "atvk": "0032000",
+  "majas_lapa": "https://www.kraslava.lv/lv",
+  "ca_plans_url": "https://www.vugd.gov.lv/lv/media/7083/download?attachment",
+  "ca_lapa": "https://www.vugd.gov.lv/lv/media/7083/download?attachment (fails VUGD vietnē)",
+  "vpvkac": {
+   "punkts": "Dagda",
+   "nosaukums": "Krāslavas novada Dagdas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Dagdas VPVKAC)",
+   "adrese": "Alejas iela 4, Dagdas pilsēta, Krāslavas nov., LV-5674",
+   "talrunis": "66954815",
+   "epasts": "dagda@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016696": {
+  "nosaukums": "Kuldīgas novads",
+  "tips": "novads",
+  "atvk": "0033000",
+  "majas_lapa": "https://kuldigasnovads.lv/",
+  "ca_plans_url": "https://kuldigasnovads.lv/wp-content/uploads/2026/02/29.01.2026.-Kuldigas-novada-domes-sedes-protokols-Nr.1.pdf",
+  "ca_lapa": "https://www.kuldiga.lv/pasvaldiba/publiskie-dokumenti/civilas-aizsardzibas-plans (vecais domēns, tagad kuldigasnovads.lv)",
+  "vpvkac": {
+   "punkts": "Kuldīga",
+   "nosaukums": "Kuldīgas novada Kuldīgas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Kuldīgas VPVKAC)",
+   "adrese": "Pilsētas laukums 2, Kuldīgas pilsēta, Kuldīgas nov., LV-3301",
+   "talrunis": "66954927",
+   "epasts": "kuldīga@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 3
+ },
+ "100016470": {
+  "nosaukums": "Ķekavas novads",
+  "tips": "novads",
+  "atvk": "0034000",
+  "majas_lapa": "https://kekava.lv/",
+  "ca_plans_url": "https://kekava.lv/wp-content/uploads/2024/01/CA-plans-48.pdf",
+  "ca_lapa": "https://kekava.lv/dokumenti/baldones-sadarbibas-teritorijas-civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Ķekava",
+   "nosaukums": "Ķekavas novada Ķekavas pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ķekavas VPVKAC)",
+   "adrese": "Gaismas iela 19, k.9-1, Ķekava, Ķekavas pag., Ķekavas nov., LV-2123",
+   "talrunis": "66954825",
+   "epasts": "kekava@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016606": {
+  "nosaukums": "Limbažu novads",
+  "tips": "novads",
+  "atvk": "0035000",
+  "majas_lapa": "https://www.limbazunovads.lv/lv",
+  "ca_plans_url": "https://www.limbazunovads.lv/lv/media/16552/download?attachment",
+  "ca_lapa": "https://www.limbazunovads.lv/lv/civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Aloja",
+   "nosaukums": "Limbažu novada Alojas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Alojas VPVKAC)",
+   "adrese": "Jūras iela 13, Alojas pilsēta, Limbažu nov., LV-4064",
+   "talrunis": "66954803",
+   "epasts": "aloja@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100015243": {
+  "nosaukums": "Līvānu novads",
+  "tips": "novads",
+  "atvk": "0036000",
+  "majas_lapa": "https://www.livani.lv/lv",
+  "ca_plans_url": "https://www.livani.lv/lv/media/24639/download?attachment",
+  "ca_lapa": "https://www.livani.lv/lv/civila-aizsardziba",
+  "vpvkac": {
+   "punkts": "Līvāni",
+   "nosaukums": "Līvānu novada Līvānu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Līvānu VPVKAC)",
+   "adrese": "Rīgas iela 77, Līvānu pilsēta, Līvānu nov.,, LV-5316",
+   "talrunis": "66954906",
+   "epasts": "livani@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016751": {
+  "nosaukums": "Ludzas novads",
+  "tips": "novads",
+  "atvk": "0037000",
+  "majas_lapa": "https://www.ludzasnovads.lv/lv",
+  "ca_plans_url": "https://www.ludzasnovads.lv/lv/media/50219/download?attachment",
+  "ca_lapa": "https://www.ludzasnovads.lv/lv/ludzas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Ludza",
+   "nosaukums": "Ludzas novada Ludzas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ludzas VPVKAC)",
+   "adrese": "Raiņa iela 16, Ludzas pilsēta, Ludzas nov., LV-5701",
+   "talrunis": "66954912",
+   "epasts": "ludza@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 3
+ },
+ "100016671": {
+  "nosaukums": "Madonas novads",
+  "tips": "novads",
+  "atvk": "0038001",
+  "majas_lapa": "https://madona.lv/lat/",
+  "ca_plans_url": "https://www.madona.lv/lat/box/lemumi/335.p.pielikums_MADONA_CA_plans%202026%20(2)%20(1).docx",
+  "ca_lapa": "https://www.madona.lv/lat/madonas-novada-sadarbibas-teritorijas-civilas-aizs (kopš 2025-07 ietver bijušo Varakļānu novadu; vecais Varakļānu plāns: https://www.varaklani.lv/images/2020/Varaklani_CAP.pdf)",
+  "vpvkac": {
+   "punkts": "Cesvaine",
+   "nosaukums": "Madonas novada Cesvaines pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Cesvaines VPVKAC)",
+   "adrese": "Pils iela 1a, Cesvaines plsēta, Madonas nov., LV-4871",
+   "talrunis": "66954813",
+   "epasts": "cesvaine@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 3
+ },
+ "100016583": {
+  "nosaukums": "Mārupes novads",
+  "tips": "novads",
+  "atvk": "0039000",
+  "majas_lapa": "https://www.marupe.lv/lv",
+  "ca_plans_url": "https://www.marupe.lv/lv/media/6731/download?attachment",
+  "ca_lapa": "https://www.marupe.lv/lv/marupes-novada-pasvaldiba/civila-aizsardziba",
+  "vpvkac": {
+   "punkts": "Mārupe",
+   "nosaukums": "Mārupes novada Mārupes pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Mārupes VPVKAC)",
+   "adrese": "Daugavas iela 29, Mārupes pag., Mārupes nov., LV-2167",
+   "talrunis": "66954902",
+   "epasts": "marupe@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016688": {
+  "nosaukums": "Ogres novads",
+  "tips": "novads",
+  "atvk": "0040000",
+  "majas_lapa": "https://www.ogresnovads.lv/lv",
+  "ca_plans_url": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
+  "ca_lapa": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
+  "vpvkac": {
+   "punkts": "Ikšķile",
+   "nosaukums": "Ogres novada Ikšķiles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ikšķiles VPVKAC)",
+   "adrese": "Peldu iela 22, Ikšķiles pilsēta, Ogres nov., LV-5052",
+   "talrunis": "66954861",
+   "epasts": "ikskile@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 6
+ },
+ "100016077": {
+  "nosaukums": "Olaines novads",
+  "tips": "novads",
+  "atvk": "0041000",
+  "majas_lapa": "https://olaine.lv/lv",
+  "ca_plans_url": "https://www.olaine.lv/uploads/kcfinder/files/atseviski_faili/Olaines_novada_ST_CA_plans_29122025_redakcija(3).pdf",
+  "ca_lapa": "https://www.olaine.lv/lv/pakalpojumi-un-informacija/drosiba/civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Olaine",
+   "nosaukums": "Olaines novada Olaines pilsētas valsts un pašvaldību vienotais klientu apkalpošanas centrs (Olaines VPVKAC)",
+   "adrese": "Zemgales iela 33, Olaine pilsēta, Olaines nov., LV-2114",
+   "talrunis": "66954899",
+   "epasts": "olaine@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016727": {
+  "nosaukums": "Preiļu novads",
+  "tips": "novads",
+  "atvk": "0042000",
+  "majas_lapa": "https://www.preili.lv/lv",
+  "ca_plans_url": "https://www.preili.lv/lv/media/965/download?attachment",
+  "ca_lapa": "https://preili.lv/pasvaldiba/civila-aizsardziba/",
+  "vpvkac": {
+   "punkts": "Aglona",
+   "nosaukums": "Preiļu novada Aglonas pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Aglonas VPVKAC)",
+   "adrese": "Somersetas iela 34, Aglona, Aglonas pag., Preiļu nov., LV-5304",
+   "talrunis": "66954801",
+   "epasts": "aglona@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016542": {
+  "nosaukums": "Rēzeknes novads",
+  "tips": "novads",
+  "atvk": "0043000",
+  "majas_lapa": "https://rezeknesnovads.lv/",
+  "ca_plans_url": null,
+  "ca_lapa": "https://rezekne.lv/civila-aizsardziba/ (VUGD sarakstā kopīgs Rēzeknes valstspilsētas un Rēzeknes novada plāns)",
+  "vpvkac": {
+   "punkts": "Viļāni",
+   "nosaukums": "Rēzeknes novada Viļānu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Viļānu VPVKAC)",
+   "adrese": "Kultūras laukums 1 A, Viļānu pilsēta, Rēzeknes nov., LV-4650",
+   "talrunis": "66954859",
+   "epasts": "vilani@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 5
+ },
+ "100016784": {
+  "nosaukums": "Ropažu novads",
+  "tips": "novads",
+  "atvk": "0044000",
+  "majas_lapa": "https://www.ropazi.lv/lv",
+  "ca_plans_url": "https://www.ropazi.lv/lv/media/83197/download?attachment",
+  "ca_lapa": "https://www.ropazi.lv/lv/ropazu-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Ropaži",
+   "nosaukums": "Ropažu novada Ropažu pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ropažu VPVKAC)",
+   "adrese": "Sporta iela 1, Ropaži, Ropažu pag., Ropažu nov., LV-2135",
+   "talrunis": "66954875",
+   "epasts": "ropazi@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100015485": {
+  "nosaukums": "Salaspils novads",
+  "tips": "novads",
+  "atvk": "0045000",
+  "majas_lapa": "https://salaspils.lv/",
+  "ca_plans_url": "https://www.salaspils.lv/sites/default/files/Civil%C4%81%20aizsardziba/CA_plans_2024_GALA__16.05.2024_Domes_sede.pdf",
+  "ca_lapa": "https://www.salaspils.lv/lv/civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Salaspils",
+   "nosaukums": "Salaspils novada Salaspils pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Salaspils VPVKAC)",
+   "adrese": "Līvzemes iela 8, Salaspils pilsēta, Salaspils nov., LV-2169",
+   "talrunis": "66954846",
+   "epasts": "salaspils@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016663": {
+  "nosaukums": "Saldus novads",
+  "tips": "novads",
+  "atvk": "0046000",
+  "majas_lapa": "https://www.saldus.lv/",
+  "ca_plans_url": "https://www.saldus.lv/wp-content/uploads/2021/12/Saldus-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans_ML.docx",
+  "ca_lapa": "https://saldus.lv/pasvaldiba/dokumenti/posts/civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Brocēni",
+   "nosaukums": "Saldus novada Brocēnu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Brocēnu VPVKAC)",
+   "adrese": "Lielcieceres iela 3, Brocēnu pilsēta, Saldus nov., LV-3851",
+   "talrunis": "66954811",
+   "epasts": "broceni@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 1
+ },
+ "100016550": {
+  "nosaukums": "Saulkrastu novads",
+  "tips": "novads",
+  "atvk": "0047000",
+  "majas_lapa": "https://saulkrasti.lv/",
+  "ca_plans_url": "https://saulkrasti.lv/wp-content/uploads/2022/04/SAULKRASTU_NOVADA_CA_plans-2022_publicesanai.pdf",
+  "ca_lapa": "https://saulkrasti.lv/novads/drosiba/civilas-aizsardzibas-plans/",
+  "vpvkac": {
+   "punkts": "Saulkrasti",
+   "nosaukums": "Saulkrastu novada Saulkrastu pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Saulkrastu VPVKAC)",
+   "adrese": "Raiņa iela 8, Saulkrastu pilsēta, Saulkrastu nov., LV-2160",
+   "talrunis": "66954847",
+   "epasts": "saulkrasti@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016768": {
+  "nosaukums": "Siguldas novads",
+  "tips": "novads",
+  "atvk": "0048000",
+  "majas_lapa": "https://sigulda.lv/",
+  "ca_plans_url": "https://sigulda.lv/media/uploads/domes-sedes-23.10.2025.-protokols.pdf",
+  "ca_lapa": "https://www.sigulda.lv/novads/civila-aizsardziba/civilas-aizsardzibas-plans/ (fails: https://www.sigulda.lv/media/uploads/Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.pdf; ir arī 27. pielikums iedzīvotājiem)",
+  "vpvkac": {
+   "punkts": "Sigulda",
+   "nosaukums": "Siguldas novada Siguldas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Siguldas VPVKAC)",
+   "adrese": "Raiņa iela 3, Siguldas pilsēta, Siguldas nov., LV-2150",
+   "talrunis": "66954916",
+   "epasts": "sigulda@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 5
+ },
+ "100016735": {
+  "nosaukums": "Smiltenes novads",
+  "tips": "novads",
+  "atvk": "0049000",
+  "majas_lapa": "https://www.smiltenesnovads.lv/lv",
+  "ca_plans_url": "https://www.smiltenesnovads.lv/lv/media/41166/download?attachment",
+  "ca_lapa": "https://www.smiltenesnovads.lv/lv/civila-aizsardziba",
+  "vpvkac": {
+   "punkts": "Smiltene",
+   "nosaukums": "Smiltenes novada, Smiltenes pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Smiltenes VPVKAC)",
+   "adrese": "Dārza iela 3, Smiltenes pilsēta, Smiltenes nov., LV-4729",
+   "talrunis": "66954850",
+   "epasts": "smiltene@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 6
+ },
+ "100016390": {
+  "nosaukums": "Talsu novads",
+  "tips": "novads",
+  "atvk": "0051000",
+  "majas_lapa": "https://www.talsunovads.lv/lv",
+  "ca_plans_url": "https://www.talsunovads.lv/lv/media/31740/download?attachment",
+  "ca_lapa": "https://www.talsunovads.lv/lv/dokumentu-katalogs/talsu-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Dundaga",
+   "nosaukums": "Talsu novada Dundagas pagasta valsts un pašvaldības vienotais klientu apkalpošanas centrs (Dundagas VPVKAC)",
+   "adrese": "Pils iela 5-1, Dundaga, Dundagas pag., Talsu nov., LV-3270",
+   "talrunis": "66954817",
+   "epasts": "dundaga@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 3
+ },
+ "100016710": {
+  "nosaukums": "Tukuma novads",
+  "tips": "novads",
+  "atvk": "0052000",
+  "majas_lapa": "https://www.tukums.lv/lv",
+  "ca_plans_url": "https://www.tukums.lv/lv/media/56137/download?attachment",
+  "ca_lapa": "https://www.tukums.lv/lv/tukuma-novada-civilas-aizsardzibas-plans",
+  "vpvkac": {
+   "punkts": "Kandava",
+   "nosaukums": "Tukuma novada Kandavas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Kandavas VPVKAC)",
+   "adrese": "Dārza iela 6, Kandavas pilsēta, Tukuma nov., LV-3120",
+   "talrunis": "66954824",
+   "epasts": "kandava@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 5
+ },
+ "100016286": {
+  "nosaukums": "Valkas novads",
+  "tips": "novads",
+  "atvk": "0053000",
+  "majas_lapa": "https://www.valka.lv/lv",
+  "ca_plans_url": "https://www.valka.lv/lv/media/1092/download?attachment",
+  "ca_lapa": "http://www.valka.lv/lv/valkas-novads-1/pasvaldiba-1/civila-aizsardziba/civila-aizsardziba-plans",
+  "vpvkac": {
+   "punkts": "Valka",
+   "nosaukums": "Valkas novada Valkas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Valkas VPVKAC)",
+   "adrese": "Rīgas iela 25, Valkas pilsēta, Valkas nov., LV-4701",
+   "talrunis": "66954878",
+   "epasts": "valka@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 2
+ },
+ "100016647": {
+  "nosaukums": "Valmieras novads",
+  "tips": "novads",
+  "atvk": "0054000",
+  "majas_lapa": "https://www.valmierasnovads.lv/",
+  "ca_plans_url": "https://www.valmierasnovads.lv/content/uploads/2024/04/140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.pdf",
+  "ca_lapa": "https://www.vugd.gov.lv/lv/media/6887/download?attachment (fails VUGD vietnē)",
+  "vpvkac": {
+   "punkts": "Mazsalaca",
+   "nosaukums": "Valmieras novada Mazsalacas pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Mazsalacas VPVKAC)",
+   "adrese": "Pērnavas iela 4, Mazsalacas pilsēta, Valmieras nov., LV-4215",
+   "talrunis": "66954867",
+   "epasts": "mazsalaca@pakalpojumucentri.lv"
+  },
+  "vpvkac_skaits": 7
+ },
+ "100016333": {
+  "nosaukums": "Ventspils novads",
+  "tips": "novads",
+  "atvk": "0056000",
+  "majas_lapa": "https://www.ventspilsnovads.lv/lv",
+  "ca_plans_url": null,
+  "ca_lapa": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf (VUGD sarakstā kopīgs Ventspils valstspilsētas un Ventspils novada plāns)",
+  "vpvkac": null,
+  "vpvkac_skaits": 0
+ }
+}

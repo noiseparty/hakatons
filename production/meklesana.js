@@ -18,6 +18,7 @@ const krizesMeklesana = (() => {
   const AVOTI_LVGMC = {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
+    bridinajumi: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi" target="_blank" rel="noopener">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · CC0',
   };
   let klasifikators = null;
   let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
@@ -393,13 +394,16 @@ const krizesMeklesana = (() => {
       if (uzskaite) zinot(uzskaite.vaicajums);
     }
     const kurTeksts = adrese ? isaAdrese(adrese.adrese) : vieta?.nosaukums;
-    const galva = draudi +
+    const pludi = galvenais && PLUDU_SCENARIJI.has(galvenais.kods);
+    // Lēmums vispirms (112, brīdinājums šai vietai, plūdu zona jā/nē), tad situācija, padoms un vietas
+    const galva = draudi + zvanitTeksts +
+      (no ? '<div id="rez-lemums"></div>' + (pludi ? pluduBloks() : '') : '') +
       (galvenais
         ? `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
           (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}</p>` : '')
         : kurTeksts ? `<p class="sapratu">${adrese ? 'Adrese' : 'Vieta'}: <b>${esc(kurTeksts)}</b></p>` +
             '<p class="piezime">Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.</p>' : '') +
-      zvanitTeksts +
+      (no ? '<p class="piezime" id="rez-mana-vieta" hidden></p>' : '') +
       (bezDatiem ? '<p class="piezime kluda">Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.</p>' : '');
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
@@ -418,7 +422,6 @@ const krizesMeklesana = (() => {
     const kodi = (galvenais?.kategorijas || []).filter(k => kategorijas[k]?.skaits);
     const arDrosam = !galvenais || galvenais.nr || galvenais.kods === 'patvertne';
     const drosas = arDrosam ? DROSAS.filter(d => !kodi.includes(d.kods)) : [];
-    const pludi = galvenais && PLUDU_SCENARIJI.has(galvenais.kods);
     if (kodi.length) {
       stavoklis.kategorijas = new Set(kodi);
       document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
@@ -435,8 +438,13 @@ const krizesMeklesana = (() => {
       return;
     }
 
-    kaste.innerHTML = galva + '<p class="piezime">Meklē tuvākās vietas…</p>';
+    kaste.innerHTML = galva + '<div id="rez-vietas"><p class="piezime">Meklē tuvākās vietas…</p></div><div id="rez-pasvaldiba"></div>' + beigas;
     const ll = { lat: no.lat.toFixed(5), lon: no.lon.toFixed(5) };
+    lemumaDati(ll, no, signal);
+    if (pludi) pluduDati(ll, signal);
+    if (no.apraksts === 'no Jums') manaVietaDati(ll, signal);
+    pasvaldibaDati(ll, no, signal);
+    const vietas = h => { const d = kaste.querySelector('#rez-vietas'); if (d) d.innerHTML = h; };
     const tuvakas = (k, n) => iegut('/objekti?' + new URLSearchParams({ kategorijas: k, ...ll, limit: n }), signal)
       .catch(e => { if (e.name === 'AbortError') throw e; return { features: [] }; });
     try {
@@ -446,20 +454,18 @@ const krizesMeklesana = (() => {
       ]);
       grupas.forEach(g => { g.features = izveleties(g.features); });
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
-      kaste.innerHTML = galva +
-        (pludi ? pluduBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
+      vietas((laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
         kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
         (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
-        '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + beigas;
+        '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>');
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
-      if (pludi) pluduDati(ll, signal);
       if (laiks) augsnesDati(ll, signal);
       // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
       if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
       // zonas.js: satiksme apvidū (LVC) un slidens ceļš tuvumā — rinda tikai tad, ja ir dati
       if (typeof Zonas !== 'undefined') Zonas.satiksmesRinda(ll).then(h => { const d = kaste.querySelector('#rez-satiksme'); if (d && !signal.aborted) d.innerHTML = h; }, () => {});
     } catch (e) {
-      if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>' + beigas;
+      if (e.name !== 'AbortError') vietas('<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>');
     }
   }
 
@@ -516,6 +522,46 @@ const krizesMeklesana = (() => {
     return `<h3>Drošās vietas tuvumā</h3><ol class="rez-saraksts drosas">${rindas}</ol>`;
   }
 
+  // Lēmuma rinda: spēkā esošs LVĢMC brīdinājums šai vietai (poligonā) vai "nav"; neizdodas — rindu nerāda
+  function lemumaDati(ll, no, signal) {
+    iegut('/bridinajumi?' + new URLSearchParams(ll), signal).then(d => {
+      const el = kaste.querySelector('#rez-lemums');
+      if (!el) return;
+      const kur = no.regions ? 'šajā apvidū' : 'šai vietai';
+      const sie = (d.bridinajumi || []).filter(b => b.attiecas).sort((a, b) => b.limenis - a.limenis);
+      const lidz = b => b.lidz ? ', līdz ' + new Date(b.lidz).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      el.innerHTML = (sie.length
+        ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}"><span aria-hidden="true">⚠</span> <b>LVĢMC brīdinājums ${kur}:</b> ` +
+          sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + '</p>'
+        : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b></p>`) +
+        `<small class="avots-rinda">${AVOTI_LVGMC.bridinajumi}</small>`;
+    }).catch(() => {});
+  }
+
+  // Atrašanās vieta pēc GPS: tuvākā VZD adrese (≤ 300 m)
+  function manaVietaDati(ll, signal) {
+    iegut('/adreses/tuvaka?' + new URLSearchParams(ll), signal).then(a => {
+      const el = kaste.querySelector('#rez-mana-vieta');
+      if (!el || !a.adrese) return;
+      el.textContent = `Jūsu atrašanās vieta: ~${isaAdrese(a.adrese)} (VZD adrešu reģistrs)`;
+      el.hidden = false;
+    }).catch(() => {});
+  }
+
+  // Pašvaldība: CA plāns, tīmekļvietne, VPVKAC tālrunis kā teksts (bez tel: saitēm)
+  function pasvaldibaDati(ll, no, signal) {
+    iegut('/pasvaldiba?' + new URLSearchParams(ll), signal).then(p => {
+      const el = kaste.querySelector('#rez-pasvaldiba');
+      if (!el) return;
+      const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
+      const c = p.vpvkac;
+      el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
+        saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
+        (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
+        `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)${c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : ''}</small>`;
+    }).catch(() => {});
+  }
+
   // Plūdu scenārijiem: plūdu riska zona adresē (LVĢMC WMS caur /api/pludi; lēns, līdz 15 s) un tuvākās upes līmenis
   function pluduBloks() {
     return `<ul class="fakti" id="rez-pludi-bloks">
@@ -532,14 +578,22 @@ const krizesMeklesana = (() => {
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-pludi', '<b>Plūdu riska zona</b><span>Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).</span>');
     });
-    iegut('/udens?' + new URLSearchParams({ ...ll, limit: 1 }), signal).then(d => {
+    iegut('/udens?' + new URLSearchParams({ ...ll, limit: 3 }), signal).then(d => {
       const s = d.stacijas[0];
       if (!s) throw new Error('nav');
+      // prognoze: tuvākā no 3 stacijām, kurai LVĢMC to dod (prognoze ir ~35 no 74 stacijām)
+      const ps = d.stacijas.find(x => x.prognoze);
+      const pr = ps?.prognoze;
+      const cm = v => (v < 0 ? '−' : '') + Math.abs(v);
+      const prognoze = pr ? `<small>Prognoze ${pr.dienas} dienām${ps !== s ? ` (${esc(ps.nosaukums)}, ${attalums(ps.attalums_m)})` : ''}: ` +
+        `<b>${esc(pr.virziens)}</b> (${pr.izmaina_cm > 0 ? '+' : ''}${cm(pr.izmaina_cm)} cm pēc modeļa)` +
+        (pr.josla_50_cm ? `, līmenis ~${cm(pr.josla_50_cm[0])}…${cm(pr.josla_50_cm[1])} cm (50 % varbūtība)` : '') +
+        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` : '';
       const izm = s.izmaina_24h_cm;
       const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: nemainās';
       const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
       pluduRinda('rez-udens', `<b>Tuvākā upe vai ezers</b><span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): ${s.limenis_cm} cm${tend}` +
-        `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small><small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
+        `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small>${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
     });
