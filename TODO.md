@@ -24,7 +24,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Use the 22–23.08.2026 storm (~277k customers without power) as the demo scenario in the pitch — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Crisis search: test on a real phone, and show "Ko tev vajag?" above the map on mobile (panel is below it now) — added 2026-10-09 19:11 +03:00 by noiseparty
+- [ ] Crisis search: test on a real phone (search bar is now in the header, above the map) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `evakuacijas_punkts`, `uzlades_stacija` — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
@@ -32,6 +32,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)
 - [x] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — `ielade.py --apvienot 35`: 3 shelters, 12 OSM fuel stations, 11 same-bank ATM stacks merged; separate buildings at one address kept — done 2026-10-09 21:40 +03:00 by noiseparty (added 2026-10-09 19:11 +03:00 by noiseparty)
 - [x] Crisis search: map always centres on the place named in the query ("lācis Ogre", "Rēzekne"), also when the scenario has no map layers or isn't recognised; zoom to the city + nearest per layer, not far-away 3rd results — done 2026-10-09 20:56 +03:00 by noiseparty
 - [x] Simulēti dati prototipam: `atseviski_dati/udens.csv` (100 publiskas ūdens ņemšanas vietas) + `atseviski_dati/energija.csv` (100 publiskie ierīču uzlādes punkti) + README ar ielādes komandām (`ielade.py` formāts, kategorijas `udens_punkts`/`uzlades_stacija`) — done 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia)

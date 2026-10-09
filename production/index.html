@@ -14,26 +14,24 @@
 <body>
 <header>
   <h1>Latvijas karte</h1>
-  <p id="statuss" role="status">Ielādē…</p>
-  <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
+  <form id="meklet-forma" role="search" class="meklet-rinda">
+    <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
+           aria-label="Ko tev vajag?" placeholder="Ko tev vajag? Piem.: patvertne Ogrē">
+    <button type="submit">Meklēt</button>
+  </form>
+  <div class="galva-labi">
+    <p id="statuss" role="status">Ielādē…</p>
+    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
+  </div>
 </header>
 <main>
   <aside id="panelis">
     <section id="meklesana">
-      <form id="meklet-forma" role="search">
-        <h2><label for="jautajums">Ko tev vajag?</label></h2>
-        <div class="meklet-rinda">
-          <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
-                 placeholder="Piem.: patvertne Ogrē, bērnam augsta temperatūra">
-          <button type="submit">Meklēt</button>
-        </div>
-      </form>
       <div id="atras-pogas" class="atras-pogas"></div>
       <div id="rezultati" aria-live="polite" hidden></div>
     </section>
 
     <section id="vieta">
-      <h2>Meklēt</h2>
       <div class="meklesana">
         <input id="meklet" type="search" placeholder="Nosaukums vai adrese…" autocomplete="off"
                aria-label="Meklēt kartē parādītos objektus" aria-controls="mekl-rezultati">
@@ -57,11 +55,6 @@
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
         <ul id="avoti-saraksts"></ul>
       </details>
-    </section>
-
-    <section>
-      <h2 id="saraksts-virsraksts">Saraksts</h2>
-      <ol id="saraksts"></ol>
     </section>
   </aside>
   <div id="kartes-laukums">
