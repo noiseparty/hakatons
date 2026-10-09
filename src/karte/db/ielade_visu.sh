@@ -24,5 +24,9 @@ $L $D/vkcp_udens_nemsanas_vietas.csv --avots vkcp-udens --kategorija udens_nemsa
 $L $D/gtfs_rigas_satiksme.csv --avots rs-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 $L $D/gtfs_atd.csv --avots atd-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 $L $D/gtfs_vivi.csv --avots vivi-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
+$L $D/noturibas_punkti.geojson --avots osm-noturiba --kategorija noturibas_punkts --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
+# Simulēti prototipa dati (atseviski_dati/README.md): kartē marķēti "SIMULĒTI DATI — prototips"
+$L atseviski_dati/udens.csv --avots sim-udens --kategorija udens_punkts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+$L atseviski_dati/energija.csv --avots sim-energija --kategorija uzlades_stacija --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 
 psql "$MAP_DB_OWNER_DSN" -c "select o.avots, a.licence, o.kategorija, count(*) from objekti o join avoti a on a.kods = o.avots group by 1, 2, 3 order by 1, 3"

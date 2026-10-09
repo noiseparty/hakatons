@@ -8,8 +8,8 @@
     "Svars: frāze no N vārdiem = N punkti, dalīts ar √(cik scenārijos šis atslēgvārds ir) — retāki vārdi sver vairāk.",
     "Neraksti vispārīgus vārdus (palīdzība, ceļš, iela, tālu): tie sasaista nesaistītus vaicājumus.",
     "kategorijas: slāņu kodi no tabulas kategorijas (src/karte/db/shema.sql), secībā, kādā rādīt. Tukšs = tikai padoms.",
-    "Kategorijas, kuru vēl nav kartē, tiek izlaistas. Plānotie kodi: noturibas_punkts (siltums/uzlāde/wifi/ūdens),",
-    "udens_punkts, evakuacijas_punkts, uzlades_stacija.",
+    "Kategorijas, kuru vēl nav kartē, tiek izlaistas. noturibas_punkts = OSM kandidāti (statuss nav apstiprināts);",
+    "udens_punkts un uzlades_stacija = SIMULĒTI prototipa dati (atseviski_dati/), kartē marķēti.",
     "zvanit112: rāda pogu 'Zvanīt 112'. dzivibas_draudi: frāzes, kas to rāda vienmēr; ja atrastas tikai tās,",
     "rāda dzivibas_draudi_scenarijs.",
     "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
@@ -317,7 +317,7 @@
     },
     {
       "kods": "elektromobilis", "nr": 20, "grupa": "B", "nosaukums": "Izlādējies elektromobilis",
-      "kategorijas": ["uzlades_stacija"], "zvanit112": false, "talak": "cels",
+      "kategorijas": [], "zvanit112": false, "talak": "cels",
       "padoms": "Ieslēdziet ekonomisko režīmu, izslēdziet apsildi un kondicionieri. Brauciet līdz tuvākajai uzlādes stacijai vai sazinieties ar ceļu palīdzību.",
       "atslegvardi": ["elektromobil", "elektroauto", "uzlādes stacij", "elektroauto izlād", "электромоб", "зарядн", "electric car", "ev$", "charging station",
         "elektriskais auto", "elektriskā auto", "elektro auto", "e auto", "elektromašīn", "tesla$", "uzlādes punkt",
@@ -903,7 +903,7 @@
 
     {
       "kods": "telefona_baterija", "nr": 81, "grupa": "H", "nosaukums": "Izlādējas telefons",
-      "kategorijas": ["noturibas_punkts"], "zvanit112": false, "talak": "elektriba",
+      "kategorijas": ["noturibas_punkts", "uzlades_stacija"], "zvanit112": false, "talak": "elektriba",
       "padoms": "Ieslēdziet enerģijas taupīšanas režīmu, samaziniet ekrāna spilgtumu, izslēdziet nevajadzīgas lietotnes. Ārkārtas zvanam 112 baterija jātaupa.",
       "atslegvardi": ["baterij", "izlād", "uzlād", "lādētāj", "telefons mirst", "батаре", "заряд", "разряд", "battery", "charge my phone", "charger",
         "powerbank", "pauerbank", "power bank", "lādēt", "lādiņ", "telefons nosēd", "telefons izslēdz", "betarij",
@@ -912,7 +912,7 @@
     },
     {
       "kods": "nav_elektribas", "nr": 82, "grupa": "H", "nosaukums": "Ilgstoši nav elektrības",
-      "kategorijas": ["noturibas_punkts", "degviela", "bankomats"], "zvanit112": false, "talak": "elektriba",
+      "kategorijas": ["noturibas_punkts", "uzlades_stacija", "degviela", "bankomats"], "zvanit112": false, "talak": "elektriba",
       "padoms": "Paziņojiet Sadales tīklam 8404. Turiet ledusskapi aizvērtu, lietojiet lukturus, nevis sveces. Apjautājieties, kā klājas kaimiņiem, īpaši veciem cilvēkiem.",
       "atslegvardi": ["nav elektrīb", "nav strāv", "elektrīb", "strāv", "atslēg", "blackout", "sadales tīkl", "8404$", "нет света", "электричеств", "отключ", "power outage", "no power", "no electricity",
         "nav gaismas", "gaisma pazud", "elektroapgād", "elektroenerģij", "korķi izsit", "drošinātāj", "sadalestīkl",

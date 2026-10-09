@@ -281,3 +281,34 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- Noturības punkti (OSM kandidāti, noturibas_punkti.py) un simulētie prototipa dati (atseviski_dati/) ----
+-- Noturības punktu pazīmes (siltums, uzlāde, ūdens, wifi, ģenerators) nav apstiprinātas: karte raksta "nav zināms".
+-- Ūdens un uzlādes punkti ir IZDOMĀTI prototipa dati: karte katru punktu marķē "SIMULĒTI DATI — prototips".
+insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
+  ('noturibas_punkts', 'Noturības punktu kandidāti (bibliotēkas, kultūras nami, skolas)', 'patvertnes', '#9333ea', 13),
+  ('udens_punkts', 'Dzeramā ūdens punkti (SIMULĒTI)', 'vide', '#0284c7', 84),
+  ('uzlades_stacija', 'Ierīču uzlādes punkti (SIMULĒTI)', 'infrastruktura', '#65a30d', 25)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
+   'ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/', true,
+   'https://www.openstreetmap.org/copyright', 'Overpass API (amenity=library|community_centre|townhall|school ar nosaukumu), src/karte/db/noturibas_punkti.py',
+   'Noturības punktu kandidāti: kur krīzē varētu sasildīties, uzlādēt telefonu, iegūt ūdeni un informāciju',
+   'Tikai kandidāti: siltums, uzlāde, ūdens, wifi un ģenerators nav apstiprināti (statuss "nav zināms"). Pašvaldību apstiprinātu noturības punktu atvērto datu nav.', 71),
+  ('sim-udens', 'Simulēti prototipa dati (komanda): dzeramā ūdens punkti', 'Hakatona komanda',
+   'Simulēti dati, CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'atseviski_dati/udens.csv (100 izdomāti punkti)',
+   'Slānis „Dzeramā ūdens punkti (SIMULĒTI)”; meklēšana „nav ūdens”',
+   'IZDOMĀTI dati prototipam: adreses, nosaukumi un darba laiki nav reāli. Aizstāt ar reāliem datiem (piem., OSM amenity=drinking_water, pašvaldības).', 95),
+  ('sim-energija', 'Simulēti prototipa dati (komanda): ierīču uzlādes punkti', 'Hakatona komanda',
+   'Simulēti dati, CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'atseviski_dati/energija.csv (100 izdomāti punkti)',
+   'Slānis „Ierīču uzlādes punkti (SIMULĒTI)”; meklēšana „telefona baterija”, „nav elektrības”',
+   'IZDOMĀTI dati prototipam: adreses, nosaukumi, darba laiki un ligzdu skaits nav reāli.', 96)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;

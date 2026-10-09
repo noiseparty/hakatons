@@ -19,6 +19,8 @@
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><span aria-hidden="true">🎤</span></button>
+    <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
     <button type="submit">Meklēt</button>
     <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
       <p id="populari-virsraksts">Biežāk meklētais</p>
@@ -57,6 +59,7 @@
 
     <section>
       <h2>Slāņi</h2>
+      <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Saraksts: ieslēgto slāņu objekti</button>
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
         <span class="punkts" style="background:#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 gados)</label>
@@ -69,6 +72,7 @@
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a></p>
+        <p class="piezime trukst"><b>Ko vēl vajadzētu publicēt:</b> 25 datu kopas, kas krīzē vajadzīgas, bet nav atvērtas (patvertņu statuss, elektrības atslēgumi, evakuācijas vietas mašīnlasāmā formā…). <a href="trukstosie.html">Saraksts</a></p>
         <ul id="avoti-saraksts"></ul>
       </details>
     </section>
@@ -120,10 +124,13 @@
 </script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
+<script src="objekta-statuss.js"></script>
 <script src="app.js"></script>
 <script src="zonas.js"></script>
 <script src="meklesana.js"></script>
+<script src="runa.js"></script>
 <script src="apaksa.js"></script>
+<script src="saraksts.js"></script>
 <script src="bridinajumi.js"></script>
 <script src="zibens.js"></script>
 <script src="prognozes.js"></script>
