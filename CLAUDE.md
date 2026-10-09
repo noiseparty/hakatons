@@ -13,8 +13,9 @@ Almost all source material is in **Latvian**; file and folder names, script CLI 
 - `ai-open-data-2026-hakatons/` — vendored copy of the organisers' starter kit (source commit in `UPSTREAM.md`). **Treat as read-only**; put derived data and our code in `src/` (and notes in `notes/`) so upstream can be re-copied without conflicts.
   - `ca-plani-hakatons/` — our track's kit (see below).
   - `vdaa-epakalpojumi/` — VDAA guidelines for Latvija.gov.lv e-services (15 principles, UX/UI, architecture, `07-atbilstibas-audita-kontrolsaraksts.md` audit checklist). `SKILL.md` there is a ready-made agent skill.
-- `src/`, `notes/` — our work (currently empty).
-- `.claude/skills/` — thin wrappers (`vdaa-epakalpojumi`, `celu-kartes-datubaze`) that point to the kit's own `SKILL.md` files in place, so their relative paths keep working.
+- `src/`, `notes/` — our work.
+- `src/karte/` — the map's PostGIS database `map` on the VPS (schema, loaders, data snapshots) and its API, served at `map.repo.lv/api/*` (everything else on map.repo.lv is static files from `production/`). Adding a dataset: `src/karte/README.md`.
+- `.claude/skills/` — thin wrappers (`vdaa-epakalpojumi`, `celu-kartes-datubaze`) that point to the kit's own `SKILL.md` files in place, so their relative paths keep working; plus `todo` for maintaining `TODO.md`.
 
 ## Data kit architecture (`ai-open-data-2026-hakatons/ca-plani-hakatons/`)
 
@@ -57,3 +58,4 @@ uv run convert.py <file> --slug <slug>
 - Never commit to `main` directly: branch as `<name>/<topic>`, push, open a PR (details in `README.md`).
 - Dev machines are Windows (PowerShell); `.gitattributes` normalizes to LF.
 - Secrets go in `.env` / `dati/` (gitignored). The repo is public.
+- `TODO.md` is the shared task log (pending / in progress / done, each with timestamp and GitHub username). Follow the `todo` skill (`.claude/skills/todo/SKILL.md`): after finishing a piece of work, mark its task done and add follow-ups in the same commit; never guess the time or user, get them from `Get-Date` and `gh api user --jq .login`.

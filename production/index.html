@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Latvijas karte · map.repo.lv</title>
+<meta name="description" content="Patvertnes, bankomāti, aptiekas, slimnīcas un citi objekti Latvijas kartē, tuvākie tev.">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="stils.css">
+</head>
+<body>
+<header>
+  <h1>Latvijas karte</h1>
+  <p id="statuss" role="status">Ielādē…</p>
+</header>
+<main>
+  <aside id="panelis">
+    <section id="vieta">
+      <button id="atrast" type="button">📍 Rādīt tuvākos man</button>
+      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
+    </section>
+
+    <section>
+      <label for="regions" class="virsraksts">Reģions vai pilsēta</label>
+      <select id="regions"><option value="">Visa Latvija</option></select>
+    </section>
+
+    <section>
+      <span class="virsraksts">Ko rādīt</span>
+      <div id="kategorijas"></div>
+    </section>
+
+    <section>
+      <span class="virsraksts" id="saraksts-virsraksts">Saraksts</span>
+      <ol id="saraksts"></ol>
+    </section>
+  </aside>
+  <div id="karte" role="application" aria-label="Karte"></div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="app.js"></script>
+</body>
+</html>
