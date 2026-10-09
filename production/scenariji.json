@@ -299,7 +299,7 @@
     {
       "kods": "deg_kaimini", "nr": 32, "grupa": "C", "nosaukums": "Deg kaimiņu ēka",
       "kategorijas": ["ugunsdzeseji"], "zvanit112": true, "talak": "uguns",
-      "padoms": "Zvaniet 112. Aizveriet logus un durvis, sagatavojiet dokumentus un esiet gatavs atstāt māju. Sekojiet glābēju norādēm.",
+      "padoms": "Zvaniet 112. Aizveriet logus un durvis, sagatavojiet dokumentus un esiet gatavi atstāt māju. Sekojiet glābēju norādēm.",
       "atslegvardi": ["kaimiņ", "blakus māj", "blakus ēk", "deg$", "ugun", "liesm", "у соседей горит", "соседн", "neighbour's house", "next door fire"]
     },
     {
@@ -530,7 +530,7 @@
     {
       "kods": "piesarnojums", "nr": 70, "grupa": "F", "nosaukums": "Radiācija vai ķīmisks piesārņojums",
       "kategorijas": ["patvertne"], "zvanit112": true, "talak": "kimiska",
-      "padoms": "Ejiet iekšā, aizveriet logus un durvis, izslēdziet ventilāciju. Ieslēdziet LR1 un sekojiet oficiālām norādēm. Ja bijāt ārā, noņemiet virsdrēbes un nomazgājieties.",
+      "padoms": "Ejiet iekšā, aizveriet logus un durvis, izslēdziet ventilāciju. Ieslēdziet LR1 un sekojiet oficiālām norādēm. Ja esat bijuši ārā, noņemiet virsdrēbes un nomazgājieties.",
       "atslegvardi": ["radiāc", "radioaktīv", "kodolavār", "piesārņoj", "ķīmisk", "toksisk", "indīgs mākon", "радиац", "химическ", "radiation", "nuclear", "chemical", "bīstama objekt", "objekta sprādzien"]
     },
 
@@ -634,7 +634,7 @@
     {
       "kods": "vilciena_avarija", "nr": 88, "grupa": "H", "nosaukums": "Vilciena avārija",
       "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true, "talak": "cels",
-      "padoms": "Sekojiet personāla norādēm, pārbaudiet, vai blakus esošie nav cietuši. Izkāpiet prom no sliedēm, ne uz blakus ceļa. Zvaniet 112.",
+      "padoms": "Sekojiet personāla norādēm, pārbaudiet, vai blakus esošie nav cietuši. Izkāpiet prom no sliedēm, nevis uz blakus sliežu ceļa. Zvaniet 112.",
       "atslegvardi": ["vilcien", "vagon", "sliedēs", "dzelzceļ", "поезд", "вагон", "train crash", "derail", "vilciena avārij", "vilciens noskrēj"]
     },
     {
@@ -665,7 +665,7 @@
     {
       "kods": "ielauzies_ledu", "nr": 93, "grupa": "I", "nosaukums": "Cilvēks iekritis ledainā ūdenī",
       "kategorijas": ["neatliekama_24h"], "zvanit112": true, "talak": "udens",
-      "padoms": "Zvaniet 112. Netuvojieties pa ledu stāvus: pasniedziet garu koku, virvi vai šalli, guļot uz ledus. Izglābto uzreiz nogādājiet siltumā.",
+      "padoms": "Zvaniet 112. Neejiet pie cietušā pa ledu stāvus: tuvojieties guļus un pasniedziet garu koku, virvi vai šalli. Izglābto uzreiz nogādājiet siltumā.",
       "atslegvardi": ["ielūz", "iekrit āliņģ", "iekrita ūdenī", "zem ledus", "ledain", "āliņģ", "провалил", "под лёд", "под лед", "fell through the ice", "icy water", "ledainā ūden", "iekritis ūden", "iekrita ūden"]
     },
     {
@@ -714,7 +714,7 @@
     {
       "kods": "viltota_trauksme", "nr": 101, "grupa": "J", "nosaukums": "Aizdomīgs trauksmes ziņojums",
       "kategorijas": [], "zvanit112": false, "talak": "info",
-      "padoms": "Oficiālos brīdinājumus sūta šūnu apraide un sirēnas, un tie ir 112.lv. Ja ziņa prasa atvērt saiti vai maksāt, tā ir krāpšana.",
+      "padoms": "Oficiālos brīdinājumus sūta šūnu apraide un sirēnas, un tie ir pieejami 112.lv. Ja ziņa prasa atvērt saiti vai maksāt, tā ir krāpšana.",
       "atslegvardi": ["viltot", "aizdomīga ziņ", "īsziņa par trauksm", "trauksmes ziņ", "ложная тревог", "fake alert", "fake warning"]
     },
     {
@@ -838,7 +838,7 @@
       "Tagad: palieciet telpās, tālāk no logiem; ienesiet vai nostipriniet priekšmetus, ko var aiznest vējš. Nebrauciet bez vajadzības.",
       "Tālāk: LVĢMC brīdinājumi lapas augšā mainās līdz ar prognozi; oranža vai sarkana brīdinājuma gadījumā tālrunī var pienākt LV-Alert šūnu apraides ziņa.",
       "Nogāztiem vadiem nepieskarieties; elektrības bojājumus piesakiet Sadales tīklam (sadalestikls.lv), ceļu stāvokli skatiet lvceli.lv.",
-      "Kad vētra pierimst, meklējiet vēlreiz, piem., „nav elektrības” vai „koks pāri ceļam”."
+      "Kad vētra pierimst, meklējiet vēlreiz, piemēram, „nav elektrības” vai „koks pāri ceļam”."
     ],
     "elektriba": [
       "Tagad: pārbaudiet, vai bojājums ir tikai Jūsu mājā (drošinātāji) vai visā apkaimē; taupiet telefona akumulatoru.",
@@ -848,7 +848,7 @@
     ],
     "medicina": [
       "Tagad: ja apdraudēta dzīvība, zvaniet 112 un sekojiet dispečera norādēm; neatstājiet cietušo vienu.",
-      "Tālāk: NMPD brigāde ierodas un lemj, vai vest uz slimnīcu; sagatavojiet personas dokumentu un lietoto zāļu sarakstu, atslēdziet durvis.",
+      "Tālāk: NMPD brigāde ierodas un lemj, vai vest uz slimnīcu; sagatavojiet personas dokumentu un lietoto zāļu sarakstu, atslēdziet ārdurvis.",
       "Ja stāvoklis nav dzīvībai bīstams: darba laikā — ģimenes ārsts, ārpus tā — ģimenes ārstu konsultatīvais tālrunis (vmnvd.gov.lv) vai tuvākā 24/7 neatliekamā palīdzība šajā kartītē.",
       "Meklējiet vēlreiz, ja simptomi mainās."
     ],
@@ -856,12 +856,12 @@
       "Tagad: izejiet ārā un aizveriet aiz sevis durvis; liftu neizmantojiet. Zvaniet 112, kad esat drošībā.",
       "Tālāk: VUGD ierodas un lemj, kad var atgriezties; gaidiet drošā attālumā, kur glābēji Jūs redz, un pastāstiet, vai iekšā vēl ir cilvēki.",
       "Ja mājoklī nevar atgriezties, pagaidu izmitināšanu palīdz atrast pašvaldības sociālais dienests; tuvākā izmitināšanas vieta ir šajā kartītē.",
-      "Meklējiet vēlreiz, piem., „nav elektrības” vai „nav siltuma”, ja ugunsgrēks skāra visu māju."
+      "Meklējiet vēlreiz, piemēram, „nav elektrības” vai „nav siltuma”, ja ugunsgrēks skāra visu māju."
     ],
     "pazudis": [
       "Tagad: ja esat apmaldījies, palieciet uz vietas un taupiet telefona akumulatoru; ja meklējat cilvēku, pierakstiet, kur un kad viņš redzēts pēdējo reizi un kā bija ģērbies.",
       "Tālāk: pēc zvana uz 112 meklēšanu organizē Valsts policija kopā ar VUGD; policija var piesaistīt brīvprātīgos meklētājus.",
-      "Turiet tālruni ieslēgtu un brīvu — meklētāji Jums zvanīs.",
+      "Turiet tālruni ieslēgtu un brīvu — meklētāji ar Jums sazināsies.",
       "Meklējiet vēlreiz, kad zināt precīzāku vietu (ciems, ceļa numurs, adrese)."
     ],
     "kimiska": [
@@ -886,11 +886,11 @@
       "Tagad: ieslēdziet avārijas gaismas, uzvelciet atstarojošo vesti un nolieciet avārijas zīmi; ja ir cietušie, zvaniet 112.",
       "Tālāk: uz 112 izsaukumu ierodas policija un glābēji; ja cietušo nav, saskaņoto paziņojumu par negadījumu var aizpildīt paši.",
       "Ceļu stāvokli un slēgtos ceļus skatiet lvceli.lv; tehnisko palīdzību sniedz apdrošinātājs vai autoserviss.",
-      "Ja jāgaida ilgi, meklējiet vēlreiz, piem., „degviela” vai „patvertne”."
+      "Ja jāgaida ilgi, meklējiet vēlreiz, piemēram, „degviela” vai „patvertne”."
     ],
     "udens": [
-      "Tagad: ja kāds iekritis ūdenī, sauciet palīdzību un zvaniet 112; glābiet guļus no krasta vai ledus ar garu priekšmetu, nevis ar rokām.",
-      "Tālāk: ierodas VUGD glābēji un NMPD; izglābto sasildiet un vediet pie ārsta arī tad, ja viņš jūtas labi.",
+      "Tagad: ja kāds iekritis ūdenī, sauciet palīdzību un zvaniet 112; nepieejiet pārāk tuvu — pasniedziet garu priekšmetu no krasta vai guļus no ledus.",
+      "Tālāk: ierodas VUGD glābēji un NMPD; izglābto sasildiet un nogādājiet pie ārsta arī tad, ja viņš jūtas labi.",
       "Par ūdens līmeni un ledus apstākļiem informē LVĢMC; pašvaldība var aizliegt iziešanu uz ledus.",
       "Meklējiet vēlreiz „plūdi”, ja ūdens kāpj."
     ],
