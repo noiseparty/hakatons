@@ -44,7 +44,16 @@ const statuss = (t, kluda) => { el('statuss').textContent = t; el('statuss').cla
 const stavoklis = { vieta: null, regions: '', kategorijas: new Set() };
 let kategorijas = {};
 let regioni = {};
-const objektuSlanis = L.featureGroup().addTo(karte);
+// Tālinot punkti apvienojas grupās: jo tālāk, jo lielākā rādiusā (px), lai kartē nav juceklis.
+// Grupas aplis rāda skaitu un slāņu krāsu proporcijas; no ielu līmeņa (16) — atsevišķi punkti.
+const objektuSlanis = L.markerClusterGroup({
+  maxClusterRadius: z => z <= 8 ? 110 : z <= 11 ? 80 : z <= 13 ? 60 : z <= 14 ? 40 : 25,
+  disableClusteringAtZoom: 16,
+  showCoverageOnHover: false,
+  spiderfyOnMaxZoom: false,
+  chunkedLoading: true,
+  iconCreateFunction: grupasIkona
+}).addTo(karte);
 let robezaSlanis = null;
 let vietasSlanis = null;
 let tuvakaSlanis = null;
@@ -55,6 +64,32 @@ async function iegut(cels, signal) {
   const r = await fetch(API + cels, { signal });
   if (!r.ok) throw new Error(r.status);
   return r.json();
+}
+
+function grupasIkona(grupa) {
+  const skaiti = {};
+  for (const m of grupa.getAllChildMarkers()) skaiti[m.options.fillColor] = (skaiti[m.options.fillColor] || 0) + 1;
+  const n = grupa.getChildCount();
+  let lidz = 0;
+  const dalas = Object.entries(skaiti).sort((a, b) => b[1] - a[1])
+    .map(([krasa, k]) => `${krasa} ${lidz}deg ${lidz += k / n * 360}deg`).join(', ');
+  const izmers = n < 10 ? 30 : n < 100 ? 36 : n < 1000 ? 44 : 52;
+  return L.divIcon({
+    html: `<span style="background:conic-gradient(${dalas})"><b>${n < 10000 ? n : Math.round(n / 1000) + 'k'}</b></span>`,
+    className: 'grupa-ikona', iconSize: [izmers, izmers]
+  });
+}
+
+// Maršruts līdz vietai: Google Maps un Waze ņem tālruņa atrašanās vietu paši; OSM (ar kājām) — no manas vietas, ja zināma.
+function marsrutaSaites(lat, lon, no) {
+  const [x, y] = [(+lat).toFixed(6), (+lon).toFixed(6)];
+  const saites = [
+    ['Google Maps', `https://www.google.com/maps/dir/?api=1&destination=${x}%2C${y}`],
+    ['Waze', `https://www.waze.com/ul?ll=${x}%2C${y}&navigate=yes`],
+    ['OSM', `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no ? `${no.lat}%2C${no.lon}` : ''}%3B${x}%2C${y}`]
+  ];
+  return '<span class="marsruts"><span>Maršruts:</span>' +
+    saites.map(([nos, url]) => `<a href="${url}" target="_blank" rel="noopener">${nos}</a>`).join('') + '</span>';
 }
 
 function attalums(m) {
@@ -226,11 +261,9 @@ function popupSaturs(p, ll) {
   if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' no tevis</small>');
-  const no = stavoklis.vieta ? `${stavoklis.vieta.lat},${stavoklis.vieta.lon}` : '';
-  const marsruts = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no}%3B${ll.lat}%2C${ll.lng}`;
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
-    rindas.join('<br>') + `<br><a href="${marsruts}" target="_blank" rel="noopener">Maršruts ↗</a><br>${Avoti.rinda(p.avots)}</div>`;
+    rindas.join('<br>') + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
 
 function zimetSarakstu(features) {
@@ -248,7 +281,7 @@ function zimetSarakstu(features) {
     li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
       <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc([nosaukums(p) ? k.nosaukums : '', p.adrese].filter(Boolean).join(' · '))}</small></span>
       <span class="attalums">${attalums(p.attalums_m)}</span>`;
-    const atvert = () => { karte.setView(f._slanis.getLatLng(), Math.max(karte.getZoom(), 16)); f._slanis.openPopup(); };
+    const atvert = () => atvertObjektu(f);
     li.addEventListener('click', atvert);
     li.addEventListener('keydown', e => { if (e.key === 'Enter') atvert(); });
     ol.append(li);
@@ -271,9 +304,9 @@ async function atjaunot() {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
       f._slanis = L.circleMarker([lat, lon], { radius: 6, color: '#fff', weight: 1.5, fillColor: k.krasa || '#57534e', fillOpacity: .9 })
-        .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }))
-        .addTo(objektuSlanis);
+        .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
     }
+    objektuSlanis.addLayers(gj.features.map(f => f._slanis));
     if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
     redzamie = gj.features;
     zimetSarakstu(gj.features);
@@ -288,9 +321,11 @@ async function atjaunot() {
 const MEKL_GARUMS = 8;
 const vienkarsot = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
 
+// Punkts var būt paslēpts grupā, tāpēc uznirstošo logu atver pie koordinātām, nevis pie punkta.
 function atvertObjektu(f) {
-  karte.setView(f._slanis.getLatLng(), Math.max(karte.getZoom(), 16));
-  f._slanis.openPopup();
+  const ll = f._slanis.getLatLng();
+  karte.setView(ll, Math.max(karte.getZoom(), 16));
+  L.popup().setLatLng(ll).setContent(popupSaturs(f.properties, ll)).openOn(karte);
 }
 
 function meklet() {
