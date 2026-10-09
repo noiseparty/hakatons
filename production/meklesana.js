@@ -357,7 +357,8 @@ const krizesMeklesana = (() => {
     const p = no.regions ? { ...f.properties, attalums_m: null } : f.properties;
     const i = p.ipasibas || {};
     const [lon, lat] = f.geometry.coordinates;
-    const ca = (i.komentars ? `<small class="ca-avots">${esc(i.komentars)}</small>` : i.vietas ? `<small>${esc(i.vietas)} vietas</small>` : '') +
+    const ca = (i.komentars ? `<small class="ca-avots">${esc(i.komentars)}</small>` : i.vietas ? `<small>${esc(i.vietas)} vietas</small>` :
+      i.marsruti ? `<small>${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>` : '') +
       (/^https?:\/\//.test(i.plans_url || '') ? `<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>` : '');
     return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
       <span class="teksts">${virsraksts || ''}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>

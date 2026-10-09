@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Ielādē visus kartes punktu avotus datubāzē `map` (VPS). Katrs avots aizvieto savu iepriekšējo saturu.
-# Avotu licences un saites: tabula avoti (shema.sql). Jaunu failu lejupielāde: valsts_dati.py, osm_poi.py.
+# Avotu licences un saites: tabula avoti (shema.sql). Jaunu failu lejupielāde: valsts_dati.py, osm_poi.py, gtfs.py.
 # Palaišana (VPS): cd /srv/hakatons && set -a && . /etc/hakatons/map.env && set +a && bash src/karte/db/ielade_visu.sh
 set -euo pipefail
 cd "$(dirname "$0")/../../.."
@@ -20,5 +20,9 @@ $L $D/iemic_vugd_depo.csv --avots iemic-vugd --kategorija ugunsdzeseji --nosauku
 python3 -c 'import json,sys; f=[x for p in sys.argv[1:] for x in json.load(open(p))["features"]]; json.dump({"type":"FeatureCollection","features":f},sys.stdout)'   $D/ca_pulcesanas_vietas.geojson $D/ca_izmitinasana.geojson > /tmp/ca_plani.geojson
 $L /tmp/ca_plani.geojson --avots ca-plani --kategorija "{kategorija}" --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 $L $D/osm_poi.geojson --avots osm --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
+$L $D/vkcp_udens_nemsanas_vietas.csv --avots vkcp-udens --kategorija udens_nemsana --nosaukums "{nosaukums}" --lon x --lat y --srid 3059
+$L $D/gtfs_rigas_satiksme.csv --avots rs-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
+$L $D/gtfs_atd.csv --avots atd-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
+$L $D/gtfs_vivi.csv --avots vivi-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 
 psql "$MAP_DB_OWNER_DSN" -c "select o.avots, a.licence, o.kategorija, count(*) from objekti o join avoti a on a.kods = o.avots group by 1, 2, 3 order by 1, 3"

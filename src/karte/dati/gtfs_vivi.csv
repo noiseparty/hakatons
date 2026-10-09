@@ -1,0 +1,139 @@
+id,nosaukums,marsruti,marsrutu_saraksts,veidi,x,y
+1,Rīga,48,"Ogre - Rīga, Rīga - Ogre, Cēsis - Rīga, Indra - Rīga, Ludza - Rīga, Rīga - Cēsis, Rīga - Indra, Rīga - Ludza, Rīga - Sloka, Rīga - Valga, Sloka - Rīga, Valga - Rīga …",vilciens,24.1192287684862000,56.9467739727777000
+203,Aizkraukle,16,"Indra - Rīga, Ludza - Rīga, Rīga - Indra, Rīga - Ludza, Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene, Krāslava - Rīga, Rīga - Krāslava …",vilciens,25.2757597452728000,56.6223647639072000
+204,Alotene,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,25.5854862203705000,56.6329946513652000
+206,Āraiši,5,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.3001661303278000,57.2364111542820000
+207,Asari,7,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.6893880367279000,56.9572115918885000
+208,Atašiene,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,26.4075802803563000,56.5301595885940000
+213,Babīte,9,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.9535319805145000,56.9571823415722000
+222,Biksti,2,"Liepāja - Rīga, Rīga - Liepāja",vilciens,22.9807258846995000,56.6915034517893000
+225,Brasa,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1460197447486000,56.9778998528210000
+227,Briģi,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,28.0522619248222000,56.4150209527182000
+229,Bulduri,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.8531744480133000,56.9814258989405000
+230,Carnikava,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.2787712812423000,57.1279787078409000
+232,Cena,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,23.8325572725443000,56.7080027380157000
+233,Cēsis,6,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.2821476938697000,57.3131972790606000
+234,Cesvaine,2,"Gulbene - Rīga, Rīga - Gulbene",vilciens,26.3315909400000000,56.9580585500000000
+235,Ciemupe,5,"Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle",vilciens,24.6540842044487000,56.7817091290944000
+236,Cirma,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,27.5335840702973000,56.5339019811814000
+237,Cukurfabrika,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,23.7587428270853000,56.6531297629584000
+238,Čiekurkalns,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.1686020137058000,56.9802945136659000
+239,Dalbe,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,23.8753924726916000,56.7415605937824000
+241,Dārziņi,6,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Rīga - Aizkraukle",vilciens,24.2807076216922000,56.8702576491688000
+243,Daugavpils,6,"Indra - Rīga, Rīga - Indra, Krāslava - Rīga, Rīga - Krāslava, Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.5277432442235000,55.8749550007753000
+245,Daugmale,7,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle",vilciens,24.1997102740242000,56.9103953018265000
+248,Depo,9,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,24.0392446517944000,56.9465775893604000
+249,Dobele,2,"Liepāja - Rīga, Rīga - Liepāja",vilciens,23.2846786914160000,56.6287913243289000
+250,Dole,8,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.3238283155187000,56.8644156545297000
+252,Dubulti,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.7752670049667000,56.9687987609272000
+255,Dzintari,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.8218355178833000,56.9736086294435000
+256,Egļupe,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.7418911459681000,57.1077849966028000
+258,Kalngale,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1513581993422000,57.0860049715404000
+260,Kalsnava,4,"Madona - Rīga, Rīga - Madona, Gulbene - Rīga, Rīga - Gulbene",vilciens,26.0185389516118000,56.7337061012868000
+267,Koknese,8,"Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene, Daugavpils - Rīga, Rīga - Daugavpils",vilciens,25.4392448900034000,56.6509143708760000
+269,Krāslava,4,"Indra - Rīga, Rīga - Indra, Krāslava - Rīga, Rīga - Krāslava",vilciens,27.1454730000000000,55.9252910000000000
+271,Krievupe,7,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.5101920602610000,57.0648066683610000
+273,Krustpils,10,"Indra - Rīga, Ludza - Rīga, Rīga - Indra, Rīga - Ludza, Rīga - Zilupe, Zilupe - Rīga, Krāslava - Rīga, Rīga - Krāslava, Daugavpils - Rīga, Rīga - Daugavpils",vilciens,25.8600062366895000,56.5204209615270000
+274,Gaisma,6,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Rīga - Aizkraukle",vilciens,24.2319705964837000,56.8940521358686000
+275,Kūdra,5,"Rīga - Ķemeri, Ķemeri - Rīga, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.5458254814148000,56.9286377224354000
+276,Garciems,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.2054227350308000,57.1018977620009000
+279,Kūkas,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,26.0597926139962000,56.5401860399074000
+281,Garupe,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.2464077472686000,57.1146958674728000
+282,Gauja,4,"Rīga - Skulte, Skulte - Rīga, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.2877720000000000,57.1416240000000000
+283,Ķegums,6,"Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.7257536891265000,56.7415237603494000
+286,Ķemeri,6,"Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.4899389743804000,56.9383315900226000
+287,Ķīšupe,2,"Rīga - Skulte, Skulte - Rīga",vilciens,24.4329315658978000,57.2862946132764000
+291,Gulbene,2,"Gulbene - Rīga, Rīga - Gulbene",vilciens,26.7657058200000000,57.1828012900000000
+296,Lielupe,9,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.8703191280364000,56.9821040588739000
+297,Ieriķi,5,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.1725852482923000,57.1994098798981000
+298,Lielvārde,12,"Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.8081820491643000,56.7221003062220000
+299,Ikšķile,8,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.5060168268719000,56.8394773175852000
+300,Liepāja,2,"Liepāja - Rīga, Rīga - Liepāja",vilciens,21.0165956136552000,56.5241164406698000
+301,Līgatne,6,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.0239076146317000,57.1841697864747000
+304,Līksna,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.4526860234764000,55.9981416850370000
+305,Imanta,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.9992475509643000,56.9502932527782000
+306,Lilaste,4,"Rīga - Skulte, Skulte - Rīga, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.3357620000000000,57.1819130000000000
+307,Inčukalns,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.6874757768819000,57.0965675849595000
+308,Līvāni,6,"Indra - Rīga, Rīga - Indra, Krāslava - Rīga, Rīga - Krāslava, Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.1803654198593000,56.3512523512376000
+309,Lode,4,"Rīga - Valga, Valga - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.4142964839411000,57.3882006702825000
+310,Inčupe,4,"Rīga - Skulte, Skulte - Rīga, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.3979375366325000,57.2251266534686000
+311,Ludza,4,"Ludza - Rīga, Rīga - Ludza, Rīga - Zilupe, Zilupe - Rīga",vilciens,27.7216609956667000,56.5332504676022000
+312,Lugaži,2,"Rīga - Valga, Valga - Rīga",vilciens,26.0015011310315000,57.7532053493050000
+313,Indra,2,"Indra - Rīga, Rīga - Indra",vilciens,27.5410581315650130,55.8764330935863000
+315,Madona,4,"Madona - Rīga, Rīga - Madona, Gulbene - Rīga, Rīga - Gulbene",vilciens,26.2205067156173000,56.8510483857642000
+316,Majori,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.7958502769470000,56.9714742355697000
+317,Istalsna,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,27.8287450801144000,56.4821376611130000
+319,Mārciena,4,"Madona - Rīga, Rīga - Madona, Gulbene - Rīga, Rīga - Gulbene",vilciens,26.0970924848516000,56.7720232700194000
+322,Melluži,7,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.7136137485504000,56.9588115492146000
+323,Jāņamuiža,4,"Rīga - Valga, Valga - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.3395804407045000,57.3438971959134000
+324,Melturi,2,"Rīga - Valmiera, Valmiera - Rīga",vilciens,25.2341837885615000,57.2075455389199000
+326,Mežāre,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,26.2520576476527000,56.5419516170448000
+328,Milzkalne,4,"Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.2324469089508000,56.9702403246921000
+330,Muldakmens,2,"Aizkraukle - Rīga, Rīga - Aizkraukle",vilciens,25.2058017257149000,56.6312045246917000
+331,Jāņavārti,14,"Ogre - Rīga, Rīga - Ogre, Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga …",vilciens,24.1858052732459000,56.9190222662818000
+333,Nerza,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,27.9588764191066000,56.4308137776442000
+335,Nīcgale,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.3715331081766000,56.1358992232436000
+336,Jaundubulti,7,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.7579131126403000,56.9610344106446000
+338,Jaungulbene,2,"Gulbene - Rīga, Rīga - Gulbene",vilciens,26.6043500000000000,57.0702700000000000
+339,Ogre,20,"Ogre - Rīga, Rīga - Ogre, Indra - Rīga, Ludza - Rīga, Rīga - Indra, Rīga - Ludza, Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene …",vilciens,24.6025031801764000,56.8154379769307000
+340,Olaine,4,"Jelgava - Rīga, Liepāja - Rīga, Rīga - Jelgava, Rīga - Liepāja",vilciens,23.9454559565638000,56.7858286762846000
+341,Jaunkalsnava,4,"Madona - Rīga, Rīga - Madona, Gulbene - Rīga, Rīga - Gulbene",vilciens,25.9763402938188000,56.6869092908658000
+342,Ozolnieki,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,23.8065844774246000,56.6868177226079000
+343,Jaunogre,8,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.5819626090815000,56.8218235556115000
+346,Jaunolaine,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,23.9846080004645000,56.8064549873867000
+349,Jelgava,4,"Jelgava - Rīga, Liepāja - Rīga, Rīga - Jelgava, Rīga - Liepāja",vilciens,23.7339977859664000,56.6414125558211000
+352,Pabaži,4,"Rīga - Skulte, Skulte - Rīga, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.4082816364607000,57.2421191030271000
+354,Pārogre,6,"Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.6158539297357000,56.8089143441492000
+357,Pļaviņas,14,"Indra - Rīga, Ludza - Rīga, Rīga - Indra, Rīga - Ludza, Madona - Rīga, Rīga - Madona, Rīga - Zilupe, Zilupe - Rīga, Gulbene - Rīga, Rīga - Gulbene, Krāslava - Rīga, Rīga - Krāslava …",vilciens,25.7166312218760000,56.6170292163162000
+358,Priedaine,9,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.8867878913879000,56.9720356222507000
+359,Pumpuri,7,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.7371850013732000,56.9599639439286000
+360,Jersika,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.2102291345399000,56.2545553653336000
+362,Jugla,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.2351210117340000,56.9921192765640000
+364,Jumprava,4,"Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.9746470000000000,56.6782230000000000
+367,Kaibala,2,"Aizkraukle - Rīga, Rīga - Aizkraukle",vilciens,24.8886908053827000,56.7031507300772000
+372,Rēzekne II,4,"Ludza - Rīga, Rīga - Ludza, Rīga - Zilupe, Zilupe - Rīga",vilciens,27.3452749727584000,56.5199041586994000
+374,Garkalne,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.4139689921939000,57.0467082568731000
+377,Rumbula,6,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Rīga - Aizkraukle",vilciens,24.2545129533391000,56.8827492372145000
+379,Sakstagals,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,27.1510808948369000,56.5368120019180000
+380,Salaspils,11,"Ogre - Rīga, Rīga - Ogre, Madona - Rīga, Rīga - Zilupe, Zilupe - Rīga, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.3531111718402000,56.8605589993261000
+381,Saldus,2,"Liepāja - Rīga, Rīga - Liepāja",vilciens,22.4713908075500000,56.6858426586438000
+382,Sarkandaugava,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1341334819662000,56.9929002210974000
+384,Saulkalne,7,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle",vilciens,24.4359251259447000,56.8495505834052000
+385,Mangaļi,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1299852847987000,57.0188913218787000
+386,Torņakalns,14,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Jelgava - Rīga, Liepāja - Rīga, Rīga - Dubulti, Rīga - Jelgava, Rīga - Liepāja, Rīga - Tukums I, Tukums I - Rīga …",vilciens,24.0890956525618000,56.9323723256879000
+387,BA Turība,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,24.0775259436486000,56.9111943313459000
+388,Tīraine,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,24.0740042567449000,56.8868621968252000
+391,Zasulauks,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,24.0517544746398000,56.9414511214425000
+392,Zolitūde,10,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Dubulti - Rīga, Rīga - Dubulti, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,24.0223145484924000,56.9491961465976000
+393,Vaivari,7,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.6690837144851000,56.9550411560789000
+394,Sloka,8,"Rīga - Sloka, Sloka - Rīga, Rīga - Ķemeri, Ķemeri - Rīga, Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.6167216300964000,56.9471861643184000
+395,Smārde,4,"Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.3379435539245000,56.9547691114100000
+396,Tukums I,4,"Rīga - Tukums I, Tukums I - Rīga, Rīga - Tukums II, Tukums II - Rīga",vilciens,23.1701070070266000,56.9659447094994000
+397,Tukums II,2,"Rīga - Tukums II, Tukums II - Rīga",vilciens,23.1154274940490000,56.9597007096978000
+398,Saulkrasti,4,"Rīga - Skulte, Skulte - Rīga, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.4265779497072000,57.2690800468644000
+399,Skulte,2,"Rīga - Skulte, Skulte - Rīga",vilciens,24.4630916121241000,57.3332937309977000
+400,Zemitāni,14,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Skulte, Skulte - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga, Carnikava - Rīga, Rīga - Carnikava …",vilciens,24.1560095783643000,56.9653840496692000
+408,Sigulda,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.8546207427716000,57.1531248877042000
+412,Skrīveri,7,"Rīga - Madona, Zilupe - Rīga, Rīga - Gulbene, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,25.1237295628379000,56.6469697802638000
+413,Skrunda,2,"Liepāja - Rīga, Rīga - Liepāja",vilciens,22.0122675423044000,56.6805508872784000
+418,Stirniene,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,26.6368452070310000,56.5658166822529000
+419,Strenči,2,"Rīga - Valga, Valga - Rīga",vilciens,25.6995852466207000,57.6341674055228000
+421,Šķirotava,10,"Ogre - Rīga, Rīga - Ogre, Madona - Rīga, Zilupe - Rīga, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.2109616043671000,56.9048289436810000
+423,Taudejāņi,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,27.4534083365870000,56.5321083391252000
+427,Trepe,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.0757275106880000,56.4384516205122000
+430,Vabole,2,"Daugavpils - Rīga, Rīga - Daugavpils",vilciens,26.4577650547289000,56.0407456410732000
+432,Valmiera,4,"Rīga - Valga, Valga - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,25.4409426212441000,57.5224399222590000
+433,Vangaži,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.5876950267120000,57.0786942276021000
+434,Varakļāni,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,26.7688601020927000,56.5606192933674000
+441,Viļāni,4,"Ludza - Rīga, Rīga - Ludza, Rīga - Zilupe, Zilupe - Rīga",vilciens,26.9385555265762000,56.5609179747191000
+446,Zilupe,2,"Rīga - Zilupe, Zilupe - Rīga",vilciens,28.1167317149993000,56.3916905790317000
+449,Vecdaugava,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1070152762040000,57.0570916272049000
+450,Vagonu parks,8,"Ogre - Rīga, Rīga - Ogre, Lielvārde - Rīga, Rīga - Lielvārde, Aizkraukle - Rīga, Daugavpils - Rīga, Rīga - Aizkraukle, Rīga - Daugavpils",vilciens,24.1554589750740000,56.9424951988769000
+451,Vecāķi,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1150239225862000,57.0746119678065000
+452,Ziemeļblāzma,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1133500095384000,57.0361763919822000
+453,Zvejniekciems,2,"Rīga - Skulte, Skulte - Rīga",vilciens,24.4426810741424000,57.3070223678813000
+460,Valga,2,"Rīga - Valga, Valga - Rīga",vilciens,26.0530493260739000,57.7746047262964000
+500,Bieriņi/Bērnu slimnīca,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,24.0815320033297060,56.9223834927934700
+501,Dauderi,6,"Rīga - Skulte, Skulte - Rīga, Carnikava - Rīga, Rīga - Carnikava, Rīga - Saulkrasti, Saulkrasti - Rīga",vilciens,24.1258674389059070,57.0025320178568100
+520,Medemciems,2,"Jelgava - Rīga, Rīga - Jelgava",vilciens,24.0584740000000000,56.8550750000000000
+540,Šmerlis,8,"Cēsis - Rīga, Rīga - Cēsis, Rīga - Valga, Valga - Rīga, Rīga - Sigulda, Sigulda - Rīga, Rīga - Valmiera, Valmiera - Rīga",vilciens,24.2006659850797980,56.9858729741613900
