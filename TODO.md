@@ -39,10 +39,14 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
+- [ ] Map popup: show `ipasibas.plans_url` as a link next to „Avots: … CA plāns, lpp. N” for `evakuacijas_punkts` / `izmitinasana` (needs production/app.js) — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] CA plans → map: evacuation assembly points (`evakuacijas_punkts`, 728) and temporary accommodation (`izmitinasana`, 578, 103k places) from 29 municipal plans, each citing plan + page; 41 coordinate errors in official plans found and fixed via VZD address register — `src/karte/db/ca_plani.py`, report `notes/ca-plani-kvalitate.md` — done 2026-10-10 00:08 +03:00 by noiseparty (added 2026-10-10 00:08 +03:00 by noiseparty)
 - [x] Map sidebar: quick buttons (Patvertne, Ārsts, Policija …) removed; search results section only shows after a search — done 2026-10-09 21:53 +03:00 by noiseparty (added 2026-10-09 21:53 +03:00 by noiseparty)
 - [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)
 - [x] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — `ielade.py --apvienot 35`: 3 shelters, 12 OSM fuel stations, 11 same-bank ATM stacks merged; separate buildings at one address kept — done 2026-10-09 21:40 +03:00 by noiseparty (added 2026-10-09 19:11 +03:00 by noiseparty)

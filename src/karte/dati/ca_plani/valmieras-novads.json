@@ -1,0 +1,25 @@
+{
+ "slug": "valmieras-novads",
+ "statuss": "nav_publicets",
+ "piezime": "The public plan version refers assembly points to annex 5 and accommodation to annex 7, both listed as '(elektroniski)'; neither annex is in the folder (the other files are council decisions and the CAK bylaws), so no lists could be extracted.",
+ "atsauces": [
+  {
+   "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+   "citats": "5. pielikums. Evakuācijas pulcēšanās vietas (elektroniski)"
+  },
+  {
+   "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+   "citats": "7. pielikums. Izmitināšanas vietas (elektroniski)"
+  },
+  {
+   "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+   "citats": "Pulcēšanās vietas Valmieras novadā skatīt 5. pielikumā."
+  },
+  {
+   "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+   "citats": "Izmitināšanas vietas Valmieras novadā skatīt 7. pielikumā."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

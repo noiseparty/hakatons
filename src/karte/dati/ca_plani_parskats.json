@@ -1,0 +1,1980 @@
+[
+ {
+  "slug": "adazu-novads",
+  "pasvaldiba": "Ādažu novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 6.1 'Evakuācijas pulcēšanas vietas' (p. 132–133, 17 rows, WGS-84 with comma decimals). Temporary accommodation: table 6.5 (p. 135–136, 9 rows; the first two rows lack the Nr. cell and coordinate digits are split by <br>). Settlement column of table 6.1 appended to the address in parentheses. STRUKTURA.md claims 5 assembly points / 11 accommodation sites (1060 places) — does not match the plan text.",
+  "atsauces": [
+   {
+    "fails": "adazu_novada_ca_plans_publiska-versija_0.md",
+    "citats": "Ādažu novada teritorijā ir noteiktas 17 evakuācijas pulcēšanas vietas"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 17,
+   "ar_koord": 17,
+   "geokodeti": 0,
+   "kartē": 17,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 9,
+   "ar_koord": 9,
+   "geokodeti": 0,
+   "kartē": 9,
+   "vietas": 2710,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "aizkraukles-novads",
+  "pasvaldiba": "Aizkraukles novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 'Evakuācijas pulcēšanās vietas Aizkraukles novadā' (p. 130–133, 44 rows, address only) plus a separate table 'Evakuācijas punkti Aizkraukles novadā' (p. 137, 7 rows, numbered from 1 again). Accommodation: annex 7 table 1 (p. 175–181, 41 rows with Lat/Lon); rows 11–14 are inside a picture-text block and were reassembled by hand, row 13 lon unreadable. Coordinate digits split by <br>.",
+  "atsauces": [
+   {
+    "fails": "22.01.2026_10_CAP_jauna_redakcija.md",
+    "citats": "CA plāna 7.  pielikumā  norādītas  Aizkraukles novadā esošās izmitināšanas vietas."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [
+   "Pagastapakalpojumu centra ēka,Iršupagasts, „Kūlēni” Iršupagasts (lpp. 131): address_not_found",
+   "Pagasta pakalpojumu centra ēka ,Bebru pagasts, „Vecbebri”, Bebru pagasts (lpp. 131): address_not_found",
+   "Neretas kultūras centrs, P.Lodziņa iela 1, Nereta (lpp. 131): address_not_found",
+   "Zalves kultūras nams, Zalve,\" Atpūtas\", Zalves pagasts (lpp. 132): address_not_found",
+   "Zalves pamatskolas telpas, \"Zalves pamatskola\", Zalve, Zalves pagasts (lpp. 132): address_not_found",
+   "„Mazbānīša parks\" Daudzevā, Daudzeva, Daudzeses pagasts, (lpp. 133): address_not_found",
+   "„Aizsargu laukums\" Daudzevā, Daudzeva, Daudzeses pagasts, (lpp. 133): address_not_found",
+   "Sporta halle Daudzesē, Daudzese, Daudzeses pagasts, (lpp. 133): address_not_found",
+   "Pļaviņu autoosta, Stacijas iela 4, Pļaviņas, (lpp. 133): address_not_found",
+   "Stadions, Raiņa iela 109, Pļaviņas (lpp. 133): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 51,
+   "ar_koord": 0,
+   "geokodeti": 41,
+   "kartē": 35,
+   "vietas": 0,
+   "dublikati": 6
+  },
+  "izmitinasana": {
+   "atrasti": 41,
+   "ar_koord": 40,
+   "geokodeti": 1,
+   "kartē": 39,
+   "vietas": 7079,
+   "dublikati": 2
+  }
+ },
+ {
+  "slug": "aluksnes-novads",
+  "pasvaldiba": "Alūksnes novads",
+  "statuss": "nav_publicets",
+  "piezime": "Plan refers to annex 6 (assembly points), annex 7 (potential evacuation points) and annex 10 (temporary accommodation list) — none of the annexes are in the folder. Section 7.7 points to annex 9 for accommodation while the annex list names it annex 10 (annex 9 is vehicles).",
+  "atsauces": [
+   {
+    "fails": "CAP_PLANS_2025.md",
+    "citats": "Alūksnes novadā iedzīvotāju evakuācijas gadījumā noteiktas vairākas pulcēšanās vietas (skatīt 6. pielikumu)."
+   },
+   {
+    "fails": "CAP_PLANS_2025.md",
+    "citats": "6. pielikums. Evakuācijas pulcēšanās vietas."
+   },
+   {
+    "fails": "CAP_PLANS_2025.md",
+    "citats": "7. pielikums. Potenciālie evakuācijas punkti Alūksnes novadā."
+   },
+   {
+    "fails": "CAP_PLANS_2025.md",
+    "citats": "10. pielikums. Pagaidu izmitināšanas vietu saraksts."
+   },
+   {
+    "fails": "CAP_PLANS_2025.md",
+    "citats": "Alūksnes novadā ir noteiktas potenciālās pagaidu izmitināšanas vietas (skat. 9.pielikumu)."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "augsdaugavas-novads",
+  "pasvaldiba": "Augšdaugavas novads",
+  "statuss": "dalejs",
+  "piezime": "Shared plan with Daugavpils: the Augšdaugava folder only has pointer stubs, so records cite ../daugavpils/cap_aktualizets_2026_05_gala_novads.md, table 5.2 'Evakuācijas pulcēšanās vietas Augšdaugavas novadā' (p. 136–138, 40 rows, Lat/Lon mostly comma decimals; rows are spread over several lines). Temporary accommodation is in annex 4, marked restricted (ierobežotas pieejamības). Daugavpils city's own table 5.1 is not included here.",
+  "atsauces": [
+   {
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "Pagaidu izmitināšana Daugavpils valstspilsētā un Augšdaugavas novadā skatāma 4.pielikumā. _(Ierobežotas pieejamības informācija)._"
+   },
+   {
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "4. pielikums. Pagaidu izmitināšana (Ierobežotas pieejamības informācija)"
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Zariņu auto pietura (Dvietes pagasts)",
+    "nr": 11,
+    "lpp": 137,
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "||Dvietes pagasts|Zariņu auto pietura|<br>Dvietes pagasts,|56,087518|26,205289|",
+    "koord_teksts": "56,087518; 26,205289",
+    "attalums_km": 7.9,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Zariņi\", Dvietes pag., Augšdaugavas nov., LV-5441",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "pie pagasta pārvaldes (Līksnas pagasts)",
+    "nr": 18,
+    "lpp": 137,
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "||Līksnas pagasts|pie pagasta pārvaldes||55,942017|26,650464|",
+    "koord_teksts": "55,942017; 26,650464",
+    "attalums_km": 16.4,
+    "tips": "far_from_address",
+    "adrese_vzd": "Daugavas iela 8, Līksna, Līksnas pag., Augšdaugavas nov., LV-5456",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "pie pamatskolas (Medumu pagasts)",
+    "nr": 20,
+    "lpp": 137,
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "||Medumu pagasts|pie pamatskolas||55,937688|26,351106|",
+    "koord_teksts": "55,937688; 26,351106",
+    "attalums_km": 17.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Alejas iela 20, Medumi, Medumu pag., Augšdaugavas nov., LV-5460",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Pašulienes ciema sporta laukums (Šēderes pagasts)",
+    "nr": 33,
+    "lpp": 138,
+    "fails": "../daugavpils/cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "|||Pašulienes ciema sporta||||",
+    "koord_teksts": "55,943827; 26,243618",
+    "attalums_km": 1.2,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Pašuliene\", Šēderes pag., Augšdaugavas nov., LV-5474",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 40,
+   "ar_koord": 40,
+   "geokodeti": 4,
+   "kartē": 40,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "balvu-novads",
+  "pasvaldiba": "Balvu novads",
+  "statuss": "publicets",
+  "piezime": "Main plan file, section 6.2 table 6.2.1 (p. 106–107): 27 assembly points with WGS84 coordinates written as 'N 57.131804' / 'E 27.268518' (koord_teksts joins the two cells with '; '); nosaukums = institution + ' — ' + the 'Pulcēšanās vieta' column. Section 6.5 table (p. 108–112): 34 temporary accommodation sites in municipal buildings, no coordinates; 'Guļvietas: Nav' recorded as gultas 0. In the accommodation table the narrow address column breaks words across <br> (e.g. 'Kārsava<br>s iela'); addresses were re-joined, and four rows (6, 13, 22, 30) are split across page breaks.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Dabas parka “Balkānu kalni” viesu nams, Logini, Šķilbēnu pagasts (lpp. 108): address_not_found",
+   "Stacijas pamatskolas Vīksnas filiāle, Vīksna, Vīksnas pagasts (lpp. 110): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 27,
+   "ar_koord": 27,
+   "geokodeti": 0,
+   "kartē": 27,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 34,
+   "ar_koord": 0,
+   "geokodeti": 32,
+   "kartē": 31,
+   "vietas": 6600,
+   "dublikati": 1
+  }
+ },
+ {
+  "slug": "bauskas-novads",
+  "pasvaldiba": "Bauskas novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points are a bulleted prose list in ch. 6.2 (p. 107-108, no coordinates); temporary accommodation is table 15 in ch. 6.5 (p. 108-109) with Lat/Lon in comma-decimal WGS84. Accommodation table has 'Virtuve ar ēdnīcu' and 'Guļam vietas' as yes/no only, no capacity numbers. Ch. 6.2 also says assembly can be at any parish administration building ('Pie attiecīgo pašvaldību nodaļu administratīvajām ēkām'), not itemised.",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Griķu pamatskola",
+    "nr": 3,
+    "lpp": 108,
+    "fails": "bauska_stca_plans_2022_precizets.md",
+    "citats": "|3.|Griķu pamatskola|Izglītības<br>iestāde|Visbijas iela 1,<br>Ceraukstes pag.,<br>LV-3908|56,34724|24,2556098|Ir|Nav|",
+    "koord_teksts": "56,34724|24,2556098",
+    "attalums_km": 3.2,
+    "tips": "far_from_address",
+    "adrese_vzd": "Visbijas iela 1, Ceraukste, Ceraukstes pag., Bauskas nov., LV-3908",
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [
+   "Bauskas pilsētas Rātslaukums, Rātslaukums Bauska (lpp. 107): address_not_found",
+   "Iecavas autoostas laukums, Ed. Virzas iela 24 Iecava (lpp. 107): address_not_found",
+   "Laukums pie Rundāles apvienības pārvaldes ēkas, Pilsrundāle1 Pilsrundāle (lpp. 107): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 9,
+   "ar_koord": 0,
+   "geokodeti": 6,
+   "kartē": 6,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 20,
+   "ar_koord": 20,
+   "geokodeti": 1,
+   "kartē": 20,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "cesu-novads",
+  "pasvaldiba": "Cēsu novads",
+  "statuss": "nav_publicets",
+  "piezime": "The published file is the plan 'bez pielikumiem' (without annexes). Assembly points are in annex 12 (not marked restricted but not published) and accommodation sites in annex 19 (marked 'Ierobežota pieejamība'). Matches the manual profile in vietne (cesu-novads.json, both lists empty).",
+  "atsauces": [
+   {
+    "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+    "citats": "|12.pielikums|**Evakuācijas pulcēšanās vietas Cēsu**<br>**novada teritorijā **|5||"
+   },
+   {
+    "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+    "citats": "|19.pielikums|**Izmitināšanas**<br>**vietas**<br>**Cēsu**<br>**novada**<br>**teritorijā**|10|Ierobežota pieejamība|"
+   },
+   {
+    "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+    "citats": "Cēsu novada teritorijā ir noteiktas evakuācijas pulcēšanās vietas, kuru adreses apkopotas **12.pielikumā."
+   },
+   {
+    "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+    "citats": "Apzinātās izmitināšanas vietas skatīt **19.pielikumā.**"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "daugavpils",
+  "pasvaldiba": "Daugavpils",
+  "statuss": "dalejs",
+  "piezime": "Joint plan of Daugavpils valstspilsēta and Augšdaugavas novads; used the 2026-05 updated version (cap_aktualizets_2026_05_gala_novads.md; CA-Plans_14.05.md and 317_lem_public-v001.md are older copies with the same tables, not duplicated). Assembly points: table 5.1 (city, 25 rows / 27 locations, dot decimals; place column is the neighbourhood name) and table 5.2 (Augšdaugavas novads, 40 rows, mostly comma decimals), ch. 5.2, p. 134-138; rows are spread over many table lines in the conversion. Temporary accommodation is in annex 4, marked restricted ('Ierobežotas pieejamības informācija') and not published.",
+  "atsauces": [
+   {
+    "fails": "cap_aktualizets_2026_05_gala_novads.md",
+    "citats": "Pagaidu izmitināšana Daugavpils valstspilsētā un Augšdaugavas novadā skatāma 4.pielikumā. _(Ierobežotas pieejamības informācija)._"
+   },
+   {
+    "fails": "CA-Plans_14.05.md",
+    "citats": "4. pielikums. Pagaidu izmitināšana (Ierobežotas pieejamības informācija)"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 29,
+   "ar_koord": 29,
+   "geokodeti": 0,
+   "kartē": 29,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "dienvidkurzemes-novads",
+  "pasvaldiba": "Dienvidkurzemes novads",
+  "statuss": "kopigs_plans",
+  "piezime": "All files in this folder (incl. annex 12 'pulcēšanās vietas') are pointer stubs with no content: Dienvidkurzeme shares the Liepāja–Dienvidkurzeme cooperation-territory CA plan (Liepajas-DKN-ST-CAP), whose full conversion is in markdown/liepaja/. Extract lists from the liepaja slug.",
+  "atsauces": [
+   {
+    "fails": "dkn-lv_12-pielikums-pulcesanas-vietas.md",
+    "citats": "> Pilnais konvertētais pamatplāns pieejams: [markdown/liepaja/Liepajas-DKN-ST-CAP_2023ATJ.md](../liepaja/Liepajas-DKN-ST-CAP_2023ATJ.md)."
+   },
+   {
+    "fails": "liepaja-lv_12-pielikums-pulcesanas-vietas-evakuacijas-koridori-2026.md",
+    "citats": "> Šis dokuments ir Liepājas valstspilsētas un Dienvidkurzemes novada kopīgās sadarbības teritorijas civilās aizsardzības plāna sastāvdaļa (Liepajas-DKN-ST-CAP)."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "dobeles-novads",
+  "pasvaldiba": "Dobeles novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 23 'Pulcēšanās vietas' (HTML table, 17 rows with Lat/Lon; rows 1–5 comma decimals, 6–17 dot decimals). Accommodation: table 25 (40 rows, capacity 'Cilvēku skaits', kitchen and beds; no coordinates); 'nav' in the beds column read as 0. No accommodation site is listed in Dobele town itself.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Bērzupes speciālā internātpamatskola, Bērzupes skola, Annenieki, Annenieku pagasts, Dobeles novads, LV-3718 (lpp. None): address_not_found",
+   "Bērzes skola, Bērzes skola Bērze, Bērzes pagasts, Dobeles novads, LV-3732 (lpp. None): address_not_found",
+   "Bikstu pagasta sporta zāle, Atpūtas, Bikstu pagasts, Dobeles novads, LV-3713 (lpp. None): address_ambiguous",
+   "Auces vidusskola (jaunā ēka ), J.Mātera iela 11., Auce, Dobeles novads, LV-3708 (lpp. None): address_not_found",
+   "Auces vidusskola (vecā ēka ), J.Mātera iela 13., Auce, Dobeles novads, LV-3708 (lpp. None): address_not_found",
+   "Vītiņu tautas nams, Vītiņi, Vītiņu pag., Dobeles novads, LV-3708 (lpp. None): address_not_found",
+   "Lielauces tautas nams, \"Ezerkrasti\" Lielauces pag., Dobeles novads, LV-3716 (lpp. None): address_not_found",
+   "Annas Brigaderes pamatskola, Annas Brigaderes pamatskola, Kroņauce, Tērvetes pagasts, Dobeles novads, LV-3730 (lpp. None): address_not_found",
+   "SIA Rehabilitācijas centrs \"Tērvete\", RC Tērvete, Tērvetes pagasts, Dobeles novads, LV-3730 (lpp. None): address_not_found",
+   "Tērvetes sporta halle, Kroņauce, Tērvetes pagasts, Dobeles novads, LV-37 (lpp. None): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 17,
+   "ar_koord": 17,
+   "geokodeti": 0,
+   "kartē": 17,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 40,
+   "ar_koord": 0,
+   "geokodeti": 30,
+   "kartē": 28,
+   "vietas": 6440,
+   "dublikati": 2
+  }
+ },
+ {
+  "slug": "gulbenes-novads",
+  "pasvaldiba": "Gulbenes novads",
+  "statuss": "publicets",
+  "piezime": "Annex 2 'Evakuācijas pulcēšanās vietu kopsavilkums' (lpp. 221-223, 30 rows) and annex 4 'Izmitināšanas vietu kopsavilkums' (lpp. 229-233, 32 rows, 'Kopā: 3005' people / 205 beds) are inside the single plan file. Many coordinates use comma decimals (converted to dot only). Suspicious: evak #20 lat 51.13, #29 same coords as #5, #30; izmit #6 near Rīga, #16 lon missing decimal point; izmit #3 has two capacity values '150<br>120' (vietas left null).",
+  "atsauces": [
+   {
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|**Nr.p.k.**|**Nosaukums**|**Ēkas tips**|**Adrese**|**Koor**|**dinātes***|**Telpu veids***|**Cilvēku**<br>**skaits***|**Virtuve**<br>**ar ēdnīcu**|<br>**Guļam**<br>**vietas**|"
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Līgo pagasta pārvalde Līgo kultūras nams, laukums",
+    "nr": 5,
+    "lpp": 221,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|5.|Līgo pagasta pārvalde<br>Līgo kultūras nams,<br>laukums|Jaunstukmaņi, Līgo,<br>Līgo  pagasts|57,183391|26,767557|",
+    "koord_teksts": "57,183391|26,767557",
+    "attalums_km": 21.5,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Jaunstukmaņi\", Līgo, Līgo pag., Gulbenes nov., LV-4421",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Stradu pagasta pārvalde . Stāķu autobusu pietura",
+    "nr": 20,
+    "lpp": 222,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|20.|Stradu pagasta pārvalde .<br>Stāķu autobusu pietura|Stāķi, Stradu pag.,<br>Gulbenes nov.|51,134893|26,733374|",
+    "koord_teksts": "51,134893|26,733374",
+    "attalums_km": 646.6,
+    "aizstats_ar_adresi": false,
+    "rezultats": "not_on_map",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Stradu pagasta pārvalde Stradi. “Palienas 2",
+    "nr": 21,
+    "lpp": 222,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|21|Stradu pagasta pārvalde<br>Stradi. “Palienas 2|Stradi , Stradu pag.,<br>Gulbenes nov.|57,140653|26,791523|",
+    "koord_teksts": "57,140653|26,791523",
+    "attalums_km": 4.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Stradi\", Stradu pag., Gulbenes nov., LV-4417",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Gulbenes pilsēta Gulbenes vidusskola",
+    "nr": 30,
+    "lpp": 223,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|30|Gulbenes pilsēta<br>Gulbenes vidusskola|Skolas iela 12.<br>Gulbene|57.10162076|26.467967|",
+    "koord_teksts": "57.10162076|26.467967",
+    "attalums_km": 19.8,
+    "tips": "far_from_address",
+    "adrese_vzd": "Skolas iela 12, Gulbene, Gulbenes nov., LV-4401",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Līgo kultūras nams",
+    "nr": 6,
+    "lpp": 230,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|6.|Līgo kultūras nams|Pašizklaides<br>pasākumu ēka|Jaunstukmaņi, Līgo ,<br>Līgo pagasts|56,917432|24,170905|Aktu un mazā<br>zāle;<br>u.c. telpas|60|nav|nav|",
+    "koord_teksts": "56,917432|24,170905",
+    "attalums_km": 116.1,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   },
+   {
+    "nosaukums": "Jaungulbenes tautas nams",
+    "nr": 16,
+    "lpp": 231,
+    "fails": "Gulbenes_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "|16|Jaungulbenes tautas<br>nams|Kultūras<br>iestāde|\"Kokles\",<br>Jaungulbenes<br>pag.,<br>Gulbenes nov.|57.077155|26634389|Aktu zāle<br>Mēģinājuma<br>telpas|70|nav|nav|",
+    "koord_teksts": "57.077155|26634389",
+    "attalums_km": null,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [
+   "Stradu pagasta pārvalde . Stāķu autobusu pietura, Stāķi, Stradu pag., Gulbenes nov. (lpp. 222): plan_coordinate_error"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 30,
+   "ar_koord": 30,
+   "geokodeti": 3,
+   "kartē": 29,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 32,
+   "ar_koord": 32,
+   "geokodeti": 2,
+   "kartē": 31,
+   "vietas": 2685,
+   "dublikati": 1
+  }
+ },
+ {
+  "slug": "jekabpils-novads",
+  "pasvaldiba": "Jēkabpils novads",
+  "statuss": "nav_publicets",
+  "piezime": "Plan refers to annex 22 (assembly points) and annex 24 (accommodation sites, incl. catering); the folder only contains annexes 1, 1A, 2, 4, 5, 9, 10, 11, 14, 16, 18, 19, 20.",
+  "atsauces": [
+   {
+    "fails": "jekabpils_ca_plans.md",
+    "citats": "Pielikumā Nr. 22 norādītas pulcēšanās vietas Jēkabpils novada teritorijā."
+   },
+   {
+    "fails": "jekabpils_ca_plans.md",
+    "citats": "Pielikumā Nr. 24 uzskaitītas apzinātās Jēkabpils novada teritorijas izmitināšanas vietas."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "jelgava",
+  "pasvaldiba": "Jelgava",
+  "statuss": "nav_publicets",
+  "piezime": "Shared Jelgava city + Jelgava county plan (2 volumes). Volume 1 (city) refers assembly points to annex 5 and accommodation to annex 7; volume 2 (county) to annexes 6 and 8. None of these annexes are in the folder; the converted volumes end with chapter 8.",
+  "atsauces": [
+   {
+    "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+    "citats": "- 5.pielikums. Evakuācijas pulcēšanās vietas Jelgavas pilsētā"
+   },
+   {
+    "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+    "citats": "7. pielikums. Apzinātās izmitināšanas vietas Jelgavas pilsētā"
+   },
+   {
+    "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+    "citats": "Pulcēšanās vietas Jelgavas pilsētā skatīt 5. pielikumā."
+   },
+   {
+    "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+    "citats": "Apzinātās izmitināšanas vietas Jelgavas pilsētā skatīt 7. pielikumā."
+   },
+   {
+    "fails": "12_5_pielikums3_Jelgavas_novada_CA_plans.md",
+    "citats": "6.pielikumā rādītas pulcēšanās vietas."
+   },
+   {
+    "fails": "12_5_pielikums3_Jelgavas_novada_CA_plans.md",
+    "citats": "Apzinātās izmitināšanas vietas skatīt 8. pielikumā."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "jelgavas-novads",
+  "pasvaldiba": "Jelgavas novads",
+  "statuss": "nav_publicets",
+  "piezime": "Jelgava county volume of the shared Jelgava city/county plan (same text also in markdown/jelgava/). Assembly points are referred to annex 6 and accommodation sites to annex 8; neither annex is in the folder.",
+  "atsauces": [
+   {
+    "fails": "40_lemuma_pielikums_civilas_aizsardzibas_plans_0.md",
+    "citats": "Jelgavas novadā katastrofu gadījumā noteiktas vairākas pulcēšanās vietas. No pulcēšanās vietām notiek tālāka evakuācijas koordinēšana. 6.pielikumā rādītas pulcēšanās vietas."
+   },
+   {
+    "fails": "40_lemuma_pielikums_civilas_aizsardzibas_plans_0.md",
+    "citats": "Apzinātās izmitināšanas vietas skatīt 8. pielikumā."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "jurmala",
+  "pasvaldiba": "Jūrmala",
+  "statuss": "publicets",
+  "piezime": "Both lists are in the main plan L0004_pielikums.md: table 4.2 'Evakuācijas pulcēšanās vietas' (lpp. 85, 23 points, lat / lon in one cell) and table 4.4 'izmitināšanas vietas' (lpp. 88-90, 24 sites; capacity column is 'Guļam vietas', recorded in vietas). Assembly-point table has district + place description (mostly stations/intersections), adrese = '<place>, <district>, Jūrmala'. Point #10 Melluži lat 56.064556 is a likely typo (kept as written).",
+  "atsauces": [
+   {
+    "fails": "L0004_pielikums.md",
+    "citats": "Jūrmalas pilsētas sadarbības teritorijā īslaicīgai iedzīvotāju izvietošanai iespējams izmantot Jūrmalas izglītības iestādes un viesnīcas (kopumā 24 objekti; aptuveni 3100 iedzīvotājiem)."
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Dubultu prospekts 105 pie viesnīcas „Liesma”",
+    "nr": 10,
+    "lpp": 85,
+    "fails": "L0004_pielikums.md",
+    "citats": "|10.|Melluži|Dubultu prospekts 105 pie viesnīcas „Liesma”|56.064556  /  23.735869|",
+    "koord_teksts": "56.064556  /  23.735869",
+    "attalums_km": 96.1,
+    "aizstats_ar_adresi": false,
+    "rezultats": "not_on_map",
+    "slanis": "evakuacijas_punkti"
+   }
+  ],
+  "neatrasti": [
+   "Dubultu prospekts 105 pie viesnīcas „Liesma”, Dubultu prospekts 105 pie viesnīcas „Liesma”, Melluži, Jūrmala (lpp. 85): plan_coordinate_error"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 23,
+   "ar_koord": 23,
+   "geokodeti": 0,
+   "kartē": 22,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 24,
+   "ar_koord": 24,
+   "geokodeti": 0,
+   "kartē": 24,
+   "vietas": 3980,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "kekavas-novads",
+  "pasvaldiba": "Ķekavas novads",
+  "statuss": "publicets",
+  "piezime": "Lists are inline in chapter 6.2 (assembly points, WGS84 lat/lon) and 6.5 (temporary accommodation, WGS84 lat/lon with digits split by <br>) of the current Ķekava plan (lpp. 111-113). The folder also holds the superseded 2021 Baldone plan with the same tables (3 assembly points, same 5 schools) — those records are included and flagged in piezime; drop fails=baldonessadarbibasteritorijasplans.md to avoid duplicates. Gultas 'nav' recorded as 0.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 4,
+   "ar_koord": 4,
+   "geokodeti": 0,
+   "kartē": 4,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 5,
+   "ar_koord": 5,
+   "geokodeti": 0,
+   "kartē": 5,
+   "vietas": 2850,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "kraslavas-novads",
+  "pasvaldiba": "Krāslavas novads",
+  "statuss": "publicets",
+  "piezime": "Used the 2026-updated plan (kraslavas_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md): assembly points in table 32 (ch. 6.2, p. 123-124, addresses only, no coordinates) and accommodation in table 33 (ch. 6.4, p. 125-127) with 'lat<br>lon' WGS84 coordinates. In the accommodation table the 'Adrese' column mostly holds the building type/name; parish is taken from the first column. Older 2022 VUGD version (kraslavas_novada_STCA_plans_2022_VUGD.md) has a prose-only accommodation summary and was not duplicated.",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Varavīksnes sk",
+    "nr": null,
+    "lpp": 126,
+    "fails": "kraslavas_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plans.md",
+    "citats": "||N.Rancāna 4<br>Varavīksnes sk|zāle,<br>klases|100|+|-|56.892787<br>27.178744|",
+    "koord_teksts": "56.892787<br>27.178744",
+    "attalums_km": 73.6,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [
+   "Varavīksnes v-sk. (sporta zāle/stadions), Rancāna iela 4, Krāslava (lpp. 123): address_not_found",
+   "Dagdasv-sk., Mičurina ielā3a,Dagda (lpp. 123): address_not_found",
+   "Pag. pārvaldes ēka, Ilzes iela 19, Priežmale, Kastuļinas pag. (lpp. 124): address_not_found",
+   "Bērnudārzs-skola, c. Ezerkalns, Krāslavas pag. (lpp. 124): address_not_found",
+   "Tautas nams, Aulejas pag. (lpp. 126): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 28,
+   "ar_koord": 0,
+   "geokodeti": 24,
+   "kartē": 24,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 26,
+   "ar_koord": 25,
+   "geokodeti": 1,
+   "kartē": 17,
+   "vietas": 985,
+   "dublikati": 8
+  }
+ },
+ {
+  "slug": "kuldigas-novads",
+  "pasvaldiba": "Kuldīgas novads",
+  "statuss": "dalejs",
+  "piezime": "Assembly points: table 6.2.1 (p. 121–122, 22 rows numbered 1–5, 7–23; row 6 missing, row 5 merged with the 'pagastos' sub-header). Coordinates are 'N xx.xx / E xx.xx'; rows 1–7 have only 2 decimals and row 2 (Rātslaukums) looks like degrees-minutes. Accommodation sites are said to be in annex 8.6, which is not in the folder (plan PDF has only annexes 1–3); nosaukums combines the 'Pulcēšanās vieta' and 'Iestāde' columns.",
+  "atsauces": [
+   {
+    "fails": "Kuldigas_novada_sadarbibas_teritorijas_civilas_a_izsardzibas_plans.md",
+    "citats": "8.6. pielikumā uzskaitītas apzinātās izmitināšanas vietas Kuldīgas novada pašvaldības iestādēs."
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Rātslaukums (Kuldīgas novada dome)",
+    "nr": 2,
+    "lpp": 121,
+    "fails": "Kuldigas_novada_sadarbibas_teritorijas_civilas_a_izsardzibas_plans.md",
+    "citats": "|**2.**|Kuldīgas<br>novada dome|Rātslaukum<br>s|Baznīcas<br>iela 1,<br>Kuldīga|N 56.58|E 21.58|",
+    "koord_teksts": "N 56.58; E 21.58",
+    "attalums_km": 12.5,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Pilsētas laukums",
+    "nr": 3,
+    "lpp": 121,
+    "fails": "Kuldigas_novada_sadarbibas_teritorijas_civilas_a_izsardzibas_plans.md",
+    "citats": "|**3.**|Pilsētas laukums|Pilsētas laukums|<br> <br>Pilsētas laukums<br>|N 56.96|E 21.96|",
+    "koord_teksts": "N 56.96; E 21.96",
+    "attalums_km": 1.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Pilsētas laukums 1, Kuldīga, Kuldīgas nov., LV-3301",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Alsungas vidusskola (Alsungas pagasta pārvalde)",
+    "nr": 7,
+    "lpp": 121,
+    "fails": "Kuldigas_novada_sadarbibas_teritorijas_civilas_a_izsardzibas_plans.md",
+    "citats": "|**7.**|Alsungas pagasta<br>pārvalde|Alsungas<br>vidusskola|Skolas iela 11,<br>Alsunga|N 56.97|E 21.56|",
+    "koord_teksts": "N 56.97; E 21.56",
+    "attalums_km": 1.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Skolas iela 11, Alsunga, Alsungas pag., Kuldīgas nov., LV-3306",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 22,
+   "ar_koord": 22,
+   "geokodeti": 3,
+   "kartē": 22,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "liepaja",
+  "pasvaldiba": "Liepāja",
+  "statuss": "nav_publicets",
+  "piezime": "Shared Liepāja city + Dienvidkurzeme county (DKN) plan. Chapter 6.2 says assembly-point addresses are 'summarised in the table below' and in annex 12, but no table follows in the conversion (only a visual-elements marker on lpp. 211); accommodation sites are in annex 7 (plan states ~35 000 places). Neither annex is in the folder, so no points could be extracted; the stadium 'Olimpija' mention is a 24 h holding place for prisoners, not a public site.",
+  "atsauces": [
+   {
+    "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+    "citats": "|_7. pielikums_|Izmitināšanas un ēdināšanas vietas Liepājas valstspilsētā un Dienvidkurzemes|"
+   },
+   {
+    "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+    "citats": "|_12.pielikums_|Pulcēšanās vietas Liepājas un DKN ST|"
+   },
+   {
+    "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+    "citats": "Liepājas un DKN ST ir noteiktas evakuācijas pulcēšanās vietas, kuru adreses apkopotas zemāk tabulā. Pulcēšanās vietu karte brīvi pieejama jebkuram pašvaldības iedzīvotājam interaktīvajā kartē un 12. pielikumā."
+   },
+   {
+    "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+    "citats": "Pašlaik apzinātais izmitināšanas vietu skaits ir ~35 000, kas ir atbilstošs. Apzinātās izmitināšanas vietas skatīt 7. pielikumā."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "limbazu-novads",
+  "pasvaldiba": "Limbažu novads",
+  "statuss": "publicets",
+  "piezime": "Both lists are HTML tables inline in the 2021 plan: table 36 (chapter 6.2, assembly points) and table 38 (chapter 6.5, temporary accommodation). No coordinates and no row numbers; accommodation rows are grouped under town/parish header rows (kept in piezime, addresses already contain the parish). Gultas 'Nav' recorded as 0; one row lists capacity 240 but 250 beds (Rīgas Valsts tehnikums dienesta viesnīca). The per-parish *-pagasts.md / *-pilseta.md files are maps with no extractable text.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Vilzēnu sporta laukums, Vilzēni, Braslavas pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Veikals Ozolmuižā, SIA IMPAR veikals, Ozolmuiža, Brīvzemnieku pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Limbažu novada speciālā pamatskola, Katvari, Katvaru pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Pie veikala, „Veikals”, Kaijciems, Limbažu pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Pie bibliotēkas, Meldru iela 1-12a, Pāle, Pāles pagasts, Limbažu novads (lpp. None): address_not_found",
+   "PII „Vilnītis”, Korģenes filiāle, Zītaru iela 2, Korģene, Salacgrīvas pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Skultes kultūras integrācijas centrs, Mandegas, Skultes pagasts, Limbažu novads (lpp. None): address_not_found",
+   "veikals, Skultes muiža, Gaiļi, Skultes pagasts, Limbažu novads (lpp. None): address_not_found",
+   "DUS, Laiceimkursīši, Vārzas, Skultes pagasts, Limbažu novads (lpp. None): address_not_found",
+   "KC “Melngaiļa sēta”, “Melngailis”, Vidrižu pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Bibliotēka – uzņēmējdarbības centrs “SALA”, Ungurpils ciems, Alojas pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Vilzēnu pirmsskolas izglītības iestāde “Auseklītis” filiāle „Vilzēni”, Vilzēni, Braslavas pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Ozolmuižas sporta komplekss, Ozolmuiža, Brīvzemnieku pagasts, Limbažu novads, (lpp. None): address_not_found",
+   "Pāles kultūras nams, “Kalnakrogs”, Pāles pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Pirmsskolas izglītības iestāde „Vilnītis” Korģenes filiāle, Zītaru iela 2, Korģene, Salacgrīvas pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Skultes kultūras integrācijas centrs, Mandegas, Skultes pagasts, Limbažu novads (lpp. None): address_not_found",
+   "Skultes pirmsskolas izglītības iestāde „Aģupīte”, Mandegas, Skultes pagasts, Limbažu novads (lpp. None): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 39,
+   "ar_koord": 0,
+   "geokodeti": 29,
+   "kartē": 29,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 54,
+   "ar_koord": 0,
+   "geokodeti": 47,
+   "kartē": 47,
+   "vietas": 6209,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "livanu-novads",
+  "pasvaldiba": "Līvānu novads",
+  "statuss": "nav_publicets",
+  "piezime": "Both the 2024 plan and the older version say assembly points are in annex 7 ('coordinates announced separately' depending on the hazard); no accommodation list is referenced (catering in annex 10). Annexes are not in the folder.",
+  "atsauces": [
+   {
+    "fails": "livanu-novada-civilas-aizsardzibas-plans-2024.md",
+    "citats": "Pulcēšanās vietas apdraudējuma gadījumā Līvānu novadā, 7.pielikums."
+   },
+   {
+    "fails": "livanu-novada-civilas-aizsardzibas-plans-2024.md",
+    "citats": "Šo vietu koordinātes tiek paziņotas atsevišķi, vadoties pēc iespējamo apdraudējumu vietas intensitātes un rakstura."
+   },
+   {
+    "fails": "livanu-novada-civilas-aizsardzibas-plans-vecaka-versija.md",
+    "citats": "Pulcēšanās vietas apdraudējuma gadījumā Līvānu novadā"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "ludzas-novads",
+  "pasvaldiba": "Ludzas novads",
+  "statuss": "publicets",
+  "piezime": "Lists are in the public annex file: annex 11 (27 assembly points, LKS-92 TM coordinates) and annex 13 (21 accommodation sites, no coordinates). The assembly table has no name column, so nosaukums is the 'Teritoriālā vienība' value; coordinates are written northing first then easting (e.g. '272785.66<br>728672.57'), stored as lat=first (y), lon=second (x). The 'Iedzīvotāju skaits' column is population served, not capacity, so it is kept in piezime. Gultas 'nav' recorded as 0.",
+  "atsauces": [
+   {
+    "fails": "LSTCAP_plans.md",
+    "citats": "Pielikums Nr.11 – Iedzīvotāju pulcēšanās vietas evakuācijas gadījumā"
+   },
+   {
+    "fails": "LSTCAP_plans.md",
+    "citats": "Pielikums Nr.13 – Ludzas novada pašvaldības izmitināšanas vietas"
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Cirmas pagasts",
+    "nr": 10,
+    "lpp": 11,
+    "fails": "LSTCAP_pielikumi_publiskojams.md",
+    "citats": "|10.|Cirmas<br>pagasts|Pagasta iela 2, Tutāni,<br>Cirmas pagasts, Ludzas<br>novads|271933.01<br>724224.79|615|6,3|",
+    "koord_teksts": "271933.01<br>724224.79",
+    "attalums_km": 1.0,
+    "tips": "far_from_address",
+    "adrese_vzd": "Pagasta iela 2, Tutāni, Cirmas pag., Ludzas nov., LV-5735",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   }
+  ],
+  "neatrasti": [
+   "Ludzas novada sporta skola, P. Miglinīka iela 27a, Ludza, Ludzas novads (lpp. 14): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 27,
+   "ar_koord": 27,
+   "geokodeti": 1,
+   "kartē": 27,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 21,
+   "ar_koord": 0,
+   "geokodeti": 20,
+   "kartē": 20,
+   "vietas": 2780,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "madonas-novads",
+  "pasvaldiba": "Madonas novads",
+  "statuss": "dalejs",
+  "piezime": "Assembly points: annex 5 (piel_5_pulcesanas_vietas_madonas_nov_2026.md, 2026 plan), an HTML table grouped by pagasta/apvienības pārvalde with name + location, no coordinates or row numbers; adrese = location as written + ', Madonas novads'. Accommodation sites are in annex 8 ('Pielikumā Nr. 8 uzskaitītas apzinātās Madonas novada izmitināšanas vietas'), which is not in the folder. The 2021 plan file is a scanned PDF without text and was not used.",
+  "atsauces": [
+   {
+    "fails": "madona_ca_plans_2026.md",
+    "citats": "Pielikumā Nr. 8 uzskaitītas apzinātās Madonas novada izmitināšanas vietas."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [
+   "Bērzaunes pamatskolas ēka, Bērzaunes pamatskola Bērzaune, Madonas novads (lpp. None): address_not_found",
+   "Sauleskalna TN, Aronas iela 1 Sauleskalns Bērzaunes pagasts, Madonas novads (lpp. None): address_not_found",
+   "Dzelzavas SAC, Grāveri 1, Dzelzava, Madonas novads (lpp. None): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 51,
+   "ar_koord": 0,
+   "geokodeti": 48,
+   "kartē": 47,
+   "vietas": 0,
+   "dublikati": 1
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "marupes-novads",
+  "pasvaldiba": "Mārupes novads",
+  "statuss": "publicets",
+  "piezime": "Lists are separate annex files: annex 5 (11 assembly points) and annex 7 (13 accommodation sites, capacity computed at 6 m2 per person, total 'Kopā: 5130'). No coordinates. Several addresses still say 'Babītes novads' (pre-2021 county, now part of Mārupe). Gultas 'nav' recorded as 0.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Salas sākumskola un Spuņciema sporta halle, Pīlādzīši, Spuņciems, Salas pagasts, Babītes novads, LV-2105 (lpp. 1): address_not_found",
+   "Salas sākumskola un Spuņciema sporta halle, “Pīlādzīši”, Spuņciems, Salas pagasts, Babītes novads, LV 2105 (lpp. 1): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 11,
+   "ar_koord": 0,
+   "geokodeti": 10,
+   "kartē": 10,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 13,
+   "ar_koord": 0,
+   "geokodeti": 12,
+   "kartē": 12,
+   "vietas": 4530,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "ogres-novads",
+  "pasvaldiba": "Ogres novads",
+  "statuss": "publicets",
+  "piezime": "Main plan file: table 26 'evakuēto personu pulcēšanās vietas' (lpp. 121-122, 29 rows, lat/lon columns) and table 27 'izmitināšanas vietas' (lpp. 123-124, 21 rows; 'Personu skaits' -> vietas, 'Guļam vietas' -> gultas with 'Nav' = 0, 'Virtuve ar ēdnīcu' -> edinasana). Assembly table contains duplicates (#20/#26 Krape, #25/#29 Jumprava) and several coordinates west of the county (#13 Tome, #14 Rembate, #18 Meņģele filiāle, #27 Laubere). Counts match the manual extraction in vietne profili (29/21/11,005).",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Ogres pilsētas dzelzceļa stacija",
+    "nr": 2,
+    "lpp": 121,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|2.|**Ogres pilsētas dzelzceļa stacija**|Skolas iela 1, Ogre, Ogres<br>novads,LV-5001|56.8150123|24.5822824|",
+    "koord_teksts": "56.8150123|24.5822824",
+    "attalums_km": 1.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Skolas iela 1, Ogre, Ogres nov., LV-5001",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Tomes pagasta pārvalde",
+    "nr": 13,
+    "lpp": 121,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|13.|**Tomes pagasta pārvalde**|“Ābelītes”, Tomē, Tomes pag.,<br>Ogres nov.,LV-5020|56.6511548|24.0294849|",
+    "koord_teksts": "56.6511548|24.0294849",
+    "attalums_km": 31.3,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Rembates pagasta pārvalde",
+    "nr": 14,
+    "lpp": 121,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|14.|**Rembates pagasta pārvalde**|Lielvārdes ielā 3, Rembatē,<br>Rembates pag., Ogres nov.,<br>LV-5016|56.6527933|23.9424099|",
+    "koord_teksts": "56.6527933|23.9424099",
+    "attalums_km": 36.5,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Taurupes pamatskolas Menģeles filiāle",
+    "nr": 18,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|18.|**Taurupes pamatskolas Menģeles**<br>**filiāle**|Taurupes pamatskolas<br>Meņģeles filiāle, Meņģele,<br>Ogresnovads,LV-5047|56.7722059|23.8252414|",
+    "koord_teksts": "56.7722059|23.8252414",
+    "attalums_km": 38.5,
+    "aizstats_ar_adresi": false,
+    "rezultats": "not_on_map",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Mazozolu pagasta pārvalde",
+    "nr": 23,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|23.|**Mazozolu pagasta pārvalde**|Rīgas ielā 5, Līčupē,<br>Mazozolu pag., Ogres nov.,<br>LV-5065|56.924867|25.3057885|",
+    "koord_teksts": "56.924867|25.3057885",
+    "attalums_km": 7.5,
+    "tips": "far_from_address",
+    "adrese_vzd": "Rīgas iela 5, Līčupe, Mazozolu pag., Ogres nov., LV-5065",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Meņgeles pagasta pārvalde",
+    "nr": 24,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|24.|**Meņgeles pagasta pārvalde**|“Pagastmāja”, Meņģelē,<br>Meņģeles pag., Ogres nov.,<br>LV-5047|56.8478436|24.611051|",
+    "koord_teksts": "56.8478436|24.611051",
+    "attalums_km": 49.6,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Pagastmāja\", Meņģele, Meņģeles pag., Ogres nov., LV-5047",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Jumpravas pagasta pārvalde",
+    "nr": 25,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|25.|**Jumpravas pagasta pārvalde**|Daugavas ielā 6, Jumpravā,<br>Jumpravas pag., Ogres nov.,<br>LV-5022|56.562258|24.7386229|",
+    "koord_teksts": "56.562258|24.7386229",
+    "attalums_km": 19.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Daugavas iela 6, Jumprava, Jumpravas pag., Ogres nov., LV-5022",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Lauberes pagasta pārvalde",
+    "nr": 27,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|27.|**Lauberes pagasta pārvalde**|Ozolu ielā 3, Lauberē,<br>Lauberes pag., Ogres nov.,<br>LV-5044|56.7179416|24.2172333|",
+    "koord_teksts": "56.7179416|24.2172333",
+    "attalums_km": 19.0,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Lēdmanes pagasta pārvalde",
+    "nr": 28,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|28.|**Lēdmanes pagasta pārvalde**|“Pagastmāja”, Lēdmanē,<br>Lēdmanes pag., Ogres nov.,<br>LV-5011|56.7722954|24.8516233|",
+    "koord_teksts": "56.7722954|24.8516233",
+    "attalums_km": 9.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Pagastmāja\", Lēdmane, Lēdmanes pag., Ogres nov., LV-5011",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Jumpravas pagasta pārvalde",
+    "nr": 29,
+    "lpp": 122,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|29.|**Jumpravas pagasta pārvalde**|Daugavas ielā 6, Jumpravā,<br>Jumpravas pag., Ogres nov.,<br>LV-5022|56.562258|24.7386229|",
+    "koord_teksts": "56.562258|24.7386229",
+    "attalums_km": 19.1,
+    "tips": "far_from_address",
+    "adrese_vzd": "Daugavas iela 6, Jumprava, Jumpravas pag., Ogres nov., LV-5022",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Pirmsskolas izglītības iestāde \"Čiekuriņš\"",
+    "nr": 11,
+    "lpp": 124,
+    "fails": "a_jaunais_-ca-plans_30.03.2023_publikacijai_0.md",
+    "citats": "|11.|**Pirmsskolas**<br>**izglītības iestāde**<br>**\"Čiekuriņš\"**|Irbenāju iela 2, Ikšķile,<br>Ogres novads|56.8322399|24.4779415|Sporta zāles. Aktu zāle.<br>Grupiņas, u.c. telpas|500|Ir|Nav|",
+    "koord_teksts": "56.8322399|24.4779415",
+    "attalums_km": 1.7,
+    "tips": "far_from_address",
+    "adrese_vzd": "Irbenāju iela 2, Ikšķile, Ogres nov., LV-5052",
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [
+   "Taurupes pamatskolas Menģeles filiāle, Taurupes pamatskolas Meņģeles filiāle, Meņģele, Ogresnovads,LV-5047 (lpp. 122): plan_coordinate_error"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 29,
+   "ar_koord": 29,
+   "geokodeti": 9,
+   "kartē": 25,
+   "vietas": 0,
+   "dublikati": 3
+  },
+  "izmitinasana": {
+   "atrasti": 21,
+   "ar_koord": 21,
+   "geokodeti": 1,
+   "kartē": 21,
+   "vietas": 11005,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "olaines-novads",
+  "pasvaldiba": "Olaines novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points from annex 9 (5 rows, no coordinates; also restated in prose in main plan section 6.2, not duplicated here). Accommodation from annex 12, an HTML table (cited lines are the <td> lines holding the name); row 12 has two sub-rows at different addresses (two records), row 13 gives per-room capacities that were summed; total vietas 1704 and gultas 245 match the table's 'Kopā' row. 'Guļamvietas: nav' recorded as gultas 0; names exclude the phone numbers given in brackets.",
+  "atsauces": [
+   {
+    "fails": "Olaines_novada_ST_CA_plans_29122025_redakcija.md",
+    "citats": "- 9.pielikums   Evakuācijas pulcēšanās vietas Olaines novadā"
+   },
+   {
+    "fails": "Olaines_novada_ST_CA_plans_29122025_redakcija.md",
+    "citats": "- 12.pielikums  Apzinātās izmitināšanas vietas"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [
+   "Olaines 2. vidusskolas stadions, Stadiona iela 1, Olaine, Olaines nov., LV-2114 (lpp. None): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 5,
+   "ar_koord": 0,
+   "geokodeti": 4,
+   "kartē": 4,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 21,
+   "ar_koord": 0,
+   "geokodeti": 21,
+   "kartē": 18,
+   "vietas": 1655,
+   "dublikati": 3
+  }
+ },
+ {
+  "slug": "preilu-novads",
+  "pasvaldiba": "Preiļu novads",
+  "statuss": "dalejs",
+  "piezime": "Section 6.2, table 6.1 (p. 132–134): 38 assembly points with WGS84 LAT/LON columns (rows 1–14 and 22–38 with ~15 decimals, rows 15–21 with 6); the intro text says '38 (trīsdesmit viena)' and refers to '5.1. tabulā' although the table is 6.1. Temporary accommodation sites are only referenced to annex 4 ('PAGAIDU IZMITINĀŠANAS VIETAS PREIĻU NOVADA PAŠVALDĪBAS IESTĀDĒS'), which is not included in the converted file.",
+  "atsauces": [
+   {
+    "fails": "cak_plans_22_homepage.md",
+    "citats": "Pagaidu izmitināšanas vietas Preiļu novada pašvaldības iestādēs apkopotas PIELIKUMĀ NR.4 “PAGAIDU IZMITINĀŠANAS VIETAS PREIĻU NOVADA PAŠVALDĪBAS IESTĀDĒS”."
+   }
+  ],
+  "kludas": [
+   {
+    "nosaukums": "Jaunaglonā pie sociālās mājas",
+    "nr": 5,
+    "lpp": 132,
+    "fails": "cak_plans_22_homepage.md",
+    "citats": "|5.|Aglonas pagasts|Jaunaglonā pie<br>sociālās mājas|Rušonas<br>iela 9|56.24175518646109|26.98649236098109|",
+    "koord_teksts": "56.24175518646109; 26.98649236098109",
+    "attalums_km": 8.9,
+    "tips": "far_from_address",
+    "adrese_vzd": "Rušonas iela 9, Jaunaglona, Aglonas pag., Preiļu nov., LV-5304",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Smelteri – Salas pamatskola",
+    "nr": 30,
+    "lpp": 133,
+    "fails": "cak_plans_22_homepage.md",
+    "citats": "|30.|Saunas pagasts|Smelteri – Salas<br>pamatskola|<br>Smelteri,<br>Saunas<br>pagasts|56.42254368928344|26.67670741372087|",
+    "koord_teksts": "56.42254368928344; 26.67670741372087",
+    "attalums_km": 1.3,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Smelteri\", Ozoliņi, Saunas pag., Preiļu nov., LV-5326",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 38,
+   "ar_koord": 38,
+   "geokodeti": 2,
+   "kartē": 36,
+   "vietas": 0,
+   "dublikati": 2
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "rezekne",
+  "pasvaldiba": "Rēzekne",
+  "statuss": "publicets",
+  "piezime": "Used the PDF conversion of the joint Rēzekne city + county plan (lpp. 70-84): table 13 (9 city assembly points), table 14 (30 county assembly points) and table 16 'Pagaidu izmitināšanas vietu kopsavilkums' (85 sites). The izmitināšana header says 'MGRS koordinātas' but values are decimal lat/lon (treated as wgs84). The same plan also exists as a DOCX conversion (71_paragrafs_Rezeknes_STCA_plans_2024_07032024.md) with the same values; not duplicated. Izmit #69 Viļānu kultūras nams lon 86.923316 is a typo (kept).",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Feimaņu pamatskola",
+    "nr": 13,
+    "lpp": 76,
+    "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+    "citats": "|13.|Feimaņu<br>pamatskola|Izglītības<br>iestāde|``Feimaņu<br>skola``, Feimaņi,<br>Feimaņu<br>pag.,<br>Rēzeknes nov.,<br>LV-4623|56.271269|27.183416|Sporta<br>zāle; aktu<br>zāle;<br>mācību<br>klases|100|ir|nav|",
+    "koord_teksts": "56.271269|27.183416",
+    "attalums_km": 8.9,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Feimaņu skola\", Feimaņi, Feimaņu pag., Rēzeknes nov., LV-4623",
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   },
+   {
+    "nosaukums": "Viļānu kultūras nams",
+    "nr": 69,
+    "lpp": 82,
+    "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+    "citats": "|69.|Viļānu<br>kultūras<br>nams|Kultūras<br>pasākum<br>u telpas|Kultūras<br>laukums<br>2,<br>Viļāni,|56.550769|86.923316|Zāle|500|nav|nav|",
+    "koord_teksts": "56.550769|86.923316",
+    "attalums_km": 3704.0,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 39,
+   "ar_koord": 39,
+   "geokodeti": 0,
+   "kartē": 39,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 85,
+   "ar_koord": 85,
+   "geokodeti": 2,
+   "kartē": 83,
+   "vietas": 13380,
+   "dublikati": 2
+  }
+ },
+ {
+  "slug": "rezeknes-novads",
+  "pasvaldiba": "Rēzeknes novads",
+  "statuss": "kopigs_plans",
+  "piezime": "All files in this folder are pointer stubs with no content: Rēzeknes novads shares the Rēzekne city + Rēzeknes novads cooperation-territory CA plan, whose full conversion is in markdown/rezekne/. Extract lists from the rezekne slug.",
+  "atsauces": [
+   {
+    "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+    "citats": "> Šis dokuments ir Rēzeknes valstspilsētas un Rēzeknes novada kopīgās sadarbības teritorijas civilās aizsardzības plāna sastāvdaļa."
+   },
+   {
+    "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+    "citats": "> Pilnais konvertētais teksts pieejams: [markdown/rezekne/](../rezekne/)."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "riga",
+  "pasvaldiba": "Rīga",
+  "statuss": "dalejs",
+  "piezime": "Assembly points: table 1.1 'Evakuācijas pulcēšanās vietas' in the main plan (lpp. 103-105), 59 places with address + neighbourhood (apkaime), no coordinates; adrese = '<address>, <apkaime>, Rīga'. Row 60 ('Citas vietas ... par kurām sabiedrība tiks atsevišķi informēta') is not a place and was skipped. Temporary accommodation sites are not listed: the plan says the database is kept by CAOIP.",
+  "atsauces": [
+   {
+    "fails": "rigas-valstspilsetas-sadarbibas-teritorijas-civilas-aizsardzibas-plans-2024.md",
+    "citats": "2. Pieejamo Pašvaldības pagaidu izmitināšanas vietu datubāzi uztur un aktualizē CAOIP."
+   },
+   {
+    "fails": "rigas-valstspilsetas-sadarbibas-teritorijas-civilas-aizsardzibas-plans-2024.md",
+    "citats": "|60.|Citas vietas (ņemot vērā konkrēto apdraudējumu),par kurām sabiedrība tiks atsevišķi informēta|||"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [
+   "Publiskā vieta, Pretī Taisnajai ielai 71A, Dārziņi, Rīga (lpp. 103): address_not_found",
+   "Rīgas 21. vidusskola, Tomsona iela 35, Skanste, Brasa, Rīga (lpp. 104): address_ambiguous",
+   "Publiskā vieta, Latviešu strēlnieku laukums, Vecrīga, Rīga (lpp. 104): address_not_found",
+   "Publiskā vieta, Akmensdārzs, Kantora ielas, Amulas ielas un Slampes ielas krustojums, Bieriņi, Rīga (lpp. 105): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 59,
+   "ar_koord": 0,
+   "geokodeti": 55,
+   "kartē": 55,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "ropazu-novads",
+  "pasvaldiba": "Ropažu novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 6.1 (ch. 6.1.2, p. 135-137), 32 points with WGS84 coordinates. Accommodation: table 6.3 (ch. 6.1.5, p. 139-145), 22 sites with WGS84 coordinates and capacity; rows 11-16 are in an image-rendered table ('picture text') with scrambled text, row 1 is merged into the header, and lat digits are wrapped with <br> (joined). The 'Esošo guļamvietu skaits' column is empty/dropped in all rows. Two obvious coordinate typos: assembly nr 4 lat 7.009797, accommodation nr 9 lon 4.2854.",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Langstiņos – pie LMT torņa",
+    "nr": 4,
+    "lpp": 135,
+    "fails": "cap_ropazi_2024_publicesanai_0.md",
+    "citats": "|4.|Langstiņos – pie<br>LMT torņa|Rīgas ielā 2a,<br>Langstiņi,<br>Ropažu novads|Langstiņi|7.009797|24.326364|",
+    "koord_teksts": "7.009797|24.326364",
+    "attalums_km": 5528.2,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Ropažu vidusskola",
+    "nr": 6,
+    "lpp": 140,
+    "fails": "cap_ropazi_2024_publicesanai_0.md",
+    "citats": "|6.|Ropažu<br>vidusskola|Sabiedriskā<br>ēka|Ropažu<br>novads,<br>Zaķumuiža,<br>Skolas iela 3|Klases,<br>aktu zāle.<br>1303,3m2|372|ir|56.97045265696<br>614|24.504419343180505|",
+    "koord_teksts": "56.97045265696<br>614|24.504419343180505",
+    "attalums_km": 1.0,
+    "tips": "far_from_address",
+    "adrese_vzd": "Skolas iela 3, Zaķumuiža, Ropažu pag., Ropažu nov., LV-2133",
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   },
+   {
+    "nosaukums": "Ulbrokas Mūzikas un mākslas skola",
+    "nr": 9,
+    "lpp": 141,
+    "fails": "cap_ropazi_2024_publicesanai_0.md",
+    "citats": "|9.|Ulbrokas<br>Mūzikas un<br>mākslas skola|Sabiedriskā<br>ēka|Institūta iela<br>1b, Ulbroka,<br>Stopiņu<br>pagasts,<br>Ropažu<br>novads,|zāle 188<br>m2|53|nav|56.94396243806<br>2364|4.28540033215755|",
+    "koord_teksts": "56.94396243806<br>2364|4.28540033215755",
+    "attalums_km": 1209.6,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 32,
+   "ar_koord": 32,
+   "geokodeti": 1,
+   "kartē": 32,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 22,
+   "ar_koord": 22,
+   "geokodeti": 2,
+   "kartē": 21,
+   "vietas": 4328,
+   "dublikati": 1
+  }
+ },
+ {
+  "slug": "salaspils-novads",
+  "pasvaldiba": "Salaspils novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 15 (ch. 9.2, p. 131), 14 numbered rows with WGS84 'lat,lon' text; the place-name column only says 'Salaspils pilsēta/pagasts', so places are identified by address only; rows 1, 3, 4 hold two locations each (split). Accommodation: table 16 (ch. 9.5, p. 132), 12 rows with WGS84 coordinates and capacity; rows 1 and 12 hold two buildings each (split). 'Guļ vietas' is yes/no only.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 17,
+   "ar_koord": 17,
+   "geokodeti": 0,
+   "kartē": 17,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 14,
+   "ar_koord": 14,
+   "geokodeti": 0,
+   "kartē": 14,
+   "vietas": 2108,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "saldus-novads",
+  "pasvaldiba": "Saldus novads",
+  "statuss": "publicets",
+  "piezime": "Used the newest consolidated plan (amendments of 21.12.2023, PDF): assembly points table 33 (ch. 6.2, p. 133-134) and accommodation table 36 (ch. 6.5, p. 137-139), both with WGS84 Lat/Lon. The PDF conversion splits names across cells and wraps coordinate digits with <br> (joined here; raw text kept in koord_teksts). The older 2021 DOCX version (Saldus-novada-...-plans_ML.md) has the same assembly-point table and was not duplicated; the accommodation list is mostly private guesthouses/apartments (phone numbers omitted).",
+  "atsauces": [],
+  "kludas": [
+   {
+    "nosaukums": "Jaunlutriņu pagasta pārvalde",
+    "nr": 5,
+    "lpp": 133,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|5.|Jaunlutriņu<br>pārvalde|pagasta|Upes iela 4, Jaunlutriņu pagasts<br>Saldus novads, LV–3876|57.32026|24.42159|",
+    "koord_teksts": "57.32026|24.42159",
+    "attalums_km": 114.3,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Lutriņu pagasta pārvalde",
+    "nr": 9,
+    "lpp": 133,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|9.|Lutriņu<br>pārvalde|pagasta|„Pagasta māja”, Lutriņu pagasts,<br>Saldus novads, LV-3861|56.90998|24.17512|",
+    "koord_teksts": "56.90998|24.17512",
+    "attalums_km": 83.7,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Novadnieku pagasta pārvalde",
+    "nr": 10,
+    "lpp": 133,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|10.|Novadnieku<br>pārvalde|pagasta|\"Mežvidi\", Novadnieku pagasts,<br>Saldus novads, LV-3801|56.39036|22.28007|",
+    "koord_teksts": "56.39036|22.28007",
+    "attalums_km": 1.5,
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Vadakstes pagasta pārvalde",
+    "nr": 13,
+    "lpp": 134,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|13.|Vadakstes<br>pārvalde|pagasta|„Krāces”, Vadakstes pagasts, Saldus<br>novads, LV–3895|56.37286|22.74742|",
+    "koord_teksts": "56.37286|22.74742",
+    "attalums_km": 15.6,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Krāces\", Rubas pag., Saldus nov., LV-3892",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Gaiķu pamatskola",
+    "nr": 21,
+    "lpp": 134,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|21.|Gaiķu pam|atskola|Gaiķu pamatskola, Vecgaiķi, Gaiķu<br>pag., Brocēnu nov.|56.47488|22.33541|",
+    "koord_teksts": "56.47488|22.33541",
+    "attalums_km": 37.3,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Gaiķu pamatskola\", Vecgaiķi, Gaiķu pag., Saldus nov., LV-3873",
+    "rezultats": "varis_address",
+    "slanis": "evakuacijas_punkti"
+   },
+   {
+    "nosaukums": "Atpūtas bāze “Radi”",
+    "nr": 27,
+    "lpp": 139,
+    "fails": "Saldus_novada_sadarbibas_teritorijas_civilas_aizsardzibas_plana_grozijumi_21.12.2023.md",
+    "citats": "|27.|Atpūtas bāze “Radi”, tel.<br>+371 29538230|Atpūtas<br>kompleks<br>s|“Radi”, Cieceres<br>pag.|56.65477<br>9|22.5708<br>08|Istabas viesu<br>namā,<br>vasaras<br>mājiņas|45|Ir|45|",
+    "koord_teksts": "56.65477<br>9|22.5708<br>08",
+    "attalums_km": 1.5,
+    "tips": "far_from_address",
+    "adrese_vzd": "\"Radi\", Cieceres pag., Saldus nov., LV-3851",
+    "rezultats": "varis_address",
+    "slanis": "izmitinasana"
+   }
+  ],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 23,
+   "ar_koord": 23,
+   "geokodeti": 5,
+   "kartē": 23,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 32,
+   "ar_koord": 32,
+   "geokodeti": 1,
+   "kartē": 32,
+   "vietas": 1292,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "saulkrastu-novads",
+  "pasvaldiba": "Saulkrastu novads",
+  "statuss": "publicets",
+  "piezime": "Used the newest plan version (SAULKRASTU_NOVADA_CA_plans.md, uploaded 2026/07); two older versions (2021, 2022) in the folder were not duplicated. Assembly points: table 4.1 (ch. 4.1.2, p. 137), 5 points with WGS84 coordinates. Accommodation: table 4.5 (ch. 4.1.5, p. 139-140), 13 sites with WGS84 Lat/Lon (wrapped digits joined); capacity given only for the 6 Sēja-area sites plus the boiler house; no beds/catering columns.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 5,
+   "ar_koord": 5,
+   "geokodeti": 0,
+   "kartē": 5,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 13,
+   "ar_koord": 13,
+   "geokodeti": 0,
+   "kartē": 12,
+   "vietas": 632,
+   "dublikati": 1
+  }
+ },
+ {
+  "slug": "siguldas-novads",
+  "pasvaldiba": "Siguldas novads",
+  "statuss": "nav_publicets",
+  "piezime": "Section 6.2 refers assembly points to annex 9 ('Pulcēšanās vietas', public per the annex list) and 6.5 refers accommodation to annex 5, which is marked restricted ('Ierobežota pieejamība'). Neither annex is in the folder (only annex 27 is), so no lists could be extracted.",
+  "atsauces": [
+   {
+    "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+    "citats": "Siguldas novadā tiek noteiktās vairākas evakuācijas pulcēšanās vietas (9. pielikums)."
+   },
+   {
+    "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+    "citats": "|9.|Pulcēšanās vietas.|1-5|"
+   },
+   {
+    "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+    "citats": "|5|Pagaidu izmitināšana. (Ierobežota pieejamība)|1-5|"
+   },
+   {
+    "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+    "citats": "Pašvaldībai pieejamās telpas ir skolas, pirmsskolas izglītības iestādes, kultūras centri, Mālpils dienesta viesnīcas un Mālpils tehnikuma telpas (5. pielikums)."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "smiltenes-novads",
+  "pasvaldiba": "Smiltenes novads",
+  "statuss": "publicets",
+  "piezime": "Main plan section 6.2, table 38 (p. 132–133): 21 assembly points, no coordinates; the 'Pulcēšanās vieta' column contains only the town/parish, the actual place is in 'Piezīmes'. Section 6.5, table 39 (p. 134–135): 22 temporary accommodation sites with capacity/kitchen/beds; 'Nav' beds recorded as 0. Rows 1 and 3 are both 'Smiltenes vidusskola' at different addresses.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Baznīcas laukums, Baznīcas laukums, Smiltene (lpp. 132): address_not_found",
+   "Ojāra Vācieša Gaujienas pamatskola, \"Vidusskola\", Gaujiena, Gaujienas pagasts, Smiltenes novads (lpp. 132): address_not_found",
+   "Bilskas pamatskola, \"Pamatskola\", Bilska, Bilskas pagasts, Smiltenes novads (lpp. 134): address_not_found",
+   "Launkalnes sākumskola, Līvu iela Launkalne, Launkalnes pagasts, Smiltenes novads (lpp. 134): address_not_found",
+   "Gaujienas pamatskola, \"Internātskola\", Gaujiena, Gaujienas pagasts, Smiltenes novads (lpp. 135): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 21,
+   "ar_koord": 0,
+   "geokodeti": 19,
+   "kartē": 19,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 22,
+   "ar_koord": 0,
+   "geokodeti": 19,
+   "kartē": 18,
+   "vietas": 4840,
+   "dublikati": 1
+  }
+ },
+ {
+  "slug": "talsu-novads",
+  "pasvaldiba": "Talsu novads",
+  "statuss": "publicets",
+  "piezime": "Main plan annex 16 (p. 50–53): 49 assembly places grouped by town/parish (nr = group number, shared by rows); nosaukums = 'Pulcēšanās objekts' + ' — ' + 'Pulcēšanās vieta'; no coordinates; Lībagu (group 15) and Valdgale (group 20) rows are broken across lines by the conversion. Annex 18 (p. 55): accommodation sites only as free-text per town/parish (no addresses, capacities or beds); adrese holds just the town/parish column, several rows bundle multiple buildings, and rows marked 'nav'/'-' (Abava, Balgale, Ģibuļi, Ķūļciems, Lube) were skipped. The 47 'lemums247_pielikums_*' files are hazard action sheets with no lists.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Talsu tirgus — Auto stāvlaukums pie Talsu tirgus, Ezeru iela 4, Talsi (lpp. 50): address_not_found",
+   "Talsu lidlauks — Lidlaukā, Griezes ielas galā, Ģibuļupagasts (lpp. 50): address_not_found",
+   "Tirgus laukums — Tirgus laukumā pie daudzdzīvokļu mājas “Skaistkalni” un “Strīķi, Tiņģere, īves pagasts (lpp. 51): address_not_found",
+   "Ķūļciema tautas nams — Laukumā pie tautas nama, \"Ķūļciema tautas nams\", Ķūļciems, Ķūļciemapagasts (lpp. 51): address_not_found",
+   "Lībagu pagasta pārvalde — Laukuma pie pagasta pārvaldes, Mundigciems, Lībagu pagasts (lpp. 52): address_not_found",
+   "Mērsraga vidusskola — Mērsraga sporta hallē,, Skola iela 8, Mērsraga pagasts,Talsu novads (lpp. 52): address_not_found",
+   "BLPJC ''Varavīksne''; — Parkā pie jauniešu centra, Rude-5, Rude, Rojas pagasts (lpp. 52): address_not_found",
+   "Sabiles sporta centrs, Sabile (lpp. 55): address_not_found",
+   "Stendes pamatskola, Virbu pamatskola, Virbu kultūras nams, Stendes tautas nams, bijušās Virbu pamatskolas telpas, Stende; Virbu pagasts (lpp. 55): address_not_found",
+   "Talsu sporta nams, Talsu sporta halle, Talsu Valsts ģimnāzija ar skolas zāli un sporta halli. Talsu Tautas nams ar vairākām mazām zālēm un vienu lielāku zāli, Talsi (lpp. 55): address_not_found",
+   "Valdemārpils skola/sporta zāle; PII “Saulstariņš”, Valdemārpils, Ārlavas pagasts (lpp. 55): address_not_found",
+   "Dundagas pils un viesu nams “Jūras sapņi” (pakalpojuma līgums), Dundagas pagasts (lpp. 55): address_not_found",
+   "Aktu zāle “Tiņģeres” pils, Īves pagasts (lpp. 55): address_not_found",
+   "Tautas nams, Kolkas pagasts (lpp. 55): address_not_found",
+   "Lībiešu saieta nams, Kolkas pagasts (lpp. 55): address_not_found",
+   "Līvu tautas nams, Mazirbē, Mazirbe, Kolkas pagasts (lpp. 55): address_not_found",
+   "Skolas, bērnudārzs, Kolkas pagasts (lpp. 55): address_not_found",
+   "Z/S Paegļi, Laidze, Laidze; Laidzes pagasts / Vandzenes pagasts (lpp. 55): address_not_found",
+   "Skola, sporta zāles, kultūras nams, bērnudārzs, Laucienes pagasts (lpp. 55): address_not_found",
+   "Strazdes muiža, Lībagu BLPC “Kāķīši”, Lībagu pagasts; Strazdes pagasts (lpp. 55): address_not_found",
+   "Kultūras nams un skolas ēkas aktu zāle, Rojas pagasts (lpp. 55): address_not_found",
+   "Tautas nams, skola, bērnudārzs, Valdgales pagasts (lpp. 55): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 49,
+   "ar_koord": 0,
+   "geokodeti": 42,
+   "kartē": 42,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 16,
+   "ar_koord": 0,
+   "geokodeti": 1,
+   "kartē": 1,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "tukuma-novads",
+  "pasvaldiba": "Tukuma novads",
+  "statuss": "publicets",
+  "piezime": "Assembly points: table 26 (ch. 6.3, p. 49-51), 34 places with WGS84 'Google format' coordinates and no row numbers; several rows are split or merged across table lines (coordinates partly on adjacent lines, Vāne+Matkule merged). Accommodation: table 27 'Iedzīvotāju pagaidu izmitināšanas vietas' (ch. 6.6, p. 53-57), 85 sites with capacity, catering and beds but no coordinates; contact-person columns are split across cells so values were read by eye (contacts omitted). Annex 5 'Pašvaldības izmitināšanas vietas Ukrainas iedzīvotājiem' (refugee housing) was not included.",
+  "atsauces": [
+   {
+    "fails": "ca-plans-tukums-2024.md",
+    "citats": "### Pašvaldības izmitināšanas vietas Ukrainas iedzīvotājiem"
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [
+   "Atbalsta dzīvoklis, Celtnieku iela 10-15, Tukums (lpp. 54): address_not_found",
+   "Atbalsta dzīvoklis, Celtnieku iela 10-17, Tukums (lpp. 54): address_not_found",
+   "Irlavas pamatskola, Irlavas pamatskola, Irlava (lpp. 54): address_not_found",
+   "Sēmes tautas nams, \"Vālodzes\", Sēmes pagastā (lpp. 55): address_not_found",
+   "Zentenes kultūras nams un pirmsskolas bērnu uzraudzības grupas telpas, \"Gobas\", Zentenes pagastā (lpp. 55): address_not_found",
+   "Slampes kultūras pils, Slampes kultūras pils, Slampe, Slampes pag. (lpp. 55): address_not_found",
+   "Džūkstes Biedrību nams, Džūkstes Biedrību nams, Džūkste, Džūkstes pagasts (lpp. 55): address_not_found",
+   "Jaunsātu Tautas nams, \"Pagasts”, Jaunsātu pagastā (lpp. 55): address_not_found",
+   "Pūres pamatskola, Pūres sporta zāle, \"Skola”, Pūres pagastā (lpp. 55): address_not_found",
+   "KC \"Tev\" (Džūkstes pag.), \"Aptiekas māja\"3, Džūkstes pag. (lpp. 56): address_not_found",
+   "KC \"Mūsmājas\" (Sēmes pag.), Ezera iela 2a, Sēmes pagasts (lpp. 56): address_not_found",
+   "Vāne, \"Prātnieki\", Vāne, \"Prātnieki\" (lpp. 56): address_not_found",
+   "Valdeķu kultūras nams, Valdeķi, Kandavas (lpp. 56): address_not_found",
+   "Vānes kultūras nams, \"Gaismas\", Vāne (lpp. 56): address_not_found",
+   "Engures vidusskola, Skolas iela 7 un 9,Engure (lpp. 57): address_not_found",
+   "Šlokenbekas muiža, Šlokenbekas muiža, Milzkalne, Smārdes pag. (lpp. 57): address_not_found",
+   "Lapmežciema pagasta pārvalde, Liepu iela 2, Lapmežciems (lpp. 57): address_not_found",
+   "Lapmežciema pamatskola, Liepu iela 2a, Lapmežciems (lpp. 57): address_not_found",
+   "Milzkalnes sākumskola, Milzkalnes sākumskola Milzkalnē (lpp. 57): address_not_found",
+   "Lapmežciema pagasta sporta komplekss, Liepu iela 2, Lapmežciems (lpp. 57): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 34,
+   "ar_koord": 34,
+   "geokodeti": 0,
+   "kartē": 34,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 85,
+   "ar_koord": 0,
+   "geokodeti": 65,
+   "kartē": 62,
+   "vietas": 13505,
+   "dublikati": 3
+  }
+ },
+ {
+  "slug": "valkas-novads",
+  "pasvaldiba": "Valkas novads",
+  "statuss": "publicets",
+  "piezime": "Plan dated 23.02.2021 (pre-2021 territorial reform boundaries). Section 6.2 (p. 101) lists 13 assembly points as a bulleted list (name + address in brackets, no coordinates); section 6.5 table 37 (p. 104–105) lists 16 accommodation sites, mostly the same buildings. In table rows 13–16 the conversion split the name over two cells (columns shifted), re-joined here; 'nav' beds recorded as 0.",
+  "atsauces": [],
+  "kludas": [],
+  "neatrasti": [
+   "Turnas tautas nams, Turnas tautas nams, Turna, Ērģemes pagasts, Valkas novads (lpp. 101): address_not_found",
+   "Valkas kultūras nams, E. Dārzņa iela 8, Valka (lpp. 104): address_not_found",
+   "Kārķu tautasnams, “Tautas nams”Ķārķi, Kārķu pag. (lpp. 104): address_not_found",
+   "PII (“Pumpuriņš”), Puškina iela 10, Valka (lpp. 105): address_not_found"
+  ],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 13,
+   "ar_koord": 0,
+   "geokodeti": 12,
+   "kartē": 12,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 16,
+   "ar_koord": 0,
+   "geokodeti": 13,
+   "kartē": 13,
+   "vietas": 3730,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "valmieras-novads",
+  "pasvaldiba": "Valmieras novads",
+  "statuss": "nav_publicets",
+  "piezime": "The public plan version refers assembly points to annex 5 and accommodation to annex 7, both listed as '(elektroniski)'; neither annex is in the folder (the other files are council decisions and the CAK bylaws), so no lists could be extracted.",
+  "atsauces": [
+   {
+    "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+    "citats": "5. pielikums. Evakuācijas pulcēšanās vietas (elektroniski)"
+   },
+   {
+    "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+    "citats": "7. pielikums. Izmitināšanas vietas (elektroniski)"
+   },
+   {
+    "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+    "citats": "Pulcēšanās vietas Valmieras novadā skatīt 5. pielikumā."
+   },
+   {
+    "fails": "140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md",
+    "citats": "Izmitināšanas vietas Valmieras novadā skatīt 7. pielikumā."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ },
+ {
+  "slug": "ventspils",
+  "pasvaldiba": "Ventspils",
+  "statuss": "nav_publicets",
+  "piezime": "The only file is a conversion of a scanned 203-page PDF with no text layer (front matter skenets: True); the body is just a warning that text could not be extracted, so no assembly or accommodation lists are available in Markdown. The original PDF would need OCR/visual reading.",
+  "atsauces": [
+   {
+    "fails": "plans_publiskais_2023.md",
+    "citats": "> **UZMANĪBU:** PDF bez teksta slāņa (skenēts dokuments, 203 lpp.). Automātiska teksta izguve nav iespējama — teksts jāatveido vizuāli (modelim lasot lapas)."
+   }
+  ],
+  "kludas": [],
+  "neatrasti": [],
+  "izmesti": [],
+  "evakuacijas_punkti": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  },
+  "izmitinasana": {
+   "atrasti": 0,
+   "ar_koord": 0,
+   "geokodeti": 0,
+   "kartē": 0,
+   "vietas": 0,
+   "dublikati": 0
+  }
+ }
+]

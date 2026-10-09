@@ -1,0 +1,17 @@
+{
+ "slug": "jekabpils-novads",
+ "statuss": "nav_publicets",
+ "piezime": "Plan refers to annex 22 (assembly points) and annex 24 (accommodation sites, incl. catering); the folder only contains annexes 1, 1A, 2, 4, 5, 9, 10, 11, 14, 16, 18, 19, 20.",
+ "atsauces": [
+  {
+   "fails": "jekabpils_ca_plans.md",
+   "citats": "Pielikumā Nr. 22 norādītas pulcēšanās vietas Jēkabpils novada teritorijā."
+  },
+  {
+   "fails": "jekabpils_ca_plans.md",
+   "citats": "Pielikumā Nr. 24 uzskaitītas apzinātās Jēkabpils novada teritorijas izmitināšanas vietas."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

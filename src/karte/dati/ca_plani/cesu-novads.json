@@ -1,0 +1,25 @@
+{
+ "slug": "cesu-novads",
+ "statuss": "nav_publicets",
+ "piezime": "The published file is the plan 'bez pielikumiem' (without annexes). Assembly points are in annex 12 (not marked restricted but not published) and accommodation sites in annex 19 (marked 'Ierobežota pieejamība'). Matches the manual profile in vietne (cesu-novads.json, both lists empty).",
+ "atsauces": [
+  {
+   "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+   "citats": "|12.pielikums|**Evakuācijas pulcēšanās vietas Cēsu**<br>**novada teritorijā **|5||"
+  },
+  {
+   "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+   "citats": "|19.pielikums|**Izmitināšanas**<br>**vietas**<br>**Cēsu**<br>**novada**<br>**teritorijā**|10|Ierobežota pieejamība|"
+  },
+  {
+   "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+   "citats": "Cēsu novada teritorijā ir noteiktas evakuācijas pulcēšanās vietas, kuru adreses apkopotas **12.pielikumā."
+  },
+  {
+   "fails": "Cesu_novada_civilas_aizsardzibas_plans_bez_pielikumiem.md",
+   "citats": "Apzinātās izmitināšanas vietas skatīt **19.pielikumā.**"
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

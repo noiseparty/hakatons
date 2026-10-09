@@ -21,6 +21,7 @@ Caddy (map.repo.lv) ──/api/*──► karte_api.py :8920 (hakatons-map-api.s
 | `db/osm_poi.py` | Tikai bankomāti un DUS no OpenStreetMap (ODbL; valsts datu nav) → `dati/osm_poi.geojson`. |
 | `db/ielade_visu.sh` | Ielādē visus avotus no jauna (shēma + visi `ielade.py` izsaukumi). |
 | `dati/` | Ielādējamie faili (avota momentuzņēmumi). Nav publiski. |
+| `db/ca_plani.py` | Pašvaldību CA plānu pulcēšanās vietas (`evakuacijas_punkts`) un pagaidu izmitināšanas vietas (`izmitinasana`) → `dati/ca_pulcesanas_vietas.geojson`, `dati/ca_izmitinasana.geojson`. Ievade: AI izvilkums `dati/ca_plani/<slug>.json` (katrs ieraksts ar burtisku citātu no plāna, ko skripts pārbauda); lappuse no `<!-- lpp. N -->`, koordinātas pārbaudītas pret novada robežu un VZD adrešu reģistru. Kvalitāte: `notes/ca-plani-kvalitate.md`. Palaišana lokāli: `uv run --no-project --with shapely --with pyproj src/karte/db/ca_plani.py` (vajag `kadastrs.db`). |
 | `db/slimnicas_24h.py` | 37 slimnīcas ar 24/7 neatliekamo palīdzību (VM 04.03.2026. rīkojums, Valsts katastrofu medicīnas plāna 12. pielikums) → `dati/slimnicas_24h.geojson`. Koordinātas no VZD adrešu reģistra (`aw_eka.csv`), PSKUS un RAKUS — uzņemšanas ieeja no OSM. Adreses pārbaudītas; `atseviski_dati/hospitals.csv` koordinātas bija aptuvenas (līdz 118 km nobīde), tāpēc netiek lietotas. |
 | `api/karte_api.py` | API (Python standarta bibliotēka + psycopg). Galapunkti aprakstīti faila sākumā. |
 | `serveris/` | Caddy un systemd failu kopijas, kas uzstādītas VPS. |

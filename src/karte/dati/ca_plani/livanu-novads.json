@@ -1,0 +1,21 @@
+{
+ "slug": "livanu-novads",
+ "statuss": "nav_publicets",
+ "piezime": "Both the 2024 plan and the older version say assembly points are in annex 7 ('coordinates announced separately' depending on the hazard); no accommodation list is referenced (catering in annex 10). Annexes are not in the folder.",
+ "atsauces": [
+  {
+   "fails": "livanu-novada-civilas-aizsardzibas-plans-2024.md",
+   "citats": "Pulcēšanās vietas apdraudējuma gadījumā Līvānu novadā, 7.pielikums."
+  },
+  {
+   "fails": "livanu-novada-civilas-aizsardzibas-plans-2024.md",
+   "citats": "Šo vietu koordinātes tiek paziņotas atsevišķi, vadoties pēc iespējamo apdraudējumu vietas intensitātes un rakstura."
+  },
+  {
+   "fails": "livanu-novada-civilas-aizsardzibas-plans-vecaka-versija.md",
+   "citats": "Pulcēšanās vietas apdraudējuma gadījumā Līvānu novadā"
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

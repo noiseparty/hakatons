@@ -1,0 +1,25 @@
+{
+ "slug": "liepaja",
+ "statuss": "nav_publicets",
+ "piezime": "Shared Liepāja city + Dienvidkurzeme county (DKN) plan. Chapter 6.2 says assembly-point addresses are 'summarised in the table below' and in annex 12, but no table follows in the conversion (only a visual-elements marker on lpp. 211); accommodation sites are in annex 7 (plan states ~35 000 places). Neither annex is in the folder, so no points could be extracted; the stadium 'Olimpija' mention is a 24 h holding place for prisoners, not a public site.",
+ "atsauces": [
+  {
+   "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+   "citats": "|_7. pielikums_|Izmitināšanas un ēdināšanas vietas Liepājas valstspilsētā un Dienvidkurzemes|"
+  },
+  {
+   "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+   "citats": "|_12.pielikums_|Pulcēšanās vietas Liepājas un DKN ST|"
+  },
+  {
+   "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+   "citats": "Liepājas un DKN ST ir noteiktas evakuācijas pulcēšanās vietas, kuru adreses apkopotas zemāk tabulā. Pulcēšanās vietu karte brīvi pieejama jebkuram pašvaldības iedzīvotājam interaktīvajā kartē un 12. pielikumā."
+  },
+  {
+   "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
+   "citats": "Pašlaik apzinātais izmitināšanas vietu skaits ir ~35 000, kas ir atbilstošs. Apzinātās izmitināšanas vietas skatīt 7. pielikumā."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

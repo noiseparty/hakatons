@@ -150,3 +150,23 @@ end $$;
 -- Publiskais API lieto map_api: tikai lasīšana.
 grant usage on schema public to map_api;
 grant select on regioni, kategorijas, objekti, avoti to map_api;
+
+-- Pašvaldību CA plānu slāņi (src/karte/db/ca_plani.py). Katram punktam ipasibas satur plāna lappusi
+-- (lpp), saiti (plans_url), gatavu atsauces tekstu (avots_teksts) un pārbaudes karodziņus (karodzini).
+insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
+  ('evakuacijas_punkts', 'Evakuācijas pulcēšanās vietas (pašvaldību CA plāni)', 'patvertnes', '#0f766e', 11),
+  ('izmitinasana', 'Pagaidu izmitināšanas vietas (pašvaldību CA plāni)', 'patvertnes', '#0369a1', 12)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('ca-plani', 'Pašvaldību civilās aizsardzības plāni', 'Katra pašvaldība (izdevējs un plāna saite norādīti katram punktam)',
+   'Oficiāls dokuments, nav autortiesību objekts (Autortiesību likuma 6. pants)', 'https://likumi.lv/ta/id/5138-autortiesibu-likums', true,
+   'https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons',
+   'Plānu PDF/DOCX no pašvaldību tīmekļvietnēm (ipasibas.plans_url), pārveidoti Markdown; vietas izvilktas ar AI + regex, katra pārbaudīta pret plāna tekstu (src/karte/db/ca_plani.py)',
+   'Evakuācijas pulcēšanās vietas; pagaidu izmitināšanas vietas',
+   'Koordinātas no plāna; ja plānā tikai adrese vai koordinātas ir kļūdainas, tās ģeokodētas ar VZD adrešu reģistru. Kvalitāte: notes/ca-plani-kvalitate.md.', 15)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
