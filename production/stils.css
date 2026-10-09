@@ -327,3 +327,12 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .zonu-legenda .skala i { width: 10px; border: 0; }
 .robezas-ikona span { display: flex; align-items: baseline; justify-content: center; gap: 1px; height: 100%; box-sizing: border-box; padding-top: 4px; border: 2px solid #1e3a8a; border-radius: 6px; background: #fff; color: #1e3a8a; font: 700 13px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
 .robezas-ikona small { font-size: 9px; font-weight: 600; }
+
+/* Rezultāta kartīte: lēmuma rinda (LVĢMC brīdinājums šai vietai) un pašvaldība (meklesana.js) */
+.lemums { margin: .3rem 0 .1rem; padding: .45rem .6rem; font-size: .88rem; border-radius: 4px; border-left: 4px solid #a8a29e; background: var(--fons); }
+.lemums.bridinajums-dzeltens { background: #fef9c3; border-left-color: #ca8a04; color: #1c1917; }
+.lemums.bridinajums-oranžs, .lemums.bridinajums-oranzs { background: #ffedd5; border-left-color: #c2410c; color: #1c1917; }
+.lemums.bridinajums-sarkans { background: #fee2e2; border-left-color: #b91c1c; color: #1c1917; }
+.lemums.lemums-nav { border-left-color: #287a41; background: #ecfdf3; }
+#rez-lemums .avots-rinda, #rez-pasvaldiba .avots-rinda { display: block; margin-bottom: .3rem; }
+.pasvaldiba-rinda { margin: .7rem 0 .1rem; font-size: .85rem; }
