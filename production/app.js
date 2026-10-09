@@ -362,7 +362,8 @@ function meklet() {
           pec = li;
         }
       } catch (e) {
-        if (e.name !== 'AbortError') adresuGrupa.textContent = 'Adreses · neizdevās ielādēt';
+        // kamēr /api/adreses nav pieejams (404), adrešu grupu vienkārši nerādām
+        if (e.name !== 'AbortError') adresuGrupa.remove();
       }
     }, 250);
   }
