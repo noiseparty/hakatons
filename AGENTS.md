@@ -7,7 +7,11 @@ Claude Code reads `CLAUDE.md`; everyone else starts here.
 
 1. Read `README.md` → **"Working together"**: the git workflow and the `TODO.md` format. Follow it exactly.
 2. Read `CLAUDE.md` for project context (hackathon track, data kit layout, commands). It applies to all agents.
-3. Read `TODO.md` to see what is pending, in progress and done.
+3. Read `TODO.md` to see what is pending, in progress and done, and `notes/stavoklis.md` for the current merge state.
+
+## What the product is
+
+https://map.repo.lv: a resident types one line ("Ogre, plūdi", "patvertne Rīgā") and gets one result card with a decision, nearest safe places with sources, warnings and advice; a map is the second view. Only open data with a stated licence goes on the map. UI text is Latvian, "Jūs" form; no `tel:` buttons (team decision). Details and architecture: `CLAUDE.md` → "The product".
 
 ## Saving and updating (preferred — teammates are not git experts)
 
