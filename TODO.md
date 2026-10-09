@@ -30,6 +30,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Papildināt scenārijus: aizsalušas caurules, kanalizācija nestrādā, lifts nedarbojas, izsists logs, auto ceļa malā, trauma var/nevar kustēties — `notes/SCENARIJI.md` Nr 113–119, `production/scenariji.json` atslēgvārdi + "nevar kustēt" dzīvības draudos, 6 testi (70/70 ok) — done 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia)
 - [x] Papildināt scenārijus: troksnis kaimiņš, huligāni uz ielas — `notes/SCENARIJI.md` (Nr 111–112), `production/scenariji.json` policijas atslēgvārdi (troksn/kaimiņ/шум/сосед/nois/neighbor/hooligan) + 4 testi `src/meklesana/testi.json` (64/64 ok) — done 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia)
 - [x] Izveidot `notes/SCENARIJI.md` — 110 dzīves/katastrofas/krīzes scenāriji ar meklēšanas atslēgvārdiem (pirmais melnraksts krīzes-meklēšanas klasifikatoram) — done 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia)
 - [x] Crisis search "Ko tev vajag?" without AI: free text (LV/RU/EN) → scenario, 112 prompt, place name → 3 nearest per layer; rules in `production/scenariji.json`, tests in `src/meklesana/` — done 2026-10-09 19:11 +03:00 by noiseparty

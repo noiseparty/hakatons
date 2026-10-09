@@ -44,12 +44,20 @@
   {"q": "пожар в доме", "scenarijs": "ugunsgreks", "zvanit112": true},
   {"q": "smoke in the building", "scenarijs": "ugunsgreks", "zvanit112": true},
 
+  {"q": "aizsalušas caurules, mājā nav ūdens", "scenarijs": "ugunsgreks"},
+  {"q": "kanalizācija nestrādā", "scenarijs": "ugunsgreks"},
+  {"q": "lifts nedarbojas", "scenarijs": "ugunsgreks"},
+
   {"q": "man nozaga somu", "scenarijs": "policija"},
   {"q": "kaimiņš draud ar nazi", "scenarijs": "policija"},
   {"q": "kaimiņš trokšņo naktī", "scenarijs": "policija"},
   {"q": "huligāni uz ielas", "scenarijs": "policija"},
   {"q": "сосед шумит ночью", "scenarijs": "policija"},
   {"q": "noisy neighbours", "scenarijs": "policija"},
+  {"q": "izsists logs", "scenarijs": "policija"},
+
+  {"q": "cilvēks nevar kustēties pēc kritiena", "scenarijs": "medicina", "zvanit112": true},
+  {"q": "var kustēties, bet stipri sāp kāju", "scenarijs": "medicina"},
   {"q": "pazudis bērns", "scenarijs": "policija"},
   {"q": "меня ограбили", "scenarijs": "policija"},
   {"q": "someone stole my car", "scenarijs": "policija"},
