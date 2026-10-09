@@ -131,6 +131,14 @@ function aizpilditKategorijas(saraksts) {
 }
 
 // ---- Objekti ----
+// Bez nosaukuma (bieži OSM bankomātiem) rādām operatoru vai zīmolu.
+const nosaukums = p => p.nosaukums || p.ipasibas?.operator || p.ipasibas?.brand || '';
+const kartosanai = p => nosaukums(p).replace(/^[\s"'„“«]+/, '');
+const pecNosaukuma = (a, b) => {
+  const x = kartosanai(a.properties), y = kartosanai(b.properties);
+  return !x - !y || x.localeCompare(y, 'lv');  // bez nosaukuma — beigās
+};
+
 function popupSaturs(p, ll) {
   const k = kategorijas[p.kategorija] || {};
   const i = p.ipasibas || {};
@@ -143,8 +151,8 @@ function popupSaturs(p, ll) {
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' no tevis</small>');
   const no = stavoklis.vieta ? `${stavoklis.vieta.lat},${stavoklis.vieta.lon}` : '';
   const marsruts = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no}%3B${ll.lat}%2C${ll.lng}`;
-  return `<div class="popup"><b>${esc(p.nosaukums || k.nosaukums || 'Objekts')}</b>` +
-    (p.nosaukums && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
+  return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
+    (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
     rindas.join('<br>') + `<br><a href="${marsruts}" target="_blank" rel="noopener">Maršruts ↗</a></div>`;
 }
 
@@ -161,7 +169,7 @@ function zimetSarakstu(features) {
     const li = document.createElement('li');
     li.tabIndex = 0;
     li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
-      <span class="teksts"><b>${esc(p.nosaukums || k.nosaukums)}</b><small>${esc(p.adrese || k.nosaukums || '')}</small></span>
+      <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc([nosaukums(p) ? k.nosaukums : '', p.adrese].filter(Boolean).join(' · '))}</small></span>
       <span class="attalums">${attalums(p.attalums_m)}</span>`;
     const atvert = () => { karte.setView(f._slanis.getLatLng(), Math.max(karte.getZoom(), 16)); f._slanis.openPopup(); };
     li.addEventListener('click', atvert);
@@ -189,7 +197,7 @@ async function atjaunot() {
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }))
         .addTo(objektuSlanis);
     }
-    if (!stavoklis.vieta) gj.features.sort((a, b) => (a.properties.nosaukums || '~').localeCompare(b.properties.nosaukums || '~', 'lv'));
+    if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
     zimetSarakstu(gj.features);
     const r = regioni[stavoklis.regions];
     statuss(`${gj.features.length} objekti${r ? ' · ' + r.nosaukums : ''}`);
