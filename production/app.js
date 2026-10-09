@@ -45,10 +45,10 @@ const stavoklis = { vieta: null, regions: '', kategorijas: new Set() };
 let kategorijas = {};
 let regioni = {};
 // Tālinot punkti apvienojas grupās: jo tālāk, jo lielākā rādiusā (px), lai kartē nav juceklis.
-// Grupas aplis rāda skaitu un slāņu krāsu proporcijas; no ielu līmeņa (16) — atsevišķi punkti.
+// Grupas aplis rāda skaitu un slāņu krāsu proporcijas; pilsētā (no 13) — atsevišķi punkti.
 const objektuSlanis = L.markerClusterGroup({
-  maxClusterRadius: z => z <= 8 ? 110 : z <= 11 ? 80 : z <= 13 ? 60 : z <= 14 ? 40 : 25,
-  disableClusteringAtZoom: 16,
+  maxClusterRadius: z => z <= 8 ? 110 : z <= 10 ? 60 : z <= 11 ? 40 : 25,
+  disableClusteringAtZoom: 13,
   showCoverageOnHover: false,
   spiderfyOnMaxZoom: false,
   chunkedLoading: true,
