@@ -39,3 +39,6 @@ scratch/
 
 # Non-public data (e.g. critical infrastructure lists from organisers) — never commit
 /dati/
+
+# demo Playwright ekrānuzņēmumi (src/demo/parbaude.py)
+ekr-demo/

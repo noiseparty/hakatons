@@ -41,6 +41,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] Confirm LR1 FM frequencies against the official LR/NEPLP list (demo cards say Rīga 90.7 FM from a secondary source) — added 2026-10-10 01:58 +03:00 by noiseparty
+- [ ] Load LVĢMC observations (data.gov.lv `hidrometeorologiskie-noverojumi`, CC0) to show real gust maxima, e.g. for the 22–23.08.2026 storm replay — added 2026-10-10 01:58 +03:00 by noiseparty
+- [ ] Offline mode: service worker + cached data/tiles for the user's area (demo 7 can only say "print it now") — added 2026-10-10 01:58 +03:00 by noiseparty
+- [ ] Verify the pitch figure "~277 000 households" for the August storm (verified: ~245 000 at 23.08 13:00, ~260 000 affected; `notes/demo-scenariji.md`) — added 2026-10-10 01:58 +03:00 by noiseparty
 - [ ] Flood zones: server-side cached tile proxy for the LVĢMC WMS (upstream answers in 5–7 s per tile, first view takes 5–20 s) and warm Ogre/Jūrmala before the pitch — added 2026-10-10 01:50 +03:00 by noiseparty
 - [ ] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — added 2026-10-10 01:50 +03:00 by noiseparty
 - [ ] VPS: apply `src/karte/db/shema.sql` once (new table `meklejumi` for "Biežāk meklētais"; until then the dropdown shows built-in examples and counting is a no-op) — added 2026-10-10 01:36 +03:00 by noiseparty
@@ -58,6 +62,14 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Demo panel: right-edge "Demo" tab / phone bottom sheet with simulated scenarios, SIMULĀCIJA badges, "Beigt demo" restores the map, `?demo=<code>` links (`production/demo.js`, `notes/demo-scenariji.md`) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 1: yellow strong-wind warning over Kurzeme coast (VZD boundaries as warning polygon, banner, advice) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 2: red storm warning Rīga/Jūrmala/Mārupe + shelters, accommodation and 24/7 hospitals — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 3: drone sighting in Rēzekne: 1 km closed zone, nearest shelter outside the zone and away from it, direction line — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 4: night cut hand at 03:00: nearest 24/7 emergency dept with route, pharmacies greyed as closed, first aid, red 112 line — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 5: Ogre flood high ground from LĢIA DTM 20 m (CC BY 4.0), ≥23 m polygons via `src/demo/augstumi.py` (≥15 m covers 99.6 % of Ogre) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 6: 22–23.08.2026 storm replay (Bauska): outage areas, ATMs/fuel greyed with nearest working one, fallen trees/closed roads, real figures with sources — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
+- [x] Demo 7: no power + no mobile network for a chosen city: live-status layers "status nezināms", where to go without a phone, printable card — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Warnings banner stays centred (70ch column) when expanded on desktop — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
 - [x] Flood risk zones drawn as filled areas with a clear border (WMS recoloured on canvas, EPSG:3857, 512 px tiles; spring floods + ice jams + sea surge) + `production/zonas.js` zone registry with overlap = "paaugstināts risks" (hatched, popup with sources); LVĢMC warning areas as a second zone layer (`/api/bridinajumi?poligoni=1`) — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
 - [x] "Kas notiks tālāk" block in the search result card: concrete next steps and what happens next (judging criterion 3) — done 2026-10-10 02:05 +03:00 by noiseparty: `talak` per scenario → 14 step families in `talak_gimenes` (scenariji.json), rendered at the end of every result card (added 2026-10-10 01:01 +03:00 by noiseparty)
