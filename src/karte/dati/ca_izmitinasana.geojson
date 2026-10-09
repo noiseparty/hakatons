@@ -4757,8 +4757,8 @@
     "citats": "|3|Rankas pamatskola|Izglītības<br>iestāde|Skolas  iela 5<br>Ranka|57.21093|26.184552|Aktu zāle.<br>Dienesta  viesnīca|150<br>120|Ir|120|",
     "izdevejs": "Gulbenes novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Skolas iela 5, Ranka, Rankas pag., Gulbenes nov., LV-4416",
+    "vzd_kods": "104086912",
     "plana_lat": 57.21093,
     "plana_lon": 26.184552,
     "koord_teksts": "57.21093|26.184552",
@@ -5726,8 +5726,8 @@
     "citats": "|30.|Bērzu sporta zāle|Sporta ēka|Vidus iela 7<br>Gulbene<br>Gulbenes nov.|57.17702|26.76196|Zāle sporta|80|nav|nav|",
     "izdevejs": "Gulbenes novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Vidus iela 7, Gulbene, Gulbenes nov., LV-4401",
+    "vzd_kods": "101549016",
     "plana_lat": 57.17702,
     "plana_lon": 26.76196,
     "koord_teksts": "57.17702|26.76196",
@@ -11953,8 +11953,8 @@
     "citats": "|2.|Bijusī<br>Audriņu pa<br>matskola|Izglītības<br>iestāde|Krasuhas iela 1A<br>k-1,<br>Audriņi,<br>Audriņu pagasts,<br>Rēzeknes<br>novads,<br>LV-<br>4611|56.587460|27.242977|Sporta<br>zāle; aktu<br>zāle;<br>mācību<br>klases|100|ir|40|",
     "izdevejs": "Rēzekne (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Krasuhas iela 1, Audriņi, Audriņu pag., Rēzeknes nov., LV-4611",
+    "vzd_kods": "106251597",
     "plana_lat": 56.58746,
     "plana_lon": 27.242977,
     "koord_teksts": "56.587460|27.242977",
@@ -11990,8 +11990,8 @@
     "citats": "|3.|Audriņu<br>pirmskolas<br>izglītības<br>iestāde|Izglītības<br>iestāde|Krasuhas iela 1A<br>k-3,<br>Audriņi,<br>Audriņu pagasts,<br>Rēzeknes<br>novads,<br>LV-<br>4611|56.588090|27.243130|mācību<br>klases|80|nav|nav|",
     "izdevejs": "Rēzekne (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Krasuhas iela 1, Audriņi, Audriņu pag., Rēzeknes nov., LV-4611",
+    "vzd_kods": "106251597",
     "plana_lat": 56.58809,
     "plana_lon": 27.24313,
     "koord_teksts": "56.588090|27.243130",
@@ -12473,8 +12473,8 @@
     "citats": "|16.|Gaigalavas<br>pirmsskolas<br>izglītības<br>iestāde|Izglītības<br>iestāde|Skolas<br>iela<br>1<br>Gaigalavas<br>pagasts,<br>Rēzeknes<br>novads,<br>LV-<br>4618|56.733970|27.065753|mācību<br>klases|50|ir|nav|",
     "izdevejs": "Rēzekne (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Skolas iela 1, Gaigalava, Gaigalavas pag., Rēzeknes nov., LV-4618",
+    "vzd_kods": "104529616",
     "plana_lat": 56.73397,
     "plana_lon": 27.065753,
     "koord_teksts": "56.733970|27.065753",
@@ -20742,6 +20742,43 @@
    "type": "Feature",
    "properties": {
     "kategorija": "izmitinasana",
+    "nosaukums": "Engures vidusskola",
+    "adrese": "Skolas iela 7 un 9,Engure",
+    "pasvaldiba": "Tukuma novads",
+    "pasvaldiba_slug": "tukuma-novads",
+    "nr_plana": null,
+    "avots_teksts": "Avots: Tukuma novada CA plāns, lpp. 57",
+    "plans_url": "https://www.tukums.lv/lv/media/56137/download?attachment",
+    "plans_fails": "ca-plans-tukums-2024.md",
+    "lpp": 57,
+    "citats": "|Engures vidusskola|Dzidra<br>(29544650)|Lūse|Skolas<br>iela<br>7<br>un<br>9,Engure|890|ēdnīca, vienā<br>ēdienreizē<br>150|140<br>vietas<br>internātā|",
+    "izdevejs": "Tukuma novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 7, Engure, Engures pag., Tukuma nov., LV-3113",
+    "vzd_kods": "101228405",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "vietas": 890,
+    "gultas": 140,
+    "edinasana": "ēdnīca, vienā ēdienreizē 150",
+    "izvilkuma_piezime": "Beds: '140 vietas internātā' (boarding house).",
+    "komentars": "Avots: Tukuma novada CA plāns, lpp. 57 · 890 vietas · vieta noteikta pēc adreses (VZD)",
+    "id": "tukuma-novads-izm-59"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.221907,
+     57.162852
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "izmitinasana",
     "nosaukums": "Engures PII \"Spārīte\"",
     "adrese": "Skolas iela 10, Engures pag.",
     "pasvaldiba": "Tukuma novads",
@@ -20765,7 +20802,7 @@
     "edinasana": "ir virtuve",
     "izvilkuma_piezime": "Beds: '112 gultas vietas bērniem' (children).",
     "komentars": "Avots: Tukuma novada CA plāns, lpp. 57 · 105 vietas · vieta noteikta pēc adreses (VZD)",
-    "id": "tukuma-novads-izm-59"
+    "id": "tukuma-novads-izm-60"
    },
    "geometry": {
     "type": "Point",
@@ -20801,7 +20838,7 @@
     "gultas": null,
     "edinasana": "Ir virtuve",
     "komentars": "Avots: Tukuma novada CA plāns, lpp. 57 · 30 vietas · vieta noteikta pēc adreses (VZD)",
-    "id": "tukuma-novads-izm-60"
+    "id": "tukuma-novads-izm-61"
    },
    "geometry": {
     "type": "Point",
@@ -20837,7 +20874,7 @@
     "gultas": 4,
     "edinasana": "Ir virtuve",
     "komentars": "Avots: Tukuma novada CA plāns, lpp. 57 · 30 vietas · vieta noteikta pēc adreses (VZD)",
-    "id": "tukuma-novads-izm-61"
+    "id": "tukuma-novads-izm-62"
    },
    "geometry": {
     "type": "Point",
@@ -20874,7 +20911,7 @@
     "edinasana": "Ēdnīca (vienā ēdienreizē) - 100 pers.",
     "izvilkuma_piezime": "Beds column gives no number. Pieejamās guļamvietas: 'mazo bērnu gultiņas'.",
     "komentars": "Avots: Tukuma novada CA plāns, lpp. 57 · 350 vietas · vieta noteikta pēc adreses (VZD)",
-    "id": "tukuma-novads-izm-62"
+    "id": "tukuma-novads-izm-63"
    },
    "geometry": {
     "type": "Point",

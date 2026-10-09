@@ -157,7 +157,8 @@
    "edinasana": null,
    "fails": "L0004_pielikums.md",
    "citats": "|10.|Melluži|Dubultu prospekts 105 pie viesnīcas „Liesma”|56.064556  /  23.735869|",
-   "piezime": "lat 56.064556 as written is ~100 km south of Jūrmala (other points ~56.95); likely typo for 56.964556 — not corrected"
+   "piezime": "lat 56.064556 as written is ~100 km south of Jūrmala (other points ~56.95); likely typo for 56.964556 — not corrected",
+   "parbaudes_piezime": "checked against the original PDF (sha256 matches faili.json): one-digit typo, 56.964… written as 56.064… (~100 km south, in Lithuania); longitude matches VZD exactly"
   },
   {
    "nr": 11,

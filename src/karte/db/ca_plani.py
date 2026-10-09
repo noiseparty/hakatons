@@ -79,7 +79,10 @@ def komponentes(adrese):
     return [k for k in (norm(x) for x in re.split(r"[,;]", adrese or "")) if k]
 
 
-IELA_NR = re.compile(r"^(.*?(iela|gatve|prospekts|bulvaris|laukums|soseja|cels|aleja|krastmala|dambis|linija)\d+[a-z]?(k\d+)?)(.*)$")
+# Iela + numurs komponentes sākumā, aiz kā vēl teksts ("dubultuprospekts105pieviesnicasliesma").
+# Mājas burts ir neviennozīmīgs ("38aolaine" = "38a" + "olaine", "105pie…" = "105" + "pie…"), tāpēc mēģina abus.
+IELA_NR = [re.compile(r"^(.*?(iela|gatve|prospekts|bulvaris|laukums|soseja|cels|aleja|krastmala|dambis|linija)\d+"
+                      + burts + r"(k\d+)?)(.*)$") for burts in (r"[a-z]?", "")]
 
 
 def vieta_sakrit(a, std_komp):
@@ -202,9 +205,10 @@ class Adreses:
         if m and not re.search(r"(iela|gatve|prospekts|bulvaris|laukums|soseja|cels|aleja|dambis|linija)$", m.group(1)):
             meginajumi.append((f"{m.group(1)}iela{m.group(2)}", komp[1:]))  # "Raiņa 15" → "Raiņa iela 15"
         for i, k in enumerate(komp):
-            m = IELA_NR.match(k)
-            if m and (i > 0 or m.group(4)):
-                meginajumi.append((m.group(1), ([m.group(4)] if m.group(4) else []) + komp[:i] + komp[i + 1:]))
+            for rx in IELA_NR:
+                m = rx.match(k)
+                if m and (i > 0 or m.group(4)) and len(m.group(4)) != 1:  # "2a" nav "2" + "a"
+                    meginajumi.append((m.group(1), ([m.group(4)] if m.group(4) else []) + komp[:i] + komp[i + 1:]))
         for atslega, citas in meginajumi:
             vietas = [c for c in citas if not c.endswith("nov") and not re.fullmatch(r"\d+", c)]
             atrasti, labakais = [], 1
@@ -344,6 +348,8 @@ def main():
                     s["geokodeti"] += 1
                 for k in stat["kludas"][kludu_sk:]:
                     k["rezultats"] = metode or "not_on_map"
+                    k["adrese_vzd"] = k.get("adrese_vzd") or (pg[1] if pg else None)
+                    k["parbaudes_piezime"] = r.get("parbaudes_piezime")  # cilvēka pārbaude pret oriģinālo PDF
                     k["slanis"] = slanis
                 if not koord:
                     stat["neatrasti"].append(f"{r.get('nosaukums')}, {r.get('adrese') or '(bez adreses)'} (lpp. {lpp}): "
@@ -484,6 +490,10 @@ def parskats_md(parskats):
             problema = "not a valid coordinate"
         else:
             problema = f"outside the municipality ({k['attalums_km']} km away)"
+        if k.get("parbaudes_piezime"):
+            problema += f"; {k['parbaudes_piezime']}"
+        if k.get("rezultats") == "varis_address" and k.get("tips") != "far_from_address":
+            problema += f" — VZD: {k['adrese_vzd']}"
         vert = (k.get("koord_teksts") or "").replace("|", " / ").replace("<br>", " ")
         r.append(f"| {k['pasvaldiba']} | {k['nosaukums']} (nr. {k.get('nr') or '–'}) | {k['lpp'] or '–'} | `{vert}` | "
                  f"{problema} | {REZULTATS.get(k.get('rezultats'), k.get('rezultats'))} |")

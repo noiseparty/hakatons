@@ -153,8 +153,8 @@
     "citats": "|5.|Dzelzceļa<br>pieturas punkts<br>Gauja|Mazā stacijas<br>iela 2|Gaujas ciems|57,141575|24,28776|",
     "izdevejs": "Ādažu novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Mazā Stacijas iela 2, Gauja, Carnikavas pag., Ādažu nov., LV-2163",
+    "vzd_kods": "103803103",
     "plana_lat": 57.141575,
     "plana_lon": 24.28776,
     "koord_teksts": "57,141575; 24,28776",
@@ -186,8 +186,8 @@
     "citats": "|6.|Brīvā laika<br>pavadīšanas<br>centrs,“Kadiķis”|Cīruļu iela 10|Kalngales ciems|57,07968|24,16642|",
     "izdevejs": "Ādažu novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Cīruļu iela 10, Kalngale, Carnikavas pag., Ādažu nov., LV-2163",
+    "vzd_kods": "101301410",
     "plana_lat": 57.07968,
     "plana_lon": 24.16642,
     "koord_teksts": "57,07968; 24,16642",
@@ -219,8 +219,8 @@
     "citats": "|7.|Baltezera<br>baznīca|Baznīcas iela<br>1|Baltezera ciems|57,04422|24,31532|",
     "izdevejs": "Ādažu novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Baznīcas iela 1, Baltezers, Ādažu pag., Ādažu nov., LV-2164",
+    "vzd_kods": "103934965",
     "plana_lat": 57.04422,
     "plana_lon": 24.31532,
     "koord_teksts": "57,04422; 24,31532",
@@ -318,8 +318,8 @@
     "citats": "|10.|Alderu<br>sabiedriskā|Kanāla iela 72|Alderu ciems,<br>Jaunkūlu ciems|57,052468|24,343269|",
     "izdevejs": "Ādažu novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Kanāla iela 72, Alderi, Ādažu pag., Ādažu nov., LV-2164",
+    "vzd_kods": "103132003",
     "plana_lat": 57.052468,
     "plana_lon": 24.343269,
     "koord_teksts": "57,052468; 24,343269",
@@ -2755,8 +2755,8 @@
     "citats": "|||pie pagasta pārvaldes|Skrudalienas pagasts,|55,7494687|26,782588|",
     "izdevejs": "Augšdaugavas novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Skaista iela 9, Silene, Skrudalienas pag., Augšdaugavas nov., LV-5470",
+    "vzd_kods": "103812313",
     "plana_lat": 55.7494687,
     "plana_lon": 26.782588,
     "koord_teksts": "55,7494687; 26,782588",
@@ -6668,8 +6668,8 @@
     "citats": "|28|Gulbenes pilsēta<br>Centrālais skvērs|Ābeļu iela 2<br>Gulbene|57.172665|26.761225|",
     "izdevejs": "Gulbenes novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Ābeļu iela 2, Gulbene, Gulbenes nov., LV-4401",
+    "vzd_kods": "101540266",
     "plana_lat": 57.172665,
     "plana_lon": 26.761225,
     "koord_teksts": "57.172665|26.761225",
@@ -7056,6 +7056,42 @@
    "type": "Feature",
    "properties": {
     "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Dubultu prospekts 105 pie viesnīcas „Liesma”",
+    "adrese": "Dubultu prospekts 105 pie viesnīcas „Liesma”, Melluži, Jūrmala",
+    "pasvaldiba": "Jūrmala",
+    "pasvaldiba_slug": "jurmala",
+    "nr_plana": 10,
+    "avots_teksts": "Avots: Jūrmalas CA plāns, lpp. 85",
+    "plans_url": "https://dokumenti.jurmala.lv/docs/l22/x/L0004_pielikums.pdf",
+    "plans_fails": "L0004_pielikums.md",
+    "lpp": 85,
+    "citats": "|10.|Melluži|Dubultu prospekts 105 pie viesnīcas „Liesma”|56.064556  /  23.735869|",
+    "izdevejs": "Jūrmala (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Dubultu prospekts 105, Jūrmala, LV-2008",
+    "vzd_kods": "101711450",
+    "plana_lat": 56.064556,
+    "plana_lon": 23.735869,
+    "koord_teksts": "56.064556  /  23.735869",
+    "karodzini": [
+     "plan_coordinate_error"
+    ],
+    "izvilkuma_piezime": "lat 56.064556 as written is ~100 km south of Jūrmala (other points ~56.95); likely typo for 56.964556 — not corrected",
+    "komentars": "Avots: Jūrmalas CA plāns, lpp. 85 · plāna koordinātas kļūdainas, vieta noteikta pēc adreses (VZD)",
+    "id": "jurmala-evak-10"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.735869,
+     56.964552
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
     "nosaukums": "Dzelzceļa stacija „Asari”",
     "adrese": "Dzelzceļa stacija „Asari”, Asari, Jūrmala",
     "pasvaldiba": "Jūrmala",
@@ -7075,7 +7111,7 @@
     "koord_teksts": "56.957390  /  23.689685",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-10"
+    "id": "jurmala-evak-11"
    },
    "geometry": {
     "type": "Point",
@@ -7108,7 +7144,7 @@
     "koord_teksts": "56.954875  /  23.667510",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-11"
+    "id": "jurmala-evak-12"
    },
    "geometry": {
     "type": "Point",
@@ -7141,7 +7177,7 @@
     "koord_teksts": "56.946666  /  23.619001",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-12"
+    "id": "jurmala-evak-13"
    },
    "geometry": {
     "type": "Point",
@@ -7174,7 +7210,7 @@
     "koord_teksts": "56.954925  /  23.634574",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-13"
+    "id": "jurmala-evak-14"
    },
    "geometry": {
     "type": "Point",
@@ -7207,7 +7243,7 @@
     "koord_teksts": "56.962112  /  23.612047",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-14"
+    "id": "jurmala-evak-15"
    },
    "geometry": {
     "type": "Point",
@@ -7240,7 +7276,7 @@
     "koord_teksts": "56.959227  /  23.602381",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-15"
+    "id": "jurmala-evak-16"
    },
    "geometry": {
     "type": "Point",
@@ -7266,14 +7302,14 @@
     "citats": "|17.|Kauguri|Skolas iela 3 (stadions)|56.949980  /  23.611323|",
     "izdevejs": "Jūrmala (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Skolas iela 3, Jūrmala, LV-2011",
+    "vzd_kods": "101738163",
     "plana_lat": 56.94998,
     "plana_lon": 23.611323,
     "koord_teksts": "56.949980  /  23.611323",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-16"
+    "id": "jurmala-evak-17"
    },
    "geometry": {
     "type": "Point",
@@ -7306,7 +7342,7 @@
     "koord_teksts": "56.974380  /  23.555098",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-17"
+    "id": "jurmala-evak-18"
    },
    "geometry": {
     "type": "Point",
@@ -7339,7 +7375,7 @@
     "koord_teksts": "56.941243  /  23.489038",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-18"
+    "id": "jurmala-evak-19"
    },
    "geometry": {
     "type": "Point",
@@ -7372,7 +7408,7 @@
     "koord_teksts": "56.928768  /  23.545807",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-19"
+    "id": "jurmala-evak-20"
    },
    "geometry": {
     "type": "Point",
@@ -7405,7 +7441,7 @@
     "koord_teksts": "56.949075  /  23.751497",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-20"
+    "id": "jurmala-evak-21"
    },
    "geometry": {
     "type": "Point",
@@ -7438,7 +7474,7 @@
     "koord_teksts": "56.941909  /  23.693352",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-21"
+    "id": "jurmala-evak-22"
    },
    "geometry": {
     "type": "Point",
@@ -7471,7 +7507,7 @@
     "koord_teksts": "56.949269  /  23.652157",
     "karodzini": [],
     "komentars": "Avots: Jūrmalas CA plāns, lpp. 85",
-    "id": "jurmala-evak-22"
+    "id": "jurmala-evak-23"
    },
    "geometry": {
     "type": "Point",
@@ -11261,6 +11297,40 @@
    "type": "Feature",
    "properties": {
     "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Sauleskalna TN",
+    "adrese": "Aronas iela 1 Sauleskalns Bērzaunes pagasts, Madonas novads",
+    "pasvaldiba": "Madonas novads",
+    "pasvaldiba_slug": "madonas-novads",
+    "nr_plana": null,
+    "avots_teksts": "Avots: Madonas novada CA plāns",
+    "plans_url": "https://www.madona.lv/lat/box/datnes/26.07/tx1720183220_piel_5_pulcesanas_vietas_madonas_nov_2026.docx",
+    "plans_fails": "piel_5_pulcesanas_vietas_madonas_nov_2026.md",
+    "lpp": null,
+    "citats": "<td>Sauleskalna TN</td>",
+    "izdevejs": "Madonas novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Aronas iela 1, Sauleskalns, Bērzaunes pag., Madonas nov., LV-4853",
+    "vzd_kods": "101405730",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Bērzaunes pagasta pārvalde",
+    "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
+    "id": "madonas-novads-evak-7"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.072965,
+     56.806254
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
     "nosaukums": "Cesvaines vidusskola",
     "adrese": "Madonas iela 1, Cesvaine, Cesvaines pagasts, Madonas novads",
     "pasvaldiba": "Madonas novads",
@@ -11281,7 +11351,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Cesvaines apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-7"
+    "id": "madonas-novads-evak-8"
    },
    "geometry": {
     "type": "Point",
@@ -11315,7 +11385,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Cesvaines apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-8"
+    "id": "madonas-novads-evak-9"
    },
    "geometry": {
     "type": "Point",
@@ -11349,7 +11419,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Cesvaines apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-9"
+    "id": "madonas-novads-evak-10"
    },
    "geometry": {
     "type": "Point",
@@ -11383,7 +11453,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Dzelzavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-10"
+    "id": "madonas-novads-evak-11"
    },
    "geometry": {
     "type": "Point",
@@ -11417,7 +11487,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Dzelzavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-11"
+    "id": "madonas-novads-evak-12"
    },
    "geometry": {
     "type": "Point",
@@ -11451,7 +11521,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Dzelzavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-12"
+    "id": "madonas-novads-evak-13"
    },
    "geometry": {
     "type": "Point",
@@ -11485,7 +11555,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Dzelzavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-13"
+    "id": "madonas-novads-evak-14"
    },
    "geometry": {
     "type": "Point",
@@ -11519,7 +11589,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ērgļu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-14"
+    "id": "madonas-novads-evak-15"
    },
    "geometry": {
     "type": "Point",
@@ -11553,7 +11623,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ērgļu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-15"
+    "id": "madonas-novads-evak-16"
    },
    "geometry": {
     "type": "Point",
@@ -11587,7 +11657,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ērgļu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-16"
+    "id": "madonas-novads-evak-17"
    },
    "geometry": {
     "type": "Point",
@@ -11621,7 +11691,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ērgļu apvienības pārvalde; note: a hospital is listed as an assembly point in the plan",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-17"
+    "id": "madonas-novads-evak-18"
    },
    "geometry": {
     "type": "Point",
@@ -11655,7 +11725,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Kalsnavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-18"
+    "id": "madonas-novads-evak-19"
    },
    "geometry": {
     "type": "Point",
@@ -11689,7 +11759,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Kalsnavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-19"
+    "id": "madonas-novads-evak-20"
    },
    "geometry": {
     "type": "Point",
@@ -11723,7 +11793,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Kalsnavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-20"
+    "id": "madonas-novads-evak-21"
    },
    "geometry": {
     "type": "Point",
@@ -11757,7 +11827,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Kalsnavas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-21"
+    "id": "madonas-novads-evak-22"
    },
    "geometry": {
     "type": "Point",
@@ -11791,7 +11861,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Liezēres pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-22"
+    "id": "madonas-novads-evak-23"
    },
    "geometry": {
     "type": "Point",
@@ -11825,7 +11895,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Liezēres pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-23"
+    "id": "madonas-novads-evak-24"
    },
    "geometry": {
     "type": "Point",
@@ -11859,7 +11929,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Lubānas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-24"
+    "id": "madonas-novads-evak-25"
    },
    "geometry": {
     "type": "Point",
@@ -11893,7 +11963,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Lubānas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-25"
+    "id": "madonas-novads-evak-26"
    },
    "geometry": {
     "type": "Point",
@@ -11927,7 +11997,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ļaudonas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-26"
+    "id": "madonas-novads-evak-27"
    },
    "geometry": {
     "type": "Point",
@@ -11961,7 +12031,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ļaudonas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-27"
+    "id": "madonas-novads-evak-28"
    },
    "geometry": {
     "type": "Point",
@@ -11995,7 +12065,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ļaudonas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-28"
+    "id": "madonas-novads-evak-29"
    },
    "geometry": {
     "type": "Point",
@@ -12029,7 +12099,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Mārcienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-29"
+    "id": "madonas-novads-evak-30"
    },
    "geometry": {
     "type": "Point",
@@ -12063,7 +12133,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Mētrienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-30"
+    "id": "madonas-novads-evak-31"
    },
    "geometry": {
     "type": "Point",
@@ -12097,7 +12167,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Mētrienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-31"
+    "id": "madonas-novads-evak-32"
    },
    "geometry": {
     "type": "Point",
@@ -12131,7 +12201,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ošupes pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-32"
+    "id": "madonas-novads-evak-33"
    },
    "geometry": {
     "type": "Point",
@@ -12165,7 +12235,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Ošupes pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-33"
+    "id": "madonas-novads-evak-34"
    },
    "geometry": {
     "type": "Point",
@@ -12199,7 +12269,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Praulienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-34"
+    "id": "madonas-novads-evak-35"
    },
    "geometry": {
     "type": "Point",
@@ -12233,7 +12303,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Praulienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-35"
+    "id": "madonas-novads-evak-36"
    },
    "geometry": {
     "type": "Point",
@@ -12267,7 +12337,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Praulienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-36"
+    "id": "madonas-novads-evak-37"
    },
    "geometry": {
     "type": "Point",
@@ -12301,7 +12371,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Sarkaņu pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-37"
+    "id": "madonas-novads-evak-38"
    },
    "geometry": {
     "type": "Point",
@@ -12335,7 +12405,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Vestienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-38"
+    "id": "madonas-novads-evak-39"
    },
    "geometry": {
     "type": "Point",
@@ -12369,7 +12439,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Vestienas pagasta pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-39"
+    "id": "madonas-novads-evak-40"
    },
    "geometry": {
     "type": "Point",
@@ -12403,7 +12473,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Varakļānu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-40"
+    "id": "madonas-novads-evak-41"
    },
    "geometry": {
     "type": "Point",
@@ -12437,7 +12507,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Varakļānu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-41"
+    "id": "madonas-novads-evak-42"
    },
    "geometry": {
     "type": "Point",
@@ -12471,7 +12541,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Varakļānu apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-42"
+    "id": "madonas-novads-evak-43"
    },
    "geometry": {
     "type": "Point",
@@ -12505,7 +12575,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Madonas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-43"
+    "id": "madonas-novads-evak-44"
    },
    "geometry": {
     "type": "Point",
@@ -12539,7 +12609,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Madonas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-44"
+    "id": "madonas-novads-evak-45"
    },
    "geometry": {
     "type": "Point",
@@ -12573,7 +12643,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Madonas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-45"
+    "id": "madonas-novads-evak-46"
    },
    "geometry": {
     "type": "Point",
@@ -12607,7 +12677,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Madonas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-46"
+    "id": "madonas-novads-evak-47"
    },
    "geometry": {
     "type": "Point",
@@ -12641,7 +12711,7 @@
     "karodzini": [],
     "izvilkuma_piezime": "Pagasta/apvienības pārvalde: Madonas apvienības pārvalde",
     "komentars": "Avots: Madonas novada CA plāns · vieta noteikta pēc adreses (VZD)",
-    "id": "madonas-novads-evak-47"
+    "id": "madonas-novads-evak-48"
    },
    "geometry": {
     "type": "Point",
@@ -19574,8 +19644,8 @@
     "citats": "|3|Salaspils pilsēta|Smilšu iela 1,  un Rudzu iela 2 Salaspils|56.858657, 24.335189 un<br>56.857836,24.335532|",
     "izdevejs": "Salaspils novads (pašvaldība)",
     "geokodesana": "plan_coords",
-    "adrese_vzd": null,
-    "vzd_kods": null,
+    "adrese_vzd": "Rudzu iela 2, Salaspils, Salaspils nov., LV-2121",
+    "vzd_kods": "104979923",
     "plana_lat": 56.857836,
     "plana_lon": 24.335532,
     "koord_teksts": "56.857836,24.335532",

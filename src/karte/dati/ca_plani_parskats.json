@@ -146,6 +146,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Zariņi\", Dvietes pag., Augšdaugavas nov., LV-5441",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -159,6 +160,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Daugavas iela 8, Līksna, Līksnas pag., Augšdaugavas nov., LV-5456",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -172,6 +174,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Alejas iela 20, Medumi, Medumu pag., Augšdaugavas nov., LV-5460",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -185,6 +188,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Pašuliene\", Šēderes pag., Augšdaugavas nov., LV-5474",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    }
   ],
@@ -254,6 +258,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Visbijas iela 1, Ceraukste, Ceraukstes pag., Bauskas nov., LV-3908",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -453,6 +458,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Jaunstukmaņi\", Līgo, Līgo pag., Gulbenes nov., LV-4421",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -465,6 +471,8 @@
     "attalums_km": 646.6,
     "aizstats_ar_adresi": false,
     "rezultats": "not_on_map",
+    "adrese_vzd": null,
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -478,6 +486,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Stradi\", Stradu pag., Gulbenes nov., LV-4417",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -491,6 +500,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Skolas iela 12, Gulbene, Gulbenes nov., LV-4401",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -503,6 +513,8 @@
     "attalums_km": 116.1,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "\"Jaunstukmaņi\", Līgo, Līgo pag., Gulbenes nov., LV-4421",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    },
    {
@@ -515,6 +527,8 @@
     "attalums_km": null,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "\"Kokles\", Gulbītis, Jaungulbenes pag., Gulbenes nov., LV-4420",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -680,20 +694,20 @@
     "citats": "|10.|Melluži|Dubultu prospekts 105 pie viesnīcas „Liesma”|56.064556  /  23.735869|",
     "koord_teksts": "56.064556  /  23.735869",
     "attalums_km": 96.1,
-    "aizstats_ar_adresi": false,
-    "rezultats": "not_on_map",
+    "aizstats_ar_adresi": true,
+    "rezultats": "varis_address",
+    "adrese_vzd": "Dubultu prospekts 105, Jūrmala, LV-2008",
+    "parbaudes_piezime": "checked against the original PDF (sha256 matches faili.json): one-digit typo, 56.964… written as 56.064… (~100 km south, in Lithuania); longitude matches VZD exactly",
     "slanis": "evakuacijas_punkti"
    }
   ],
-  "neatrasti": [
-   "Dubultu prospekts 105 pie viesnīcas „Liesma”, Dubultu prospekts 105 pie viesnīcas „Liesma”, Melluži, Jūrmala (lpp. 85): plan_coordinate_error"
-  ],
+  "neatrasti": [],
   "izmesti": [],
   "evakuacijas_punkti": {
    "atrasti": 23,
    "ar_koord": 23,
-   "geokodeti": 0,
-   "kartē": 22,
+   "geokodeti": 1,
+   "kartē": 23,
    "vietas": 0,
    "dublikati": 0
   },
@@ -749,6 +763,8 @@
     "attalums_km": 73.6,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "N. Rancāna iela 4, Krāslava, Krāslavas nov., LV-5601",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -799,6 +815,8 @@
     "attalums_km": 12.5,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Baznīcas iela 1, Kuldīga, Kuldīgas nov., LV-3301",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -812,6 +830,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Pilsētas laukums 1, Kuldīga, Kuldīgas nov., LV-3301",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -825,6 +844,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Skolas iela 11, Alsunga, Alsungas pag., Kuldīgas nov., LV-3306",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    }
   ],
@@ -1000,6 +1020,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Pagasta iela 2, Tutāni, Cirmas pag., Ludzas nov., LV-5735",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    }
   ],
@@ -1038,15 +1059,14 @@
   "kludas": [],
   "neatrasti": [
    "Bērzaunes pamatskolas ēka, Bērzaunes pamatskola Bērzaune, Madonas novads (lpp. None): address_not_found",
-   "Sauleskalna TN, Aronas iela 1 Sauleskalns Bērzaunes pagasts, Madonas novads (lpp. None): address_not_found",
    "Dzelzavas SAC, Grāveri 1, Dzelzava, Madonas novads (lpp. None): address_not_found"
   ],
   "izmesti": [],
   "evakuacijas_punkti": {
    "atrasti": 51,
    "ar_koord": 0,
-   "geokodeti": 48,
-   "kartē": 47,
+   "geokodeti": 49,
+   "kartē": 48,
    "vietas": 0,
    "dublikati": 1
   },
@@ -1106,6 +1126,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Skolas iela 1, Ogre, Ogres nov., LV-5001",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1118,6 +1139,8 @@
     "attalums_km": 31.3,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "\"Ābelītes\", Tome, Tomes pag., Ogres nov., LV-5020",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1130,6 +1153,8 @@
     "attalums_km": 36.5,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Lielvārdes iela 3, Rembate, Rembates pag., Ogres nov., LV-5016",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1142,6 +1167,8 @@
     "attalums_km": 38.5,
     "aizstats_ar_adresi": false,
     "rezultats": "not_on_map",
+    "adrese_vzd": null,
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1155,6 +1182,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Rīgas iela 5, Līčupe, Mazozolu pag., Ogres nov., LV-5065",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1168,6 +1196,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Pagastmāja\", Meņģele, Meņģeles pag., Ogres nov., LV-5047",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1181,6 +1210,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Daugavas iela 6, Jumprava, Jumpravas pag., Ogres nov., LV-5022",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1193,6 +1223,8 @@
     "attalums_km": 19.0,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Ozolu iela 3, Laubere, Lauberes pag., Ogres nov., LV-5044",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1206,6 +1238,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Pagastmāja\", Lēdmane, Lēdmanes pag., Ogres nov., LV-5011",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1219,6 +1252,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Daugavas iela 6, Jumprava, Jumpravas pag., Ogres nov., LV-5022",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1232,6 +1266,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Irbenāju iela 2, Ikšķile, Ogres nov., LV-5052",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -1316,6 +1351,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Rušonas iela 9, Jaunaglona, Aglonas pag., Preiļu nov., LV-5304",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1329,6 +1365,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Smelteri\", Ozoliņi, Saunas pag., Preiļu nov., LV-5326",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    }
   ],
@@ -1369,6 +1406,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Feimaņu skola\", Feimaņi, Feimaņu pag., Rēzeknes nov., LV-4623",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    },
    {
@@ -1381,6 +1419,8 @@
     "attalums_km": 3704.0,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Kultūras laukums 2, Viļāni, Rēzeknes nov., LV-4650",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -1495,6 +1535,8 @@
     "attalums_km": 5528.2,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Rīgas iela 2A, Langstiņi, Garkalnes pag., Ropažu nov., LV-2137",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1508,6 +1550,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "Skolas iela 3, Zaķumuiža, Ropažu pag., Ropažu nov., LV-2133",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    },
    {
@@ -1520,6 +1563,8 @@
     "attalums_km": 1209.6,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Institūta iela 1B, Ulbroka, Stopiņu pag., Ropažu nov., LV-2130",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -1585,6 +1630,8 @@
     "attalums_km": 114.3,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "Upes iela 4, Jaunlutriņi, Jaunlutriņu pag., Saldus nov., LV-3876",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1597,6 +1644,8 @@
     "attalums_km": 83.7,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "\"Pagasta māja\", Lutriņi, Lutriņu pag., Saldus nov., LV-3861",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1609,6 +1658,8 @@
     "attalums_km": 1.5,
     "aizstats_ar_adresi": true,
     "rezultats": "varis_address",
+    "adrese_vzd": "\"Mežvidi\", Mežvidi, Novadnieku pag., Saldus nov., LV-3801",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1622,6 +1673,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Krāces\", Rubas pag., Saldus nov., LV-3892",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1635,6 +1687,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Gaiķu pamatskola\", Vecgaiķi, Gaiķu pag., Saldus nov., LV-3873",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "evakuacijas_punkti"
    },
    {
@@ -1648,6 +1701,7 @@
     "tips": "far_from_address",
     "adrese_vzd": "\"Radi\", Cieceres pag., Saldus nov., LV-3851",
     "rezultats": "varis_address",
+    "parbaudes_piezime": null,
     "slanis": "izmitinasana"
    }
   ],
@@ -1847,7 +1901,6 @@
    "Vāne, \"Prātnieki\", Vāne, \"Prātnieki\" (lpp. 56): address_not_found",
    "Valdeķu kultūras nams, Valdeķi, Kandavas (lpp. 56): address_not_found",
    "Vānes kultūras nams, \"Gaismas\", Vāne (lpp. 56): address_not_found",
-   "Engures vidusskola, Skolas iela 7 un 9,Engure (lpp. 57): address_not_found",
    "Šlokenbekas muiža, Šlokenbekas muiža, Milzkalne, Smārdes pag. (lpp. 57): address_not_found",
    "Lapmežciema pagasta pārvalde, Liepu iela 2, Lapmežciems (lpp. 57): address_not_found",
    "Lapmežciema pamatskola, Liepu iela 2a, Lapmežciems (lpp. 57): address_not_found",
@@ -1866,9 +1919,9 @@
   "izmitinasana": {
    "atrasti": 85,
    "ar_koord": 0,
-   "geokodeti": 65,
-   "kartē": 62,
-   "vietas": 13505,
+   "geokodeti": 66,
+   "kartē": 63,
+   "vietas": 14395,
    "dublikati": 3
   }
  },
