@@ -14,6 +14,9 @@ Galapunkti:
                                        ?poligoni=1 — arī brīdinājumu apgabali [[lat, lon], ...] (zonas.js)
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
   GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
+                                       + prognoze 7 dienām (LVĢMC hidroloģiskās prognozes, kešs 1 h)
+  GET /api/adreses/tuvaka?lat=..&lon=.. tuvākā VZD adrese (≤ 300 m) atrašanās vietai
+  GET /api/pasvaldiba?lat=..&lon=..    pašvaldība punktā: CA plāns, tīmekļvietne, VPVKAC tālrunis (teksts)
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
                                        novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
@@ -413,7 +416,65 @@ def udens(q):
         rez.append({**p, "lat": slat, "lon": slon, "attalums_m": _attalums_m(lat, lon, slat, slon),
                     "vecs": tagad - laiks > timedelta(hours=udens_limenis.DERIGS_H)})
     rez.sort(key=lambda s: s["attalums_m"])
-    return {"avots": "lvgmc-hidro", "stacijas": rez[:limit]}
+    rez = rez[:limit]
+    prognozes = {}
+    if time.time() - _hidro_kluda[0] > 300:  # pēc kļūdas bez kešas 5 min nemēģina (lai /api/udens nekavējas)
+        try:
+            prognozes = _kesots("hidro_prognoze", 3600, _hidro_prognozes)
+        except Kluda:
+            _hidro_kluda[0] = time.time()
+    for st in rez:
+        st["prognoze"] = _hidro_prognoze_stacijai(prognozes.get(st["stacija"]), st)
+    return {"avots": "lvgmc-hidro", "stacijas": rez}
+
+
+# ---- Hidroloģiskā prognoze (LVĢMC "Hidroloģiskās prognozes", data.gov.lv, CC0): 14 dienas, katrai stacijai
+# ūdens līmeņa procentiles (m LAS-2000,5). Pārrēķins uz cm virs posteņa "0": (m − nulle_m) × 100. ----
+HIDRO_PROGNOZE = ("https://data.gov.lv/dati/dataset/5d9b0379-c0b8-4ce9-9094-7c30b5502433/resource/"
+                  "a967bf11-139f-4040-84d6-ce7c68006a8b/download/hidro_forecast.csv")
+HIDRO_PROGNOZE_DIENAS = 7
+_hidro_kluda = [0.0]
+
+
+def _hidro_prognozes():
+    """stacija → {datums: (V95, V75, mediāna, V25, V5)} ūdens līmenim (UDLIM), m."""
+    rez = {}
+    for r in _csv(HIDRO_PROGNOZE):
+        if r["PARAM"] != "UDLIM":
+            continue
+        try:
+            vertibas = tuple(float(r[k]) for k in ("V95", "V75", "MEDIANA", "V25", "V5"))
+        except (KeyError, ValueError):
+            continue
+        rez.setdefault(r["STATION_ID"], {})[r["DATUMS"][:10]] = vertibas
+    return rez
+
+
+def _hidro_prognoze_stacijai(dienas, st):
+    """Prognoze pēc HIDRO_PROGNOZE_DIENAS dienām: mediāna un joslas cm (ja zināma posteņa nulle), izmaiņa un virziens
+    pēc modeļa (starpība nav atkarīga no nulles)."""
+    if not dienas:
+        return None
+    sodien = _riga_tagad().date()
+    merka = (sodien + timedelta(days=HIDRO_PROGNOZE_DIENAS)).isoformat()
+    datumi = sorted(dienas)
+    merkis = merka if merka in dienas else (datumi[-1] if datumi[-1] < merka else None)
+    sakums = sodien.isoformat() if sodien.isoformat() in dienas else datumi[0]
+    if not merkis:
+        return None
+    v95, v75, med, v25, v5 = dienas[merkis]
+    nulle = st.get("nulle_m")
+    cm = (lambda m: round((m - nulle) * 100)) if nulle is not None else None
+    # virziens pēc paša modeļa trajektorijas (mediāna pēc 7 dienām pret šodienu): salīdzinot ar mērījumu, iejauktos
+    # modeļa nobīde (prognoze izdota iepriekšējā dienā), un "kāpj" varētu nozīmēt tikai to
+    izmaina = round((med - dienas[sakums][2]) * 100)
+    return {
+        "datums": merkis, "dienas": (datetime.fromisoformat(merkis).date() - sodien).days,
+        "mediana_cm": cm(med) if cm else None, "josla_50_cm": [cm(v75), cm(v25)] if cm else None,
+        "josla_90_cm": [cm(v95), cm(v5)] if cm else None,
+        "izmaina_cm": izmaina, "virziens": "kāpj" if izmaina >= 5 else "krīt" if izmaina <= -5 else "stabils",
+        "avots": "lvgmc-hidro-prognoze",
+    }
 
 
 # ---- Prognoze / ziņas: /api/prognozes, /api/prognozes/robezas ----
@@ -2025,6 +2086,47 @@ def statuss(_q):
 # ==== Statuss — beigas ====
 
 
+
+# ---- Rezultāta kartītei: tuvākā adrese GPS punktam un pašvaldības uzziņa ----
+
+def adreses_tuvaka(q):
+    """Tuvākā VZD adrese (≤ 300 m) atrašanās vietai: "Jūsu atrašanās vieta: ~Brīvības iela 15, Ogre"."""
+    lat, lon = _vieta(q)
+    return vaicat(
+        """select coalesce((select json_build_object('adrese', adrese, 'kods', kods, 'attalums_m', d) from (
+             select adrese, kods, round(st_distance(geom::geography,
+                    st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326)::geography))::int as d
+             from adreses order by geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) limit 1) a
+           where d <= 300), '{}'::json)""",
+        {"lat": lat, "lon": lon}, timeout="2s")
+
+
+PASVALDIBAS_FAILS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dati", "pasvaldibas.json")
+
+
+def _pasvaldibas_dati():
+    with open(PASVALDIBAS_FAILS, encoding="utf-8") as f:
+        return json.load(f)
+
+
+def pasvaldiba(q):
+    """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne un VPVKAC kontakts
+    (src/karte/db/pasvaldibas.py → src/karte/dati/pasvaldibas.json)."""
+    lat, lon = _vieta(q)
+    kods = vaicat("""select kods from regioni where tips in ('novads', 'valstspilseta')
+                     and st_contains(geom, st_setsrid(st_makepoint(%s, %s), 4326)) limit 1""", (lon, lat), timeout="2s")
+    if not kods:
+        raise Kluda(404, "vieta nav nevienā pašvaldībā")
+    dati = _kesots("pasvaldibas", 3600, _pasvaldibas_dati).get(kods)
+    if not dati:
+        raise Kluda(404, "pašvaldības dati nav atrasti")
+    return {"kods": kods, **dati, "avoti": [
+        {"nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)", "licence": "Oficiāls dokuments",
+         "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"},
+        {"nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "licence": "CC0 1.0",
+         "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -2032,6 +2134,8 @@ MARSRUTI = [
     (re.compile(r"^/api/regioni/([^/]+)$"), regions, 3600),
     (re.compile(r"^/api/objekti/?$"), objekti, 60),
     (re.compile(r"^/api/adreses/?$"), adreses, 3600),
+    (re.compile(r"^/api/adreses/tuvaka/?$"), adreses_tuvaka, 3600),
+    (re.compile(r"^/api/pasvaldiba/?$"), pasvaldiba, 3600),
     (re.compile(r"^/api/bridinajumi/?$"), bridinajumi, 300),
     (re.compile(r"^/api/pludi/?$"), pludi, 3600),
     (re.compile(r"^/api/udens/?$"), udens, 600),
