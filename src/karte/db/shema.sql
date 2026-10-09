@@ -199,3 +199,50 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- Ceļu slēgumi un negadījumi (karte_api.py /api/celi, production/celi.js): tikai avota rinda panelim "Datu avoti";
+-- notikumi netiek glabāti datubāzē, tos API ņem tieši no NAP (kešs 5 min).
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('lvc-nap', 'Ceļu slēgumi, negadījumi, remontdarbi un slidens ceļš (DATEX II)', 'VSIA "Latvijas Valsts ceļi" / Nacionālais piekļuves punkts transportdata.gov.lv',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf',
+   'NAP API download-file (DATEX II v3 SituationPublication; katrai kopai sava bezmaksas atslēga), karte_api.py /api/celi, kešs 5 min',
+   'Slānis "Ceļu slēgumi un negadījumi"; rinda "Ceļu satiksme" meklēšanas rezultātā',
+   'Tikai valsts autoceļi. Kopas: ceļu slēgumi, negadījumi, joslu slēgumi, remontdarbi, slidens ceļš (SIC).', 78)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- Biežāk meklētais (meklesana.js → POST /api/meklejumi; GET /api/meklejumi/top) ----
+-- Tikai normalizēts vaicājuma teksts un skaitītāji: bez IP, laika pa lietotājiem vai citiem lietotāja datiem.
+-- Vaicājumus ar cipariem (mājas numuri = adreses) API neskaita; klienti sūta vaicājumu bez adreses.
+create table if not exists meklejumi (
+  id         bigserial primary key,
+  vaicajums  text not null unique check (length(vaicajums) between 1 and 100),  -- mazie burti, viena atstarpe
+  skaits     int  not null default 1,            -- cik reižu meklēts ar atpazītu situāciju vai slāni
+  klikski    int  not null default 0,            -- cik reižu pēc tā atvērts rezultāts
+  pedejais   timestamptz not null default now()
+);
+create index if not exists meklejumi_pedejais_idx on meklejumi (pedejais);
+grant select, insert, update on meklejumi to map_api;
+grant usage on sequence meklejumi_id_seq to map_api;
+
+-- Demo: lai "Biežāk meklētais" nekad nav tukšs
+insert into meklejumi (vaicajums, skaits) values
+  ('nav elektrības', 12), ('plūdi ogrē', 9), ('tuvākā patvertne', 7), ('nav ūdens', 5), ('evakuācija', 4)
+on conflict (vaicajums) do nothing;
+
+-- ==== Statuss (production/statuss.html) ====
+-- Fona pārbaužu rezultāti: karte_api.py ik 15 min ieraksta vienu rindu par katru komponentu (vietne, API, datu avoti),
+-- glabā 8 dienas. Tabulu izveido arī pats API (tas pats bloks STATUSS_SHEMA failā karte_api.py), ja shēma nav palaista.
+create table if not exists statuss_parbaudes (
+  id         bigserial primary key,
+  komponents text not null,
+  laiks      timestamptz not null default now(),
+  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  zinojums   text,
+  ilgums_ms  int
+);
+create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+grant select on statuss_parbaudes to map_api;
