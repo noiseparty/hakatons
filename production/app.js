@@ -1,6 +1,6 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', transports: 'Transports', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
@@ -221,6 +221,9 @@ function radtRegionu(kods) {
 }
 
 // ---- Kategorijas ----
+// Lieli slāņi (~12 000 pieturu, ūdens ņemšanas vietas) sākumā izslēgti; tos ieslēdz filtrā vai meklēšanas scenārijs
+const IZSLEGTI_SAKUMA = new Set(['pietura', 'udens_nemsana']);
+
 function aizpilditKategorijas(saraksts) {
   kategorijas = Object.fromEntries(saraksts.map(k => [k.kods, k]));
   const kaste = el('kategorijas');
@@ -233,7 +236,7 @@ function aizpilditKategorijas(saraksts) {
     div.className = 'grupa';
     div.dataset.grupa = grupa;
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
-      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? 'checked' : 'disabled'}>
+      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${!k.skaits ? 'disabled' : IZSLEGTI_SAKUMA.has(k.kods) ? '' : 'checked'}>
         <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
         <span class="skaits">${k.skaits}</span></label>`).join('');
     kaste.append(div);
@@ -288,6 +291,8 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
+  if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
+  if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +

@@ -65,7 +65,7 @@
     },
     {
       "kods": "ugunsgreks", "nosaukums": "Ugunsgrēks", "atra_poga": "🔥 Ugunsgrēks",
-      "kategorijas": ["ugunsdzeseji"], "zvanit112": true, "talak": "uguns",
+      "kategorijas": ["ugunsdzeseji", "udens_nemsana"], "zvanit112": true, "talak": "uguns",
       "padoms": "Zvaniet 112. Pametiet telpas, aizveriet aiz sevis durvis un neizmantojiet liftu. Dūmos pārvietojieties pieliekušies pie grīdas.",
       "atslegvardi": [
         "ugun", "ugunsgrēk", "deg$", "degam", "liesm", "dūm", "ugunsdzēs", "glābēj", "vugd",
@@ -273,14 +273,14 @@
     },
     {
       "kods": "transports_apstajies", "nr": 28, "grupa": "B", "nosaukums": "Sabiedriskais transports apstājies",
-      "kategorijas": [], "zvanit112": false, "talak": "cels",
+      "kategorijas": ["pietura"], "zvanit112": false, "talak": "cels",
       "padoms": "Sekojiet pārvadātāja norādēm, neizkāpiet uz sliedēm vai šosejas. Informāciju meklējiet pārvadātāja mājaslapā vai radio.",
       "atslegvardi": ["autobus", "vilciens apstāj", "elektrovilcien", "tramvaj", "trolejbus", "transports apstāj", "автобус", "электричк", "bus stopped", "train stopped"]
     },
 
     {
       "kods": "meza_ugunsgreks", "nr": 29, "grupa": "C", "nosaukums": "Meža vai lauku ugunsgrēks",
-      "kategorijas": ["ugunsdzeseji"], "zvanit112": true, "talak": "uguns",
+      "kategorijas": ["ugunsdzeseji", "udens_nemsana"], "zvanit112": true, "talak": "uguns",
       "padoms": "Zvaniet 112. Ejiet prom no uguns perpendikulāri vēja virzienam, uz ceļu vai ūdeni. Nemēģiniet dzēst lielu ugunsgrēku paši.",
       "atslegvardi": ["meža ugun", "mežs deg", "deg mežs", "meža ugunsgrēk", "lauks deg", "kūdr", "ugunsgrēk", "dūm", "liesm", "лесной пожар", "лес горит", "forest fire", "wildfire"]
     },
@@ -505,7 +505,7 @@
     },
     {
       "kods": "evakuacija", "nr": 66, "grupa": "F", "nosaukums": "Evakuācijas rīkojums",
-      "kategorijas": ["evakuacijas_punkts", "degviela"], "zvanit112": false, "talak": "kars",
+      "kategorijas": ["evakuacijas_punkts", "pietura", "degviela"], "zvanit112": false, "talak": "kars",
       "padoms": "Ņemiet dokumentus, zāles, telefonu ar lādētāju, naudu, ūdeni, pārtiku un siltas drēbes. Aizslēdziet māju, izslēdziet gāzi un elektrību. Brauciet pa norādīto maršrutu.",
       "atslegvardi": ["evaku", "jāpamet māj", "jāatstāj māj", "jābrauc prom", "braukt prom", "aizbrauk", "kur iet", "эвакуац", "уехать", "evacuat", "leave the city"]
     },

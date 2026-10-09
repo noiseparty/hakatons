@@ -250,3 +250,34 @@ alter table statuss_parbaudes drop constraint if exists statuss_parbaudes_stavok
 alter table statuss_parbaudes add constraint statuss_parbaudes_stavoklis_check
   check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas', 'nav_datu'));
 grant select on statuss_parbaudes to map_api;
+
+-- ---- Ūdens ņemšanas vietas ugunsdzēsībai (valsts_dati.py) un sabiedriskā transporta pieturas (gtfs.py) ----
+insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
+  ('udens_nemsana', 'Ūdens ņemšanas vietas ugunsdzēsībai (VKCP IĢIS)', 'vide', '#0e7490', 82),
+  ('pietura', 'Sabiedriskā transporta pieturas (evakuācijas savākšana)', 'transports', '#4d7c0f', 90)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('vkcp-udens', 'VKCP IĢIS – atklātās ūdens ņemšanas vietas', 'Iekšlietu ministrijas Informācijas centrs',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/vkcp-igis-atklatas-udens-nemsanas-vietas',
+   'atklatas_udens_nemsanas_vietas_un_hidranti.csv (src/karte/db/valsts_dati.py)',
+   'Ūdens ņemšanas vietas ugunsdzēsībai', 'Kartē tikai atklātās ūdens ņemšanas vietas (apzīmējums Ut); ~15 000 hidrantu nav rādīti. LKS-92 TM.', 24),
+  ('rs-gtfs', 'Maršrutu saraksti Rīgas Satiksme sabiedriskajam transportam (GTFS)', 'SIA „Rīgas satiksme”',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/marsrutu-saraksti-rigas-satiksme-sabiedriskajam-transportam',
+   'Jaunākais mēneša ZIP (stops.txt, routes.txt, trips.txt, stop_times.txt; src/karte/db/gtfs.py)',
+   'Pieturas Rīgā: maršrutu skaits un numuri', 'Tikai pieturas, kurās apstājas vismaz viens reiss.', 30),
+  ('atd-gtfs', 'Autobusu kustības saraksts starppilsētu un vietējās nozīmes maršrutos (GTFS)', 'VSIA „Autotransporta direkcija”',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/atd-gtfs', 'https://www.atd.lv/sites/default/files/GTFS/gtfs-latvia-lv.zip (src/karte/db/gtfs.py)',
+   'Autobusu pieturas visā Latvijā: maršrutu skaits un numuri', 'Tikai pieturas, kurās apstājas vismaz viens reiss.', 31),
+  ('vivi-gtfs', 'Vilcienu kustības saraksts iekšzemes dzelzceļa maršrutos (GTFS)', 'VSIA „Autotransporta direkcija”',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/iekszemes-dzelzcela-vilcienu-kustibas-saraksts-gtfs-formata',
+   'https://vivi.lv/uploads/GTFS.zip (src/karte/db/gtfs.py)', 'Vilcienu stacijas un pieturas', null, 32)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;

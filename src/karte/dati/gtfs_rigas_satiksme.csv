@@ -1,0 +1,1644 @@
+id,nosaukums,marsruti,marsrutu_saraksts,veidi,x,y
+0001,Latgales iela 450,1,18,autobuss,24.23493,56.88659
+0002,Latgales iela 450,1,18,autobuss,24.23493,56.88684
+0003,A.Čaka iela,3,"18, 23, 35",trolejbuss,24.14962,56.96361
+0004,Dzeņu iela,4,"6, 20, 31, 33",autobuss,24.20665,56.93943
+0005,Dzeņu iela,4,"6, 20, 31, 33",autobuss,24.20657,56.93912
+0006,Alfa,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.20178,56.98381
+0007,Alfa,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.20224,56.98381
+0009,Katlakalna kapi,1,12,autobuss,24.17333,56.89614
+0010,Brūkleņu iela,1,7,autobuss,24.05276,56.92261
+0011,Brūkleņu iela,1,7,autobuss,24.05221,56.92220
+0012,Brūkleņu iela,1,55,autobuss,24.05066,56.91912
+0013,Airu iela,2,"2, 24",autobuss,24.09548,57.04760
+0014,Airu iela,1,24,autobuss,24.09624,57.04779
+0015,Brāļu kapi,1,9,autobuss,24.14872,56.98165
+0016,Aizvēja,1,24,autobuss,24.06251,57.05356
+0017,Aizvēja,2,"2, 24",autobuss,24.06310,57.05276
+0018,Apskates stacija,1,18,autobuss,24.22999,56.88865
+0019,Apskates stacija,1,18,autobuss,24.23107,56.88846
+0020,Alojas iela,5,"3, 4, 11, 12, 34","autobuss, trolejbuss",24.13079,56.96757
+0021,Vējdzirnavu iela,2,"28, 31","autobuss, trolejbuss",24.28172,56.99486
+0022,Vējdzirnavu iela,2,"28, 31","autobuss, trolejbuss",24.28109,56.99526
+0023,Aptiekas iela,1,49,autobuss,24.11796,56.99943
+0024,Aptiekas iela,2,"3, 49","autobuss, trolejbuss",24.11713,56.99841
+0025,Aptiekas iela,1,3,trolejbuss,24.11674,56.99897
+0026,Daudersala,1,49,autobuss,24.12489,57.00945
+0027,Franču licejs,5,"3, 4, 11, 12, 34","autobuss, trolejbuss",24.12596,56.96357
+0028,Čiekurkalna 8. šķērslīnija,1,9,autobuss,24.18106,56.98322
+0029,Atlantijas iela,4,"2, 24, 29, 58",autobuss,24.08643,57.03652
+0030,Atlantijas iela,4,"2, 24, 29, 58",autobuss,24.08740,57.03779
+0031,Bākas iela,2,"2, 24",autobuss,24.06830,57.05202
+0032,Bākas iela,1,24,autobuss,24.06924,57.05224
+0033,Augstrozes iela,1,9,autobuss,24.16018,56.98333
+0035,Lauvas iela,1,15,trolejbuss,24.15677,56.93810
+0036,Lauvas iela,1,15,trolejbuss,24.15537,56.93915
+0037,Avotu iela,4,"11, 13, 16, 50","autobuss, trolejbuss",24.13739,56.95193
+0038,Bajāru iela,5,"4, 12, 21, 31, 34","autobuss, trolejbuss",24.17693,56.97635
+0039,Bajāru iela,5,"4, 12, 21, 31, 34","autobuss, trolejbuss",24.17567,56.97605
+0040,Baltāsbaznīcas iela,4,"2, 24, 29, 58",autobuss,24.09465,57.03562
+0041,Baltāsbaznīcas iela,4,"2, 24, 29, 58",autobuss,24.09110,57.03630
+0042,Jukuma Vācieša iela,2,"20, 48",autobuss,24.21169,56.93163
+0043,Jukuma Vācieša iela,3,"13, 20, 48",autobuss,24.20996,56.93158
+0045,Tirzas iela,3,"4, 31, 34",trolejbuss,24.22266,56.98713
+0046,Slāvu rotācijas aplis,5,"13, 31, 33, 45, 49",autobuss,24.18439,56.93110
+0048,Bergenas iela,1,48,autobuss,24.15182,57.00226
+0049,Bergenas iela,1,48,autobuss,24.15220,57.00243
+0050,Viestura prospekts,3,"2, 11, 24",autobuss,24.13215,56.99909
+0051,Viestura prospekts,4,"2, 11, 24, 58",autobuss,24.13192,57.00004
+0052,"Bērnu slimnīca ""Gaiļezers",2,"21, 31",autobuss,24.25277,56.95877
+0053,"Bērnu slimnīca ""Gaiļezers",2,"21, 31",autobuss,24.25302,56.95977
+0054,Biķernieku iela,6,"14, 18, 21, 33, 45, 63","autobuss, trolejbuss",24.23818,56.95891
+0055,Biķernieku iela,5,"13, 14, 16, 17, 48","autobuss, trolejbuss",24.16851,56.97262
+0056,Brīvdabas muzejs,3,"28, 29, 31","autobuss, trolejbuss",24.26464,56.99662
+0057,Brīvdabas muzejs,3,"28, 29, 31","autobuss, trolejbuss",24.26476,56.99625
+0058,2.trolejbusu parks,1,57,autobuss,24.09318,56.93244
+0059,Brīvības bulvāris,4,"3, 6, 9, 50",autobuss,24.11617,56.95175
+0060,Brīvības bulvāris,5,"2, 11, 13, 24, 30",autobuss,24.11314,56.95215
+0061,Brīvības gatve,4,"4, 28, 29, 33","autobuss, trolejbuss",24.23747,56.98856
+0062,Sporta akadēmija,1,21,autobuss,24.20930,56.98450
+0063,Balasta dambis,1,57,autobuss,24.08455,56.94535
+0064,Brīvības iela,4,"3, 6, 13, 49","autobuss, trolejbuss",24.14866,56.96582
+0065,Brīvības iela,1,5,trolejbuss,24.13618,56.96360
+0066,Bruņinieku iela,5,"3, 5, 11, 12, 22","autobuss, trolejbuss",24.12284,56.96178
+0067,Bruņinieku iela,5,"3, 5, 11, 12, 25","autobuss, trolejbuss",24.12170,56.96093
+0068,Pagrieziens uz Bukultiem,1,29,autobuss,24.25923,57.00367
+0069,Pagrieziens uz Bukultiem,1,29,autobuss,24.25918,57.00360
+0070,Celmu iela,2,"21, 45",autobuss,24.23299,56.97479
+0071,Celmu iela,2,"21, 45",autobuss,24.23256,56.97479
+0072,Niedru iela,2,"11, 29",autobuss,24.11969,57.04568
+0073,Niedru iela,2,"11, 29",autobuss,24.11905,57.04537
+0074,Elizabetes iela,9,"10, 12, 23, 25, 26, 51, 52, 55, 63",autobuss,24.12363,56.94810
+0075,Centrālā stacija,11,"2, 3, 11, 15, 16, 18, 20, 21, 23, 24, 50","autobuss, trolejbuss",24.11772,56.94847
+0076,Stacijas laukums,11,"4, 6, 9, 12, 32, 38, 39, 43, 51, 52, 63",autobuss,24.12012,56.94779
+0077,Centrālā stacija,3,"11, 18, 23",trolejbuss,24.12130,56.94813
+0078,Centrāltirgus,28,"2, 3, 4, 7, 10, 11, 12, 13, 14, 15, 16, 17 …","autobuss, trolejbuss",24.11878,56.94572
+0079,Centrālā stacija,21,"2, 3, 4, 11, 12, 13, 15, 16, 17, 18, 19, 20 …","autobuss, trolejbuss",24.11889,56.94601
+0080,Cēsu iela,10,"3, 4, 6, 12, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.14369,56.96584
+0081,Cēsu iela,11,"3, 4, 6, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.14331,56.96554
+0082,Čiekurkalna 4.šķērslīnija,1,9,autobuss,24.17099,56.98577
+0083,Jaunciema pamatskola,2,"11, 29",autobuss,24.17343,57.04173
+0084,Jaunciema pamatskola,2,"11, 29",autobuss,24.17345,57.04245
+0085,Čiekurkalna stacija,2,"48, 58",autobuss,24.16345,56.97878
+0086,Čiekurkalna stacija,2,"48, 58",autobuss,24.16325,56.97849
+0087,Ķīpsala,1,57,autobuss,24.08575,56.94991
+0088,Vecmīlgrāvja D/P,4,"2, 24, 29, 58",autobuss,24.08883,57.04198
+0089,Vecmīlgrāvja D/P,4,"2, 24, 29, 58",autobuss,24.08947,57.04190
+0090,Dārzciema iela,6,"3, 6, 16, 22, 51, 52","autobuss, trolejbuss",24.18412,56.94944
+0091,Slāvu rotācijas aplis,3,"13, 33, 50",autobuss,24.18190,56.93270
+0092,Vizmas Belševicas iela,6,"31, 45, 47, 48, 49, 63",autobuss,24.19686,56.94871
+0093,Cesvaines iela,1,13,autobuss,24.21178,56.93011
+0094,Dārziņi,1,18,autobuss,24.29716,56.85944
+0095,Jāņogu iela,1,18,autobuss,24.26882,56.86281
+0098,Daugavas stadions,8,"3, 6, 11, 13, 22, 50, 51, 52","autobuss, trolejbuss",24.15537,56.95332
+0099,Daugavpils iela,1,15,trolejbuss,24.13979,56.94171
+0102,Jaunciema 10.šķērslīnija,2,"11, 29",autobuss,24.18769,57.03184
+0103,Jaunciema 10.šķērslīnija,2,"11, 29",autobuss,24.18777,57.03204
+0104,Čiekurkalna 9.šķērslīnija,1,9,autobuss,24.18285,56.98635
+0106,Tilta iela,3,"3, 11, 24","autobuss, trolejbuss",24.12495,56.99248
+0107,Varavīksnes gatve,6,"31, 45, 47, 48, 49, 63",autobuss,24.19930,56.95384
+0108,Gāles iela,4,"2, 24, 29, 58",autobuss,24.11855,57.03352
+0109,"Stacionārs ""Biķernieki",3,"18, 31, 45","autobuss, trolejbuss",24.19896,56.96643
+0110,"Stacionārs ""Biķernieki",1,16,autobuss,24.19910,56.96515
+0111,Dzērbenes iela,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.19117,56.98078
+0112,Dzērbenes iela,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.19237,56.98105
+0113,Emīlijas Benjamiņas iela,9,"4, 14, 15, 17, 18, 19, 20, 23, 31",trolejbuss,24.12790,56.94196
+0114,Dzirnavu iela,6,"11, 13, 18, 22, 23, 35","autobuss, trolejbuss",24.12542,56.95071
+0115,Hanzas iela,11,"2, 4, 5, 11, 13, 15, 19, 20, 22, 24","autobuss, trolejbuss",24.10607,56.96245
+0116,Hanzas iela,12,"2, 4, 11, 12, 13, 15, 16, 19, 20, 24, 34","autobuss, trolejbuss",24.10579,56.96180
+0118,Jaunciema gatve 233,2,"11, 29",autobuss,24.11498,57.04323
+0119,Jaunciema gatve 233,2,"11, 29",autobuss,24.11477,57.04326
+0120,Mākslas muzejs,6,"3, 5, 11, 12, 22, 25","autobuss, trolejbuss",24.11258,56.95611
+0121,Elizabetes iela,11,"2, 4, 11, 12, 13, 15, 16, 19, 20, 24, 34","autobuss, trolejbuss",24.10619,56.95796
+0122,E.Melngaiļa iela,6,"3, 5, 11, 12, 22, 25","autobuss, trolejbuss",24.11856,56.95923
+0123,Āliņģu iela,2,"11, 29",autobuss,24.11839,57.03527
+0124,Emmas iela,4,"2, 24, 29, 58",autobuss,24.11843,57.03368
+0125,Āliņģu iela,2,"11, 29",autobuss,24.11819,57.03524
+0126,Ēveles iela,5,"3, 5, 11, 12, 22","autobuss, trolejbuss",24.13173,56.96898
+0128,Ēveles iela,5,"3, 4, 11, 12, 34","autobuss, trolejbuss",24.13330,56.97069
+0129,Mākoņu iela,1,31,trolejbuss,24.30557,56.97946
+0131,Krustabaznīcas iela,1,9,autobuss,24.18576,56.99239
+0132,Ezermalas iela,2,"9, 48",autobuss,24.16420,57.00685
+0133,Jaunciema 2.šķērslīnija,2,"11, 29",autobuss,24.17339,57.04570
+0134,Rāmuļu iela,9,"2, 4, 5, 11, 13, 15, 19, 20, 22","autobuss, trolejbuss",24.11947,56.98386
+0135,Jaunciema 2.šķērslīnija,2,"11, 29",autobuss,24.17357,57.04600
+0136,Rāmuļu iela,10,"2, 4, 11, 12, 13, 15, 16, 19, 20, 34","autobuss, trolejbuss",24.11860,56.98316
+0138,Mazā Juglas iela,1,34,trolejbuss,24.27056,56.97041
+0139,Ganību dambis,11,"3, 4, 5, 11, 12, 13, 15, 19, 20, 22, 49","autobuss, trolejbuss",24.12306,56.98841
+0140,Ganību dambis,1,49,autobuss,24.12278,56.98851
+0142,Ģertrūdes iela,3,"51, 52, 63",autobuss,24.14301,56.94727
+0145,Ģertrūdes iela,12,"3, 4, 6, 9, 14, 16, 17, 20, 21, 31, 34, 50","autobuss, trolejbuss",24.12194,56.95676
+0146,Ģertrūdes iela,3,"51, 52, 63",autobuss,24.13994,56.94703
+0148,Ģertrūdes iela,6,"11, 13, 16, 18, 23, 35","autobuss, trolejbuss",24.13146,56.95359
+0149,Emīlijas Benjamiņas iela,9,"4, 15, 17, 18, 19, 20, 23, 31, 35",trolejbuss,24.12950,56.94210
+0151,Hipokrāta iela,6,"14, 18, 21, 33, 45, 63","autobuss, trolejbuss",24.23837,56.95979
+0152,Ierēdņu iela,6,"3, 5, 11, 12, 22, 49","autobuss, trolejbuss",24.13517,56.97332
+0153,Ierēdņu iela,6,"3, 4, 11, 12, 34, 49","autobuss, trolejbuss",24.13557,56.97434
+0156,Ilūkstes iela,7,"17, 23, 31, 35, 45, 48, 49","autobuss, trolejbuss",24.19842,56.95563
+0157,Zemes iela,5,"3, 34, 45, 48, 49",autobuss,24.19548,56.94246
+0158,Ilūkstes iela,6,"13, 31, 33, 34, 45, 49",autobuss,24.19692,56.93197
+0159,Varavīksnes gatve,6,"31, 45, 47, 48, 49, 63",autobuss,24.19895,56.95340
+0160,Ilūkstes iela,6,"13, 31, 33, 34, 45, 49",autobuss,24.19401,56.93170
+0161,Ilūkstes iela,7,"17, 23, 31, 35, 45, 48, 49","autobuss, trolejbuss",24.19729,56.95550
+0162,"Atpūtas centrs ""Lido",2,"12, 34",autobuss,24.16254,56.92439
+0164,Inčukalna iela,1,48,autobuss,24.14149,56.99706
+0165,Strazdumuižas vidusskola,1,34,trolejbuss,24.25132,56.98258
+0166,Strazdumuižas vidusskola,1,34,trolejbuss,24.25069,56.98277
+0167,Inženieru iela,13,"2, 3, 4, 11, 13, 15, 19, 20, 22, 24, 30","autobuss, trolejbuss",24.11682,56.95122
+0168,Inženieru iela,14,"3, 4, 11, 13, 14, 15, 16, 17, 19, 20, 22, 31 …","autobuss, trolejbuss",24.11490,56.95090
+0170,Jugla,5,"4, 21, 28, 31, 45","autobuss, trolejbuss",24.25489,56.97801
+0171,Jāņavārti,1,15,trolejbuss,24.18381,56.91994
+0172,Jāņavārti,1,15,trolejbuss,24.18469,56.91945
+0173,Jaunciema kapi,2,"11, 29",autobuss,24.18861,57.04154
+0174,Jaunības iela,1,31,trolejbuss,24.29746,56.98564
+0175,Jaunības iela,1,31,trolejbuss,24.29734,56.98560
+0176,Jugla,5,"21, 29, 31, 33, 34","autobuss, trolejbuss",24.25447,56.97680
+0177,Jugla,3,"21, 31, 34","autobuss, trolejbuss",24.25444,56.97539
+0179,Jugla,5,"4, 21, 28, 31, 45","autobuss, trolejbuss",24.25484,56.97772
+0180,Juglas iela,4,"28, 29, 31, 34","autobuss, trolejbuss",24.23837,56.98901
+0181,Juglas iela,4,"28, 29, 31, 34","autobuss, trolejbuss",24.24245,56.98996
+0182,Dzirnavu iela,6,"11, 13, 16, 18, 23, 35","autobuss, trolejbuss",24.12530,56.95056
+0183,Kalēji,2,"11, 29",autobuss,24.13743,57.05261
+0184,Kalēji,2,"11, 29",autobuss,24.13859,57.05250
+0185,Pagrieziens uz Jaunciema kapiem,2,"11, 29",autobuss,24.18448,57.03660
+0186,Pagrieziens uz Jaunciema kapiem,2,"11, 29",autobuss,24.18279,57.03696
+0187,Biķernieku memoriāls,3,"16, 31, 45",autobuss,24.20741,56.96566
+0188,Biķernieku memoriāls,3,"16, 31, 45",autobuss,24.20954,56.96504
+0189,Sarkandaugavas kapi,1,48,autobuss,24.13919,56.99691
+0191,Mediķu iela,1,28,autobuss,24.33180,57.00390
+0192,Mediķu iela,1,28,autobuss,24.33165,57.00384
+0193,Tālivalža iela,4,"13, 16, 17, 48","autobuss, trolejbuss",24.17812,56.96965
+0194,Esplanāde,1,53,autobuss,24.11597,56.95347
+0194b,Esplanāde,6,"4, 14, 17, 20, 31, 34","autobuss, trolejbuss",24.11657,56.95384
+0194c,Esplanāde,4,"3, 21, 37, 41",autobuss,24.11558,56.95322
+0196,Brāļu Kaudzīšu iela,5,"3, 34, 45, 48, 49",autobuss,24.19660,56.94045
+0197,Ķengaraga iela,4,"31, 45, 49, 60",autobuss,24.17343,56.91763
+0198,Ķengaraga iela,4,"31, 45, 49, 60",autobuss,24.17329,56.91887
+0199,Kuzņecovs,1,15,trolejbuss,24.17851,56.92423
+0200,Kuzņecovs,1,15,trolejbuss,24.17812,56.92474
+0201,Ikšķiles iela,4,"18, 31, 45, 49",autobuss,24.20456,56.89931
+0202,Ikšķiles iela,3,"31, 45, 49",autobuss,24.20276,56.90037
+0203,Dienvidu tilts,4,"31, 45, 49, 60",autobuss,24.17137,56.92137
+0204,Dienvidu tilts,4,"31, 45, 49, 60",autobuss,24.17049,56.92145
+0205,Getliņi,1,47,autobuss,24.25718,56.88396
+0207,Zemitāna laukums,5,"4, 12, 21, 31, 34","autobuss, trolejbuss",24.18598,56.97918
+0208,Zemitāna laukums,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.18637,56.97921
+0209,Ķīšezera iela,1,48,autobuss,24.17175,56.99521
+0210,Ķīšezera iela,1,9,autobuss,24.17310,56.99461
+0211,Ķīšezera iela,2,"9, 48",autobuss,24.17228,56.99533
+0212,Klipiņas,1,29,autobuss,24.23224,57.01292
+0213,Klipiņas,1,29,autobuss,24.23243,57.01283
+0214,Vecdaugavas iela,2,"2, 24",autobuss,24.09203,57.04459
+0215,Vecdaugavas iela,1,24,autobuss,24.09218,57.04450
+0216,Daudersalas pārvads,4,"2, 11, 24, 58",autobuss,24.12932,57.00957
+0217,Daudersalas pārvads,4,"2, 11, 24, 58",autobuss,24.12890,57.01052
+0218,Kreimeņu iela,4,"2, 24, 29, 58",autobuss,24.09705,57.03605
+0219,K.Barona iela,9,"4, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.14997,56.96786
+0220,K.Barona iela,9,"4, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.14961,56.96789
+0221,Krustabaznīcas iela,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.19489,56.98191
+0222,Krustabaznīcas iela,6,"4, 12, 16, 21, 31, 34","autobuss, trolejbuss",24.19657,56.98231
+0223,Krustpils iela,1,18,autobuss,24.22177,56.89211
+0224,Krustpils iela,1,18,autobuss,24.22023,56.89301
+0225,Kūdras bāze,1,29,autobuss,24.25171,57.00453
+0226,Kūdras bāze,1,29,autobuss,24.25212,57.00451
+0227,Berģi,3,"28, 29, 31","autobuss, trolejbuss",24.27358,56.99897
+0228,Berģi,3,"28, 29, 31","autobuss, trolejbuss",24.27352,56.99927
+0229,Eglaines iela/Dole,4,"18, 31, 45, 49",autobuss,24.19117,56.90472
+0230,Eglaines iela/Dole,3,"31, 45, 49",autobuss,24.19140,56.90503
+0231,Kvēles iela,4,"4, 28, 29, 33","autobuss, trolejbuss",24.24378,56.98077
+0232,Kvēles iela,4,"4, 28, 29, 33","autobuss, trolejbuss",24.24459,56.98042
+0233,Lāčplēša iela,6,"3, 5, 11, 12, 20, 25","autobuss, trolejbuss",24.11688,56.95818
+0234,Langstiņi,1,28,autobuss,24.32652,57.01032
+0235,Langstiņi,1,28,autobuss,24.32636,57.01010
+0236,Lapsukalni,1,28,autobuss,24.33776,56.98786
+0237,Lapsukalni,1,28,autobuss,24.33781,56.98714
+0238,Lēdurgas iela,4,"2, 11, 24, 58",autobuss,24.13049,57.01799
+0239,Lēdurgas iela,4,"2, 11, 24, 58",autobuss,24.13209,57.01913
+0240,Lejasciema iela,1,31,trolejbuss,24.30057,56.98313
+0241,Lejasciema iela,1,31,trolejbuss,24.30016,56.98333
+0244,Lienes iela,4,"11, 13, 22, 50","autobuss, trolejbuss",24.14774,56.95365
+0245,Lienes iela,5,"11, 13, 16, 22, 50","autobuss, trolejbuss",24.14738,56.95353
+0246,Līgeri,2,"11, 29",autobuss,24.12716,57.05100
+0247,Līgeri,2,"11, 29",autobuss,24.12800,57.05139
+0250,Rītupes iela,1,15,trolejbuss,24.16700,56.93293
+0251,Slāvu rotācijas aplis,3,"13, 33, 50",autobuss,24.18149,56.93201
+0252,Lugažu iela,9,"2, 4, 5, 11, 13, 15, 19, 20, 22","autobuss, trolejbuss",24.11199,56.97479
+0253,Lugažu iela,10,"2, 4, 11, 12, 13, 15, 16, 19, 20, 34","autobuss, trolejbuss",24.11100,56.97385
+0254,Martas Rinkas iela,4,"2, 24, 29, 58",autobuss,24.10240,57.03446
+0255,"Kultūras pils ""Ziemeļblāzma",4,"2, 24, 29, 58",autobuss,24.10036,57.03509
+0257,Piedrujas iela,3,"13, 20, 63",autobuss,24.17286,56.93965
+0258,Mākoņu iela,1,31,trolejbuss,24.30494,56.97986
+0259,Mākslas muzejs,8,"3, 5, 11, 12, 25, 37, 41, 53","autobuss, trolejbuss",24.11133,56.95565
+0260,Dambjapurva iela,2,"21, 45",autobuss,24.24022,56.97385
+0261,Malnavas iela,4,"18, 31, 45, 49",autobuss,24.18506,56.90766
+0262,Malnavas iela,3,"31, 45, 49",autobuss,24.18352,56.90874
+0263,Mangaļsala,2,"2, 24",autobuss,24.05520,57.06101
+0264,Mangaļu prospekts,1,24,autobuss,24.09526,57.07113
+0265,Mangaļu prospekts,2,"2, 24",autobuss,24.09574,57.07088
+0266,Aldaris,1,49,autobuss,24.11850,57.00442
+0269,Matīsa iela,5,"3, 6, 9, 16, 21",autobuss,24.13050,56.96029
+0270,Matīsa iela,3,"18, 23, 35",trolejbuss,24.13652,56.95644
+0271,Matīsa iela,2,"51, 52",autobuss,24.14837,56.95067
+0272,Matīsa iela,6,"11, 13, 16, 22, 50","autobuss, trolejbuss",24.14361,56.95291
+0273,Matīsa iela,3,"18, 23, 35",trolejbuss,24.13644,56.95627
+0274,Matīsa iela,2,"51, 52",autobuss,24.14932,56.95107
+0275,Mazā Kalna iela,1,15,trolejbuss,24.14533,56.94232
+0276,Mazā Kalna iela,1,15,trolejbuss,24.14817,56.94078
+0279,Mēbeļu nams,7,"17, 23, 31, 35, 45, 48, 49","autobuss, trolejbuss",24.19113,56.95668
+0280,Mēbeļu nams,7,"17, 23, 31, 35, 45, 48, 49","autobuss, trolejbuss",24.19119,56.95636
+0281,Viļānu iela,1,15,trolejbuss,24.15169,56.94271
+0282,Melīdas iela,4,"2, 24, 29, 58",autobuss,24.10997,57.03157
+0283,Melīdas iela,4,"2, 24, 29, 58",autobuss,24.10902,57.03227
+0284,Mēness iela,1,9,autobuss,24.13660,56.96864
+0285,Dambjapurva iela,3,"29, 33, 45",autobuss,24.24305,56.97372
+0286,Dambjapurva iela,4,"21, 29, 33, 35","autobuss, trolejbuss",24.24123,56.97257
+0288,Rembates iela,1,52,autobuss,24.23030,56.93896
+0289,Rembates iela,2,"34, 52",autobuss,24.23163,56.93923
+0290,Meža prospekts,2,"9, 48",autobuss,24.16541,57.00646
+0291,Mežaparks / ZOO,2,"9, 48",autobuss,24.15652,57.00487
+0292,Mežaparks / ZOO,2,"9, 48",autobuss,24.15543,57.00437
+0293,Langa,2,"11, 29",autobuss,24.14381,57.05277
+0294,Langa,2,"11, 29",autobuss,24.14477,57.05293
+0295,Milnas,1,29,autobuss,24.24367,57.00920
+0296,Milnas,1,29,autobuss,24.24338,57.00925
+0297,Motormuzejs,2,"35, 45","autobuss, trolejbuss",24.22997,56.97025
+0298,Motormuzejs,2,"35, 45","autobuss, trolejbuss",24.23003,56.97034
+0300,Višķu iela,2,"15, 18","autobuss, trolejbuss",24.21653,56.90014
+0301,Mārkalnes iela,2,"31, 34",trolejbuss,24.23085,56.98809
+0302,Murjāņu iela,4,"4, 28, 29, 33","autobuss, trolejbuss",24.24919,56.97900
+0303,Murjāņu iela,4,"4, 28, 29, 33","autobuss, trolejbuss",24.25009,56.97882
+0304,Skanstnieki,1,24,autobuss,24.10439,57.05536
+0305,Skanstnieki,2,"2, 24",autobuss,24.10439,57.05585
+0306,Nīcgales iela,8,"13, 16, 17, 18, 23, 35, 48, 49","autobuss, trolejbuss",24.17672,56.95969
+0307,Itas Kozakevičas iela,2,"13, 50",autobuss,24.17311,56.95016
+0308,Itas Kozakevičas iela,8,"3, 6, 11, 13, 22, 50, 51, 52","autobuss, trolejbuss",24.17191,56.95105
+0309,Stirnu iela,8,"11, 13, 17, 18, 23, 35, 48, 49","autobuss, trolejbuss",24.18050,56.95899
+0310,Itas Kozakevičas iela,7,"3, 6, 11, 16, 22, 51, 52","autobuss, trolejbuss",24.17079,56.95110
+0311,Osta,1,24,autobuss,24.06070,57.05577
+0312,Osta,2,"2, 24",autobuss,24.06069,57.05548
+0313,Ostas iela,4,"2, 11, 24, 58",autobuss,24.13412,57.02171
+0314,Ostas iela,4,"2, 11, 24, 58",autobuss,24.13475,57.02182
+0315,Čiekurkalna 2.šķērslīnija,1,9,autobuss,24.16653,56.98264
+0316,Čiekurkalna 2.šķērslīnija,1,9,autobuss,24.16613,56.98552
+0317,Ozolaine/Jūras medicīnas centrs,7,"3, 5, 11, 12, 22, 24, 49","autobuss, trolejbuss",24.13385,56.98653
+0318,Ozolaine/Jūras medicīnas centrs,7,"3, 4, 11, 12, 24, 34, 49","autobuss, trolejbuss",24.13300,56.98733
+0319,Ozoli,2,"11, 29",autobuss,24.12372,57.04830
+0320,Ozoli,2,"11, 29",autobuss,24.12395,57.04877
+0321,Ozolkalni,1,29,autobuss,24.22090,57.01176
+0322,Ozolkalni,1,29,autobuss,24.22056,57.01185
+0323,Paegles,1,24,autobuss,24.07997,57.06159
+0324,Paegles,2,"2, 24",autobuss,24.08000,57.06144
+0325,Pagrieziens uz Dārziņiem,1,18,autobuss,24.27284,56.87091
+0326,Pagrieziens uz Dārziņiem,1,18,autobuss,24.27247,56.87081
+0328,Pagrieziens uz Carnikavu,2,"11, 29",autobuss,24.15608,57.05291
+0329,Pagrieziens uz Carnikavu,2,"11, 29",autobuss,24.15394,57.05299
+0330,Pagrieziens uz Mangaļsalu,1,24,autobuss,24.10501,57.07066
+0331,Vecāķu prospekts,2,"2, 24",autobuss,24.10484,57.07029
+0332,Upesciema iela,1,31,trolejbuss,24.29103,56.99008
+0333,Upesciema iela,1,31,trolejbuss,24.29105,56.99033
+0334,Upesciema iela,1,28,autobuss,24.29151,56.99053
+0335,Upesciema iela,1,28,autobuss,24.29169,56.99057
+0336,Ķīļu iela,2,"2, 24",autobuss,24.10184,57.05054
+0337,Ķīļu iela,1,24,autobuss,24.10164,57.05023
+0338,Pāles iela,1,34,trolejbuss,24.24798,56.98531
+0339,Pāles iela,1,34,trolejbuss,24.24812,56.98676
+0340,Palīdzības iela,5,"3, 5, 11, 12, 22","autobuss, trolejbuss",24.12758,56.96474
+0341,"Sociālās aprūpes centrs ""Mežciems",2,"21, 45",autobuss,24.22615,56.97505
+0342,Berģuciems,1,31,trolejbuss,24.30995,56.97801
+0342a,Berģuciems,1,31,trolejbuss,24.31008,56.97791
+0343,"Sociālās aprūpes centrs ""Mežciems",2,"21, 45",autobuss,24.22674,56.97504
+0344,Pērnavas iela,4,"3, 6, 13, 49","autobuss, trolejbuss",24.14827,56.96601
+0345,Pērnavas iela,3,"18, 23, 35",trolejbuss,24.14959,56.96325
+0346,Pētersala,9,"2, 4, 5, 11, 13, 15, 19, 20, 22","autobuss, trolejbuss",24.10696,56.96866
+0347,Pētersala,9,"2, 4, 11, 12, 13, 15, 16, 20, 34","autobuss, trolejbuss",24.10708,56.96901
+0348,Vecmīlgrāvja 5.līnija,4,"2, 24, 29, 58",autobuss,24.11365,57.03097
+0349,Vecmīlgrāvja 5.līnija,4,"2, 24, 29, 58",autobuss,24.11383,57.03117
+0350,Čiekurkalna 5.šķērslīnija,1,9,autobuss,24.17354,56.98296
+0351,Pildas iela,1,13,autobuss,24.18063,56.94189
+0352,Pildas iela,2,"13, 50",autobuss,24.18163,56.94136
+0353,Madaru iela,1,28,autobuss,24.30409,56.98750
+0354,Madaru iela,1,28,autobuss,24.30429,56.98735
+0355,Jaunciema 1.šķērslīnija,2,"11, 29",autobuss,24.17211,57.05048
+0356,Jaunciema 1.šķērslīnija,2,"11, 29",autobuss,24.17222,57.05068
+0357,Žīguru iela,1,52,autobuss,24.22440,56.93693
+0358,Žīguru iela,1,52,autobuss,24.22481,56.93696
+0359,Katlakalna iela,3,"13, 20, 48",autobuss,24.20181,56.93173
+0360,Katlakalna iela,6,"13, 31, 33, 34, 45, 49",autobuss,24.19866,56.93203
+0361,Aizsardzības akadēmija,1,9,autobuss,24.17769,56.99379
+0363,Ciemupes iela,1,34,trolejbuss,24.24451,56.98800
+0365,"Muzejs ""Dauderi",4,"2, 11, 24, 58",autobuss,24.12891,57.00519
+0366,Katoļu iela,1,15,trolejbuss,24.13664,56.94058
+0368,Preču - 2,1,13,autobuss,24.21707,56.92250
+0369,Prūšu iela,3,"31, 45, 49",autobuss,24.17597,56.91452
+0370,Prūšu iela,4,"18, 31, 45, 49",autobuss,24.17554,56.91422
+0371,Purvciems,5,"17, 23, 35, 47, 63","autobuss, trolejbuss",24.20553,56.95433
+0372,Purvciems,5,"17, 23, 35, 47, 63","autobuss, trolejbuss",24.20480,56.95478
+0373,Raiņa bulvāris,15,"2, 3, 4, 11, 12, 13, 14, 15, 16, 19, 20, 22 …","autobuss, trolejbuss",24.10927,56.95393
+0374,Rankas iela,9,"2, 4, 5, 11, 13, 15, 19, 20, 22","autobuss, trolejbuss",24.11637,56.98015
+0375,Rankas iela,10,"2, 4, 11, 12, 13, 15, 16, 19, 20, 34","autobuss, trolejbuss",24.11502,56.97877
+0376,Rasas iela,4,"18, 31, 45, 49",autobuss,24.19860,56.90180
+0377,Rasas iela,3,"31, 45, 49",autobuss,24.19686,56.90280
+0378,Ratnieki,3,"16, 21, 31",autobuss,24.24000,56.95742
+0379a,Ratnieki,2,"16, 31",autobuss,24.23653,56.95803
+0380,Raunas iela,5,"13, 16, 17, 48, 58","autobuss, trolejbuss",24.17765,56.96867
+0381,Rēznas iela,1,15,trolejbuss,24.16147,56.93463
+0382,Rēznas iela,1,15,trolejbuss,24.16022,56.93559
+0383,Psihiskās veselības centrs,2,"3, 49","autobuss, trolejbuss",24.12071,56.99378
+0384,Psihiskās veselības centrs,2,"3, 49","autobuss, trolejbuss",24.12076,56.99401
+0385,Klijānu iela,1,9,autobuss,24.14460,56.97452
+0387,"Rūpnīca ""RER",2,"2, 49",autobuss,24.12200,56.99090
+0388,"Rūpnīca ""RER",2,"2, 49",autobuss,24.12231,56.99119
+0389,Rožu iela,2,"28, 31","autobuss, trolejbuss",24.27688,56.99772
+0390,Rožu iela,2,"28, 31","autobuss, trolejbuss",24.27706,56.99773
+0391,"RP SIA ""Rīgas satiksme",3,"13, 20, 63",autobuss,24.16468,56.94470
+0392,"RP SIA ""Rīgas satiksme",3,"13, 20, 63",autobuss,24.16486,56.94365
+0393,Rudens iela,11,"3, 16, 20, 22, 31, 33, 34, 45, 47, 48, 49","autobuss, trolejbuss",24.20334,56.93727
+0394,Rudens iela,11,"3, 16, 20, 22, 31, 33, 34, 45, 47, 48, 49","autobuss, trolejbuss",24.20314,56.93786
+0396,Rumbula,1,18,autobuss,24.24677,56.88161
+0397,Rumbula,1,18,autobuss,24.24487,56.88286
+0399,VEF,9,"4, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.15931,56.97107
+0400,VEF,9,"4, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.16271,56.97188
+0401,Rušonu iela,3,"31, 45, 49",autobuss,24.17951,56.91067
+0404,Rušonu iela,4,"18, 31, 45, 49",autobuss,24.17997,56.90982
+0405,Rusova iela/Valsts biroji,1,48,autobuss,24.16407,56.98856
+0406,Rusova iela/Valsts biroji,1,48,autobuss,24.16443,56.98874
+0407,S.Eizenšteina iela,7,"14, 16, 18, 31, 33, 45, 63","autobuss, trolejbuss",24.23236,56.95910
+0408,S.Eizenšteina iela,1,35,trolejbuss,24.23215,56.96146
+0409,S.Eizenšteina iela,7,"14, 16, 18, 31, 33, 45, 63","autobuss, trolejbuss",24.23039,56.95951
+0410,Sakņu iela,1,18,autobuss,24.28237,56.86345
+0412,Rītupes iela,1,15,trolejbuss,24.16893,56.93227
+0413,Salnas iela,4,"6, 20, 31, 33",autobuss,24.21736,56.94431
+0414,Salnas iela,4,"6, 20, 31, 33",autobuss,24.21675,56.94324
+0415,Sarkandaugava,4,"2, 3, 11, 24","autobuss, trolejbuss",24.12494,56.99419
+0416,Sarkandaugava,4,"2, 3, 11, 24","autobuss, trolejbuss",24.12679,56.99487
+0417a,Sarkandaugava,1,48,autobuss,24.13215,56.99522
+0417b,Sarkandaugava - izkāpšana,1,48,autobuss,24.13163,56.99576
+0418,Gustava Zemgala gatve,5,"4, 12, 21, 31, 34","autobuss, trolejbuss",24.16873,56.97382
+0419,Gustava Zemgala gatve,5,"4, 12, 21, 31, 34","autobuss, trolejbuss",24.16807,56.97371
+0420,Meža prospekts,3,"2, 11, 24",autobuss,24.13239,56.99611
+0421,Saules dārzs,2,"9, 48",autobuss,24.16992,57.00167
+0422,Saules dārzs,2,"9, 48",autobuss,24.17047,57.00168
+0423,Čiekurkalna 6.šķērslīnija,1,9,autobuss,24.17726,56.98607
+0424a,Silciema iela /pagaidu/,3,"4, 28, 29","autobuss, trolejbuss",24.23115,56.98680
+0425,Šķirotavas stacija,1,15,trolejbuss,24.21408,56.90260
+0426,Šķirotavas stacija,2,"15, 18","autobuss, trolejbuss",24.21333,56.90313
+0427,Ūdeļu iela,3,"29, 33, 45",autobuss,24.25352,56.97577
+0428,Čiekurkalna ūdenstornis,2,"9, 48",autobuss,24.15759,56.98466
+0429,Kundziņsala,1,3,trolejbuss,24.10583,57.00107
+0430,Ūdeļu iela,3,"29, 33, 45",autobuss,24.25291,56.97561
+0431,Slāvu iela,1,15,trolejbuss,24.17206,56.92962
+0432,Slāvu iela,1,15,trolejbuss,24.17284,56.92866
+0433,Šmerļa mežs,1,21,autobuss,24.21201,56.98094
+0434,Šmerļa mežs,1,21,autobuss,24.21246,56.98044
+0435,Gaujas iela,1,48,autobuss,24.16080,56.98541
+0436,Sporta akadēmija,3,"4, 31, 34",trolejbuss,24.20957,56.98551
+0437,Rīgas apvedceļš,1,28,autobuss,24.32231,56.98583
+0438,Rīgas apvedceļš,1,28,autobuss,24.32154,56.98595
+0439,"Sporta bāze ""Biķernieki",1,35,trolejbuss,24.23348,56.96611
+0440,Stabu iela,2,"13, 22","autobuss, trolejbuss",24.13720,56.95213
+0441,Zemitānu stacija,4,"18, 23, 35, 49","autobuss, trolejbuss",24.15666,56.96480
+0442,Vecdaugavas stacija,2,"2, 24",autobuss,24.10564,57.05902
+0443,Zemitānu stacija,4,"18, 23, 35, 49","autobuss, trolejbuss",24.15611,56.96495
+0444,Vecdaugavas stacija,1,24,autobuss,24.10600,57.05941
+0445,Gustava Zemgala gatve,5,"18, 23, 35, 49, 58","autobuss, trolejbuss",24.17099,56.96253
+0446,Stārķu iela,5,"18, 23, 35, 49, 58","autobuss, trolejbuss",24.16678,56.96550
+0448,Stendera iela,1,48,autobuss,24.14646,56.99927
+0449,Stendera iela,1,48,autobuss,24.14571,56.99881
+0450,Stirnu iela,8,"11, 13, 17, 18, 23, 35, 48, 49","autobuss, trolejbuss",24.18086,56.95860
+0453,Strautu iela,2,"13, 50",autobuss,24.18237,56.93850
+0454,Strautu iela,2,"13, 50",autobuss,24.18209,56.93734
+0455,Struktoru iela,4,"4, 21, 31, 34","autobuss, trolejbuss",24.17341,56.97524
+0456,Struktoru iela,5,"13, 14, 16, 17, 48","autobuss, trolejbuss",24.17327,56.97145
+0457,Sudrabu Edžus iela,2,"9, 48",autobuss,24.17039,56.99895
+0458,Sudrabu Edžus iela,2,"9, 48",autobuss,24.17099,56.99821
+0459,Jaunbiķeri,1,6,autobuss,24.25009,56.95230
+0460,Suži,1,29,autobuss,24.20795,57.01859
+0461,Tadenavas iela,1,28,autobuss,24.29844,56.98862
+0462,Tadenavas iela,1,28,autobuss,24.29896,56.98863
+0463,Tadenavas iela,1,31,trolejbuss,24.29430,56.98764
+0464,Tadenavas iela,1,31,trolejbuss,24.29476,56.98725
+0465,Tālivalža iela,6,"13, 14, 16, 17, 48, 58","autobuss, trolejbuss",24.17786,56.97075
+0466,Tallinas iela,11,"3, 4, 6, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.13588,56.96246
+0467,Tallinas iela,1,9,autobuss,24.13567,56.96273
+0468,Tallinas iela,10,"3, 4, 6, 12, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.13755,56.96329
+0469,Tallinas iela,3,"18, 23, 35",trolejbuss,24.14196,56.95934
+0470,Tallinas iela,3,"18, 23, 35",trolejbuss,24.14143,56.95896
+0471,TEC-1,1,9,autobuss,24.18669,56.98970
+0472,TEC-1,1,9,autobuss,24.18679,56.98959
+0473,Brāļu kapi,2,"9, 48",autobuss,24.15164,56.98264
+0474,Mīlgrāvja tilts,4,"2, 11, 24, 58",autobuss,24.13559,57.03101
+0475,Mīlgrāvja tilts,4,"2, 11, 24, 58",autobuss,24.13409,57.03192
+0476,Sesku iela,4,"34, 45, 48, 49",autobuss,24.19585,56.94518
+0477,Aglonas iela,3,"31, 45, 49",autobuss,24.17724,56.91277
+0478,Aglonas iela,4,"18, 31, 45, 49",autobuss,24.17730,56.91205
+0479,Sesku iela,7,"3, 20, 34, 45, 48, 49, 63",autobuss,24.19604,56.94719
+0480,Tīrumi,1,18,autobuss,24.26033,56.87612
+0481,Tīrumi,1,18,autobuss,24.26205,56.87517
+0482,Traumatoloģijas un ortopēdijas slimnīca,7,"3, 4, 11, 12, 24, 34, 49","autobuss, trolejbuss",24.13604,56.98378
+0483,Traumatoloģijas un ortopēdijas slimnīca,7,"3, 5, 11, 12, 22, 24, 49","autobuss, trolejbuss",24.13627,56.98292
+0484,Sporta bāze,2,"9, 48",autobuss,24.16865,57.00360
+0485,Sporta bāze,2,"9, 48",autobuss,24.16809,57.00419
+0486,Tilta iela,3,"3, 11, 24","autobuss, trolejbuss",24.12413,56.99287
+0487,Ulbrokas iela,4,"6, 20, 31, 33",autobuss,24.21490,56.93867
+0488,Ulbrokas iela,4,"6, 20, 31, 33",autobuss,24.21521,56.93893
+0489,Dzelzavas iela,1,6,autobuss,24.23698,56.94822
+0491,Ūnijas iela,9,"13, 16, 17, 18, 23, 35, 48, 49, 58","autobuss, trolejbuss",24.17686,56.96430
+0492,Pavasara gatve,4,"3, 16, 22, 47","autobuss, trolejbuss",24.20106,56.93297
+0493,Pavasara gatve,11,"3, 16, 20, 22, 31, 33, 34, 45, 47, 48, 49","autobuss, trolejbuss",24.20199,56.93406
+0494,Upesciems,1,28,autobuss,24.33804,56.98240
+0495,Upesciems,1,28,autobuss,24.33610,56.98185
+0496,Rencēnu iela,1,13,autobuss,24.21290,56.92304
+0497,Rencēnu iela,1,13,autobuss,24.21275,56.92275
+0498,Vagonu parks,1,15,trolejbuss,24.15512,56.94230
+0499,Vaidavas iela,1,58,autobuss,24.17614,56.96208
+0501,Jaunciema 6.šķērslīnija,2,"11, 29",autobuss,24.17524,57.03949
+0505,Slēpotāju iela,4,"4, 28, 29, 33","autobuss, trolejbuss",24.23903,56.98553
+0506a,Slēpotāju iela /pagaidu/,4,"4, 28, 29, 33","autobuss, trolejbuss",24.23732,56.98402
+0507,Ābeļu iela,1,18,autobuss,24.27092,56.86769
+0508,Jaunciema 6.šķērslīnija,2,"11, 29",autobuss,24.17563,57.03863
+0511,Viļānu iela,1,15,trolejbuss,24.15344,56.94094
+0512,Viskaļu iela,1,9,autobuss,24.18474,56.98587
+0516,Ziemeļblāzma,2,"11, 29",autobuss,24.11311,57.03890
+0517,Ziemeļblāzma,2,"11, 29",autobuss,24.11285,57.03941
+0518,Ziemeļnieki,1,28,autobuss,24.33508,56.99558
+0519,Ziemeļnieki,1,28,autobuss,24.33522,56.99583
+0521,Zundagi,2,"11, 29",autobuss,24.16941,57.05236
+0522,Zundagi,2,"11, 29",autobuss,24.16823,57.05257
+0523,Zvejas iela,1,24,autobuss,24.10613,57.06368
+0524,Zvejas iela,2,"2, 24",autobuss,24.10585,57.06418
+0525,Liepkalna iela,1,34,trolejbuss,24.26302,56.97214
+0526,Liepkalna iela,1,34,trolejbuss,24.26228,56.97238
+0527,"Slimnīca ""Gaiļezers",1,45,autobuss,24.23979,56.96802
+0528,"Slimnīca ""Gaiļezers",6,"14, 18, 21, 33, 45, 63","autobuss, trolejbuss",24.24017,56.96683
+0529,Jaunciema 8.šķērslīnija,2,"11, 29",autobuss,24.18472,57.03792
+0530,Sakņu iela,1,18,autobuss,24.26972,56.86496
+0533,Dārziņu 27.līnija,1,18,autobuss,24.27810,56.86790
+0535,Dārziņu 29.līnija,1,18,autobuss,24.27634,56.86192
+0538,Dārziņu 38.līnija,1,18,autobuss,24.28593,56.86107
+0539,Dārziņu 38.līnija,1,18,autobuss,24.28424,56.86142
+0540,Dārziņu 46.līnija,1,18,autobuss,24.29089,56.85989
+0541,Dārziņu 46.līnija,1,18,autobuss,24.29125,56.85995
+0542,Mežciema pamatskola,6,"14, 18, 21, 33, 45, 63","autobuss, trolejbuss",24.23852,56.96243
+0543,Mežciema pamatskola,6,"14, 18, 21, 33, 45, 63","autobuss, trolejbuss",24.23874,56.96334
+0544,Krievupes iela,1,28,autobuss,24.32820,57.00808
+0545,Krievupes iela,1,28,autobuss,24.32820,57.00835
+0610,Nacionālais teātris,8,"5, 12, 13, 25, 30, 37, 41, 53","autobuss, trolejbuss",24.10646,56.95377
+0611,Ķīpsala,9,"5, 12, 13, 25, 30, 37, 41, 53, 57","autobuss, trolejbuss",24.08708,56.94991
+0612,Kliņģeru iela,2,"3, 13",autobuss,24.07043,56.95329
+0613,Ūdens iela,2,"3, 13",autobuss,24.07041,56.95628
+0614,Saldus iela,1,13,autobuss,24.06358,56.96213
+0615,Dzirciema iela,1,13,autobuss,24.05937,56.96475
+0616,Vaidelotes iela,7,"9, 13, 25, 30, 38, 39, 54","autobuss, trolejbuss",24.05568,56.96418
+0617,Saulgožu iela,3,"13, 21, 46",autobuss,24.04733,56.96135
+0618,Observatorijas iela,3,"13, 21, 46",autobuss,24.03932,56.96187
+0619,"ATC ""Latina",5,"13, 21, 36, 37, 46",autobuss,24.03021,56.96343
+0620,Mellužu iela,3,"13, 36, 56",autobuss,24.02697,56.96666
+0621,6.autobusu parks,3,"13, 36, 56",autobuss,24.03138,56.97180
+0622,Gaiļi,3,"13, 36, 56",autobuss,24.03511,56.97606
+0623,Kleistu iela 37,3,"13, 36, 56",autobuss,24.03557,56.97889
+0624,Pagrieziens uz Kleistiem,1,13,autobuss,24.03169,56.98376
+0625,Mikrobioloģijas institūts,1,13,autobuss,24.02564,56.98505
+0626,Kleisti,1,13,autobuss,24.01407,56.98686
+0626a,Kleisti,1,13,autobuss,24.01420,56.98702
+0627,Mikrobioloģijas institūts,1,13,autobuss,24.02532,56.98496
+0629,Kleistu iela 37,3,"13, 36, 56",autobuss,24.03554,56.97801
+0630,Gaiļi,3,"13, 36, 56",autobuss,24.03392,56.97492
+0631,6.autobusu parks,3,"13, 36, 56",autobuss,24.03165,56.97230
+0632,Mellužu iela,3,"13, 36, 56",autobuss,24.02704,56.96696
+0633,"ATC ""Latina",5,"13, 21, 36, 37, 46",autobuss,24.02967,56.96326
+0634,Observatorijas iela,3,"13, 21, 46",autobuss,24.03934,56.96177
+0635,Saulgožu iela,3,"13, 21, 46",autobuss,24.04830,56.96123
+0636,Vaidelotes iela,7,"9, 13, 25, 30, 38, 39, 54","autobuss, trolejbuss",24.05526,56.96335
+0637,Buļļu iela,1,13,autobuss,24.05906,56.96477
+0638,Saldus iela,1,13,autobuss,24.06491,56.96168
+0639,Ūdens iela,2,"3, 13",autobuss,24.06984,56.95523
+0640,Kliņģeru iela,2,"3, 13",autobuss,24.07030,56.95293
+0642,Ķīpsala,10,"5, 12, 13, 14, 25, 30, 37, 41, 53, 57","autobuss, trolejbuss",24.08672,56.94921
+0643,Nacionālais teātris,9,"5, 12, 13, 14, 25, 30, 37, 41, 53","autobuss, trolejbuss",24.10706,56.95393
+0645,Zasulauka depo,2,"56, 63",autobuss,24.03437,56.94510
+0646,Zasulauka depo,2,"56, 63",autobuss,24.03401,56.94509
+0647,Zasulauka iela,1,56,autobuss,24.04093,56.94249
+0648,Zasulauka iela,2,"56, 63",autobuss,24.04060,56.94267
+0649,Jāņa Endzelīna iela,2,"56, 63",autobuss,24.02853,56.94342
+0650,Jāņa Endzelīna iela,2,"56, 63",autobuss,24.02774,56.94300
+0651,Mobilitātes punkts Ķengarags,5,"15, 18, 31, 45, 49","autobuss, trolejbuss",24.21308,56.89708
+0652,Mobilitātes punkts Ķengarags,2,"15, 18","autobuss, trolejbuss",24.21228,56.89718
+0653,Mobilitātes punkts Ķengarags,4,"18, 31, 45, 49",autobuss,24.21200,56.89722
+0706a,Mārkalnes iela /pagaidu/,1,33,autobuss,24.23151,56.98666
+0719,Lubānas iela,1,33,autobuss,24.17378,56.93204
+0730,Matrožu iela,1,57,autobuss,24.07984,56.96335
+0732,Balasta dambis,1,3,autobuss,24.08360,56.94506
+1024,Airītes iela,4,"21, 37, 41, 46",autobuss,23.99724,56.95932
+1025,13.janvāra iela,7,"3, 4, 8, 21, 32, 43, 63",autobuss,24.11349,56.94562
+1025a,13.janvāra iela,5,"22, 23, 26, 27, N22","autobuss, trolejbuss",24.11311,56.94543
+1025b,13.janvāra iela,7,"7, 9, 10, 25, 38, 39, 55","autobuss, trolejbuss",24.11373,56.94571
+1028,Stacijas laukums,11,"4, 7, 8, 9, 27, 32, 38, 39, 43, 63, N22","autobuss, trolejbuss",24.11885,56.94764
+1028a,Stacijas laukums,1,35,trolejbuss,24.11976,56.94807
+1033a,Merķeļa iela,7,"3, 6, 9, 13, 18, 23, 50","autobuss, trolejbuss",24.11984,56.94859
+1033b,Merķeļa iela,6,"4, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.11884,56.94945
+1037,Arēna Rīga,1,24,autobuss,24.11946,56.96948
+1038,Arēna Rīga,1,24,autobuss,24.11887,56.96947
+1039,Valsts arhīvs,7,"9, 12, 22, 25, 32, 43, N22","autobuss, trolejbuss",24.07543,56.94575
+1043,Kurzemes prospekts,4,"4, 37, 41, 63",autobuss,24.03689,56.95214
+1044,Progresa iela,1,37,autobuss,24.03528,56.95543
+1045,Progresa iela,1,36,autobuss,24.03530,56.95789
+1046,Sudrabkalniņš,2,"36, 37",autobuss,24.03524,56.96097
+1047,Upes iela,1,24,autobuss,24.13379,56.97590
+1048,Upes iela,1,24,autobuss,24.13437,56.97575
+1051,Kleistu iela,2,"39, 56",autobuss,24.03262,56.97595
+1052,Baltegļu iela,2,"39, 56",autobuss,24.02667,56.97730
+10521,Baltegļu iela,2,"39, 56",autobuss,24.02589,56.97716
+1053,Kleistu iela,1,39,autobuss,24.03330,56.97577
+1057,Kleistu iela,3,"21, 37, 46",autobuss,24.02311,56.96656
+1058,Rigondas gatve,3,"21, 37, 46",autobuss,24.01752,56.96903
+1059,Dammes iela,3,"21, 37, 46",autobuss,24.00956,56.96811
+1060,Imanta 4,3,"21, 37, 46",autobuss,24.00227,56.96485
+1061,Pagrieziens uz Babīti,3,"21, 37, 46",autobuss,23.99872,56.96199
+10622,Imantas D/P,1,36,autobuss,23.99724,56.96045
+1062a,Imantas D/P,3,"21, 37, 41",autobuss,23.99665,56.96033
+1062c,Imantas D/P,1,36,autobuss,23.99620,56.96013
+1063,Pagrieziens uz Babīti,3,"21, 37, 46",autobuss,23.99980,56.96292
+1064,Imanta 4,3,"21, 37, 46",autobuss,24.00436,56.96549
+1065,Dammes iela,3,"21, 37, 46",autobuss,24.01114,56.96851
+1066,Rigondas gatve,3,"21, 37, 46",autobuss,24.01770,56.96855
+1067,Kleistu iela,3,"21, 37, 46",autobuss,24.02210,56.96659
+1069,Sudrabkalniņš,2,"36, 37",autobuss,24.03475,56.95992
+1070,Imantas iela,2,"36, 41",autobuss,24.02616,56.95753
+1071,Kleistu iela,3,"36, 41, 56",autobuss,24.01804,56.96024
+1072,Dammes iela,3,"36, 41, 56",autobuss,24.01233,56.95990
+1073,96.vidusskola,1,41,autobuss,24.00500,56.95948
+1074,Vīksnes iela,1,41,autobuss,24.00051,56.96055
+1075,Vīksnes iela,1,41,autobuss,24.00183,56.96014
+1076,96.vidusskola,1,41,autobuss,24.00681,56.95896
+1077,Anniņmuižas mežaparks,2,"36, 56",autobuss,24.00860,56.95402
+1078,Dubultu iela,4,"4, 36, 56, 63",autobuss,24.00414,56.95343
+1080,Ceriņu iela,2,"36, 46",autobuss,23.99773,56.95561
+1081,Ceriņu iela,2,"36, 46",autobuss,23.99734,56.95681
+1083,Dubultu iela,4,"4, 36, 56, 63",autobuss,24.00551,56.95341
+1084,Anniņmuižas mežaparks,2,"36, 56",autobuss,24.00893,56.95538
+1085,Dammes iela,3,"36, 41, 56",autobuss,24.01380,56.96003
+1086,Kleistu iela,2,"36, 41",autobuss,24.02189,56.95885
+1087,Imantas iela,2,"36, 41",autobuss,24.02830,56.95743
+1088,Jūrmalas gatve,2,"37, 41",autobuss,24.03464,56.95367
+1089,Kurzemes prospekts,2,"4, 63",autobuss,24.03753,56.95199
+1094,Valsts arhīvs,7,"5, 12, 25, 30, 37, 41, 53","autobuss, trolejbuss",24.07594,56.94646
+1102,Lastādijas iela,8,"4, 14, 17, 18, 19, 20, 23, 31",trolejbuss,24.12997,56.94052
+1103,Uzvaras parks,5,"3, 12, 14, 25, 57","autobuss, trolejbuss",24.08798,56.94226
+1104,Uzvaras parks,9,"3, 9, 12, 22, 25, 32, 43, 57, N22","autobuss, trolejbuss",24.09141,56.94031
+1105,A.Grīna bulvāris,5,"9, 22, 32, 43, N22","autobuss, trolejbuss",24.08187,56.94209
+1106,Nometņu iela,5,"9, 22, 32, 43, N22","autobuss, trolejbuss",24.07816,56.94301
+1107,Valsts arhīvs,5,"9, 22, 32, 43, N22","autobuss, trolejbuss",24.07477,56.94525
+1111,Uzvaras parks,9,"4, 7, 8, 21, 25, 38, 39, 55, 63",autobuss,24.08958,56.93877
+1112,E.Smiļģa iela,8,"4, 7, 8, 21, 25, 38, 39, 55",autobuss,24.07786,56.93682
+1114,Āgenskalna tirgus,4,"5, 46, 56, 63","autobuss, trolejbuss",24.07098,56.93585
+1115,Viļa Plūdoņa iela,8,"4, 5, 21, 38, 39, 46, 56, 63","autobuss, trolejbuss",24.07028,56.94052
+1116,Āgenskalna iela,8,"4, 9, 21, 25, 38, 39, 46, 63","autobuss, trolejbuss",24.06238,56.94670
+1117,Kuldīgas iela,8,"4, 9, 21, 25, 38, 39, 46, 63","autobuss, trolejbuss",24.05796,56.94834
+1118,Botāniskais dārzs/Rīgas Stradiņa universitāte,8,"9, 21, 25, 30, 38, 39, 46, 54","autobuss, trolejbuss",24.05391,56.95204
+1119,Sēlpils iela/Donoru centrs,8,"9, 21, 25, 30, 38, 39, 46, 54","autobuss, trolejbuss",24.05248,56.95693
+1124,Slokas iela,7,"9, 13, 25, 30, 38, 39, 54","autobuss, trolejbuss",24.05387,56.96144
+1125,Rīgas lidosta,2,"22, N22",autobuss,23.98040,56.92186
+1126,Buļļu iela,4,"9, 25, 30, 54","autobuss, trolejbuss",24.05778,56.96695
+1127,Cementa iela,4,"9, 25, 30, 54","autobuss, trolejbuss",24.05913,56.96937
+1128,Spilves iela,4,"9, 25, 30, 54","autobuss, trolejbuss",24.06499,56.97170
+1129,Lidoņu iela,3,"3, 30, 54",autobuss,24.07343,56.97111
+1130,Lidoņu iela,3,"3, 30, 54",autobuss,24.07331,56.97145
+1131,Spilves lidlauks,3,"3, 30, 54",autobuss,24.07559,56.97415
+1132,Spilves lidlauks,3,"3, 30, 54",autobuss,24.07620,56.97494
+1133,Podraga iela,3,"3, 30, 54",autobuss,24.07999,56.97798
+1134,Podraga iela,3,"3, 30, 54",autobuss,24.08096,56.97855
+1135,Pagrieziens uz Voleriem,3,"3, 30, 54",autobuss,24.08296,56.98866
+1136,Voleri,1,54,autobuss,24.08711,57.00378
+1137,Voleru iela 35,1,54,autobuss,24.08685,56.99806
+1138,Voleru iela 35,1,54,autobuss,24.08668,56.99760
+1139,Voleru iela 5,1,54,autobuss,24.08605,56.99354
+1140,Voleru iela 4,1,54,autobuss,24.08495,56.99150
+1141,Pagrieziens uz Voleriem,2,"3, 30",autobuss,24.08215,56.98923
+1142,Voleri,2,"3, 30",autobuss,24.07713,56.99799
+1143,Voleri,2,"3, 30",autobuss,24.07723,56.99872
+1144,Beķermuiža,2,"3, 30",autobuss,24.07626,57.00613
+1145,Beķermuiža,2,"3, 30",autobuss,24.07580,57.00686
+1146,Zilā iela,2,"3, 30",autobuss,24.06934,57.01311
+1147,Zilā iela,2,"3, 30",autobuss,24.07160,57.01163
+1148,Guberņciems,2,"3, 30",autobuss,24.05725,57.01817
+1149,Guberņciems,2,"3, 30",autobuss,24.05605,57.01836
+1150,Silikātu iela,2,"3, 30",autobuss,24.04649,57.02871
+1151,Silikātu iela,2,"3, 30",autobuss,24.04682,57.02801
+1152,Bolderāja,4,"3, 30, 36, 56",autobuss,24.04821,57.03285
+1153,Bolderājas Jaunā pamatskola,4,"3, 30, 36, 56",autobuss,24.04439,57.03568
+1154,Dambjapurva iela,1,35,trolejbuss,24.23941,56.97302
+1155,Bolderājas tilts,4,"3, 30, 36, 56",autobuss,24.04068,57.03668
+1156,Līduma iela,1,35,trolejbuss,24.23318,56.97205
+1157,"Sporta bāze ""Biķernieki",1,35,trolejbuss,24.23380,56.96499
+1158,Biķernieku iela,1,35,trolejbuss,24.23116,56.96093
+1159,Plēksnes iela,4,"3, 30, 36, 56",autobuss,24.02915,57.04066
+1160,Zvīņu iela,4,"3, 30, 36, 56",autobuss,24.02439,57.03849
+1161,Birutas Baumanes aleja,4,"3, 30, 36, 56",autobuss,24.01976,57.03642
+1162,Daugavgrīvas D/P,4,"3, 30, 36, 56",autobuss,24.01737,57.03581
+1163,Memmes pļava,2,"3, 36",autobuss,24.01232,57.03509
+1164,Ziemeļupe,2,"3, 36",autobuss,24.00362,57.03398
+1165,Attīrīšanas iekārtas,1,36,autobuss,23.99725,57.02888
+1166,Roņu iela,1,36,autobuss,23.99277,57.02133
+1167,Zēģeļu iela,1,36,autobuss,23.98585,57.01789
+1168,Dzelmes iela,1,36,autobuss,23.97749,57.01429
+1169,Vētras iela,1,36,autobuss,23.97513,57.01308
+1170,Pludmale,1,36,autobuss,23.96983,57.01663
+1171,Vakarbuļļi,1,36,autobuss,23.94337,57.00100
+1172,Pludmale,1,36,autobuss,23.97139,57.01605
+1173,Vētras iela,1,36,autobuss,23.97487,57.01293
+1174,Dzelmes iela,1,36,autobuss,23.97849,57.01455
+1175,Zēģeļu iela,1,36,autobuss,23.98562,57.01768
+1176,Roņu iela,1,36,autobuss,23.99318,57.02156
+1177,Attīrīšanas iekārtas,2,"3, 36",autobuss,23.99850,57.02955
+1178,Ziemeļupe,2,"3, 36",autobuss,24.00575,57.03422
+1179,Memmes pļava,2,"3, 36",autobuss,24.01272,57.03500
+1180,Birutas Baumanes aleja,4,"3, 30, 36, 56",autobuss,24.02103,57.03688
+1181,Zvīņu iela,4,"3, 30, 36, 56",autobuss,24.02642,57.03929
+1182,Plēksnes iela,4,"3, 30, 36, 56",autobuss,24.03036,57.04110
+1183,Daugavgrīvas cietoksnis,4,"3, 30, 36, 56",autobuss,24.03555,57.04240
+1184,Platā iela,2,"36, 56",autobuss,24.04336,57.02822
+1185,Platā iela,2,"36, 56",autobuss,24.04471,57.02848
+1186,Silikātu iela,2,"36, 56",autobuss,24.03392,57.02809
+1187,Silikātu iela,2,"36, 56",autobuss,24.03422,57.02790
+1188,Buļļupe,2,"36, 56",autobuss,24.02562,57.02556
+1189,Buļļupe,2,"36, 56",autobuss,24.02651,57.02602
+1190,Lielā iela,2,"36, 56",autobuss,24.01856,57.02211
+1191,Lielā iela,2,"36, 56",autobuss,24.01860,57.02200
+1192,Jaunie Bolderājas kapi,2,"36, 56",autobuss,24.01762,57.01715
+1193,Jaunie Bolderājas kapi,2,"36, 56",autobuss,24.01797,57.01671
+1194,Bumbu kalniņš,2,"36, 56",autobuss,24.02761,57.00249
+1195,Bumbu kalniņš,2,"36, 56",autobuss,24.02751,57.00324
+1196,Spilves pļavas,2,"36, 56",autobuss,24.02935,56.99789
+1197,Spilves pļavas,2,"36, 56",autobuss,24.02943,56.99717
+1198,Pagrieziens uz Kleistiem,2,"36, 56",autobuss,24.03281,56.98431
+1199,Pagrieziens uz Kleistiem,3,"13, 36, 56",autobuss,24.03337,56.98294
+1200,Ērgļu iela,1,34,autobuss,24.24644,56.93412
+1201,Ērgļu iela,1,34,autobuss,24.24627,56.93409
+1202,Lāčupīte,1,39,autobuss,24.03644,56.97504
+1203,Lāčupīte,1,39,autobuss,24.03637,56.97517
+1204,Virbu iela,1,39,autobuss,24.04089,56.97233
+1205,Virbu iela,1,39,autobuss,24.04234,56.97152
+1206,Saulgožu iela,1,39,autobuss,24.04722,56.96970
+1207,Saulgožu iela,2,"38, 39",autobuss,24.04860,56.96963
+1208,Garā iela,2,"38, 39",autobuss,24.05030,56.96898
+1209,Garā iela,2,"38, 39",autobuss,24.05110,56.96860
+1210,Skodas iela,1,38,autobuss,24.05056,56.97117
+1211,Spilves iela 16,1,38,autobuss,24.05267,56.97202
+1212,Dzirciema iela 119,1,38,autobuss,24.05583,56.97406
+1214,Dzirciema iela,1,38,autobuss,24.05462,56.97797
+1215,Nordeka,1,38,autobuss,24.05505,56.97681
+1217,Dzirciema iela 119,1,38,autobuss,24.05572,56.97404
+1218,Spilves iela 16,1,38,autobuss,24.05216,56.97192
+1219,Skodas iela,1,38,autobuss,24.04999,56.97104
+1220,Buļļu iela,2,"38, 39",autobuss,24.05547,56.96648
+1221,Dzirciema iela,2,"38, 39",autobuss,24.05635,56.96598
+1226,Dzegužkalns,1,3,autobuss,24.07116,56.96220
+1227,Dzegužkalns,1,3,autobuss,24.07073,56.96120
+1228,Iļģuciems,1,3,autobuss,24.07159,56.96578
+1229,Iļģuciems,1,3,autobuss,24.07146,56.96597
+1230,Spilves iela,4,"9, 25, 30, 54","autobuss, trolejbuss",24.06331,56.97159
+1231,Cementa iela,4,"9, 25, 30, 54","autobuss, trolejbuss",24.05852,56.96870
+1233,Mazā Stacijas iela,8,"9, 21, 25, 30, 38, 39, 46, 54","autobuss, trolejbuss",24.05224,56.95958
+1234,Sēlpils iela/Donoru centrs,8,"9, 21, 25, 30, 38, 39, 46, 54","autobuss, trolejbuss",24.05262,56.95615
+1235,Dārza iela/Rīgas Stradiņa universitāte,8,"9, 21, 25, 30, 38, 39, 46, 54","autobuss, trolejbuss",24.05353,56.95287
+1236,Botāniskais dārzs,8,"4, 9, 21, 25, 38, 39, 46, 63","autobuss, trolejbuss",24.05440,56.94968
+1237,Kuldīgas iela,8,"4, 9, 21, 25, 38, 39, 46, 63","autobuss, trolejbuss",24.05979,56.94762
+1238,Melnsila iela,9,"4, 9, 12, 21, 25, 38, 39, 46, 63","autobuss, trolejbuss",24.06539,56.94464
+1239,Nometņu iela,8,"4, 5, 21, 38, 39, 46, 56, 63","autobuss, trolejbuss",24.07216,56.93810
+1240,Āgenskalna tirgus,4,"5, 46, 56, 63","autobuss, trolejbuss",24.07089,56.93584
+1242,E.Smiļģa iela,8,"4, 7, 8, 21, 25, 38, 39, 55",autobuss,24.07701,56.93665
+1243,Uzvaras parks,10,"4, 7, 8, 10, 21, 25, 38, 39, 55, 63","autobuss, tramvajs",24.09120,56.93959
+1244,Balasta dambis,5,"3, 12, 14, 25, 57","autobuss, trolejbuss",24.08363,56.94567
+1251a,Autoosta,9,"3, 4, 7, 9, 10, 27, 32, 55, 63","autobuss, trolejbuss",24.11635,56.94639
+1251b,Autoosta,10,"8, 21, 22, 23, 25, 26, 38, 39, 43, N22",autobuss,24.11589,56.94621
+1253,Zaķusala,7,"4, 14, 17, 18, 19, 23, 31",trolejbuss,24.11941,56.93257
+1254,Lucavsala,7,"4, 14, 17, 18, 19, 23, 31",trolejbuss,24.11422,56.92935
+1255,Bieķensalas iela,8,"4, 10, 14, 17, 18, 19, 23, 31","autobuss, trolejbuss",24.10720,56.92829
+1256,Laivu iela,3,"10, 26, 27","autobuss, trolejbuss",24.10707,56.93132
+1258,Nacionālā bibliotēka,4,"10, 23, 26, 27","autobuss, trolejbuss",24.09879,56.94119
+1259,Nacionālā bibliotēka,4,"10, 23, 26, 27","autobuss, trolejbuss",24.09810,56.94159
+1260,Kīleveina grāvis,3,"10, 26, 27","autobuss, trolejbuss",24.10228,56.93715
+1261,Laivu iela,3,"10, 26, 27","autobuss, trolejbuss",24.10684,56.93141
+1263,Mūkusalas rotācijas aplis,3,"4, 10, 19","autobuss, trolejbuss",24.10427,56.92330
+1264,Koku iela,2,"23, 26",autobuss,24.09552,56.92236
+1265,Satiksmes iela,3,"23, 26, 27","autobuss, trolejbuss",24.09296,56.92693
+1266,Bieķensalas iela,3,"23, 26, 27","autobuss, trolejbuss",24.09869,56.93101
+1267,Bieķensalas iela,3,"23, 26, 27","autobuss, trolejbuss",24.09775,56.93021
+1268,Satiksmes iela,3,"23, 26, 27","autobuss, trolejbuss",24.09276,56.92675
+1269,Koku iela,2,"23, 26",autobuss,24.09572,56.92208
+1270,Valdeķu iela,2,"44, 46",autobuss,24.09657,56.91453
+1271,Tadaiķu iela,4,"4, 19, 44, 46","autobuss, trolejbuss",24.09710,56.91570
+1272,Stērstu iela/CSDD,2,"23, 26",autobuss,24.11341,56.91473
+1273,Stērstu iela/CSDD,2,"23, 26",autobuss,24.11242,56.91500
+1274,Skaistkalnes iela,2,"23, 26",autobuss,24.10387,56.91782
+1275,Skaistkalnes iela,2,"23, 26",autobuss,24.10361,56.91795
+1276,Mūkusalas rotācijas aplis,3,"4, 10, 19","autobuss, trolejbuss",24.10354,56.92213
+1277,Mazā Stērstu iela,3,"23, 26, 60",autobuss,24.11830,56.91374
+1278,Ziepniekkalna iela,3,"23, 26, 60",autobuss,24.12139,56.91409
+1279,Ziepniekkalna iela,1,23,autobuss,24.12282,56.91510
+1280,Doles iela,1,23,autobuss,24.13235,56.91584
+1281,Doles iela,1,23,autobuss,24.13443,56.91595
+1286,Štrausi,2,"12, 23",autobuss,24.14627,56.90696
+1287,Štrausi,2,"12, 23",autobuss,24.14630,56.90580
+1289,Valdlauču centrs,2,"12, 23",autobuss,24.14673,56.90124
+1290a,Brīvības piemineklis,2,"21, 50",autobuss,24.11434,56.95243
+1290b,Brīvības piemineklis,3,"3, 6, 9",autobuss,24.11388,56.95214
+1292,Sarma,2,"12, 23",autobuss,24.14746,56.89581
+1293,Sarma,2,"12, 23",autobuss,24.14737,56.89716
+1296a,Pagrieziens uz Baložiem,1,26,autobuss,24.15298,56.88534
+1297,Kāpu iela,1,26,autobuss,24.15872,56.88263
+1298,Vidēji,1,26,autobuss,24.16750,56.87969
+1299,Vidēji,1,26,autobuss,24.16765,56.87972
+1300,Ādiņas,1,26,autobuss,24.17285,56.87967
+1301,Ādiņas,1,26,autobuss,24.17350,56.87981
+1303,Dzelzskalni,1,26,autobuss,24.18330,56.88337
+1304,Kalnavoti,1,26,autobuss,24.18980,56.88324
+1305,Katlakalns,1,26,autobuss,24.19306,56.88444
+1306,Dzelzskalni,1,26,autobuss,24.18274,56.88336
+1308,Titurga,1,23,autobuss,24.14686,56.88349
+1309,Meža iela,1,23,autobuss,24.13964,56.88148
+1310,Baloži,1,23,autobuss,24.12217,56.87617
+1311,Baložu skola,1,23,autobuss,24.11855,56.87486
+1312,Baložu galapunkts,1,23,autobuss,24.11062,56.87066
+1313,Baložu skola,1,23,autobuss,24.11870,56.87480
+1314,Baloži,1,23,autobuss,24.12302,56.87645
+1315,Meža iela,1,23,autobuss,24.14022,56.88146
+1316,Titurga,1,23,autobuss,24.14740,56.88352
+1319,Rāmava,1,12,autobuss,24.15491,56.89436
+1320,Katlakalna kapi,1,12,autobuss,24.17207,56.89547
+1321,Ziedonis,1,12,autobuss,24.17328,56.89763
+1322,Rāmava,1,12,autobuss,24.15271,56.89429
+1323,Krustkalni,1,26,autobuss,24.14112,56.89544
+1326,Kalētu iela,2,"26, 60",autobuss,24.12826,56.90734
+1327,Šautuves iela,2,"26, 60",autobuss,24.12458,56.91196
+1328,Šautuves iela,2,"26, 60",autobuss,24.12403,56.91223
+1329,Kalētu iela,2,"26, 60",autobuss,24.12790,56.90722
+1330,Priekules iela,2,"26, 60",autobuss,24.12986,56.90479
+1331,Neilandi,1,26,autobuss,24.13958,56.89637
+1332,Krustkalni,1,26,autobuss,24.14353,56.89320
+1333,Lucavsala,7,"4, 17, 18, 19, 23, 31, 35",trolejbuss,24.11457,56.92919
+1334,Zaķusala,7,"4, 17, 18, 19, 23, 31, 35",trolejbuss,24.12003,56.93258
+1335,K.Ulmaņa gatve,4,"4, 19, 44, 46","autobuss, trolejbuss",24.09253,56.91884
+1336,Bērzupes iela/2.slimnīca,4,"4, 19, 44, 46","autobuss, trolejbuss",24.09186,56.91611
+1337,Bērzupes iela/2.slimnīca,4,"4, 19, 44, 46","autobuss, trolejbuss",24.09293,56.91594
+1338,Spulgas iela,5,"4, 44, 46, 56, 60","autobuss, trolejbuss",24.09324,56.90201
+1338a,Ziepniekkalns,1,19,trolejbuss,24.09350,56.90231
+1339,Ziepniekkalna vidusskola,5,"4, 44, 46, 56, 60","autobuss, trolejbuss",24.09250,56.90013
+1340,Ozolciema iela,6,"4, 27, 44, 46, 56, 60","autobuss, trolejbuss",24.09832,56.89951
+1341,Ziepniekkalna D/P,6,"4, 27, 44, 46, 56, 60","autobuss, trolejbuss",24.10252,56.90238
+1341a,Ziepniekkalna D/P,6,"4, 27, 44, 46, 56, 60","autobuss, trolejbuss",24.10255,56.90161
+1342,Ozolciema iela,6,"4, 27, 44, 46, 56, 60","autobuss, trolejbuss",24.09666,56.89917
+1343,Ziepniekkalna vidusskola,5,"4, 44, 46, 56, 60","autobuss, trolejbuss",24.09231,56.89916
+1344,Spulgas iela,6,"4, 19, 44, 46, 56, 60","autobuss, trolejbuss",24.09375,56.90346
+1345,Graudu iela,2,"44, 46",autobuss,24.09553,56.90981
+1346,Graudu iela,2,"44, 46",autobuss,24.09508,56.90828
+1351,Ābolu iela,1,27,trolejbuss,24.08330,56.90626
+1352,Ābolu iela,1,27,trolejbuss,24.08187,56.90449
+1353,Graudu iela,1,27,trolejbuss,24.08617,56.91048
+1354,Graudu iela,1,27,trolejbuss,24.08536,56.90951
+1355,Ģimnastikas iela,1,27,trolejbuss,24.08799,56.91706
+1356,Ģimnastikas iela,1,27,trolejbuss,24.08748,56.91580
+1357,Robežu iela/Bērnu slimnīca,3,"27, 44, 46","autobuss, trolejbuss",24.08885,56.92055
+1359,Telts iela,1,10,autobuss,24.08924,56.91845
+1360,Vaiņodes iela,2,"4, 19",trolejbuss,24.09213,56.91827
+1361,Telts iela,1,10,autobuss,24.09121,56.91902
+1362,Satiksmes iela,2,"44, 46",autobuss,24.09038,56.92713
+1363,Satiksmes iela,2,"44, 46",autobuss,24.09051,56.92709
+1364,Torņakalna iela,2,"25, 46",autobuss,24.08062,56.92816
+1365,Torņakalna iela,2,"25, 46",autobuss,24.08079,56.92849
+1370,Tukuma iela,7,"5, 7, 8, 46, 55, 56, 63","autobuss, trolejbuss",24.07164,56.93293
+1371,Tukuma iela,5,"5, 46, 55, 56, 63","autobuss, trolejbuss",24.07136,56.93322
+1372,Kokles iela,3,"25, 44, 63",autobuss,24.07735,56.93362
+1373,Kokles iela,3,"25, 44, 63",autobuss,24.07756,56.93363
+1374,Mārupes iela,2,"25, 44",autobuss,24.07121,56.93183
+1375,Mārupes iela,6,"7, 8, 25, 44, 55, 56",autobuss,24.07105,56.93187
+1376,Paula Stradiņa slimnīca,6,"7, 8, 25, 44, 55, 56",autobuss,24.06534,56.92968
+1377,Paula Stradiņa slimnīca,6,"7, 8, 25, 44, 55, 56",autobuss,24.06474,56.92952
+1378,Raudas iela,1,7,autobuss,24.06131,56.92647
+1379,Raudas iela,1,7,autobuss,24.06158,56.92658
+1380,Dauguļu iela,1,7,autobuss,24.04650,56.92144
+1381,Dauguļu iela,1,7,autobuss,24.04537,56.92144
+1382,Upesgrīvas iela,1,7,autobuss,24.04148,56.91975
+1383,Brūkleņu iela,1,10,autobuss,24.05057,56.91347
+1384,Kurmenes iela,1,10,autobuss,24.05482,56.91315
+1386,Kursīšu iela,1,10,autobuss,24.05894,56.91266
+1391,"Bērnudārzs ""Lienīte",1,25,autobuss,24.04702,56.89997
+1392,Mārupe,1,25,autobuss,24.04605,56.89567
+1393,"Bērnudārzs ""Lienīte",1,25,autobuss,24.04633,56.89831
+1394,Veczariņu iela,1,25,autobuss,24.05636,56.88968
+1395,Mārupe,1,25,autobuss,24.04591,56.89518
+1396,"Bērnudārzs ""Zeltrīti",1,25,autobuss,24.05078,56.88993
+1397,"Bērnudārzs ""Zeltrīti",1,25,autobuss,24.05070,56.88987
+1398,Veczariņu iela,1,25,autobuss,24.05766,56.88950
+1399,Vecmoku iela,3,"10, 25, 56",autobuss,24.07314,56.91706
+1400,Vecmoku iela,3,"10, 25, 56",autobuss,24.07340,56.91709
+1401,Ģimnastikas iela,3,"10, 25, 56",autobuss,24.07475,56.91873
+1403,Asītes iela,1,10,autobuss,24.07433,56.92182
+1404,Robežu iela,1,10,autobuss,24.07576,56.92287
+1407,Ozolnieku iela,2,"8, 44",autobuss,24.05838,56.93000
+1408,Ozolnieku iela,2,"8, 44",autobuss,24.05715,56.93085
+1409,Astras iela,2,"8, 44",autobuss,24.05150,56.93162
+1410,Astras iela,2,"8, 44",autobuss,24.05095,56.93162
+1411,Jaunmoku iela,2,"8, 44",autobuss,24.04481,56.93415
+1412,Jaunmoku iela,2,"8, 44",autobuss,24.04570,56.93364
+1413,Ventspils iela,3,"8, 44, 53",autobuss,24.03877,56.93565
+1415,Fridriha Candera iela,3,"22, 56, N22",autobuss,24.04523,56.93937
+1416,Irlavas iela,3,"22, 56, N22",autobuss,24.04016,56.93777
+1417,Rucavas iela,3,"22, 56, N22",autobuss,24.03545,56.93628
+1418,Apuzes iela,2,"22, N22",autobuss,24.02851,56.93388
+1419,Pleskodāles iela,2,"22, N22",autobuss,24.02486,56.93189
+1420,Zolitūdes iela,2,"22, N22",autobuss,24.02001,56.92961
+1423,Apuzes iela,1,53,autobuss,24.03176,56.93350
+1424,Ventspils iela,4,"8, 44, 53, 56",autobuss,24.03735,56.93523
+1425,Rucavas iela,2,"8, 44",autobuss,24.03054,56.93929
+1426,Rucavas iela,2,"8, 44",autobuss,24.03131,56.93912
+1427,Jūrkalnes iela,3,"8, 44, 53",autobuss,24.02227,56.93948
+1428,Jūrkalnes iela,3,"8, 44, 53",autobuss,24.02242,56.93929
+1429,Šampētera iela,3,"8, 44, 53",autobuss,24.02483,56.93788
+1430,Šampētera iela,3,"8, 44, 53",autobuss,24.02542,56.93736
+1431,Priedaines iela,4,"8, 44, 53, 56",autobuss,24.01609,56.94359
+1432,Priedaines iela,4,"8, 44, 53, 56",autobuss,24.01762,56.94300
+1433,P.Lejiņa iela,1,46,autobuss,24.01210,56.94699
+1434,Anniņmuižas iela,5,"8, 44, 46, 53, 63",autobuss,24.01440,56.94926
+1435,Zolitūdes D/P,5,"8, 44, 46, 53, 63",autobuss,24.02382,56.94830
+1435a,Zolitūdes D/P,5,"8, 44, 46, 53, 63",autobuss,24.02459,56.94823
+1436,Anniņmuižas iela,5,"8, 44, 46, 53, 63",autobuss,24.01264,56.94938
+1437,Rostokas iela 16,5,"8, 44, 46, 53, 63",autobuss,24.00598,56.94952
+1438,Rostokas iela 16,4,"8, 44, 53, 63",autobuss,24.00653,56.94945
+1439,Imantas stacija,4,"8, 44, 53, 63",autobuss,24.00122,56.94956
+1440,Imantas stacija,5,"8, 44, 46, 53, 63",autobuss,23.99980,56.94966
+1441,Imantas stacija,2,"46, 56",autobuss,23.99929,56.94889
+1442,Mežmalas iela,5,"8, 44, 46, 53, 56",autobuss,24.00143,56.94607
+1443,Gramzdas iela,5,"8, 44, 46, 53, 56",autobuss,24.00347,56.94344
+1444,Zantes iela,5,"8, 44, 46, 53, 56",autobuss,24.01256,56.94418
+1445,Zantes iela,4,"8, 44, 53, 56",autobuss,24.01157,56.94406
+1446,Gramzdas iela,4,"8, 44, 53, 56",autobuss,24.00309,56.94414
+1447,Mežmalas iela,4,"8, 44, 53, 56",autobuss,24.00049,56.94751
+1448,Imantas stacija,1,56,autobuss,23.99924,56.94915
+1449,Ērkšķu iela,1,4,autobuss,23.99015,56.95349
+1450,Lazdu iela,1,4,autobuss,23.98530,56.95359
+1451,Ķiburgas iela,1,4,autobuss,23.97869,56.95374
+1452,Beberbeķu iela,1,4,autobuss,23.97203,56.95371
+1453,Ķiburgas iela,1,4,autobuss,23.97973,56.95366
+1454,Lazdu iela,1,4,autobuss,23.98307,56.95359
+1455,Ērkšķu iela,1,4,autobuss,23.99078,56.95344
+1456,Anniņmuižas mežaparks,2,"4, 63",autobuss,24.01100,56.95348
+1457,Anniņmuižas mežaparks,2,"4, 63",autobuss,24.00995,56.95356
+1458,Muižas iela,2,"4, 63",autobuss,24.01623,56.95310
+1459,Muižas iela,2,"4, 63",autobuss,24.01682,56.95293
+1460,Imantas 7.līnija,2,"4, 63",autobuss,24.02298,56.95227
+1461,Imantas 7.līnija,2,"4, 63",autobuss,24.02425,56.95230
+1462,Kooperatīva iela,2,"4, 63",autobuss,24.02931,56.95220
+1463,Kooperatīva iela,2,"4, 63",autobuss,24.03037,56.95213
+1464,Granīta iela,1,50,autobuss,24.21208,56.90859
+1465,Malēju iela,1,50,autobuss,24.21712,56.91169
+1466,Granīta iela 13,1,50,autobuss,24.22946,56.91271
+1467,Rožkalni,1,50,autobuss,24.23725,56.91299
+1468,Getliņu iela,1,50,autobuss,24.24495,56.91327
+1469,Jaudas iela,1,50,autobuss,24.25791,56.91374
+1470,Acones mazdārziņi,1,50,autobuss,24.26698,56.91408
+1471,TEC-2,1,50,autobuss,24.27597,56.91445
+1472,Uzņēmumu parks,1,50,autobuss,24.28569,56.91464
+1473,Acone,1,50,autobuss,24.29088,56.91503
+1474,Uzņēmumu parks,1,50,autobuss,24.28417,56.91482
+1475,TEC-2,1,50,autobuss,24.27410,56.91445
+1476,Acones mazdārziņi,1,50,autobuss,24.26562,56.91415
+1477,Jaudas iela,1,50,autobuss,24.25660,56.91384
+1478,Getliņu iela,1,50,autobuss,24.24430,56.91338
+1479,Rožkalni,1,50,autobuss,24.23599,56.91306
+1480,Granīta iela 13,1,50,autobuss,24.22871,56.91279
+1481,Malēju iela,1,50,autobuss,24.21666,56.91161
+1482,Krustpils iela,1,50,autobuss,24.21221,56.90887
+1483,Rājumsila iela,2,"47, 50",autobuss,24.20096,56.91484
+1484,Dzirkaļu iela,2,"47, 50",autobuss,24.19679,56.91806
+1485,Krustpils iela 53,3,"3, 47, 50",autobuss,24.19324,56.92098
+1487,Rājumsila iela,2,"47, 50",autobuss,24.20029,56.91519
+1488,Depo,2,"47, 50",autobuss,24.20589,56.91177
+1489,Depo,2,"47, 50",autobuss,24.20486,56.91243
+1490,Tērbatas iela,9,"4, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.11615,56.95303
+1491,Stabu iela,2,"20, 50",autobuss,24.12539,56.95774
+1492,A.Čaka iela,2,"20, 50",autobuss,24.13199,56.95458
+1494,A.Čaka iela,1,50,autobuss,24.13487,56.95465
+1495,Tērbatas iela,2,"20, 50",autobuss,24.13016,56.95704
+1496,Brīvības iela,2,"20, 50",autobuss,24.12709,56.95861
+1497,Vietalvas iela,2,"13, 50",autobuss,24.17202,56.94544
+1498,Vietalvas iela,2,"13, 50",autobuss,24.17249,56.94501
+1499,Slāvu rotācijas aplis,5,"13, 31, 33, 45, 49",autobuss,24.18291,56.93145
+1500,Skaņu iela,3,"20, 50, 63",autobuss,24.17612,56.94486
+1501,Skaņu iela,3,"20, 50, 63",autobuss,24.17634,56.94496
+1502,Gaismas iela,3,"20, 50, 63",autobuss,24.18196,56.94553
+1503,Dārzciema iela,1,50,autobuss,24.18275,56.94488
+1504,Katlakalna iela,3,"3, 16, 22","autobuss, trolejbuss",24.19845,56.93063
+1505,Krustpils iela 53,2,"47, 50",autobuss,24.19412,56.91978
+1506,Mazā Rencēnu iela,1,50,autobuss,24.18679,56.92706
+1507,Mazā Rencēnu iela,3,"3, 47, 50",autobuss,24.18799,56.92502
+1508,Pildas iela,1,50,autobuss,24.18216,56.94216
+1509,Tālivalža iela,2,"14, 16","autobuss, trolejbuss",24.17970,56.97039
+1510,Laimdotas iela,2,"14, 16","autobuss, trolejbuss",24.18829,56.96899
+1511,"Ķeguma iela/Stacionārs ""Biķernieki",2,"14, 16","autobuss, trolejbuss",24.19391,56.96804
+1512,"Bērnu slimnīca ""Gaiļezers",1,16,autobuss,24.25706,56.95624
+1513,Brekši,1,16,autobuss,24.28788,56.95709
+1514,Bebrenes iela,1,16,autobuss,24.29319,56.95749
+1515,Nautrēnu iela,1,16,autobuss,24.29861,56.95925
+1516,"Papīrfabrika ""Jugla",1,16,autobuss,24.30231,56.96075
+1517,Sunīši,1,16,autobuss,24.37665,56.97193
+1518,Mucenieku ceļš,1,16,autobuss,24.37367,56.96953
+1519,Mucenieku ceļš,1,16,autobuss,24.37377,56.96959
+1521,Amatnieki,1,16,autobuss,24.33987,56.96981
+1522,Amatnieki,1,16,autobuss,24.33862,56.96852
+1523,Upeskalni,1,16,autobuss,24.33035,56.96526
+1524,Upeskalni,1,16,autobuss,24.32961,56.96512
+1525,"Papīrfabrika ""Jugla",1,16,autobuss,24.30218,56.96082
+1526,Nautrēnu iela,1,16,autobuss,24.29753,56.95900
+1527,Bebrenes iela,1,16,autobuss,24.29304,56.95755
+1528,Brekši,1,16,autobuss,24.28729,56.95725
+1529,"Bērnu slimnīca ""Gaiļezers",1,16,autobuss,24.25438,56.95631
+1530,"Ķeguma iela/Stacionārs ""Biķernieki",2,"14, 16","autobuss, trolejbuss",24.19503,56.96792
+1531,Burtnieku iela,2,"14, 16","autobuss, trolejbuss",24.18460,56.96967
+1534,Melnsila iela,5,"22, 32, 43, 53, N22",autobuss,24.06877,56.94358
+1537,Apuzes iela,1,53,autobuss,24.03027,56.93373
+1539,Rūdas,2,"22, N22",autobuss,24.00215,56.92673
+1540,Priežkalni,2,"22, N22",autobuss,23.99648,56.92306
+1541,Rīgas lidosta,2,"22, N22",autobuss,23.97973,56.92154
+1543,Priežkalni,2,"22, N22",autobuss,23.99722,56.92306
+1544,Rūdas,2,"22, N22",autobuss,24.00283,56.92678
+1545a,Lielirbes iela,4,"22, 32, 43, N22",autobuss,24.03661,56.93148
+1546,Kauguru iela,6,"22, 32, 43, 53, 56, N22",autobuss,24.04649,56.93618
+1548,Melnsila iela,5,"22, 32, 43, 53, N22",autobuss,24.06903,56.94357
+1549,Babītes stacija,2,"4, 13",autobuss,23.95345,56.95822
+1549a,Babītes stacija,1,13,autobuss,23.95176,56.95795
+1550,Rododendru audzētava,2,"4, 13",autobuss,23.95258,56.95976
+1551,Beberbeķu iela,1,4,autobuss,23.97189,56.95394
+1552,Granīta iela 5,1,50,autobuss,24.22399,56.91250
+1553,Granīta iela 5,1,50,autobuss,24.22260,56.91259
+1554,Latvijas Pasts,2,"22, N22",autobuss,23.98697,56.92767
+1555,Miglas iela,2,"22, N22",autobuss,23.99243,56.92599
+1558,Tīraine,1,25,autobuss,24.06243,56.88845
+1559,"Dzelzceļa stacija ""Turība",1,56,autobuss,24.07551,56.91229
+1560,"Dzelzceļa stacija ""Turība",1,56,autobuss,24.07645,56.91209
+1561,Āgenskalna priedes,1,56,autobuss,24.05899,56.94454
+1562,Dreiliņu iela,1,56,autobuss,24.06034,56.94183
+1600,E.Birznieka-Upīša iela,1,22,trolejbuss,24.12439,56.94864
+1601,Malēju iela,1,47,autobuss,24.22091,56.90736
+1602,Katlakalna iela,4,"3, 16, 22, 47","autobuss, trolejbuss",24.19908,56.93027
+1603,Katlakalna iela,2,"3, 47",autobuss,24.19791,56.92997
+1604,Slāvu rotācijas aplis,1,50,autobuss,24.18302,56.92931
+1605,Slāvu rotācijas aplis,1,50,autobuss,24.18313,56.92976
+1606,Veiksmes iela,1,24,autobuss,24.07261,57.05612
+1607,Veiksmes iela,2,"2, 24",autobuss,24.07280,57.05640
+1608,Airītes iela,1,46,autobuss,23.99775,56.95992
+1612,Ādažu iela,1,29,autobuss,24.25966,57.01317
+1613,Bukulti,1,29,autobuss,24.25880,57.02085
+1614,Saulīši,1,34,autobuss,24.26796,56.92446
+1615,Cidoniju iela,1,34,autobuss,24.25798,56.92609
+1616,Cidoniju iela,1,34,autobuss,24.25875,56.92545
+1617,Strazdiņu iela,1,34,autobuss,24.25491,56.92815
+1618,Strazdiņu iela,1,34,autobuss,24.25404,56.92866
+1619,Ozolu iela,1,34,autobuss,24.23926,56.93657
+1620,Ozolu iela,1,34,autobuss,24.24011,56.93627
+1621,Sila iela,1,47,autobuss,24.21479,56.90635
+1622,Gaismas pamatskola,1,47,autobuss,24.23848,56.89417
+1623,Gaismas pamatskola,1,47,autobuss,24.23828,56.89444
+1624,Sila iela,1,47,autobuss,24.21396,56.90689
+1662,Spilve,1,13,autobuss,23.96273,56.96453
+1663,Spilve,1,13,autobuss,23.96323,56.96470
+1664,Mežāres,1,13,autobuss,23.96883,56.97464
+1665,Mežāres,1,13,autobuss,23.96942,56.97644
+1666,Liepezers,1,13,autobuss,24.00135,56.98439
+1667,Liepezers,1,13,autobuss,23.99998,56.98394
+1668,Lejasvīganti,1,29,autobuss,24.26056,57.01060
+1669,Lejasvīganti,1,29,autobuss,24.26035,57.01040
+1701,80.vidusskola,1,16,autobuss,24.20383,56.95858
+1702,80.vidusskola,1,16,autobuss,24.20304,56.95924
+1703,Skultes stadions,1,43,autobuss,23.94951,56.91965
+1704,Skultes stadions,1,43,autobuss,23.94754,56.91993
+1706,Sila iela,1,47,autobuss,24.21545,56.90659
+1708,Pumpas,1,13,autobuss,23.97450,56.97838
+1709,Pumpas,1,13,autobuss,23.97596,56.97872
+1801,Mārkalnes iela,3,"4, 31, 34",trolejbuss,24.22881,56.98809
+1802,Tirzas iela,3,"4, 31, 34",trolejbuss,24.22240,56.98735
+1803,Meža skola,3,"4, 31, 34",trolejbuss,24.21404,56.98637
+1804,Sporta akadēmija,3,"4, 31, 34",trolejbuss,24.20966,56.98582
+1805,Rīgas Tehniskā universitāte,1,57,autobuss,24.08401,56.95233
+1806,Rīgas Tehniskā universitāte,1,57,autobuss,24.08370,56.95247
+1807,Kaiju iela,1,57,autobuss,24.08096,56.95650
+1808,Kaiju iela,1,57,autobuss,24.08091,56.95698
+1809,Ģipša iela,1,57,autobuss,24.08248,56.95912
+1810,Ģipša iela,1,57,autobuss,24.08197,56.95910
+1812,Sporta iela,1,24,autobuss,24.11557,56.96480
+1813,Sporta iela,1,24,autobuss,24.11527,56.96466
+1816,Lejupes iela,2,"12, 60",autobuss,24.14757,56.91095
+1817,Lejupes iela,2,"12, 60",autobuss,24.14908,56.91115
+1835,Gustava Zemgala gatve,6,"13, 14, 16, 17, 48, 58","autobuss, trolejbuss",24.16817,56.97333
+2013,Pētersala,2,"19, 20","autobuss, trolejbuss",24.10648,56.96764
+2016,Vītolu iela,3,"3, 11, 24","autobuss, trolejbuss",24.12953,56.99035
+2017,Centrālā stacija,8,"3, 4, 13, 14, 17, 19, 31, 34",trolejbuss,24.11816,56.94755
+2018,Šmerlis,2,"12, 16",trolejbuss,24.20858,56.98484
+2018a,Sporta akadēmija,1,21,autobuss,24.20876,56.98510
+2019,Palmu iela,1,12,trolejbuss,24.18125,56.97774
+2020,Matīsa iela,7,"4, 12, 14, 17, 25, 31, 34",trolejbuss,24.12951,56.95996
+2021,Matīsa iela,12,"3, 4, 6, 9, 12, 13, 14, 16, 17, 21, 31, 34","autobuss, trolejbuss",24.13012,56.96000
+2024,Palmu iela,1,12,trolejbuss,24.18204,56.97790
+2025,Daugavas stadions,1,5,trolejbuss,24.15392,56.95312
+2026,J.Asara iela,1,5,trolejbuss,24.15138,56.95445
+2027,Vārnu iela,1,5,trolejbuss,24.14608,56.95787
+2028,A.Čaka iela,1,5,trolejbuss,24.14342,56.95928
+2029,K.Barona iela,1,5,trolejbuss,24.14112,56.96060
+2030,Brīvības iela,1,5,trolejbuss,24.13789,56.96260
+2031,Dzemdību nams,1,5,trolejbuss,24.13381,56.96523
+2032,Franču licejs,1,5,trolejbuss,24.12541,56.96291
+2033,Baložu iela,4,"5, 9, 12, 25",trolejbuss,24.07205,56.94571
+2034,Melnsila iela,4,"5, 9, 12, 25",trolejbuss,24.06647,56.94426
+2036,Paula Stradiņa slimnīca,1,5,trolejbuss,24.06957,56.93203
+2037,Kapseļu iela,4,"5, 9, 12, 25",trolejbuss,24.07130,56.94305
+2038,Franču licejs,2,"5, 25",trolejbuss,24.12589,56.96286
+2039,Dzemdību nams,2,"5, 25",trolejbuss,24.13254,56.96539
+2040,K.Barona iela,1,5,trolejbuss,24.14002,56.96118
+2041,A.Čaka iela,1,5,trolejbuss,24.14399,56.95885
+2042,Vārnu iela,1,5,trolejbuss,24.14728,56.95713
+2043,J.Asara iela,1,5,trolejbuss,24.15011,56.95562
+2045,Āgenskalna iela,2,"12, 56","autobuss, trolejbuss",24.06205,56.94591
+2046,Āgenskalna priedes,1,12,trolejbuss,24.05949,56.94459
+2048,Irbenes iela,1,27,trolejbuss,24.08724,56.91395
+2049,Irbenes iela,1,27,trolejbuss,24.08685,56.91347
+2050,Jelgavas iela,1,27,trolejbuss,24.09030,56.92367
+2051,Vienības gatve,1,27,trolejbuss,24.09001,56.92356
+2052,Mūkusala,3,"10, 26, 27","autobuss, trolejbuss",24.10409,56.93581
+2053,Mūkusala,3,"10, 26, 27","autobuss, trolejbuss",24.10479,56.93455
+2055,Jelgavas iela,9,"4, 14, 17, 18, 19, 23, 26, 27, 31","autobuss, trolejbuss",24.09953,56.93174
+2057,Ainavas iela,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.19071,56.96184
+2058,64.vidusskola,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.18499,56.95901
+2059,Dzelzavas iela,2,"11, 16",trolejbuss,24.17694,56.95825
+2060,Purvciema iela,2,"11, 16",trolejbuss,24.17535,56.95477
+2061,Purvciema iela,2,"11, 16",trolejbuss,24.17591,56.95558
+2062,Dzelzavas iela,2,"11, 16",trolejbuss,24.17742,56.95900
+2063,Ģertrūdes iela,6,"11, 13, 18, 22, 23, 35","autobuss, trolejbuss",24.13080,56.95340
+2065,64.vidusskola,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.18720,56.96023
+2066,Ainavas iela,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.19213,56.96240
+2067,Grīziņkalns,1,13,trolejbuss,24.15230,56.95625
+2068,Lienes iela,1,13,trolejbuss,24.14677,56.95377
+2069,Bruņinieku iela,4,"13, 22, 50","autobuss, trolejbuss",24.14022,56.95228
+2070,Stabu iela,1,13,trolejbuss,24.13640,56.95149
+2071,Lāčplēša iela,1,13,trolejbuss,24.13127,56.94978
+2072,Dzirnavu iela,1,13,trolejbuss,24.12561,56.94891
+2073,Vilhelma Purvīša iela,1,13,trolejbuss,24.12497,56.94577
+2074,Vilhelma Purvīša iela,1,13,trolejbuss,24.12507,56.94578
+2075,Visvalža iela,1,13,trolejbuss,24.12791,56.94917
+2076,Avotu iela,2,"13, 22",trolejbuss,24.13278,56.95066
+2077,Stabu iela,2,"13, 22",trolejbuss,24.13736,56.95159
+2078,Lienes iela,1,13,trolejbuss,24.14748,56.95397
+2079,Vārnu iela,3,"3, 6, 13","autobuss, trolejbuss",24.15191,56.96027
+2080,Ieriķu iela,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.19535,56.96507
+2081,Prūšu iela,2,"15, 18","autobuss, trolejbuss",24.20812,56.90459
+2082,Plostu iela,2,"15, 18","autobuss, trolejbuss",24.20026,56.90675
+2083,Bultu iela,2,"15, 18","autobuss, trolejbuss",24.19486,56.90999
+2084,Malnavas iela,2,"15, 18","autobuss, trolejbuss",24.19111,56.91253
+2085,Rušonu iela,1,15,trolejbuss,24.18553,56.91527
+2086,Latvijas Universitāte,4,"15, 18, 20, 23",trolejbuss,24.11556,56.95100
+2087,Rušonu iela,1,15,trolejbuss,24.18579,56.91439
+2088,Malnavas iela,1,15,trolejbuss,24.19252,56.91153
+2089,Bultu iela,1,15,trolejbuss,24.19607,56.90904
+2090,Plostu iela,1,15,trolejbuss,24.20143,56.90627
+2091,Ikšķiles iela,1,15,trolejbuss,24.20854,56.90425
+2092,Zemitāna laukums,1,16,trolejbuss,24.18625,56.97782
+2093,Linezers,1,16,trolejbuss,24.19293,56.97710
+2094,Aizkraukles iela,1,16,trolejbuss,24.18760,56.97558
+2095,Teikas vidusskola,1,16,trolejbuss,24.18247,56.97514
+2096,Bajāru iela,1,16,trolejbuss,24.17987,56.97276
+2097,Tālivalža iela,1,16,trolejbuss,24.17901,56.97102
+2098,Bajāru iela,1,16,trolejbuss,24.18052,56.97324
+2099,Teikas vidusskola,1,16,trolejbuss,24.18336,56.97530
+2100,Aizkraukles iela,1,16,trolejbuss,24.18812,56.97632
+2102,Saulkalnes iela,2,"4, 19",trolejbuss,24.09780,56.91491
+2104,Graudu iela,3,"4, 19, 60","autobuss, trolejbuss",24.10248,56.91135
+2105,Mālu iela,1,19,trolejbuss,24.10405,56.91123
+2106,Līvciema iela,3,"4, 19, 60","autobuss, trolejbuss",24.09723,56.90866
+2107,Ēbelmuižas iela,2,"4, 19",trolejbuss,24.09380,56.90439
+2109,Līvciema iela,3,"4, 19, 60","autobuss, trolejbuss",24.09878,56.90931
+2110,Saulkalnes iela,2,"4, 19",trolejbuss,24.10290,56.91207
+2112,Brīvības iela,2,"9, 25","autobuss, trolejbuss",24.13597,56.96305
+2113,Staburaga iela,1,19,trolejbuss,24.10908,56.90750
+2115,Dzintars,1,19,trolejbuss,24.11154,56.90600
+2116,Staburaga iela,1,19,trolejbuss,24.10856,56.90806
+2117,Nacionālā bibliotēka,4,"9, 12, 25, 57","autobuss, trolejbuss",24.09621,56.94057
+2118,Centrāltirgus,2,"13, 34","autobuss, trolejbuss",24.12039,56.94476
+2119,Merķeļa iela,10,"2, 3, 11, 13, 15, 19, 20, 22, 24","autobuss, trolejbuss",24.11928,56.94908
+2120,Medicīnas muzejs,11,"2, 4, 5, 11, 13, 15, 19, 20, 22, 24","autobuss, trolejbuss",24.10730,56.95725
+2124,Televīzijas centrs,1,20,trolejbuss,24.11766,56.93483
+2125,Ieriķu iela,5,"11, 13, 18, 31, 45","autobuss, trolejbuss",24.19485,56.96463
+2126,Vaidavas iela,8,"13, 16, 17, 18, 23, 35, 48, 49","autobuss, trolejbuss",24.17604,56.96165
+2130,Meža prospekts,3,"2, 11, 24",autobuss,24.13189,56.99604
+2137,Višķu iela,1,15,trolejbuss,24.21582,56.89980
+3000,Zasulauka stacija,1,8,tramvajs,24.05316,56.94190
+3001,Kalnciema iela,1,8,tramvajs,24.05733,56.94074
+3002,Ormaņu iela,1,8,tramvajs,24.05967,56.93718
+3003,Pārslas iela,1,8,tramvajs,24.06296,56.93668
+3004,Āgenskalna tirgus,1,8,tramvajs,24.07082,56.93558
+3005,E.Smiļģa iela,1,8,tramvajs,24.07592,56.93662
+3006,A.Grīna bulvāris,1,8,tramvajs,24.08285,56.94167
+3007,Uzvaras parks,4,"1, 5, 8, 14",tramvajs,24.09079,56.93998
+3008,Nacionālā bibliotēka,5,"1, 5, 8, 10, 14",tramvajs,24.09441,56.94132
+3009,Grēcinieku iela,5,"1, 5, 8, 10, 14",tramvajs,24.10606,56.94570
+3010,13.janvāra iela,4,"1, 5, 8, 14",tramvajs,24.11387,56.94604
+3011,Centrāltirgus,6,"1, 5, 7, 8, 11, 14",tramvajs,24.11433,56.94411
+3012,Grēcinieku iela,9,"1, 5, 8, 9, 10, 14, 22, 27, N22","autobuss, tramvajs, trolejbuss",24.10565,56.94595
+3013,Nacionālā bibliotēka,5,"1, 5, 8, 10, 14",tramvajs,24.09498,56.94156
+3014,Uzvaras parks,4,"1, 5, 8, 14",tramvajs,24.09027,56.94011
+3015,A.Grīna bulvāris,1,8,tramvajs,24.08265,56.94141
+3016,E.Smiļģa iela,1,8,tramvajs,24.07712,56.93674
+3017,Āgenskalna tirgus,1,8,tramvajs,24.07014,56.93564
+3018,Pārslas iela,1,8,tramvajs,24.06268,56.93674
+3019,Ormaņu iela,1,8,tramvajs,24.05919,56.93739
+3020,Kalnciema iela,1,8,tramvajs,24.05752,56.94049
+3021,Zasulauka stacija,1,8,tramvajs,24.05212,56.94216
+3022,Elvīras iela,1,8,tramvajs,24.04844,56.94615
+3023,Kandavas iela,1,8,tramvajs,24.04690,56.94892
+3024,Jūrmalas gatve,1,8,tramvajs,24.04605,56.95106
+3025,Jaunsaules iela,1,8,tramvajs,24.04559,56.95512
+3026,Tapešu iela,1,8,tramvajs,24.04643,56.95768
+3027,Jaunsaules iela,1,8,tramvajs,24.04556,56.95483
+3028,Jūrmalas gatve,1,8,tramvajs,24.04580,56.95199
+3029,Kandavas iela,1,8,tramvajs,24.04683,56.94896
+3030,Elvīras iela,1,8,tramvajs,24.04864,56.94587
+3031,Imanta,1,1,tramvajs,24.00822,56.96615
+3032,Dammes iela,1,1,tramvajs,24.01415,56.96094
+3033,Kleistu iela,1,1,tramvajs,24.02042,56.95985
+3034,Imantas iela,1,1,tramvajs,24.02667,56.95759
+3035,Bebru iela,1,1,tramvajs,24.03471,56.95680
+3036,Jūrmalas gatve,1,1,tramvajs,24.03480,56.95252
+3037,Botāniskais dārzs/Rīgas Stradiņa universitāte,5,"1, 30, 37, 41, 54","autobuss, tramvajs",24.05369,56.95127
+3038,Baldones iela,6,"1, 5, 14, 30, 37, 41","autobuss, tramvajs",24.06642,56.95067
+3039,Mārtiņa iela,6,"1, 5, 14, 30, 37, 41","autobuss, tramvajs",24.07216,56.94851
+3040,Valsts arhīvs,3,"1, 5, 14",tramvajs,24.07397,56.94606
+3041,Nometņu iela,3,"1, 5, 14",tramvajs,24.07707,56.94341
+3042,A.Grīna bulvāris,3,"1, 5, 14",tramvajs,24.08228,56.94202
+3043,A.Grīna bulvāris,3,"1, 5, 14",tramvajs,24.08258,56.94196
+3044,Nometņu iela,3,"1, 5, 14",tramvajs,24.07812,56.94298
+3045,Valsts arhīvs,3,"1, 5, 14",tramvajs,24.07448,56.94551
+3046,Mārtiņa iela,6,"1, 5, 14, 30, 37, 41","autobuss, tramvajs",24.07248,56.94812
+3047,Baldones iela,6,"1, 5, 14, 30, 37, 41","autobuss, tramvajs",24.06559,56.95076
+3048,Botāniskais dārzs/Rīgas Stradiņa universitāte,5,"1, 4, 37, 41, 63","autobuss, tramvajs",24.05279,56.95122
+3049,Kurzemes prospekts,1,1,tramvajs,24.03502,56.95278
+3050,Bebru iela,2,"1, 41","autobuss, tramvajs",24.03484,56.95692
+3051,Imantas iela,1,1,tramvajs,24.02651,56.95760
+3052,Kleistu iela,1,1,tramvajs,24.02001,56.95998
+3053,Dammes iela,1,1,tramvajs,24.01394,56.96114
+3054,Imanta,1,1,tramvajs,24.00886,56.96579
+3055,Iļģuciems,2,"5, 14",tramvajs,24.06795,56.96489
+3057,Buļļu iela,2,"5, 14",tramvajs,24.06226,56.96368
+3058,Saldus iela,2,"5, 14",tramvajs,24.06033,56.95905
+3060,Pulka sēta,2,"5, 14",tramvajs,24.06297,56.95465
+3061,Nacionālā opera,3,"5, 7, 8",tramvajs,24.11399,56.94863
+3062,Nacionālais teātris,3,"5, 7, 8",tramvajs,24.10419,56.95375
+3063,Ausekļa iela,3,"5, 7, 8",tramvajs,24.10083,56.95742
+3064,Vašingtona laukums,2,"5, 8",tramvajs,24.09836,56.96193
+3065,Eksportosta,2,"5, 8",tramvajs,24.09791,56.96826
+3066,Katrīnas iela,2,"5, 8",tramvajs,24.10072,56.96819
+3067,Pētersala,2,"5, 8",tramvajs,24.10535,56.96771
+3068,Lugažu iela,2,"5, 8",tramvajs,24.11203,56.97466
+3069,Bukultu iela,2,"5, 8",tramvajs,24.11400,56.97712
+3070,Rankas iela,2,"5, 8",tramvajs,24.11612,56.97968
+3071,Rāmuļu iela,2,"5, 8",tramvajs,24.11918,56.98339
+3072,1.trolejbusu parks,2,"5, 8",tramvajs,24.12159,56.98733
+3073,"Rūpnīca ""RER",2,"5, 8",tramvajs,24.12219,56.99017
+3074,Duntes iela,2,"5, 8",tramvajs,24.12329,56.99344
+3075,Sarkandaugava,2,"5, 8",tramvajs,24.12592,56.99543
+3076,Allažu iela,2,"5, 8",tramvajs,24.12362,56.99845
+3077,Aldaris,2,"5, 8",tramvajs,24.12340,57.00185
+3078,Gaujienas iela,2,"5, 8",tramvajs,24.12518,57.00624
+3079,Daudersala,2,"5, 8",tramvajs,24.12509,57.01021
+3080,Mīlgrāvis,2,"5, 8",tramvajs,24.12302,57.01711
+3081,Daudersala,2,"5, 8",tramvajs,24.12540,57.00952
+3082,Gaujienas iela,2,"5, 8",tramvajs,24.12516,57.00634
+3083,Aldaris,2,"5, 8",tramvajs,24.12342,57.00146
+3084,Allažu iela,2,"5, 8",tramvajs,24.12349,56.99818
+3085,Sarkandaugava,2,"5, 8",tramvajs,24.12628,56.99510
+3086,Duntes iela,2,"5, 8",tramvajs,24.12306,56.99326
+3087,"Rūpnīca ""RER",2,"5, 8",tramvajs,24.12210,56.99089
+3088,1.trolejbusu parks,2,"5, 8",tramvajs,24.12163,56.98761
+3089,Rāmuļu iela,2,"5, 8",tramvajs,24.11924,56.98356
+3090,Rankas iela,2,"5, 8",tramvajs,24.11591,56.97946
+3091,Bukultu iela,2,"5, 8",tramvajs,24.11440,56.97765
+3092,Lugažu iela,2,"5, 8",tramvajs,24.11184,56.97446
+3093,Pētersala,2,"5, 8",tramvajs,24.10589,56.96782
+3094,Katrīnas iela,2,"5, 8",tramvajs,24.10150,56.96809
+3095,Eksportosta,2,"5, 8",tramvajs,24.09827,56.96853
+3096,Vašingtona laukums,2,"5, 8",tramvajs,24.09830,56.96259
+3097,Ausekļa iela,3,"5, 7, 8",tramvajs,24.10053,56.95771
+3098,Nacionālais teātris,3,"5, 7, 8",tramvajs,24.10458,56.95327
+3099,Nacionālā opera,3,"5, 7, 8",tramvajs,24.11414,56.94836
+3100,13.janvāra iela,5,"1, 5, 8, 10, 14",tramvajs,24.11321,56.94576
+3101,Pulka sēta,2,"5, 14",tramvajs,24.06304,56.95512
+3103,Saldus iela,2,"5, 14",tramvajs,24.06012,56.95935
+3104,Buļļu iela,2,"5, 14",tramvajs,24.06272,56.96400
+3105,Iļģuciems,2,"5, 14",tramvajs,24.06886,56.96486
+3106,Jugla,1,1,tramvajs,24.24057,56.98973
+3107,Mārkalnes iela,1,1,tramvajs,24.22874,56.98801
+3108,Tirzas iela,1,1,tramvajs,24.22210,56.98723
+3109,Meža skola,1,1,tramvajs,24.21433,56.98630
+3110,Sporta akadēmija,1,1,tramvajs,24.20763,56.98531
+3111,Alfa,1,1,tramvajs,24.20267,56.98433
+3112,Krustabaznīcas iela,1,1,tramvajs,24.19456,56.98336
+3113,Džutas iela,1,1,tramvajs,24.18245,56.98097
+3114,45.vidusskola,1,1,tramvajs,24.17670,56.97935
+3115,Lēdmanes iela,1,1,tramvajs,24.17206,56.97734
+3116,Gustava Zemgala gatve,1,1,tramvajs,24.16609,56.97365
+3117,VEF,1,1,tramvajs,24.15993,56.97115
+3118,K.Barona iela,4,"1, 7, 11, 14",tramvajs,24.15066,56.96758
+3119,Pērnavas iela,4,"1, 7, 11, 14",tramvajs,24.14934,56.96559
+3120,"Sporta nams ""Daugava",4,"1, 7, 11, 14",tramvajs,24.14438,56.96280
+3121,Tallinas iela,4,"1, 7, 11, 14",tramvajs,24.14075,56.96098
+3122,Bērnu pasaule,4,"1, 7, 11, 14",tramvajs,24.13350,56.95730
+3123,Ģertrūdes iela,4,"1, 7, 11, 14",tramvajs,24.12803,56.95459
+3124,Dzirnavu iela,4,"1, 7, 11, 14",tramvajs,24.12320,56.95223
+3125,Merķeļa iela,4,"1, 7, 11, 14",tramvajs,24.11864,56.94995
+3126,Stacijas laukums,5,"1, 7, 8, 11, 14",tramvajs,24.11636,56.94765
+3127,Merķeļa iela,4,"1, 7, 11, 14",tramvajs,24.11955,56.95037
+3128,Dzirnavu iela,4,"1, 7, 11, 14",tramvajs,24.12353,56.95234
+3129,Ģertrūdes iela,4,"1, 7, 11, 14",tramvajs,24.12772,56.95441
+3130,Bērnu pasaule,4,"1, 7, 11, 14",tramvajs,24.13238,56.95672
+3131,Tallinas iela,4,"1, 7, 11, 14",tramvajs,24.14045,56.96079
+3132,"Sporta nams ""Daugava",4,"1, 7, 11, 14",tramvajs,24.14398,56.96258
+3133,Pērnavas iela,4,"1, 7, 11, 14",tramvajs,24.14873,56.96499
+3134,Brīvības iela,4,"1, 7, 11, 14",tramvajs,24.15100,56.96804
+3135,VEF,1,1,tramvajs,24.16104,56.97148
+3136,Gustava Zemgala gatve,1,1,tramvajs,24.16667,56.97398
+3137,Lēdmanes iela,1,1,tramvajs,24.17186,56.97724
+3138,45.vidusskola,1,1,tramvajs,24.17552,56.97900
+3139,Džutas iela,1,1,tramvajs,24.18345,56.98121
+3140,Krustabaznīcas iela,1,1,tramvajs,24.19414,56.98327
+3141,Alfa,1,1,tramvajs,24.20218,56.98426
+3142,Sporta akadēmija,1,1,tramvajs,24.20834,56.98545
+3143,Meža skola,1,1,tramvajs,24.21506,56.98637
+3144,Tirzas iela,1,1,tramvajs,24.22280,56.98728
+3145,Mārkalnes iela,1,1,tramvajs,24.22943,56.98806
+3146,Jugla,1,1,tramvajs,24.24152,56.98977
+3148,Eglaines iela/Dole,2,"7, 14",tramvajs,24.18823,56.90638
+3149,Malnavas iela,2,"7, 14",tramvajs,24.18302,56.90875
+3150,Rušonu iela,2,"7, 14",tramvajs,24.17936,56.91050
+3152,Prūšu iela,2,"7, 14",tramvajs,24.17557,56.91469
+3153,Ķengaraga iela,2,"7, 14",tramvajs,24.17324,56.91850
+3154,Dienvidu tilts,2,"7, 14",tramvajs,24.17105,56.92139
+3155,Krasta masīvs,2,"7, 14",tramvajs,24.16815,56.92556
+3156,"Atpūtas centrs ""Lido",2,"7, 14",tramvajs,24.16370,56.92947
+3157,Rēznas iela,2,"7, 14",tramvajs,24.15995,56.93341
+3158,Latgales parks,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.15587,56.93599
+3159,Mazā Kalna iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.14638,56.93790
+3160,Daugavpils iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.14004,56.93898
+3161,Katoļu iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.13549,56.93958
+3162,Elijas iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.12574,56.93988
+3163,Jēzusbaznīcas iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.12080,56.94104
+3164,Spīķeri,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.11619,56.94234
+3165,Autoosta,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.11512,56.94439
+3167,Spīķeri,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.11693,56.94217
+3168,Jēzusbaznīcas iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.12185,56.94052
+3170,Elijas iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.12627,56.93987
+3171,Katoļu iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.13629,56.93957
+3172,Daugavpils iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.14063,56.93872
+3173,Mazā Kalna iela,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.14727,56.93785
+3174,Latgales parks,7,"1, 5, 7, 8, 10, 11, 14",tramvajs,24.15461,56.93663
+3175,Rēznas iela,2,"7, 14",tramvajs,24.16023,56.93303
+3176,"Atpūtas centrs ""Lido",2,"7, 14",tramvajs,24.16396,56.92911
+3177,Krasta masīvs,2,"7, 14",tramvajs,24.16838,56.92520
+3178,Dienvidu tilts,2,"7, 14",tramvajs,24.17125,56.92101
+3179,Ķengaraga iela,2,"7, 14",tramvajs,24.17344,56.91808
+3180,Prūšu iela,2,"7, 14",tramvajs,24.17575,56.91426
+3182,Rušonu iela,2,"7, 14",tramvajs,24.17984,56.91011
+3183,Malnavas iela,2,"7, 14",tramvajs,24.18357,56.90850
+3184,Eglaines iela/Dole,2,"7, 14",tramvajs,24.18803,56.90642
+3185,Bišumuiža,1,10,tramvajs,24.14072,56.91458
+3186,Doles iela,1,10,tramvajs,24.13438,56.91589
+3187,Ziepniekkalna iela,1,10,tramvajs,24.12305,56.91514
+3188,Mazā Stērstu iela,1,10,tramvajs,24.11707,56.91370
+3189,Stērstu iela/CSDD,1,10,tramvajs,24.11186,56.91513
+3190,Skaistkalnes iela,1,10,tramvajs,24.10355,56.91788
+3191,Viesītes iela,1,10,tramvajs,24.09788,56.91967
+3192,Vienības gatve/Bērnu slimnīca,1,10,tramvajs,24.08945,56.92118
+3193,Jelgavas iela,1,10,tramvajs,24.08988,56.92388
+3194,Satiksmes iela,1,10,tramvajs,24.09073,56.92736
+3195,Torņakalna stacija,1,10,tramvajs,24.08704,56.93049
+3196,Arkādijas parks,2,"10, 63","autobuss, tramvajs",24.08390,56.93295
+3198,Uzvaras parks,1,10,tramvajs,24.09031,56.93915
+3199,Arkādijas parks,2,"10, 63","autobuss, tramvajs",24.08341,56.93280
+3200,Torņakalna stacija,1,10,tramvajs,24.08835,56.93017
+3201,Satiksmes iela,1,10,tramvajs,24.09078,56.92760
+3202,Jelgavas iela/Bērnu slimnīca,1,10,tramvajs,24.08979,56.92366
+3203,Telts iela,1,10,tramvajs,24.08890,56.92008
+3204,Viesītes iela,1,10,tramvajs,24.09732,56.92028
+3205,Skaistkalnes iela,1,10,tramvajs,24.10387,56.91774
+3206,Stērstu iela/CSDD,1,10,tramvajs,24.11233,56.91495
+3207,Mazā Stērstu iela,1,10,tramvajs,24.11626,56.91381
+3208,Ziepniekkalna iela,1,10,tramvajs,24.12143,56.91402
+3209,Mazā Bauskas iela,1,10,tramvajs,24.12389,56.91570
+3210,Doles iela,1,10,tramvajs,24.13235,56.91580
+3211,Ezermalas iela,1,11,tramvajs,24.16236,57.00678
+3212,Mežaparks / ZOO,1,11,tramvajs,24.15748,57.00556
+3213,Visbijas prospekts,1,11,tramvajs,24.15951,57.00055
+3214,Hamburgas iela,1,11,tramvajs,24.16141,56.99743
+3215,Mirdzas Ķempes iela,1,11,tramvajs,24.16366,56.99370
+3216,Rusova iela/Valsts biroji,1,11,tramvajs,24.16465,56.98953
+3217,Gaujas iela,1,11,tramvajs,24.16046,56.98646
+3218,2.Meža kapi,1,11,tramvajs,24.15550,56.98425
+3219,Brāļu kapi,1,11,tramvajs,24.15073,56.98258
+3220,Brasas stacija,1,11,tramvajs,24.14444,56.97579
+3221,Kazarmu iela/Lielie kapi,1,11,tramvajs,24.14189,56.97320
+3222,Mēness iela,2,"9, 11","autobuss, tramvajs",24.13556,56.96875
+3223,Dzemdību nams,1,11,tramvajs,24.13359,56.96605
+3224,Laima,1,11,tramvajs,24.13188,56.96356
+3225,Brīvības iela,1,11,tramvajs,24.12915,56.96016
+3226,Bērnu pasaule,1,11,tramvajs,24.13291,56.95727
+3227,Brīvības iela,1,11,tramvajs,24.12900,56.95951
+3228,Laima,1,11,tramvajs,24.13173,56.96338
+3229,Dzemdību nams,1,11,tramvajs,24.13313,56.96525
+3230,Mēness iela,1,11,tramvajs,24.13594,56.96898
+3231,Kazarmu iela/Lielie kapi,1,11,tramvajs,24.14180,56.97304
+3232,Brasas stacija,1,11,tramvajs,24.14488,56.97615
+3233,Brāļu kapi,1,11,tramvajs,24.15121,56.98274
+3234,2.Meža kapi,1,11,tramvajs,24.15569,56.98431
+3235,Gaujas iela,1,11,tramvajs,24.15971,56.98594
+3236,Rusova iela/Valsts biroji,1,11,tramvajs,24.16483,56.98979
+3237,Mirdzas Ķempes iela,1,11,tramvajs,24.16375,56.99352
+3238,Hamburgas iela,1,11,tramvajs,24.16127,56.99768
+3239,Visbijas prospekts,1,11,tramvajs,24.15974,57.00027
+3240,Mežaparks / ZOO,1,11,tramvajs,24.15705,57.00469
+3242,Aspazijas bulvāris,3,"1, 7, 11",tramvajs,24.11486,56.94811
+3247,Meža skola,3,"4, 31, 34",trolejbuss,24.21517,56.98625
+3251,Kultūru vidusskola,2,"5, 8",tramvajs,24.10872,56.97061
+3252,Kultūru vidusskola,2,"5, 8",tramvajs,24.10849,56.97037
+3255,Stacijas laukums,4,"1, 7, 11, 14",tramvajs,24.11602,56.94823
+3257,Rasas iela,2,"7, 14",tramvajs,24.19511,56.90314
+3258,Ikšķiles iela,2,"7, 14",tramvajs,24.20346,56.89998
+3261,Ikšķiles iela,2,"7, 14",tramvajs,24.20310,56.90018
+3262,Rasas iela,2,"7, 14",tramvajs,24.19466,56.90335
+3263,Mobilitātes punkts Ķengarags,2,"7, 14",tramvajs,24.21244,56.89740
+3264-6,Mobilitātes punkts Ķengarags,2,"7, 14",tramvajs,24.21264,56.89668
+4001,Krustabaznīcas iela,1,9,autobuss,24.18705,56.99230
+4003,Loģistikas centrs,1,26,autobuss,24.14808,56.88973
+4131,Pagrieziens uz Piņķiem,1,43,autobuss,23.92306,56.94603
+4132,Pagrieziens uz Piņķiem,1,43,autobuss,23.92294,56.94404
+4160,Basu iela,1,56,autobuss,24.09312,56.90840
+4161,Basu iela,1,56,autobuss,24.09332,56.90846
+4175,Ūnijas iela,4,"13, 16, 17, 48","autobuss, trolejbuss",24.17701,56.96526
+4848,Vētras,2,"10, 55",autobuss,23.97465,56.88328
+4977,Piņķi,3,"4, 32, 43",autobuss,23.91045,56.94428
+4996,Milži,1,55,autobuss,23.99476,56.90446
+4999,Mūzikas un mākslas skola,2,"10, 55",autobuss,23.93454,56.88218
+5000,Skulte,1,43,autobuss,23.95258,56.91937
+5002,Balvu iela,2,"12, 34",autobuss,24.14278,56.93412
+5003,Grēcinieku iela,19,"3, 4, 7, 8, 9, 10, 21, 22, 23, 25, 26, 27 …","autobuss, trolejbuss",24.10541,56.94577
+5010,Āgenskalna tirgus,8,"4, 7, 8, 21, 25, 38, 39, 55",autobuss,24.07240,56.93569
+5011,Āgenskalna tirgus,8,"4, 7, 8, 21, 25, 38, 39, 55",autobuss,24.07280,56.93571
+5021,Arkādijas parks,2,"25, 44",autobuss,24.08212,56.93145
+5022,Arkādijas parks,2,"25, 44",autobuss,24.08230,56.93155
+5023a,Ārlavas iela,3,"25, 55, 56",autobuss,24.07762,56.92246
+5024a,Ārlavas iela,2,"25, 56",autobuss,24.07638,56.92124
+5030,Āvas,1,51,autobuss,24.31668,56.92921
+5031,Āvas,1,51,autobuss,24.31545,56.92978
+5032,Ulbrokas vidusskola,1,51,autobuss,24.32064,56.92910
+5034,Baložu iela,5,"22, 32, 43, 53, N22",autobuss,24.07201,56.94490
+5035a,Baltinavas iela,4,"6, 34, 51, 52",autobuss,24.23254,56.94320
+5036a,Baltinavas iela,4,"6, 34, 51, 52",autobuss,24.23110,56.94340
+5041,Brīvkalni,1,43,autobuss,23.91613,56.92820
+5042,Brīvkalni,1,43,autobuss,23.91408,56.92393
+5060,Bramberģes iela,3,"10, 25, 56",autobuss,24.06995,56.91489
+5061,Bramberģes iela,3,"10, 25, 56",autobuss,24.06847,56.91409
+5062,Līgo parks,1,51,autobuss,24.30794,56.93344
+5063,Līgo parks,1,51,autobuss,24.30760,56.93386
+5065,Brūkleņu iela,1,55,autobuss,24.05191,56.91931
+5075,Čiekuri,1,55,autobuss,23.98646,56.89226
+5076,Čiekuri,1,55,autobuss,23.98662,56.89197
+5088,Dārzciema iela,7,"3, 6, 16, 20, 22, 51, 52","autobuss, trolejbuss",24.18737,56.94890
+5090,Daugavas stadions,9,"3, 6, 11, 13, 16, 22, 50, 51, 52","autobuss, trolejbuss",24.15477,56.95328
+5091,Daugavgrīvas iela,7,"9, 12, 22, 25, 32, 43, N22","autobuss, trolejbuss",24.08178,56.94507
+5101a,Dreiliņu rotācijas aplis,1,51,autobuss,24.24481,56.94365
+5103,Dreiliņu veikals,1,51,autobuss,24.25041,56.94351
+5131,Gaviezes iela,2,"32, 43",autobuss,23.99001,56.94782
+5132,Gaviezes iela,2,"32, 43",autobuss,23.98874,56.94870
+5133a,Ģimnastikas iela,1,55,autobuss,24.07134,56.92052
+5134,Ģimnastikas iela,4,"10, 25, 55, 56",autobuss,24.07553,56.91939
+5136,Bišumuiža,1,23,autobuss,24.14039,56.91498
+5137,Bišumuiža,1,23,autobuss,24.14151,56.91408
+5140,Ilūkstes iela,9,"6, 16, 20, 22, 31, 34, 47, 51, 52","autobuss, trolejbuss",24.19842,56.94743
+5141,Ilūkstes iela,6,"3, 6, 16, 22, 51, 52","autobuss, trolejbuss",24.19430,56.94810
+5142,Stopiņu pagasta pārvalde,1,51,autobuss,24.28369,56.94311
+5143,Stopiņu pagasta pārvalde,1,51,autobuss,24.28446,56.94281
+5144,Grīziņkalns,3,"3, 6, 13","autobuss, trolejbuss",24.15287,56.95708
+5145,Grīziņkalns,2,"3, 6",autobuss,24.15296,56.95594
+5176,Ķienes,2,"10, 55",autobuss,23.95906,56.87908
+5177,Ķienes,2,"10, 55",autobuss,23.95803,56.87895
+5185,Nacionālā bibliotēka,15,"3, 4, 7, 8, 9, 21, 22, 25, 32, 38, 39, 43 …","autobuss, trolejbuss",24.09702,56.94244
+5186,Nacionālā bibliotēka,15,"3, 4, 7, 8, 9, 21, 22, 25, 32, 38, 39, 43 …","autobuss, trolejbuss",24.09516,56.94183
+5186a,Nacionālā bibliotēka,1,57,autobuss,24.09441,56.94143
+5188,Lamberti,2,"7, 55",autobuss,24.02736,56.91760
+5189,Lamberti,2,"7, 55",autobuss,24.02548,56.91755
+5197,Liepiņas,4,"6, 34, 51, 52",autobuss,24.22229,56.94422
+5198,Liepiņas,4,"6, 34, 51, 52",autobuss,24.22103,56.94460
+5199,Liepziedi,1,51,autobuss,24.25756,56.94329
+5200,Liepziedi,1,51,autobuss,24.25646,56.94338
+5204,Mārupes novada dome,2,"10, 25",autobuss,24.05468,56.90515
+5205,Mārupes novada dome,2,"10, 25",autobuss,24.05642,56.90608
+5216,Mežciems,1,10,autobuss,24.01453,56.89284
+5217,Mežciems,1,10,autobuss,24.01376,56.89278
+5218,Mežmalas iela,2,"32, 43",autobuss,23.99660,56.94359
+5219,Mežmalas iela,2,"32, 43",autobuss,23.99573,56.94376
+5220,Mežotnes iela,1,55,autobuss,24.06498,56.92100
+5221,Mežotnes iela,1,55,autobuss,24.06502,56.92121
+5235,Noras,1,55,autobuss,24.00376,56.91101
+5236,Noras,1,55,autobuss,24.00243,56.91015
+5272,Jaunā iela,2,"4, 32",autobuss,23.91329,56.95173
+5273,Pagrieziens uz Piņķiem,3,"4, 32, 43",autobuss,23.91993,56.94580
+5279,Priežciems,2,"32, 43",autobuss,23.93612,56.95071
+5288,Dreiliņu iela,5,"22, 32, 43, 53, N22",autobuss,24.06201,56.94173
+5289,Dreiliņu iela,6,"22, 32, 43, 53, 56, N22",autobuss,24.06249,56.94176
+5292,A.Čaka iela,3,"3, 6, 13","autobuss, trolejbuss",24.15087,56.96317
+5293,A.Čaka iela,3,"3, 6, 13","autobuss, trolejbuss",24.15107,56.96319
+5294,Jāņa Čakstes gatve,2,"12, 23",autobuss,24.14607,56.90852
+5295,Piena kombināts,1,23,autobuss,24.14508,56.91142
+5310,Puķulejas,1,10,autobuss,23.99217,56.88731
+5311,Puķulejas,2,"10, 55",autobuss,23.98771,56.88636
+5312,Puķulejas,1,55,autobuss,23.98920,56.88870
+5315,Sēļi,1,10,autobuss,24.03515,56.89772
+5316,Sēļi,1,10,autobuss,24.03807,56.89831
+5320,Radiostacijas iela,1,51,autobuss,24.27131,56.94288
+5321,Radiostacijas iela,1,51,autobuss,24.26747,56.94309
+5323a,Rāmava,1,23,autobuss,24.14862,56.89022
+5324,Rāmava,2,"23, 26",autobuss,24.14879,56.89046
+5328,Kauguru iela,3,"32, 43, 53",autobuss,24.04401,56.93538
+5329,Riekstiņi,2,"10, 55",autobuss,23.96945,56.88190
+5330,Riekstiņi,2,"10, 55",autobuss,23.96469,56.88086
+5331,Robežu iela/Bērnu slimnīca,3,"27, 44, 46","autobuss, trolejbuss",24.08836,56.91925
+5333,Mežkalna iela,1,27,trolejbuss,24.07946,56.89881
+5334,Vienības gatve,1,27,trolejbuss,24.07872,56.89966
+5342,A.Saharova iela,5,"20, 31, 34, 51, 52",autobuss,24.20855,56.94603
+5343,A.Saharova iela,9,"6, 16, 20, 22, 31, 34, 47, 51, 52","autobuss, trolejbuss",24.20523,56.94664
+5350,Saules aleja,2,"25, 46",autobuss,24.07438,56.93023
+5351,Saules aleja,2,"25, 46",autobuss,24.07491,56.92960
+5359,Sējas iela,2,"10, 25",autobuss,24.06609,56.91238
+5360,Sējas iela,2,"10, 25",autobuss,24.06540,56.91205
+5361,Mārupītes gatve,1,10,autobuss,24.04630,56.90043
+5368,Silkalēji,1,43,autobuss,23.94418,56.92017
+5369,Silkalēji,1,43,autobuss,23.94257,56.92031
+5375,Mārupes ģimnāzija,2,"7, 55",autobuss,24.03732,56.91825
+5376,Mārupes ģimnāzija,2,"7, 55",autobuss,24.03607,56.91824
+5384,Valsts arhīvs,3,"30, 37, 41",autobuss,24.07532,56.94647
+5389,Stīpnieki,1,55,autobuss,24.00910,56.91495
+5390,Stīpnieki,2,"7, 55",autobuss,24.01158,56.91641
+5397,Grēdu iela,2,"12, 34",autobuss,24.15181,56.93106
+5406,Ulbroka,1,51,autobuss,24.29210,56.94052
+5406a,Ulbroka,1,51,autobuss,24.29237,56.94021
+5409,Upesgrīvas iela,1,55,autobuss,24.04289,56.91871
+5410,Upesgrīvas iela,1,55,autobuss,24.04239,56.91856
+5414,Mārupītes gatve,2,"10, 25",autobuss,24.04943,56.90157
+5424,Valdlauču centrs,2,"12, 23",autobuss,24.14668,56.90251
+5428,Jaunmārupes pamatskola,1,55,autobuss,23.94671,56.87898
+5429,Jaunmārupes pamatskola,2,"10, 55",autobuss,23.94605,56.88007
+5438,Vizmas,1,10,autobuss,24.00673,56.89077
+5439,Vizmas,1,10,autobuss,24.00222,56.88981
+5440,Zaigas,1,10,autobuss,24.01939,56.89404
+5441,Zaigas,1,10,autobuss,24.02165,56.89437
+5447,Zirnīši,1,55,autobuss,23.98565,56.89792
+5448,Zirnīši,1,55,autobuss,23.98631,56.89818
+5449,Zolitūdes iela,4,"22, 32, 43, N22",autobuss,24.01584,56.92897
+5450,Zolitūdes iela,2,"32, 43",autobuss,24.01646,56.92942
+5452,Matīsa kapi,2,"20, 63",autobuss,24.15960,56.94707
+5453,Matīsa kapi,2,"20, 63",autobuss,24.15758,56.94731
+5454,Piedrujas iela,3,"13, 20, 63",autobuss,24.17406,56.93991
+5455,Brāļu Kaudzīšu iela,4,"6, 16, 22, 47","autobuss, trolejbuss",24.20522,56.94170
+5456,A.Deglava iela,4,"6, 16, 22, 47","autobuss, trolejbuss",24.20657,56.94483
+5457,Dārzciema vidusskola,2,"20, 63",autobuss,24.19071,56.94589
+5458,Jaunrozes iela,1,13,autobuss,24.16981,56.94470
+5459,Matīsa iela,2,"20, 63",autobuss,24.15331,56.94780
+5460,Valmieras iela,1,20,autobuss,24.14733,56.95056
+5461,Krāsotāju iela,2,"11, 20","autobuss, trolejbuss",24.14121,56.95343
+5462,A.Čaka iela,2,"11, 20","autobuss, trolejbuss",24.13640,56.95568
+5463,Rīgas 1.slimnīca,4,"4, 12, 25, 34",trolejbuss,24.12456,56.96008
+5464,K.Valdemāra iela,1,20,autobuss,24.11296,56.95683
+5465,Matīsa iela,1,20,autobuss,24.13709,56.95524
+5466,Avotu iela,1,20,autobuss,24.14323,56.95237
+5467,Valmieras iela,2,"20, 63",autobuss,24.14819,56.95006
+5468,Pērnavas iela,2,"20, 63",autobuss,24.15291,56.94789
+5470,A.Saharova iela,4,"6, 16, 22, 47","autobuss, trolejbuss",24.20571,56.94396
+5471,Brāļu Kaudzīšu iela,4,"6, 16, 22, 47","autobuss, trolejbuss",24.20434,56.94074
+5472,Pētersala,1,19,trolejbuss,24.10632,56.96764
+5511,Pļavu iela,1,55,autobuss,23.94155,56.88230
+5512,Pļavu iela,2,"10, 55",autobuss,23.94025,56.88264
+5513,Siltumnīcu komplekss,1,10,autobuss,23.93111,56.88074
+5514,Ziedkalnu iela,1,10,autobuss,23.92513,56.87811
+5515,Pīlādžu iela,1,10,autobuss,23.92948,56.87677
+5516b,Bērzu iela,1,10,autobuss,23.93490,56.87651
+5518b,Kalngales,1,10,autobuss,23.95193,56.87607
+5590,Gramzdas iela,2,"32, 43",autobuss,23.99980,56.94030
+5591,Gramzdas iela,2,"32, 43",autobuss,23.99910,56.93984
+5593,Noliktavu iela,2,"34, 52",autobuss,24.23609,56.93275
+5926,Īslīces iela,1,27,trolejbuss,24.08235,56.89851
+5928,Brīvības gatve,2,"48, 58",autobuss,24.16550,56.97400
+5929,Brīvības gatve,1,58,autobuss,24.16658,56.97191
+6445,Kāpu iela,1,26,autobuss,24.15975,56.88165
+6454,Beberbeķu iela,2,"32, 43",autobuss,23.96132,56.94969
+7012,Anniņmuižas Jaunā pamatskola,1,56,autobuss,24.02205,56.96122
+7013,Graudu iela,1,56,autobuss,24.08708,56.90966
+7014,Graudu iela,1,56,autobuss,24.08416,56.91055
+7015,Ķekavas iela,1,60,autobuss,24.11014,56.91357
+7016,Ķekavas iela,1,60,autobuss,24.11165,56.91410
+7063,Zasulauka iela,1,63,autobuss,24.04043,56.94243
+7064,Šampēteris,1,63,autobuss,24.03404,56.94072
+7065,Šampēteris,1,63,autobuss,24.03320,56.94058
+7066,Stigu iela 10,1,63,autobuss,24.22215,56.95678
+7067,Stigu iela 10,1,63,autobuss,24.22107,56.95626
+7068,Prūšu skvērs,1,18,autobuss,24.17681,56.91523
+7074,Piedrujas iela,1,33,autobuss,24.17443,56.93402
+7075a,Piedrujas iela,1,33,autobuss,24.17576,56.93422
+7080,Ķengaraga skolas,1,18,autobuss,24.18387,56.91505
+7749,Abrenes iela,4,"6, 9, 12, 16",autobuss,24.12994,56.94610
+7749a,Abrenes iela,5,"2, 11, 24, 51, 52",autobuss,24.13020,56.94608
+7749b,Abrenes iela,8,"7, 10, 23, 25, 26, 38, 39, 55",autobuss,24.13052,56.94607
+7749c,Abrenes iela,5,"4, 22, 32, 43, 50",autobuss,24.13079,56.94607
+7749g,Abrenes iela,22,"2, 4, 6, 7, 9, 10, 11, 12, 16, 22, 23, 24 …",autobuss,24.12864,56.94599
+7970,Sarkandaugavas stacija - izkāpšana,1,3,trolejbuss,24.13079,56.99507
+7971,Sarkandaugavas stacija - izkāpšana,1,3,trolejbuss,24.13182,56.99432
+7972,Sarkandaugavas stacija,1,3,trolejbuss,24.13143,56.99514
+7974,Viļa Plūdoņa iela,8,"4, 5, 21, 38, 39, 46, 56, 63","autobuss, trolejbuss",24.06982,56.94074
+7978,Pļavnieku kapi,3,"20, 48, 52",autobuss,24.22073,56.93494
+7978a,Pļavnieku kapi,3,"20, 48, 52",autobuss,24.22077,56.93466
+7980,Centrālā stacija,6,"11, 13, 16, 17, 22, 30","autobuss, trolejbuss",24.11834,56.94758
+7981,7.autobusu parks,3,"13, 20, 63",autobuss,24.16586,56.94023
+7982,Līduma iela,1,35,trolejbuss,24.23434,56.97219
+7984,Elizabetes iela,1,20,autobuss,24.10808,56.95825
+7985,1.trolejbusu parks,9,"2, 4, 5, 11, 13, 15, 19, 20, 22","autobuss, trolejbuss",24.12156,56.98780
+7986,1.trolejbusu parks,1,2,autobuss,24.12113,56.98693
+7987,Ģertrūdes iela,13,"3, 4, 6, 9, 12, 13, 14, 16, 17, 21, 31, 34 …","autobuss, trolejbuss",24.12204,56.95663
+7988,"Slimnīca ""Gaiļezers",5,"14, 18, 21, 33, 63","autobuss, trolejbuss",24.24142,56.96836
+7989,7.autobusu parks,3,"13, 20, 63",autobuss,24.16624,56.93939
+7990,Viršu iela,6,"3, 6, 16, 22, 51, 52","autobuss, trolejbuss",24.17745,56.95023
+7991,Viršu iela,6,"3, 6, 16, 22, 51, 52","autobuss, trolejbuss",24.17666,56.95041
+7992,Vītolu iela,3,"3, 11, 24","autobuss, trolejbuss",24.13062,56.98891
+7993,Stāvvadu iela,1,24,autobuss,24.08866,57.07016
+7994,Stāvvadu iela,2,"2, 24",autobuss,24.08886,57.07026
+7996,"Muzejs ""Dauderi",4,"2, 11, 24, 58",autobuss,24.12984,57.00337
+7997,Stigu iela,1,63,autobuss,24.21686,56.95373
+7998,Stigu iela,1,63,autobuss,24.21674,56.95378
+7999,Brasas stacija,1,9,autobuss,24.14434,56.97582
+8000,Kazarmu iela/Lielie kapi,1,9,autobuss,24.14186,56.97320
+8004,Suži,2,"11, 29",autobuss,24.20816,57.01883
+8005,Laktas iela,7,"3, 4, 11, 12, 24, 34, 49","autobuss, trolejbuss",24.13657,56.97934
+8006,Laktas iela,7,"3, 5, 11, 12, 22, 24, 49","autobuss, trolejbuss",24.13601,56.97830
+8012,Kaņepju iela,4,"3, 30, 36, 56",autobuss,24.04786,57.03402
+8013,Bolderājas Jaunā pamatskola,4,"3, 30, 36, 56",autobuss,24.04559,57.03531
+8014,Daugavgrīvas cietoksnis,4,"3, 30, 36, 56",autobuss,24.03565,57.04266
+8015,Mākoņkalns,1,12,autobuss,24.16568,56.89502
+8016,Mākoņkalns,1,12,autobuss,24.16515,56.89506
+8019,Remtes iela,4,"22, 32, 43, N22",autobuss,24.03064,56.92816
+8020,Remtes iela,2,"32, 43",autobuss,24.03030,56.92828
+8021,Lielirbes iela,2,"32, 43",autobuss,24.03431,56.93079
+8023,Mežotnes iela,1,7,autobuss,24.05535,56.92407
+8025,Vārnu iela,3,"3, 6, 13","autobuss, trolejbuss",24.15202,56.95926
+8026,"Atpūtas centrs ""Lido",2,"12, 34",autobuss,24.15909,56.92708
+8028,Balvu iela,2,"12, 34",autobuss,24.14481,56.93282
+8030,Mežciems,5,"14, 18, 29, 35, 63","autobuss, trolejbuss",24.24280,56.97074
+8030a,Mežciems,5,"14, 18, 29, 35, 63","autobuss, trolejbuss",24.24286,56.96984
+8040,Bolderājas tilts,4,"3, 30, 36, 56",autobuss,24.03970,57.03736
+8041,Īslīces iela,1,27,trolejbuss,24.08609,56.89837
+8050,Bolderāja,4,"3, 30, 36, 56",autobuss,24.04856,57.03339
+8056,Kalnavoti,1,26,autobuss,24.18988,56.88315
+8063,Mežotnes iela,1,7,autobuss,24.05641,56.92479
+8064,Milži,1,55,autobuss,23.99530,56.90470
+8067,Mucenieki,1,16,autobuss,24.37973,56.95887
+8071,Meistaru iela,3,"4, 32, 43",autobuss,23.90414,56.94293
+8072,Pagrieziens uz Voleriem,1,54,autobuss,24.08288,56.98925
+8073,Piņķi,3,"4, 32, 43",autobuss,23.91042,56.94433
+8074,Aizsardzības akadēmija,1,9,autobuss,24.18080,56.99323
+8078,Skulte,1,43,autobuss,23.95358,56.91932
+8079,Aviācijas muzejs,1,43,autobuss,23.96212,56.91851
+8082,Upesgrīvas iela,1,7,autobuss,24.04120,56.91948
+8083,Vētras,2,"10, 55",autobuss,23.97921,56.88419
+8085,Beberbeķu iela,2,"32, 43",autobuss,23.96092,56.94928
+8090,Pagrieziens uz Rāmavu,1,23,autobuss,24.15522,56.88614
+8091,Pagrieziens uz Rāmavu,2,"23, 26",autobuss,24.15499,56.88641
+8095,K.Mīlenbaha iela,2,"12, 34",autobuss,24.12095,56.94134
+8096,Grenču iela,2,"32, 43",autobuss,24.00486,56.93391
+8097,Grenču iela,2,"32, 43",autobuss,24.00431,56.93550
+9082,Anniņmuižas Jaunā pamatskola,1,56,autobuss,24.02337,56.96254
+9090,Ē.Valtera iela,1,6,autobuss,24.23705,56.94559
+9092,Latvenergo,3,"16, 33, 35","autobuss, trolejbuss",24.22166,56.95318
+9093,Latvenergo,3,"16, 33, 35","autobuss, trolejbuss",24.22138,56.95313
+9094,Ādažu iela,1,29,autobuss,24.25956,57.01410
+9095,Kaivas iela,4,"6, 34, 51, 52",autobuss,24.24039,56.94399
+9096,Kaivas iela,3,"34, 51, 52",autobuss,24.23991,56.94413
+9097,Dreiliņu rotācijas aplis,1,51,autobuss,24.24604,56.94337
+9098,Ulbrokas iela 48,3,"16, 33, 35","autobuss, trolejbuss",24.22783,56.95770
+9099,Ulbrokas iela 48,3,"16, 33, 35","autobuss, trolejbuss",24.22853,56.95857
+9100,Ulbrokas iela 13,5,"20, 31, 34, 51, 52",autobuss,24.21135,56.94587
+9101,Ulbrokas iela 13,5,"20, 31, 34, 51, 52",autobuss,24.21344,56.94541
+9102,Miera iela,1,49,autobuss,24.13917,56.97037
+9103,Miera iela,1,49,autobuss,24.13915,56.97024
+9104,Bieķensalas iela,8,"4, 10, 17, 18, 19, 23, 31, 35","autobuss, trolejbuss",24.10656,56.92641
+9105,Čiekurkalna 3.šķērslīnija,1,9,autobuss,24.16711,56.98730
+9106,Rusova iela/Valsts biroji,1,9,autobuss,24.16680,56.98903
+9109,Aldaris,1,49,autobuss,24.11987,57.00542
+9113,LU Akadēmiskais centrs,5,"9, 12, 23, 25, 57","autobuss, trolejbuss",24.09799,56.93658
+9114,LU Akadēmiskais centrs,6,"9, 12, 14, 23, 25, 57","autobuss, trolejbuss",24.09801,56.93709
+9115,2.trolejbusu parks,1,23,autobuss,24.09908,56.93217
+9116,Lāčupes kapi,2,"39, 56",autobuss,24.02474,56.97625
+9118,Biķeri,1,6,autobuss,24.25583,56.95270
+9119,Dreiliņupīte,1,6,autobuss,24.24618,56.94708
+9120,Torņakalna stacija,1,57,autobuss,24.09031,56.93191

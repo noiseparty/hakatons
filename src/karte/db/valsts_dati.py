@@ -93,7 +93,22 @@ def vugd_depo():
     saglabat("iemic_vugd_depo.csv", ["id", "nosaukums", "adrese", "telefons", "epasts", "parvalde", "x", "y"], rindas)
 
 
+def udens_nemsanas_vietas():
+    """VKCP IĢIS "Atklātās ūdens ņemšanas vietas" (CC0). Failā ir arī ~15 000 hidrantu (UH, EX, R, M, T, …):
+    kartē liekam tikai atklātās ūdens ņemšanas vietas (apzīmējums "Ut;<tilpums> (U<nr>)"). LKS-92 TM (EPSG:3059)."""
+    url = ("https://data.gov.lv/dati/dataset/d43c5e7f-7c11-4b0e-8222-51261c23d752/resource/"
+           "b3705fbe-3b29-47a3-a8c7-cdb3269d26cc/download/atklatas_udens_nemsanas_vietas_un_hidranti.csv")
+    rindas = []
+    for r in csv.DictReader(io.StringIO(lejupieladet(url))):
+        if not r["name"].startswith("Ut;") or not r["x"]:
+            continue
+        tilpums, _, nr = r["name"][3:].partition(" (")
+        rindas.append({"id": r["id"], "nosaukums": "Ūdens ņemšanas vieta ugunsdzēsībai" + (f" {nr.rstrip(')')}" if nr else ""),
+                       "apzimejums": r["name"], "tilpums": tilpums.strip(), "x": r["x"], "y": r["y"]})
+    saglabat("vkcp_udens_nemsanas_vietas.csv", ["id", "nosaukums", "apzimejums", "tilpums", "x", "y"], rindas)
+
+
 if __name__ == "__main__":
     DATI.mkdir(parents=True, exist_ok=True)
-    for f in (arstniecibas_iestades, aptiekas, vp_iecirkni, pasvaldibu_policija, vugd_depo):
+    for f in (arstniecibas_iestades, aptiekas, vp_iecirkni, pasvaldibu_policija, vugd_depo, udens_nemsanas_vietas):
         f()

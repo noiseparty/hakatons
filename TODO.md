@@ -12,7 +12,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] "Noturības punkti" (resilience points) layer: culture centres/libraries/schools with heat/charging/water/wifi/generator flags + status & `last_updated` — see `notes/research/` — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Live power-outage layer from Sadales tīkls JSON (`karte.sadalestikls.lv/lv/atslegumi-elektrotikla/unplanned`), cached; ask ST for permission (no licence) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Ogre river gauge (LVĢMC live level) vs 22.15 m threshold + flood zones → highlight affected addresses — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Remaining official CC0 layers: fire-water intake points (VKCP IĢIS `vkcp-igis-atklatas-udens-nemsanas-vietas`); refresh ZVA + IeM IC data daily (`valsts_dati.py` + `ielade_visu.sh`) — added 2026-10-09 20:48 +03:00 by noiseparty
+- [ ] Refresh ZVA + IeM IC + GTFS data daily (`valsts_dati.py`, `gtfs.py` + `ielade_visu.sh`, e.g. a systemd timer) — added 2026-10-09 20:48 +03:00 by noiseparty (split from the CC0 layers item 2026-10-10 02:32 +03:00)
 - [ ] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Commission-only layers: social-care providers (LM register), vulnerable-population density (GEOSTAT 1 km), Seveso/hazard sites, HES dams — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Status freshness rule: any status older than 6 h (operational) / 24 h (static) shows "unknown" — added 2026-10-09 18:36 +03:00 by noiseparty
@@ -61,6 +61,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Fire-water intake points (VKCP IĢIS, CC0; 1 117 open intakes, hydrants left out) as `udens_nemsana`, and public-transport stops as evacuation pick-up points from 3 CC0 GTFS feeds (Rīgas satiksme 1 643, ATD buses 10 179, vivi trains 138) as `pietura` with route counts; both off by default, linked to the fire / evacuation scenarios — done 2026-10-10 02:32 +03:00 by noiseparty; DB load is a VPS step (added 2026-10-09 20:48 +03:00 by noiseparty)
 - [x] Satiksme on the VPS: zones work with real minute speeds (30 municipalities); border feed: failure reason in `kopas.*.kluda`, file-id/format fallbacks, JSON parser, `?debug=1` behind `MAP_DEBUG`; status-page components `satiksme` + `robezas` — done 2026-10-10 02:26 +03:00 by noiseparty (added 2026-10-10 02:22 +03:00 by noiseparty)
 - [x] Public info card: LR1 FM frequency, 112, cell broadcast, sirens, 72h checklist — done 2026-10-10 02:24 +03:00 by noiseparty: production/info.html "Svarīgi krīzē", printable, a source per block (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] NAP keys on the VPS (8 feeds) — done 2026-10-10 02:22 +03:00 by noiseparty: `/api/celi` reads the real names (NEGADIJUMI, REMONTI, 3 × SLIDENS); SLEGUMI/JOSLAS not subscribed, skipped (added 2026-10-10 01:57 +03:00 by noiseparty)
