@@ -1,0 +1,101 @@
+id,nosaukums,adrese,vieta,veids,darba_laiks,ligzdas,lat,lon
+energija-1,"Kultūras centrs — uzlādes punkts (Rīga)","Rīgas iela 22, Rīga","Rīga","Publiskais uzlādes punkts","24/7",6,56.95750,24.11505
+energija-2,"Dome — uzlādes punkts (Rīga)","Stacijas iela 42, Rīga","Rīga","Ātrās uzlādes punkts","08:00–20:00",12,56.94592,24.11613
+energija-3,"Dome — uzlādes punkts (Rīga)","Domes iela 40, Rīga","Rīga","Publiskais uzlādes punkts","09:00–18:00",6,56.94208,24.11241
+energija-4,"Bibliotēka — uzlādes punkts (Rīga)","Parka iela 43, Rīga","Rīga","Ātrās uzlādes punkts","09:00–18:00",10,56.95187,24.09954
+energija-5,"Dome — uzlādes punkts (Rīga)","Parka iela 26, Rīga","Rīga","Ātrās uzlādes punkts","07:00–23:00",10,56.95464,24.10934
+energija-6,"Bērnu un jauniešu centrs — uzlādes punkts (Rīga)","Daugavas iela 45, Rīga","Rīga","Publiskais uzlādes punkts","07:00–23:00",8,56.94921,24.10072
+energija-7,"Bibliotēka — uzlādes punkts (Rīga)","Pils iela 30, Rīga","Rīga","Publiskais uzlādes punkts","07:00–23:00",8,56.95325,24.10845
+energija-8,"Kafejnīca — uzlādes punkts (Rīga)","Domes iela 27, Rīga","Rīga","Ātrās uzlādes punkts","10:00–19:00",10,56.94519,24.09464
+energija-9,"Tirdzniecības centrs — uzlādes punkts (Rīga)","Brīvības iela 22, Rīga","Rīga","Publiskais uzlādes punkts","09:00–18:00",6,56.95470,24.09551
+energija-10,"Bibliotēka — uzlādes punkts (Rīga)","Lielā iela 38, Rīga","Rīga","Publiskais uzlādes punkts","10:00–19:00",8,56.94628,24.09628
+energija-11,"Bibliotēka — uzlādes punkts (Rīga)","Lielā iela 40, Rīga","Rīga","Publiskais uzlādes punkts","09:00–18:00",6,56.94223,24.11378
+energija-12,"Bibliotēka — uzlādes punkts (Rīga)","Lielā iela 45, Rīga","Rīga","Ātrās uzlādes punkts","08:00–20:00",12,56.94638,24.11336
+energija-13,"Bērnu un jauniešu centrs — uzlādes punkts (Rīga)","Skolas iela 5, Rīga","Rīga","Ātrās uzlādes punkts","24/7",12,56.95201,24.09606
+energija-14,"Tirgus — uzlādes punkts (Rīga)","Skolas iela 22, Rīga","Rīga","Ātrās uzlādes punkts","10:00–19:00",10,56.94449,24.11058
+energija-15,"Kultūras centrs — uzlādes punkts (Rīga)","Parka iela 11, Rīga","Rīga","Publiskais uzlādes punkts","24/7",6,56.94803,24.10563
+energija-16,"Tirgus — uzlādes punkts (Rīga)","Lielā iela 36, Rīga","Rīga","Publiskais uzlādes punkts","24/7",4,56.95073,24.10812
+energija-17,"Bibliotēka — uzlādes punkts (Rīga)","Stacijas iela 41, Rīga","Rīga","Ātrās uzlādes punkts","10:00–19:00",12,56.95118,24.11366
+energija-18,"Dzelzceļa stacija — uzlādes punkts (Rīga)","Rīgas iela 45, Rīga","Rīga","Publiskais uzlādes punkts","08:00–20:00",8,56.95148,24.11303
+energija-19,"Bibliotēka — uzlādes punkts (Rīga)","Parka iela 13, Rīga","Rīga","Ātrās uzlādes punkts","08:00–20:00",12,56.95088,24.11434
+energija-20,"Bibliotēka — uzlādes punkts (Daugavpils)","Parka iela 19, Daugavpils","Daugavpils","Publiskais uzlādes punkts","09:00–18:00",8,55.87555,26.52904
+energija-21,"Tirgus — uzlādes punkts (Daugavpils)","Skolas iela 12, Daugavpils","Daugavpils","Publiskais uzlādes punkts","24/7",8,55.87742,26.53362
+energija-22,"Bērnu un jauniešu centrs — uzlādes punkts (Daugavpils)","Brīvības iela 3, Daugavpils","Daugavpils","Publiskais uzlādes punkts","24/7",8,55.86631,26.53404
+energija-23,"Dome — uzlādes punkts (Daugavpils)","Pils iela 10, Daugavpils","Daugavpils","Ātrās uzlādes punkts","08:00–20:00",12,55.87771,26.52682
+energija-24,"Bērnu un jauniešu centrs — uzlādes punkts (Daugavpils)","Stacijas iela 35, Daugavpils","Daugavpils","Publiskais uzlādes punkts","10:00–19:00",6,55.87876,26.54540
+energija-25,"Dzelzceļa stacija — uzlādes punkts (Daugavpils)","Skolas iela 4, Daugavpils","Daugavpils","Publiskais uzlādes punkts","24/7",8,55.86652,26.53098
+energija-26,"Dzelzceļa stacija — uzlādes punkts (Liepāja)","Tirgus iela 17, Liepāja","Liepāja","Publiskais uzlādes punkts","24/7",6,56.50622,21.00331
+energija-27,"Bērnu un jauniešu centrs — uzlādes punkts (Liepāja)","Skolas iela 5, Liepāja","Liepāja","Ātrās uzlādes punkts","09:00–18:00",10,56.51857,21.01076
+energija-28,"Dome — uzlādes punkts (Liepāja)","Meža iela 20, Liepāja","Liepāja","Publiskais uzlādes punkts","07:00–23:00",8,56.50541,21.02147
+energija-29,"Kultūras centrs — uzlādes punkts (Liepāja)","Meža iela 5, Liepāja","Liepāja","Publiskais uzlādes punkts","07:00–23:00",6,56.51896,21.00781
+energija-30,"Kafejnīca — uzlādes punkts (Liepāja)","Meža iela 38, Liepāja","Liepāja","Ātrās uzlādes punkts","10:00–19:00",10,56.51354,21.02588
+energija-31,"Tirdzniecības centrs — uzlādes punkts (Liepāja)","Pils iela 44, Liepāja","Liepāja","Ātrās uzlādes punkts","09:00–18:00",12,56.51327,21.02329
+energija-32,"Kafejnīca — uzlādes punkts (Jelgava)","Parka iela 16, Jelgava","Jelgava","Publiskais uzlādes punkts","24/7",4,56.64355,23.71220
+energija-33,"Dzelzceļa stacija — uzlādes punkts (Jelgava)","Meža iela 30, Jelgava","Jelgava","Ātrās uzlādes punkts","07:00–23:00",12,56.65497,23.71127
+energija-34,"Dzelzceļa stacija — uzlādes punkts (Jelgava)","Domes iela 2, Jelgava","Jelgava","Publiskais uzlādes punkts","08:00–20:00",6,56.64640,23.71924
+energija-35,"Bērnu un jauniešu centrs — uzlādes punkts (Jelgava)","Jūras iela 44, Jelgava","Jelgava","Publiskais uzlādes punkts","09:00–18:00",4,56.64339,23.71573
+energija-36,"Kultūras centrs — uzlādes punkts (Jelgava)","Domes iela 40, Jelgava","Jelgava","Publiskais uzlādes punkts","24/7",8,56.65107,23.71423
+energija-37,"Bibliotēka — uzlādes punkts (Jūrmala)","Skolas iela 42, Jūrmala","Jūrmala","Publiskais uzlādes punkts","10:00–19:00",4,56.97853,23.76722
+energija-38,"Bērnu un jauniešu centrs — uzlādes punkts (Jūrmala)","Rīgas iela 14, Jūrmala","Jūrmala","Publiskais uzlādes punkts","10:00–19:00",4,56.96931,23.76092
+energija-39,"Tirgus — uzlādes punkts (Jūrmala)","Daugavas iela 15, Jūrmala","Jūrmala","Ātrās uzlādes punkts","08:00–20:00",10,56.98139,23.76374
+energija-40,"Kultūras centrs — uzlādes punkts (Jūrmala)","Skolas iela 35, Jūrmala","Jūrmala","Publiskais uzlādes punkts","08:00–20:00",8,56.97035,23.75680
+energija-41,"Bērnu un jauniešu centrs — uzlādes punkts (Ventspils)","Jūras iela 18, Ventspils","Ventspils","Publiskais uzlādes punkts","10:00–19:00",8,57.38385,21.55088
+energija-42,"Tirgus — uzlādes punkts (Ventspils)","Domes iela 2, Ventspils","Ventspils","Ātrās uzlādes punkts","24/7",12,57.39673,21.55064
+energija-43,"Bibliotēka — uzlādes punkts (Ventspils)","Lielā iela 20, Ventspils","Ventspils","Ātrās uzlādes punkts","07:00–23:00",10,57.39007,21.55871
+energija-44,"Bibliotēka — uzlādes punkts (Rēzekne)","Stacijas iela 42, Rēzekne","Rēzekne","Ātrās uzlādes punkts","24/7",12,56.51590,27.33026
+energija-45,"Bērnu un jauniešu centrs — uzlādes punkts (Rēzekne)","Brīvības iela 14, Rēzekne","Rēzekne","Publiskais uzlādes punkts","07:00–23:00",6,56.51024,27.32968
+energija-46,"Bērnu un jauniešu centrs — uzlādes punkts (Rēzekne)","Daugavas iela 18, Rēzekne","Rēzekne","Publiskais uzlādes punkts","08:00–20:00",8,56.50782,27.33244
+energija-47,"Bērnu un jauniešu centrs — uzlādes punkts (Valmiera)","Pils iela 28, Valmiera","Valmiera","Ātrās uzlādes punkts","07:00–23:00",10,57.53295,25.42590
+energija-48,"Dome — uzlādes punkts (Valmiera)","Domes iela 19, Valmiera","Valmiera","Publiskais uzlādes punkts","24/7",4,57.53918,25.43273
+energija-49,"Kultūras centrs — uzlādes punkts (Valmiera)","Jūras iela 33, Valmiera","Valmiera","Publiskais uzlādes punkts","24/7",4,57.52992,25.41575
+energija-50,"Dzelzceļa stacija — uzlādes punkts (Jēkabpils)","Jūras iela 33, Jēkabpils","Jēkabpils","Ātrās uzlādes punkts","24/7",10,56.49636,25.86549
+energija-51,"Dome — uzlādes punkts (Jēkabpils)","Jūras iela 28, Jēkabpils","Jēkabpils","Publiskais uzlādes punkts","07:00–23:00",4,56.49203,25.86167
+energija-52,"Kultūras centrs — uzlādes punkts (Jēkabpils)","Brīvības iela 8, Jēkabpils","Jēkabpils","Ātrās uzlādes punkts","09:00–18:00",12,56.50192,25.86639
+energija-53,"Bērnu un jauniešu centrs — uzlādes punkts (Ogre)","Tirgus iela 2, Ogre","Ogre","Ātrās uzlādes punkts","08:00–20:00",10,56.81760,24.59962
+energija-54,"Bibliotēka — uzlādes punkts (Ogre)","Pils iela 34, Ogre","Ogre","Publiskais uzlādes punkts","08:00–20:00",4,56.81567,24.60459
+energija-55,"Bērnu un jauniešu centrs — uzlādes punkts (Ogre)","Jūras iela 22, Ogre","Ogre","Publiskais uzlādes punkts","09:00–18:00",6,56.81291,24.61533
+energija-56,"Kultūras centrs — uzlādes punkts (Cēsis)","Jūras iela 15, Cēsis","Cēsis","Ātrās uzlādes punkts","08:00–20:00",12,57.30627,25.28201
+energija-57,"Dome — uzlādes punkts (Cēsis)","Parka iela 15, Cēsis","Cēsis","Publiskais uzlādes punkts","07:00–23:00",4,57.31581,25.26774
+energija-58,"Dome — uzlādes punkts (Cēsis)","Daugavas iela 31, Cēsis","Cēsis","Ātrās uzlādes punkts","09:00–18:00",12,57.31104,25.26290
+energija-59,"Dome — uzlādes punkts (Sigulda)","Skolas iela 18, Sigulda","Sigulda","Ātrās uzlādes punkts","08:00–20:00",10,57.15623,24.84758
+energija-60,"Tirgus — uzlādes punkts (Sigulda)","Parka iela 4, Sigulda","Sigulda","Publiskais uzlādes punkts","10:00–19:00",4,57.16473,24.86019
+energija-61,"Bibliotēka — uzlādes punkts (Tukums)","Meža iela 30, Tukums","Tukums","Ātrās uzlādes punkts","24/7",12,56.96233,23.15442
+energija-62,"Dzelzceļa stacija — uzlādes punkts (Tukums)","Jūras iela 41, Tukums","Tukums","Publiskais uzlādes punkts","07:00–23:00",4,56.97124,23.15521
+energija-63,"Bērnu un jauniešu centrs — uzlādes punkts (Salaspils)","Tirgus iela 23, Salaspils","Salaspils","Ātrās uzlādes punkts","07:00–23:00",10,56.86611,24.34966
+energija-64,"Tirgus — uzlādes punkts (Salaspils)","Daugavas iela 35, Salaspils","Salaspils","Publiskais uzlādes punkts","10:00–19:00",4,56.86365,24.35604
+energija-65,"Dome — uzlādes punkts (Kuldīga)","Daugavas iela 13, Kuldīga","Kuldīga","Publiskais uzlādes punkts","07:00–23:00",4,56.97623,21.66038
+energija-66,"Bibliotēka — uzlādes punkts (Kuldīga)","Lielā iela 17, Kuldīga","Kuldīga","Publiskais uzlādes punkts","24/7",4,56.97494,21.65678
+energija-67,"Kultūras centrs — uzlādes punkts (Saldus)","Tirgus iela 26, Saldus","Saldus","Publiskais uzlādes punkts","24/7",6,56.66870,22.48214
+energija-68,"Tirgus — uzlādes punkts (Saldus)","Jūras iela 5, Saldus","Saldus","Publiskais uzlādes punkts","08:00–20:00",8,56.66124,22.49297
+energija-69,"Tirdzniecības centrs — uzlādes punkts (Gulbene)","Skolas iela 24, Gulbene","Gulbene","Publiskais uzlādes punkts","10:00–19:00",8,57.17788,26.75924
+energija-70,"Kultūras centrs — uzlādes punkts (Gulbene)","Daugavas iela 37, Gulbene","Gulbene","Publiskais uzlādes punkts","07:00–23:00",6,57.17714,26.75641
+energija-71,"Tirgus — uzlādes punkts (Balvi)","Meža iela 45, Balvi","Balvi","Publiskais uzlādes punkts","07:00–23:00",6,57.13186,27.26823
+energija-72,"Tirdzniecības centrs — uzlādes punkts (Balvi)","Brīvības iela 8, Balvi","Balvi","Publiskais uzlādes punkts","24/7",8,57.11932,27.26118
+energija-73,"Kafejnīca — uzlādes punkts (Ludza)","Daugavas iela 25, Ludza","Ludza","Publiskais uzlādes punkts","09:00–18:00",6,56.54896,27.74033
+energija-74,"Kafejnīca — uzlādes punkts (Ludza)","Parka iela 17, Ludza","Ludza","Ātrās uzlādes punkts","07:00–23:00",10,56.54465,27.72432
+energija-75,"Kultūras centrs — uzlādes punkts (Krāslava)","Parka iela 21, Krāslava","Krāslava","Publiskais uzlādes punkts","10:00–19:00",6,55.89243,27.17667
+energija-76,"Bērnu un jauniešu centrs — uzlādes punkts (Krāslava)","Parka iela 1, Krāslava","Krāslava","Ātrās uzlādes punkts","07:00–23:00",12,55.89163,27.16265
+energija-77,"Tirdzniecības centrs — uzlādes punkts (Dobele)","Pils iela 16, Dobele","Dobele","Publiskais uzlādes punkts","07:00–23:00",8,56.62613,23.27672
+energija-78,"Dzelzceļa stacija — uzlādes punkts (Dobele)","Daugavas iela 35, Dobele","Dobele","Publiskais uzlādes punkts","24/7",8,56.62539,23.27831
+energija-79,"Kafejnīca — uzlādes punkts (Bauska)","Meža iela 43, Bauska","Bauska","Publiskais uzlādes punkts","09:00–18:00",4,56.40759,24.18971
+energija-80,"Bibliotēka — uzlādes punkts (Bauska)","Domes iela 9, Bauska","Bauska","Publiskais uzlādes punkts","10:00–19:00",8,56.41399,24.19901
+energija-81,"Bibliotēka — uzlādes punkts (Limbaži)","Pils iela 34, Limbaži","Limbaži","Ātrās uzlādes punkts","08:00–20:00",12,57.50021,24.70838
+energija-82,"Tirdzniecības centrs — uzlādes punkts (Limbaži)","Lielā iela 30, Limbaži","Limbaži","Publiskais uzlādes punkts","07:00–23:00",4,57.51453,24.71599
+energija-83,"Bibliotēka — uzlādes punkts (Alūksne)","Domes iela 27, Alūksne","Alūksne","Ātrās uzlādes punkts","07:00–23:00",12,57.42872,27.06854
+energija-84,"Bibliotēka — uzlādes punkts (Alūksne)","Rīgas iela 6, Alūksne","Alūksne","Publiskais uzlādes punkts","08:00–20:00",6,57.42145,27.06212
+energija-85,"Kafejnīca — uzlādes punkts (Smiltene)","Rīgas iela 43, Smiltene","Smiltene","Publiskais uzlādes punkts","24/7",6,57.13943,25.68288
+energija-86,"Bērnu un jauniešu centrs — uzlādes punkts (Smiltene)","Skolas iela 21, Smiltene","Smiltene","Publiskais uzlādes punkts","09:00–18:00",8,57.12884,25.68839
+energija-87,"Tirdzniecības centrs — uzlādes punkts (Madona)","Rīgas iela 31, Madona","Madona","Publiskais uzlādes punkts","24/7",4,56.85436,26.21540
+energija-88,"Tirdzniecības centrs — uzlādes punkts (Madona)","Lielā iela 34, Madona","Madona","Ātrās uzlādes punkts","08:00–20:00",10,56.85062,26.22789
+energija-89,"Dzelzceļa stacija — uzlādes punkts (Preiļi)","Tirgus iela 1, Preiļi","Preiļi","Ātrās uzlādes punkts","09:00–18:00",12,56.28988,26.65221
+energija-90,"Kultūras centrs — uzlādes punkts (Preiļi)","Jūras iela 43, Preiļi","Preiļi","Publiskais uzlādes punkts","24/7",4,56.28196,26.65304
+energija-91,"Dzelzceļa stacija — uzlādes punkts (Varakļāni)","Brīvības iela 38, Varakļāni","Varakļāni","Ātrās uzlādes punkts","07:00–23:00",12,56.60288,26.16366
+energija-92,"Tirdzniecības centrs — uzlādes punkts (Līvāni)","Pils iela 26, Līvāni","Līvāni","Ātrās uzlādes punkts","24/7",10,56.35038,26.16170
+energija-93,"Tirgus — uzlādes punkts (Aizkraukle)","Lielā iela 14, Aizkraukle","Aizkraukle","Publiskais uzlādes punkts","24/7",6,56.90550,25.26675
+energija-94,"Bibliotēka — uzlādes punkts (Aizkraukle)","Skolas iela 22, Aizkraukle","Aizkraukle","Ātrās uzlādes punkts","24/7",12,56.90728,25.27385
+energija-95,"Tirdzniecības centrs — uzlādes punkts (Pļaviņas)","Lielā iela 15, Pļaviņas","Pļaviņas","Ātrās uzlādes punkts","10:00–19:00",12,56.61905,25.73450
+energija-96,"Kultūras centrs — uzlādes punkts (Ādaži)","Pils iela 32, Ādaži","Ādaži","Ātrās uzlādes punkts","08:00–20:00",10,57.08199,24.34889
+energija-97,"Bērnu un jauniešu centrs — uzlādes punkts (Olaine)","Brīvības iela 37, Olaine","Olaine","Publiskais uzlādes punkts","09:00–18:00",8,56.79819,23.94727
+energija-98,"Bērnu un jauniešu centrs — uzlādes punkts (Olaine)","Pils iela 39, Olaine","Olaine","Publiskais uzlādes punkts","10:00–19:00",6,56.79610,23.94455
+energija-99,"Bibliotēka — uzlādes punkts (Ikšķile)","Brīvības iela 34, Ikšķile","Ikšķile","Publiskais uzlādes punkts","07:00–23:00",6,56.82674,24.71092
+energija-100,"Dzelzceļa stacija — uzlādes punkts (Ķegums)","Brīvības iela 34, Ķegums","Ķegums","Publiskais uzlādes punkts","08:00–20:00",6,56.70797,24.92679
