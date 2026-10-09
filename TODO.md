@@ -41,7 +41,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — added 2026-10-09 20:15 +03:00 by noiseparty
-- [ ] Water level layer: gauge stations with current level + danger thresholds from an open source (research running) — added 2026-10-09 20:15 +03:00 by noiseparty
+- [ ] Water level layer: 74 LVĢMC gauges, hourly `LIMEN` from data.gov.lv "Hidrometeoroloģiskie novērojumi" (CC0; join `hidro_stacijas`, level m = cm/100 + ELEVATION); danger levels only in PRIS `videscentrs.lvgmc.lv/data/pris_stations` (no licence: ask LVĢMC) — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
 
 ## In progress
