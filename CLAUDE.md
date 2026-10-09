@@ -13,7 +13,8 @@ Almost all source material is in **Latvian**; file and folder names, script CLI 
 - `ai-open-data-2026-hakatons/` — vendored copy of the organisers' starter kit (source commit in `UPSTREAM.md`). **Treat as read-only**; put derived data and our code in `src/` (and notes in `notes/`) so upstream can be re-copied without conflicts.
   - `ca-plani-hakatons/` — our track's kit (see below).
   - `vdaa-epakalpojumi/` — VDAA guidelines for Latvija.gov.lv e-services (15 principles, UX/UI, architecture, `07-atbilstibas-audita-kontrolsaraksts.md` audit checklist). `SKILL.md` there is a ready-made agent skill.
-- `src/`, `notes/` — our work (currently empty).
+- `src/`, `notes/` — our work.
+- `production/` — **the live site, https://map.repo.lv.** The VPS pulls `main` every minute and serves this dir as static files (no build step, no server-side code), so a merged change is public within ~1 minute. Build framework apps locally and commit the output here. Only this dir is public. Server headers block geolocation/camera/microphone and iframing. Full guide: `notes/deploy.md`.
 - `.claude/skills/` — thin wrappers (`vdaa-epakalpojumi`, `celu-kartes-datubaze`) that point to the kit's own `SKILL.md` files in place, so their relative paths keep working; plus `todo` for maintaining `TODO.md`.
 
 ## Data kit architecture (`ai-open-data-2026-hakatons/ca-plani-hakatons/`)

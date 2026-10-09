@@ -5,10 +5,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 ## Pending
 - [ ] Pick the problem/user and the 3–6 step flow for our prototype — added 2026-10-09 17:13 +03:00 by noiseparty
+- [ ] Decide if the prototype needs "use my location"; if so, allow geolocation for map.repo.lv on the VPS (see `notes/deploy.md`) — added 2026-10-09 17:35 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Document the production setup (map.repo.lv) in README, AGENTS, CLAUDE.md and `notes/deploy.md` — done 2026-10-09 17:35 +03:00 by noiseparty (added 2026-10-09 17:35 +03:00 by noiseparty)
 - [x] Add easy mode: one-click setup, update and save for teammates — done 2026-10-09 17:33 +03:00 by noiseparty
 - [x] Set up prod deploy to the VPS: `production/` on `main` → https://map.repo.lv, pulled every minute (see `notes/deploy.md`) — done 2026-10-09 17:30 +03:00 by noiseparty (added 2026-10-09 17:20 +03:00 by noiseparty)
 - [x] Add AGENTS.md so non-Claude agents (Mistral etc.) pick up the workflow — done 2026-10-09 17:23 +03:00 by noiseparty (added 2026-10-09 17:23 +03:00 by noiseparty)
