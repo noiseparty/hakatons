@@ -38,7 +38,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty
-- [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] Confirm LR1 FM frequencies against the official LR/NEPLP list (demo cards say Rīga 90.7 FM from a secondary source) — added 2026-10-10 01:58 +03:00 by noiseparty
@@ -62,6 +61,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Mobile: show search results as a bottom sheet over the map instead of below it — done 2026-10-10 02:19 +03:00 by noiseparty: `production/apaksa.js` (peek / half / full, verdict line first, route button, collapses when demo/forecast/filters open) (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Demo panel: right-edge "Demo" tab / phone bottom sheet with simulated scenarios, SIMULĀCIJA badges, "Beigt demo" restores the map, `?demo=<code>` links (`production/demo.js`, `notes/demo-scenariji.md`) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 1: yellow strong-wind warning over Kurzeme coast (VZD boundaries as warning polygon, banner, advice) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 2: red storm warning Rīga/Jūrmala/Mārupe + shelters, accommodation and 24/7 hospitals — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)

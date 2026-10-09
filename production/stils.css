@@ -265,6 +265,7 @@ strong.nē { color: var(--zals); }
   .apaksa #rezultati .marsruts a { min-height: 32px; display: inline-flex; align-items: center; }
   /* Kartes apakšējās vadīklas (mērogs, atsauces, pamatkarte) paceļas virs lapas */
   body.apaksa-aktiva:has(#apaksa:not([hidden])) .leaflet-bottom { bottom: calc(var(--apaksa-h, 0px) + 2px); }
+  body.apaksa-aktiva #demo-cilne { z-index: 1001; }  /* demo cilne (demo.js) paliek pieejama arī virs atvērtas lapas */
   body.apaksa-aktiva:has(#apaksa:not([hidden])) .pamatkarte { bottom: calc(var(--apaksa-h, 0px) + 44px); }
 }
 

@@ -45,8 +45,10 @@ const Apaksa = (() => {
     setTimeout(atjaunotAugstumu, 260);  // pēc CSS pārejas
   }
 
+  // Kartes apakšējās vadīklas (atsauces, mērogs, pamatkarte) paceļ līdz "peek" augstumam, ne augstāk: pie atvērtas
+  // lapas tās citādi uzkāptu virsū demo cilnei un kartes rīkiem
   function atjaunotAugstumu() {
-    document.documentElement.style.setProperty('--apaksa-h', augstums() + 'px');
+    document.documentElement.style.setProperty('--apaksa-h', Math.min(augstums(), Math.round(innerHeight * DALA.peek)) + 'px');
   }
 
   // Spriedums: 112 → plūdu zona jā/nē → LVĢMC brīdinājums šai vietai → ko sapratām
