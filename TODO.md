@@ -27,6 +27,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Izveidot `notes/SCENARIJI.md` — 110 dzīves/katastrofas/krīzes scenāriji ar meklēšanas atslēgvārdiem (pirmais melnraksts krīzes-meklēšanas klasifikatoram) — done 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia)
 - [x] Map data sources: `avoti` table with license/publisher/links, shown in the map (Datu avoti panel, each popup, attribution); pharmacies, hospitals, police, fire stations switched from OSM to official CC0 data (ZVA, IeM IC) — done 2026-10-09 19:09 +03:00 by noiseparty
 - [x] Map layer: 37 hospitals with 24/7 emergency care (VM disaster medicine plan, annex 12), addresses checked, coordinates from VZD address register — done 2026-10-09 18:46 +03:00 by noiseparty
 - [x] Research crisis-map services & open data (taxonomy, ~55 Latvian sources, intl feeds + case studies, top-15 layers) → `notes/research/` — done 2026-10-09 18:36 +03:00 by noiseparty (added 2026-10-09 18:36 +03:00 by noiseparty)
