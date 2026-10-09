@@ -9,7 +9,8 @@ const Klasifikators = (() => {
   function raksts(atslegvards) {
     const vesels = atslegvards.endsWith('$');
     const t = normalizet(vesels ? atslegvards.slice(0, -1) : atslegvards).trimEnd();
-    return { teksts: t + (vesels ? ' ' : ''), svars: t.trim().split(' ').length, vesels, saknes: t.trim() };
+    const vardi = t.trim().split(' ').length;
+    return { teksts: t + (vesels ? ' ' : ''), vardi, svars: vardi, vesels, saknes: t.trim() };
   }
 
   function levenshtein(a, b) {
@@ -81,29 +82,47 @@ const Klasifikators = (() => {
     for (const s of scenariji) for (const r of s.raksti) r.svars /= Math.sqrt(biezums[r.teksts]);
     const draudi = noteikumi.dzivibas_draudi.map(raksts);
     const vietas = sagatavotVietas(regioni, noteikumi.vietu_sinonimi);
+    // "Vai domājāt…?": citi scenāriji, kas sasniedz šo daļu no labākā punktiem (noskaņots ar src/meklesana/vaicajumi.json)
+    const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.45;
 
     function klasificet(vaicajums) {
       const t = normalizet(vaicajums);
       const vardi = t.trim().split(' ').filter(Boolean);
       // Katrs vaicājuma vārds scenārijam dod punktus vienreiz: no labākā atslēgvārda, kas sākas tajā
       // ("ugunsgrēks" atbilst gan 'ugun', gan 'ugunsgrēk' — skaitām tikai vienu).
+      // Katrs vaicājuma vārds scenārijam dod punktus vienreiz: atrastos atslēgvārdus ņem no stiprākā, un tos, kas
+      // pārklājas ar jau paņemtu ("car on fire" un "fire"), neskaita.
+      const vardaNr = [];
+      for (let i = 0, nr = -1; i < t.length; i++) { if (t[i] !== ' ' && t[i - 1] === ' ') nr++; vardaNr[i] = nr; }
       const punkti = s => {
-        const pecVieta = {};
+        const atrasti = [];
         for (const r of s.raksti) {
           const i = t.indexOf(r.teksts);
-          if (i >= 0 && !(pecVieta[i] >= r.svars)) pecVieta[i] = r.svars;
+          if (i >= 0) atrasti.push([vardaNr[i + 1], r.vardi, r.svars, r.saknes.length]);
         }
-        return Object.values(pecVieta).reduce((a, b) => a + b, 0);
+        atrasti.sort((a, b) => b[2] - a[2] || b[1] - a[1]);
+        const aiznemti = new Set();
+        let summa = 0, burti = 0;
+        for (const [no, garums, svars, b] of atrasti) {
+          const vardi = Array.from({ length: garums }, (_, j) => no + j);
+          if (vardi.some(v => aiznemti.has(v))) continue;
+          vardi.forEach(v => aiznemti.add(v));
+          summa += svars;
+          burti += b;
+        }
+        return [summa, burti];
       };
-      let rez = scenariji.map(s => ({ s, punkti: punkti(s), aptuveni: false }));
+      let rez = scenariji.map(s => { const [p, b] = punkti(s); return { s, punkti: p, burti: b, aptuveni: false }; });
       const draudiAtrasti = draudi.some(r => t.includes(r.teksts));
       // Aptuveno (ar drukas kļūdu) meklējam tikai tad, ja nekas cits nav atrasts — arī dzīvības draudi.
       if (!draudiAtrasti && rez.every(x => !x.punkti)) {
         rez = scenariji.map(s => ({ s, punkti: s.raksti.some(r => vardi.some(v => lidzigs(v, r))) ? 1 : 0, aptuveni: true }));
       }
       const max = Math.max(...rez.map(x => x.punkti));
-      // Pirmais = galvenais; citi ("Vai domāji…?") tikai, ja vairāk nekā pusē tik stipri. Vienādiem paliek secība failā.
-      const atrasti = rez.filter(x => x.punkti && x.punkti * 2 > max).sort((a, b) => b.punkti - a.punkti).slice(0, 4);
+      // Pirmais = galvenais; citi ("Vai domāji…?") tikai, ja sasniedz `slieksnis` daļu no labākā. Vienādiem paliek secība failā.
+      const atrasti = rez.filter(x => x.punkti && (x.punkti === max || x.punkti > max * slieksnis))
+        // vienādiem punktiem — garāks (konkrētāks) atrastais vārda sākums ("бомбоубежищ" pirms "бомб"), tad secība failā
+        .sort((a, b) => b.punkti - a.punkti || (b.burti || 0) - (a.burti || 0)).slice(0, 3);
       // "cilvēks neelpo" bez cita scenārija → noklusētais (medicīna)
       const noklusets = scenariji.find(s => s.kods === noteikumi.dzivibas_draudi_scenarijs);
       if (draudiAtrasti && !atrasti.length && noklusets) atrasti.push({ s: noklusets, aptuveni: false });
