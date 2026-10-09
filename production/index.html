@@ -3,43 +3,31 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mana adrese krīzē · map.repo.lv</title>
-<meta name="description" content="4 soļos: kur esat, kas notiek un ko darīt. Tuvākās drošās vietas, LVĢMC brīdinājumi un plūdu risks Jūsu adresē no atvērtajiem datiem.">
+<meta name="format-detection" content="telephone=no">
+<title>Latvijas krīzes karte · map.repo.lv</title>
+<meta name="description" content="Uzraksti, kas notiek un kur: tuvākās evakuācijas un izmitināšanas vietas, patvertnes, slimnīcas, LVĢMC brīdinājumi un plūdu risks no atvērtajiem datiem.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
       integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
 <link rel="stylesheet" href="stils.css">
 </head>
-<body class="rezims-plusma">
+<body>
 <header>
-  <h1><a href="#/1">Mana adrese krīzē</a></h1>
+  <h1>Krīzes karte</h1>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
-           aria-label="Ko tev vajag?" placeholder="Ko tev vajag? Piem.: patvertne Ogrē">
+           aria-label="Ko tev vajag? Kas notiek un kur?" placeholder="Ko tev vajag? Piem.: plūdi Ogrē">
     <button type="submit">Meklēt</button>
   </form>
   <div class="galva-labi">
     <p id="statuss" role="status">Ielādē…</p>
-    <a class="galva-112" href="tel:112" aria-label="Zvanīt 112">📞 112</a>
-    <button id="rezims-poga" type="button">🗺 Karte</button>
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
   </div>
 </header>
 <div id="bridinajums" class="bridinajums" role="status" hidden></div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <main>
-  <section id="plusma" aria-label="Mana adrese krīzē">
-    <ol class="soli" aria-label="Soļi">
-      <li>Vieta</li><li>Kas notiek</li><li>Situācija</li><li>Rezultāts</li>
-    </ol>
-    <p id="solis-nr" class="solis-nr">Solis 1 no 4</p>
-    <div id="zvanit-josla" role="alert" hidden>
-      <a class="zvanit112" href="tel:112">📞 Zvanīt 112</a>
-      <p class="piezime">Izklausās, ka apdraudēta dzīvība. Zvaniet tūlīt: dispečers palīdzēs.</p>
-    </div>
-    <div id="solis"><p class="piezime">Ielādē…</p></div>
-  </section>
   <aside id="panelis">
     <section id="meklesana">
       <div id="rezultati" aria-live="polite" hidden></div>
@@ -92,10 +80,10 @@
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
         integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
 <script>
-  // Ja Leaflet (unpkg.com) neielādējas, karte nestrādā, bet plūsma "Mana adrese krīzē" strādā (plusma.js no tās neatkarīga)
+  // Ja Leaflet (unpkg.com) neielādējas, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
   if (!window.L || !L.markerClusterGroup) {
     var kluda = document.getElementById('kartes-kluda');
-    kluda.textContent = 'Karti neizdevās ielādēt. "Mana adrese krīzē" strādā arī bez kartes; lai redzētu karti, pārlādējiet lapu vēlāk.';
+    kluda.textContent = 'Karti neizdevās ielādēt (unpkg.com nav pieejams). Pārlādējiet lapu pēc brīža. Ja apdraudēta dzīvība vai veselība, zvaniet 112.';
     kluda.hidden = false;
   }
 </script>
@@ -103,6 +91,6 @@
 <script src="klasifikators.js"></script>
 <script src="app.js"></script>
 <script src="meklesana.js"></script>
-<script src="plusma.js"></script>
+<script src="bridinajumi.js"></script>
 </body>
 </html>
