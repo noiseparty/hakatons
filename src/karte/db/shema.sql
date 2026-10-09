@@ -199,3 +199,17 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ==== Statuss (production/statuss.html) ====
+-- Fona pārbaužu rezultāti: karte_api.py ik 15 min ieraksta vienu rindu par katru komponentu (vietne, API, datu avoti),
+-- glabā 8 dienas. Tabulu izveido arī pats API (tas pats bloks STATUSS_SHEMA failā karte_api.py), ja shēma nav palaista.
+create table if not exists statuss_parbaudes (
+  id         bigserial primary key,
+  komponents text not null,
+  laiks      timestamptz not null default now(),
+  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  zinojums   text,
+  ilgums_ms  int
+);
+create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+grant select on statuss_parbaudes to map_api;

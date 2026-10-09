@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex">
+<title>Sistēmu statuss · Krīzes karte</title>
+<meta name="description" content="Vai Krīzes karte un tās atvērto datu avoti atbild: pēdējo 24 stundu un 7 dienu pieejamība.">
+<link rel="stylesheet" href="statuss.css">
+</head>
+<body>
+<header class="augsa">
+  <div class="augsa-iekss">
+    <h1>Krīzes karte <span>· Sistēmu statuss</span></h1>
+    <a class="atpakal" href="./">← Uz karti</a>
+  </div>
+</header>
+<main class="saturs">
+  <div id="baneris" class="baneris ielade" role="status" aria-live="polite">Ielādē…</div>
+  <p id="pedeja" class="pedeja" hidden></p>
+  <section id="komponenti" aria-label="Komponenti"></section>
+  <section class="leģenda" aria-label="Apzīmējumi">
+    <h2>Apzīmējumi</h2>
+    <ul>
+      <li><i class="kv darbojas"></i> Darbojas</li>
+      <li><i class="kv traucejumi"></i> Traucējumi</li>
+      <li><i class="kv nedarbojas"></i> Nedarbojas</li>
+      <li><i class="kv nav"></i> Nav datu</li>
+    </ul>
+    <p class="piezime">Šī lapa pārbauda, vai karte un tās atvērto datu avoti atbild. Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
+  </section>
+</main>
+<script src="statuss.js"></script>
+</body>
+</html>
