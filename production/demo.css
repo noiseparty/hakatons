@@ -1,0 +1,74 @@
+/* Demo panelis (demo.js): cilne kartes labajā malā, panelis no labās (telefonā — no apakšas), SIMULĀCIJA zīmes */
+.demo-zime { display: inline-block; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff; font-size: .7rem; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase; vertical-align: middle; margin-right: .4rem; }
+.bridinajums .demo-zime { background: #1c1917; }
+
+#demo-cilne { position: absolute; z-index: 600; right: 0; top: 160px; width: auto; padding: .7rem .4rem; border-radius: var(--radiuss) 0 0 var(--radiuss);
+  border: 0; background: #7c2d12; color: #fff; font-weight: 700; font-size: .85rem; letter-spacing: .05em; writing-mode: vertical-rl;
+  box-shadow: var(--ena); transition: right .25s; }
+#demo-cilne:hover { background: #9a3412; }
+body.demo-aktivs #demo-cilne::before { content: '● '; color: #fca5a5; }
+#demo-karte-zime { position: absolute; z-index: 600; top: 10px; left: 10px; pointer-events: none; }
+#demo-karte-zime .demo-zime { font-size: .8rem; padding: .25rem .6rem; box-shadow: var(--ena); }
+
+#demo-panelis { position: absolute; z-index: 700; top: 0; right: 0; bottom: 0; width: 360px; max-width: 92%; box-sizing: border-box;
+  display: flex; flex-direction: column; background: var(--virsma); box-shadow: -4px 0 12px rgba(0, 0, 0, .15);
+  transform: translateX(105%); transition: transform .25s; visibility: hidden; }
+body.demo-atverts #demo-panelis { transform: none; visibility: visible; }
+body.demo-atverts #demo-cilne { right: 360px; }
+body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
+.demo-galva { display: flex; align-items: center; gap: .5rem; padding: .6rem .8rem; border-bottom: 3px solid #7c2d12; }
+.demo-galva b { flex: 1; color: #7c2d12; }
+.demo-galva .demo-aizvert { width: 2.2rem; height: 2.2rem; padding: 0; border: 0; font-size: 1.1rem; }
+#demo-saturs { flex: 1; overflow-y: auto; padding: .6rem .8rem 1rem; }
+
+.demo-saraksts { list-style: none; margin: .6rem 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.demo-saraksts button { display: flex; gap: .6rem; align-items: center; text-align: left; padding: .55rem .6rem; }
+.demo-saraksts button:hover, .demo-saraksts button[aria-current] { background: #fff7ed; border-color: #c2410c; }
+.demo-saraksts b { display: block; font-size: .9rem; }
+.demo-saraksts small { color: var(--teksts2); font-size: .78rem; }
+.demo-ikona-l { font-size: 1.5rem; width: 2rem; flex: none; text-align: center; }
+.demo-beigt { background: #1c1917 !important; border-color: #1c1917 !important; margin-top: .8rem; }
+
+.demo-atpakal { margin: 0 0 .5rem; }
+.demo-kartite h2 { font-size: 1.1rem; margin: .3rem 0 .5rem; color: #1c1917; }
+.demo-kartite h3 { font-size: .9rem; margin: .8rem 0 .25rem; color: var(--zils); }
+.demo-virsraksts { margin: 0; display: flex; align-items: center; gap: .4rem; }
+.demo-laiks { font-weight: 700; font-size: .9rem; }
+.demo-notiek { margin: 0; padding-left: 1.1rem; font-size: .88rem; }
+.demo-notiek li, .demo-darit li { margin: .2rem 0; }
+.demo-darit { padding-left: 1.6rem; }
+.demo-regions { display: block; font-size: .85rem; font-weight: 600; margin: .3rem 0 .5rem; }
+.demo-regions select { margin-top: .25rem; }
+.demo-avoti { margin-top: .8rem; }
+.demo-legenda { display: flex; gap: .4rem; align-items: center; }
+.demo-nez { width: .8rem; height: .8rem; flex: none; border-radius: 50%; background: #d6d3d1; border: 1.5px dashed #57534e; }
+.demo-druka { margin-top: .8rem; }
+.rez-saraksts.slegtas b { color: var(--teksts2); }
+
+/* Kartes ikonas (emoji) un pelēkotie punkti */
+.demo-ikona span { display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: #fff; font-size: 17px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .45); border: 2px solid #7c2d12; box-sizing: border-box; }
+.demo-ikona.demo-es span { border-color: #0077c8; }
+.demo-ikona.demo-pelekots span { width: 22px; height: 22px; margin: 4px; background: #a8a29e; color: #fff; font-size: 12px; font-weight: 800; border: 2px solid #fff; }
+
+/* Demo laikā īstā LVĢMC josla paslēpta (tā atgriežas pēc "Beigt demo") */
+body.demo-aktivs #bridinajums { display: none; }
+
+@media (max-width: 800px) {
+  #demo-cilne { top: 150px; padding: .6rem .35rem; }
+  #demo-panelis { position: fixed; top: auto; left: 0; right: 0; width: auto; max-width: none; height: 52vh; border-radius: 14px 14px 0 0;
+    transform: translateY(105%); box-shadow: 0 -4px 14px rgba(0, 0, 0, .2); z-index: 1200; }
+  body.demo-atverts #demo-cilne { right: 0; }
+  body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 10px; }
+  body.demo-atverts .pamatkarte { display: none; }
+}
+
+@media print {
+  header, #panelis, .kartes-rikis, .pamatkarte, #demo-cilne, #demo-karte-zime, .demo-galva .demo-aizvert,
+  .demo-atpakal, .demo-beigt, .demo-druka, .marsruts, .demo-regions select, #karte, .bridinajums:not(.demo-josla) { display: none !important; }
+  html, body, main, #kartes-laukums { height: auto !important; display: block; overflow: visible; box-shadow: none; padding: 0; }
+  #demo-panelis { position: static; transform: none; visibility: visible; width: auto; max-width: none; height: auto; box-shadow: none; }
+  #demo-saturs { overflow: visible; }
+  .demo-josla details > p { display: block; }
+}
