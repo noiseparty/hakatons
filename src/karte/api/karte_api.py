@@ -640,6 +640,142 @@ def _bridinajumu_zinas(regioni_, vietas, tagad):
     return zinas, poligoni
 
 
+# Riska karte: līmenis 0–3 katram novadam šodien un rīt. HEURISTIKA, nevis oficiāls vērtējums:
+# max(LVĢMC brīdinājuma krāsa, brāzmu un nokrišņu prognoze) + 1 par zibeni pēdējās 30 min (tikai šodien)
+# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā); ne vairāk par 3.
+RISKA_BRAZMAS = [(15, 1), (20, 2), (25, 3)]   # diennakts maks. brāzmas, m/s
+RISKA_NOKRISNI = [(15, 1), (30, 2)]           # diennakts nokrišņu summa, mm
+RISKA_LIMENI = {0: "nav", 1: "paaugstināts", 2: "augsts", 3: "ļoti augsts"}
+ZIBENS_AVOTS_ISS = {"nosaukums": "FMI zibens dati", "licence": "CC BY 4.0", "url": "https://en.ilmatieteenlaitos.fi/open-data"}
+LVC_AVOTS_ISS = {"nosaukums": "LVC satiksmes informācija (NAP)", "licence": "CC0 1.0",
+                 "url": "https://www.transportdata.gov.lv/lv/card/f3204a64-3dc3-4ed6-b6f0-872f58500735"}
+PR_NOMINATIVS = {"Kurzemē": "Kurzeme", "Zemgalē": "Zemgale", "Vidzemē": "Vidzeme", "Latgalē": "Latgale",
+                 "Rīgā un Pierīgā": "Rīga un Pierīga"}
+
+
+def _pec_sliekshna(vertiba, sliekshni):
+    lim = 0
+    for robeza, l in sliekshni:
+        if vertiba is not None and vertiba >= robeza:
+            lim = l
+    return lim
+
+
+def _tuvaka_vieta_regions(vietas):
+    """(lat, lon) → reģiona kods pēc tuvākās prognožu vietas (režģis 0,1°, lai nav 6427 salīdzinājumu katram punktam)."""
+    rezgis = {}
+    for _n, la, lo, kods in vietas.values():
+        if kods:
+            rezgis.setdefault((round(la, 1), round(lo, 1)), []).append((la, lo, kods))
+
+    def atrast(lat, lon):
+        kandidati = [v for dy in (-0.1, 0, 0.1) for dx in (-0.1, 0, 0.1)
+                     for v in rezgis.get((round(lat + dy, 1), round(lon + dx, 1)), [])]
+        if not kandidati:
+            return None
+        return min(kandidati, key=lambda v: (v[0] - lat) ** 2 + ((v[1] - lon) * 0.55) ** 2)[2]
+    return atrast
+
+
+def _riski(dati, regioni_, vietas, tagad, dienas):
+    """{kods: {"sodien": n, "rit": n, "iemesli": [{diena, limenis, teksts, avots, klat}]}} pirmajām divām dienām."""
+    atslegas = list(zip(["sodien", "rit"], dienas[:2]))
+    riski = {k: {"sodien": 0, "rit": 0, "iemesli": []} for k in regioni_}
+
+    def pievienot(kods, diena, limenis, teksts, avots, klat=False):
+        r = riski.get(kods)
+        if r is None:
+            return
+        r[diena] = min(3, r[diena] + limenis) if klat else max(r[diena], limenis)
+        r["iemesli"].append({"diena": diena, "limenis": limenis, "teksts": teksts, "avots": avots, "klat": klat})
+
+    # LVĢMC brīdinājumi: līmenis dienām, kuras pārklāj brīdinājuma laiks
+    try:
+        for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
+            if b["lidz"] and b["lidz"] < tagad:
+                continue
+            _p, skarti = _bridinajumu_skartie(b, vietas)
+            for diena, datums in atslegas:
+                d0 = datetime.strptime(datums, "%Y-%m-%d")
+                if (b["no"] and b["no"] >= d0 + timedelta(days=1)) or (b["lidz"] and b["lidz"] < d0):
+                    continue
+                for kods in skarti:
+                    pievienot(kods, diena, b["limenis"], f"LVĢMC {b['krasa'].lower()} brīdinājums: {b['paradiba'].lower()}",
+                              BRIDINAJUMU_AVOTS)
+    except Kluda:
+        pass
+    # Prognoze: (bez zibens/ceļiem) brāzmas un nokrišņi; prognoze aprēķina "klat" pirms zibens, lai max darbojas pareizi
+    for diena, datums in atslegas:
+        for kods, r in dati["kopsavilkums"].get(datums, {}).items():
+            lim = _pec_sliekshna(r["brazmas"], RISKA_BRAZMAS)
+            if lim:
+                pievienot(kods, diena, lim, f"brāzmas līdz {_skaitlis_lv(r['brazmas'])} m/s" +
+                          (f" ({r['brazmas_vieta']})" if r.get("brazmas_vieta") else ""), PROGNOZU_AVOTS)
+            lim = _pec_sliekshna(r["nokrisni"], RISKA_NOKRISNI)
+            if lim:
+                pievienot(kods, diena, lim, f"nokrišņi līdz {_skaitlis_lv(r['nokrisni'])} mm" +
+                          (f" ({r['nokrisni_vieta']})" if r.get("nokrisni_vieta") else ""), PROGNOZU_AVOTS)
+    if vietas:
+        atrast = _tuvaka_vieta_regions(vietas)
+        # Zibens pēdējās 30 min (FMI) — tikai šodien, +1
+        try:
+            skaits = {}
+            for z in _kesots("zibens_fmi", 60, _fmi_zibens)["zibeni"]:
+                kods = atrast(z["lat"], z["lon"])
+                if kods:
+                    skaits[kods] = skaits.get(kods, 0) + 1
+            for kods, n in skaits.items():
+                pievienot(kods, "sodien", 1, f"zibens pēdējās {ZIBENS_MIN} min: {n}", ZIBENS_AVOTS_ISS, klat=True)
+        except Kluda:
+            pass
+        # Slidens ceļš (LVC) — tikai šodien, +1; tikai no kešas, lai prognoze negaida NAP
+        with _kesas_slots:
+            ieraksts = _kesa.get(("celi", "slidens"))
+        skaits = {}
+        for n in (ieraksts[1] if ieraksts else None) or []:
+            kods = atrast(n["lat"], n["lon"])
+            if kods:
+                skaits[kods] = skaits.get(kods, 0) + 1
+        for kods, n in skaits.items():
+            pievienot(kods, "sodien", 1, f"slidens ceļš: {n} {'vieta' if n % 10 == 1 and n % 100 != 11 else 'vietas'}",
+                      LVC_AVOTS_ISS, klat=True)
+    for r in riski.values():
+        r["iemesli"].sort(key=lambda i: (i["diena"] != "sodien", i["klat"], -i["limenis"]))
+    return riski
+
+
+def _risku_zinas(riski, regioni_, dienas, sodien):
+    """Ziņa lentes augšā katrai dienai: plānošanas reģioni ar paaugstinātu risku un galvenais iemesls."""
+    zinas = []
+    for diena, datums in zip(["sodien", "rit"], dienas[:2]):
+        pa_pr = {}  # plānošanas reģions → [maks. līmenis, galvenais iemesls, novadi]
+        for kods, r in riski.items():
+            if r[diena] < 1:
+                continue
+            pr = regioni_[kods]["planosanas_regions"]
+            pr = PR_NOMINATIVS.get(pr, regioni_[kods]["nosaukums"])
+            iemesli = [i for i in r["iemesli"] if i["diena"] == diena]
+            galvenais = next((i for i in iemesli if not i["klat"]), iemesli[0] if iemesli else None)
+            esosais = pa_pr.setdefault(pr, [0, None, []])
+            esosais[2].append(kods)
+            if r[diena] > esosais[0]:
+                esosais[0], esosais[1] = r[diena], galvenais
+        if not pa_pr:
+            continue
+        seciba = sorted(pa_pr.items(), key=lambda x: -x[1][0])
+        nos = _dienas_nosaukums(datums, sodien)
+        dalas = [pr + (f" ({re.sub(r' [(].*[)]$', '', v[1]['teksts'])})" if v[1] else "") for pr, v in seciba]
+        kodi = [k for _pr, v in seciba for k in v[2]]
+        zinas.append({
+            "veids": "riski", "paradiba": "Risks", "limenis": seciba[0][1][0], "datums": datums, "diena": nos,
+            "virsraksts": f"{nos} paaugstināts risks: " + ", ".join(dalas),
+            "teksts": f"Novadi ar paaugstinātu risku: {len(kodi)}. Riska karte apvieno LVĢMC brīdinājumus, prognozi, "
+                      "zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
+            "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": PROGNOZU_AVOTS,
+        })
+    return zinas
+
+
 def prognozes(_q):
     return _kesots("prognozes_atbilde", 300, _prognozes)
 
@@ -666,7 +802,9 @@ def _prognozes():
         raise Kluda(503, "prognozes pašlaik nav pieejamas")
     sodien = tagad.date()
     dienas = [d for d in sorted(dati["kopsavilkums"]) if d >= sodien.isoformat()][:3]
-    zinas = bridinajumu_zinas + _prognozu_zinas(dati, regioni_, sodien, dienas)
+    riski = _riski(dati, regioni_, vietas, tagad, dienas)
+    zinas = _risku_zinas(riski, regioni_, dienas, sodien) + bridinajumu_zinas + \
+        _prognozu_zinas(dati, regioni_, sodien, dienas)
     # Ja dienā nekas nepārsniedz sliekšņus — viena mierīga ziņa, lai lente nav tukša
     for datums in dienas:
         if any(z["datums"] == datums and z["limenis"] >= 1 for z in zinas):
@@ -685,7 +823,8 @@ def _prognozes():
                       f"brāzmas līdz {_skaitlis_lv(brazmas)} m/s, nokrišņi līdz {_skaitlis_lv(nokrisni)} mm.",
             "regioni": [], "bbox": None, "avots": PROGNOZU_AVOTS,
         })
-    zinas.sort(key=lambda z: (z["veids"] != "bridinajums", z["datums"], -z["limenis"], z["virsraksts"]))
+    zinas.sort(key=lambda z: (z["veids"] != "riski", z["veids"] != "bridinajums", z["datums"], -z["limenis"],
+                              z["virsraksts"]))
     return {
         "laiks_lv": tagad.isoformat(timespec="minutes"),
         "prognoze_mainita": dati["mainits"],
@@ -695,6 +834,9 @@ def _prognozes():
                         "dienas": {d: dati["kopsavilkums"][d].get(k) for d in dienas}} for k, r in regioni_.items()},
         "bridinajumu_poligoni": poligoni,
         "sliekshni": PROGNOZU_SLIEKSNI,
+        "riski": riski,
+        "riska_dienas": {"sodien": dienas[0] if dienas else None, "rit": dienas[1] if len(dienas) > 1 else None},
+        "riska_limeni": RISKA_LIMENI,
     }
 
 
@@ -980,13 +1122,14 @@ def _datex_notikumi(saturs, tips):
     return [_celu_notikums(i, tips) for i in _datex_ieraksti(ET.fromstring(saturs))]
 
 
-def _nap_lejupieladet(atslega):
-    """NAP download-file: XML baiti vai b"" (204 — plūsma tukša). ≤ 10 MB, taimauts 10 s."""
-    pieprasijums = urllib.request.Request(
-        NAP_BAZE + "/api/v1/get/file/download-file", method="POST",
-        data=json.dumps({"file_id": "1", "format": "xml"}).encode(),
-        headers={"x-api-key": atslega, "Content-Type": "application/json",
-                 "User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
+_NAP_GALVENES = {"Content-Type": "application/json", "User-Agent": "map.repo.lv (hakatons, karte_api.py)"}
+_nap_kludas_teksts = {}  # vides mainīgais → pēdējās kļūdas īss apraksts (bez atslēgas); /api/satiksme kopas.kluda
+_nap_faila_id = {}       # vides mainīgais → faila id, ja "1" neder (no metadata/file/info)
+
+
+def _nap_pieprasit(atslega, kermenis):
+    pieprasijums = urllib.request.Request(NAP_BAZE + "/api/v1/get/file/download-file", method="POST",
+                                          data=json.dumps(kermenis).encode(), headers={"x-api-key": atslega, **_NAP_GALVENES})
     with urllib.request.urlopen(pieprasijums, timeout=10) as r:
         if r.status == 204:  # piem., slidens ceļš vasarā
             return b""
@@ -996,10 +1139,50 @@ def _nap_lejupieladet(atslega):
     return saturs
 
 
+def _nap_lejupieladet(atslega, mainigais=None):
+    """NAP download-file: baiti (parasti DATEX XML) vai b"" (204). ≤ 10 MB, taimauts 10 s. Ja file_id "1" ar xml
+    neder (4xx, izņemot nederīgu atslēgu), faila id ņem no metadata/file/info un mēģina arī bez format."""
+    import urllib.error
+    faila_id = _nap_faila_id.get(mainigais, "1")
+    try:
+        return _nap_pieprasit(atslega, {"file_id": faila_id, "format": "xml"})
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403) or e.code >= 500:
+            raise
+    info = urllib.request.Request(NAP_BAZE + "/api/v1/metadata/file/info", headers={"x-api-key": atslega, **_NAP_GALVENES})
+    with urllib.request.urlopen(info, timeout=10) as r:
+        faili = json.loads(r.read(1_000_000)).get("files") or []
+    if faili:
+        faila_id = str(faili[0]["file_id"])
+        if mainigais:
+            _nap_faila_id[mainigais] = faila_id
+    try:
+        return _nap_pieprasit(atslega, {"file_id": faila_id, "format": "xml"})
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403) or e.code >= 500:
+            raise
+    return _nap_pieprasit(atslega, {"file_id": faila_id})
+
+
+def _nap_kludas_apraksts(e):
+    import urllib.error
+    if isinstance(e, urllib.error.HTTPError):
+        try:
+            teksts = json.loads(e.read(2000)).get("response_text", "")
+        except Exception:
+            teksts = ""
+        return f"HTTP {e.code}" + (f": {str(teksts)[:120]}" if teksts else "")
+    if isinstance(e, ET.ParseError):
+        return f"atbilde nav XML ({e})"[:160]
+    return f"{type(e).__name__}: {e}"[:160]
+
+
 def _nap_parsets(saturs):
     """Viena kopa → {ieraksti, vietas, merijumi} neatkarīgi no publikācijas veida (parsē vienreiz kešam)."""
     if not saturs:
         return {"ieraksti": [], "vietas": {}, "merijumi": []}
+    if saturs.lstrip()[:1] in (b"{", b"["):  # dažas kopas dod JSON (ne DATEX)
+        return {"ieraksti": [], "vietas": {}, "merijumi": [], "json": json.loads(saturs)}
     sakne = ET.fromstring(saturs)
     return {"ieraksti": _datex_ieraksti(sakne), "vietas": _datex_vietas(sakne), "merijumi": _datex_merijumi(sakne)}
 
@@ -1012,8 +1195,17 @@ def _nap_kopa(mainigais, sekundes):
         ieraksts = _kesa.get(("nap", mainigais))
     if not ieraksts and time.time() - pedeja_kluda < 60:
         raise Kluda(503, "avots nav pieejams")
+    def ielade():
+        try:
+            dati = _nap_parsets(_nap_lejupieladet(atslega, mainigais))
+        except Exception as e:
+            _nap_kludas_teksts[mainigais] = _nap_kludas_apraksts(e)
+            raise
+        _nap_kludas_teksts.pop(mainigais, None)
+        return dati
+
     try:
-        return _kesots(("nap", mainigais), sekundes, lambda: _nap_parsets(_nap_lejupieladet(atslega)))
+        return _kesots(("nap", mainigais), sekundes, ielade)
     except Kluda:
         with _kesas_slots:
             _celu_kludas[mainigais] = time.time()
@@ -1276,10 +1468,42 @@ def _satiksmes_stacijas(kopas):
     return rez
 
 
+def _json_robezas(obj):
+    """JSON atbildē: katrs objekts ar platumu/garumu un gaidīšanas laiku (min vai s pēc lauka nosaukuma)."""
+    rez = []
+
+    def lauks(d, *dalas):
+        return next((v for k, v in d.items() if any(x in k.lower() for x in dalas)), None)
+
+    def staiga(o):
+        if isinstance(o, list):
+            for x in o:
+                staiga(x)
+        elif isinstance(o, dict):
+            lat, lon = _skaitlis_vai_none(lauks(o, "lat")), _skaitlis_vai_none(lauks(o, "lon", "lng"))
+            ll = _lv_koord(lat, lon)
+            gaid = next(((k, _skaitlis_vai_none(v)) for k, v in o.items()
+                         if any(x in k.lower() for x in ("wait", "gaid", "delay", "queue", "time")) and
+                         _skaitlis_vai_none(v) is not None), None)
+            if ll and gaid:
+                minutes = gaid[1] / 60 if any(x in gaid[0].lower() for x in ("sec", "_s")) else gaid[1]
+                rez.append({"id": str(lauks(o, "id") or len(rez)), "lat": ll[0], "lon": ll[1],
+                            "nosaukums": str(lauks(o, "name", "nosauk", "title") or "Robežšķērsošanas vieta"),
+                            "virziens": lauks(o, "direction", "virzien"), "gaidisana_min": round(minutes),
+                            "laiks": lauks(o, "updated", "timestamp", "laiks", "date")})
+            for v in o.values():
+                if isinstance(v, (list, dict)):
+                    staiga(v)
+    staiga(obj)
+    return rez
+
+
 def _satiksmes_robezas(dati):
     """Robežpunkti: situāciju ieraksti ar kavējumu (delayTimeValue, s) vai mērījumi ar travelTime/duration (s)."""
     if not dati:
         return []
+    if "json" in dati:
+        return _json_robezas(dati["json"])
     rez = []
     for i in dati["ieraksti"]:
         s = _skaitlis_vai_none(i["kavejums_s"])
@@ -1301,7 +1525,8 @@ def _satiksme_dati():
     punkti, zonas = _satiksmes_punkti_un_zonas(pec_koda["vietas"], pec_koda["merijumi"])
     return {
         "avots": "lvc-nap", "laiks": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "kopas": {k: {"konfigurets": m in dati, "pieejams": dati.get(m) is not None, "nosaukums": n,
+        "kopas": {k: {"konfigurets": m in dati, "pieejams": dati.get(m) is not None,
+                      "kluda": _nap_kludas_teksts.get(m) if m in dati else None, "nosaukums": n,
                       "datu_kopa_url": f"https://transportdata.gov.lv/card/{c}", "licence": "CC0 1.0",
                       "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"}
                   for k, m, _s, c, n in SATIKSME_KOPAS},
@@ -1313,7 +1538,26 @@ def _satiksme_dati():
     }
 
 
-def satiksme(_q):
+def _satiksme_debug():
+    """Katras kopas neapstrādātās atbildes sākums (2 KB) — tikai ar MAP_DEBUG=1 (VPS env), atslēgas netiek rādītas."""
+    rez = {}
+    for k, m, *_ in SATIKSME_KOPAS + [(f"celi_{t}", v) for v, t, _c in NAP_KOPAS]:
+        atslega = os.environ.get(m, "").strip()
+        if not atslega:
+            rez[k] = {"konfigurets": False}
+            continue
+        try:
+            saturs = _nap_lejupieladet(atslega, m)
+            rez[k] = {"konfigurets": True, "baiti": len(saturs), "faila_id": _nap_faila_id.get(m, "1"),
+                      "sakums": saturs[:2048].decode("utf-8", "replace")}
+        except Exception as e:
+            rez[k] = {"konfigurets": True, "kluda": _nap_kludas_apraksts(e)}
+    return rez
+
+
+def satiksme(q):
+    if q.get("debug", [""])[0] == "1" and os.environ.get("MAP_DEBUG", "").strip() == "1":
+        return {"debug": _satiksme_debug()}
     return _kesots("satiksme", 60, _satiksme_dati)
 
 
@@ -1440,6 +1684,12 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
     ("celi", "Ceļu slēgumi un negadījumi", "LVC DATEX II caur Nacionālo piekļuves punktu",
      ("LVC ceļu notikumi (transportdata.gov.lv)", "https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf",
       *_CC0)),
+    ("satiksme", "Satiksme zonās", "LVC satiksmes uzskaites iekārtas: vietas un minūtes ātrums",
+     ("LVC satiksmes intensitāte un ātrums (transportdata.gov.lv)",
+      "https://transportdata.gov.lv/card/ed1f0d2c-6ad8-4823-b132-71fc69993d1c", *_CC0)),
+    ("robezas", "Robežu gaidīšanas laiks", "LVC robežšķērsošanas vietu gaidīšanas laiks",
+     ("LVC robežšķērsošanas gaidīšanas laiks (transportdata.gov.lv)",
+      "https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae", *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
 ]
@@ -1599,12 +1849,40 @@ def _parb_celi():
     return "darbojas", zinojums
 
 
+def _parb_satiksme():
+    # tas pats kešs kā /api/satiksme; bez atslēgām — pelēks
+    d = satiksme({})
+    vietas, merijumi = d["kopas"]["vietas"], d["kopas"]["merijumi"]
+    if not (vietas["konfigurets"] and merijumi["konfigurets"]):
+        return "nav_datu", "Nav konfigurēts (nav NAP atslēgu)"
+    if not merijumi["pieejams"]:
+        return "nedarbojas", "Ātruma dati neatbild" + (f" ({merijumi['kluda']})" if merijumi["kluda"] else "")
+    ar_datiem = [z for z in d["zonas"] if z["limenis"] != 3]
+    if not ar_datiem:
+        return "traucejumi", "Nevienā zonā nav jaunu mērījumu"
+    lenas = sum(1 for z in ar_datiem if z["limenis"] >= 1)
+    zinojums = f"{_skaits(len(ar_datiem), 'zona', 'zonas')} ar datiem" + (f", {lenas} ar lēnu satiksmi vai sastrēgumu" if lenas else "")
+    return ("darbojas" if vietas["pieejams"] else "traucejumi"), zinojums
+
+
+def _parb_robezas():
+    d = satiksme({})
+    k = d["kopas"]["robezas"]
+    if not k["konfigurets"]:
+        return "nav_datu", "Nav konfigurēts (nav NAP atslēgas)"
+    if not k["pieejams"]:
+        return "nedarbojas", "Datu kopa neatbild" + (f" ({k['kluda']})" if k["kluda"] else "")
+    n = len(d["robezas"])
+    return ("darbojas", _skaits(n, "robežpunkts", "robežpunkti")) if n else ("traucejumi", "Atbilde ir, bet robežpunktu nav")
+
+
 # kods → (pārbaude, virs cik ms "atbild lēni")
 STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
     "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
     "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
     "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000), "celi": (_parb_celi, 8000),
+    "satiksme": (_parb_satiksme, 8000), "robezas": (_parb_robezas, 8000),
     "osm": (_parb_osm, 5000),
 }
 

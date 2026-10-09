@@ -68,7 +68,7 @@
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
-        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a></p>
+        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a></p>
         <ul id="avoti-saraksts"></ul>
       </details>
     </section>
@@ -82,6 +82,14 @@
     </div>
     <div id="prognozes" class="prognozes" hidden>
       <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><span aria-hidden="true">⛅</span> <span class="prog-poga-teksts">Prognoze</span></button>
+      <div class="riski-sledzis" role="group" aria-label="Riska karte">
+        <span class="riski-nos">Riski:</span>
+        <button type="button" data-riski="sodien" aria-pressed="false">Šodien</button>
+        <button type="button" data-riski="rit" aria-pressed="false">Rīt</button>
+      </div>
+      <div class="riski-legenda" aria-label="Riska līmeņi" hidden>
+        <span><i style="background:#fde68a"></i>paaugstināts</span><span><i style="background:#f97316"></i>augsts</span><span><i style="background:#dc2626"></i>ļoti augsts</span>
+      </div>
       <section id="prog-panelis" class="prog-panelis" aria-label="Prognoze un brīdinājumi" hidden>
         <div class="prog-galva">
           <h2>Prognoze un brīdinājumi</h2>

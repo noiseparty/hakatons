@@ -8,10 +8,10 @@ Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 
 
 ## 0:00–1:00 · 1. Problēma (hook)
 
-**Slide:** "2026. gada 22.–23. augusts. Vētra. ~277 000 mājsaimniecību bez elektrības."
+**Slide:** "2026. gada 22.–23. augusts. Vētra. ~260 000 elektrības lietotāju skāra atslēgumi." (verified: LSM 26.08.2026 and Sadales tīkls; ~245 000 at one moment on 23 Aug; sources in `notes/demo-scenariji.md` §6)
 Below: "Kur man iet? Vai mana māja ir plūdu zonā? Kur ir siltums un ūdens?"
 
-**Say:** Augusta vētrā simtiem tūkstošu cilvēku palika bez elektrības. Viņu pašvaldībai ir civilās aizsardzības plāns — tajā ir rakstīts, kur pulcēties, kur izmitina, kas ir bīstams. Bet neviens to neatrada, jo tas ir 200+ lappušu PDF.
+**Say:** Augusta vētrā elektrības atslēgumi skāra ap 260 000 lietotāju. Viņu pašvaldībai ir civilās aizsardzības plāns — tajā ir rakstīts, kur pulcēties, kur izmitina, kas ir bīstams. Bet neviens to neatrada, jo tas ir 200+ lappušu PDF.
 
 ## 1:00–1:45 · 2. Kāpēc tā ir
 
