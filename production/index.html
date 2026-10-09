@@ -19,6 +19,10 @@
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
     <button type="submit">Meklēt</button>
+    <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
+      <p id="populari-virsraksts">Biežāk meklētais</p>
+      <div class="populari-pogas"></div>
+    </div>
   </form>
   <div class="galva-labi">
     <p id="statuss" role="status">Ielādē…</p>
@@ -59,7 +63,7 @@
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
-        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
+        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a></p>
         <ul id="avoti-saraksts"></ul>
       </details>
     </section>

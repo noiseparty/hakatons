@@ -1,0 +1,86 @@
+:root {
+  --zils: #0077c8; --zils-tumss: #005a99; --zils-gaiss: #e6f1fa;
+  --zals: #2e8b4b; --oranzs: #f57e20; --sarkans: #d52b1e; --pelek: #d5d9de;
+  --fons: #f2f4f7; --virsma: #fff; --robeza: #e0e0e0;
+  --teksts: #333; --teksts2: #5c6670;
+  --radiuss: 8px; --ena: 0 2px 8px rgba(0, 0, 0, .1);
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--fons); color: var(--teksts);
+  font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+a { color: var(--zils-tumss); }
+
+.augsa { background: var(--zils); color: #fff; }
+.augsa-iekss {
+  max-width: 760px; margin: 0 auto; padding: 12px 14px;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px 14px; flex-wrap: wrap;
+}
+.augsa h1 { margin: 0; font-size: 18px; font-weight: 700; }
+.augsa h1 span { font-weight: 400; opacity: .9; }
+.atpakal { color: #fff; font-size: 14px; white-space: nowrap; }
+
+.saturs { max-width: 760px; margin: 0 auto; padding: 14px 12px 32px; }
+
+.baneris {
+  padding: 14px 16px; border-radius: var(--radiuss); color: #fff; font-weight: 700; font-size: 17px;
+  box-shadow: var(--ena); background: #6b7480;
+}
+.baneris.ok { background: var(--zals); }
+.baneris.dalejs { background: #b85a00; }
+.baneris.kluda { background: var(--sarkans); }
+.baneris.nav { background: #6b7480; }
+.baneris.ielade { background: #6b7480; }
+.pedeja { margin: 8px 2px 14px; color: var(--teksts2); font-size: 13px; }
+.pedeja small { display: block; }
+
+.komp {
+  background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena);
+  padding: 12px 14px 12px; margin-bottom: 10px;
+}
+.komp-augsa { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
+.komp h2 { margin: 0; font-size: 16px; line-height: 1.3; }
+.apraksts { margin: 1px 0 0; font-size: 13px; color: var(--teksts2); }
+.pill {
+  flex: none; display: inline-flex; align-items: center; gap: 4px; padding: 2px 10px;
+  border-radius: 999px; font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.pill.darbojas { background: #e3f3e8; color: #1d6b37; }
+.pill.traucejumi { background: #fff0dd; color: #8a4500; }
+.pill.nedarbojas { background: #fde6e4; color: #a81e14; }
+.pill.nav_datu { background: #eceef1; color: #4d5660; }
+.zinojums { margin: 6px 0 0; font-size: 13px; color: var(--teksts2); }
+.avots, .laiks { margin: 3px 0 0; font-size: 12px; color: var(--teksts2); }
+
+.josla {
+  display: flex; gap: 1px; height: 28px; margin-top: 10px; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.josla i { flex: 1 1 0; min-width: 0; border-radius: 1px; background: var(--pelek); }
+.josla i.darbojas { background: var(--zals); }
+.josla i.traucejumi { background: var(--oranzs); }
+.josla i.nedarbojas { background: var(--sarkans); }
+.josla i.izv { outline: 2px solid var(--teksts); outline-offset: 1px; position: relative; z-index: 1; }
+.josla-uzraksti {
+  display: flex; justify-content: space-between; gap: 6px; margin-top: 4px; font-size: 11.5px; color: var(--teksts2);
+}
+.josla-uzraksti b { font-weight: 600; color: var(--teksts); text-align: center; flex: 1; }
+.josla-uzraksti span:first-child { text-align: left; }
+.josla-uzraksti span:last-child { text-align: right; }
+.detala { margin: 4px 0 0; min-height: 17px; font-size: 12.5px; color: var(--teksts); }
+
+.leģenda { margin-top: 18px; font-size: 13px; color: var(--teksts2); }
+.leģenda h2 { margin: 0 0 6px; font-size: 14px; color: var(--teksts); }
+.leģenda ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.kv { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 4px; background: var(--pelek); }
+.kv.darbojas { background: var(--zals); }
+.kv.traucejumi { background: var(--oranzs); }
+.kv.nedarbojas { background: var(--sarkans); }
+.piezime { margin: 12px 0 0; }
+
+@media (min-width: 700px) {
+  .augsa h1 { font-size: 20px; }
+  .saturs { padding-top: 22px; }
+  .josla { height: 32px; gap: 2px; }
+}
