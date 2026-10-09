@@ -9,21 +9,38 @@ Galapunkti:
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
   GET /api/adreses?q=brivibas 15 ogre&limit=8
                                        adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
+  GET /api/bridinajumi?lat=..&lon=..   LVĢMC hidrometeoroloģiskie brīdinājumi (spēkā esošie); ar lat/lon —
+                                       vai brīdinājums attiecas uz šo vietu (attiecas)
+  GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
+  GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
   GET /api/veseliba                    pārbaude
+
+Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
 
 Palaišana: MAP_DB_DSN=postgresql://map_api:...@127.0.0.1/map python3 karte_api.py [ports]
 Tikai standarta bibliotēka + psycopg 3 (Ubuntu: python3-psycopg).
 """
 
+import csv
+import io
 import json
+import math
 import os
 import re
 import sys
+import threading
+import time
 import unicodedata
+import urllib.request
+from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timedelta, timezone
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
 import psycopg
+
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "db"))
+import udens_limenis  # noqa: E402  (src/karte/db/udens_limenis.py)
 
 DSN = os.environ.get("MAP_DB_DSN", "")
 MAX_LIMIT = 20000
@@ -36,9 +53,9 @@ class Kluda(Exception):
         self.statuss = statuss
 
 
-def vaicat(sql, params=()):
+def vaicat(sql, params=(), timeout="10s"):
     with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
-        cur.execute("set statement_timeout = '10s'")
+        cur.execute(f"set statement_timeout = '{timeout}'")
         cur.execute(sql, params)
         rinda = cur.fetchone()
         return rinda[0] if rinda else None
@@ -148,9 +165,9 @@ def _vienkarsot(teksts):
 
 
 def adreses(q):
-    vardi = [v for v in re.split(r"[\s,]+", _vienkarsot(q.get("q", [""])[0])) if v][:6]
-    if len("".join(vardi)) < 3:
-        raise Kluda(400, "q: vajag vismaz 3 burtus")
+    vardi = [v for v in re.split(r"[\s,]+", _vienkarsot(q.get("q", [""])[0][:100])) if v][:6]
+    if not any(len(v) >= 3 for v in vardi):
+        raise Kluda(400, "q: vajag vismaz vienu vārdu ar 3+ burtiem")
     limit = int(_skaitlis(q, "limit", 1, 20) or 8)
     raksti = ["%" + re.sub(r"([\\%_])", r"\\\1", v) + "%" for v in vardi]
     # mājas numurs ("15" → "15", "15A"; ne "115", "k-15" vai "LV-5015") — augstāk sarakstā
@@ -164,7 +181,225 @@ def adreses(q):
                        similarity(meklesanai, %s) desc, length(adrese), adrese
               limit %s) a""",
         (*raksti, numuri, vardi[0] + "%", " ".join(vardi), limit),
+        timeout="2s",
     )
+
+
+# ---- Ārējie atvērtie dati bez datubāzes: lejupielāde + kešs atmiņā ----
+
+_kesa = {}
+_kesas_slots = threading.Lock()
+_atslegu_sloti = {}  # atslēga → Lock: vienlaicīgi pieprasījumi gaida vienu lejupielādi
+
+
+def _kesots(atslega, sekundes, funkcija):
+    """Atgriež kešoto vērtību; ja avots nav pieejams, labāk novecojusi nekā nekāda (un nākamais mēģinājums
+    pēc minūtes, nevis katrā pieprasījumā). sekundes var būt funkcija (vērtība → sekundes)."""
+    ilgums = sekundes if callable(sekundes) else (lambda _v: sekundes)
+
+    def no_kesas():
+        with _kesas_slots:
+            ieraksts = _kesa.get(atslega)
+        return ieraksts, bool(ieraksts) and time.time() - ieraksts[0] < ilgums(ieraksts[1])
+
+    ieraksts, svaigs = no_kesas()
+    if svaigs:
+        return ieraksts[1]
+    with _kesas_slots:
+        slots = _atslegu_sloti.setdefault(atslega, threading.Lock())
+    with slots:
+        ieraksts, svaigs = no_kesas()
+        if svaigs:
+            return ieraksts[1]
+        try:
+            vertiba = funkcija()
+        except Exception as e:  # tīkls, formāts
+            if ieraksts:
+                with _kesas_slots:
+                    _kesa[atslega] = (time.time() - ilgums(ieraksts[1]) + 60, ieraksts[1])
+                return ieraksts[1]
+            if isinstance(e, Kluda):
+                raise
+            raise Kluda(503, "avots pašlaik nav pieejams") from e
+        with _kesas_slots:
+            if len(_kesa) > 20000:
+                _kesa.clear()
+                _atslegu_sloti.clear()
+            _kesa[atslega] = (time.time(), vertiba)
+        return vertiba
+
+
+def _lejupieladet(url, timeout=20):
+    pieprasijums = urllib.request.Request(url, headers={"User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
+    with urllib.request.urlopen(pieprasijums, timeout=timeout) as r:
+        return r.read()
+
+
+def _vieta(q, obligata=True):
+    lat = _skaitlis(q, "lat", 55, 59)
+    lon = _skaitlis(q, "lon", 20, 29)
+    if (lat is None) != (lon is None) or (obligata and lat is None):
+        raise Kluda(400, "vajag lat un lon (Latvijā)")
+    return lat, lon
+
+
+def _attalums_m(lat1, lon1, lat2, lon2):
+    f1, f2 = math.radians(lat1), math.radians(lat2)
+    a = math.sin((f2 - f1) / 2) ** 2 + math.cos(f1) * math.cos(f2) * math.sin(math.radians(lon2 - lon1) / 2) ** 2
+    return round(2 * 6371000 * math.asin(math.sqrt(a)))
+
+
+# LVĢMC "Hidrometeoroloģiskie brīdinājumi", data.gov.lv, CC0 1.0. Laiks — Latvijas vietējais.
+BRIDINAJUMI = "https://data.gov.lv/dati/dataset/c971bd44-5a51-46fb-9343-495fb1006287/resource"
+BRIDINAJUMI_META = BRIDINAJUMI + "/59c111fb-8c9a-4a63-8284-0a64a2920681/download/bridinajumu_metadata.csv"
+BRIDINAJUMI_POLIGONI = BRIDINAJUMI + "/01dc7d3c-34e5-4cc3-8f1a-aaf022872a02/download/bridinajumu_poligoni.csv"
+BRIDINAJUMU_LIMENI = {"dzeltens": 1, "oranžs": 2, "oranzs": 2, "sarkans": 3}
+
+
+def _riga_tagad():
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.now(ZoneInfo("Europe/Riga")).replace(tzinfo=None)
+    except Exception:  # bez tzdata (Windows): vasaras laiks UTC+3, ziemā UTC+2 (aptuveni)
+        utc = datetime.now(timezone.utc)
+        return (utc + timedelta(hours=3 if 3 < utc.month < 11 else 2)).replace(tzinfo=None)
+
+
+def _csv(url):
+    return list(csv.DictReader(io.StringIO(_lejupieladet(url).decode("utf-8-sig"))))
+
+
+def _lv_laiks(teksts):
+    return datetime.strptime(teksts, "%Y.%m.%d %H:%M:%S") if teksts.strip() else None
+
+
+def _bridinajumi_dati():
+    poligoni = {}  # brīdinājums -> poligons -> [(npk, lat, lon)]
+    for r in _csv(BRIDINAJUMI_POLIGONI):
+        poligoni.setdefault(r["WEATHER_WARNING_EV_ID"], {}).setdefault(r["POLIGON_ID"], []).append(
+            (int(r["NPK"]), float(r["LAT"]), float(r["LON"])))
+    saraksts = []
+    for r in _csv(BRIDINAJUMI_META):
+        saraksts.append({
+            "id": r["WEATHER_WARNING_EV_ID"],
+            "nr": r["WARNING_NO"],
+            "krasa": r["INTENSITY_LV"].strip(),
+            "limenis": BRIDINAJUMU_LIMENI.get(r["INTENSITY_LV"].strip().lower(), 1),
+            "paradiba": r["PARADIBA"].strip(),
+            "regioni": r["REGIONS"].strip(),
+            "no": _lv_laiks(r["TIME_FROM"]),
+            "lidz": _lv_laiks(r["TIME_TILL"]),
+            "teksts": r["TEKSTS_LV"].strip(),
+            "riski": r["RISKS_LV"].strip(),
+            "poligoni": [[(lat, lon) for _, lat, lon in sorted(p)]
+                         for p in poligoni.get(r["WEATHER_WARNING_EV_ID"], {}).values()],
+        })
+    return saraksts
+
+
+def _punkts_poligona(lat, lon, poligons):
+    iekša = False
+    j = len(poligons) - 1
+    for i in range(len(poligons)):
+        (yi, xi), (yj, xj) = poligons[i], poligons[j]
+        if (yi > lat) != (yj > lat) and lon < (xj - xi) * (lat - yi) / (yj - yi) + xi:
+            iekša = not iekša
+        j = i
+    return iekša
+
+
+def bridinajumi(q):
+    lat, lon = _vieta(q, obligata=False)
+    tagad = _riga_tagad()
+    rez = []
+    for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
+        if b["lidz"] and b["lidz"] < tagad:
+            continue
+        rez.append({
+            **{k: v for k, v in b.items() if k != "poligoni"},
+            "no": b["no"].isoformat() if b["no"] else None,
+            "lidz": b["lidz"].isoformat() if b["lidz"] else None,
+            "attiecas": any(_punkts_poligona(lat, lon, p) for p in b["poligoni"]) if lat is not None else None,
+        })
+    rez.sort(key=lambda b: (-b["limenis"], b["no"] or ""))
+    return {"avots": "lvgmc-bridinajumi", "laiks_lv": tagad.isoformat(timespec="minutes"), "bridinajumi": rez}
+
+
+# Plūdu riska zonas: LVĢMC "3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes" (2026–2031), CC0 1.0,
+# WMS caur ĢeoLatvija.lv (geo-dpps.viss.gov.lv). Slāņa nr → atkārtošanās varbūtība gadā, %.
+PLUDU_WMS = "https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/"
+PLUDU_SERVISI = [
+    ("pavasara pali", "3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092", {"3": 10, "2": 10, "1": 1, "0": 0.5}),
+    ("ledus sastrēgumi", "3._cikla_L_558_jIS73E/3322e012-8cb3-4a4c-8acf-a467e25a17b3", {"2": 10, "1": 1, "0": 0.5}),
+    ("jūras vējuzplūdi", "3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea", {"2": 10, "1": 1, "0": 0.5}),
+]
+_pludu_pavedieni = ThreadPoolExecutor(max_workers=6)
+_pludu_rinda = [0]  # cik WMS pieprasījumu gaida vai iet; virs PLUDU_MAX_RINDA — 503, nevis bezgalīga rinda
+PLUDU_MAX_RINDA = 30
+
+
+def _pludu_serviss(veids, cels, slani, lat, lon):
+    d = 0.0002  # ~20 m
+    parametri = {
+        "service": "WMS", "version": "1.3.0", "request": "GetFeatureInfo", "styles": "", "crs": "EPSG:4326",
+        "layers": ",".join(slani), "query_layers": ",".join(slani), "info_format": "application/geojson",
+        "bbox": f"{lat - d},{lon - d},{lat + d},{lon + d}", "width": 11, "height": 11, "i": 5, "j": 5,
+        "feature_count": 10,
+    }
+    url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
+    atrasti = json.loads(_lejupieladet(url, timeout=25)).get("features", [])
+    varbutibas = [slani[f["layerName"]] for f in atrasti if f.get("layerName") in slani]
+    return {"veids": veids, "varbutiba_proc": max(varbutibas)} if varbutibas else None
+
+
+def pludi(q):
+    lat, lon = _vieta(q)
+    lat, lon = round(lat, 3), round(lon, 3)  # ~100 × 60 m; kešs pēc tā (mazāk pieprasījumu uz geo-dpps)
+
+    def gatavs(_d):
+        with _kesas_slots:
+            _pludu_rinda[0] -= 1
+
+    def parbaudit():
+        with _kesas_slots:
+            if _pludu_rinda[0] + len(PLUDU_SERVISI) > PLUDU_MAX_RINDA:
+                raise Kluda(503, "plūdu pārbaude pārslogota, mēģiniet pēc brīža")
+            _pludu_rinda[0] += len(PLUDU_SERVISI)
+        darbi = [_pludu_pavedieni.submit(_pludu_serviss, v, c, s, lat, lon) for v, c, s in PLUDU_SERVISI]
+        for d in darbi:
+            d.add_done_callback(gatavs)
+        veidi, kludas = [], 0
+        for d in darbi:
+            try:
+                r = d.result()
+            except Exception:
+                kludas += 1
+                continue
+            if r:
+                veidi.append(r)
+        if kludas == len(darbi):
+            raise RuntimeError("neviens plūdu WMS neatbild")
+        veidi.sort(key=lambda v: -v["varbutiba_proc"])
+        return {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
+
+    # serviss mēdz atbildēt 1–30 s (taimauts 25 s); ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min
+    return _kesots(("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
+
+
+def udens(q):
+    lat, lon = _vieta(q)
+    limit = int(_skaitlis(q, "limit", 1, 10) or 3)
+    stacijas = _kesots("udens", 900, lambda: udens_limenis.stacijas(timeout=20))
+    tagad = datetime.now(timezone.utc)
+    rez = []
+    for f in stacijas:
+        p = f["properties"]
+        slon, slat = f["geometry"]["coordinates"]
+        laiks = datetime.fromisoformat(p["laiks"].replace("Z", "+00:00"))
+        rez.append({**p, "lat": slat, "lon": slon, "attalums_m": _attalums_m(lat, lon, slat, slon),
+                    "vecs": tagad - laiks > timedelta(hours=udens_limenis.DERIGS_H)})
+    rez.sort(key=lambda s: s["attalums_m"])
+    return {"avots": "lvgmc-hidro", "stacijas": rez[:limit]}
 
 
 def veseliba(_q):
@@ -178,6 +413,9 @@ MARSRUTI = [
     (re.compile(r"^/api/regioni/([^/]+)$"), regions, 3600),
     (re.compile(r"^/api/objekti/?$"), objekti, 60),
     (re.compile(r"^/api/adreses/?$"), adreses, 3600),
+    (re.compile(r"^/api/bridinajumi/?$"), bridinajumi, 300),
+    (re.compile(r"^/api/pludi/?$"), pludi, 3600),
+    (re.compile(r"^/api/udens/?$"), udens, 600),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
 ]
 

@@ -25,6 +25,7 @@ Caddy (map.repo.lv) ──/api/*──► karte_api.py :8920 (hakatons-map-api.s
 | `dati/` | Ielādējamie faili (avota momentuzņēmumi). Nav publiski. |
 | `db/slimnicas_24h.py` | 37 slimnīcas ar 24/7 neatliekamo palīdzību (VM 04.03.2026. rīkojums, Valsts katastrofu medicīnas plāna 12. pielikums) → `dati/slimnicas_24h.geojson`. Koordinātas no VZD adrešu reģistra (`aw_eka.csv`), PSKUS un RAKUS — uzņemšanas ieeja no OSM. Adreses pārbaudītas; `atseviski_dati/hospitals.csv` koordinātas bija aptuvenas (līdz 118 km nobīde), tāpēc netiek lietotas. |
 | `api/karte_api.py` | API (Python standarta bibliotēka + psycopg). Galapunkti aprakstīti faila sākumā. |
+| `/api/bridinajumi`, `/api/pludi`, `/api/udens` | Bez datubāzes: LVĢMC brīdinājumi (data.gov.lv CSV), plūdu riska zonas (LVĢMC WMS GetFeatureInfo, ~10 s pirmo reizi), ūdens līmenis (tas pats `udens_limenis.py`). Kešs API atmiņā; avots nepieejams → pēdējā zināmā vērtība vai 503. Darbojas uzreiz pēc sapludināšanas (API pārstartējas pats). |
 | `serveris/` | Caddy un systemd failu kopijas, kas uzstādītas VPS. |
 
 Paroles: `/etc/hakatons/map.env` uz VPS (`MAP_DB_OWNER_DSN`, `MAP_DB_DSN`), nekad repozitorijā.
