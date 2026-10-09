@@ -17,6 +17,9 @@ Galapunkti:
                                        novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
   GET /api/veseliba                    pārbaude
+  POST /api/meklejumi {vaicajums, atpazits, klikskis}
+                                       biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāja datiem); 204
+  GET /api/meklejumi/top?n=3           biežāk meklētie pēdējās 14 dienās (kešs 60 s)
   GET /api/statuss                     statusa lapa: vietnes, API un datu avotu stāvoklis, 24 h pa 15 min, 7 dienu pieejamība
 
 Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
@@ -704,6 +707,70 @@ def veseliba(_q):
     return {"ok": vaicat("select true")}
 
 
+# ---- Biežāk meklētais: POST /api/meklejumi, GET /api/meklejumi/top (tabula meklejumi, shema.sql) ----
+# Glabā tikai normalizētu vaicājumu un skaitītājus (bez IP vai citiem lietotāja datiem).
+
+MEKLEJUMI_MINUTE = 60          # ierakstu skaits minūtē visam procesam; pārējos klusi izmet
+MEKLEJUMI_DIENAS = 14
+_meklejumi_slots = threading.Lock()
+_meklejumi_logs = [0.0, 0]     # [minūtes sākums, ierakstu skaits tajā]
+
+
+def _meklejums_normalizets(teksts):
+    """Mazie burti, viena atstarpe; None, ja nav ko skaitīt (tukšs, >100 zīmes vai ar cipariem — adrese)."""
+    if not isinstance(teksts, str):
+        return None
+    t = " ".join(teksts.lower().split())
+    if not t or len(t) > 100 or re.search(r"\d", t) or not re.search(r"\w", t):
+        return None
+    return t
+
+
+def _meklejumi_atlauts():
+    with _meklejumi_slots:
+        tagad = time.time()
+        if tagad - _meklejumi_logs[0] >= 60:
+            _meklejumi_logs[:] = [tagad, 0]
+        if _meklejumi_logs[1] >= MEKLEJUMI_MINUTE:
+            return False
+        _meklejumi_logs[1] += 1
+        return True
+
+
+def meklejumi_pievienot(dati):
+    """{vaicajums, atpazits: true, klikskis?: bool}. Skaita tikai atpazītus vaicājumus; vienmēr 204."""
+    if not isinstance(dati, dict) or dati.get("atpazits") is not True:
+        return
+    vaicajums = _meklejums_normalizets(dati.get("vaicajums"))
+    if not vaicajums or not _meklejumi_atlauts():
+        return
+    klikskis = dati.get("klikskis") is True
+    with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+        cur.execute("set statement_timeout = '2s'")
+        cur.execute(
+            """insert into meklejumi (vaicajums, skaits, klikski) values (%(v)s, %(s)s, %(k)s)
+               on conflict (vaicajums) do update set skaits = meklejumi.skaits + %(s)s,
+                 klikski = meklejumi.klikski + %(k)s, pedejais = now()""",
+            {"v": vaicajums, "s": 0 if klikskis else 1, "k": 1 if klikskis else 0},
+        )
+
+
+def meklejumi_top(q):
+    n = int(_skaitlis(q, "n", 1, 10) or 3)
+
+    def ielade():
+        return vaicat(
+            """select coalesce(json_agg(vaicajums order by skaits desc, klikski desc, pedejais desc), '[]') from (
+                 select vaicajums, skaits, klikski, pedejais from meklejumi
+                 where pedejais > now() - make_interval(days => %s)
+                 order by skaits desc, klikski desc, pedejais desc limit 10) m""",
+            (MEKLEJUMI_DIENAS,),
+            timeout="2s",
+        )
+
+    return {"vaicajumi": _kesots("meklejumi_top", 60, ielade)[:n]}
+
+
 # ==== Statuss (production/statuss.html) — sākums ====
 # Fona pavediens API procesā ik 15 min pārbauda vietni, API/DB un katru datu avotu (visas pārbaudes reizē, katrai
 # ≤ 10 s; pieprasījumus tas nebloķē) un ieraksta vienu rindu par katru komponentu tabulā statuss_parbaudes.
@@ -988,6 +1055,10 @@ MARSRUTI = [
     (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
     (re.compile(r"^/api/statuss/?$"), statuss, 60),
+    (re.compile(r"^/api/meklejumi/top/?$"), meklejumi_top, 60),
+]
+POST_MARSRUTI = [
+    (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
 ]
 
 
@@ -1010,6 +1081,27 @@ class Apstradatajs(BaseHTTPRequestHandler):
                 self.log_error("db: %s", e)
                 return self._atbilde(503, {"kluda": "datubāze nav pieejama"}, 0)
         self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
+
+    def do_POST(self):
+        cels = urlparse(self.path).path
+        funkcija = next((f for r, f in POST_MARSRUTI if r.match(cels)), None)
+        if funkcija is None:
+            return self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
+        try:
+            garums = int(self.headers.get("Content-Length") or 0)
+        except ValueError:
+            garums = -1
+        if not 0 <= garums <= 2000:
+            return self._atbilde(413, {"kluda": "pārāk garš pieprasījums"}, 0)
+        try:
+            funkcija(json.loads(self.rfile.read(garums) or b"{}"))
+        except (ValueError, UnicodeDecodeError):
+            pass  # nederīgs JSON — neskaitām
+        except psycopg.Error as e:
+            self.log_error("db: %s", e)  # statistika nav svarīgāka par meklēšanu: tik un tā 204
+        self.send_response(204)
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
 
     def _atbilde(self, statuss, dati, kesot):
         teksts = dati if isinstance(dati, str) else json.dumps(dati, ensure_ascii=False, separators=(",", ":"))
