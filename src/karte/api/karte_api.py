@@ -640,6 +640,142 @@ def _bridinajumu_zinas(regioni_, vietas, tagad):
     return zinas, poligoni
 
 
+# Riska karte: līmenis 0–3 katram novadam šodien un rīt. HEURISTIKA, nevis oficiāls vērtējums:
+# max(LVĢMC brīdinājuma krāsa, brāzmu un nokrišņu prognoze) + 1 par zibeni pēdējās 30 min (tikai šodien)
+# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā); ne vairāk par 3.
+RISKA_BRAZMAS = [(15, 1), (20, 2), (25, 3)]   # diennakts maks. brāzmas, m/s
+RISKA_NOKRISNI = [(15, 1), (30, 2)]           # diennakts nokrišņu summa, mm
+RISKA_LIMENI = {0: "nav", 1: "paaugstināts", 2: "augsts", 3: "ļoti augsts"}
+ZIBENS_AVOTS_ISS = {"nosaukums": "FMI zibens dati", "licence": "CC BY 4.0", "url": "https://en.ilmatieteenlaitos.fi/open-data"}
+LVC_AVOTS_ISS = {"nosaukums": "LVC satiksmes informācija (NAP)", "licence": "CC0 1.0",
+                 "url": "https://www.transportdata.gov.lv/lv/card/f3204a64-3dc3-4ed6-b6f0-872f58500735"}
+PR_NOMINATIVS = {"Kurzemē": "Kurzeme", "Zemgalē": "Zemgale", "Vidzemē": "Vidzeme", "Latgalē": "Latgale",
+                 "Rīgā un Pierīgā": "Rīga un Pierīga"}
+
+
+def _pec_sliekshna(vertiba, sliekshni):
+    lim = 0
+    for robeza, l in sliekshni:
+        if vertiba is not None and vertiba >= robeza:
+            lim = l
+    return lim
+
+
+def _tuvaka_vieta_regions(vietas):
+    """(lat, lon) → reģiona kods pēc tuvākās prognožu vietas (režģis 0,1°, lai nav 6427 salīdzinājumu katram punktam)."""
+    rezgis = {}
+    for _n, la, lo, kods in vietas.values():
+        if kods:
+            rezgis.setdefault((round(la, 1), round(lo, 1)), []).append((la, lo, kods))
+
+    def atrast(lat, lon):
+        kandidati = [v for dy in (-0.1, 0, 0.1) for dx in (-0.1, 0, 0.1)
+                     for v in rezgis.get((round(lat + dy, 1), round(lon + dx, 1)), [])]
+        if not kandidati:
+            return None
+        return min(kandidati, key=lambda v: (v[0] - lat) ** 2 + ((v[1] - lon) * 0.55) ** 2)[2]
+    return atrast
+
+
+def _riski(dati, regioni_, vietas, tagad, dienas):
+    """{kods: {"sodien": n, "rit": n, "iemesli": [{diena, limenis, teksts, avots, klat}]}} pirmajām divām dienām."""
+    atslegas = list(zip(["sodien", "rit"], dienas[:2]))
+    riski = {k: {"sodien": 0, "rit": 0, "iemesli": []} for k in regioni_}
+
+    def pievienot(kods, diena, limenis, teksts, avots, klat=False):
+        r = riski.get(kods)
+        if r is None:
+            return
+        r[diena] = min(3, r[diena] + limenis) if klat else max(r[diena], limenis)
+        r["iemesli"].append({"diena": diena, "limenis": limenis, "teksts": teksts, "avots": avots, "klat": klat})
+
+    # LVĢMC brīdinājumi: līmenis dienām, kuras pārklāj brīdinājuma laiks
+    try:
+        for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
+            if b["lidz"] and b["lidz"] < tagad:
+                continue
+            _p, skarti = _bridinajumu_skartie(b, vietas)
+            for diena, datums in atslegas:
+                d0 = datetime.strptime(datums, "%Y-%m-%d")
+                if (b["no"] and b["no"] >= d0 + timedelta(days=1)) or (b["lidz"] and b["lidz"] < d0):
+                    continue
+                for kods in skarti:
+                    pievienot(kods, diena, b["limenis"], f"LVĢMC {b['krasa'].lower()} brīdinājums: {b['paradiba'].lower()}",
+                              BRIDINAJUMU_AVOTS)
+    except Kluda:
+        pass
+    # Prognoze: (bez zibens/ceļiem) brāzmas un nokrišņi; prognoze aprēķina "klat" pirms zibens, lai max darbojas pareizi
+    for diena, datums in atslegas:
+        for kods, r in dati["kopsavilkums"].get(datums, {}).items():
+            lim = _pec_sliekshna(r["brazmas"], RISKA_BRAZMAS)
+            if lim:
+                pievienot(kods, diena, lim, f"brāzmas līdz {_skaitlis_lv(r['brazmas'])} m/s" +
+                          (f" ({r['brazmas_vieta']})" if r.get("brazmas_vieta") else ""), PROGNOZU_AVOTS)
+            lim = _pec_sliekshna(r["nokrisni"], RISKA_NOKRISNI)
+            if lim:
+                pievienot(kods, diena, lim, f"nokrišņi līdz {_skaitlis_lv(r['nokrisni'])} mm" +
+                          (f" ({r['nokrisni_vieta']})" if r.get("nokrisni_vieta") else ""), PROGNOZU_AVOTS)
+    if vietas:
+        atrast = _tuvaka_vieta_regions(vietas)
+        # Zibens pēdējās 30 min (FMI) — tikai šodien, +1
+        try:
+            skaits = {}
+            for z in _kesots("zibens_fmi", 60, _fmi_zibens)["zibeni"]:
+                kods = atrast(z["lat"], z["lon"])
+                if kods:
+                    skaits[kods] = skaits.get(kods, 0) + 1
+            for kods, n in skaits.items():
+                pievienot(kods, "sodien", 1, f"zibens pēdējās {ZIBENS_MIN} min: {n}", ZIBENS_AVOTS_ISS, klat=True)
+        except Kluda:
+            pass
+        # Slidens ceļš (LVC) — tikai šodien, +1; tikai no kešas, lai prognoze negaida NAP
+        with _kesas_slots:
+            ieraksts = _kesa.get(("celi", "slidens"))
+        skaits = {}
+        for n in (ieraksts[1] if ieraksts else None) or []:
+            kods = atrast(n["lat"], n["lon"])
+            if kods:
+                skaits[kods] = skaits.get(kods, 0) + 1
+        for kods, n in skaits.items():
+            pievienot(kods, "sodien", 1, f"slidens ceļš: {n} {'vieta' if n % 10 == 1 and n % 100 != 11 else 'vietas'}",
+                      LVC_AVOTS_ISS, klat=True)
+    for r in riski.values():
+        r["iemesli"].sort(key=lambda i: (i["diena"] != "sodien", i["klat"], -i["limenis"]))
+    return riski
+
+
+def _risku_zinas(riski, regioni_, dienas, sodien):
+    """Ziņa lentes augšā katrai dienai: plānošanas reģioni ar paaugstinātu risku un galvenais iemesls."""
+    zinas = []
+    for diena, datums in zip(["sodien", "rit"], dienas[:2]):
+        pa_pr = {}  # plānošanas reģions → [maks. līmenis, galvenais iemesls, novadi]
+        for kods, r in riski.items():
+            if r[diena] < 1:
+                continue
+            pr = regioni_[kods]["planosanas_regions"]
+            pr = PR_NOMINATIVS.get(pr, regioni_[kods]["nosaukums"])
+            iemesli = [i for i in r["iemesli"] if i["diena"] == diena]
+            galvenais = next((i for i in iemesli if not i["klat"]), iemesli[0] if iemesli else None)
+            esosais = pa_pr.setdefault(pr, [0, None, []])
+            esosais[2].append(kods)
+            if r[diena] > esosais[0]:
+                esosais[0], esosais[1] = r[diena], galvenais
+        if not pa_pr:
+            continue
+        seciba = sorted(pa_pr.items(), key=lambda x: -x[1][0])
+        nos = _dienas_nosaukums(datums, sodien)
+        dalas = [pr + (f" ({re.sub(r' [(].*[)]$', '', v[1]['teksts'])})" if v[1] else "") for pr, v in seciba]
+        kodi = [k for _pr, v in seciba for k in v[2]]
+        zinas.append({
+            "veids": "riski", "paradiba": "Risks", "limenis": seciba[0][1][0], "datums": datums, "diena": nos,
+            "virsraksts": f"{nos} paaugstināts risks: " + ", ".join(dalas),
+            "teksts": f"Novadi ar paaugstinātu risku: {len(kodi)}. Riska karte apvieno LVĢMC brīdinājumus, prognozi, "
+                      "zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
+            "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": PROGNOZU_AVOTS,
+        })
+    return zinas
+
+
 def prognozes(_q):
     return _kesots("prognozes_atbilde", 300, _prognozes)
 
@@ -666,7 +802,9 @@ def _prognozes():
         raise Kluda(503, "prognozes pašlaik nav pieejamas")
     sodien = tagad.date()
     dienas = [d for d in sorted(dati["kopsavilkums"]) if d >= sodien.isoformat()][:3]
-    zinas = bridinajumu_zinas + _prognozu_zinas(dati, regioni_, sodien, dienas)
+    riski = _riski(dati, regioni_, vietas, tagad, dienas)
+    zinas = _risku_zinas(riski, regioni_, dienas, sodien) + bridinajumu_zinas + \
+        _prognozu_zinas(dati, regioni_, sodien, dienas)
     # Ja dienā nekas nepārsniedz sliekšņus — viena mierīga ziņa, lai lente nav tukša
     for datums in dienas:
         if any(z["datums"] == datums and z["limenis"] >= 1 for z in zinas):
@@ -685,7 +823,8 @@ def _prognozes():
                       f"brāzmas līdz {_skaitlis_lv(brazmas)} m/s, nokrišņi līdz {_skaitlis_lv(nokrisni)} mm.",
             "regioni": [], "bbox": None, "avots": PROGNOZU_AVOTS,
         })
-    zinas.sort(key=lambda z: (z["veids"] != "bridinajums", z["datums"], -z["limenis"], z["virsraksts"]))
+    zinas.sort(key=lambda z: (z["veids"] != "riski", z["veids"] != "bridinajums", z["datums"], -z["limenis"],
+                              z["virsraksts"]))
     return {
         "laiks_lv": tagad.isoformat(timespec="minutes"),
         "prognoze_mainita": dati["mainits"],
@@ -695,6 +834,9 @@ def _prognozes():
                         "dienas": {d: dati["kopsavilkums"][d].get(k) for d in dienas}} for k, r in regioni_.items()},
         "bridinajumu_poligoni": poligoni,
         "sliekshni": PROGNOZU_SLIEKSNI,
+        "riski": riski,
+        "riska_dienas": {"sodien": dienas[0] if dienas else None, "rit": dienas[1] if len(dienas) > 1 else None},
+        "riska_limeni": RISKA_LIMENI,
     }
 
 

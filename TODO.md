@@ -24,6 +24,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Shelters: show whether animals/pets are accepted — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show capacity and live status (open for guests / full / closed) — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Transport layer: blocked / congested roads — check Waze for Cities (CCP) feed and transportdata.gov.lv (NAP) — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
@@ -43,7 +45,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
+- [ ] Risk map: add river level / flood-forecast and ice to the per-region risk (needs gauge thresholds — PRIS not open) — added 2026-10-10 02:28 +03:00 by noiseparty
 - [ ] Satiksme: get real responses of the minute speed feed (ed1f0d2c) and border waiting times (cb730ba2) and check `_datex_merijumi` / `_satiksmes_robezas` against them (parsers follow the DATEX II v3 standard, no sample yet) — added 2026-10-10 02:22 +03:00 by noiseparty
+- [ ] Satiksme: check `/api/satiksme` on the VPS (region lookup SQL untested locally: no PostGIS on dev machines) — added 2026-10-10 02:22 +03:00 by noiseparty
+- [ ] Flood WMS (geo-dpps) returned 504 after 60 s on 2026-10-10 ~02:30 — zones now draw without it, but re-check before the pitch; server-side tile cache would remove the dependency — added 2026-10-10 02:31 +03:00 by noiseparty
 
 - [ ] Email info@rigassatiksme.lv asking for a GTFS-RT (live vehicle positions / delays) feed under an open licence; today only static GTFS (CC0) is open — added 2026-10-10 02:27 +03:00 by noiseparty
 - [ ] Storm replay (`vetra-2026`): use real LVC road events from `/api/celi` instead of the simulated A7/P103 closure — added 2026-10-10 02:27 +03:00 by noiseparty
@@ -55,6 +60,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Traffic as zones (zonas.js): novadi coloured by LVC traffic level (`/api/satiksme`), 77 counter sites as dots, border waits as markers, slippery-road 15 km zones (hatched) in the overlap logic, toggles + legend, result-card line "Satiksme šajā apvidū" — done 2026-10-10 02:31 +03:00 by noiseparty (added 2026-10-10 02:31 +03:00 by noiseparty)
+- [x] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — done 2026-10-10 02:28 +03:00 by noiseparty: risk map today/tomorrow in the Prognoze panel (`riski` in `/api/prognozes`: LVĢMC warnings, gusts, rain, FMI lightning +1, LVC slippery roads +1; ice and river levels not yet) (added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] Incidents layer: LVC live road events (closures, ice, accidents) into `objekti` with `derigs_lidz`; needs NAP API key — done 2026-10-10 02:27 +03:00 by noiseparty: live as an overlay via `/api/celi` on the real NAP keys (#51, #61), not stored in `objekti` (added 2026-10-09 18:11 +03:00 by noiseparty)
 - [x] Transport layer: blocked / congested roads — check Waze for Cities (CCP) feed and transportdata.gov.lv (NAP) — done 2026-10-10 02:27 +03:00 by noiseparty: NAP: `/api/satiksme` minute speeds → municipality zones (#61); Waze CCP not usable (research 05); map layer → A (added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — done 2026-10-10 02:27 +03:00 by noiseparty: NAP slippery-road stations in `/api/satiksme` (#61); cameras not on NAP (added 2026-10-09 23:20 +03:00 by noiseparty)

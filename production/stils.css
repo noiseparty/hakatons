@@ -293,6 +293,37 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .zonu-legenda i.parklajas { border-color: #dc2626; background: repeating-linear-gradient(45deg, #b91c1c 0 2px, rgba(127, 29, 29, .47) 2px 6px); }
 .zonu-legenda small { color: #57534e; }
 .zonu-legenda.paslepta { display: none; }
-@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }  /* neaizsedz pamatkartes slēdzi */
+.leaflet-bottom.leaflet-right .zonu-legenda { margin-bottom: 52px; }  /* virs pamatkartes slēdža (.pamatkarte) */
+@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }
 .zonu-popup p { margin: .3rem 0; }
 .zonu-popup .paaugstinats { color: #b91c1c; }
+
+/* Riska karte (prognozes.js): slēdzis Šodien / Rīt blakus prognožu pogai, leģenda, novada logs ar iemesliem */
+.prognozes:not(.atverts) { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; max-width: calc(100% - 70px); }
+.riski-sledzis { display: inline-flex; align-items: center; gap: 2px; padding: 3px; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.riski-nos { font-size: .8rem; font-weight: 600; color: var(--teksts2); padding: 0 .3rem; }
+.riski-sledzis button { width: auto; min-height: 36px; padding: .25rem .55rem; font-size: .82rem; border: 0; }
+.riski-sledzis button.aktiva { background: #c2410c; color: #fff; font-weight: 600; }
+.prognozes.atverts .riski-sledzis { display: none; }
+.prognozes.zem:not(.atverts) { z-index: 399; }  /* kamēr atvērts kartes logs (prognozes.js) */  /* atvērtā panelī dienu izvēlas cilnes */
+.riski-legenda { display: flex; flex-wrap: wrap; gap: .2rem .6rem; padding: .3rem .5rem; font-size: .75rem; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.riski-legenda[hidden] { display: none; }
+.riski-legenda i { display: inline-block; width: .8rem; height: .8rem; margin-right: .25rem; vertical-align: -1px; border-radius: 2px; border: 1px solid rgba(0, 0, 0, .25); }
+.riski-legenda span { white-space: nowrap; }
+.prognozes.atverts .riski-legenda { position: absolute; left: 350px; top: 0; width: max-content; pointer-events: auto; }
+.riska-limenis { display: inline-block; margin: .15rem 0 .3rem; padding: .05rem .45rem; border-radius: 4px; font-weight: 700; font-size: .8rem; background: #e7e5e4; }
+.riska-limenis.riska-1 { background: #fde68a; }
+.riska-limenis.riska-2 { background: #f97316; color: #fff; }
+.riska-limenis.riska-3 { background: #dc2626; color: #fff; }
+.riska-iemesli { margin: 0 0 .3rem; padding-left: 1rem; font-size: .8rem; }
+.popup .riska-iemesli a { display: inline; margin: 0; font-weight: 400; }
+.prog-zina.lim-1[data-veids="riski"] { border-left-color: #fbbf24; }
+@media (max-width: 800px) {
+  .riski-sledzis button { min-height: 44px; }
+  .prognozes.atverts .riski-legenda { display: none; }  /* telefonā krāsas paskaidro panelis */
+}
+
+.zonu-legenda .skala { flex-wrap: wrap; gap: .15rem .3rem; }
+.zonu-legenda .skala i { width: 10px; border: 0; }
+.robezas-ikona span { display: flex; align-items: baseline; justify-content: center; gap: 1px; height: 100%; box-sizing: border-box; padding-top: 4px; border: 2px solid #1e3a8a; border-radius: 6px; background: #fff; color: #1e3a8a; font: 700 13px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.robezas-ikona small { font-size: 9px; font-weight: 600; }
