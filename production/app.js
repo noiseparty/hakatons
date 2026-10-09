@@ -1,6 +1,6 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
@@ -249,11 +249,23 @@ const pecNosaukuma = (a, b) => {
   return !x - !y || x.localeCompare(y, 'lv');  // bez nosaukuma — beigās
 };
 
+// Ūdens līmenis (LVĢMC): cm virs posteņa nulles un m LAS-2000,5; mērījuma laiks UTC → vietējais
+const komats = x => String(x).replace('.', ',');
+function udensLimenis(i) {
+  const izm = i.izmaina_24h_cm;
+  const r = [`Ūdens līmenis: <strong>${i.limenis_cm} cm</strong>` + (i.limenis_m != null ? ` (${komats(i.limenis_m)} m LAS)` : '')];
+  if (izm != null) r.push(`<small>Pēdējās 24 h: ${izm > 0 ? '↑ +' : izm < 0 ? '↓ −' : '→ '}${Math.abs(izm)} cm</small>`);
+  if (i.udens_temp != null) r.push(`<small>Ūdens temperatūra: ${komats(i.udens_temp)} °C</small>`);
+  if (i.laiks) r.push(`<small>Mērīts ${new Date(i.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}</small>`);
+  return r.join('<br>');
+}
+
 function popupSaturs(p, ll) {
   const k = kategorijas[p.kategorija] || {};
   const i = p.ipasibas || {};
   const rindas = [];
   if (p.adrese) rindas.push(esc(p.adrese));
+  if (i.limenis_cm != null) rindas.push(udensLimenis(i));
   if (i.piezime) rindas.push('<small>' + esc(i.piezime) + '</small>');
   if (i.opening_hours) rindas.push('<small>Darba laiks: ' + esc(i.opening_hours) + '</small>');
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');

@@ -1,0 +1,11 @@
+# /etc/systemd/system/hakatons-udens.path — ielādē uzreiz, kad main maina ūdens līmeņa ielādes kodu.
+[Unit]
+Description=Load LVĢMC water levels when their loader changes on main
+
+[Path]
+PathChanged=/srv/hakatons/src/karte/db/udens_limenis.py
+PathChanged=/srv/hakatons/src/karte/db/udens_limenis.sh
+Unit=hakatons-udens.service
+
+[Install]
+WantedBy=multi-user.target

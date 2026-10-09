@@ -41,8 +41,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — added 2026-10-09 20:15 +03:00 by noiseparty
-- [ ] Water level layer: 74 LVĢMC gauges, hourly `LIMEN` from data.gov.lv "Hidrometeoroloģiskie novērojumi" (CC0; join `hidro_stacijas`, level m = cm/100 + ELEVATION); danger levels only in PRIS `videscentrs.lvgmc.lv/data/pris_stations` (no licence: ask LVĢMC) — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
+- [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
+- [ ] Crisis search: add `udens_limenis` to the flood scenario in `production/scenariji.json`; optional 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) — added 2026-10-09 20:34 +03:00 by noiseparty
 
 ## In progress
 
@@ -53,6 +54,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [x] Crisis search: map always centres on the place named in the query ("lācis Ogre", "Rēzekne"), also when the scenario has no map layers or isn't recognised; zoom to the city + nearest per layer, not far-away 3rd results — done 2026-10-09 20:56 +03:00 by noiseparty
 - [x] Simulēti dati prototipam: `atseviski_dati/udens.csv` (100 publiskas ūdens ņemšanas vietas) + `atseviski_dati/energija.csv` (100 publiskie ierīču uzlādes punkti) + README ar ielādes komandām (`ielade.py` formāts, kategorijas `udens_punkts`/`uzlades_stacija`) — done 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia)
 - [x] Official CC0 layers loaded: VUGD depots, VP + municipal police, ZVA pharmacies, IeM IC medical institutions (PR #14) — done 2026-10-09 20:48 +03:00 by noiseparty
+- [x] Water level layer "Ūdens līmenis" (group Vide un ūdeņi): 74 LVĢMC gauges from data.gov.lv (CC0), hourly via `hakatons-udens.timer`; popup shows cm, m LAS-2000,5, 24 h change, water temperature, time; readings older than 6 h hidden — done 2026-10-09 20:34 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
 - [x] Crisis scenarios: all 119 from `notes/SCENARIJI.md` in the search classifier (own advice, map layers, 112), rare keywords weigh more, "Vai domāji…?" alternatives; #72/#73 not implemented as written (profiling) — done 2026-10-09 20:20 +03:00 by noiseparty (added 2026-10-09 18:46 +03:00 by noiseparty)
 - [x] Papildināt scenārijus: aizsalušas caurules, kanalizācija nestrādā, lifts nedarbojas, izsists logs, auto ceļa malā, trauma var/nevar kustēties — `notes/SCENARIJI.md` Nr 113–119, `production/scenariji.json` atslēgvārdi + "nevar kustēt" dzīvības draudos, 6 testi (70/70 ok) — done 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia)
 - [x] Address search in the map's search menu: 550k VZD building addresses (CC BY 4.0) in PostGIS (`adreses`, `src/karte/db/adreses.sh`), `/api/adreses`; picking an address makes it the reference point for the list, nearest shelter and crisis search — done 2026-10-09 20:15 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)

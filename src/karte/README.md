@@ -21,6 +21,7 @@ Caddy (map.repo.lv) ──/api/*──► karte_api.py :8920 (hakatons-map-api.s
 | `db/valsts_dati.py` | Valsts atvērtie dati no data.gov.lv (CC0): ārstniecības iestādes, VP iecirkņi, pašvaldību policija, VUGD depo (IeM IC), aptiekas (ZVA) → `dati/*.csv`. |
 | `db/osm_poi.py` | Tikai bankomāti un DUS no OpenStreetMap (ODbL; valsts datu nav) → `dati/osm_poi.geojson`. |
 | `db/ielade_visu.sh` | Ielādē visus avotus no jauna (shēma + visi `ielade.py` izsaukumi). |
+| `db/udens_limenis.py`, `.sh` | Ūdens līmenis 74 LVĢMC hidroloģiskajās stacijās (data.gov.lv, CC0), katru stundu: `hakatons-udens.timer` (:45) un `.path` (pēc izmaiņām main). Mērījums vecāks par 6 h netiek rādīts (`derigs_lidz`). |
 | `dati/` | Ielādējamie faili (avota momentuzņēmumi). Nav publiski. |
 | `db/slimnicas_24h.py` | 37 slimnīcas ar 24/7 neatliekamo palīdzību (VM 04.03.2026. rīkojums, Valsts katastrofu medicīnas plāna 12. pielikums) → `dati/slimnicas_24h.geojson`. Koordinātas no VZD adrešu reģistra (`aw_eka.csv`), PSKUS un RAKUS — uzņemšanas ieeja no OSM. Adreses pārbaudītas; `atseviski_dati/hospitals.csv` koordinātas bija aptuvenas (līdz 118 km nobīde), tāpēc netiek lietotas. |
 | `api/karte_api.py` | API (Python standarta bibliotēka + psycopg). Galapunkti aprakstīti faila sākumā. |
@@ -65,6 +66,7 @@ python src/karte/db/osm_poi.py          # OSM bankomāti, DUS → dati/ (lokāli
 bash src/karte/db/ielade_visu.sh        # VPS: shēma + visi avoti datubāzē
 bash src/karte/db/regioni.sh            # VPS: robežas (reizi mēnesī pietiek)
 bash src/karte/db/adreses.sh            # VPS: adrešu meklēšana (reizi mēnesī pietiek)
+systemctl start hakatons-udens.service  # VPS: ūdens līmenis tagad (citādi katru stundu pats)
 ```
 
 `ielade.py` papildus: `--srid 3059` (LKS-92 TM koordinātas), `--kodejums cp1257`, `--atdalitajs ";"`.

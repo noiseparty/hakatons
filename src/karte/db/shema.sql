@@ -32,7 +32,8 @@ insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
   ('bankomats',  'Bankomāti',                'infrastruktura', '#1d4ed8', 20),
   ('policija',   'Policija',                 'infrastruktura', '#1e3a8a', 50),
   ('ugunsdzeseji', 'Ugunsdzēsēji (VUGD)',    'infrastruktura', '#c2410c', 60),
-  ('degviela',   'Degvielas uzpildes stacijas', 'infrastruktura', '#a16207', 70)
+  ('degviela',   'Degvielas uzpildes stacijas', 'infrastruktura', '#a16207', 70),
+  ('udens_limenis', 'Ūdens līmenis upēs un ezeros (LVĢMC)', 'vide', '#0891b2', 80)
 on conflict (kods) do update set
   nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
 
@@ -96,6 +97,12 @@ insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, da
    'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', true,
    'https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati', 'aw_shp.zip (robežas), aw_eka.csv (adrešu koordinātas)',
    'Novadu, valstspilsētu un pilsētu robežas; adrešu meklēšana; 24/7 slimnīcu adreses un koordinātas', null, 80),
+  ('lvgmc-hidro', 'Hidrometeoroloģiskie novērojumi (hidroloģiskie operatīvie dati)', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi',
+   'hidro_stacijas.csv + hidro_operativie_dati.csv (katru stundu, src/karte/db/udens_limenis.py)',
+   'Ūdens līmenis un ūdens temperatūra hidroloģiskajās stacijās',
+   'Līmenis cm virs posteņa nulles (m LAS-2000,5 = nulle + cm/100); laiks UTC. Bīstamības līmeņi (PRIS) nav atvērtie dati, tāpēc netiek rādīti. Mērījums vecāks par 6 h kartē netiek rādīts.', 75),
   ('osm-karte', 'OpenStreetMap karšu fons', 'OpenStreetMap Foundation',
    'ODbL 1.0 (dati), CC BY-SA 2.0 (attēli); flīžu lietošanas noteikumi', 'https://operations.osmfoundation.org/policies/tiles/', true,
    'https://www.openstreetmap.org/copyright', 'https://tile.openstreetmap.org',
