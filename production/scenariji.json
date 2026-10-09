@@ -1,0 +1,151 @@
+{
+  "_apraksts": [
+    "Krīzes meklēšanas noteikumi (production/klasifikators.js). Bez AI: atslēgvārds = vārda sākums.",
+    "Atslēgvārdus raksti ar vai bez garumzīmēm (salīdzina bez tām), latviski, krieviski vai angliski.",
+    "'patvert' atrod patvertne/patvertnē/patvertni; '$' beigās = tikai vesels vārds ('deg$' neatrod 'degviela').",
+    "Frāze no vairākiem vārdiem sver vairāk ('gaisa uzbrukum' = 2 punkti, 'uzbruk' = 1).",
+    "kategorijas: slāņu kodi no tabulas kategorijas (src/karte/db/shema.sql), secībā, kādā rādīt.",
+    "Kategorijas, kuru vēl nav kartē, tiek izlaistas, tāpēc nākotnes slāņus var ierakstīt jau tagad.",
+    "zvanit112: scenārijs vienmēr rāda pogu 'Zvanīt 112'. dzivibas_draudi: frāzes, kas to rāda jebkurā scenārijā;",
+    "ja atrastas tikai tās, rāda dzivibas_draudi_scenarijs.",
+    "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
+    "vietu_sinonimi: citvalodu vietvārdi → nosaukums tabulā regioni. Latviskās formas (Ogrē, Rīgas) atrod pats.",
+    "Pārbaude: src/meklesana/testi.json (vaicājums → sagaidāmais scenārijs)."
+  ],
+  "dzivibas_draudi_scenarijs": "medicina",
+  "dzivibas_draudi": [
+    "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nereaģē", "nevar pamodināt", "nekustas",
+    "stipri asiņ", "nevar apturēt asiņ", "sirdslēkm", "infarkt", "insult", "krampj", "noslīk", "slīkst",
+    "saindēj", "saindēš", "pārdozē", "pašnāvīb", "dzemdē", "ugunsgrēk", "deg māja", "deg dzīvokl", "112$",
+    "не дыш", "без сознан", "сильное кровотеч", "инфаркт", "инсульт", "судорог", "тонет", "утону",
+    "отравл", "передоз", "суицид", "рожает", "пожар",
+    "not breathing", "can't breathe", "cant breathe", "unconscious", "heavy bleeding", "won't stop bleeding",
+    "heart attack", "stroke", "seizure", "drowning", "poison", "overdose", "suicid", "in labor", "on fire"
+  ],
+  "scenariji": [
+    {
+      "kods": "patvertne",
+      "nosaukums": "Patvertne",
+      "atra_poga": "🛡️ Patvertne",
+      "kategorijas": ["patvertne"],
+      "zvanit112": false,
+      "padoms": "Ja skan trauksmes sirēnas, ieslēdz LR1 vai LTV1 un seko norādēm. Dodies uz tuvāko patvertni vai paliec iekštelpās tālāk no logiem.",
+      "atslegvardi": [
+        "patvert", "patvēr", "slēptuv", "bunker", "pagrab", "sirēn", "trauksm", "gaisa uzbrukum", "gaisa trauksm",
+        "raķet", "dron", "apšaud", "šaud", "sprādzien", "bombard", "bumbu", "bumba$", "bumbas", "kara$", "karadarb",
+        "karš$", "paslēpt", "slēpties",
+        "укрыт", "убежищ", "бомбоубежищ", "подвал", "сирен", "тревог", "ракет", "дрон", "обстрел", "стрельб", "взрыв",
+        "бомб", "войн", "спрятат",
+        "shelter", "bunker", "basement", "siren", "air raid", "missile", "drone", "shelling", "shooting",
+        "explosion", "bomb", "war$", "hide"
+      ]
+    },
+    {
+      "kods": "medicina",
+      "nosaukums": "Medicīniskā palīdzība",
+      "atra_poga": "🏥 Ārsts",
+      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"],
+      "zvanit112": false,
+      "padoms": "Ja apdraudēta dzīvība, zvani 112. Ja nav steidzami, ģimenes ārsta konsultatīvais tālrunis 66016001 strādā visu diennakti.",
+      "atslegvardi": [
+        "ārst", "dakter", "medicīn", "mediķ", "slimnīc", "neatliekam", "uzņemšanas nodaļ", "ātrā palīdz", "ātro palīdz",
+        "ātrie$", "pirmā palīdz", "pirmo palīdz", "traum", "ievain", "sāp$", "sāpe", "sāpī", "slikti$", "slims$", "slima$",
+        "saslim", "temperatūr", "drudz", "lūzum", "lauzt", "salauz", "asiņ", "brūc", "apdeg", "sirds", "infarkt",
+        "insult", "elpo", "elpas trūk", "bezsamaņ", "ģībon", "noģīb", "krampj", "alerģ", "dzemd", "grūtniec", "sasit",
+        "sagriez", "iegriez", "kritu$", "veselīb", "saindē",
+        "врач", "доктор", "больниц", "скорая", "скорую", "скорой", "медиц", "медпомощ", "ранен", "травм", "боль$",
+        "болит", "больно", "болею", "кровь", "кровоточ", "кровотеч", "температур", "плохо", "сердц", "инфаркт",
+        "инсульт", "дыш", "перелом", "сломал", "ожог", "обжег", "беремен", "роды", "аллерг", "судорог", "отравл",
+        "doctor", "hospital", "medic", "ambulance", "injur", "wound", "hurt", "pain", "bleed", "fever", "sick", "ill$",
+        "heart", "stroke", "breath", "broken", "burn", "pregnan", "allerg", "emergency room", "first aid"
+      ]
+    },
+    {
+      "kods": "zales",
+      "nosaukums": "Zāles",
+      "atra_poga": "💊 Aptieka",
+      "kategorijas": ["aptieka", "neatliekama_24h"],
+      "zvanit112": false,
+      "padoms": "Pirms ej, pārbaudi aptiekas darba laiku. Zāles ar e-recepti var saņemt jebkurā aptiekā.",
+      "atslegvardi": [
+        "zāles$", "zāļu$", "zālēm", "aptiek", "medikament", "recept", "insulīn", "pretsāp", "antibiot", "tablet",
+        "inhalator", "pārsēj", "plāksteri",
+        "аптек", "лекарств", "таблет", "инсулин", "рецепт", "медикамент", "бинт",
+        "pharmac", "medicine", "medication", "drugstore", "pill", "insulin", "prescription", "painkiller", "bandage"
+      ]
+    },
+    {
+      "kods": "ugunsgreks",
+      "nosaukums": "Ugunsgrēks vai glābšana",
+      "atra_poga": "🔥 Ugunsgrēks",
+      "kategorijas": ["ugunsdzeseji"],
+      "zvanit112": true,
+      "padoms": "Zvani 112. Pamet telpas, aizver aiz sevis durvis un neizmanto liftu. Dūmos pārvietojies pieliecies pie grīdas.",
+      "atslegvardi": [
+        "ugun", "deg$", "degam", "dūm", "liesm", "gāzes noplūd", "gāzes smak", "smird pēc gāz", "glābēj", "vugd",
+        "iesprūd", "iestrēg", "applūd", "plūdi", "plūdu", "plūdos",
+        "пожар", "горит", "горим", "дым", "огонь", "огня", "запах газ", "утечка газ", "спасател", "наводнен", "затоп",
+        "fire", "smoke", "burning", "flame", "gas leak", "smell gas", "rescue", "trapped", "flood"
+      ]
+    },
+    {
+      "kods": "policija",
+      "nosaukums": "Policija un drošība",
+      "atra_poga": "🚓 Policija",
+      "kategorijas": ["policija"],
+      "zvanit112": false,
+      "padoms": "Ja briesmas draud tagad, zvani 112 vai 110. Neiesaisties konfliktā, dodies uz drošu vietu.",
+      "atslegvardi": [
+        "polic", "zagl", "zādz", "nozag", "aplaupī", "laupīš", "uzbruk", "draud", "vardarb", "piekāv", "pazud",
+        "ielauz", "krāpn", "huligān", "nozieg", "bīstams cilvēk", "seko man", "ierocis", "ierocī",
+        "полиц", "вор$", "вора$", "воры", "краж", "украл", "ограб", "напал", "насил", "угрож", "пропал", "избил",
+        "мошен", "оружи",
+        "police", "thief", "theft", "stole", "robb", "attacked", "attacker", "assault", "violen", "threat",
+        "missing", "break in", "burglar", "weapon", "gun$", "knife"
+      ]
+    },
+    {
+      "kods": "degviela",
+      "nosaukums": "Degviela un evakuācija ar auto",
+      "atra_poga": "⛽ Degviela",
+      "kategorijas": ["degviela"],
+      "zvanit112": false,
+      "padoms": "Pirms brauc prom, pārbaudi, vai ceļš nav slēgts. Evakuācijas laikā seko pašvaldības un 112.lv norādēm.",
+      "atslegvardi": [
+        "degviel", "benzīn", "dīzel", "dīzeļ", "uzpild", "dus$", "tankot", "evaku", "aizbrauk", "braukt prom",
+        "jābrauc prom",
+        "бензин", "топлив", "заправ", "дизел", "эвакуац", "уехать",
+        "fuel", "petrol", "gas station", "diesel", "refuel", "evacuat", "leave the city"
+      ]
+    },
+    {
+      "kods": "nauda",
+      "nosaukums": "Skaidra nauda",
+      "atra_poga": "💶 Bankomāts",
+      "kategorijas": ["bankomats"],
+      "zvanit112": false,
+      "padoms": "Ja nav elektrības vai sakaru, kartes var nedarboties. Turi mazliet skaidras naudas.",
+      "atslegvardi": [
+        "naud", "bankomāt", "eiro$", "kešs",
+        "деньг", "наличн", "банкомат", "кэш",
+        "cash", "atm$", "money", "withdraw"
+      ]
+    }
+  ],
+  "vietu_sinonimi": {
+    "Rīga": ["рига", "риге", "ригу", "риги"],
+    "Daugavpils": ["даугавпилс", "даугавпилсе"],
+    "Liepāja": ["лиепая", "лиепае", "лиепаю", "libau"],
+    "Jelgava": ["елгава", "елгаве", "mitau"],
+    "Jūrmala": ["юрмала", "юрмале"],
+    "Ventspils": ["вентспилс", "вентспилсе"],
+    "Rēzekne": ["резекне"],
+    "Valmiera": ["валмиера", "валмиере"],
+    "Jēkabpils": ["екабпилс", "екабпилсе"],
+    "Ogre": ["огре"],
+    "Cēsis": ["цесис", "цесисе"],
+    "Sigulda": ["сигулда", "сигулде"],
+    "Tukums": ["тукумс", "тукумсе"],
+    "Salaspils": ["саласпилс", "саласпилсе"]
+  }
+}
