@@ -482,7 +482,7 @@
     {
       "kods": "gaisa_trauksme", "nr": 62, "grupa": "F", "nosaukums": "Gaisa trauksme",
       "kategorijas": ["patvertne"], "zvanit112": false, "talak": "kars",
-      "padoms": "Uzreiz dodieties uz patvertni vai telpu bez logiem ēkas iekšienē, zemākajā stāvā. Ieslēdziet LR1. Palieciet tur, līdz trauksme atcelta.",
+      "padoms": "Ja saņemat gaisa trauksmes ziņu (LV-ALERT), uzreiz dodieties uz patvertni vai telpu bez logiem ēkas iekšienē, zemākajā stāvā, un palieciet tur, līdz trauksme atcelta. Ja dzirdat tikai sirēnas, ieslēdziet LTV1 vai Latvijas Radio — tur pateiks, kas noticis un kas jādara.",
       "atslegvardi": ["gaisa trauksm", "gaisa uzbrukum", "trauksm", "sirēn", "raķet", "bombard", "bumbas", "bumba$", "воздушн", "тревог", "сирен", "ракет", "бомб", "air raid", "siren", "missile", "bomb"]
     },
     {
@@ -831,12 +831,12 @@
     "pludi": [
       "Tagad: pārvietojieties augstāk; ja ūdens tuvojas rozetēm, izslēdziet elektrību. Nebrieniet un nebrauciet pa applūdušu ceļu.",
       "Tālāk: LVĢMC ik stundu atjauno upju līmeņus, brīdinājumi ir lapas augšā; par evakuāciju lemj pašvaldība kopā ar VUGD — sekojiet pašvaldības vietnei, LR1 un LTV1.",
-      "Ja izsludina evakuāciju, tālrunī pienāks LV-Alert šūnu apraides ziņa; dodieties uz pulcēšanās vietu, kas norādīta šajā kartītē.",
+      "Ja izsludina evakuāciju, tālrunī pienāks LV-ALERT šūnu apraides ziņa; dodieties uz pulcēšanās vietu, kas norādīta šajā kartītē.",
       "Meklējiet vēlreiz, ja ūdens līmenis vai Jūsu atrašanās vieta mainās. Ja apdraudēta dzīvība, zvaniet 112."
     ],
     "vetra": [
       "Tagad: palieciet telpās, tālāk no logiem; ienesiet vai nostipriniet priekšmetus, ko var aiznest vējš. Nebrauciet bez vajadzības.",
-      "Tālāk: LVĢMC brīdinājumi lapas augšā mainās līdz ar prognozi; oranža vai sarkana brīdinājuma gadījumā tālrunī var pienākt LV-Alert šūnu apraides ziņa.",
+      "Tālāk: LVĢMC brīdinājumi lapas augšā mainās līdz ar prognozi; par bīstamiem laikapstākļiem tālrunī var pienākt arī LV-ALERT šūnu apraides ziņa — izlasiet to visu un rīkojieties pēc norādēm.",
       "Nogāztiem vadiem nepieskarieties; elektrības bojājumus piesakiet Sadales tīklam (sadalestikls.lv), ceļu stāvokli skatiet lvceli.lv.",
       "Kad vētra pierimst, meklējiet vēlreiz, piemēram, „nav elektrības” vai „koks pāri ceļam”."
     ],
@@ -866,13 +866,13 @@
     ],
     "kimiska": [
       "Tagad: ieejiet telpās, aizveriet logus un durvis, izslēdziet ventilāciju; ja esat ārā, ejiet prom no dūmiem šķērsām vējam.",
-      "Tālāk: VUGD nosaka bīstamo zonu un lemj par evakuāciju; ziņas — LR1, LTV1, 112.lv un LV-Alert šūnu apraide tālrunī.",
+      "Tālāk: VUGD nosaka bīstamo zonu un lemj par evakuāciju; ziņas — LR1, LTV1, 112.lv un LV-ALERT šūnu apraide tālrunī.",
       "Neejiet skatīties un neatgriezieties, kamēr dienesti nav paziņojuši, ka ir droši.",
       "Ja izsludina evakuāciju, meklējiet vēlreiz ar savu adresi: kartītē būs tuvākā pulcēšanās vieta."
     ],
     "kars": [
-      "Tagad: sekojiet tikai oficiālām norādēm — LR1, LTV1, 112.lv; ja skan sirēnas, dodieties uz patvertni vai iekštelpās tālāk no logiem.",
-      "Tālāk: valsts un pašvaldība paziņos par evakuāciju un pulcēšanās vietām; tālrunī var pienākt LV-Alert šūnu apraides ziņa.",
+      "Tagad: sekojiet tikai oficiālām norādēm — LR1, LTV1, 112.lv; ja skan sirēnas, ieslēdziet LTV1 vai Latvijas Radio: tur pateiks, kāpēc tās skan un kas jādara.",
+      "Tālāk: valsts un pašvaldība paziņos par evakuāciju un pulcēšanās vietām; tālrunī var pienākt LV-ALERT šūnu apraides ziņa.",
       "Turiet tuvumā dokumentus, zāles, ūdeni un pārtiku vismaz 72 stundām; neizplatiet nepārbaudītas ziņas.",
       "Meklējiet vēlreiz ar savu adresi — kartītē būs tuvākā patvertne un evakuācijas vieta."
     ],
@@ -907,7 +907,7 @@
     ],
     "_": [
       "Tagad: ja apdraudēta dzīvība vai veselība, zvaniet 112.",
-      "Tālāk: oficiālā informācija — LVĢMC brīdinājumi lapas augšā, 112.lv, pašvaldības vietne, LR1 un LTV1; nopietnos gadījumos tālrunī pienāk LV-Alert šūnu apraides ziņa.",
+      "Tālāk: oficiālā informācija — LVĢMC brīdinājumi lapas augšā, 112.lv, pašvaldības vietne, LR1 un LTV1; nopietnos gadījumos tālrunī pienāk LV-ALERT šūnu apraides ziņa.",
       "Meklējiet vēlreiz, kad situācija vai Jūsu atrašanās vieta mainās."
     ]
   },

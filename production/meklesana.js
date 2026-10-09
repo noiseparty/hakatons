@@ -135,9 +135,10 @@ const krizesMeklesana = (() => {
   // Telefonā rezultāti ir zem kartes (un panelis var būt aizvērts): atveram to un ritinām līdz rezultātiem
   function raditRezultatus() {
     if (!matchMedia('(max-width: 800px)').matches) return;
+    if (typeof Apaksa !== 'undefined') { el('jautajums').blur(); return Apaksa.atvert('puse'); }  // apaksa.js: lapa virs kartes
     if (document.body.classList.contains('panelis-slegts')) el('panelis-poga').click();
     el('jautajums').blur();
-    setTimeout(() => kaste.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+    setTimeout(() => kaste.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }), 250);
   }
   kaste.addEventListener('click', e => {
     const darbiba = e.target.closest('[data-darbiba]')?.dataset.darbiba;
@@ -302,7 +303,7 @@ const krizesMeklesana = (() => {
     if (!no) {
       kaste.innerHTML = galva + `<p class="piezime vieta-zina">Lai atrastu tuvākās vietas, pievienojiet adresi vai pilsētu, piem.,
         „${esc(teksts)} Ogrē” vai „${esc(teksts)} Brīvības 15 Ogre”, vai nosakiet savu atrašanās vietu.</p>
-        <button type="button" class="galvena" data-darbiba="atrast">📍 Noteikt manu atrašanās vietu</button>` + beigas;
+        <button type="button" class="galvena" data-darbiba="atrast"><span aria-hidden="true">📍</span> Noteikt manu atrašanās vietu</button>` + beigas;
       return;
     }
 
@@ -347,7 +348,7 @@ const krizesMeklesana = (() => {
     .map((f, i) => ({ f, i, spec: f.properties.ipasibas?.specializeta ? 1 : 0 }))
     .sort((a, b) => a.spec - b.spec || a.i - b.i).slice(0, UZ_KATEGORIJU).map(x => x.f);
 
-  const notiritPoga = () => '<button type="button" class="otra" data-darbiba="notirit">✕ Notīrīt meklēšanu</button>';
+  const notiritPoga = () => '<button type="button" class="otra" data-darbiba="notirit"><span aria-hidden="true">✕</span> Notīrīt meklēšanu</button>';
 
   function vienums(f, no, virsraksts) {
     // attālums no reģiona centra nav "no tevis", tāpēc uznirstošajā logā to nerādām
@@ -372,7 +373,7 @@ const krizesMeklesana = (() => {
   // tukša rinda: norāde uz tuvāko patvertni (tā ir tajā pašā sarakstā).
   function drosasBloks(drosas, vietas, no) {
     const rindas = drosas.map((d, i) => {
-      const virsraksts = `<span class="drosa-nos">${d.ikona} ${esc(d.nos)}</span>`;
+      const virsraksts = `<span class="drosa-nos"><span aria-hidden="true">${d.ikona}</span> ${esc(d.nos)}</span>`;
       const f = vietas[i];
       if (f && d.aizstat && f.properties.attalums_m > 10000) {
         return vienums(f, no, virsraksts + '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā. Jautājiet savai pašvaldībai vai izmantojiet tuvāko patvertni.</small>');
@@ -387,8 +388,8 @@ const krizesMeklesana = (() => {
   // Plūdu scenārijiem: plūdu riska zona adresē (LVĢMC WMS caur /api/pludi; lēns, līdz 15 s) un tuvākās upes līmenis
   function pluduBloks() {
     return `<ul class="fakti" id="rez-pludi-bloks">
-      <li id="rez-pludi"><span class="ikona">🌊</span><div><b>Plūdu riska zona</b><span>Pārbauda… (līdz 15 s)</span></div></li>
-      <li id="rez-udens"><span class="ikona">📏</span><div><b>Tuvākā upe vai ezers</b><span>Ielādē…</span></div></li></ul>`;
+      <li id="rez-pludi"><span class="ikona" aria-hidden="true">🌊</span><div><b>Plūdu riska zona</b><span>Pārbauda… (līdz 15 s)</span></div></li>
+      <li id="rez-udens"><span class="ikona" aria-hidden="true">📏</span><div><b>Tuvākā upe vai ezers</b><span>Ielādē…</span></div></li></ul>`;
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
   function pluduDati(ll, signal) {
@@ -444,7 +445,9 @@ const krizesMeklesana = (() => {
     }
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
       .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
-    karte.fitBounds(L.latLngBounds(punkti), { padding: [40, 40], maxZoom: 15 });
+    // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
+    const apaksa = typeof Apaksa !== 'undefined' ? Apaksa.augstums() : 0;
+    karte.fitBounds(L.latLngBounds(punkti), { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40 + apaksa], maxZoom: 15 });
   }
 
   // Enter rezultātu sarakstā = klikšķis
