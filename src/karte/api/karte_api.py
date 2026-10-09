@@ -191,10 +191,11 @@ _kesas_slots = threading.Lock()
 
 
 def _kesots(atslega, sekundes, funkcija):
-    """Atgriež kešoto vērtību; ja avots nav pieejams, labāk novecojusi nekā nekāda."""
+    """Atgriež kešoto vērtību; ja avots nav pieejams, labāk novecojusi nekā nekāda.
+    sekundes var būt funkcija (vērtība → sekundes), piem., nepilnīgu atbildi kešot īsāk."""
     with _kesas_slots:
         ieraksts = _kesa.get(atslega)
-    if ieraksts and time.time() - ieraksts[0] < sekundes:
+    if ieraksts and time.time() - ieraksts[0] < (sekundes(ieraksts[1]) if callable(sekundes) else sekundes):
         return ieraksts[1]
     try:
         vertiba = funkcija()
@@ -325,7 +326,7 @@ def _pludu_serviss(veids, cels, slani, lat, lon):
         "feature_count": 10,
     }
     url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
-    atrasti = json.loads(_lejupieladet(url, timeout=25)).get("features", [])
+    atrasti = json.loads(_lejupieladet(url, timeout=15)).get("features", [])
     varbutibas = [slani[f["layerName"]] for f in atrasti if f.get("layerName") in slani]
     return {"veids": veids, "varbutiba_proc": max(varbutibas)} if varbutibas else None
 
@@ -350,7 +351,8 @@ def pludi(q):
         veidi.sort(key=lambda v: -v["varbutiba_proc"])
         return {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
 
-    return _kesots(("pludi", lat, lon), 86400, parbaudit)
+    # serviss mēdz atbildēt 1–30 s; ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min
+    return _kesots(("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
 
 
 def udens(q):
