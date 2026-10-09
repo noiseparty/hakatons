@@ -39,6 +39,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
+- [ ] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — added 2026-10-09 19:11 +03:00 by noiseparty
+- [ ] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — added 2026-10-09 20:15 +03:00 by noiseparty
+- [ ] Water level layer: gauge stations with current level + danger thresholds from an open source (research running) — added 2026-10-09 20:15 +03:00 by noiseparty
+- [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
 
 ## In progress
 
@@ -51,6 +55,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [x] Official CC0 layers loaded: VUGD depots, VP + municipal police, ZVA pharmacies, IeM IC medical institutions (PR #14) — done 2026-10-09 20:48 +03:00 by noiseparty
 - [x] Crisis scenarios: all 119 from `notes/SCENARIJI.md` in the search classifier (own advice, map layers, 112), rare keywords weigh more, "Vai domāji…?" alternatives; #72/#73 not implemented as written (profiling) — done 2026-10-09 20:20 +03:00 by noiseparty (added 2026-10-09 18:46 +03:00 by noiseparty)
 - [x] Papildināt scenārijus: aizsalušas caurules, kanalizācija nestrādā, lifts nedarbojas, izsists logs, auto ceļa malā, trauma var/nevar kustēties — `notes/SCENARIJI.md` Nr 113–119, `production/scenariji.json` atslēgvārdi + "nevar kustēt" dzīvības draudos, 6 testi (70/70 ok) — done 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia)
+- [x] Address search in the map's search menu: 550k VZD building addresses (CC BY 4.0) in PostGIS (`adreses`, `src/karte/db/adreses.sh`), `/api/adreses`; picking an address makes it the reference point for the list, nearest shelter and crisis search — done 2026-10-09 20:15 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
 - [x] Papildināt scenārijus: troksnis kaimiņš, huligāni uz ielas — `notes/SCENARIJI.md` (Nr 111–112), `production/scenariji.json` policijas atslēgvārdi (troksn/kaimiņ/шум/сосед/nois/neighbor/hooligan) + 4 testi `src/meklesana/testi.json` (64/64 ok) — done 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia)
 - [x] Izveidot `notes/SCENARIJI.md` — 110 dzīves/katastrofas/krīzes scenāriji ar meklēšanas atslēgvārdiem (pirmais melnraksts krīzes-meklēšanas klasifikatoram) — done 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:34 +03:00 by iesalnieksjanLatvia)
 - [x] Crisis search "Ko tev vajag?" without AI: free text (LV/RU/EN) → scenario, 112 prompt, place name → 3 nearest per layer; rules in `production/scenariji.json`, tests in `src/meklesana/` — done 2026-10-09 19:11 +03:00 by noiseparty

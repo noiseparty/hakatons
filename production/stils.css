@@ -58,6 +58,8 @@ button.otra:hover { background: var(--zils-gaiss); }
 #mekl-rezultati li { padding: .45rem .6rem; display: flex; gap: .5rem; align-items: flex-start; cursor: pointer; border-bottom: 1px solid #f0f0f0; }
 #mekl-rezultati li:hover, #mekl-rezultati li:focus { background: var(--zils-gaiss); outline: none; }
 #mekl-rezultati li.piezime { cursor: default; margin: 0; }
+#mekl-rezultati li.mekl-grupa { cursor: default; padding: .35rem .6rem .2rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts2); background: var(--fons); }
+#mekl-rezultati li.mekl-grupa:hover { background: var(--fons); }
 #mekl-rezultati .punkts { margin-top: .3rem; }
 #mekl-rezultati .teksts { min-width: 0; }
 #mekl-rezultati b { display: block; font-size: .88rem; }

@@ -16,6 +16,7 @@ Caddy (map.repo.lv) ──/api/*──► karte_api.py :8920 (hakatons-map-api.s
 |---|---|
 | `db/shema.sql` | Tabulas `regioni`, `kategorijas`, `avoti`, `objekti` + trigeris, kas punktam pieraksta pašvaldību un pilsētu. Slāņi un **datu avoti ar licencēm** definēti šeit. |
 | `db/regioni.sh` | 35 novadi, 7 valstspilsētas, 75 pilsētas no VZD adrešu reģistra (`aw_shp.zip`). |
+| `db/adreses.sh` | ~550 000 spēkā esošas ēku adreses ar koordinātām no VZD adrešu reģistra (`aw_eka.csv`, CC BY 4.0) → tabula `adreses`, meklēšanai `/api/adreses`. |
 | `db/ielade.py` | Ielādē GeoJSON vai CSV (lat/lon) kā vienu **avotu**; atkārtota ielāde aizvieto šī avota saturu. |
 | `db/valsts_dati.py` | Valsts atvērtie dati no data.gov.lv (CC0): ārstniecības iestādes, VP iecirkņi, pašvaldību policija, VUGD depo (IeM IC), aptiekas (ZVA) → `dati/*.csv`. |
 | `db/osm_poi.py` | Tikai bankomāti un DUS no OpenStreetMap (ODbL; valsts datu nav) → `dati/osm_poi.geojson`. |
@@ -63,6 +64,7 @@ python src/karte/db/valsts_dati.py      # data.gov.lv CSV → dati/ (lokāli; ta
 python src/karte/db/osm_poi.py          # OSM bankomāti, DUS → dati/ (lokāli; tad PR)
 bash src/karte/db/ielade_visu.sh        # VPS: shēma + visi avoti datubāzē
 bash src/karte/db/regioni.sh            # VPS: robežas (reizi mēnesī pietiek)
+bash src/karte/db/adreses.sh            # VPS: adrešu meklēšana (reizi mēnesī pietiek)
 ```
 
 `ielade.py` papildus: `--srid 3059` (LKS-92 TM koordinātas), `--kodejums cp1257`, `--atdalitajs ";"`.

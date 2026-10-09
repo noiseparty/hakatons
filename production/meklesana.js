@@ -57,7 +57,7 @@ const krizesMeklesana = (() => {
   // Reģionam ņem bbox centru.
   function izcelsme(vieta) {
     if (vieta) return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true };
-    if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: 'no tevis' };
+    if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: stavoklis.vieta.adrese ? `no adreses ${isaAdrese(stavoklis.vieta.adrese)}` : 'no tevis' };
     const r = regioni[stavoklis.regions];
     if (r) return { ...centrs(r), apraksts: `no centra (${r.nosaukums})`, regions: true };
     return null;

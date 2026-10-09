@@ -7,6 +7,8 @@ Galapunkti:
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
   GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
+  GET /api/adreses?q=brivibas 15 ogre&limit=8
+                                       adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
   GET /api/veseliba                    pārbaude
 
 Palaišana: MAP_DB_DSN=postgresql://map_api:...@127.0.0.1/map python3 karte_api.py [ports]
@@ -17,6 +19,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import parse_qs, urlparse
 
@@ -139,6 +142,31 @@ def objekti(q):
     )
 
 
+def _vienkarsot(teksts):
+    """Mazie burti bez garumzīmēm, kā adreses.meklesanai (lower(unaccent(...)))."""
+    return "".join(c for c in unicodedata.normalize("NFD", teksts.lower()) if not unicodedata.combining(c))
+
+
+def adreses(q):
+    vardi = [v for v in re.split(r"[\s,]+", _vienkarsot(q.get("q", [""])[0])) if v][:6]
+    if len("".join(vardi)) < 3:
+        raise Kluda(400, "q: vajag vismaz 3 burtus")
+    limit = int(_skaitlis(q, "limit", 1, 20) or 8)
+    raksti = ["%" + re.sub(r"([\\%_])", r"\\\1", v) + "%" for v in vardi]
+    # mājas numurs ("15" → "15", "15A"; ne "115", "k-15" vai "LV-5015") — augstāk sarakstā
+    numuri = [r"(^|\s)" + v + r"[a-z]?(,|\s|$)" for v in vardi if v.isdigit()]
+    return vaicat(
+        f"""select coalesce(json_agg(a), '[]') from (
+              select kods, adrese, round(st_y(geom)::numeric, 6) as lat, round(st_x(geom)::numeric, 6) as lon
+              from adreses
+              where {" and ".join(["meklesanai like %s"] * len(raksti))}
+              order by meklesanai ~ all(%s::text[]) desc, meklesanai like %s desc,
+                       similarity(meklesanai, %s) desc, length(adrese), adrese
+              limit %s) a""",
+        (*raksti, numuri, vardi[0] + "%", " ".join(vardi), limit),
+    )
+
+
 def veseliba(_q):
     return {"ok": vaicat("select true")}
 
@@ -149,6 +177,7 @@ MARSRUTI = [
     (re.compile(r"^/api/regioni/?$"), regioni, 3600),
     (re.compile(r"^/api/regioni/([^/]+)$"), regions, 3600),
     (re.compile(r"^/api/objekti/?$"), objekti, 60),
+    (re.compile(r"^/api/adreses/?$"), adreses, 3600),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
 ]
 

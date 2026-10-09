@@ -259,7 +259,7 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
-  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' no tevis</small>');
+  if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
     rindas.join('<br>') + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
@@ -303,11 +303,75 @@ function atvertObjektu(f) {
   L.popup().setLatLng(ll).setContent(popupSaturs(f.properties, ll)).openOn(karte);
 }
 
+// ---- Adreses (VZD adrešu reģistrs caur /api/adreses): izvēlētā adrese kļūst par atskaites punktu ----
+const isaAdrese = a => a.split(', ').slice(0, 2).join(', ');  // "Brīvības iela 15, Ogre"
+let adresuPieprasijums = null;
+let adresuTaimeris = null;
+
+function izveletiesAdresi(a) {
+  stavoklis.vieta = { lat: a.lat, lon: a.lon, adrese: a.adrese };
+  if (vietasSlanis) vietasSlanis.remove();
+  vietasSlanis = L.layerGroup([
+    L.circleMarker([a.lat, a.lon], { radius: 9, color: '#fff', weight: 3, fillColor: '#0077c8', fillOpacity: 1 })
+      .bindTooltip(isaAdrese(a.adrese), { permanent: true, direction: 'top', offset: [0, -8] })
+  ]).addTo(karte);
+  if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
+  el('atrast').textContent = '📍 Rādīt tuvākos man';
+  el('vieta-teksts').textContent = `Saraksts sakārtots pēc attāluma no adreses ${isaAdrese(a.adrese)} (taisnā līnijā).`;
+  karte.setView([a.lat, a.lon], 16);
+  atjaunot();
+  krizesMeklesana.atkartot();  // meklesana.js
+}
+
+function meklesanasRinda(krasa, virsraksts, apaksa, izveleties) {
+  const li = document.createElement('li');
+  li.tabIndex = 0;
+  li.setAttribute('role', 'option');
+  li.innerHTML = `<span class="punkts" style="background:${esc(krasa)}"></span>
+    <span class="teksts"><b>${esc(virsraksts)}</b><small>${esc(apaksa)}</small></span>`;
+  li.addEventListener('click', izveleties);
+  li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
+  return li;
+}
+
 function meklet() {
   const ul = el('mekl-rezultati');
-  const vardi = vienkarsot(el('meklet').value).split(/\s+/).filter(Boolean);
+  const vaicajums = el('meklet').value.trim();
+  const vardi = vienkarsot(vaicajums).split(/\s+/).filter(Boolean);
   ul.innerHTML = '';
+  clearTimeout(adresuTaimeris);
+  if (adresuPieprasijums) adresuPieprasijums.abort();
   if (!vardi.length || vardi.join('').length < 2) { ul.hidden = true; return; }
+
+  const adresuGrupa = document.createElement('li');
+  adresuGrupa.className = 'mekl-grupa';
+  adresuGrupa.textContent = 'Adreses';
+  if (vardi.join('').length >= 3) {
+    adresuGrupa.textContent = 'Adreses · meklē…';
+    adresuTaimeris = setTimeout(async () => {
+      adresuPieprasijums = new AbortController();
+      try {
+        const adreses = await iegut('/adreses?' + new URLSearchParams({ q: vaicajums, limit: 5 }), adresuPieprasijums.signal);
+        adresuGrupa.textContent = adreses.length ? 'Adreses' : 'Adreses · nav atrasta';
+        let pec = adresuGrupa;
+        for (const a of adreses) {
+          const li = meklesanasRinda('#0077c8', isaAdrese(a.adrese), a.adrese, () => {
+            ul.hidden = true; el('meklet').value = isaAdrese(a.adrese); izveletiesAdresi(a);
+          });
+          pec.after(li);
+          pec = li;
+        }
+      } catch (e) {
+        if (e.name !== 'AbortError') adresuGrupa.textContent = 'Adreses · neizdevās ielādēt';
+      }
+    }, 250);
+  }
+  ul.append(adresuGrupa);
+
+  const objektuGrupa = document.createElement('li');
+  objektuGrupa.className = 'mekl-grupa';
+  objektuGrupa.textContent = 'Kartē';
+  ul.append(objektuGrupa);
   const atrasti = [];
   for (const f of redzamie) {
     const p = f.properties;
@@ -317,17 +381,11 @@ function meklet() {
   for (const f of atrasti) {
     const p = f.properties;
     const k = kategorijas[p.kategorija] || {};
-    const li = document.createElement('li');
-    li.tabIndex = 0;
-    li.setAttribute('role', 'option');
-    li.innerHTML = `<span class="punkts" style="background:${esc(k.krasa)}"></span>
-      <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc(p.adrese || k.nosaukums)}</small></span>`;
-    const izveleties = () => { ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f); };
-    li.addEventListener('click', izveleties);
-    li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
-    ul.append(li);
+    ul.append(meklesanasRinda(k.krasa, nosaukums(p) || k.nosaukums, p.adrese || k.nosaukums, () => {
+      ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f);
+    }));
   }
-  if (!atrasti.length) ul.innerHTML = '<li class="piezime">Nekas netika atrasts ieslēgtajos slāņos.</li>';
+  if (!atrasti.length) objektuGrupa.textContent = 'Kartē · nekas ieslēgtajos slāņos';
   ul.hidden = false;
 }
 el('meklet').addEventListener('input', meklet);

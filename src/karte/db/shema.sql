@@ -95,7 +95,7 @@ insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, da
   ('vzd-varis', 'Valsts adrešu reģistra informācijas sistēmas atvērtie dati', 'Valsts zemes dienests',
    'CC BY 4.0', 'https://creativecommons.org/licenses/by/4.0/', true,
    'https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati', 'aw_shp.zip (robežas), aw_eka.csv (adrešu koordinātas)',
-   'Novadu, valstspilsētu un pilsētu robežas; 24/7 slimnīcu adreses un koordinātas', null, 80),
+   'Novadu, valstspilsētu un pilsētu robežas; adrešu meklēšana; 24/7 slimnīcu adreses un koordinātas', null, 80),
   ('osm-karte', 'OpenStreetMap karšu fons', 'OpenStreetMap Foundation',
    'ODbL 1.0 (dati), CC BY-SA 2.0 (attēli); flīžu lietošanas noteikumi', 'https://operations.osmfoundation.org/policies/tiles/', true,
    'https://www.openstreetmap.org/copyright', 'https://tile.openstreetmap.org',
@@ -147,6 +147,18 @@ do $$ begin
 exception when duplicate_object then null;
 end $$;
 
+-- Adrešu meklēšana: ēku adreses ar koordinātām (VZD adrešu reģistrs, aw_eka.csv; ielāde: adreses.sh).
+-- meklesanai = adrese mazajiem burtiem bez garumzīmēm; trigrammu indekss ļauj meklēt pēc vārdu daļām.
+create extension if not exists pg_trgm;
+create extension if not exists unaccent;
+create table if not exists adreses (
+  kods       text primary key,                  -- VZD adrešu reģistra kods
+  adrese     text not null,                     -- pilnā adrese (STD), piem. "Brīvības iela 15, Ogre, Ogres nov., LV-5001"
+  meklesanai text not null,
+  geom       geometry(Point, 4326) not null
+);
+create index if not exists adreses_meklesanai_idx on adreses using gin (meklesanai gin_trgm_ops);
+
 -- Publiskais API lieto map_api: tikai lasīšana.
 grant usage on schema public to map_api;
-grant select on regioni, kategorijas, objekti, avoti to map_api;
+grant select on regioni, kategorijas, objekti, avoti, adreses to map_api;
