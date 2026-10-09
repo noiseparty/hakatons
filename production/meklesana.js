@@ -1,4 +1,4 @@
-// "Ko tev vajag?": krīzes meklēšana — viens vaicājums ir gana. Teksts → scenārijs (klasifikators.js + scenariji.json,
+// "Kas Jums vajadzīgs?" (Ko tev vajag?): krīzes meklēšana — viens vaicājums ir gana. Teksts → scenārijs (klasifikators.js + scenariji.json,
 // bez AI, pārlūkā) + vieta (adrese ar mājas numuru → VZD /api/adreses; vietvārds → reģions; citādi mana vieta).
 // Rezultātā uzreiz: padoms, tuvākās vietas scenārija slāņos, drošās vietas (evakuācija, izmitināšana no CA plāniem,
 // patvertne, 24/7 slimnīca), plūdu scenārijiem — plūdu riska zona un upes līmenis; LVĢMC brīdinājumu josla (bridinajumi.js).
@@ -23,7 +23,10 @@ const krizesMeklesana = (() => {
   const rezultatuSlanis = L.layerGroup().addTo(karte);
   const kaste = el('rezultati');
 
-  async function sakt(regioniSaraksts) {
+  let bezDatiem = false;  // /api/kategorijas, /regioni vai /avoti neielādējās (app.js)
+
+  async function sakt(regioniSaraksts, datiNav = false) {
+    bezDatiem = datiNav;
     try {
       const noteikumi = await (await fetch('scenariji.json')).json();
       klasifikators = Klasifikators.izveidot(noteikumi, regioniSaraksts);
@@ -81,7 +84,7 @@ const krizesMeklesana = (() => {
   function vietaNav(liegta) {
     const zina = kaste.querySelector('.vieta-zina');
     if (zina) zina.innerHTML = `<span class="kluda">${liegta ? 'Atrašanās vieta nav atļauta.' : 'Atrašanās vietu neizdevās noteikt.'}</span>
-      Pievieno vaicājumam adresi vai pilsētu, piem., „${esc(pedejais?.teksts || 'plūdi')} Ogrē” vai „… Brīvības 15 Ogre”.`;
+      Pievienojiet vaicājumam adresi vai pilsētu, piem., „${esc(pedejais?.teksts || 'plūdi')} Ogrē” vai „… Brīvības 15 Ogre”.`;
   }
 
   // Kur meklēt: adrese vaicājumā → vietvārds vaicājumā (reģionu meklet() jau izvēlējās) → mana atrašanās vieta →
@@ -89,8 +92,8 @@ const krizesMeklesana = (() => {
   function izcelsme(vieta, adrese) {
     if (adrese) return { lat: adrese.lat, lon: adrese.lon, apraksts: `no adreses ${isaAdrese(adrese.adrese)}`, nosaukums: isaAdrese(adrese.adrese) };
     if (vieta) return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true, nosaukums: vieta.nosaukums };
-    if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: stavoklis.vieta.adrese ? `no adreses ${isaAdrese(stavoklis.vieta.adrese)}` : 'no tevis',
-      nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : 'Tavā vietā' };
+    if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: stavoklis.vieta.adrese ? `no adreses ${isaAdrese(stavoklis.vieta.adrese)}` : 'no Jums',
+      nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : 'Jūsu vietā' };
     const r = regioni[stavoklis.regions];
     if (r) return { ...centrs(r), apraksts: `no centra (${r.nosaukums})`, regions: true, nosaukums: r.nosaukums };
     return null;
@@ -174,16 +177,17 @@ const krizesMeklesana = (() => {
         ? `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
           (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}</p>` : '')
         : kurTeksts ? `<p class="sapratu">${adrese ? 'Adrese' : 'Vieta'}: <b>${esc(kurTeksts)}</b></p>` +
-            '<p class="piezime">Uzraksti arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.</p>' : '') +
-      zvanitTeksts;
-    const vaiDomaji = citi.length ? `<p class="piezime">Vai domāji:</p><div class="atras-pogas">` +
+            '<p class="piezime">Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.</p>' : '') +
+      zvanitTeksts +
+      (bezDatiem ? '<p class="piezime kluda">Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.</p>' : '');
+    const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
     const beigas = vaiDomaji + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
     if (!galvenais && !kurTeksts) {
       if (jaunsRegions) atjaunot();
-      kaste.innerHTML = draudi + `<p class="piezime">Nesapratu, ko tev vajag. Uzraksti citiem vārdiem, piem., „patvertne”, „ārsts”,
+      kaste.innerHTML = draudi + `<p class="piezime">Nesapratām, kas Jums vajadzīgs. Uzrakstiet citiem vārdiem, piem., „patvertne”, „ārsts”,
         „plūdi Ogrē”, „nav elektrības Brīvības 15 Ogre”.</p>` + (draudi ? '' : '<p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>') + notiritPoga();
       return;
     }
@@ -201,8 +205,8 @@ const krizesMeklesana = (() => {
     if (kodi.length || jaunsRegions) atjaunot();
 
     if (!no) {
-      kaste.innerHTML = galva + `<p class="piezime vieta-zina">Lai atrastu tuvākās vietas, pievieno adresi vai pilsētu, piem.,
-        „${esc(teksts)} Ogrē” vai „${esc(teksts)} Brīvības 15 Ogre”, vai nosaki savu atrašanās vietu.</p>
+      kaste.innerHTML = galva + `<p class="piezime vieta-zina">Lai atrastu tuvākās vietas, pievienojiet adresi vai pilsētu, piem.,
+        „${esc(teksts)} Ogrē” vai „${esc(teksts)} Brīvības 15 Ogre”, vai nosakiet savu atrašanās vietu.</p>
         <button type="button" class="galvena" data-darbiba="atrast">📍 Noteikt manu atrašanās vietu</button>` + beigas;
       return;
     }
@@ -226,7 +230,7 @@ const krizesMeklesana = (() => {
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
       if (pludi) pluduDati(ll, signal);
     } catch (e) {
-      if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģini vēlreiz pēc brīža.</p>' + beigas;
+      if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>' + beigas;
     }
   }
 
@@ -263,11 +267,11 @@ const krizesMeklesana = (() => {
       const virsraksts = `<span class="drosa-nos">${d.ikona} ${esc(d.nos)}</span>`;
       const f = vietas[i];
       if (f && d.aizstat && f.properties.attalums_m > 10000) {
-        return vienums(f, no, virsraksts + '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā. Jautā savai pašvaldībai vai izmanto tuvāko patvertni.</small>');
+        return vienums(f, no, virsraksts + '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā. Jautājiet savai pašvaldībai vai izmantojiet tuvāko patvertni.</small>');
       }
       if (f) return vienums(f, no, virsraksts);
       return `<li class="tuksa"><span class="teksts">${virsraksts}<small>${d.aizstat
-        ? 'Šai vietai pašvaldības CA plānā mūsu datos vēl nav. Izmanto tuvāko patvertni.' : 'Datos nav atrasta. Jautā pašvaldībai.'}</small></span></li>`;
+        ? 'Šai vietai pašvaldības CA plānā mūsu datos vēl nav. Izmantojiet tuvāko patvertni.' : 'Datos nav atrasta. Jautājiet pašvaldībai.'}</small></span></li>`;
     }).join('');
     return `<h3>Drošās vietas tuvumā</h3><ol class="rez-saraksts drosas">${rindas}</ol>`;
   }

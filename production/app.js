@@ -21,7 +21,7 @@ for (const slanis of Object.values(pamatkartes)) {
   slanis.on('tileload', () => { flizesIeladetas = true; });
   slanis.on('tileerror', () => {
     if (++flizuKludas !== 8 || flizesIeladetas) return;
-    el('kartes-kluda').textContent = 'Kartes fona attēli neielādējas. Pārbaudiet interneta savienojumu; punkti un "Mana adrese krīzē" strādā arī bez fona.';
+    el('kartes-kluda').textContent = 'Kartes fona attēli neielādējas. Pārbaudiet interneta savienojumu; punkti un meklēšana strādā arī bez fona.';
     el('kartes-kluda').hidden = false;
   });
 }
@@ -286,7 +286,7 @@ function popupSaturs(p, ll) {
   if (i.piezime) rindas.push('<small>' + esc(i.piezime) + '</small>');
   if (i.opening_hours) rindas.push('<small>Darba laiks: ' + esc(i.opening_hours) + '</small>');
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
-  if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
+  if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
@@ -444,4 +444,7 @@ Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
     aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); krizesMeklesana.sakt(r);
   })
-  .catch(() => statuss('Datus neizdevās ielādēt. Mēģini vēlreiz pēc brīža.', true));
+  .catch(() => {
+    statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
+    krizesMeklesana.sakt([], true);  // padoms un 112 rinda strādā arī bez kartes datiem
+  });
