@@ -10,6 +10,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Add AGENTS.md so non-Claude agents (Mistral etc.) pick up the workflow — done 2026-10-09 17:23 +03:00 by noiseparty (added 2026-10-09 17:23 +03:00 by noiseparty)
 - [x] Write git workflow + TODO.md rules for all AI agents into README.md — done 2026-10-09 17:21 +03:00 by noiseparty (added 2026-10-09 17:21 +03:00 by noiseparty)
 - [x] Protect `main`: PRs required (0 approvals, self-merge OK), no force-push or deletion, applies to admins too — done 2026-10-09 17:20 +03:00 by noiseparty (added 2026-10-09 17:13 +03:00 by noiseparty)
 - [x] Add TODO.md and the `todo` skill for tracking tasks — done 2026-10-09 17:13 +03:00 by noiseparty (added 2026-10-09 17:13 +03:00 by noiseparty)
