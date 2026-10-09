@@ -68,6 +68,17 @@
       <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
       <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta">◎</button>
     </div>
+    <div id="prognozes" class="prognozes" hidden>
+      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis">⛅ <span class="prog-poga-teksts">Prognoze</span></button>
+      <section id="prog-panelis" class="prog-panelis" aria-label="Prognoze un brīdinājumi" hidden>
+        <div class="prog-galva">
+          <h2>Prognoze un brīdinājumi</h2>
+          <button type="button" class="prog-aizvert" aria-label="Aizvērt prognozi">✕</button>
+        </div>
+        <div class="prog-dienas" role="group" aria-label="Diena"></div>
+        <div class="prog-saturs" aria-live="polite"></div>
+      </section>
+    </div>
     <div class="pamatkarte" role="group" aria-label="Pamatkarte">
       <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
       <button type="button" data-pamats="reljefs" aria-pressed="false">Reljefs</button>
@@ -92,5 +103,6 @@
 <script src="app.js"></script>
 <script src="meklesana.js"></script>
 <script src="bridinajumi.js"></script>
+<script src="prognozes.js"></script>
 </body>
 </html>
