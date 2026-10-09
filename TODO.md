@@ -28,6 +28,15 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `evakuacijas_punkts`, `uzlades_stacija` — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
+- [ ] Accessibility for blind & disabled users: screen-reader labels, keyboard navigation, contrast, text alternative to the map (list view); check against WCAG 2.1 AA / VDAA guidelines — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Shelters: show wheelchair access (ramp / step-free entrance) in popups and as a filter — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Shelters: show whether animals/pets are accepted — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Shelters: show capacity and live status (open for guests / full / closed) — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Transport layer: blocked / congested roads — check Waze for Cities (CCP) feed and transportdata.gov.lv (NAP) — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Show current weather from LVĢMC on the map (observations + forecast) — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 
 ## In progress
 
