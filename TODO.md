@@ -37,7 +37,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty
-- [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] Confirm LR1 FM frequencies against the official LR/NEPLP list (demo cards say Rīga 90.7 FM from a secondary source) — added 2026-10-10 01:58 +03:00 by noiseparty
@@ -63,6 +62,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Mobile: show search results as a bottom sheet over the map instead of below it — done 2026-10-10 02:19 +03:00 by noiseparty: `production/apaksa.js` (peek / half / full, verdict line first, route button, collapses when demo/forecast/filters open) (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Accessibility pass (WCAG 2.1 AA basics): visible focus, contrast fixes, aria-hidden icons, reduced motion, heading order, Escape closes the forecast panel; axe-core 0 violations on index (search, suggestions, result card, sources) and statuss.html at 375 and 1280 px — done 2026-10-10 02:09 +03:00 by noiseparty; no real screen-reader test (added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] "Datu avoti" panel lists every dataset the site uses (DB rows + API-side LVĢMC, LVC/NAP, FMI, Open-Meteo, OpenTopoMap), with "N atvērto datu avoti", update frequency and last update for warnings/forecast — done 2026-10-10 02:09 +03:00 by noiseparty (added 2026-10-10 02:09 +03:00 by noiseparty)
 - [x] Status page round 2: flood check capped at 10 s, history read errors logged, grey "Nav datu" state; new rows for the LVĢMC forecast (cache age), FMI lightning, Open-Meteo soil/rain and LVC roads (grey until NAP keys) — done 2026-10-10 02:08 +03:00 by noiseparty (added 2026-10-10 02:08 +03:00 by noiseparty)
