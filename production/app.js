@@ -9,11 +9,22 @@ const pamatkartes = {
     maxZoom: 19,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
   }),
-  satelits: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 19,
-    attribution: 'Attēli: Esri, Maxar, Earthstar Geographics'
+  // reljefs (augstumi, upju ielejas): OSM dati + SRTM, atvērta licence (Esri satelītattēli nav atvērtie dati)
+  reljefs: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    maxZoom: 17,
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki, SRTM · stils &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC BY-SA)'
   })
 };
+// Ja fona attēli neielādējas (nav interneta, serviss nepieejams) — skaidrs paziņojums, nevis pelēks laukums
+let flizesIeladetas = false, flizuKludas = 0;
+for (const slanis of Object.values(pamatkartes)) {
+  slanis.on('tileload', () => { flizesIeladetas = true; });
+  slanis.on('tileerror', () => {
+    if (++flizuKludas !== 8 || flizesIeladetas) return;
+    el('kartes-kluda').textContent = 'Kartes fona attēli neielādējas. Pārbaudiet interneta savienojumu; punkti un "Mana adrese krīzē" strādā arī bez fona.';
+    el('kartes-kluda').hidden = false;
+  });
+}
 pamatkartes.karte.addTo(karte);
 L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(karte);
 
@@ -37,6 +48,11 @@ el('panelis-poga').addEventListener('click', () => {
   el('panelis-poga').setAttribute('aria-expanded', atverts);
   setTimeout(() => karte.invalidateSize(), 200);
 });
+// Telefonā filtru panelis sākumā aizvērts: karte visā augstumā; meklēšanas rezultāti to atver (meklesana.js)
+if (matchMedia('(max-width: 800px)').matches) {
+  document.body.classList.add('panelis-slegts');
+  el('panelis-poga').setAttribute('aria-expanded', 'false');
+}
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const statuss = (t, kluda) => { el('statuss').textContent = t; el('statuss').classList.toggle('kluda', !!kluda); };
 

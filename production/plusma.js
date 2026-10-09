@@ -403,13 +403,13 @@ const Plusma = (() => {
       </div>
       <div class="darbibas">
         <button type="button" class="galvena" id="drukat">🖨 Saglabāt / drukāt karti</button>
-        <button type="button" class="otra" id="skatit-karte">🗺 Skatīt kartē</button>
+        ${window.PlusmasKarte ? '<button type="button" class="otra" id="skatit-karte">🗺 Skatīt kartē</button>' : ''}
         <button type="button" class="otra" id="no-jauna">↺ Sākt no jauna</button>
         <a class="atsauksme" href="https://github.com/noiseparty/hakatons/issues/new?title=${encodeURIComponent('Atsauksme: Mana adrese krīzē')}" target="_blank" rel="noopener">Atsauksme par šo rīku</a>
       </div>
       ${navigacija(3).replace('class="navigacija"', 'class="navigacija beigas"')}`;
     $('drukat').addEventListener('click', () => { saglabat(); window.print(); });
-    $('skatit-karte').addEventListener('click', () => { window.PlusmasKarte?.radit(rezultats); uz('karte'); });
+    $('skatit-karte')?.addEventListener('click', () => { window.PlusmasKarte?.radit(rezultats); uz('karte'); });
     $('no-jauna').addEventListener('click', () => {
       Object.assign(st, { vieta: null, situacija: null, scenarijs: null, teksts: '' });
       st.apstakli.clear();
@@ -582,6 +582,7 @@ const Plusma = (() => {
 
   // ---------- Sākums ----------
   function sakt() {
+    if (!window.PlusmasKarte) $('rezims-poga').hidden = true;  // Leaflet neielādējās: bez kartes režīma
     $('rezims-poga').addEventListener('click', () => uz(solis() === 'karte' ? (rezultats ? 4 : st.vieta ? 2 : 1) : 'karte'));
     document.addEventListener('click', e => {
       const b = e.target.closest('[data-uz]');

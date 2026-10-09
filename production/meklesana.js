@@ -18,14 +18,22 @@ const krizesMeklesana = (() => {
       return;
     }
     const q = new URLSearchParams(location.search).get('q');
-    if (q) { el('jautajums').value = q; meklet(q); }
+    if (q) { el('jautajums').value = q; meklet(q); raditRezultatus(); }
   }
 
   el('meklet-forma').addEventListener('submit', e => {
     e.preventDefault();
     const teksts = el('jautajums').value.trim();
-    if (teksts) meklet(teksts); else notirit();
+    if (teksts) { meklet(teksts); raditRezultatus(); } else notirit();
   });
+
+  // Telefonā rezultāti ir zem kartes (un panelis var būt aizvērts): atveram to un ritinām līdz rezultātiem
+  function raditRezultatus() {
+    if (!matchMedia('(max-width: 800px)').matches) return;
+    if (document.body.classList.contains('panelis-slegts')) el('panelis-poga').click();
+    el('jautajums').blur();
+    setTimeout(() => kaste.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
+  }
   kaste.addEventListener('click', e => {
     const darbiba = e.target.closest('[data-darbiba]')?.dataset.darbiba;
     if (darbiba === 'notirit') notirit();
@@ -84,8 +92,7 @@ const krizesMeklesana = (() => {
     if (!rez.scenariji.length) {
       if (jaunsRegions) atjaunot();
       kaste.innerHTML = zvanit(rez) + (rez.vieta ? `<p class="sapratu">Vieta: <b>${esc(rez.vieta.nosaukums)}</b></p>` : '') +
-        `<p class="piezime">Nesapratu, ko tev vajag. Izvēlies kādu no pogām augstāk
-        vai uzraksti citiem vārdiem, piem., „patvertne”, „ārsts”, „aptieka”.</p>` + (rez.zvanit112 ? '' : zvanit({ zvanit112: true }, true)) + notiritPoga();
+        `<p class="piezime">Nesapratu, ko tev vajag. Uzraksti citiem vārdiem, piem., „patvertne”, „ārsts”, „aptieka”.</p>` + (rez.zvanit112 ? '' : zvanit({ zvanit112: true }, true)) + notiritPoga();
       return;
     }
 
