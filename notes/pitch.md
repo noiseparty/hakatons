@@ -1,6 +1,6 @@
 # Pitch: "Ko Jums vajag?" — map.repo.lv (10 min)
 
-Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#51, D's demo PR). Spoken in Latvian; slide text below is what goes on screen. **[D]** = fill in from D's demo PR (`?demo=<kods>` codes); **[gaida]** = only if that PR is merged and live by the freeze.
+Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#54); everything below is merged and live. **[NAP]** = shown only once the NAP keys are set on the VPS. Spoken in Latvian; slide text below is what goes on screen.
 
 Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 only once (3, 6), 3 the 3–6 step flow + summary + ending (slide 5, the sentence in bold), 4 works on a phone (live demo + statuss.html), 5 AI + open data (6–7).
 
@@ -52,25 +52,25 @@ Viena kartīte: LVĢMC brīdinājumi · lēmums (piem., plūdu zona jā/nē pie 
 
 Main path (~2 min), scenario **Ogre, plūdi** (Ogres plāns ir pilnīgākais):
 1. **Vieta:** "📍 Rādīt tuvākos man" vai adrese meklēšanā (VZD).
-2. **Vajadzība:** ierakstu "plūdi Mednieku iela 9 Ogre" (vai pieskaros "Biežāk meklētais" ieteikumam **[gaida #45]**).
+2. **Vajadzība:** ierakstu "plūdi Mednieku iela 9 Ogre" (vai pieskaros "Biežāk meklētais" ieteikumam).
 3. **Rezultāts — viena kartīte:**
    - LVĢMC brīdinājums šai vietai (ja ir);
-   - lēmums: adrese ir / nav plūdu riska zonā (LVĢMC kartes); zona kartē kā laukums ar robežu, pārklāšanās ar brīdinājuma apgabalu iesvītrota **[gaida #48]**;
-   - tuvākā upes stacija ar līmeni un 24 h izmaiņu; "Nokrišņi un augsne" rinda (Open-Meteo) **[gaida #50]**; ceļu slēgumi 5 km rādiusā (LVC) **[gaida #51 + NAP atslēgas]**;
+   - lēmums: adrese ir / nav plūdu riska zonā (LVĢMC kartes); zona kartē kā laukums ar robežu, pārklāšanās ar brīdinājuma apgabalu iesvītrota;
+   - tuvākā upes stacija ar līmeni un 24 h izmaiņu; "Nokrišņi un augsne" rinda (Open-Meteo); ceļu slēgumi 5 km rādiusā (LVC) **[NAP]**;
    - tuvākā pulcēšanās vieta un pagaidu izmitināšana ar vietu skaitu un saiti uz CA plāna lappusi; patvertne; 24/7 slimnīca; maršruta saites;
-   - padoms scenārijam; "Kas notiks tālāk" **(vēl jāuzbūvē — sk. checklist)**.
+   - padoms scenārijam; "Kas notiks tālāk" (#54).
 
 Second, 20 s: free text "cilvēks nav pie samaņas" → kartītes augšā sarkana rinda "zvaniet 112". **No buttons, no tel: links** (team decision) — say: "mēs nerādām pogu, mēs pasakām skaidri".
 
-Third, 30 s — demo sidebar **[gaida D]**, deep links (open them from a QR or bookmarks, each with the "SIMULĀCIJA" badge):
+Third, 30 s — demo panel (#53), deep links (open them from a QR or bookmarks, each with the "SIMULĀCIJA" badge):
 
 | Kods | Scenārijs | What to point at |
 |---|---|---|
-| `?demo=[D]` | 2026-08-22/23 vētras atkārtojums | brīdinājumi + slēgti ceļi + bez elektrības reģionā |
-| `?demo=[D]` | Ogre, plūdi → augstiene ≥15 m (LĢIA DEM) | kur iet, ja pulcēšanās vieta applūst |
-| `?demo=[D]` | Nakts, sagriezta roka → 24/7 neatliekamā | viena atbilde, nevis saraksts |
+| `?demo=vetra-2026` | 2026-08-22/23 vētras atkārtojums (Bauska) | simulēti elektrības atslēgumu apgabali; reālie bankomāti un DUS tajos |
+| `?demo=pludi-ogre` | Ogre, plūdi → augstiene ≥23 m (LĢIA DEM) | kur iet, ja pulcēšanās vieta applūst |
+| `?demo=nakts` | Nakts, sagriezta roka (Saulkrasti, 03:00) → 24/7 neatliekamā | viena atbilde, nevis saraksts |
 
-Pick 2 of D's 7 scenarios for the 30 s; keep the rest for questions. Say "simulācija" every time: the data in these is not live.
+Pick 2 of the 7 for the 30 s; the others for questions: `vejs` (dzeltenais, vējš), `vetra` (sarkanais, vētra), `drons` (Rēzekne, 1 km slēgta zona), `bez-sakariem` (bez elektrības un sakariem; `&regions=100003470` = Ogre). Why 23 m and not 15 m: in Ogre the Daugava is at ~17–18 m, so ≥15 m covers 99.6 % of the area (`notes/demo-scenariji.md` §5). Say "simulācija" every time: the data in these is not live.
 
 Fourth, 10 s: map.repo.lv/statuss.html — "katram avotam redzams, vai tas šobrīd darbojas" (criterion 4: no dead ends, honest about outages).
 
@@ -88,18 +88,18 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 
 ## 7:15–8:30 · 7. Atvērtie dati
 
-**Slide (criterion 5, one line on top):** "18 atvērti avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Viens izņēmums atklāti atzīmēts ⚠."
+**Slide (criterion 5, one line on top):** "19 atvērti avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Viens izņēmums atklāti atzīmēts ⚠."
 
 Grid, each with licence:
 - **VZD** adrešu reģistrs (CC BY 4.0) · **42 pašvaldību CA plāni** (oficiāls dokuments) · **VM** 24/7 slimnīcas (oficiāls dokuments)
 - **IeM IC** ārstniecības iestādes, VP iecirkņi, pašvaldības policija, VUGD depo (CC0) · **ZVA** aptiekas (CC0)
-- **LVĢMC** ūdens līmenis, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām (CC0) · zibens režģis (CC0) **[gaida #50]**
-- **FMI** zibens, pēdējās 30 min (CC BY 4.0) **[gaida #50]** · **Open-Meteo** nokrišņi un augsne (CC BY 4.0) **[gaida #50]** · **LVC** ceļu slēgumi un negadījumi caur NAP (CC0) **[gaida #51]**
+- **LVĢMC** ūdens līmenis, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām (CC0) · zibens režģis (CC0)
+- **FMI** zibens, pēdējās 30 min (CC BY 4.0) · **Open-Meteo** nokrišņi un augsne (CC BY 4.0) · **LVC** ceļu slēgumi un negadījumi caur NAP (CC0)
 - **OpenStreetMap** bankomāti, DUS, karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA)
 - ⚠ VUGD/112.lv patvertnes (781) — licence nav norādīta
-- **LĢIA** 20 m augstuma modelis (CC BY 4.0) **[gaida D]** → 19 avoti
+- **LĢIA** 20 m augstuma modelis (CC BY 4.0), demo scenārijā "Plūdi Ogrē"
 
-Count rule: 18 = all the above without ⚠ and without LĢIA. If #50/#51 are not merged by the freeze, subtract 4 (→ 14) and drop their rows.
+Count: 19 = all the above without ⚠. LVC is counted but its layer is empty until the NAP keys are set; if they aren't by the freeze, say "pieslēgts, gaida atslēgas".
 
 **Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
 
@@ -119,9 +119,9 @@ Count rule: 18 = all the above without ⚠ and without LĢIA. If #50/#51 are not
 ## Demo checklist (before judging)
 
 - [ ] **Freeze `main`** 1 h before judging — every merge goes live within a minute.
-- [ ] **"Kas notiks tālāk" block in the result card** — not built yet; the criterion-3 sentence above names it. If it isn't live by the freeze, drop it from the sentence and slide 4.
-- [ ] Fill in the `?demo=` codes from D's PR and test each deep link on a phone.
-- [ ] Recount slide 7 against what is merged (see the count rule).
+- [x] "Kas notiks tālāk" block in the result card (#54).
+- [ ] Test the 3 demo deep links (`?demo=vetra-2026`, `?demo=pludi-ogre`, `?demo=nakts`) on a phone.
+- [ ] NAP keys set? If not, say so on slide 7 (see the count note).
 - [ ] Run the exact demo path on 2 real phones (Android + iPhone), with location allowed AND denied.
 - [ ] Record a screen video of the full demo as a backup; put screenshots in the slides.
 - [ ] Just before going on stage: map.repo.lv/statuss.html all green (flood WMS is often yellow = slow; warm "plūdi Mednieku iela 9 Ogre" once), address search, warnings banner, water level.
@@ -136,6 +136,6 @@ Count rule: 18 = all the above without ⚠ and without LĢIA. If #50/#51 are not
 - **"Kāpēc nav soļu?"** Soļi ir trīs (vieta → vajadzība → rezultāts); mēs uzbūvējām arī 4 ekrānu versiju un to apzināti aizstājām ar vienu kartīti, jo krīzē cilvēks neklikšķina cauri ekrāniem.
 - **"Cik dati ir aktuāli?"** Ūdens līmenis — ik stundu; brīdinājumi un ceļi — ik 5–10 min; zibens — ik minūti; plāni — pēc publicēšanas datuma, rādām plāna lappusi. Statusa lapa rāda katra avota pēdējo pārbaudi.
 - **"Kā ar geolatvija.lv?"** Mēs to neaizstājam — tas ir plānotāju rīks un mūsu datu avots. Mēs esam iedzīvotāja skats virs tiem pašiem datiem.
-- **"Personas dati?"** Atrašanās vieta paliek telefonā. Meklējumus skaitām tikai bez adresēm un cipariem, bez IP un lietotāja datiem **[gaida #45]**.
+- **"Personas dati?"** Atrašanās vieta paliek telefonā. Meklējumus skaitām tikai bez adresēm un cipariem, bez IP un lietotāja datiem.
 - **"Drošība kara laikā?"** Rādām tikai publiski pieejamas vietas; kritiskā infrastruktūra (ģeneratori, apakšstacijas) kartē netiek likta.
 - **"Kā pašvaldība to uztur?"** Plāna atjaunošana → tas pats MI process no jauna → pārskats ar izmaiņām un kļūdām.

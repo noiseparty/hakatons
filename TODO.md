@@ -22,7 +22,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
-- [ ] Accessibility for blind & disabled users: screen-reader labels, keyboard navigation, contrast, text alternative to the map (list view); check against WCAG 2.1 AA / VDAA guidelines — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show wheelchair access (ramp / step-free entrance) in popups and as a filter — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show whether animals/pets are accepted — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show capacity and live status (open for guests / full / closed) — added 2026-10-09 23:20 +03:00 by noiseparty
@@ -38,7 +37,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty
-- [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] Confirm LR1 FM frequencies against the official LR/NEPLP list (demo cards say Rīga 90.7 FM from a secondary source) — added 2026-10-10 01:58 +03:00 by noiseparty
@@ -53,15 +51,24 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] After merging the forecast feed: check `/api/prognozes` and `/api/prognozes/robezas` live (first call ~10 s, robezas size) — added 2026-10-10 01:39 +03:00 by noiseparty
-- [ ] NAP keys for the road layer: register a "Datu ņēmējs" account on transportdata.gov.lv, subscribe to 5 feeds, put the keys in `/etc/hakatons/map.env` as `NAP_API_KEY_SLEGUMI`, `_NEGADIJUMI`, `_JOSLAS`, `_REMONTI`, `_SLIDENS`, then restart the API (no keys in the repo or on dev machines) — added 2026-10-10 01:57 +03:00 by noiseparty
 - [ ] Status page: add "LVC ceļu dati" as a component via `celu_notikumi_visi()` (after #44 is merged) — added 2026-10-10 01:57 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
 - [ ] After merging the lightning layer: check `/api/zibens` and `/api/augsne` live (FMI limit 600 req / 5 min; Open-Meteo <10k/day) — added 2026-10-10 01:56 +03:00 by noiseparty
+- [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
+- [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
+- [ ] Satiksme: get real responses of the minute speed feed (ed1f0d2c) and border waiting times (cb730ba2) and check `_datex_merijumi` / `_satiksmes_robezas` against them (parsers follow the DATEX II v3 standard, no sample yet) — added 2026-10-10 02:22 +03:00 by noiseparty
+- [ ] Satiksme: check `/api/satiksme` on the VPS (region lookup SQL untested locally: no PostGIS on dev machines) — added 2026-10-10 02:22 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] NAP keys on the VPS (8 feeds) — done 2026-10-10 02:22 +03:00 by noiseparty: `/api/celi` reads the real names (NEGADIJUMI, REMONTI, 3 × SLIDENS); SLEGUMI/JOSLAS not subscribed, skipped (added 2026-10-10 01:57 +03:00 by noiseparty)
+- [x] `/api/satiksme`: traffic level per zone (municipality, else ~10 km grid) from counter sites + minute speeds, slippery-road points, border waiting times; field mapping in `notes/research/nap-satiksme.md` — done 2026-10-10 02:22 +03:00 by noiseparty; rendering is terminal A's zonas.js (added 2026-10-10 02:22 +03:00 by noiseparty)
+- [x] Mobile: show search results as a bottom sheet over the map instead of below it — done 2026-10-10 02:19 +03:00 by noiseparty: `production/apaksa.js` (peek / half / full, verdict line first, route button, collapses when demo/forecast/filters open) (added 2026-10-10 01:01 +03:00 by noiseparty)
+- [x] Accessibility pass (WCAG 2.1 AA basics): visible focus, contrast fixes, aria-hidden icons, reduced motion, heading order, Escape closes the forecast panel; axe-core 0 violations on index (search, suggestions, result card, sources) and statuss.html at 375 and 1280 px — done 2026-10-10 02:09 +03:00 by noiseparty; no real screen-reader test (added 2026-10-09 23:20 +03:00 by noiseparty)
+- [x] "Datu avoti" panel lists every dataset the site uses (DB rows + API-side LVĢMC, LVC/NAP, FMI, Open-Meteo, OpenTopoMap), with "N atvērto datu avoti", update frequency and last update for warnings/forecast — done 2026-10-10 02:09 +03:00 by noiseparty (added 2026-10-10 02:09 +03:00 by noiseparty)
+- [x] Status page round 2: flood check capped at 10 s, history read errors logged, grey "Nav datu" state; new rows for the LVĢMC forecast (cache age), FMI lightning, Open-Meteo soil/rain and LVC roads (grey until NAP keys) — done 2026-10-10 02:08 +03:00 by noiseparty (added 2026-10-10 02:08 +03:00 by noiseparty)
 - [x] Demo panel: right-edge "Demo" tab / phone bottom sheet with simulated scenarios, SIMULĀCIJA badges, "Beigt demo" restores the map, `?demo=<code>` links (`production/demo.js`, `notes/demo-scenariji.md`) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 1: yellow strong-wind warning over Kurzeme coast (VZD boundaries as warning polygon, banner, advice) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 2: red storm warning Rīga/Jūrmala/Mārupe + shelters, accommodation and 24/7 hospitals — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)

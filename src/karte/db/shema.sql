@@ -240,9 +240,13 @@ create table if not exists statuss_parbaudes (
   id         bigserial primary key,
   komponents text not null,
   laiks      timestamptz not null default now(),
-  stavoklis  text not null check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas')),
+  stavoklis  text not null,
   zinojums   text,
   ilgums_ms  int
 );
 create index if not exists statuss_parbaudes_laiks_idx on statuss_parbaudes (laiks);
+-- nav_datu: avots vēl nav ielādēts vai nav konfigurēts (pelēks, neskaitās pieejamībā)
+alter table statuss_parbaudes drop constraint if exists statuss_parbaudes_stavoklis_check;
+alter table statuss_parbaudes add constraint statuss_parbaudes_stavoklis_check
+  check (stavoklis in ('darbojas', 'traucejumi', 'nedarbojas', 'nav_datu'));
 grant select on statuss_parbaudes to map_api;
