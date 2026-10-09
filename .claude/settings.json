@@ -1,0 +1,52 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status*)",
+      "Bash(git log*)",
+      "Bash(git diff*)",
+      "Bash(git branch*)",
+      "Bash(git fetch*)",
+      "Bash(git pull*)",
+      "Bash(git switch*)",
+      "Bash(git checkout -b*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push -u origin HEAD*)",
+      "Bash(git worktree list*)",
+      "Bash(git show*)",
+      "Bash(git ls-files*)",
+      "Bash(gh pr list*)",
+      "Bash(gh pr view*)",
+      "Bash(gh pr diff*)",
+      "Bash(gh pr checks*)",
+      "Bash(gh pr create*)",
+      "Bash(gh api user*)",
+      "Bash(Get-Date*)",
+      "Bash(uv run*)",
+      "Bash(python -m http.server*)",
+      "Bash(pnpm install*)",
+      "Bash(pnpm sagatavot*)",
+      "Bash(pnpm build*)",
+      "Bash(pnpm dev*)",
+      "Bash(curl -s https://map.repo.lv/*)",
+      "Bash(curl -s https://data.gov.lv/*)",
+      "WebFetch(domain:map.repo.lv)",
+      "WebFetch(domain:data.gov.lv)",
+      "WebFetch(domain:likumi.lv)",
+      "WebFetch(domain:vugd.gov.lv)",
+      "WebFetch(domain:videscentrs.lvgmc.lv)",
+      "WebFetch(domain:leafletjs.com)",
+      "WebFetch(domain:vdaa.gov.lv)"
+    ],
+    "deny": [
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git push origin main*)",
+      "Bash(git reset --hard*)",
+      "Bash(ssh *)",
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(./dati/**)"
+    ]
+  }
+}
