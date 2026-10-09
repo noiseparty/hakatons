@@ -199,3 +199,17 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- Ceļu slēgumi un negadījumi (karte_api.py /api/celi, production/celi.js): tikai avota rinda panelim "Datu avoti";
+-- notikumi netiek glabāti datubāzē, tos API ņem tieši no NAP (kešs 5 min).
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('lvc-nap', 'Ceļu slēgumi, negadījumi, remontdarbi un slidens ceļš (DATEX II)', 'VSIA "Latvijas Valsts ceļi" / Nacionālais piekļuves punkts transportdata.gov.lv',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf',
+   'NAP API download-file (DATEX II v3 SituationPublication; katrai kopai sava bezmaksas atslēga), karte_api.py /api/celi, kešs 5 min',
+   'Slānis "Ceļu slēgumi un negadījumi"; rinda "Ceļu satiksme" meklēšanas rezultātā',
+   'Tikai valsts autoceļi. Kopas: ceļu slēgumi, negadījumi, joslu slēgumi, remontdarbi, slidens ceļš (SIC).', 78)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;

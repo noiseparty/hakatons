@@ -54,6 +54,9 @@
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
         <span class="punkts" style="background:#38bdf8"></span>Plūdu riska zonas (LVĢMC, 1 % un 10 %)</label>
+      <label class="kat parklajums"><input type="checkbox" id="celu-slanis">
+        <span class="punkts" style="background:#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
+      <p id="celu-piezime" class="piezime" aria-live="polite"></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
@@ -104,5 +107,6 @@
 <script src="meklesana.js"></script>
 <script src="bridinajumi.js"></script>
 <script src="prognozes.js"></script>
+<script src="celi.js"></script>
 </body>
 </html>
