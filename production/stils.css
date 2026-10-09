@@ -361,3 +361,10 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .saraksts-ul .marsruts, .saraksts-ul .popup-avots { display: block; margin-top: .3rem; }
 .saraksts-karte { width: auto; margin-top: .45rem; min-height: 44px; }
 .saraksts-vel { display: block; width: calc(100% - 1.7rem); margin: .6rem .85rem .85rem; min-height: 44px; }
+
+/* Objekta zīmes un statuss (objekta-statuss.js): simulēti dati, neapstiprināts / novecojis statuss */
+.sim-zime { display: inline-block; margin: 0 0 .25rem; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff;
+  font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.obj-statuss { display: block; margin-top: .25rem; font-size: .78rem; color: var(--teksts2); }
+.obj-statuss b { color: #92400e; font-weight: 700; }
+.obj-statuss ul { margin: .15rem 0 0; padding-left: 1rem; }
