@@ -43,7 +43,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
-- [ ] Crisis search: add `udens_limenis` to the flood scenario in `production/scenariji.json`; optional 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) — added 2026-10-09 20:34 +03:00 by noiseparty
 - [ ] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — added 2026-10-09 20:56 +03:00 by noiseparty
 - [ ] Test on a phone after merge: address search ("Brīvības 15 Ogre"), a water level popup, "Tuvākā patvertne"; nothing new was browser-tested yet — added 2026-10-09 20:56 +03:00 by noiseparty
 - [ ] Agree with the team on the 3–6 step flow "Kas man jādara?" (location/address → what's happening → situation → summary with result), draft in `notes/plusma.md`; then build it — added 2026-10-09 20:56 +03:00 by noiseparty
@@ -53,6 +52,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Crisis search: add `udens_limenis` to the flood scenario in `production/scenariji.json`; optional 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) — done 2026-10-09 23:57 +03:00 by noiseparty (added 2026-10-09 20:34 +03:00 by noiseparty)
 - [x] Map sidebar: quick buttons (Patvertne, Ārsts, Policija …) removed; search results section only shows after a search — done 2026-10-09 21:53 +03:00 by noiseparty (added 2026-10-09 21:53 +03:00 by noiseparty)
 - [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)
 - [x] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — `ielade.py --apvienot 35`: 3 shelters, 12 OSM fuel stations, 11 same-bank ATM stacks merged; separate buildings at one address kept — done 2026-10-09 21:40 +03:00 by noiseparty (added 2026-10-09 19:11 +03:00 by noiseparty)
