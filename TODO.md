@@ -61,7 +61,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
-- [x] Satiksme on the VPS: zones work with real minute speeds (30 municipalities); border feed: failure reason in `kopas.*.kluda`, file-id/format fallbacks, JSON parser, `?debug=1` behind `MAP_DEBUG`; status-page components `satiksme` + `robezas` — done 2026-10-10 02:45 +03:00 by noiseparty (added 2026-10-10 02:22 +03:00 by noiseparty)
+- [x] Satiksme on the VPS: zones work with real minute speeds (30 municipalities); border feed: failure reason in `kopas.*.kluda`, file-id/format fallbacks, JSON parser, `?debug=1` behind `MAP_DEBUG`; status-page components `satiksme` + `robezas` — done 2026-10-10 02:26 +03:00 by noiseparty (added 2026-10-10 02:22 +03:00 by noiseparty)
 - [x] Public info card: LR1 FM frequency, 112, cell broadcast, sirens, 72h checklist — done 2026-10-10 02:24 +03:00 by noiseparty: production/info.html "Svarīgi krīzē", printable, a source per block (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] NAP keys on the VPS (8 feeds) — done 2026-10-10 02:22 +03:00 by noiseparty: `/api/celi` reads the real names (NEGADIJUMI, REMONTI, 3 × SLIDENS); SLEGUMI/JOSLAS not subscribed, skipped (added 2026-10-10 01:57 +03:00 by noiseparty)
 - [x] `/api/satiksme`: traffic level per zone (municipality, else ~10 km grid) from counter sites + minute speeds, slippery-road points, border waiting times; field mapping in `notes/research/nap-satiksme.md` — done 2026-10-10 02:22 +03:00 by noiseparty; rendering is terminal A's zonas.js (added 2026-10-10 02:22 +03:00 by noiseparty)
