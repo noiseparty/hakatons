@@ -221,3 +221,9 @@ strong.nē { color: var(--zals); }
   .prognozes.atverts { inset: 40% 0 18px 0; }  /* OSM atsauce apakšā paliek redzama */
   .prog-panelis { width: auto; height: 100%; border-radius: var(--radiuss) var(--radiuss) 0 0; }
 }
+
+/* Ceļu slēgumi un negadījumi (celi.js) */
+.celu-ikona span { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border: 2px solid; border-radius: 50%; background: #fff; font-size: 15px; line-height: 1; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+#celu-piezime:empty { display: none; }
+.celi-rinda { margin: .5rem 0; padding: .45rem .6rem; font-size: .85rem; background: #fff7ed; border-left: 3px solid #c2410c; border-radius: 4px; }
+.celi-rinda .avots-rinda { display: block; margin-top: .2rem; }
