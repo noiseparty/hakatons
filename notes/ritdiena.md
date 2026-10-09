@@ -2,57 +2,64 @@
 
 Goal: win. That means four things in this order: **the pitch lands**, **the phone demo cannot fail**, **every judging criterion is visibly ticked**, **the map looks calm and professional**. Everything else is optional.
 
-## Morning: ship what exists (first ~1.5 h)
+Updated 2026-10-10 02:09: batch 2 is mostly merged (`notes/stavoklis.md` has the list). The open work is below.
 
-1. Look at http://localhost:8080 (integration build) on a laptop and on a phone (same Wi-Fi, use the laptop's IP, or `ngrok`/`cloudflared` tunnel). Try the demo queries: "Ogre, plūdi", "Brīvības 15 Ogre", "nav elektrības Jelgavā", "cilvēks nav pie samaņas", "patvertne Rīgā".
-2. OK the merges one by one: #33 → #34 → #35 → #36 → #37 → #38 → #32 → #31 (`notes/stavoklis.md` has the VPS steps per PR). After each merge: hard-reload map.repo.lv on the phone.
-3. Terminal A loads the CA-plan points; check "Drošās vietas tuvumā" shows a real assembly point for Ogre.
-4. Consolidated `TODO.md` pass; tear down the test DB and worktrees (terminal C).
+## Now → morning: land what's open
+
+1. Merge in order as each is ready: #55 (status round 2, in review), #48 (zones, A), #53 (demo panel, D). Then B's "Datu avoti" PR and E's mobile bottom sheet. Hard-reload map.repo.lv on the phone after each merge.
+2. **User on the VPS** (commands in `notes/stavoklis.md` → "VPS steps"):
+   1. Run `shema.sql` once (meklejumi table, LVC avoti row, statuss constraint).
+   2. Add the NAP keys to `map.env` and restart the API.
+3. After the VPS steps, check:
+   - `/api/meklejumi/top` returns 200;
+   - `/api/celi` shows `konfigurets: true`;
+   - statuss.html "Ceļu slēgumi" is green.
+4. Fill the `?demo=[D]` placeholders in `notes/pitch.md` from #53. The codes are `vejs`, `vetra`, `drons`, `nakts`, `pludi-ogre`, `vetra-2026` and `bez-sakariem`. Note that the Ogre higher-ground threshold is **≥23 m**, not ≥15 m (see `notes/demo-scenariji.md`).
 5. **Record a screen capture of the phone demo** as the backup for bad venue Wi-Fi.
 
-## Then: mobile UI polish (the biggest visible win)
+## Freeze (1 h before the pitch)
 
-Principles (from Leaflet/MapLibre practice, Google Maps, Apple Maps, 112-style apps, VDAA UX guidelines):
+- No merges after the freeze. Every merge is live within ~1 min.
+- Warm the slow upstreams:
+  - open map.repo.lv once (forecast cache);
+  - search "plūdi Mednieku iela 9 Ogre" and the Jūrmala address (flood WMS, ~10 min cache);
+  - open the zones layer on Ogre.
+- Check statuss.html. Everything should be green or explained: flood yellow = slow upstream, roads grey = no keys.
+- Two real phones (Android Chrome + iOS Safari), location allowed AND denied. Run the exact demo path plus 2 demo deep links.
+- Backup video open in a tab, screenshots in the slides (Jūrmala plan p. 85 vs map; geolatvija.lv first screen).
 
-- **Map first, chrome last.** On a phone the map should take ≥ 65 % of the viewport. One search field at the top, one floating action ("📍 tuvākie man"), results as a **bottom sheet** that the user drags up (collapsed: one line with the decision; half: list; full: details). No sidebar on phones.
-- **One primary action per screen.** Search → result card. Layer toggles, data sources, region filter go behind one "Slāņi" button, closed by default.
-- **Result card = decision first.** First line is the verdict in plain words ("Jūs neesat plūdu riska zonā", "Tuvākā pulcēšanās vieta: Ogres stacija, 400 m"). Facts and sources below, collapsible. Max 3 nearest places per layer.
-- **Markers:** one colour per group (shelters red, health purple, safety blue, water/environment teal), simple glyph icons, cluster at low zoom, never more than one visible layer group by default (shelters). Selected marker gets a larger pin; the map pans so the marker is above the sheet, not under it.
+## Mobile UI principles (for E's bottom sheet and any last polish)
+
+- **Map first, chrome last.** On a phone the map takes ≥ 65 % of the viewport. One search field at the top, one floating action ("📍 tuvākie man"), results as a **bottom sheet** (collapsed: one line with the decision; half: list; full: details).
+- **Result card = decision first.** First line is the verdict in plain words; facts and sources below; max 3 nearest places per layer; "Kas notiks tālāk" last.
 - **Touch targets ≥ 44 px, text ≥ 16 px, contrast ≥ 4.5:1**; no hover-only interactions; no horizontal scroll.
-- **Loading and errors are visible**: skeleton lines in the card while the flood WMS answers; "nav datu" rows instead of silence.
-- **Safe-area insets** (iPhone notch/home bar), `100dvh` not `100vh`, no 300 ms tap delay, address input `enterkeyhint="search"`, `inputmode` set.
-- Basemap: OSM default; "Reljefs" only as a toggle. Keep attribution, but small.
+- **Loading and errors are visible**: skeleton lines while the flood WMS answers; "nav datu" rows instead of silence.
+- **Safe-area insets**, `100dvh` not `100vh`, `enterkeyhint="search"`.
 - Desktop: map left, result card right (≈ 400 px), same components.
-
-Concrete tasks (one terminal each, Opus for the sheet, Sonnet for the rest):
-- Bottom-sheet results panel for phones (replace `#panelis` on < 768 px).
-- Result card redesign: verdict line, grouped sections, source chips, collapsible details.
-- Marker icon set + legend; selected-marker state; pan-to-above-sheet.
-- Skeleton loading states; warm flood WMS cache for demo addresses.
-- Real-phone pass: Android Chrome + iOS Safari, geolocation prompt, print/share.
 
 ## Judging criteria checklist (what the judges must see in 10 minutes)
 
 | Criterion | Where it is shown | Status |
 |---|---|---|
-| 1 Concrete outcome | Verdict line in the result card ("zone yes/no", nearest safe place) | after #38 |
-| 2 Only once | Address from VZD/phone, everything else from registers; data-sources panel with licences | yes |
-| 3 Flow 3–6 steps, summary, "what next" | Search → result → "Kas notiks tālāk" + route/plan link. Say explicitly: one query replaces four screens; the card is the summary | add "Kas notiks tālāk" block to the card |
-| 4 Works on a phone, no dead ends | Live phone demo; geolocation denied / API down paths show a next step | real-phone test |
-| 5 AI + open data | AI extracted 1 309 places from 42 plans with citations and found 41 errors; 11 open datasets, each with licence | pitch slides 6–7 |
+| 1 Concrete outcome | Decision line in the result card (flood zone yes/no, nearest safe place with route) | ✅ live |
+| 2 Only once | Address from VZD or the phone; everything else from registers; source + licence on every place | ✅ live; "Datu avoti" panel completion → B |
+| 3 Flow 3–6 steps, summary, "what next" | Location → need → result; the card is the summary; "Kas notiks tālāk" block (#54). Say the sentence from `notes/pitch.md` slide 5 | ✅ live |
+| 4 Works on a phone, no dead ends | Live phone demo; geolocation denied / API down paths show a next step; statuss.html shows each source's state | real-phone test still open; bottom sheet → E |
+| 5 AI + open data | AI extracted 1 309 places from 42 plans with citations and found 41 errors; 18 open sources, each with licence (14 if #50/#51 weren't live) | ✅ pitch slides 6–7 |
 
-## Pitch (notes/pitch.md, PR #31)
+## Pitch (`notes/pitch.md`)
 
 - Hook: August 2026 storm, 277 000 households without power; the plan existed, nobody could use it.
-- Demo path: Ogre floods on the phone, then "cilvēks nav pie samaņas" → red 112 line.
+- geolatvija.lv 1.0 → 2.0: a catalogue of 282 products vs one answer from the same official sources (tone: "rīks plānotājiem", VARAM is the organiser).
+- Demo: "plūdi Mednieku iela 9 Ogre" on the phone; "cilvēks nav pie samaņas" → red "zvaniet 112" line; 30 s of the demo panel (2 scenarios, say "simulācija"); 10 s of statuss.html.
 - AI as auditor, not chatbot: the Jūrmala "in Lithuania" point is the story. Show the PDF page and the map side by side.
-- Open data slide: logos + licences; the shelters' missing licence as a call to action to VUGD.
-- Close: what a municipality gets (a Monday-morning dashboard of its plan's errors) and what a resident gets (one line, one answer).
+- Close: what a municipality gets (its plan's errors on Monday morning) and what a resident gets (one line, one answer).
 - Rehearse twice with a timer. Have the backup video open in a tab.
 
 ## Nice to have, only if the above is done
 
-- LVĢMC warnings banner shown also in map mode (already in #38, verify).
-- "Jūs" form in all scenario advice texts.
+- Lightning item in the Prognoze feed.
+- Server-side tile cache for the slow flood WMS.
 - Sadales tīkls outage layer (needs permission; otherwise mention as next step).
-- WCAG quick pass: labels, focus order, list view as map alternative.
+- "Ziņot par bīstamību" community reports (lacukarte pattern, moderated).
+- WCAG quick pass: labels, focus order, list view as map alternative (B's accessibility pass covers part).
