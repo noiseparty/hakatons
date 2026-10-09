@@ -53,9 +53,9 @@ class Kluda(Exception):
         self.statuss = statuss
 
 
-def vaicat(sql, params=()):
+def vaicat(sql, params=(), timeout="10s"):
     with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
-        cur.execute("set statement_timeout = '10s'")
+        cur.execute(f"set statement_timeout = '{timeout}'")
         cur.execute(sql, params)
         rinda = cur.fetchone()
         return rinda[0] if rinda else None
@@ -165,9 +165,9 @@ def _vienkarsot(teksts):
 
 
 def adreses(q):
-    vardi = [v for v in re.split(r"[\s,]+", _vienkarsot(q.get("q", [""])[0])) if v][:6]
-    if len("".join(vardi)) < 3:
-        raise Kluda(400, "q: vajag vismaz 3 burtus")
+    vardi = [v for v in re.split(r"[\s,]+", _vienkarsot(q.get("q", [""])[0][:100])) if v][:6]
+    if not any(len(v) >= 3 for v in vardi):
+        raise Kluda(400, "q: vajag vismaz vienu vārdu ar 3+ burtiem")
     limit = int(_skaitlis(q, "limit", 1, 20) or 8)
     raksti = ["%" + re.sub(r"([\\%_])", r"\\\1", v) + "%" for v in vardi]
     # mājas numurs ("15" → "15", "15A"; ne "115", "k-15" vai "LV-5015") — augstāk sarakstā
@@ -181,6 +181,7 @@ def adreses(q):
                        similarity(meklesanai, %s) desc, length(adrese), adrese
               limit %s) a""",
         (*raksti, numuri, vardi[0] + "%", " ".join(vardi), limit),
+        timeout="2s",
     )
 
 
@@ -188,26 +189,44 @@ def adreses(q):
 
 _kesa = {}
 _kesas_slots = threading.Lock()
+_atslegu_sloti = {}  # atslēga → Lock: vienlaicīgi pieprasījumi gaida vienu lejupielādi
 
 
 def _kesots(atslega, sekundes, funkcija):
-    """Atgriež kešoto vērtību; ja avots nav pieejams, labāk novecojusi nekā nekāda.
-    sekundes var būt funkcija (vērtība → sekundes), piem., nepilnīgu atbildi kešot īsāk."""
-    with _kesas_slots:
-        ieraksts = _kesa.get(atslega)
-    if ieraksts and time.time() - ieraksts[0] < (sekundes(ieraksts[1]) if callable(sekundes) else sekundes):
+    """Atgriež kešoto vērtību; ja avots nav pieejams, labāk novecojusi nekā nekāda (un nākamais mēģinājums
+    pēc minūtes, nevis katrā pieprasījumā). sekundes var būt funkcija (vērtība → sekundes)."""
+    ilgums = sekundes if callable(sekundes) else (lambda _v: sekundes)
+
+    def no_kesas():
+        with _kesas_slots:
+            ieraksts = _kesa.get(atslega)
+        return ieraksts, bool(ieraksts) and time.time() - ieraksts[0] < ilgums(ieraksts[1])
+
+    ieraksts, svaigs = no_kesas()
+    if svaigs:
         return ieraksts[1]
-    try:
-        vertiba = funkcija()
-    except Exception as e:  # tīkls, formāts
-        if ieraksts:
-            return ieraksts[1]
-        raise Kluda(503, "avots pašlaik nav pieejams") from e
     with _kesas_slots:
-        if len(_kesa) > 20000:
-            _kesa.clear()
-        _kesa[atslega] = (time.time(), vertiba)
-    return vertiba
+        slots = _atslegu_sloti.setdefault(atslega, threading.Lock())
+    with slots:
+        ieraksts, svaigs = no_kesas()
+        if svaigs:
+            return ieraksts[1]
+        try:
+            vertiba = funkcija()
+        except Exception as e:  # tīkls, formāts
+            if ieraksts:
+                with _kesas_slots:
+                    _kesa[atslega] = (time.time() - ilgums(ieraksts[1]) + 60, ieraksts[1])
+                return ieraksts[1]
+            if isinstance(e, Kluda):
+                raise
+            raise Kluda(503, "avots pašlaik nav pieejams") from e
+        with _kesas_slots:
+            if len(_kesa) > 20000:
+                _kesa.clear()
+                _atslegu_sloti.clear()
+            _kesa[atslega] = (time.time(), vertiba)
+        return vertiba
 
 
 def _lejupieladet(url, timeout=20):
@@ -315,6 +334,8 @@ PLUDU_SERVISI = [
     ("jūras vējuzplūdi", "3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea", {"2": 10, "1": 1, "0": 0.5}),
 ]
 _pludu_pavedieni = ThreadPoolExecutor(max_workers=6)
+_pludu_rinda = [0]  # cik WMS pieprasījumu gaida vai iet; virs PLUDU_MAX_RINDA — 503, nevis bezgalīga rinda
+PLUDU_MAX_RINDA = 30
 
 
 def _pludu_serviss(veids, cels, slani, lat, lon):
@@ -326,17 +347,27 @@ def _pludu_serviss(veids, cels, slani, lat, lon):
         "feature_count": 10,
     }
     url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
-    atrasti = json.loads(_lejupieladet(url, timeout=15)).get("features", [])
+    atrasti = json.loads(_lejupieladet(url, timeout=25)).get("features", [])
     varbutibas = [slani[f["layerName"]] for f in atrasti if f.get("layerName") in slani]
     return {"veids": veids, "varbutiba_proc": max(varbutibas)} if varbutibas else None
 
 
 def pludi(q):
     lat, lon = _vieta(q)
-    lat, lon = round(lat, 4), round(lon, 4)  # ~10 m; kešs pēc tā
+    lat, lon = round(lat, 3), round(lon, 3)  # ~100 × 60 m; kešs pēc tā (mazāk pieprasījumu uz geo-dpps)
+
+    def gatavs(_d):
+        with _kesas_slots:
+            _pludu_rinda[0] -= 1
 
     def parbaudit():
+        with _kesas_slots:
+            if _pludu_rinda[0] + len(PLUDU_SERVISI) > PLUDU_MAX_RINDA:
+                raise Kluda(503, "plūdu pārbaude pārslogota, mēģiniet pēc brīža")
+            _pludu_rinda[0] += len(PLUDU_SERVISI)
         darbi = [_pludu_pavedieni.submit(_pludu_serviss, v, c, s, lat, lon) for v, c, s in PLUDU_SERVISI]
+        for d in darbi:
+            d.add_done_callback(gatavs)
         veidi, kludas = [], 0
         for d in darbi:
             try:
@@ -351,14 +382,14 @@ def pludi(q):
         veidi.sort(key=lambda v: -v["varbutiba_proc"])
         return {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
 
-    # serviss mēdz atbildēt 1–30 s; ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min
+    # serviss mēdz atbildēt 1–30 s (taimauts 25 s); ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min
     return _kesots(("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
 
 
 def udens(q):
     lat, lon = _vieta(q)
     limit = int(_skaitlis(q, "limit", 1, 10) or 3)
-    stacijas = _kesots("udens", 900, udens_limenis.stacijas)
+    stacijas = _kesots("udens", 900, lambda: udens_limenis.stacijas(timeout=20))
     tagad = datetime.now(timezone.utc)
     rez = []
     for f in stacijas:
