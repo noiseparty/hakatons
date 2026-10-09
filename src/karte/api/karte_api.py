@@ -726,13 +726,21 @@ def _fmi_zibens():
     no = lidz - timedelta(minutes=ZIBENS_MIN)
     url = FMI_ZIBENS.format(no=no.strftime("%Y-%m-%dT%H:%M:%SZ"), lidz=lidz.strftime("%Y-%m-%dT%H:%M:%SZ"))
     sakne = ET.fromstring(_lejupieladet(url, timeout=10))
+    if not sakne.tag.endswith("}FeatureCollection"):  # piem., ows:ExceptionReport ar HTTP 200
+        raise Kluda(503, "FMI atbilde nav derīga")
     ns = {"BsWfs": "http://xml.fmi.fi/schema/wfs/2.0", "gml": "http://www.opengis.net/gml/3.2"}
     zibeni = {}  # (pos, laiks) → zibens: vairāki elementi (parametri) dalās vienā punktā un laikā
     for e in sakne.iter("{http://xml.fmi.fi/schema/wfs/2.0}BsWfsElement"):
         pos, laiks = e.findtext(".//gml:pos", "", ns).split(), e.findtext("BsWfs:Time", "", ns)
         if len(pos) != 2 or not laiks:
             continue
-        z = zibeni.setdefault((tuple(pos), laiks), {"lat": float(pos[0]), "lon": float(pos[1]), "laiks": laiks, "strava": None})
+        try:
+            lat, lon = float(pos[0]), float(pos[1])
+        except ValueError:
+            continue
+        if not (55 <= lat <= 59 and 20 <= lon <= 29):
+            continue
+        z = zibeni.setdefault((tuple(pos), laiks), {"lat": lat, "lon": lon, "laiks": laiks, "strava": None})
         if e.findtext("BsWfs:ParameterName", "", ns) == "peak_current":
             try:
                 z["strava"] = float(e.findtext("BsWfs:ParameterValue", "", ns))
@@ -783,6 +791,8 @@ AUGSNES_AVOTS = {"nosaukums": "Open-Meteo", "licence": "CC BY 4.0", "url": "http
 # Heuristika (nav oficiāla skala): augsnes mitrums 3–9 cm, m³/m³. Latvijas māla/smilšmāla augsnēm piesātinājums
 # ir ~0,40–0,45, smiltīm ~0,30, tāpēc sliekšņi ir rupji: < 0,20 sausa, < 0,35 mitra, ≥ 0,35 ļoti mitra (gandrīz piesātināta).
 AUGSNES_SLIEKSNI = [(0.20, "sausa"), (0.35, "mitra")]
+AUGSNES_MAX_STUNDA = 300  # Open-Meteo pieprasījumi stundā no šī procesa (bezmaksas limits <10 000 dienā); kešotās atbildes — vienmēr
+_augsnes_skaititajs = [0, 0]  # [stunda, pieprasījumi]
 
 
 def augsne(q):
@@ -790,6 +800,13 @@ def augsne(q):
     lat, lon = round(lat, 2), round(lon, 2)  # ~1 km; kešs pēc tā
 
     def iegut():
+        stunda = int(time.time() // 3600)
+        with _kesas_slots:
+            if _augsnes_skaititajs[0] != stunda:
+                _augsnes_skaititajs[:] = [stunda, 0]
+            if _augsnes_skaititajs[1] >= AUGSNES_MAX_STUNDA:
+                raise Kluda(503, "augsnes dati pašlaik nav pieejami")
+            _augsnes_skaititajs[1] += 1
         d = json.loads(_lejupieladet(OPEN_METEO.format(lat=lat, lon=lon), timeout=10))
         sodien = _riga_tagad().strftime("%Y-%m-%d")
         dienas = list(zip(d["daily"]["time"], d["daily"]["precipitation_sum"]))
