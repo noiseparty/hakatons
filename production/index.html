@@ -27,14 +27,15 @@
   </form>
   <div class="galva-labi">
     <p id="statuss" role="status">Ielādē…</p>
-    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true">☰ Filtri</button>
+    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><span aria-hidden="true">☰</span> Filtri</button>
   </div>
 </header>
 <div id="bridinajums" class="bridinajums" role="status" hidden></div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <main>
-  <aside id="panelis">
+  <aside id="panelis" aria-label="Meklēšana un kartes slāņi">
     <section id="meklesana">
+      <h2 class="vizuali-slepts">Meklēšanas rezultāts</h2>
       <div id="rezultati" aria-live="polite" hidden></div>
     </section>
 
@@ -44,8 +45,8 @@
                aria-label="Meklēt adresi (VZD adrešu reģistrs) vai kartē parādītos objektus" aria-controls="mekl-rezultati">
         <ul id="mekl-rezultati" role="listbox" hidden></ul>
       </div>
-      <button id="atrast" type="button" class="galvena">📍 Rādīt tuvākos man</button>
-      <button id="tuvaka" type="button" class="otra">🏠 Tuvākā patvertne</button>
+      <button id="atrast" type="button" class="galvena"><span aria-hidden="true">📍</span> Rādīt tuvākos man</button>
+      <button id="tuvaka" type="button" class="otra"><span aria-hidden="true">🏠</span> Tuvākā patvertne</button>
       <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
     </section>
 
@@ -80,7 +81,7 @@
       <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta">◎</button>
     </div>
     <div id="prognozes" class="prognozes" hidden>
-      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis">⛅ <span class="prog-poga-teksts">Prognoze</span></button>
+      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><span aria-hidden="true">⛅</span> <span class="prog-poga-teksts">Prognoze</span></button>
       <section id="prog-panelis" class="prog-panelis" aria-label="Prognoze un brīdinājumi" hidden>
         <div class="prog-galva">
           <h2>Prognoze un brīdinājumi</h2>
