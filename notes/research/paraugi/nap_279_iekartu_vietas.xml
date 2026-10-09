@@ -1,0 +1,559 @@
+<d2:payload xmlns:d2="http://datex2.eu/schema/3/d2Payload" xmlns:com="http://datex2.eu/schema/3/common" xmlns:loc="http://datex2.eu/schema/3/locationReferencing" xmlns:egi="http://datex2.eu/schema/3/energyInfrastructure" xmlns:fac="http://datex2.eu/schema/3/facilities" xmlns:roa="http://datex2.eu/schema/3/roadTrafficData" xmlns:sit="http://datex2.eu/schema/3/situation" xmlns:comx="http://datex2.eu/schema/3/commonExtension" xmlns:locx="http://datex2.eu/schema/3/locationExtension" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://datex2.eu/schema/3/d2Payload DATEXII_3_D2Payload.xsd http://datex2.eu/schema/3/common DATEXII_3_Common.xsd http://datex2.eu/schema/3/energyInfrastructure DATEXII_3_EnergyInfrastructure.xsd http://datex2.eu/schema/3/facilities DATEXII_3_Facilities.xsd http://datex2.eu/schema/3/locationExtension DATEXII_3_LocationExtension.xsd http://datex2.eu/schema/3/locationReferencing DATEXII_3_LocationReferencing.xsd http://datex2.eu/schema/3/parking DATEXII_3_Parking.xsd http://datex2.eu/schema/3/roadTrafficData DATEXII_3_RoadTrafficData.xsd http://datex2.eu/schema/3/situation DATEXII_3_Situation.xsd http://datex2.eu/schema/3/vms DATEXII_3_Vms.xsd http://datex2.eu/schema/3/commonExtension DATEXII_3_CommonExtension.xsd" xsi:type="roa:MeasurementSiteTablePublication" lang="en-US" modelBaseVersion="3">
+    <com:feedDescription>
+        <com:values>
+            <com:value lang="lv-LV">Nosaukums: Satiksmes uzskaites iekārtu atrašanās vietas , Url: nullfef717ac-c832-49b2-8589-521084cdb595</com:value>
+            <com:value lang="en-EN">Name: Traffic counter locations, Url: nullfef717ac-c832-49b2-8589-521084cdb595</com:value>
+        </com:values>
+    </com:feedDescription>
+    <com:feedType>Real-time traffic data - Traffic volume, Speed</com:feedType>
+    <com:publicationTime>2023-12-27T12:00:00+02:00</com:publicationTime>
+    <com:publicationCreator>
+        <com:country>lv</com:country>
+        <com:nationalIdentifier>latvia</com:nationalIdentifier>
+    </com:publicationCreator>
+    <roa:headerInformation>
+        <com:confidentiality>noRestriction</com:confidentiality>
+        <com:informationStatus>real</com:informationStatus>
+    </roa:headerInformation>
+    <roa:measurementSiteTable id="1" version="1.0">
+<roa:measurementSite id="68c924b023ee40cfa9508f1e" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.620937706135145</loc:latitude>
+                    <loc:longitude>24.387938900977513</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca545e23ee40cfa9508f1f" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.02543991142963</loc:latitude>
+                    <loc:longitude>24.318986707731707</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca567623ee40cfa9508f28" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.95659199899</loc:latitude>
+                    <loc:longitude>23.910816723218254</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca565123ee40cfa9508f27" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.39437122662903</loc:latitude>
+                    <loc:longitude>21.84866952814585</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca563123ee40cfa9508f26" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.949529691050316</loc:latitude>
+                    <loc:longitude>23.94859451519467</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca55ff23ee40cfa9508f25" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.23638647664732</loc:latitude>
+                    <loc:longitude>22.207308133156452</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca557723ee40cfa9508f24" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.860134510764254</loc:latitude>
+                    <loc:longitude>24.367833589689695</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca554023ee40cfa9508f23" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.0785827795834</loc:latitude>
+                    <loc:longitude>24.316761969884148</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca54ee23ee40cfa9508f22" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.383037242238544</loc:latitude>
+                    <loc:longitude>24.430365476184896</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca54bf23ee40cfa9508f21" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.19436571050538</loc:latitude>
+                    <loc:longitude>24.361290104524247</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca599423ee40cfa9508f29" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.40287203594016</loc:latitude>
+                    <loc:longitude>21.669681288485837</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca59e823ee40cfa9508f2a" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.92934005361505</loc:latitude>
+                    <loc:longitude>23.616177559421335</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5a1b23ee40cfa9508f2b" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.929014035576564</loc:latitude>
+                    <loc:longitude>23.584445642962667</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5a4623ee40cfa9508f2c" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.93291136801008</loc:latitude>
+                    <loc:longitude>23.481758921228003</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5afb23ee40cfa9508f2d" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.440806137045776</loc:latitude>
+                    <loc:longitude>21.006302560404148</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5b2d23ee40cfa9508f2e" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.21409238807385</loc:latitude>
+                    <loc:longitude>21.132862871803674</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5b5823ee40cfa9508f2f" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.38505344885039</loc:latitude>
+                    <loc:longitude>28.069268492642422</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5b9623ee40cfa9508f30" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.52147773687077</loc:latitude>
+                    <loc:longitude>26.460197577230826</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5bd523ee40cfa9508f31" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.59632892687931</loc:latitude>
+                    <loc:longitude>26.87509653406625</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5c1423ee40cfa9508f32" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.54011587683152</loc:latitude>
+                    <loc:longitude>27.299377670698945</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5c4623ee40cfa9508f33" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.799351865686056</loc:latitude>
+                    <loc:longitude>27.72666987844304</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5c8823ee40cfa9508f34" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>55.84844639114393</loc:latitude>
+                    <loc:longitude>26.449188452403128</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5cdd23ee40cfa9508f35" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.28521837168744</loc:latitude>
+                    <loc:longitude>27.0829731898313</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5d2e23ee40cfa9508f36" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.388095063243924</loc:latitude>
+                    <loc:longitude>25.97387632069512</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5d5923ee40cfa9508f37" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.00822037252189</loc:latitude>
+                    <loc:longitude>24.301929546537274</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5d8523ee40cfa9508f38" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.01341329674574</loc:latitude>
+                    <loc:longitude>24.31807684029562</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5dc123ee40cfa9508f39" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.46945753136442</loc:latitude>
+                    <loc:longitude>26.44423226650101</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5df323ee40cfa9508f3a" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.56968920229437</loc:latitude>
+                    <loc:longitude>26.983531680133904</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5e2423ee40cfa9508f3b" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.11516212764957</loc:latitude>
+                    <loc:longitude>24.632682467790328</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5e5823ee40cfa9508f3c" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.114972531293624</loc:latitude>
+                    <loc:longitude>24.632869133766803</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5ecc23ee40cfa9508f3d" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.22334056661935</loc:latitude>
+                    <loc:longitude>25.23922774417344</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5efd23ee40cfa9508f3e" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.12724104195175</loc:latitude>
+                    <loc:longitude>24.659606835471408</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5f6923ee40cfa9508f3f" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.65035220665698</loc:latitude>
+                    <loc:longitude>25.861090890824894</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5f8d23ee40cfa9508f40" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.27516714032699</loc:latitude>
+                    <loc:longitude>24.89748724958182</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca5fbe23ee40cfa9508f41" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.50385434985074</loc:latitude>
+                    <loc:longitude>25.327336156310547</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca602123ee40cfa9508f42" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.518350635661726</loc:latitude>
+                    <loc:longitude>25.359318367613852</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca616823ee40cfa9508f43" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.89699333924043</loc:latitude>
+                    <loc:longitude>24.406834669783134</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca61cf23ee40cfa9508f44" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.84356778691511</loc:latitude>
+                    <loc:longitude>24.019171334506858</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca621123ee40cfa9508f45" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.96087546001579</loc:latitude>
+                    <loc:longitude>23.9474853547135</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca623c23ee40cfa9508f46" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.8240604090801</loc:latitude>
+                    <loc:longitude>24.274436452791765</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca626f23ee40cfa9508f47" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.59337293606155</loc:latitude>
+                    <loc:longitude>25.545737947776875</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca629b23ee40cfa9508f48" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.612715836091404</loc:latitude>
+                    <loc:longitude>25.78458672890022</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca62d323ee40cfa9508f49" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.43638853604626</loc:latitude>
+                    <loc:longitude>26.07232614037864</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca62ff23ee40cfa9508f4a" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.85606962645361</loc:latitude>
+                    <loc:longitude>24.321479731029243</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca633323ee40cfa9508f4b" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.84662322299548</loc:latitude>
+                    <loc:longitude>24.4103866379185</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca638823ee40cfa9508f4c" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>55.8951520532573</loc:latitude>
+                    <loc:longitude>27.244561982977697</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca63e423ee40cfa9508f4d" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.66195826130137</loc:latitude>
+                    <loc:longitude>24.897871819829593</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca641123ee40cfa9508f4e" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.81447915212979</loc:latitude>
+                    <loc:longitude>24.24647106285787</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca644823ee40cfa9508f4f" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.69774514256053</loc:latitude>
+                    <loc:longitude>24.242931697634475</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca646923ee40cfa9508f50" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.52514537328448</loc:latitude>
+                    <loc:longitude>24.17140110200561</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca649923ee40cfa9508f51" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.30315242000347</loc:latitude>
+                    <loc:longitude>24.341959940429735</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca64df23ee40cfa9508f52" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.75112565990918</loc:latitude>
+                    <loc:longitude>23.893586218118408</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca650923ee40cfa9508f53" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.640140387162035</loc:latitude>
+                    <loc:longitude>23.776604576164683</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca652d23ee40cfa9508f54" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.37701730459097</loc:latitude>
+                    <loc:longitude>23.675975262251452</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca656123ee40cfa9508f55" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.671092131712385</loc:latitude>
+                    <loc:longitude>22.289394401417173</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca657823ee40cfa9508f56" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.894597107364234</loc:latitude>
+                    <loc:longitude>23.71199655809332</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca65a923ee40cfa9508f57" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.64571421606289</loc:latitude>
+                    <loc:longitude>21.89260187330164</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca65d423ee40cfa9508f58" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.58865869891096</loc:latitude>
+                    <loc:longitude>21.666856207022935</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca65fd23ee40cfa9508f59" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.5748975667059</loc:latitude>
+                    <loc:longitude>21.293075150477353</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca662423ee40cfa9508f5a" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.53997378859007</loc:latitude>
+                    <loc:longitude>21.202983757846674</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca664823ee40cfa9508f5b" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.535313962578876</loc:latitude>
+                    <loc:longitude>21.13577001660297</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca667123ee40cfa9508f5c" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.83622551686163</loc:latitude>
+                    <loc:longitude>23.5778035817982</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca669923ee40cfa9508f5d" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.70650630444398</loc:latitude>
+                    <loc:longitude>23.179510821700333</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca66c023ee40cfa9508f5e" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.66720840963834</loc:latitude>
+                    <loc:longitude>23.060550122973353</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca66e723ee40cfa9508f5f" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.67622408186649</loc:latitude>
+                    <loc:longitude>22.581659774823095</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca670f23ee40cfa9508f60" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.68698805711693</loc:latitude>
+                    <loc:longitude>22.497359961387566</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca673723ee40cfa9508f61" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>55.98922934381322</loc:latitude>
+                    <loc:longitude>27.427084268367217</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca676123ee40cfa9508f62" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>55.84083954946331</loc:latitude>
+                    <loc:longitude>26.584377470056406</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca678d23ee40cfa9508f63" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.823553723987466</loc:latitude>
+                    <loc:longitude>24.763643631739257</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca67be23ee40cfa9508f64" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.795958312809944</loc:latitude>
+                    <loc:longitude>24.96598177875614</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca67e723ee40cfa9508f65" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.72939622448993</loc:latitude>
+                    <loc:longitude>25.165797741432822</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ecc5d0935b7cdb813f8d5a" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.956180791123316</loc:latitude>
+                    <loc:longitude>24.377233598478824</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="69033100cae72ce8e429cad3" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>56.50192221758895</loc:latitude>
+                    <loc:longitude>27.730225704947447</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="6911ed078e846e2f50e009bb" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.01954784374621</loc:latitude>
+                    <loc:longitude>22.977060083759365</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="6911f4f08e846e2f50e009bc" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.15207906934728</loc:latitude>
+                    <loc:longitude>22.690908930688842</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="6a7d8c57a3b6b01dce17ea6c" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>55.94572847476226</loc:latitude>
+                    <loc:longitude>26.464786282530437</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite><roa:measurementSite id="68ca549923ee40cfa9508f20" version="1.0">
+            <roa:measurementSiteLocation xsi:type="loc:PointLocation">
+                <loc:coordinatesForDisplay>
+                    <loc:latitude>57.13171581375632</loc:latitude>
+                    <loc:longitude>24.332100070029572</loc:longitude>
+                </loc:coordinatesForDisplay>
+            </roa:measurementSiteLocation>
+        </roa:measurementSite></roa:measurementSiteTable>
+</d2:payload>
