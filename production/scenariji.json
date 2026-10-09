@@ -1,141 +1,829 @@
 {
   "_apraksts": [
     "Krīzes meklēšanas noteikumi (production/klasifikators.js). Bez AI: atslēgvārds = vārda sākums.",
+    "Divi līmeņi: 'vajadzības' (patvertne, medicīna, zāles… — ātrās pogas, vispārīgi vaicājumi) un 'scenāriji'",
+    "no notes/SCENARIJI.md (nr = tā numurs) ar savu padomu, slāņiem un 112. Vienādu punktu gadījumā uzvar pirmais sarakstā.",
     "Atslēgvārdus raksti ar vai bez garumzīmēm (salīdzina bez tām), latviski, krieviski vai angliski.",
     "'patvert' atrod patvertne/patvertnē/patvertni; '$' beigās = tikai vesels vārds ('deg$' neatrod 'degviela').",
-    "Frāze no vairākiem vārdiem sver vairāk ('gaisa uzbrukum' = 2 punkti, 'uzbruk' = 1).",
-    "kategorijas: slāņu kodi no tabulas kategorijas (src/karte/db/shema.sql), secībā, kādā rādīt.",
-    "Kategorijas, kuru vēl nav kartē, tiek izlaistas, tāpēc nākotnes slāņus var ierakstīt jau tagad.",
-    "zvanit112: scenārijs vienmēr rāda pogu 'Zvanīt 112'. dzivibas_draudi: frāzes, kas to rāda jebkurā scenārijā;",
-    "ja atrastas tikai tās, rāda dzivibas_draudi_scenarijs.",
+    "Svars: frāze no N vārdiem = N punkti, dalīts ar √(cik scenārijos šis atslēgvārds ir) — retāki vārdi sver vairāk.",
+    "Neraksti vispārīgus vārdus (palīdzība, ceļš, iela, tālu): tie sasaista nesaistītus vaicājumus.",
+    "kategorijas: slāņu kodi no tabulas kategorijas (src/karte/db/shema.sql), secībā, kādā rādīt. Tukšs = tikai padoms.",
+    "Kategorijas, kuru vēl nav kartē, tiek izlaistas. Plānotie kodi: noturibas_punkts (siltums/uzlāde/wifi/ūdens),",
+    "udens_punkts, evakuacijas_punkts, uzlades_stacija.",
+    "zvanit112: rāda pogu 'Zvanīt 112'. dzivibas_draudi: frāzes, kas to rāda vienmēr; ja atrastas tikai tās,",
+    "rāda dzivibas_draudi_scenarijs.",
     "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
     "vietu_sinonimi: citvalodu vietvārdi → nosaukums tabulā regioni. Latviskās formas (Ogrē, Rīgas) atrod pats.",
     "Pārbaude: src/meklesana/testi.json (vaicājums → sagaidāmais scenārijs)."
   ],
   "dzivibas_draudi_scenarijs": "medicina",
   "dzivibas_draudi": [
-    "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nereaģē", "nevar pamodināt", "nekustas", "nevar kustēt",
-    "stipri asiņ", "nevar apturēt asiņ", "sirdslēkm", "infarkt", "insult", "krampj", "noslīk", "slīkst",
-    "saindēj", "saindēš", "pārdozē", "pašnāvīb", "dzemdē", "ugunsgrēk", "deg māja", "deg dzīvokl", "112$",
-    "не дыш", "без сознан", "сильное кровотеч", "инфаркт", "инсульт", "судорог", "тонет", "утону",
+    "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nereaģē", "nevar pamodināt", "nekustas", "nevar kustēt", "samaņas zud",
+    "stipri asiņ", "nevar apturēt asiņ", "sirdslēkm", "infarkt", "insult", "krampj", "noslīk", "slīkst", "aizrij",
+    "saindēj", "saindēš", "pārdozē", "pašnāvīb", "dzemdē", "ugunsgrēk", "deg māja", "deg dzīvokl", "iesprost", "112$",
+    "не дыш", "без сознан", "сильное кровотеч", "инфаркт", "инсульт", "судорог", "тонет", "утону", "подавил",
     "отравл", "передоз", "суицид", "рожает", "пожар", "не может двигаться",
     "not breathing", "can't breathe", "cant breathe", "unconscious", "heavy bleeding", "won't stop bleeding",
-    "heart attack", "stroke", "seizure", "drowning", "poison", "overdose", "suicid", "in labor", "on fire",
+    "heart attack", "stroke", "seizure", "drowning", "choking", "poison", "overdose", "suicid", "in labor", "on fire",
     "can't move", "cannot move"
   ],
   "scenariji": [
     {
-      "kods": "patvertne",
-      "nosaukums": "Patvertne",
-      "atra_poga": "🛡️ Patvertne",
-      "kategorijas": ["patvertne"],
-      "zvanit112": false,
+      "kods": "patvertne", "nosaukums": "Patvertne", "atra_poga": "🛡️ Patvertne",
+      "kategorijas": ["patvertne"], "zvanit112": false,
       "padoms": "Ja skan trauksmes sirēnas, ieslēdz LR1 vai LTV1 un seko norādēm. Dodies uz tuvāko patvertni vai paliec iekštelpās tālāk no logiem.",
       "atslegvardi": [
-        "patvert", "patvēr", "slēptuv", "bunker", "pagrab", "sirēn", "trauksm", "gaisa uzbrukum", "gaisa trauksm",
-        "raķet", "dron", "apšaud", "šaud", "sprādzien", "bombard", "bumbu", "bumba$", "bumbas", "kara$", "karadarb",
-        "karš$", "paslēpt", "slēpties",
-        "укрыт", "убежищ", "бомбоубежищ", "подвал", "сирен", "тревог", "ракет", "дрон", "обстрел", "стрельб", "взрыв",
-        "бомб", "войн", "спрятат",
-        "shelter", "bunker", "basement", "siren", "air raid", "missile", "drone", "shelling", "shooting",
-        "explosion", "bomb", "war$", "hide"
+        "patvert", "patvēr", "slēptuv", "pajumt", "bunker", "bumbu patv", "paslēpt", "slēpties",
+        "укрыт", "убежищ", "бомбоубежищ", "спрятат", "shelter", "bunker", "hide"
       ]
     },
     {
-      "kods": "medicina",
-      "nosaukums": "Medicīniskā palīdzība",
-      "atra_poga": "🏥 Ārsts",
-      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"],
-      "zvanit112": false,
+      "kods": "medicina", "nosaukums": "Medicīniskā palīdzība", "atra_poga": "🏥 Ārsts",
+      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"], "zvanit112": false,
       "padoms": "Ja apdraudēta dzīvība, zvani 112. Ja nav steidzami, ģimenes ārsta konsultatīvais tālrunis 66016001 strādā visu diennakti.",
       "atslegvardi": [
         "ārst", "dakter", "medicīn", "mediķ", "slimnīc", "neatliekam", "uzņemšanas nodaļ", "ātrā palīdz", "ātro palīdz",
         "ātrie$", "pirmā palīdz", "pirmo palīdz", "traum", "ievain", "sāp$", "sāpe", "sāpī", "slikti$", "slims$", "slima$",
-        "saslim", "temperatūr", "drudz", "lūzum", "lauzt", "salauz", "asiņ", "brūc", "apdeg", "sirds", "infarkt",
-        "insult", "elpo", "elpas trūk", "bezsamaņ", "ģībon", "noģīb", "krampj", "alerģ", "dzemd", "grūtniec", "sasit",
-        "sagriez", "iegriez", "kritu$", "veselīb", "saindē", "kustēt",
+        "saslim", "temperatūr", "drudz", "apdeg", "veselīb", "113$",
         "врач", "доктор", "больниц", "скорая", "скорую", "скорой", "медиц", "медпомощ", "ранен", "травм", "боль$",
-        "болит", "больно", "болею", "кровь", "кровоточ", "кровотеч", "температур", "плохо", "сердц", "инфаркт",
-        "инсульт", "дыш", "перелом", "сломал", "ожог", "обжег", "беремен", "роды", "аллерг", "судорог", "отравл",
-        "doctor", "hospital", "medic", "ambulance", "injur", "wound", "hurt", "pain", "bleed", "fever", "sick", "ill$",
-        "heart", "stroke", "breath", "broken", "burn", "pregnan", "allerg", "emergency room", "first aid"
+        "болит", "больно", "болею", "температур", "плохо", "ожог",
+        "doctor", "hospital", "medic", "ambulance", "injur", "wound", "hurt", "pain", "fever", "sick", "ill$", "burn",
+        "first aid", "emergency room"
       ]
     },
     {
-      "kods": "zales",
-      "nosaukums": "Zāles",
-      "atra_poga": "💊 Aptieka",
-      "kategorijas": ["aptieka", "neatliekama_24h"],
-      "zvanit112": false,
+      "kods": "zales", "nosaukums": "Zāles", "atra_poga": "💊 Aptieka",
+      "kategorijas": ["aptieka", "neatliekama_24h"], "zvanit112": false,
       "padoms": "Pirms ej, pārbaudi aptiekas darba laiku. Zāles ar e-recepti var saņemt jebkurā aptiekā.",
       "atslegvardi": [
         "zāles$", "zāļu$", "zālēm", "aptiek", "medikament", "recept", "insulīn", "pretsāp", "antibiot", "tablet",
-        "inhalator", "pārsēj", "plāksteri",
+        "pārsēj", "plāksteri",
         "аптек", "лекарств", "таблет", "инсулин", "рецепт", "медикамент", "бинт",
         "pharmac", "medicine", "medication", "drugstore", "pill", "insulin", "prescription", "painkiller", "bandage"
       ]
     },
     {
-      "kods": "ugunsgreks",
-      "nosaukums": "Ugunsgrēks vai glābšana",
-      "atra_poga": "🔥 Ugunsgrēks",
-      "kategorijas": ["ugunsdzeseji"],
-      "zvanit112": true,
+      "kods": "ugunsgreks", "nosaukums": "Ugunsgrēks", "atra_poga": "🔥 Ugunsgrēks",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
       "padoms": "Zvani 112. Pamet telpas, aizver aiz sevis durvis un neizmanto liftu. Dūmos pārvietojies pieliecies pie grīdas.",
       "atslegvardi": [
-        "ugun", "deg$", "degam", "dūm", "liesm", "gāzes noplūd", "gāzes smak", "smird pēc gāz", "glābēj", "vugd",
-        "iesprūd", "iestrēg", "applūd", "plūdi", "plūdu", "plūdos", "lift", "kanalizāc", "notek", "pārplūd",
-        "caurul", "aizsal",
-        "пожар", "горит", "горим", "дым", "огонь", "огня", "запах газ", "утечка газ", "спасател", "наводнен", "затоп",
-        "лифт", "канализац", "засор", "прорв", "труб",
-        "fire", "smoke", "burning", "flame", "gas leak", "smell gas", "rescue", "trapped", "flood",
-        "elevator", "sewage", "drain", "pipe", "frozen"
+        "ugun", "ugunsgrēk", "deg$", "degam", "liesm", "dūm", "ugunsdzēs", "glābēj", "vugd",
+        "пожар", "горит", "горим", "огонь", "огня", "дым", "спасател",
+        "fire", "smoke", "burning", "flame", "rescue"
       ]
     },
     {
-      "kods": "policija",
-      "nosaukums": "Policija un drošība",
-      "atra_poga": "🚓 Policija",
-      "kategorijas": ["policija"],
-      "zvanit112": false,
+      "kods": "policija", "nosaukums": "Policija un drošība", "atra_poga": "🚓 Policija",
+      "kategorijas": ["policija"], "zvanit112": false,
       "padoms": "Ja briesmas draud tagad, zvani 112 vai 110. Neiesaisties konfliktā, dodies uz drošu vietu.",
       "atslegvardi": [
-        "polic", "zagl", "zādz", "nozag", "aplaupī", "laupīš", "uzbruk", "draud", "vardarb", "piekāv", "pazud",
-        "ielauz", "krāpn", "huligān", "nozieg", "bīstams cilvēk", "seko man", "ierocis", "ierocī",
-        "troksn", "kaimiņ", "dauz", "žūpo", "izsist", "stikl", "vandal",
-        "полиц", "вор$", "вора$", "воры", "краж", "украл", "ограб", "напал", "насил", "угрож", "пропал", "избил",
-        "мошен", "оружи", "шум", "сосед", "хулиган", "орут", "дебош", "разбит", "вандал",
+        "polic", "zagl", "zādz", "nozag", "uzbruk", "draud", "vardarb", "piekāv",
+        "krāpn", "nozieg", "bīstams cilvēk", "seko man", "ierocis", "ierocī", "110$",
+        "полиц", "вор$", "вора$", "воры", "краж", "украл", "напал", "насил", "угрож", "избил",
+        "мошен", "оружи",
         "police", "thief", "theft", "stole", "robb", "attacked", "attacker", "assault", "violen", "threat",
-        "missing", "break in", "burglar", "weapon", "gun$", "knife",
-        "nois", "neighbor", "neighbour", "hooligan", "smash", "vandal", "window"
+        "break in", "burglar", "weapon", "gun$", "knife"
       ]
     },
     {
-      "kods": "degviela",
-      "nosaukums": "Degviela un evakuācija ar auto",
-      "atra_poga": "⛽ Degviela",
-      "kategorijas": ["degviela"],
-      "zvanit112": false,
+      "kods": "degviela", "nosaukums": "Degviela", "atra_poga": "⛽ Degviela",
+      "kategorijas": ["degviela"], "zvanit112": false,
       "padoms": "Pirms brauc prom, pārbaudi, vai ceļš nav slēgts. Evakuācijas laikā seko pašvaldības un 112.lv norādēm.",
       "atslegvardi": [
-        "degviel", "benzīn", "dīzel", "dīzeļ", "uzpild", "dus$", "tankot", "evaku", "aizbrauk", "braukt prom",
-        "jābrauc prom",
-        "бензин", "топлив", "заправ", "дизел", "эвакуац", "уехать",
-        "fuel", "petrol", "gas station", "diesel", "refuel", "evacuat", "leave the city"
+        "degviel", "benzīn", "dīzel", "dīzeļ", "uzpild", "dus$", "tankot",
+        "бензин", "топлив", "заправ", "дизел",
+        "fuel", "petrol", "gas station", "diesel", "refuel"
       ]
     },
     {
-      "kods": "nauda",
-      "nosaukums": "Skaidra nauda",
-      "atra_poga": "💶 Bankomāts",
-      "kategorijas": ["bankomats"],
-      "zvanit112": false,
+      "kods": "nauda", "nosaukums": "Skaidra nauda", "atra_poga": "💶 Bankomāts",
+      "kategorijas": ["bankomats"], "zvanit112": false,
       "padoms": "Ja nav elektrības vai sakaru, kartes var nedarboties. Turi mazliet skaidras naudas.",
       "atslegvardi": [
-        "naud", "bankomāt", "eiro$", "kešs",
-        "деньг", "наличн", "банкомат", "кэш",
-        "cash", "atm$", "money", "withdraw"
+        "naud", "bankomāt", "eiro$", "kešs", "деньг", "наличн", "банкомат", "кэш", "cash", "atm$", "money", "withdraw"
       ]
+    },
+
+    {
+      "kods": "apmaldijies_meza", "nr": 1, "grupa": "A", "nosaukums": "Apmaldījies mežā",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Paliec uz vietas, nevis klīsti. Zvani 112: dispečers var noteikt tavu atrašanās vietu. Taupi telefona bateriju, padari sevi redzamu un dzirdamu.",
+      "atslegvardi": ["apmald", "nomald", "maldos", "mežā$", "meža$", "mežs$", "taku$", "takas", "taka$", "nezinu kur esmu", "neatrodu ceļu",
+        "заблуд", "в лесу", "lost in the forest", "lost in the woods", "lost$"]
+    },
+    {
+      "kods": "pazudis_pilseta", "nr": 2, "grupa": "A", "nosaukums": "Apmaldījies pilsētā",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Atver karti telefonā vai pajautā garāmgājējam vai veikalā. Ja nevari pateikt adresi, apraksti tuvākās ēkas vai zīmes. Ja jūties apdraudēts, zvani 112.",
+      "atslegvardi": ["apmaldījos pilsēt", "apmaldījies pilsēt", "nomaldījos pilsēt", "pilsētā apmald", "nezinu adres", "nezinu kur esmu", "apjuk", "заблуд", "в городе", "lost$", "lost in the city", "pazudis pilsēt", "pazudu pilsēt", "esmu pazudis", "esmu pazudusi"]
+    },
+    {
+      "kods": "pazudis_lauku", "nr": 3, "grupa": "A", "nosaukums": "Apmaldījies ārpus apdzīvotām vietām",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Paliec uz vietas un zvani 112. Ja nav zonas, mēģini uzkāpt augstāk. Taupi bateriju, turies siltumā.",
+      "atslegvardi": ["apmald", "nomald", "laukos", "purv", "vientul", "заблуд", "болот", "swamp", "lost$", "pazudis ārpus", "ārpus apdzīvot", "tālu no cilvēk"]
+    },
+    {
+      "kods": "pazudis_berns", "nr": 4, "grupa": "A", "nosaukums": "Pazudis bērns",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Zvani 112 uzreiz, negaidi. Pasaki bērna aprakstu un apģērbu, kur un kad viņu redzēji pēdējo reizi. Tirdzniecības centrā vai pasākumā uzreiz brīdini apsardzi.",
+      "atslegvardi": ["pazud", "nevaru atrast", "pazudis bērn", "pazuda bērn", "bērns pazud", "pazudis dēl", "pazuda meit", "pazudusi meit", "nevaru atrast bērn", "nevaru atrast dēl", "nevaru atrast meit", "pazaudēju bērn", "пропал ребен", "ребенок пропал", "потерял ребен", "пропал сын", "пропала доч",
+        "missing child", "lost child", "my child", "my son", "my daughter"]
+    },
+    {
+      "kods": "pazudis_vecs", "nr": 5, "grupa": "A", "nosaukums": "Pazudis gados vecs cilvēks",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Zvani 112 uzreiz. Sagatavo fotogrāfiju, apģērba aprakstu un vietas, kur viņš varētu doties. Pārbaudi tuvākās pieturas un ierastās vietas.",
+      "atslegvardi": ["pazud", "nav atgriez", "neatgriež", "demenc", "vecs cilvēk", "vecmāmiņa pazud", "vectēvs pazud", "pazudusi vecmām", "pazudis vectēv",
+        "пропал", "бабушк", "дедушк", "деменц", "grandma", "grandpa", "dementia", "elderly"]
+    },
+    {
+      "kods": "apmaldijies_sniega", "nr": 6, "grupa": "A", "nosaukums": "Apmaldījies sniegā",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Zvani 112. Patveries no vēja, nesēdi uz sniega, kusties, lai nesaltu. Paliec uz vietas, ja nezini virzienu.",
+      "atslegvardi": ["apmald", "nomald", "sniegā$", "putenī", "puteni", "aizput", "pēdas aizput", "метел", "снег", "snow", "blizzard", "lost$"]
+    },
+    {
+      "kods": "migla", "nr": 7, "grupa": "A", "nosaukums": "Apmaldījies biezā miglā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Apstājies un nogaidi, kamēr migla izklīst. Neej pa ceļa braucamo daļu. Ja apdraudēta veselība, zvani 112.",
+      "atslegvardi": ["migl", "redzamīb", "neko nevar redzēt", "туман", "fog"]
+    },
+    {
+      "kods": "nogriezies_no_grupas", "nr": 8, "grupa": "A", "nosaukums": "Atpalicis no grupas pārgājienā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Paliec uz vietas un zvani grupas biedriem. Ja nesazinies un tuvojas tumsa, zvani 112.",
+      "atslegvardi": ["pārgājien", "atpalik", "nogriez", "grupu pazaud", "pazaudēju grup", "поход", "отстал", "hike", "hiking", "lost my group"]
+    },
+    {
+      "kods": "ieslegts_telpa", "nr": 9, "grupa": "A", "nosaukums": "Ieslēgts telpā (pagrabs, noliktava)",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Zvani 112 un pasaki, kur atrodies. Ja nav zonas, klauvē un sauc palīdzību regulāri, taupi spēkus.",
+      "atslegvardi": ["ieslēdz", "ieslēg", "aizslēg", "netieku ārā", "netiek ārā", "pagrab", "noliktav", "заперт", "не могу выйти", "locked in", "trapped in"]
+    },
+    {
+      "kods": "pazudis_reljefa", "nr": 10, "grupa": "A", "nosaukums": "Apmaldījies kalnos vai stāvā reljefā",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Neturpini kāpt lejā pa stāvām nogāzēm tumsā. Paliec uz vietas, turies siltumā un zvani 112.",
+      "atslegvardi": ["kaln", "nogāz", "krauj", "stāvs krast", "reljef", "горы", "в горах", "mountain", "cliff"]
+    },
+    {
+      "kods": "pazudis_pie_udens", "nr": 11, "grupa": "A", "nosaukums": "Apmaldījies pie ezera vai upes",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Ej gar krastu vienā virzienā: krasti parasti ved līdz ceļam vai mājām. Ja tumst vai salst, zvani 112.",
+      "atslegvardi": ["apmaldījos pie ezer", "apmaldījos pie upe", "apmaldījies pie ezer", "neatrodu krast", "neatrodu ceļu atpakaļ", "заблудился у озер", "lost by the lake", "pazudis ūdenstilp", "ūdenstilp"]
+    },
+    {
+      "kods": "tumsa", "nr": 12, "grupa": "A", "nosaukums": "Tumsa pārsteigusi ārpus mājām",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Izmanto telefona lukturīti taupīgi. Turies pie ceļiem un apgaismotām vietām. Ja nevari tikt tālāk, zvani 112.",
+      "atslegvardi": ["tums", "satumst", "nav lukturīt", "lukturīt", "темно", "темнот", "dark$", "darkness", "flashlight"]
+    },
+    {
+      "kods": "arzemes", "nr": 13, "grupa": "A", "nosaukums": "Apmaldījies ārzemēs",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "112 darbojas visā Eiropas Savienībā. Sazinies ar Latvijas vēstniecību. Ja telefons izlādējas, lūdz palīdzību viesnīcā vai policijā.",
+      "atslegvardi": ["ārzem", "ārvalst", "vēstniecīb", "nesaprot valod", "за границ", "посольств", "abroad", "embassy"]
+    },
+    {
+      "kods": "medibas_senes", "nr": 14, "grupa": "A", "nosaukums": "Apmaldījies, sēņojot vai medībās",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Paliec uz vietas un zvani 112. Ja ir iespēja, dalies ar atrašanās vietu ar tuviniekiem. Taupi bateriju.",
+      "atslegvardi": ["sēņo", "sēnēs", "ogot", "ogās", "medīb", "mednie", "apmald", "грибы", "за грибами", "охот", "mushroom", "hunting"]
+    },
+
+    {
+      "kods": "autoavarija", "nr": 15, "grupa": "B", "nosaukums": "Smaga autoavārija",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Zvani 112. Ieslēdz avārijas gaismas, izliec avārijas zīmi. Cietušos nepārvieto, ja nedraud uguns vai cits apdraudējums.",
+      "atslegvardi": ["avārij", "sadur", "notrieca", "notriekt", "iesprost", "apgāz", "авари", "дтп", "столкнов", "сбил", "crash", "car accident", "collision", "autoavārij", "ceļu satiksmes negadīj", "csn$", "smaga avārij"]
+    },
+    {
+      "kods": "deg_auto", "nr": 16, "grupa": "B", "nosaukums": "Deg automašīna",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Apstājies, izslēdz dzinēju, visi ārā un prom no auto vismaz 20 metrus. Zvani 112. Neatver motora pārsegu.",
+      "atslegvardi": ["deg auto", "deg mašīn", "auto deg", "mašīna deg", "dūmi no motor", "dzinējs deg", "dzinēj", "горит машин", "car fire", "car is on fire"]
+    },
+    {
+      "kods": "auto_udeni", "nr": 17, "grupa": "B", "nosaukums": "Automašīna iebraukusi ūdenī",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Uzreiz atsprādzē drošības jostu, atver vai izsit sānu logu un izkāp, kamēr auto vēl peld. Bērnus laid ārā pirmos. Zvani 112.",
+      "atslegvardi": ["auto ūden", "mašīna ūden", "iebrauc ūden", "iebrauca upē", "iebrauca ezer", "grimst", "машина в вод", "тонет машин", "car in water", "sinking car", "iebraucis ūden", "iebrauca ūden"]
+    },
+    {
+      "kods": "auto_gravi", "nr": 18, "grupa": "B", "nosaukums": "Auto noslīdējis grāvī",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Ieslēdz avārijas gaismas. Ja kāds ir cietis, zvani 112, citādi sazinies ar ceļu palīdzību vai apdrošinātāju. Ziemā paliec siltumā.",
+      "atslegvardi": ["grāv", "noslīd", "iebrauc grāv", "nobrauc no ceļ", "кювет", "в канав", "ditch", "slid off"]
+    },
+    {
+      "kods": "auto_neiet", "nr": 19, "grupa": "B", "nosaukums": "Auto neiedarbojas",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Ieslēdz avārijas gaismas un sazinies ar ceļu palīdzību vai apdrošinātāju. Ja esi attālā vietā un salst, zvani 112.",
+      "atslegvardi": ["neiedarb", "nepiedarb", "neiet auto", "auto neiet", "mašīna neiet", "nesāk", "akumulator", "не заводит", "сломал машин", "car won't start", "car broke down", "breakdown", "piedarbin", "nevar iedarbin", "nevar piedarbin"]
+    },
+    {
+      "kods": "elektromobilis", "nr": 20, "grupa": "B", "nosaukums": "Izlādējies elektromobilis",
+      "kategorijas": ["uzlades_stacija"], "zvanit112": false,
+      "padoms": "Ieslēdz ekonomisko režīmu, izslēdz apsildi un kondicionieri. Brauc līdz tuvākajai uzlādes stacijai vai sazinies ar ceļu palīdzību.",
+      "atslegvardi": ["elektromobil", "elektroauto", "uzlādes stacij", "elektroauto izlād", "электромоб", "зарядн", "electric car", "ev$", "charging station"]
+    },
+    {
+      "kods": "bloketa_soseja", "nr": 21, "grupa": "B", "nosaukums": "Bloķēts ceļš vai šoseja",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Paliec auto un seko informācijai radio un lvceli.lv. Neapgriezies uz šosejas. Ja salst vai beidzas degviela, zvani 112.",
+      "atslegvardi": ["bloķēt", "sastrēg", "slēgts ceļ", "ceļš slēgt", "šosej", "стоим", "пробк", "дорога закрыт", "traffic jam", "road closed", "road blocked"]
+    },
+    {
+      "kods": "koks_pari_celam", "nr": 22, "grupa": "B", "nosaukums": "Koks pāri ceļam",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Nebrauc apkārt pa grāvjiem. Ja koks bloķē ceļu vai skāris vadus, zvani 112. Neej klāt vadiem.",
+      "atslegvardi": ["koks pāri", "nokrit koks", "nogāzies koks", "koks uz ceļ", "gāzies koks", "дерево упал", "fallen tree", "tree on the road"]
+    },
+    {
+      "kods": "vads_pari_celam", "nr": 23, "grupa": "B", "nosaukums": "Elektrības vads uz ceļa",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Nepieej tuvāk par 10 metriem: vads var būt zem sprieguma. Zvani 112 vai Sadales tīklam 8404. Brīdini citus.",
+      "atslegvardi": ["vads", "vadi$", "elektrolīnij", "nokritis vad", "spriegum", "zem strāv", "провод", "power line", "wire down", "downed line"]
+    },
+    {
+      "kods": "auto_putena", "nr": 24, "grupa": "B", "nosaukums": "Auto iestrēdzis putenī",
+      "kategorijas": ["degviela"], "zvanit112": true,
+      "padoms": "Paliec auto. Zvani 112. Darbini dzinēju ~10 minūtes stundā sildīšanai un pārliecinies, ka izpūtējs nav aizputināts (tvana gāze!). Ieslēdz avārijas gaismas.",
+      "atslegvardi": ["iestrēg", "iesprūd", "putenī", "puteni", "sniegavētr", "aizputin", "застрял", "метел", "snowed in", "stuck in snow", "blizzard", "auto ieslēgts", "auto iestrēg", "sniegavātr"]
+    },
+    {
+      "kods": "dizelis_aizsalis", "nr": 25, "grupa": "B", "nosaukums": "Aizsalusi dīzeļdegviela",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Novieto auto siltā vietā vai izsauc ceļu palīdzību. Nākamreiz uzpildi ziemas dīzeļdegvielu.",
+      "atslegvardi": ["aizsal", "sasal", "dīzel", "neparāv", "nepiedarb", "замерз дизел", "frozen diesel"]
+    },
+    {
+      "kods": "riepa", "nr": 26, "grupa": "B", "nosaukums": "Pārsprāgusi riepa",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Apstājies drošā vietā, ieslēdz avārijas gaismas un izliec avārijas zīmi. Ja nav rezerves riepas, zvani ceļu palīdzībai.",
+      "atslegvardi": ["riep", "pārsprāg", "caurum", "rezerves riep", "колес", "прокол", "flat tire", "flat tyre", "puncture"]
+    },
+    {
+      "kods": "velo_moto", "nr": 27, "grupa": "B", "nosaukums": "Velosipēda vai motocikla avārija",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Ja ir traumas, zvani 112. Motociklistam ķiveri nenoņem, ja viņš nav bezsamaņā bez elpošanas. Cietušo nepārvieto bez vajadzības.",
+      "atslegvardi": ["velo", "riteņ", "motocik", "moto$", "skrejriteņ", "nokritu no", "велосипед", "мотоцикл", "bike", "motorcycle", "scooter"]
+    },
+    {
+      "kods": "transports_apstajies", "nr": 28, "grupa": "B", "nosaukums": "Sabiedriskais transports apstājies",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Seko pārvadātāja norādēm, neizkāp uz sliedēm vai šosejas. Informāciju meklē pārvadātāja mājaslapā vai radio.",
+      "atslegvardi": ["autobus", "vilciens apstāj", "elektrovilcien", "tramvaj", "trolejbus", "transports apstāj", "автобус", "электричк", "bus stopped", "train stopped"]
+    },
+
+    {
+      "kods": "meza_ugunsgreks", "nr": 29, "grupa": "C", "nosaukums": "Meža vai lauku ugunsgrēks",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Zvani 112. Ej prom no uguns perpendikulāri vēja virzienam, uz ceļu vai ūdeni. Nemēģini dzēst lielu ugunsgrēku pats.",
+      "atslegvardi": ["meža ugun", "mežs deg", "deg mežs", "meža ugunsgrēk", "lauks deg", "kūdr", "ugunsgrēk", "dūm", "liesm", "лесной пожар", "лес горит", "forest fire", "wildfire"]
+    },
+    {
+      "kods": "ugunsgreks_dzivokli", "nr": 30, "grupa": "C", "nosaukums": "Ugunsgrēks dzīvoklī vai mājā",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Visi ārā, aizver aiz sevis durvis, neizmanto liftu. Zvani 112. Ja izeja aizdūmota, paliec istabā, aizbāz durvju spraugas ar slapju audumu un dod zīmes pa logu.",
+      "atslegvardi": ["dzīvoklī deg", "deg dzīvokl", "ugunsgrēks dzīvokl", "ugunsgrēks māj", "istabā deg", "virtuvē deg", "mājā deg", "deg māja", "ugun", "deg$", "liesm", "горит квартир", "пожар в доме", "пожар в квартир", "house fire", "apartment fire"]
+    },
+    {
+      "kods": "spradziens", "nr": 31, "grupa": "C", "nosaukums": "Dzirdēts sprādziens",
+      "kategorijas": ["patvertne"], "zvanit112": true,
+      "padoms": "Turies tālāk no logiem, dodies telpas iekšienē vai patvertnē. Ja redzi postījumus vai cietušos, zvani 112. Seko informācijai LR1.",
+      "atslegvardi": ["sprādzien", "sprāg", "nosprāg", "dārdien", "skaļš troksn", "взрыв", "грохот", "explosion", "blast", "sprādziena troksn", "dzirdēju sprādzien"]
+    },
+    {
+      "kods": "deg_kaimini", "nr": 32, "grupa": "C", "nosaukums": "Deg kaimiņu ēka",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Zvani 112. Aizver logus un durvis, sagatavo dokumentus un esi gatavs atstāt māju. Seko glābēju norādēm.",
+      "atslegvardi": ["kaimiņ", "blakus māj", "blakus ēk", "deg$", "ugun", "liesm", "у соседей горит", "соседн", "neighbour's house", "next door fire"]
+    },
+    {
+      "kods": "kula", "nr": 33, "grupa": "C", "nosaukums": "Kūlas ugunsgrēks",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Zvani 112. Nelaid uguni līdz ēkām: ja droši, aplaisti zāli ap māju. Kūlas dedzināšana ir aizliegta.",
+      "atslegvardi": ["kūl", "zāle deg", "deg zāle", "sausā zāl", "pērnā zāl", "трава горит", "палят траву", "grass fire"]
+    },
+    {
+      "kods": "dumi_kapnes", "nr": 34, "grupa": "C", "nosaukums": "Dūmi kāpņu telpā",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Neej aizdūmotā kāpņu telpā. Paliec dzīvoklī, aizver durvis, aizbāz spraugas ar slapju audumu, zvani 112 un dod zīmes pa logu.",
+      "atslegvardi": ["kāpņu telp", "kāpņutelp", "kāpn", "koridor", "dūm", "задымл", "дым в подъезд", "подъезд", "smoke in the stairwell", "stairwell"]
+    },
+    {
+      "kods": "gazes_smarza", "nr": 35, "grupa": "C", "nosaukums": "Gāzes smaka dzīvoklī",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Neslēdz elektrību un nelieto uguni. Atver logus, izej ārā un no ārpuses zvani Gāzes avārijas dienestam 114 vai 112.",
+      "atslegvardi": ["gāzes smak", "gāzes smarž", "smird pēc gāz", "ož pēc gāz", "gāz", "114$", "запах газ", "пахнет газ", "smell gas", "smells like gas", "gas smell"]
+    },
+    {
+      "kods": "eka_sagruvusi", "nr": 36, "grupa": "C", "nosaukums": "Ēka daļēji sagruvusi",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Zvani 112. Ja esi iesprostots, neej pa bojātām kāpnēm, sargā elpceļus no putekļiem, klauvē pa caurulēm, lai glābēji tevi sadzird.",
+      "atslegvardi": ["sagruv", "sabruk", "iebruk", "sagrūst", "drup", "griesti iebr", "обруш", "завал", "collapse", "rubble", "sagrūš", "sagrušan", "māja sagruv", "ēka sagruv"]
+    },
+
+    {
+      "kods": "sniegavetra", "nr": 37, "grupa": "D", "nosaukums": "Sniegavētra ceļā",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Ja vari, atliec braucienu. Ja esi ceļā, brauc lēni vai apstājies drošā vietā un paliec auto. Ja salst un nav palīdzības, zvani 112.",
+      "atslegvardi": ["sniegavētr", "putenis", "putenī", "puteni", "sniega vētr", "метел", "пург", "снегопад", "blizzard", "snowstorm", "sniegavātr", "sniegavētra ceļ", "sniegavātrs ceļ", "putenis ceļ"]
+    },
+    {
+      "kods": "apsaldejums", "nr": 38, "grupa": "D", "nosaukums": "Apsaldējums",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": false,
+      "padoms": "Sildi apsaldēto vietu lēnām ar ķermeņa siltumu vai remdenu ūdeni. Neberzē un nesildi ar karstu. Ja āda balta vai pūslīši, dodies pie ārsta.",
+      "atslegvardi": ["apsald", "nosal", "nejūt pirkst", "pirksti balt", "обморож", "frostbite"]
+    },
+    {
+      "kods": "hipotermija", "nr": 39, "grupa": "D", "nosaukums": "Hipotermija (pārsalšana)",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Nogādā cilvēku siltumā, novelc slapjās drēbes, ietin segās. Ja ir pie samaņas, dod siltu saldu dzērienu. Ja miegains vai apjucis, zvani 112.",
+      "atslegvardi": ["hipoterm", "pārsal", "drebu", "trīc no aukst", "ļoti salst", "ļoti auksti", "переохлаж", "замерза", "hypotherm", "freezing"]
+    },
+    {
+      "kods": "karstums", "nr": 40, "grupa": "D", "nosaukums": "Karstuma dūriens",
+      "kategorijas": ["aptieka", "neatliekama_24h"], "zvanit112": false,
+      "padoms": "Pārvieto cilvēku ēnā, dzer ūdeni mazām porcijām, atvēsini ar mitru drānu. Ja apjucis vai zaudē samaņu, zvani 112.",
+      "atslegvardi": ["karstuma vilni", "karstuma dūrien", "pārkars", "saules dūrien", "dehidrat", "reibon", "тепловой удар", "солнечный удар", "жара", "heat stroke", "heatstroke", "sunstroke", "dehydrat"]
+    },
+    {
+      "kods": "negaiss", "nr": 41, "grupa": "D", "nosaukums": "Pērkona negaiss atklātā vietā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Patveries ēkā vai automašīnā. Ja nav kur, notupies zemā vietā, kājas kopā. Nestāvi zem atsevišķiem kokiem un tālāk no ūdens.",
+      "atslegvardi": ["negais", "zibens", "zibeņ", "pērkon", "гроза", "молни", "thunder", "lightning"]
+    },
+    {
+      "kods": "ledus_celi", "nr": 42, "grupa": "D", "nosaukums": "Apledojuši ceļi",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Ja vari, atliec braucienu. Brauc lēni un ar lielu distanci. Ceļu stāvokli skaties lvceli.lv.",
+      "atslegvardi": ["slid", "apledoj", "ledus uz ceļ", "melnais ledus", "гололёд", "гололед", "скользк", "icy road", "black ice"]
+    },
+    {
+      "kods": "pludi", "nr": 43, "grupa": "D", "nosaukums": "Plūdi",
+      "kategorijas": ["evakuacijas_punkts", "noturibas_punkts"], "zvanit112": true,
+      "padoms": "Dodies augstāk. Atslēdz elektrību, ja vari to izdarīt droši. Nebrauc un neej pa applūdušu ceļu. Ja jāpamet māja, ņem dokumentus un zāles. Seko 112.lv.",
+      "atslegvardi": ["plūdi", "plūdu", "plūdos", "applūd", "pārplūd", "ūdens līmen", "pali$", "palos", "наводнен", "затоп", "паводок", "flood"]
+    },
+    {
+      "kods": "vetra_jumts", "nr": 44, "grupa": "D", "nosaukums": "Vētra norāvusi jumtu vai koku",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": false,
+      "padoms": "Turies tālāk no bojātām konstrukcijām un nokritušiem vadiem. Ja draud sabrukšana vai kāds cietis, zvani 112. Bojājumus nofotografē apdrošinātājam.",
+      "atslegvardi": ["vētr", "norāv", "jumt", "nogāz", "vējš", "буря", "ураган", "сорвал", "storm", "roof"]
+    },
+    {
+      "kods": "aukstuma_vilnis", "nr": 45, "grupa": "D", "nosaukums": "Aukstums, mājā nav siltuma",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Sildi vienu istabu, aizver pārējās. Velc vairākas kārtas drēbju. Nekad nesildies ar gāzes plīti vai grilu telpā (tvana gāze).",
+      "atslegvardi": ["aukst", "sals$", "salst", "sasalst", "caurul", "холодно", "мороз", "трубы", "freezing cold", "cold$"]
+    },
+    {
+      "kods": "ledainas_ietves", "nr": 46, "grupa": "D", "nosaukums": "Paklupis uz ledus",
+      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"], "zvanit112": false,
+      "padoms": "Ja nevari piecelties vai ir stipras sāpes, nekusties un zvani 112. Citādi dodies uz traumpunktu.",
+      "atslegvardi": ["paslīd", "uz ledus", "ledain", "ietv", "kritu", "nokritu", "поскользн", "упал", "slipped", "fell on ice"]
+    },
+    {
+      "kods": "sniegs_no_jumta", "nr": 47, "grupa": "D", "nosaukums": "Sniegs vai lāstekas krīt no jumta",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Ej tālāk no ēku malām, nenovieto auto zem jumta malas. Bīstamas lāstekas paziņo pašvaldībai vai ēkas pārvaldniekam.",
+      "atslegvardi": ["lāstek", "sniegs no jumt", "snieg krīt", "jumta mal", "сосульк", "icicle", "snow falling from roof", "nogruvum", "sniega nogruv"]
+    },
+    {
+      "kods": "viesulvetra", "nr": 48, "grupa": "D", "nosaukums": "Viesuļvētra",
+      "kategorijas": ["patvertne"], "zvanit112": false,
+      "padoms": "Paliec iekštelpās vidējā telpā bez logiem, zemākajā stāvā. Turies tālāk no logiem. Ja esi ārā, meklē stipru ēku.",
+      "atslegvardi": ["viesuļ", "viesul", "virpuļ", "orkān", "torn", "смерч", "торнадо", "ураган", "tornado", "hurricane"]
+    },
+
+    {
+      "kods": "sirdslekme", "nr": 49, "grupa": "E", "nosaukums": "Sirdslēkme",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Zvani 112. Apsēdini cilvēku, atpogā apģērbu. Ja viņš zaudē samaņu un neelpo, sāc sirds masāžu un lūdz atnest defibrilatoru (AED).",
+      "atslegvardi": ["sirdslēkm", "infarkt", "sirds", "sāp krūt", "spiež krūt", "krūtīs sāp", "reanimāc", "сердц", "болит сердц", "инфаркт", "давит в груди", "heart", "chest pain", "cpr"]
+    },
+    {
+      "kods": "insults", "nr": 50, "grupa": "E", "nosaukums": "Insults",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Zvani 112 uzreiz, katra minūte ir svarīga. Pazīmes: nokarājies sejas kaktiņš, vājums rokā, neskaidra runa. Pieraksti laiku, kad tās parādījās.",
+      "atslegvardi": ["insult", "sejas asimetr", "seja nokar", "nevar parunāt", "runa neskaidr", "roka nekust", "инсульт", "stroke"]
+    },
+    {
+      "kods": "anafilakse", "nr": 51, "grupa": "E", "nosaukums": "Smaga alerģiska reakcija",
+      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"], "zvanit112": true,
+      "padoms": "Zvani 112. Ja cilvēkam ir adrenalīna autoinjektors, palīdzi to izmantot. Ja grūti elpot, ļauj sēdēt; ja vājš, noguldi ar paceltām kājām.",
+      "atslegvardi": ["alerģ", "anafilak", "dzēlien", "iedzēl", "bite$", "lapsen", "pietūk", "tūsk", "аллерг", "укус пчел", "отек", "allerg", "anaphyla", "bee sting", "swelling"]
+    },
+    {
+      "kods": "luzums", "nr": 52, "grupa": "E", "nosaukums": "Lūzums",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": false,
+      "padoms": "Nekustini savainoto vietu, nostiprini to tādā stāvoklī, kādā tā ir. Ja lūzums ir atklāts, liels vai nevar pārvietoties, zvani 112.",
+      "atslegvardi": ["lūz", "lauzt", "salauz", "kauls", "izmežģ", "sastiep", "перелом", "сломал", "вывих", "broken", "fracture", "sprain", "lūzusi kāj", "lauzta kāj", "lūzums kāj", "lūzums rok"]
+    },
+    {
+      "kods": "satricinajums", "nr": 53, "grupa": "E", "nosaukums": "Smadzeņu satricinājums",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": false,
+      "padoms": "Pēc sitiena pa galvu vēro cilvēku. Ja ir vemšana, apjukums, miegainība vai samaņas zudums, zvani 112 vai dodies uz slimnīcu.",
+      "atslegvardi": ["satricin", "sasit galv", "sasitu galv", "sitiens pa galv", "kritu uz galv", "сотрясен", "ударил голов", "concussion", "hit my head"]
+    },
+    {
+      "kods": "saindesanas_partika", "nr": 54, "grupa": "E", "nosaukums": "Saindēšanās ar pārtiku",
+      "kategorijas": ["aptieka", "slimnica"], "zvanit112": false,
+      "padoms": "Dzer daudz šķidruma mazām porcijām; aptiekā ir rehidratācijas sāļi. Ja asinis vemšanā vai vēderā, augsta temperatūra vai bērnam dehidratācija, dodies pie ārsta.",
+      "atslegvardi": ["saindē", "vem", "caureja", "nelab", "pārtik", "отравл", "рвот", "понос", "food poisoning", "vomit", "diarrh"]
+    },
+    {
+      "kods": "tvana_gaze", "nr": 55, "grupa": "E", "nosaukums": "Tvana gāze (oglekļa monoksīds)",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Uzreiz visi ārā svaigā gaisā, atver logus. Zvani 112. Pazīmes: galvassāpes, reibonis, nelabums vairākiem cilvēkiem vienlaikus. Izslēdz sildītāju vai ģeneratoru.",
+      "atslegvardi": ["tvana gāz", "tvan", "oglekļa monoksīd", "co detektor", "ģenerator telp", "угарн", "угар", "carbon monoxide", "co alarm"]
+    },
+    {
+      "kods": "astma", "nr": 56, "grupa": "E", "nosaukums": "Astmas lēkme",
+      "kategorijas": ["aptieka", "neatliekama_24h"], "zvanit112": true,
+      "padoms": "Apsēdini cilvēku taisni, nomierini. Ja ir inhalators, lieto to. Ja nav inhalatora vai stāvoklis neuzlabojas, zvani 112.",
+      "atslegvardi": ["astm", "inhalator", "elpas trūk", "grūti elpot", "nosmak", "smok", "астм", "ингалятор", "задыха", "asthma", "inhaler", "short of breath"]
+    },
+    {
+      "kods": "diabets", "nr": 57, "grupa": "E", "nosaukums": "Zems cukura līmenis (diabēts)",
+      "kategorijas": ["neatliekama_24h", "aptieka"], "zvanit112": true,
+      "padoms": "Ja cilvēks ir pie samaņas, dod kaut ko saldu: sulu, cukuru, konfektes. Ja bezsamaņā, neko mutē nedod un zvani 112.",
+      "atslegvardi": ["diabēt", "cukur", "hipoglik", "cukurs krīt", "zems cukur", "диабет", "сахар", "diabet", "low sugar", "hypoglyc"]
+    },
+    {
+      "kods": "krampji", "nr": 58, "grupa": "E", "nosaukums": "Krampju lēkme",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Pasargā galvu, novāc bīstamus priekšmetus. Neko neliec mutē un neturi cilvēku ciet. Mēri laiku: ja lēkme ilgāka par 5 minūtēm vai atkārtojas, zvani 112.",
+      "atslegvardi": ["krampj", "epilep", "lēkm", "raust", "судорог", "эпилеп", "приступ", "seizure", "epilep", "fit$"]
+    },
+    {
+      "kods": "asinosana", "nr": 59, "grupa": "E", "nosaukums": "Stipra asiņošana",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Zvani 112. Spied brūci stipri ar tīru audumu vai pārsēju un nelaid vaļā. Žņaugu liec tikai tad, ja asiņošana no rokas vai kājas citādi neapstājas.",
+      "atslegvardi": ["asiņ", "asins", "griezum", "brūc", "iegriez", "sagriez", "žņaug", "кров", "порез", "bleed", "blood", "cut$", "tourniquet"]
+    },
+    {
+      "kods": "aizrijies", "nr": 60, "grupa": "E", "nosaukums": "Aizrijies",
+      "kategorijas": ["neatliekama_24h"], "zvanit112": true,
+      "padoms": "Ja cilvēks nevar runāt un elpot: 5 stipri sitieni starp lāpstiņām, tad 5 spiedieni vēdera augšdaļā (Heimliha paņēmiens). Atkārto. Zvani 112.",
+      "atslegvardi": ["aizrij", "aizrīj", "aizsprost", "heimli", "kaut kas kaklā", "подавил", "поперхн", "choking", "chok", "heimlich"]
+    },
+
+    {
+      "kods": "kars", "nr": 61, "grupa": "F", "nosaukums": "Karš: rīcība pēc civilās aizsardzības plāna",
+      "kategorijas": ["patvertne", "evakuacijas_punkts"], "zvanit112": false,
+      "padoms": "Seko oficiālajai informācijai LR1, LTV1 un 112.lv. Sagatavo 72 stundu somu: dokumenti, zāles, ūdens, pārtika, lukturis, radio. Zini tuvāko patvertni.",
+      "atslegvardi": ["kara$", "karš$", "karadarb", "kara stāvokl", "civilā aizsardz", "civilās aizsardz", "mobilizāc", "iebrukum", "войн", "вторжен", "war$", "invasion"]
+    },
+    {
+      "kods": "gaisa_trauksme", "nr": 62, "grupa": "F", "nosaukums": "Gaisa trauksme",
+      "kategorijas": ["patvertne"], "zvanit112": false,
+      "padoms": "Uzreiz dodies uz patvertni vai telpu bez logiem ēkas iekšienē, zemākajā stāvā. Ieslēdz LR1. Paliec tur, līdz trauksme atcelta.",
+      "atslegvardi": ["gaisa trauksm", "gaisa uzbrukum", "trauksm", "sirēn", "raķet", "bombard", "bumbas", "bumba$", "воздушн", "тревог", "сирен", "ракет", "бомб", "air raid", "siren", "missile", "bomb"]
+    },
+    {
+      "kods": "militarpersonas", "nr": 63, "grupa": "F", "nosaukums": "Nezināmi bruņoti cilvēki vai militārpersonas",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Netuvojies, nefotografē un nepublicē sociālajos tīklos. Atstāj vietu mierīgi un ziņo 112: kur, cik, kāds formas tērps, kurā virzienā kustas.",
+      "atslegvardi": ["militārpers", "karavīr", "bruņot", "formas tērp", "svešas formas", "tehnika uz ceļ", "tank", "военн", "солдат", "вооружен", "soldiers", "armed men", "military"]
+    },
+    {
+      "kods": "savieni", "nr": 64, "grupa": "F", "nosaukums": "Šāvieni tuvumā",
+      "kategorijas": ["patvertne"], "zvanit112": true,
+      "padoms": "Nogulies, attālinies no logiem, paslēpies aiz biezas sienas. Ja vari droši aiziet prom no šāvienu virziena, dari to. Zvani 112, kad esi drošībā.",
+      "atslegvardi": ["šāvien", "šauj", "šaud", "apšaud", "стрельб", "стреляют", "выстрел", "обстрел", "shots", "shooting", "gunfire"]
+    },
+    {
+      "kods": "droni", "nr": 65, "grupa": "F", "nosaukums": "Droni virs apdzīvotas vietas",
+      "kategorijas": ["patvertne"], "zvanit112": false,
+      "padoms": "Atstāj atklātu vietu, dodies iekštelpās tālāk no logiem. Nemēģini dronu notriekt vai pieskarties nokritušam dronam; ziņo 112.",
+      "atslegvardi": ["dron", "bezpilot", "дрон", "беспилот", "drone", "uav"]
+    },
+    {
+      "kods": "evakuacija", "nr": 66, "grupa": "F", "nosaukums": "Evakuācijas rīkojums",
+      "kategorijas": ["evakuacijas_punkts", "degviela"], "zvanit112": false,
+      "padoms": "Ņem dokumentus, zāles, telefonu ar lādētāju, naudu, ūdeni, pārtiku un siltas drēbes. Aizslēdz māju, izslēdz gāzi un elektrību. Brauc pa norādīto maršrutu.",
+      "atslegvardi": ["evaku", "jāpamet māj", "jāatstāj māj", "jābrauc prom", "braukt prom", "aizbrauk", "kur iet", "эвакуац", "уехать", "evacuat", "leave the city"]
+    },
+    {
+      "kods": "robeza_slegta", "nr": 67, "grupa": "F", "nosaukums": "Robeža slēgta",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Seko Valsts robežsardzes un Ārlietu ministrijas informācijai. Ja esi ārzemēs, sazinies ar Latvijas vēstniecību.",
+      "atslegvardi": ["robež", "robežsardz", "nevar atgriez", "nevar izbrauk", "граница", "границ", "border"]
+    },
+    {
+      "kods": "nav_sakaru_gimene", "nr": 68, "grupa": "F", "nosaukums": "Nav ziņu no tuviniekiem",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Mēģini SMS: tās bieži iziet, kad zvani neiet. Norunājiet iepriekš tikšanās vietu. Informāciju par cietušajiem sniedz 112 un pašvaldība.",
+      "atslegvardi": ["nav ziņu", "nevaru sazvanīt", "nevar sazvanīt", "tuvinieki", "ģimen", "нет связи с", "не могу дозвон", "родные", "can't reach my family", "family$", "sakari izslēg", "nav ziņu no ģimen"]
+    },
+    {
+      "kods": "begli", "nr": 69, "grupa": "F", "nosaukums": "Bēgļi: reģistrācija un palīdzība",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Vērsies pašvaldībā vai tās sociālajā dienestā: tur palīdz ar reģistrāciju, naktsmājām un pārtiku.",
+      "atslegvardi": ["bēgļ", "patvērum", "reģistrāc", "naktsmāj", "беженц", "убежище", "refugee", "asylum", "kara bēgļ", "bēgļu plūsm"]
+    },
+    {
+      "kods": "piesarnojums", "nr": 70, "grupa": "F", "nosaukums": "Radiācija vai ķīmisks piesārņojums",
+      "kategorijas": ["patvertne"], "zvanit112": true,
+      "padoms": "Ej iekšā, aizver logus un durvis, izslēdz ventilāciju. Ieslēdz LR1 un seko oficiālām norādēm. Ja biji ārā, novelc virsdrēbes un nomazgājies.",
+      "atslegvardi": ["radiāc", "radioaktīv", "kodolavār", "piesārņoj", "ķīmisk", "toksisk", "indīgs mākon", "радиац", "химическ", "radiation", "nuclear", "chemical", "bīstama objekt", "objekta sprādzien"]
+    },
+
+    {
+      "kods": "nemieri", "nr": 71, "grupa": "G", "nosaukums": "Nekārtības ielās",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Izvairies no pūļa, neej skatīties. Dodies prom pa sānielām vai paliec iekštelpās. Ja tevi apdraud, zvani 112.",
+      "atslegvardi": ["nemier", "nekārtīb", "pūl", "grautiņ", "protest", "demonstrāc", "беспоряд", "толп", "riot", "mob$", "crowd"]
+    },
+    {
+      "kods": "aizdomiga_uzvediba", "nr": 73, "grupa": "G", "nosaukums": "Aizdomīga uzvedība apkārtnē",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Spried pēc rīcības, nevis izskata. Ja kāds rīkojas bīstami (lūr mājās, mēģina atvērt auto, seko cilvēkiem), ziņo policijai 110 vai 112.",
+      "atslegvardi": ["aizdomīg", "lūr", "staigā apkārt māj", "mēģina atvērt", "подозрит", "suspicious"]
+    },
+    {
+      "kods": "kautins", "nr": 74, "grupa": "G", "nosaukums": "Kautiņš pasākumā",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Neiejaucies. Aizved bērnus un sevi prom no kautiņa, pasaki apsardzei un zvani 112.",
+      "atslegvardi": ["kautiņ", "kaujas", "sit viens otru", "plēšas", "драк", "fight", "brawl"]
+    },
+    {
+      "kods": "terorisms", "nr": 75, "grupa": "G", "nosaukums": "Teroristisks uzbrukums",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Bēdz, ja ir drošs ceļš. Ja nav, paslēpies, izslēdz telefona skaņu, aizbarikādē durvis. Zvani 112, kad tas ir droši.",
+      "atslegvardi": ["teror", "uzbrukums pūl", "spridzin", "ķīlniek", "теракт", "террор", "заложник", "terror", "hostage", "teroristisks uzbrukum", "terorakt"]
+    },
+    {
+      "kods": "asaru_gaze", "nr": 76, "grupa": "G", "nosaukums": "Asaru vai kairinoša gāze",
+      "kategorijas": ["aptieka"], "zvanit112": false,
+      "padoms": "Ej prom no gāzes, pret vēju, svaigā gaisā. Neberzē acis, skalo tās ar tīru ūdeni. Ja grūti elpot, zvani 112.",
+      "atslegvardi": ["asaru gāz", "kairinoš", "piparu gāz", "dedzina acis", "acis graiž", "слезоточив", "перцов", "tear gas", "pepper spray"]
+    },
+    {
+      "kods": "iebruceji", "nr": 77, "grupa": "G", "nosaukums": "Iebrucēji mājā",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Neej konfrontēt. Ieslēdzies telpā, kur var aizslēgt durvis, un zvani 112 klusā balsī. Ja vari droši izkļūt ārā, dari to.",
+      "atslegvardi": ["iebrucēj", "ielauž", "ielauz", "kāds ir mājā", "kāds mājā", "troksnis pie durv", "kāds pie durv", "вломил", "кто-то в доме", "intruder", "someone in my house", "break in"]
+    },
+    {
+      "kods": "laupisana", "nr": 78, "grupa": "G", "nosaukums": "Laupīšana uz ielas",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Nepretojies: tava drošība ir svarīgāka par mantām. Iegaumē uzbrucēja izskatu un virzienu. Zvani 112 un nobloķē bankas kartes.",
+      "atslegvardi": ["aplaupī", "laupīš", "laupītāj", "atņēma", "izrāva somu", "ограб", "грабит", "robbed", "mugged", "mugging"]
+    },
+    {
+      "kods": "panika_tc", "nr": 79, "grupa": "G", "nosaukums": "Panika tirdzniecības centrā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Nebēdz pūlī. Ej uz tuvāko izeju pret pūļa plūsmu malu, turi bērnus pie sevis. Ja nokrīti, aizsargā galvu un mēģini piecelties.",
+      "atslegvardi": ["panik", "tirdzniecības centr", "lielveikal", "drūzm", "паник", "торгов", "давка", "panic", "stampede", "shopping centre", "mall"]
+    },
+    {
+      "kods": "draudi_skola", "nr": 80, "grupa": "G", "nosaukums": "Draudi skolā",
+      "kategorijas": ["policija"], "zvanit112": true,
+      "padoms": "Seko skolotāju norādēm. Vecāki: nebrauciet uz skolu un nezvaniet bērnam, ja tā ir slēpšanās situācija; sekojiet policijas un skolas informācijai.",
+      "atslegvardi": ["skol", "bērnudārz", "draudi skol", "evakuē skol", "школ", "детский сад", "school"]
+    },
+
+    {
+      "kods": "telefona_baterija", "nr": 81, "grupa": "H", "nosaukums": "Izlādējas telefons",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Ieslēdz enerģijas taupīšanas režīmu, samazini ekrāna spilgtumu, izslēdz nevajadzīgas lietotnes. Ārkārtas zvanam 112 baterija jātaupa.",
+      "atslegvardi": ["baterij", "izlād", "uzlād", "lādētāj", "telefons mirst", "батаре", "заряд", "разряд", "battery", "charge my phone", "charger"]
+    },
+    {
+      "kods": "nav_elektribas", "nr": 82, "grupa": "H", "nosaukums": "Ilgstoši nav elektrības",
+      "kategorijas": ["noturibas_punkts", "degviela", "bankomats"], "zvanit112": false,
+      "padoms": "Paziņo Sadales tīklam 8404. Turi ledusskapi aizvērtu, lieto lukturus, nevis sveces. Apjautājies, kā klājas kaimiņiem, īpaši veciem cilvēkiem.",
+      "atslegvardi": ["nav elektrīb", "nav strāv", "elektrīb", "strāv", "atslēg", "blackout", "sadales tīkl", "8404$", "нет света", "электричеств", "отключ", "power outage", "no power", "no electricity"]
+    },
+    {
+      "kods": "nav_udens", "nr": 83, "grupa": "H", "nosaukums": "Nav ūdens",
+      "kategorijas": ["udens_punkts"], "zvanit112": false,
+      "padoms": "Seko pašvaldības un ūdenssaimniecības informācijai par ūdens izdales vietām. Ja ūdens nāk duļķains, pirms dzeršanas to uzvāri.",
+      "atslegvardi": ["nav ūden", "ūdensvad", "dzeramais ūden", "dzeramā ūden", "krāns", "нет воды", "водопровод", "питьев", "no water", "drinking water", "water outage"]
+    },
+    {
+      "kods": "nav_siltuma", "nr": 84, "grupa": "H", "nosaukums": "Ziemā nav apkures",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Sildi vienu istabu, aizklāj logus, velc kārtām. Nekad nesildies ar gāzes plīti, grilu vai ģeneratoru telpā. Siltumu un uzlādi piedāvā pašvaldības noturības punkti.",
+      "atslegvardi": ["apkur", "nav apkur", "nav siltum", "radiator", "sasalst caurul", "auksts dzīvokl", "отоплен", "нет тепла", "батарея холод", "no heating", "no heat", "bez siltum", "bez apkur"]
+    },
+    {
+      "kods": "lifts", "nr": 85, "grupa": "H", "nosaukums": "Iesprūdis liftā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Nospied avārijas pogu lifta panelī un gaidi. Nemēģini izkļūt pats caur durvīm vai lūku. Ja jūties slikti, zvani 112.",
+      "atslegvardi": ["lift", "iesprūdu lift", "iesprūdis lift", "iestrēgu lift", "лифт", "застрял в лифт", "stuck in the elevator", "elevator"]
+    },
+    {
+      "kods": "gazes_nopludes_eka", "nr": 86, "grupa": "H", "nosaukums": "Gāzes noplūde ēkā",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Neslēdz elektrību, nezvani pie durvīm, nelieto uguni. Brīdini kaimiņus klauvējot, izej ārā un no ārpuses zvani 114 vai 112.",
+      "atslegvardi": ["gāzes noplūd", "noplūd", "gāz", "114$", "утечка газ", "gas leak"]
+    },
+    {
+      "kods": "kimiska_avarija", "nr": 87, "grupa": "H", "nosaukums": "Ķīmiska avārija rūpnīcā",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Ej iekšā un paliec tur: aizver logus, durvis un ventilāciju, aizbāz spraugas. Ieslēdz LR1. Ja esi ārā, ej prom perpendikulāri vējam.",
+      "atslegvardi": ["ķīmisk", "rūpnīc", "toksisk", "mākon", "indīg", "amonjak", "hlor", "химич", "завод", "токсичн", "chemical", "toxic cloud", "factory"]
+    },
+    {
+      "kods": "vilciena_avarija", "nr": 88, "grupa": "H", "nosaukums": "Vilciena avārija",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Seko personāla norādēm, pārbaudi, vai blakus esošie nav cietuši. Izkāp prom no sliedēm, ne uz blakus ceļa. Zvani 112.",
+      "atslegvardi": ["vilcien", "vagon", "sliedēs", "dzelzceļ", "поезд", "вагон", "train crash", "derail", "vilciena avārij", "vilciens noskrēj"]
+    },
+    {
+      "kods": "tunelis", "nr": 89, "grupa": "H", "nosaukums": "Ugunsgrēks tunelī",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Atstāj auto ar atslēgu aizdedzē, ej uz tuvāko avārijas izeju prom no dūmiem. Zvani 112.",
+      "atslegvardi": ["tunel", "pazemes", "apakšzem", "туннел", "tunnel"]
+    },
+    {
+      "kods": "lidmasina", "nr": 90, "grupa": "H", "nosaukums": "Lidmašīnas avārijas nosēšanās",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Seko apkalpes norādēm, atstāj mantas, ej uz avārijas izeju. Pēc izkāpšanas dodies prom no lidmašīnas.",
+      "atslegvardi": ["lidmašīn", "lidost", "avārijas nosēš", "самолет", "самолёт", "airplane", "plane crash", "emergency landing"]
+    },
+    {
+      "kods": "kugis", "nr": 91, "grupa": "H", "nosaukums": "Prāmja vai kuģa avārija",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Uzvelc glābšanas vesti, seko apkalpes norādēm un ej uz pulcēšanās vietu uz klāja.",
+      "atslegvardi": ["prām", "kuģ", "glābšanas vest", "паром", "корабл", "спасательн жилет", "ferry", "ship", "life jacket"]
+    },
+    {
+      "kods": "nav_sakaru", "nr": 92, "grupa": "H", "nosaukums": "Mobilo sakaru tīkls nedarbojas",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "112 var iziet caur citu operatoru tīklu. Mēģini SMS. Informāciju klausies LR1 radio. Ja nekas nedarbojas, dodies uz tuvāko noturības punktu.",
+      "atslegvardi": ["nav zonas", "nav signāl", "nav tīkl", "sakari nedarb", "nav sakar", "nav interneta", "нет связи", "нет сети", "no signal", "no network", "no internet", "tīkls nedarb", "sakaru tīkl", "telefons nestrādā"]
+    },
+
+    {
+      "kods": "ielauzies_ledu", "nr": 93, "grupa": "I", "nosaukums": "Cilvēks iekritis ledainā ūdenī",
+      "kategorijas": ["neatliekama_24h"], "zvanit112": true,
+      "padoms": "Zvani 112. Netuvojies pa ledu stāvus: pasniedz garu koku, virvi vai šalli, guļot uz ledus. Izglābto uzreiz nogādā siltumā.",
+      "atslegvardi": ["ielūz", "iekrit āliņģ", "iekrita ūdenī", "zem ledus", "ledain", "āliņģ", "провалил", "под лёд", "под лед", "fell through the ice", "icy water", "ledainā ūden", "iekritis ūden", "iekrita ūden"]
+    },
+    {
+      "kods": "ledus_lust", "nr": 94, "grupa": "I", "nosaukums": "Ledus lūst zem kājām",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Nogulies, izpleti rokas un rāpo atpakaļ pa to pašu ceļu, pa kuru nāci. Ja iekriti, nemēģini izkāpt strauji: balsties uz elkoņiem un rāpies ārā.",
+      "atslegvardi": ["ledus lūzt", "ledus lūst", "ledus plīst", "plāns ledus", "uz ledus", "лёд трещит", "лед трещит", "ice is cracking", "thin ice"]
+    },
+    {
+      "kods": "straume", "nr": 95, "grupa": "I", "nosaukums": "Straume aiznes peldētāju",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Peldi paralēli krastam, nevis pret straumi. Ja pats esi krastā, neej ūdenī: met kaut ko peldošu un zvani 112.",
+      "atslegvardi": ["straum", "aiznes", "atstraum", "peldētāj", "течение", "унесло", "rip current", "current$", "swept away"]
+    },
+    {
+      "kods": "slikst", "nr": 96, "grupa": "I", "nosaukums": "Cilvēks slīkst",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Zvani 112. Pats ūdenī nelec: met glābšanas riņķi, virvi vai jebko peldošu. Izvilktajam, ja neelpo, sāc atdzīvināšanu.",
+      "atslegvardi": ["slīkst", "noslīk", "slīkon", "slīkšan", "тонет", "утону", "drowning"]
+    },
+    {
+      "kods": "laiva", "nr": 97, "grupa": "I", "nosaukums": "Apgāzusies laiva",
+      "kategorijas": [], "zvanit112": true,
+      "padoms": "Turies pie laivas: to ir vieglāk ieraudzīt nekā cilvēku. Taupi spēkus, nepeldi garu distanci līdz krastam. Zvani 112.",
+      "atslegvardi": ["laiv", "kajak", "apgāz", "лодк", "перевернул", "boat", "capsiz", "kayak"]
+    },
+    {
+      "kods": "udens_celas", "nr": 98, "grupa": "I", "nosaukums": "Ūdens ceļas pagrabā vai telpā",
+      "kategorijas": ["evakuacijas_punkts"], "zvanit112": true,
+      "padoms": "Uzreiz ej augstāk. Neaiztiec elektroierīces un slēdžus ūdenī. Ja nevari izkļūt, zvani 112.",
+      "atslegvardi": ["ūdens ceļ", "ūdens nāk", "applūst pagrab", "pagrabā ūden", "ūdens līmen", "вода поднима", "затопил", "water rising", "basement flood", "paaugstin", "līmenis ceļ"]
+    },
+
+    {
+      "kods": "kartes_nedarbojas", "nr": 99, "grupa": "J", "nosaukums": "Kartes un maksājumi nedarbojas",
+      "kategorijas": ["bankomats"], "zvanit112": false,
+      "padoms": "Izņem skaidru naudu, kamēr bankomāti darbojas. Turi mājās nelielu skaidras naudas rezervi.",
+      "atslegvardi": ["kartes nedarb", "karte nedarb", "maksājum", "terminā", "bank", "nevar samaksāt", "карта не работ", "оплат", "банк", "card not working", "payment", "bank$"]
+    },
+    {
+      "kods": "viltus_zinas", "nr": 100, "grupa": "J", "nosaukums": "Viltus ziņas un dezinformācija",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Pārbaudi informāciju oficiālos avotos: 112.lv, LSM, LR1 un valsts iestāžu kontos. Nepārsūti nepārbaudītas ziņas.",
+      "atslegvardi": ["viltus ziņ", "dezinform", "baumas", "vai tā ir taisnība", "фейк", "дезинформ", "fake news", "disinformation", "rumor"]
+    },
+    {
+      "kods": "viltota_trauksme", "nr": 101, "grupa": "J", "nosaukums": "Aizdomīgs trauksmes ziņojums",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Oficiālos brīdinājumus sūta šūnu apraide un sirēnas, un tie ir 112.lv. Ja ziņa prasa atvērt saiti vai maksāt, tā ir krāpšana.",
+      "atslegvardi": ["viltot", "aizdomīga ziņ", "īsziņa par trauksm", "trauksmes ziņ", "ложная тревог", "fake alert", "fake warning"]
+    },
+    {
+      "kods": "datu_noplude", "nr": 102, "grupa": "J", "nosaukums": "Nozagti dati vai identitāte",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Nomaini paroles un ieslēdz divu soļu autentifikāciju. Sazinies ar banku. Ziņo valsts policijai un CERT.LV.",
+      "atslegvardi": ["datu noplūd", "identitāt", "parol", "uzlauz", "krāpniek", "pikšķer", "взлом", "пароль", "мошенник", "hacked", "password", "phishing", "identity theft", "identitātes noplūd", "dati nozagt"]
+    },
+    {
+      "kods": "partika_beigusies", "nr": 103, "grupa": "J", "nosaukums": "Veikalos nav pārtikas",
+      "kategorijas": ["noturibas_punkts"], "zvanit112": false,
+      "padoms": "Neiepērcies panikā. Turi mājās 72 stundu krājumu: ūdeni, ilgi glabājamu pārtiku. Palīdzību sniedz pašvaldības sociālais dienests.",
+      "atslegvardi": ["pārtik", "veikali tukš", "nav ko ēst", "krājum", "еда", "продукт", "пустые полки", "food$", "empty shelves"]
+    },
+    {
+      "kods": "degvielas_trukums", "nr": 104, "grupa": "J", "nosaukums": "Degvielas trūkums",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Brauc tikai nepieciešamos braucienus, neuzkrāj degvielu kannās dzīvoklī. Seko informācijai par degvielas izsniegšanu.",
+      "atslegvardi": ["degvielas trūk", "nav degviel", "rindas uz degviel", "beidzās degviel", "нет бензин", "fuel shortage", "no fuel"]
+    },
+    {
+      "kods": "aptiekas_tuksas", "nr": 105, "grupa": "J", "nosaukums": "Aptiekās nav zāļu",
+      "kategorijas": ["aptieka"], "zvanit112": false,
+      "padoms": "Jautā farmaceitam par līdzvērtīgām zālēm vai citā aptiekā. Ģimenes ārsts var izrakstīt aizvietotāju.",
+      "atslegvardi": ["nav zāļ", "zāļu trūk", "beigušās zāl", "aptiekā nav", "нет лекарств", "no medicine", "out of stock", "aptiekās nav"]
+    },
+
+    {
+      "kods": "suni", "nr": 106, "grupa": "K", "nosaukums": "Uzbrūk suņi",
+      "kategorijas": ["policija", "neatliekama_24h"], "zvanit112": false,
+      "padoms": "Nebēdz un neskaties sunim acīs. Ja uzbrūk, pasargā seju un kaklu, aizsedz ar somu vai jaku. Kodumu parādi ārstam un ziņo policijai.",
+      "atslegvardi": ["suņ", "suns$", "suns uzbr", "sakoda", "iekoda suns", "suns iekoda", "собак", "укусил", "dog$", "dogs", "bitten", "suņu bar", "suņi uzbr", "uzbrūk suns", "uzbrūk suņi", "klaiņojoš"]
+    },
+    {
+      "kods": "savvalas_dzivnieki", "nr": 107, "grupa": "K", "nosaukums": "Mežacūka, lācis vai alnis tuvumā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Nebēdz un netuvojies. Lēnām atkāpies, neej starp mātīti un mazuļiem. Nebaro dzīvniekus.",
+      "atslegvardi": ["mežacūk", "meža cūk", "lāc", "aln", "vilk", "кабан", "медвед", "лось", "волк", "boar", "bear$", "moose", "wolf"]
+    },
+    {
+      "kods": "cuska", "nr": 108, "grupa": "K", "nosaukums": "Čūskas kodums",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Nomierinies, nekusties lieki, sakoto vietu turi nekustīgu. Neiegriez, neizsūc un nesien žņaugu. Dodies uz slimnīcu vai zvani 112.",
+      "atslegvardi": ["čūsk", "odze", "odzes", "змея", "змей", "гадюк", "snake", "viper", "adder"]
+    },
+    {
+      "kods": "liellopi", "nr": 109, "grupa": "K", "nosaukums": "Izbēguši liellopi",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Brauc lēni, nebiedē dzīvniekus ar signālu. Ja tie ir uz ceļa, ziņo 112, lai novērstu avāriju.",
+      "atslegvardi": ["liellop", "govis", "gov$", "zirg", "aitas", "izbēg", "коров", "скот", "cows", "cattle", "livestock"]
+    },
+    {
+      "kods": "iesprudis_saurums", "nr": 110, "grupa": "K", "nosaukums": "Cilvēks iesprūdis (grava, aka, šahta)",
+      "kategorijas": ["ugunsdzeseji"], "zvanit112": true,
+      "padoms": "Nekāp lejā pats: akās var būt bīstama gāze. Zvani 112, runā ar cietušo un nomierini viņu.",
+      "atslegvardi": ["iesprūd", "iestrēg", "aka$", "akā", "šaht", "grav", "застрял", "колодец", "шахт", "stuck in", "well$", "shaft"]
+    },
+    {
+      "kods": "troksnis_kaimins", "nr": 111, "grupa": "G", "nosaukums": "Kaimiņš trokšņo",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Ja vari, vispirms mierīgi runā ar kaimiņu. Klusums jāievēro no 23:00 līdz 7:00; ja traucē naktī, zvani pašvaldības policijai vai 110.",
+      "atslegvardi": ["troksn", "trokšņ", "kaimiņ", "skaļa mūzik", "dauz", "žūpo", "ballīt", "шум", "сосед", "орут", "дебош", "nois", "neighbor", "neighbour", "loud music"]
+    },
+    {
+      "kods": "huligani", "nr": 112, "grupa": "G", "nosaukums": "Huligāni uz ielas",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Neiesaisties sarunās, ej prom pa apgaismotu ielu vai uz veikalu. Ja tevi apdraud, zvani 112, citādi ziņo 110.",
+      "atslegvardi": ["huligān", "agresīv", "pusaudž", "bars$", "uzmācas", "хулиган", "пристают", "hooligan", "gang", "harass"]
+    },
+    {
+      "kods": "aizsalusas_caurules", "nr": 113, "grupa": "H", "nosaukums": "Aizsalušas caurules",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Aizver galveno ūdens krānu, ja caurule var būt plīsusi. Atsildi caurules lēnām ar fēnu vai siltu dvieli, nekad ar atklātu uguni. Sazinies ar namu pārvaldnieku.",
+      "atslegvardi": ["aizsalušas caurul", "sasalušas caurul", "caurules aizsal", "caurules sasal", "aizsal", "caurul", "замерзл труб", "трубы замерзл", "frozen pipe", "pipes froze"]
+    },
+    {
+      "kods": "kanalizacija", "nr": 114, "grupa": "H", "nosaukums": "Kanalizācija nestrādā",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Pārtrauc lietot ūdeni un tualeti. Sazinies ar namu pārvaldnieku vai ūdenssaimniecības avārijas dienestu. Ja notekūdeņi plūst telpā, atslēdz tur elektrību, ja to var izdarīt droši.",
+      "atslegvardi": ["kanalizāc", "notek", "aizsērēj", "grīdas ak", "pārplūst", "tualete aizsprost", "канализац", "засор", "sewage", "drain", "blocked toilet"]
+    },
+    {
+      "kods": "lifts_nedarbojas", "nr": 115, "grupa": "H", "nosaukums": "Lifts nedarbojas",
+      "kategorijas": [], "zvanit112": false,
+      "padoms": "Ziņo namu pārvaldniekam. Ja cilvēks ar ierobežotām kustībām nevar tikt lejā un draud briesmas (ugunsgrēks, dūmi), zvani 112.",
+      "atslegvardi": ["lifts nedarb", "lifts nestrādā", "lifts sabojāj", "lifts neiet", "augšstāv", "nevar uzkāpt", "nevar nokāpt", "лифт не работ", "elevator not working", "lift not working", "elevator out of order"]
+    },
+    {
+      "kods": "izsists_logs", "nr": 116, "grupa": "G", "nosaukums": "Izsists logs",
+      "kategorijas": ["policija"], "zvanit112": false,
+      "padoms": "Netuvojies stikla lauskām, aizklāj logu ar plēvi vai finieri. Ja to izdarīja kāds tīši, ziņo policijai 110 un nofotografē bojājumus apdrošinātājam.",
+      "atslegvardi": ["izsist", "izsists log", "stikl", "logs izsist", "vandal", "разбит", "окно", "вандал", "smash", "broken window", "window$"]
+    },
+    {
+      "kods": "auto_sabojajies", "nr": 117, "grupa": "B", "nosaukums": "Auto sabojājies ceļa malā",
+      "kategorijas": ["degviela"], "zvanit112": false,
+      "padoms": "Nobrauc pēc iespējas tālāk no braucamās daļas, ieslēdz avārijas gaismas, uzvelc atstarojošo vesti un izliec avārijas zīmi. Gaidi aiz barjeras, nevis auto. Zvani tehniskajai palīdzībai.",
+      "atslegvardi": ["sabojāj", "ceļa malā", "tehniskā palīdz", "tehnisko palīdz", "evakuator", "сломал", "эвакуатор", "broke down", "tow truck", "roadside"]
+    },
+    {
+      "kods": "trauma_var_kusteties", "nr": 118, "grupa": "E", "nosaukums": "Trauma: var kustēties",
+      "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"], "zvanit112": false,
+      "padoms": "Apsēdies un novērtē stāvokli. Ja sāpes ir stipras vai ir pietūkums vai deformācija, dodies uz traumpunktu vai slimnīcu. Nepārslogo savainoto vietu, liec aukstu kompresi.",
+      "atslegvardi": ["var kustēt", "var paiet", "var staigāt", "sāp kāj", "sāp rok", "sasit", "sastiep", "traum", "может ходить", "can walk", "sprained"]
+    },
+    {
+      "kods": "trauma_nevar_kusteties", "nr": 119, "grupa": "E", "nosaukums": "Trauma: nevar kustēties",
+      "kategorijas": ["neatliekama_24h", "slimnica"], "zvanit112": true,
+      "padoms": "Zvani 112. Nekustini cilvēku, īpaši, ja sāp mugura vai kakls. Turi viņu siltumā un runā ar viņu, līdz atbrauc palīdzība.",
+      "atslegvardi": ["nevar kustēt", "nevar piecelt", "nekustas pēc", "nevar pakustin", "не может двигаться", "не может встать", "can't move", "cannot move", "can't get up"]
     }
   ],
   "vietu_sinonimi": {

@@ -38,6 +38,8 @@ const krizesMeklesana = (() => {
     const darbiba = e.target.closest('[data-darbiba]')?.dataset.darbiba;
     if (darbiba === 'notirit') notirit();
     if (darbiba === 'atrast') atrastMani();
+    const cits = klasifikators?.scenariji.find(s => s.kods === e.target.closest('[data-cits]')?.dataset.cits);
+    if (cits && pedejais) meklet(pedejais.teksts, cits);
     const li = e.target.closest('li[data-lat]');
     if (li && !e.target.closest('a')) {
       const ll = { lat: +li.dataset.lat, lng: +li.dataset.lon };
@@ -72,12 +74,15 @@ const krizesMeklesana = (() => {
   }
   const centrs = r => ({ lat: (r.bbox[1] + r.bbox[3]) / 2, lon: (r.bbox[0] + r.bbox[2]) / 2 });
 
+  // scenarijs: izvēlēts ar pogu (ātrā poga vai "Vai domāji…?") — tad tekstu izmanto tikai vietai un 112.
   async function meklet(teksts, scenarijs = null) {
     if (!klasifikators) return;
     pedejais = { teksts, scenarijs };
-    const rez = scenarijs
-      ? { scenariji: [scenarijs], zvanit112: !!scenarijs.zvanit112, dzivibas_draudi: false, vieta: null }
-      : klasifikators.klasificet(teksts);
+    const rez = klasifikators.klasificet(teksts);
+    if (scenarijs) {
+      rez.scenariji = [scenarijs];
+      rez.zvanit112 = rez.dzivibas_draudi || !!scenarijs.zvanit112;
+    }
     kaste.hidden = false;
     rezultatuSlanis.clearLayers();
 
@@ -87,24 +92,29 @@ const krizesMeklesana = (() => {
       return;
     }
 
-    // kartē rādām tikai atrasto kategoriju slāņus
-    const kodi = [...new Set(rez.scenariji.flatMap(s => s.kategorijas))].filter(k => kategorijas[k]?.skaits);
+    // Galvenais scenārijs nosaka padomu un slāņus; pārējos piedāvājam kā "Vai domāji…?"
+    const [galvenais, ...citi] = rez.scenariji;
+    const galva = zvanit(rez) +
+      `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${rez.vieta ? ' · ' + esc(rez.vieta.nosaukums) : ''}</p>` +
+      (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}</p>` : '');
+    const vaiDomaji = citi.length ? `<p class="piezime">Vai domāji:</p><div class="atras-pogas">` +
+      citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
+
+    // Slāņi, kuru vēl nav kartē (piem., noturības punkti), tiek izlaisti; ja nepaliek neviens — tikai padoms.
+    const kodi = galvenais.kategorijas.filter(k => kategorijas[k]?.skaits);
+    if (!kodi.length) { kaste.innerHTML = galva + vaiDomaji + notiritPoga(); return; }
+
     stavoklis.kategorijas = new Set(kodi);
     document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
-
     const no = izcelsme(rez.vieta);
     atjaunot();
-    const galva = zvanit(rez) +
-      `<p class="sapratu">Meklēju: <b>${rez.scenariji.map(s => esc(s.nosaukums)).join(', ')}</b>${rez.vieta ? ' · ' + esc(rez.vieta.nosaukums) : ''}</p>` +
-      rez.scenariji.map(s => s.padoms ? `<p class="padoms">${esc(s.padoms)}</p>` : '').join('');
 
     if (!no) {
       kaste.innerHTML = galva + `<p class="piezime">Lai atrastu tuvākās vietas, nosaki savu atrašanās vietu
         vai pievieno pilsētu, piem., „${esc(teksts)} Ogrē”.</p>
-        <button type="button" class="galvena" data-darbiba="atrast">📍 Noteikt manu atrašanās vietu</button>` + notiritPoga();
+        <button type="button" class="galvena" data-darbiba="atrast">📍 Noteikt manu atrašanās vietu</button>` + vaiDomaji + notiritPoga();
       return;
     }
-    if (!kodi.length) { kaste.innerHTML = galva + '<p class="piezime">Šīm vietām kartē vēl nav datu.</p>' + notiritPoga(); return; }
 
     kaste.innerHTML = galva + '<p class="piezime">Meklē tuvākās vietas…</p>';
     if (pieprasijums) pieprasijums.abort();
@@ -114,7 +124,7 @@ const krizesMeklesana = (() => {
         { kategorijas: k, lat: no.lat.toFixed(5), lon: no.lon.toFixed(5), limit: UZ_KATEGORIJU * 2 }), pieprasijums.signal)));
       grupas.forEach(g => { g.features = izveleties(g.features); });
       kaste.innerHTML = galva + kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
-        '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + notiritPoga();
+        '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + vaiDomaji + notiritPoga();
       zimetKarte(grupas.flatMap(g => g.features), no);
     } catch (e) {
       if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģini vēlreiz pēc brīža.</p>';

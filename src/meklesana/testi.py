@@ -1,12 +1,13 @@
 """Pārbauda krīzes meklēšanas klasifikatoru (production/klasifikators.js + scenariji.json) ar testi.json.
 
 Palaišana (no repo saknes; Node nav vajadzīgs, JS izpilda QuickJS):
-  uv run --no-project --with quickjs src/meklesana/testi.py
+  uv run --no-project --python 3.12 --with quickjs src/meklesana/testi.py
 Vietvārdu testiem reģionus ņem no https://map.repo.lv/api/regioni (bez interneta tos izlaiž).
 """
 
 import json
 import pathlib
+import re
 import sys
 import urllib.request
 
@@ -53,7 +54,17 @@ def main():
               f"{' 112' if rez['zvanit112'] else ''}{' @' + vieta if vieta else ''}"
               f"{'  ← ' + '; '.join(problemas) if problemas else ''}")
     print(f"\n{len(testi) - kludas}/{len(testi)} pareizi")
-    sys.exit(1 if kludas else 0)
+
+    # Katra notes/SCENARIJI.md scenārija nosaukumam jāatrod savs scenārijs (pirmais vai starp "Vai domāji…?").
+    # 72 un 73 apzināti netiek atpazīti: tie vērtētu cilvēkus pēc izcelsmes/izskata, nevis rīcības.
+    md = (SAKNE / "notes" / "SCENARIJI.md").read_text(encoding="utf-8")
+    nosaukumi = re.findall(r"^\| (\d+) \| ([^|]+?) \|", md, re.M)
+    nr_saraksts = js.eval("(q => JSON.stringify(k.klasificet(q).scenariji.map(s => s.nr || null)))")
+    bez = [(nr, n) for nr, n in nosaukumi if int(nr) not in (72, 73) and int(nr) not in json.loads(nr_saraksts(n))]
+    for nr, n in bez:
+        print(f"KĻŪDA SCENARIJI.md #{nr} {n!r} neatrod savu scenāriju")
+    print(f"{len(nosaukumi) - len(bez)}/{len(nosaukumi)} scenāriju nosaukumi atrod sevi")
+    sys.exit(1 if kludas or bez else 0)
 
 
 if __name__ == "__main__":
