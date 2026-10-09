@@ -39,19 +39,21 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
-- [ ] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Address search: test on a phone; also accept an address in "Ko tev vajag?" (e.g. "aptieka Brīvības 15 Ogre") — added 2026-10-09 20:15 +03:00 by noiseparty
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
 - [ ] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — added 2026-10-09 20:56 +03:00 by noiseparty
 - [ ] Test on a phone after merge: address search ("Brīvības 15 Ogre"), a water level popup, "Tuvākā patvertne"; nothing new was browser-tested yet — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Agree with the team on the 3–6 step flow "Kas man jādara?" (location/address → what's happening → situation → summary with result), draft in `notes/plusma.md`; then build it — added 2026-10-09 20:56 +03:00 by noiseparty
 - [ ] Pitch: "Datu avoti" slide (~10 sources with licences) and how AI was used (crisis search itself runs without AI) — added 2026-10-09 20:56 +03:00 by noiseparty
 - [ ] Work in separate git worktrees per session (`git worktree add ../hakatons-<topic> -b <branch> origin/main`); sessions sharing one folder mixed commits today — added 2026-10-09 20:56 +03:00 by noiseparty
-- [ ] Water level layer: 74 LVĢMC gauges, hourly `LIMEN` from data.gov.lv "Hidrometeoroloģiskie novērojumi" (CC0; join `hidro_stacijas`, level m = cm/100 + ELEVATION); danger levels only in PRIS `videscentrs.lvgmc.lv/data/pris_stations` (no licence: ask LVĢMC) — added 2026-10-09 20:15 +03:00 by noiseparty
+- [ ] Rewrite the 119 scenario advice texts in `production/scenariji.json` to the "Jūs" form (the flow's "Cits" path shows them; the 4 main situations in `plusma.json` already use "Jūs") — added 2026-10-10 00:21 +03:00 by noiseparty
+- [ ] Flow: municipality civil-protection phone / plan link in the result card (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
+- [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the flow card — added 2026-10-10 00:21 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
+- [x] Agree with the team on the 3–6 step flow "Kas man jādara?" (location/address → what's happening → situation → summary with result), draft in `notes/plusma.md`; then build it — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Crisis search: add `udens_limenis` to the flood scenario in `production/scenariji.json`; optional 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) — done 2026-10-09 23:57 +03:00 by noiseparty (added 2026-10-09 20:34 +03:00 by noiseparty)
 - [x] Map sidebar: quick buttons (Patvertne, Ārsts, Policija …) removed; search results section only shows after a search — done 2026-10-09 21:53 +03:00 by noiseparty (added 2026-10-09 21:53 +03:00 by noiseparty)
 - [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)

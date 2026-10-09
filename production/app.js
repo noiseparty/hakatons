@@ -271,6 +271,7 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
+  if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no tevis') + '</small>');
   return `<div class="popup"><b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
@@ -407,6 +408,60 @@ el('meklet').addEventListener('keydown', e => {
   if (e.key === 'ArrowDown') el('mekl-rezultati').querySelector('li[tabindex]')?.focus();
 });
 document.addEventListener('click', e => { if (!e.target.closest('.meklesana')) el('mekl-rezultati').hidden = true; });
+
+// ---- Plūdu riska zonas (LVĢMC 3. cikla kartes 2026–2031, CC0): WMS pārklājums; serviss prot tikai EPSG:4326 ----
+const PLUDU_WMS = 'https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/';
+const pluduSlanis = L.layerGroup(['3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092', '3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea']
+  .map(cels => L.tileLayer.wms(PLUDU_WMS + cels + '?', {
+    layers: '1', format: 'image/png', transparent: true, version: '1.3.0', crs: L.CRS.EPSG4326, opacity: .6, minZoom: 8,
+    attribution: 'Plūdu riska zonas: <a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1">LVĢMC</a> (CC0)'
+  })));
+function radtPludus(ieslegt) {
+  el('pludu-slanis').checked = ieslegt;
+  if (ieslegt) pluduSlanis.addTo(karte); else pluduSlanis.remove();
+}
+el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked));
+
+// ---- Saskarne plūsmai "Mana adrese krīzē" (plusma.js): vieta un kopsavilkuma vietas kartē ----
+const plusmasSlanis = L.layerGroup().addTo(karte);
+// Telefonā karte plūsmas laikā ir paslēpta (0 px), tāpēc skatu iestata, kad karte kļūst redzama.
+let plusmasSkats = null;
+function plusmasSkatam(f) {
+  plusmasSkats = f;
+  if (karte.getSize().x) { karte.invalidateSize(); f(); plusmasSkats = null; }
+}
+window.PlusmasKarte = {
+  vieta(v) {
+    stavoklis.vieta = { lat: v.lat, lon: v.lon, adrese: v.avots === 'gps' ? undefined : v.pilna || v.nosaukums };
+    if (vietasSlanis) vietasSlanis.remove();
+    vietasSlanis = L.layerGroup([
+      L.circleMarker([v.lat, v.lon], { radius: 9, color: '#fff', weight: 3, fillColor: '#0077c8', fillOpacity: 1 })
+        .bindTooltip(v.avots === 'gps' ? 'Jūs esat šeit' : isaAdrese(v.nosaukums), { permanent: true, direction: 'top', offset: [0, -8] })
+    ]).addTo(karte);
+    plusmasSlanis.clearLayers();
+    plusmasSkatam(() => karte.setView([v.lat, v.lon], 14));
+    atjaunot();
+  },
+  // rez: { vieta, vietas: { kategorija: { f, aizstats } }, pludi, situacija }
+  radit(rez) {
+    if (!rez) return;
+    plusmasSlanis.clearLayers();
+    const punkti = [[rez.vieta.lat, rez.vieta.lon]];
+    for (const r of Object.values(rez.vietas)) {
+      if (!r) continue;
+      const [lon, lat] = r.f.geometry.coordinates;
+      const k = kategorijas[r.f.properties.kategorija] || {};
+      if (r.f.properties.attalums_m < 30000) punkti.push([lat, lon]);  // tālu slimnīcu tikai uzzīmē
+      L.circleMarker([lat, lon], { radius: 11, color: '#1c1917', weight: 2.5, fillColor: k.krasa || '#57534e', fillOpacity: 1 })
+        .bindPopup(() => popupSaturs(r.f.properties, { lat, lng: lon })).addTo(plusmasSlanis);
+    }
+    if (rez.situacija === 'pludi' || rez.pludi?.zona) radtPludus(true);
+    plusmasSkatam(() => karte.fitBounds(L.latLngBounds(punkti), { padding: [40, 40], maxZoom: 15 }));
+  },
+  paradita() {
+    setTimeout(() => { karte.invalidateSize(); if (plusmasSkats) { plusmasSkats(); plusmasSkats = null; } }, 50);
+  }
+};
 
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
