@@ -28,7 +28,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Transport layer: blocked / congested roads — check Waze for Cities (CCP) feed and transportdata.gov.lv (NAP) — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — added 2026-10-09 23:20 +03:00 by noiseparty
-- [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
@@ -58,10 +57,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
+- [ ] Risk map: add river level / flood-forecast and ice to the per-region risk (needs gauge thresholds — PRIS not open) — added 2026-10-10 02:28 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — done 2026-10-10 02:28 +03:00 by noiseparty: risk map today/tomorrow in the Prognoze panel (`riski` in `/api/prognozes`: LVĢMC warnings, gusts, rain, FMI lightning +1, LVC slippery roads +1; ice and river levels not yet) (added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] Mobile: show search results as a bottom sheet over the map instead of below it — done 2026-10-10 02:19 +03:00 by noiseparty: `production/apaksa.js` (peek / half / full, verdict line first, route button, collapses when demo/forecast/filters open) (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Accessibility pass (WCAG 2.1 AA basics): visible focus, contrast fixes, aria-hidden icons, reduced motion, heading order, Escape closes the forecast panel; axe-core 0 violations on index (search, suggestions, result card, sources) and statuss.html at 375 and 1280 px — done 2026-10-10 02:09 +03:00 by noiseparty; no real screen-reader test (added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] "Datu avoti" panel lists every dataset the site uses (DB rows + API-side LVĢMC, LVC/NAP, FMI, Open-Meteo, OpenTopoMap), with "N atvērto datu avoti", update frequency and last update for warnings/forecast — done 2026-10-10 02:09 +03:00 by noiseparty (added 2026-10-10 02:09 +03:00 by noiseparty)
