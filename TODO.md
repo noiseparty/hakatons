@@ -52,6 +52,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Search is the front door again (one query: advice, safe places from CA plans with capacity and plan link, shelter, 24/7 hospital, flood zone + river level for floods, LVĢMC banner); 4-step flow, 112 buttons and header map button removed — done 2026-10-10 00:36 +03:00 by noiseparty (added 2026-10-10 00:36 +03:00 by noiseparty)
 - [x] Demo fixes: stale search hint, results scroll into view on phones, status pill not truncated, filter panel closed on phones, map/tile load errors shown, Esri imagery → OpenTopoMap (open) — done 2026-10-10 00:23 +03:00 by noiseparty (added 2026-10-10 00:23 +03:00 by noiseparty)
 - [x] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
 - [x] Agree with the team on the 3–6 step flow "Kas man jādara?" (location/address → what's happening → situation → summary with result), draft in `notes/plusma.md`; then build it — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:56 +03:00 by noiseparty)

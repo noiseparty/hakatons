@@ -1,3 +1,6 @@
+> **Aizstāts 2026-10-10:** plūsma no lietotnes izņemta — viens vaicājums "Ko tev vajag?" rāda to pašu uzreiz
+> (`production/meklesana.js`, `bridinajumi.js`). Šis apraksts paliek kā vēsture.
+
 # "Mana adrese krīzē": 4 soļu plūsma (uzbūvēta 2026-10-10)
 
 Sākumlapa map.repo.lv (`production/plusma.js`, `plusma.json`); karte ir otrais režīms (`#/karte`, poga "🗺 Karte").
