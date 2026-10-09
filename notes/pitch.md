@@ -1,6 +1,6 @@
 # Pitch: "Ko Jums vajag?" — map.repo.lv (10 min)
 
-Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#54); everything below is merged and live. **[NAP]** = shown only once the NAP keys are set on the VPS. Spoken in Latvian; slide text below is what goes on screen.
+Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots load from `production/slaidi/<name>.png` if copied there, otherwise a named placeholder). Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#54); everything below is merged and live. **[NAP]** = shown only once the NAP keys are set on the VPS. Spoken in Latvian; slide text below is what goes on screen.
 
 Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 only once (3, 6), 3 the 3–6 step flow + summary + ending (slide 5, the sentence in bold), 4 works on a phone (live demo + statuss.html), 5 AI + open data (6–7).
 
@@ -88,18 +88,18 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 
 ## 7:15–8:30 · 7. Atvērtie dati
 
-**Slide (criterion 5, one line on top):** "19 atvērti avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Viens izņēmums atklāti atzīmēts ⚠."
+**Slide (criterion 5, one line on top):** "20 avoti: 19 atvērti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Viens izņēmums atklāti atzīmēts ⚠."
 
 Grid, each with licence:
 - **VZD** adrešu reģistrs (CC BY 4.0) · **42 pašvaldību CA plāni** (oficiāls dokuments) · **VM** 24/7 slimnīcas (oficiāls dokuments)
 - **IeM IC** ārstniecības iestādes, VP iecirkņi, pašvaldības policija, VUGD depo (CC0) · **ZVA** aptiekas (CC0)
 - **LVĢMC** ūdens līmenis, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām (CC0) · zibens režģis (CC0)
 - **FMI** zibens, pēdējās 30 min (CC BY 4.0) · **Open-Meteo** nokrišņi un augsne (CC BY 4.0) · **LVC** ceļu slēgumi un negadījumi caur NAP (CC0)
-- **OpenStreetMap** bankomāti, DUS, karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA)
+- **OpenStreetMap** bankomāti un DUS (ODbL) · **OpenStreetMap** karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA)
 - ⚠ VUGD/112.lv patvertnes (781) — licence nav norādīta
-- **LĢIA** 20 m augstuma modelis (CC BY 4.0), demo scenārijā "Plūdi Ogrē"
+- (extra, demo only, not in the count) **LĢIA** 20 m augstuma modelis (CC BY 4.0), demo scenārijā "Plūdi Ogrē"
 
-Count: 19 = all the above without ⚠. LVC is counted but its layer is empty until the NAP keys are set; if they aren't by the freeze, say "pieslēgts, gaida atslēgas".
+Count: **19 open + 1 ⚠ = 20**, exactly as the "Datu avoti" panel shows them (#56; OSM POIs and the OSM basemap are two rows there, LĢIA is demo-only). Slide version: `production/slaidi.html` slide 10.
 
 **Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
 
