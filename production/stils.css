@@ -98,6 +98,16 @@ button.otra:hover { background: var(--zils-gaiss); }
 .popup b { display: block; margin-bottom: .2rem; color: var(--zils); }
 .popup small { color: var(--teksts2); }
 .popup a { display: inline-block; margin-top: .4rem; font-weight: 600; color: var(--zils); }
+.marsruts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: .4rem; font-size: .75rem; color: var(--teksts2); }
+.marsruts a, .popup .marsruts a { margin: 0; padding: .2rem .55rem; border: 1px solid var(--zils); border-radius: 999px; font-size: .78rem; font-weight: 600; color: var(--zils); text-decoration: none; background: var(--virsma); }
+.marsruts a:hover { background: var(--zils-gaiss); }
+.rez-saraksts .marsruts { gap: 3px; }
+.rez-saraksts .marsruts a { padding: .1rem .4rem; font-size: .72rem; }
+.popup .marsruts + .popup-avots { margin-top: .5rem; }
+
+/* Punktu grupas (leaflet.markercluster): aplis ar slāņu krāsu proporcijām un skaitu vidū */
+.grupa-ikona span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; box-sizing: border-box; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.grupa-ikona b { display: grid; place-items: center; min-width: 62%; height: 62%; border-radius: 50%; background: #fff; color: var(--teksts); font-size: .72rem; font-variant-numeric: tabular-nums; }
 
 /* Krīzes meklēšana "Ko tev vajag?" (meklesana.js) */
 #meklesana { border-top: 4px solid var(--sarkans); }

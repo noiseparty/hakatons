@@ -143,10 +143,9 @@ const krizesMeklesana = (() => {
       // attālums no reģiona centra nav "no tevis", tāpēc uznirstošajā logā to nerādām
       const p = no.regions ? { ...f.properties, attalums_m: null } : f.properties;
       const [lon, lat] = f.geometry.coordinates;
-      const marsruts = `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no.regions ? '' : `${no.lat},${no.lon}`}%3B${lat}%2C${lon}`;
       return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
-        <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc(p.adrese || '')}</small></span>
-        <span class="attalums">${attalums(f.properties.attalums_m)}<a href="${marsruts}" target="_blank" rel="noopener">Maršruts ↗</a></span></li>`;
+        <span class="teksts"><b>${esc(nosaukums(p) || k.nosaukums)}</b><small>${esc(p.adrese || '')}</small>${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
+        <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
     }).join('');
     return `<h3><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</h3><ol class="rez-saraksts">${vienumi}</ol>`;
   }
