@@ -221,7 +221,7 @@ const Zonas = (() => {
       }
       if (!virsu) continue;
       const [z, v] = virsu, [aizp, mala] = z.krasas(v);
-      krasot(i, z.svitrot?.(v) && (x - y) % 8 < 2 ? [...mala, 200] : aizp);
+      krasot(i, z.svitrot?.(v) && (x - y + LIELUMS) % 8 < 2 ? [...mala, 200] : aizp);
     }
     for (const [z, m] of saraksts) for (let y = 0; y < LIELUMS; y++) for (let x = 0; x < LIELUMS; x++) {
       const i = y * LIELUMS + x;
@@ -263,7 +263,7 @@ const Zonas = (() => {
   });
   const slanis = new Slanis({
     tileSize: LIELUMS, zIndex: 250, updateWhenZooming: false, keepBuffer: 1,
-    attribution: 'Zonas: ' + saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC') + ' (CC0)',
+    attribution: 'Zonas: ' + saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC') + ', ' + saite('https://transportdata.gov.lv', 'LVC') + ' (CC0)',
   });
 
   // Leģenda kartes stūrī, kamēr kāda zona ieslēgta
@@ -287,7 +287,7 @@ const Zonas = (() => {
 
   function radit(kods, ieslegt) {
     if (ieslegt) ieslegtas.add(kods); else ieslegtas.delete(kods);
-    if (kods === 'satiksme') { if (ieslegt) robezpunkti.addTo(karte); else robezpunkti.remove(); }
+    if (kods === 'satiksme') { if (ieslegt) satiksmesPunkti.addTo(karte); else satiksmesPunkti.remove(); }
     if (ieslegtas.size) {
       if (!karte.hasLayer(slanis)) slanis.addTo(karte); else slanis.redraw();
       if (!legenda.getContainer()) legenda.addTo(karte);
@@ -348,30 +348,54 @@ const Zonas = (() => {
     return zona('bridinajumi').poligoni.length;
   }
 
-  // ---- Satiksme, ceļu meteostacijas, robežpunkti: /api/satiksme (kešots 5 min) + novadu robežas ----
+  // ---- Satiksme, ceļu meteostacijas, robežpunkti: /api/satiksme (kešots 5 min) ----
+  // Zonas: tips "regions" — novada/valstspilsētas robeža (/api/prognozes/robezas, citādi /api/regioni/<kods>), "rezgis" — bbox.
+  // Novadi bez uzskaites iekārtām ir pelēki ("nav mērījumu"). Avots katrai datu kopai no `kopas` (LVC NAP, CC0).
   let satiksmesDati = null, satiksmesLaiks = 0, robezas = null;
+  const gredzeni = geom => (geom.type === 'MultiPolygon' ? geom.coordinates : [geom.coordinates]).flat().map(g => g.map(([lon, lat]) => [lat, lon]));
+  const kopasAvots = k => k?.datu_kopa_url ? `${saite(esc(k.datu_kopa_url), esc(k.nosaukums))} (LVC) · ${esc(k.licence || 'CC0 1.0')}` : LVC_AVOTS;
   async function satiksme() {
     if (satiksmesDati && Date.now() - satiksmesLaiks < 300000) return satiksmesDati;
     const [d, r] = await Promise.all([
       fetch('/api/satiksme').then(x => x.ok ? x.json() : Promise.reject(new Error(x.status))),
-      robezas || fetch('/api/prognozes/robezas').then(x => x.ok ? x.json() : Promise.reject(new Error(x.status))),
+      robezas || fetch('/api/prognozes/robezas').then(x => x.ok ? x.json() : null).catch(() => null),
     ]);
-    robezas = r;
-    satiksmesDati = d; satiksmesLaiks = Date.now();
-    const avots = d.avots_url && d.licence ? saite(esc(d.avots_url), esc(d.avots || 'LVC')) + ' · ' + esc(d.licence) : LVC_AVOTS;
-    zona('satiksme').avots = zona('slidens').avots = avots;
-    // satiksmes zonas — novadu/valstspilsētu poligoni pēc koda
-    const pecKoda = Object.fromEntries((d.zonas || []).map(z => [String(z.kods), z]));
-    zona('satiksme').poligoni = (r.features || []).flatMap(f => {
-      const z = pecKoda[String(f.properties?.kods ?? f.id)];
-      if (!z || !f.geometry) return [];
-      const daļas = f.geometry.type === 'MultiPolygon' ? f.geometry.coordinates : [f.geometry.coordinates];
-      return [forma(daļas.flat().map(g => g.map(([lon, lat]) => [lat, lon])), Math.min(3, Math.max(0, +z.limenis || 0)) + 1,
-        satiksmesTeksts(z, f.properties?.nosaukums), { dati: z, nosaukums: z.nosaukums || f.properties?.nosaukums })];
+    if (r) robezas = r;
+    const kopas = d.kopas || {};
+    const robezaPecKoda = Object.fromEntries((robezas?.features || []).map(f => [String(f.properties?.kods ?? f.id), f]));
+    const zonas = d.zonas || [];
+    await Promise.all(zonas.filter(z => z.tips !== 'rezgis' && !robezaPecKoda[z.kods]).map(z =>
+      fetch('/api/regioni/' + encodeURIComponent(z.kods)).then(x => x.ok ? x.json() : null).then(f => { if (f?.geometry) robezaPecKoda[z.kods] = f; }, () => {})));
+    zona('satiksme').avots = kopasAvots(kopas.merijumi) + '<br>' + kopasAvots(kopas.vietas);
+    const arDatiem = new Set();
+    zona('satiksme').poligoni = zonas.flatMap(z => {
+      const lim = Math.min(3, Math.max(0, +z.limenis || 0));
+      let g;
+      if (z.tips === 'rezgis' && z.bbox) { const [w, s, e, n] = z.bbox; g = [[[s, w], [n, w], [n, e], [s, e]]]; }
+      else if (robezaPecKoda[z.kods]?.geometry) g = gredzeni(robezaPecKoda[z.kods].geometry);
+      if (!g) return [];
+      arDatiem.add(String(z.kods));
+      return [forma(g, lim + 1, satiksmesTeksts(z), { dati: z, nosaukums: z.nosaukums })];
+    }).concat((robezas?.features || []).filter(f => f.geometry && !arDatiem.has(String(f.properties?.kods ?? f.id))).map(f =>
+      forma(gredzeni(f.geometry), 4, `${esc(f.properties?.nosaukums)}: nav mērījumu (šajā novadā nav LVC satiksmes uzskaites iekārtu)`,
+        { dati: { limenis: 3 }, nosaukums: f.properties?.nosaukums })));
+    // ceļu meteostacijas: temperatūru LVC atvērtajos datos nav — tikai "slidens: jā/nē"
+    const slidensKopas = new Set();
+    zona('slidens').poligoni = (d.stacijas || []).filter(s => s.lat && s.lon).map(s => {
+      slidensKopas.add(s.avots);
+      return aplis(+s.lat, +s.lon, SLIDENS_M, s.slidens ? 2 : 1, stacijasTeksts(s, kopas[s.avots]), { dati: s, avots: kopasAvots(kopas[s.avots]) });
     });
-    zona('slidens').poligoni = (d.stacijas || []).filter(s => s.lat && s.lon).map(s => aplis(+s.lat, +s.lon, SLIDENS_M, s.slidens ? 2 : 1,
-      stacijasTeksts(s), { dati: s }));
-    robezpunkti.clearLayers();
+    zona('slidens').avots = [...slidensKopas].map(k => kopasAvots(kopas[k])).join('<br>') || kopasAvots(kopas.slidens_meteo);
+    satiksmesPunkti.clearLayers();
+    for (const p of d.punkti || []) {
+      if (!p.lat || !p.lon) continue;
+      const lim = Math.min(3, Math.max(0, +p.limenis || 0));
+      L.circleMarker([p.lat, p.lon], { radius: 5, color: '#fff', weight: 1.5, fillColor: PUNKTU_KRASAS[lim], fillOpacity: 1 })
+        .bindPopup(`<div class="popup"><b>Satiksmes uzskaites iekārta${p.nosaukums ? ' ' + esc(p.nosaukums) : ''}</b><br>Satiksme: <b>${SATIKSME[lim]}</b>` +
+          (p.atrums != null ? `<br>Ātrums ${Math.round(p.atrums)} km/h${p.atrums_brivs != null ? ` (brīvā plūsmā ~${Math.round(p.atrums_brivs)} km/h)` : ''}` : '') +
+          (p.plusma_h != null ? `<br>${p.plusma_h} transportlīdzekļi stundā` : '') + (p.laiks ? `<br><small>Mērīts ${laiks(p.laiks)}</small>` : '') +
+          `<br><small class="popup-avots">Avots: ${kopasAvots(kopas.merijumi)}</small></div>`).addTo(satiksmesPunkti);
+    }
     for (const b of d.robezas || []) {
       if (!b.lat || !b.lon) continue;
       const min = b.gaidisana_min;
@@ -380,28 +404,33 @@ const Zonas = (() => {
         title: `${b.nosaukums}: gaidīšana ${min == null ? 'nav datu' : Math.round(min) + ' min'}`,
       }).bindPopup(`<div class="popup"><b>Robežpunkts ${esc(b.nosaukums)}</b>${b.virziens ? `<br>Virziens: ${esc(b.virziens)}` : ''}` +
         `<br>Gaidīšana: ${min == null ? 'nav datu' : `<b>${Math.round(min)} min</b>`}${b.laiks ? `<br><small>Dati: ${laiks(b.laiks)}</small>` : ''}` +
-        `<br><small class="popup-avots">Avots: ${avots}</small></div>`).addTo(robezpunkti);
+        `<br><small class="popup-avots">Avots: ${kopasAvots(kopas.robezas)}</small></div>`).addTo(satiksmesPunkti);
     }
+    satiksmesDati = d; satiksmesLaiks = Date.now();
     return d;
   }
-  const robezpunkti = L.layerGroup();
-  function satiksmesTeksts(z, nos) {
+  const PUNKTU_KRASAS = ['#16a34a', '#f59e0b', '#dc2626', '#a8a29e'];
+  const satiksmesPunkti = L.layerGroup();  // uzskaites iekārtas un robežpunkti — kopā ar satiksmes zonām
+  function satiksmesTeksts(z) {
     const lim = Math.min(3, Math.max(0, +z.limenis || 0));
-    return `${esc(z.nosaukums || nos)}: <b>${SATIKSME[lim]}</b>` +
-      (z.atrums_vid != null ? `<br>Vidējais ātrums ${Math.round(z.atrums_vid)} km/h` + (z.atrums_brivs != null ? ` (brīvā plūsmā ${Math.round(z.atrums_brivs)} km/h)` : '') : '') +
-      (z.merijumi != null ? `<br><small>${z.merijumi} mērījumi${z.laiks ? ', ' + laiks(z.laiks) : ''}</small>` : '');
+    return `${esc(z.nosaukums)}: <b>${SATIKSME[lim]}</b>` +
+      (z.atrums_vid != null ? `<br>Vidējais ātrums ${Math.round(z.atrums_vid)} km/h` + (z.atrums_brivs != null ? ` (brīvā plūsmā ~${Math.round(z.atrums_brivs)} km/h)` : '') : '') +
+      (z.plusma_h != null ? `<br>${z.plusma_h} transportlīdzekļi stundā` : '') +
+      `<br><small>${z.iekartas != null ? `${z.iekartas} uzskaites iekārtas, ` : ''}${z.merijumi != null ? `${z.merijumi} mērījumi` : ''}${z.laiks ? ', ' + laiks(z.laiks) : ''}</small>`;
   }
-  function stacijasTeksts(s) {
-    const t = v => v == null ? '—' : `${(+v).toFixed(1).replace('.', ',')} °C`;
-    return `${esc(s.nosaukums)}: ${s.slidens ? '<b>slidens ceļš</b>' : 'nav slidens'}<br>Ceļa virsma ${t(s.cela_temp)}, gaiss ${t(s.gaisa_temp)}` +
-      (s.laiks ? `<br><small>Mērīts ${laiks(s.laiks)}</small>` : '');
+  function stacijasTeksts(s, kopa) {
+    const nos = s.nosaukums && !/^slippery$/i.test(s.nosaukums) ? esc(s.nosaukums) : 'Ceļa meteostacija';
+    const t = v => `${(+v).toFixed(1).replace('.', ',')} °C`;
+    return `${nos}: slidens — <b>${s.slidens ? 'jā' : 'nē'}</b>` +
+      (s.cela_temp != null ? `<br>Ceļa virsma ${t(s.cela_temp)}${s.gaisa_temp != null ? `, gaiss ${t(s.gaisa_temp)}` : ''}` : '') +
+      (s.laiks ? `<br><small>Dati: ${laiks(s.laiks)}${kopa ? ' · ' + esc(kopa.nosaukums) : ''}</small>` : '');
   }
   async function ieladetSatiksmi() {
     await satiksme();
-    return zona('satiksme').poligoni.length + zona('slidens').poligoni.length + robezpunkti.getLayers().length;
+    return zona('satiksme').poligoni.length + zona('slidens').poligoni.length + satiksmesPunkti.getLayers().length;
   }
 
-  // Rinda rezultātu kartītē (meklesana.js): satiksme apvidū, kurā ir sākumpunkts, un tuvākā slidenā ceļa stacija
+  // Rinda rezultātu kartītē (meklesana.js): satiksme apvidū, kurā ir sākumpunkts, un slidens ceļš 15 km rādiusā
   async function satiksmesRinda(vieta) {
     await satiksme();
     const ll = L.latLng(+vieta.lat, +vieta.lon);
@@ -411,12 +440,11 @@ const Zonas = (() => {
     if (!z && !sl) return '';
     const d = z?.dati, lim = d ? Math.min(3, Math.max(0, +d.limenis || 0)) : 3;
     return '<ul class="fakti">' +
-      (z ? `<li><span class="ikona">🚗</span><div><b>Satiksme šajā apvidū</b><span>${SATIKSME[lim]}` +
+      (z ? `<li><span class="ikona">🚗</span><div><b>Satiksme šajā apvidū</b><span>${lim === 3 ? 'nav mērījumu' : SATIKSME[lim]}` +
         (d.atrums_vid != null && lim < 3 ? ` (vid. ${Math.round(d.atrums_vid)} km/h)` : '') + `</span>` +
         `<small>${esc(z.nosaukums || '')}${d.laiks ? ', ' + laiks(d.laiks) : ''}</small><small class="avots-rinda">${zona('satiksme').avots}</small></div></li>` : '') +
-      (sl ? `<li><span class="ikona">🧊</span><div><b>Slidens ceļš tuvumā</b><span>${esc(sl[0].dati.nosaukums)} (${(sl[1] / 1000).toFixed(0)} km): ` +
-        `ceļa virsma ${sl[0].dati.cela_temp == null ? '—' : (+sl[0].dati.cela_temp).toFixed(1).replace('.', ',') + ' °C'}</span>` +
-        `<small class="avots-rinda">${zona('slidens').avots}</small></div></li>` : '') + '</ul>';
+      (sl ? `<li><span class="ikona">🧊</span><div><b>Slidens ceļš tuvumā</b><span>LVC ziņo par slidenu ceļu ${(sl[1] / 1000).toFixed(0)} km no šīs vietas</span>` +
+        `<small class="avots-rinda">${sl[0].avots}</small></div></li>` : '') + '</ul>';
   }
 
   // ---- Slēdži panelī zem plūdu zonām (pēc reģistra secības) ----
