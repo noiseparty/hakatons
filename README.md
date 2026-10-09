@@ -67,4 +67,5 @@ Tips to avoid merge conflicts:
 ## Claude Code
 
 - `CLAUDE.md` (shared, committed) — project context for everyone's Claude sessions.
+- `AGENTS.md` — entry point for other AI agents (Mistral, Codex, …); points to this README and `CLAUDE.md`.
 - `CLAUDE.local.md` and `.claude/settings.local.json` — personal, gitignored.
