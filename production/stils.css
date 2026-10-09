@@ -103,12 +103,18 @@ button.otra:hover { background: var(--zils-gaiss); }
 
 /* Krīzes meklēšana "Ko tev vajag?" (meklesana.js) */
 #meklesana { border-top: 4px solid var(--sarkans); }
-.meklet-rinda { display: flex; gap: 6px; margin: 0; }
+.meklet-rinda { display: flex; gap: 6px; margin: 0; position: relative; }
 .meklet-rinda input { flex: 1; min-width: 0; font-size: 1rem; border-color: transparent; }
 .meklet-rinda button { width: auto; flex: none; background: var(--sarkans); color: #fff; border-color: var(--sarkans); font-weight: 600; }
 .atras-pogas { display: flex; flex-wrap: wrap; gap: 6px; }
 .atras-pogas button { width: auto; padding: .35rem .6rem; font-size: .85rem; border-radius: 999px; }
 .atras-pogas button:hover { background: var(--zils-gaiss); border-color: var(--zils); }
+/* Biežāk meklētais: atveras, kad tukšajā laukā ieklikšķina (meklesana.js) */
+.populari { position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 1100; padding: .55rem .65rem .65rem; background: var(--virsma); color: var(--teksts); border: 1px solid var(--robeza); border-radius: var(--radiuss); box-shadow: var(--ena); }
+header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-radius: 0; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts2); }
+.populari-pogas { display: flex; flex-wrap: wrap; gap: 6px; }
+.meklet-rinda .populari-pogas button { width: auto; padding: .4rem .75rem; font-size: .9rem; font-weight: 400; color: var(--teksts); background: var(--fons); border: 1px solid var(--robeza); border-radius: 999px; }
+.meklet-rinda .populari-pogas button:hover, .meklet-rinda .populari-pogas button:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); outline: none; }
 #meklesana:has(#rezultati[hidden]) { display: none; }  /* bez rezultātiem sadaļa paslēpta */
 .sapratu { margin: .6rem 0 .3rem; font-size: .9rem; }
 .padoms { margin: .3rem 0; padding: .45rem .6rem; font-size: .85rem; background: var(--zils-gaiss); border-left: 3px solid var(--zils); border-radius: 4px; }
@@ -216,6 +222,12 @@ strong.nē { color: #287a41; }
   .prognozes.atverts { inset: 40% 0 18px 0; }  /* OSM atsauce apakšā paliek redzama */
   .prog-panelis { width: auto; height: 100%; border-radius: var(--radiuss) var(--radiuss) 0 0; }
 }
+
+/* Ceļu slēgumi un negadījumi (celi.js) */
+.celu-ikona span { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border: 2px solid; border-radius: 50%; background: #fff; font-size: 15px; line-height: 1; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+#celu-piezime:empty { display: none; }
+.celi-rinda { margin: .5rem 0; padding: .45rem .6rem; font-size: .85rem; background: #fff7ed; border-left: 3px solid #c2410c; border-radius: 4px; }
+.celi-rinda .avots-rinda { display: block; margin-top: .2rem; }
 
 /* Pieejamība: redzams fokuss tur, kur augstāk outline noņemts; mazāk kustības pēc lietotāja iestatījuma */
 a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, summary:focus-visible, [tabindex]:focus-visible { outline: 3px solid #005a99 !important; outline-offset: 2px; }

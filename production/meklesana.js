@@ -13,6 +13,8 @@ const krizesMeklesana = (() => {
     { kods: 'neatliekama_24h', nos: '24/7 neatliekamā palīdzība', ikona: '🏥' },
   ];
   const PLUDU_SCENARIJI = new Set(['pludi', 'udens_celas']);
+  // Nokrišņu un augsnes konteksta rinda (Open-Meteo caur /api/augsne): plūdiem, lietusgāzēm un vētrām
+  const LAIKA_SCENARIJI = new Set(['pludi', 'udens_celas', 'negaiss', 'vetra_jumts', 'viesulvetra']);
   const AVOTI_LVGMC = {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
@@ -41,9 +43,92 @@ const krizesMeklesana = (() => {
 
   el('meklet-forma').addEventListener('submit', e => {
     e.preventDefault();
+    aizvertPopularos();
     const teksts = el('jautajums').value.trim();
     if (teksts) { meklet(teksts); raditRezultatus(); } else notirit();
   });
+
+  // Biežāk meklētais: tukšajā laukā ieklikšķinot — 3 populārākie atpazītie vaicājumi (/api/meklejumi/top, kešs 60 s).
+  // Ja API nav pieejams vai atpazīto ir mazāk par 3 — papildina ar šiem piemēriem, lai nekad nav tukšs.
+  // Saglabāto tekstu nerāda: "atpazits" apgalvo klients, tāpēc katru vaicājumu klasificē vēlreiz un rāda tikai
+  // scenārija nosaukumu (+ vietu) no klasifikatora; neatpazītos vai tikai aptuveni atpazītos izmet.
+  const POPULARI_REZERVE = ['nav elektrības', 'plūdi ogrē', 'tuvākā patvertne'];
+  const populari = el('populari');
+  const popPogas = populari.querySelector('.populari-pogas');
+  let popularie = null, popularieLaiks = 0, popIelade = null;
+  let uzskaite = null;  // { vaicajums, klikskis } pēdējai skaitītajai meklēšanai (zinot(), zemāk)
+
+  function popularieNoVaicajumiem(vaicajumi) {
+    const rez = new Map();
+    for (const v of [...vaicajumi, ...POPULARI_REZERVE]) {
+      const k = klasifikators.klasificet(String(v));
+      const s = k.scenariji[0];
+      if (!s || k.aptuveni || k.dzivibas_draudi) continue;
+      const teksts = s.nosaukums + (k.vieta ? ' ' + k.vieta.nosaukums : '');
+      if (!rez.has(teksts)) rez.set(teksts, { teksts, kods: s.kods, nos: s.nosaukums + (k.vieta ? ' · ' + k.vieta.nosaukums : '') });
+      if (rez.size === 3) break;
+    }
+    return [...rez.values()];
+  }
+
+  async function atvertPopularos() {
+    const lauks = el('jautajums');
+    if (lauks.value.trim() || lauks.disabled || !klasifikators) return;
+    if (!popularie || Date.now() - popularieLaiks > 60000) {
+      popIelade ||= iegut('/meklejumi/top?n=10').then(d => d.vaicajumi, () => []).then(v => {
+        popularie = popularieNoVaicajumiem(Array.isArray(v) ? v : []);
+        popularieLaiks = Date.now();
+        popIelade = null;
+      });
+      await popIelade;
+      if (lauks.value.trim() || !populari.contains(document.activeElement) && document.activeElement !== lauks) return;
+    }
+    popPogas.innerHTML = popularie.map(p =>
+      `<button type="button" data-teksts="${esc(p.teksts)}" data-kods="${esc(p.kods)}">${esc(p.nos)}</button>`).join('');
+    populari.hidden = false;
+  }
+  function aizvertPopularos() {
+    populari.hidden = true;
+  }
+  el('jautajums').addEventListener('focus', atvertPopularos);
+  el('jautajums').addEventListener('click', atvertPopularos);
+  el('jautajums').addEventListener('input', () => { if (el('jautajums').value.trim()) aizvertPopularos(); else atvertPopularos(); });
+  popPogas.addEventListener('click', e => {
+    const poga = e.target.closest('button[data-kods]');
+    const scenarijs = klasifikators?.scenariji.find(s => s.kods === poga?.dataset.kods);
+    if (!scenarijs) return;
+    aizvertPopularos();
+    el('jautajums').value = poga.dataset.teksts;
+    uzskaite = null;  // ieteikumu klikšķi neskaita, citādi tie paši sev pieskaita popularitāti
+    meklet(poga.dataset.teksts, scenarijs);  // ar scenāriju: teksts dod tikai vietu, meklet() neskaita
+    raditRezultatus();
+  });
+  // Tastatūra: ↓ no lauka uz pirmo, ←/→/↑/↓ starp pogām, Escape aizver un atgriežas laukā
+  el('meklet-forma').addEventListener('keydown', e => {
+    if (populari.hidden) return;
+    const pogas = [...popPogas.querySelectorAll('button')];
+    const i = pogas.indexOf(document.activeElement);
+    if (e.key === 'Escape') { aizvertPopularos(); el('jautajums').focus(); e.preventDefault(); return; }
+    if (e.key === 'ArrowDown' && i < 0 && document.activeElement === el('jautajums')) { pogas[0]?.focus(); e.preventDefault(); return; }
+    if (i < 0) return;
+    const solis = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+    if (!solis) return;
+    e.preventDefault();
+    if (i + solis < 0) el('jautajums').focus();
+    else pogas[Math.min(i + solis, pogas.length - 1)].focus();
+  });
+  // Klikšķis vai fokuss ārpus lauka un saraksta aizver
+  document.addEventListener('pointerdown', e => { if (!el('meklet-forma').contains(e.target)) aizvertPopularos(); });
+  el('meklet-forma').addEventListener('focusout', e => {
+    if (e.relatedTarget && !el('jautajums').contains(e.relatedTarget) && !populari.contains(e.relatedTarget)) aizvertPopularos();
+  });
+
+  // Uzskaite: atpazītu vaicājumu (situācija vai slānis) vienreiz pēc meklēšanas un vienreiz, kad atver rezultātu.
+  // Sūta tikai tekstu bez adreses; bez lietotāja datiem. Kļūdas klusi ignorē.
+  function zinot(vaicajums, klikskis = false) {
+    fetch(API + '/meklejumi', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vaicajums, atpazits: true, klikskis }) }).catch(() => {});
+  }
 
   // Telefonā rezultāti ir zem kartes (un panelis var būt aizvērts): atveram to un ritinām līdz rezultātiem
   function raditRezultatus() {
@@ -59,6 +144,7 @@ const krizesMeklesana = (() => {
     const cits = klasifikators?.scenariji.find(s => s.kods === e.target.closest('[data-cits]')?.dataset.cits);
     if (cits && pedejais) meklet(pedejais.teksts, cits);
     const li = e.target.closest('li[data-lat]');
+    if (li && uzskaite && !uzskaite.klikskis) { uzskaite.klikskis = true; zinot(uzskaite.vaicajums, true); }
     if (li && !e.target.closest('a')) {
       const ll = { lat: +li.dataset.lat, lng: +li.dataset.lon };
       karte.setView(ll, Math.max(karte.getZoom(), 16));
@@ -68,6 +154,7 @@ const krizesMeklesana = (() => {
 
   function notirit() {
     pedejais = null;
+    uzskaite = null;
     if (pieprasijums) pieprasijums.abort();
     rezultatuSlanis.clearLayers();
     kaste.hidden = true;
@@ -171,6 +258,10 @@ const krizesMeklesana = (() => {
     bridinajumi(no, no?.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
+    if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
+      uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
+      if (uzskaite) zinot(uzskaite.vaicajums);
+    }
     const kurTeksts = adrese ? isaAdrese(adrese.adrese) : vieta?.nosaukums;
     const galva = draudi +
       (galvenais
@@ -202,6 +293,8 @@ const krizesMeklesana = (() => {
       document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
     }
     if (pludi) radtPludus(true);  // app.js: plūdu riska zonu slānis kartē
+    const laiks = galvenais && LAIKA_SCENARIJI.has(galvenais.kods);
+    if (galvenais?.kods === 'negaiss' && typeof Zibens !== 'undefined') Zibens.radit(true);  // zibens.js: pēdējās 30 min
     if (kodi.length || jaunsRegions) atjaunot();
 
     if (!no) {
@@ -223,12 +316,15 @@ const krizesMeklesana = (() => {
       grupas.forEach(g => { g.features = izveleties(g.features); });
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
       kaste.innerHTML = galva +
-        (pludi ? pluduBloks() : '') +
+        (pludi ? pluduBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div>' +
         kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
         (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + beigas;
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
       if (pludi) pluduDati(ll, signal);
+      if (laiks) augsnesDati(ll, signal);
+      // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
+      if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
     } catch (e) {
       if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>' + beigas;
     }
@@ -302,6 +398,22 @@ const krizesMeklesana = (() => {
         `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small><small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
+    });
+  }
+
+  // Nokrišņi pēdējās 26 dienās + augsnes mitrums: konteksts (cik ūdens zeme vēl var uzņemt), nevis brīdinājums
+  function augsnesBloks() {
+    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">🌧️</span><div><b>Nokrišņi un augsne</b><span>Ielādē…</span></div></li></ul>`;
+  }
+  function augsnesDati(ll, signal) {
+    const avots = '<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · CC BY 4.0';
+    iegut('/augsne?' + new URLSearchParams(ll), signal).then(a => {
+      const mm = x => String(Math.round(x)).replace('.', ',');
+      pluduRinda('rez-augsne', `<b>Nokrišņi un augsne</b><span>Pēdējās ${a.dienas_pagatne} dienās: ${mm(a.nokrisni_pagatne_mm)} mm nokrišņu` +
+        `${a.augsne ? `; augsne ${esc(a.augsne)}` : ''}</span><small>Nākamajās ${a.dienas_prognoze} dienās: ${mm(a.nokrisni_prognoze_mm)} mm. ` +
+        `Modeļa aprēķins šai vietai, nav brīdinājums.</small><small class="avots-rinda">${avots}</small>`);
+    }).catch(e => {
+      if (e.name !== 'AbortError') pluduRinda('rez-augsne', '<b>Nokrišņi un augsne</b><span>Datus neizdevās ielādēt.</span>');
     });
   }
 
