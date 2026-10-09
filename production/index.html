@@ -82,7 +82,7 @@
     </div>
     <div class="pamatkarte" role="group" aria-label="Pamatkarte">
       <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
-      <button type="button" data-pamats="satelits" aria-pressed="false">Satelīts</button>
+      <button type="button" data-pamats="reljefs" aria-pressed="false">Reljefs</button>
     </div>
   </div>
 </main>
@@ -91,6 +91,14 @@
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
         integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
+<script>
+  // Ja Leaflet (unpkg.com) neielādējas, karte nestrādā, bet plūsma "Mana adrese krīzē" strādā (plusma.js no tās neatkarīga)
+  if (!window.L || !L.markerClusterGroup) {
+    var kluda = document.getElementById('kartes-kluda');
+    kluda.textContent = 'Karti neizdevās ielādēt. "Mana adrese krīzē" strādā arī bez kartes; lai redzētu karti, pārlādējiet lapu vēlāk.';
+    kluda.hidden = false;
+  }
+</script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
 <script src="app.js"></script>

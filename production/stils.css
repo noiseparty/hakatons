@@ -128,7 +128,6 @@ button.otra:hover { background: var(--zils-gaiss); }
   header { grid-template-columns: minmax(0, 1fr) auto; padding: .5rem .6rem; gap: .5rem; }
   header h1 { font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .galva-labi { gap: .4rem; min-width: 0; }
-  #statuss { max-width: 30vw; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   #panelis-poga { padding: .4rem .55rem; }
   header .meklet-rinda { grid-column: 1 / -1; grid-row: 2; min-width: 0; }
   main { flex-direction: column-reverse; padding: 8px; gap: 8px; }
