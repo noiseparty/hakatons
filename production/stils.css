@@ -293,7 +293,8 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .zonu-legenda i.parklajas { border-color: #dc2626; background: repeating-linear-gradient(45deg, #b91c1c 0 2px, rgba(127, 29, 29, .47) 2px 6px); }
 .zonu-legenda small { color: #57534e; }
 .zonu-legenda.paslepta { display: none; }
-@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }  /* neaizsedz pamatkartes slēdzi */
+.leaflet-bottom.leaflet-right .zonu-legenda { margin-bottom: 52px; }  /* virs pamatkartes slēdža (.pamatkarte) */
+@media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }
 .zonu-popup p { margin: .3rem 0; }
 .zonu-popup .paaugstinats { color: #b91c1c; }
 
@@ -321,3 +322,8 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
   .riski-sledzis button { min-height: 44px; }
   .prognozes.atverts .riski-legenda { display: none; }  /* telefonā krāsas paskaidro panelis */
 }
+
+.zonu-legenda .skala { flex-wrap: wrap; gap: .15rem .3rem; }
+.zonu-legenda .skala i { width: 10px; border: 0; }
+.robezas-ikona span { display: flex; align-items: baseline; justify-content: center; gap: 1px; height: 100%; box-sizing: border-box; padding-top: 4px; border: 2px solid #1e3a8a; border-radius: 6px; background: #fff; color: #1e3a8a; font: 700 13px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.robezas-ikona small { font-size: 9px; font-weight: 600; }
