@@ -19,6 +19,8 @@
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><span aria-hidden="true">🎤</span></button>
+    <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
     <button type="submit">Meklēt</button>
     <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
       <p id="populari-virsraksts">Biežāk meklētais</p>
@@ -124,6 +126,7 @@
 <script src="app.js"></script>
 <script src="zonas.js"></script>
 <script src="meklesana.js"></script>
+<script src="runa.js"></script>
 <script src="apaksa.js"></script>
 <script src="saraksts.js"></script>
 <script src="bridinajumi.js"></script>

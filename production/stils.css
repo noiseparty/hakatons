@@ -328,6 +328,23 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .robezas-ikona span { display: flex; align-items: baseline; justify-content: center; gap: 1px; height: 100%; box-sizing: border-box; padding-top: 4px; border: 2px solid #1e3a8a; border-radius: 6px; background: #fff; color: #1e3a8a; font: 700 13px/1 system-ui, sans-serif; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
 .robezas-ikona small { font-size: 9px; font-weight: 600; }
 
+/* Meklētājs: ieteikumi rakstot (meklesana.js) un balss poga "Runāt" (runa.js) */
+.populari.ieteikumi .populari-pogas { flex-direction: column; gap: 2px; }
+.meklet-rinda .populari.ieteikumi .populari-pogas button { width: 100%; min-height: 44px; text-align: left; border-radius: 6px; border-color: transparent; background: none; }
+.meklet-rinda .populari.ieteikumi .populari-pogas button:hover,
+.meklet-rinda .populari.ieteikumi .populari-pogas button:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); }
+.populari.ieteikumi small { color: var(--teksts2); }
+.meklet-rinda .runat { min-width: 44px; padding: 0 .5rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: 1.15rem; }
+.meklet-rinda .runat[hidden] { display: none; }
+.meklet-rinda .runat.klausas { background: #fee2e2; border-color: var(--sarkans); animation: runa-pulss 1.2s ease-in-out infinite; }
+@keyframes runa-pulss { 50% { box-shadow: 0 0 0 6px rgba(213, 43, 30, .25); } }
+@media (prefers-reduced-motion: reduce) { .meklet-rinda .runat.klausas { animation: none; } }
+.runa-valodas { position: absolute; right: 0; top: calc(100% + 4px); z-index: 1150; display: flex; flex-direction: column; gap: 2px; width: 230px;
+  padding: .4rem; background: var(--virsma); color: var(--teksts); border: 1px solid var(--robeza); border-radius: var(--radiuss); box-shadow: var(--ena); }
+.runa-valodas[hidden] { display: none; }
+.meklet-rinda .runa-valodas button { width: 100%; min-height: 44px; text-align: left; background: none; color: var(--teksts); border-color: transparent; font-weight: 400; }
+.meklet-rinda .runa-valodas button[aria-checked="true"] { font-weight: 700; background: var(--zils-gaiss); }
+.runa-valodas p { margin: .3rem .2rem 0; font-size: .75rem; color: var(--teksts2); background: none; padding: 0; border-radius: 0; }
 /* ==== Saraksts (saraksts.js): kartes objekti kā teksta saraksts ==== */
 .saraksts-poga { margin: 0 0 .5rem; }
 .saraksts-dialogs { width: min(560px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); padding: 0; border: 0; border-radius: var(--radiuss); box-shadow: 0 8px 32px rgba(0, 0, 0, .3); }

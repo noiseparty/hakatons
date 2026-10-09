@@ -5,7 +5,8 @@
 map.repo.lv {
 	# The map's "show nearest to me" needs geolocation on our own pages (common blocks it).
 	# Must come BEFORE `import common` and be deferred (>), so it is applied after common's header.
-	header >Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+	# Mikrofons: balss meklēšana meklētājā (production/runa.js); tikai mūsu lapām.
+	header >Permissions-Policy "camera=(), microphone=(self), geolocation=(self)"
 	import common
 
 	# API: src/karte/api/karte_api.py (hakatons-map-api.service), Postgres db `map`.
