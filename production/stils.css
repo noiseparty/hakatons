@@ -296,3 +296,21 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 @media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }  /* neaizsedz pamatkartes slēdzi */
 .zonu-popup p { margin: .3rem 0; }
 .zonu-popup .paaugstinats { color: #b91c1c; }
+
+/* Telefoni: pieskāriena mērķi ≥ 44 px un teksts ≥ 12 px (ierīču tests: notes/telefonu-tests.md) */
+@media (max-width: 800px) {
+  .meklet-rinda input, .meklet-rinda button, #panelis-poga { min-height: 44px; }
+  .kartes-rikis button { width: 44px; height: 44px; }
+  .pamatkarte button { min-height: 40px; }
+  .prog-poga, .prog-dienas button { min-height: 44px; }
+  .prog-aizvert { width: 44px; height: 44px; }
+  .bridinajums summary { padding: .5rem 0; }
+  .marsruts a, .rez-saraksts .marsruts a, .apaksa #rezultati .marsruts a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 .7rem; font-size: .85rem; }
+  .marsruts { gap: 6px; }
+  .grupa-ikona b { font-size: .8rem; }
+  .zonu-legenda small { font-size: .78rem; }
+}
+/* Šauri telefoni (iPhone SE, 320–400 px): zonu leģenda virs pamatkartes slēdža, nevis tam pāri */
+@media (max-width: 400px) {
+  .leaflet-bottom.leaflet-left .zonu-legenda { margin-bottom: 56px; }
+}

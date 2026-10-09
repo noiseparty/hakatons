@@ -174,8 +174,10 @@ async function tuvakaPatvertne() {
 }
 el('tuvaka').addEventListener('click', tuvakaPatvertne);
 
-// Ja atļauja jau dota iepriekš, nosakām vietu uzreiz (bez jauna jautājuma).
-navigator.permissions?.query({ name: 'geolocation' }).then(p => { if (p.state === 'granted') atrastMani(); }).catch(() => {});
+// Ja atļauja jau dota iepriekš, nosakām vietu uzreiz (bez jauna jautājuma). Pēc DOMContentLoaded: atbilde var pienākt
+// ātrāk, nekā ielādēts meklesana.js (krizesMeklesana), — Chrome/Android ierīču testā tā bija JS kļūda.
+addEventListener('DOMContentLoaded', () => navigator.permissions?.query({ name: 'geolocation' })
+  .then(p => { if (p.state === 'granted') atrastMani(); }).catch(() => {}));
 
 // ---- Reģioni ----
 function aizpilditRegionus(saraksts) {

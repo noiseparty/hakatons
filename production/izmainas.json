@@ -1,0 +1,24 @@
+{
+  "_apraksts": "Izmaiņu žurnāls (izmainas.js, poga # galvenes kreisajā malā). Jaunākās augšā: datums (YYYY-MM-DD), viena rinda, saite (nav obligāta).",
+  "izmainas": [
+    { "datums": "2026-10-10", "teksts": "Telefonā lielākas pogas (vismaz 44 px), slāņi pēc ielādes izslēgti, izmaiņu žurnāls (šis logs)" },
+    { "datums": "2026-10-10", "teksts": "Satiksme kā zonas: slēgti un slideni ceļi (LVC), arī rezultāta kartītē", "saite": "https://github.com/noiseparty/hakatons/pull/67" },
+    { "datums": "2026-10-10", "teksts": "Riska karte šodienai un rītdienai: novadi iekrāsoti pēc riska līmeņa 0–3", "saite": "https://github.com/noiseparty/hakatons/pull/65" },
+    { "datums": "2026-10-10", "teksts": "Lapa „Svarīgi krīzē”: 112, sirēnas, LV-ALERT, LR1 frekvences, krājumi 72 stundām", "saite": "info.html" },
+    { "datums": "2026-10-10", "teksts": "Telefonā meklēšanas rezultāts ir apakšējā lapā virs kartes", "saite": "https://github.com/noiseparty/hakatons/pull/60" },
+    { "datums": "2026-10-10", "teksts": "Datu avoti: visas 20 datu kopas ar licencēm; pieejamības pārbaude", "saite": "https://github.com/noiseparty/hakatons/pull/56" },
+    { "datums": "2026-10-10", "teksts": "Rezultāta kartītē bloks „Kas notiks tālāk”; padomi „Jūs” formā", "saite": "https://github.com/noiseparty/hakatons/pull/54" },
+    { "datums": "2026-10-10", "teksts": "Demo panelis: 7 simulēti krīzes scenāriji (vētra, drons, plūdi Ogrē, bez sakariem…)", "saite": "?demo=vetra-2026" },
+    { "datums": "2026-10-10", "teksts": "Ceļu slēgumi un satiksmes negadījumi kartē (LVC, DATEX II)", "saite": "https://github.com/noiseparty/hakatons/pull/51" },
+    { "datums": "2026-10-10", "teksts": "Zibens pēdējās 30 minūtēs (FMI) un nokrišņi un augsnes mitrums rezultātā (Open-Meteo)", "saite": "https://github.com/noiseparty/hakatons/pull/50" },
+    { "datums": "2026-10-10", "teksts": "Plūdu riska zonas kā laukumi ar robežu; kur zonas pārklājas, paaugstināts risks", "saite": "https://github.com/noiseparty/hakatons/pull/48" },
+    { "datums": "2026-10-10", "teksts": "Prognoze un brīdinājumi: LVĢMC prognožu lente un brīdinājumu apgabali kartē", "saite": "https://github.com/noiseparty/hakatons/pull/46" },
+    { "datums": "2026-10-10", "teksts": "„Biežāk meklētais”: populārākie vaicājumi zem meklēšanas", "saite": "https://github.com/noiseparty/hakatons/pull/45" },
+    { "datums": "2026-10-10", "teksts": "Statusa lapa: vai darbojas vietne, API un katrs datu avots", "saite": "statuss.html" },
+    { "datums": "2026-10-10", "teksts": "Evakuācijas pulcēšanās un izmitināšanas vietas no 42 pašvaldību CA plāniem", "saite": "https://github.com/noiseparty/hakatons/pull/32" },
+    { "datums": "2026-10-09", "teksts": "Meklēšana ir sākums: viens vaicājums — drošās vietas, plūdi, brīdinājumi", "saite": "https://github.com/noiseparty/hakatons/pull/38" },
+    { "datums": "2026-10-09", "teksts": "Upju ūdens līmenis (LVĢMC) un plūdu scenāriji", "saite": "https://github.com/noiseparty/hakatons/pull/40" },
+    { "datums": "2026-10-09", "teksts": "LVĢMC brīdinājumi, plūdu riska zonas pārbaude adresē, tuvākais ūdens līmenis", "saite": "https://github.com/noiseparty/hakatons/pull/35" },
+    { "datums": "2026-10-09", "teksts": "Adrešu meklēšana (VZD adrešu reģistrs)", "saite": "https://github.com/noiseparty/hakatons/pull/33" }
+  ]
+}
