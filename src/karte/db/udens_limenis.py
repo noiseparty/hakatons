@@ -23,8 +23,8 @@ DATI = KOPA + "/de5f06e9-6f44-497d-8ec2-72a2483608e8/download/hidro_operativie_d
 DERIGS_H = 6  # vecāks mērījums kartē vairs netiek rādīts (API filtrē pēc derigs_lidz)
 
 
-def lasit(url):
-    with urllib.request.urlopen(url, timeout=60) as r:
+def lasit(url, timeout=60):
+    with urllib.request.urlopen(url, timeout=timeout) as r:
         return list(csv.DictReader(io.StringIO(r.read().decode("utf-8-sig"))))
 
 
@@ -32,15 +32,19 @@ def laiks(teksts):
     return datetime.strptime(teksts, "%Y.%m.%d %H:%M:%S").replace(tzinfo=timezone.utc)
 
 
-def stacijas():
+def stacijas(timeout=60):
     """GeoJSON features: pēdējais līmenis katrā stacijā. Lieto arī karte_api.py (/api/udens)."""
     merijumi = {}  # (stacija, parametrs) -> {laiks: vērtība}
-    for r in lasit(DATI):
+    for r in lasit(DATI, timeout):
         if r["ABBREVIATION"] in ("LIMEN", "WTEMD") and r["VALUE"].strip():
-            merijumi.setdefault((r["STATION_ID"], r["ABBREVIATION"]), {})[laiks(r["DATETIME"])] = float(r["VALUE"])
+            try:
+                vertiba = float(r["VALUE"])
+            except ValueError:  # viena bojāta vērtība nedrīkst apturēt visu ielādi
+                continue
+            merijumi.setdefault((r["STATION_ID"], r["ABBREVIATION"]), {})[laiks(r["DATETIME"])] = vertiba
 
     features = []
-    for s in lasit(STACIJAS):
+    for s in lasit(STACIJAS, timeout):
         limenis = merijumi.get((s["STATION_ID"], "LIMEN"))
         if not limenis or not s["GEOGR1"] or not s["GEOGR2"]:
             continue
