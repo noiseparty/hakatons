@@ -44,10 +44,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] Check https://map.repo.lv/statuss.html ~30 min after the status PR is merged: all rows filled, table `statuss_parbaudes` created by the API (`journalctl -u hakatons-map-api` shows no `statuss:` errors) — added 2026-10-10 01:35 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Public status page https://map.repo.lv/statuss.html (site, API/DB, VZD addresses, LVĢMC warnings/flood WMS/water level, CA-plan points, shelters, OSM tiles; 24 h bar in 15-min steps + 7-day uptime; checker thread in the API, table `statuss_parbaudes`) — done 2026-10-10 01:35 +03:00 by noiseparty (added 2026-10-10 01:35 +03:00 by noiseparty)
 - [x] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — done 2026-10-10 01:01 +03:00 by noiseparty: all of tonight's PRs merged in order (#31–#41) (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Consolidated TODO.md pass and `notes/stavoklis.md` rewrite after the merges — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Check that `ielade_visu.sh` reloads the CA-plan layers (`--avots ca-plani`, both categories in one call) — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
