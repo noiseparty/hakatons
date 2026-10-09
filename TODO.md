@@ -33,6 +33,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Crisis search: map always centres on the place named in the query ("lācis Ogre", "Rēzekne"), also when the scenario has no map layers or isn't recognised; zoom to the city + nearest per layer, not far-away 3rd results — done 2026-10-09 20:56 +03:00 by noiseparty
 - [x] Simulēti dati prototipam: `atseviski_dati/udens.csv` (100 publiskas ūdens ņemšanas vietas) + `atseviski_dati/energija.csv` (100 publiskie ierīču uzlādes punkti) + README ar ielādes komandām (`ielade.py` formāts, kategorijas `udens_punkts`/`uzlades_stacija`) — done 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:55 +03:00 by iesalnieksjanLatvia)
 - [x] Official CC0 layers loaded: VUGD depots, VP + municipal police, ZVA pharmacies, IeM IC medical institutions (PR #14) — done 2026-10-09 20:48 +03:00 by noiseparty
 - [x] Crisis scenarios: all 119 from `notes/SCENARIJI.md` in the search classifier (own advice, map layers, 112), rare keywords weigh more, "Vai domāji…?" alternatives; #72/#73 not implemented as written (profiling) — done 2026-10-09 20:20 +03:00 by noiseparty (added 2026-10-09 18:46 +03:00 by noiseparty)
