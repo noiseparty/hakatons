@@ -98,10 +98,12 @@
       "atslegvardi": [
         "polic", "zagl", "zādz", "nozag", "aplaupī", "laupīš", "uzbruk", "draud", "vardarb", "piekāv", "pazud",
         "ielauz", "krāpn", "huligān", "nozieg", "bīstams cilvēk", "seko man", "ierocis", "ierocī",
+        "troksn", "kaimiņ", "dauz", "žūpo",
         "полиц", "вор$", "вора$", "воры", "краж", "украл", "ограб", "напал", "насил", "угрож", "пропал", "избил",
-        "мошен", "оружи",
+        "мошен", "оружи", "шум", "сосед", "хулиган", "орут", "дебош",
         "police", "thief", "theft", "stole", "robb", "attacked", "attacker", "assault", "violen", "threat",
-        "missing", "break in", "burglar", "weapon", "gun$", "knife"
+        "missing", "break in", "burglar", "weapon", "gun$", "knife",
+        "nois", "neighbor", "neighbour", "hooligan"
       ]
     },
     {
