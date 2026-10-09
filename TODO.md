@@ -19,10 +19,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Use the 22–23.08.2026 storm (~277k customers without power) as the demo scenario in the pitch — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — added 2026-10-09 18:36 +03:00 by noiseparty
+- [ ] Establish the full list of crisis scenarios our platform covers (user need → map categories → urgency/112 → advice); base it on the CA plans' "kā rīkoties" annexes (e.g. `markdown/augsdaugavas-novads/cap_12_*`) and use it as the crisis-search classifier's taxonomy — added 2026-10-09 18:46 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Map layer: 37 hospitals with 24/7 emergency care (VM disaster medicine plan, annex 12), addresses checked, coordinates from VZD address register — done 2026-10-09 18:46 +03:00 by noiseparty
 - [x] Research crisis-map services & open data (taxonomy, ~55 Latvian sources, intl feeds + case studies, top-15 layers) → `notes/research/` — done 2026-10-09 18:36 +03:00 by noiseparty (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Map DB + API + filters: PostGIS db `map` on the VPS, `/api` (`src/karte/`), regions/cities from VZD, OSM ATMs/pharmacies/hospitals/police/fire/fuel, "nearest to me" with geolocation allowed for map.repo.lv — done 2026-10-09 18:11 +03:00 by noiseparty
 - [x] Publish OpenStreetMap map of Latvia with 781 public shelters (VUGD / 112.lv) at https://map.repo.lv — done 2026-10-09 17:41 +03:00 by noiseparty

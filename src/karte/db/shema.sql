@@ -26,6 +26,7 @@ create table if not exists kategorijas (
 
 insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
   ('patvertne',  'Publiskās patvertnes',     'patvertnes',     '#b91c1c', 10),
+  ('neatliekama_24h', 'Neatliekamā palīdzība 24/7 (slimnīcas)', 'veseliba', '#7c3aed', 15),
   ('bankomats',  'Bankomāti',                'infrastruktura', '#1d4ed8', 20),
   ('aptieka',    'Aptiekas',                 'infrastruktura', '#15803d', 30),
   ('slimnica',   'Slimnīcas',                'infrastruktura', '#be185d', 40),

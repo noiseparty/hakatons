@@ -1,7 +1,7 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
 const SARAKSTA_GARUMS = 100;
-const GRUPAS = { patvertnes: 'Patvertnes', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true }).fitBounds(latvija);
@@ -144,6 +144,7 @@ function popupSaturs(p, ll) {
   const i = p.ipasibas || {};
   const rindas = [];
   if (p.adrese) rindas.push(esc(p.adrese));
+  if (i.piezime) rindas.push('<small>' + esc(i.piezime) + '</small>');
   if (i.opening_hours) rindas.push('<small>Darba laiks: ' + esc(i.opening_hours) + '</small>');
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: <a href="tel:' + esc(i.phone.replace(/\s/g, '')) + '">' + esc(i.phone) + '</a></small>');
