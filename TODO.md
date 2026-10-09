@@ -22,7 +22,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
-- [ ] Accessibility for blind & disabled users: screen-reader labels, keyboard navigation, contrast, text alternative to the map (list view); check against WCAG 2.1 AA / VDAA guidelines — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show wheelchair access (ramp / step-free entrance) in popups and as a filter — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show whether animals/pets are accepted — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show capacity and live status (open for guests / full / closed) — added 2026-10-09 23:20 +03:00 by noiseparty
@@ -57,11 +56,15 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Status page: add "LVC ceļu dati" as a component via `celu_notikumi_visi()` (after #44 is merged) — added 2026-10-10 01:57 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
 - [ ] After merging the lightning layer: check `/api/zibens` and `/api/augsne` live (FMI limit 600 req / 5 min; Open-Meteo <10k/day) — added 2026-10-10 01:56 +03:00 by noiseparty
+- [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
+- [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Accessibility pass (WCAG 2.1 AA basics): visible focus, contrast fixes, aria-hidden icons, reduced motion, heading order, Escape closes the forecast panel; axe-core 0 violations on index (search, suggestions, result card, sources) and statuss.html at 375 and 1280 px — done 2026-10-10 02:09 +03:00 by noiseparty; no real screen-reader test (added 2026-10-09 23:20 +03:00 by noiseparty)
+- [x] "Datu avoti" panel lists every dataset the site uses (DB rows + API-side LVĢMC, LVC/NAP, FMI, Open-Meteo, OpenTopoMap), with "N atvērto datu avoti", update frequency and last update for warnings/forecast — done 2026-10-10 02:09 +03:00 by noiseparty (added 2026-10-10 02:09 +03:00 by noiseparty)
 - [x] Status page round 2: flood check capped at 10 s, history read errors logged, grey "Nav datu" state; new rows for the LVĢMC forecast (cache age), FMI lightning, Open-Meteo soil/rain and LVC roads (grey until NAP keys) — done 2026-10-10 02:08 +03:00 by noiseparty (added 2026-10-10 02:08 +03:00 by noiseparty)
 - [x] Demo panel: right-edge "Demo" tab / phone bottom sheet with simulated scenarios, SIMULĀCIJA badges, "Beigt demo" restores the map, `?demo=<code>` links (`production/demo.js`, `notes/demo-scenariji.md`) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
 - [x] Demo 1: yellow strong-wind warning over Kurzeme coast (VZD boundaries as warning polygon, banner, advice) — done 2026-10-10 01:58 +03:00 by noiseparty (added 2026-10-10 01:58 +03:00 by noiseparty)
