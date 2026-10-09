@@ -41,6 +41,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Mobile: show search results as a bottom sheet over the map instead of below it — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: re-copy `src/karte/serveris/hakatons-map-api-restart.path` to `/etc/systemd/system/` (now also watches `udens_limenis.py`), `systemctl daemon-reload` — added 2026-10-10 01:01 +03:00 by noiseparty
 - [ ] VPS: remove the test DB and test API from the integration test (`map_test`, `/tmp/map_test-src`; commands in `notes/stavoklis.md`) — added 2026-10-10 01:01 +03:00 by noiseparty
+- [ ] Flood zones: server-side cached tile proxy for the LVĢMC WMS (upstream answers in 5–7 s per tile, first view takes 5–20 s) and warm Ogre/Jūrmala before the pitch — added 2026-10-10 01:50 +03:00 by noiseparty
+- [ ] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — added 2026-10-10 01:50 +03:00 by noiseparty
 - [ ] VPS: apply `src/karte/db/shema.sql` once (new table `meklejumi` for "Biežāk meklētais"; until then the dropdown shows built-in examples and counting is a no-op) — added 2026-10-10 01:36 +03:00 by noiseparty
 - [ ] Check https://map.repo.lv/statuss.html ~30 min after the status PR is merged: all rows filled, table `statuss_parbaudes` created by the API (`journalctl -u hakatons-map-api` shows no `statuss:` errors) — added 2026-10-10 01:35 +03:00 by noiseparty
 - [ ] Result card: "next 24 h at your place" from the LVĢMC hourly place forecast (nearest of 6 427 places; via CKAN datastore_search_sql, not the 70 MB CSV) — added 2026-10-10 01:39 +03:00 by noiseparty
@@ -51,10 +53,13 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Status page: add "LVC ceļu dati" as a component via `celu_notikumi_visi()` (after #44 is merged) — added 2026-10-10 01:57 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
 - [ ] After merging the lightning layer: check `/api/zibens` and `/api/augsne` live (FMI limit 600 req / 5 min; Open-Meteo <10k/day) — added 2026-10-10 01:56 +03:00 by noiseparty
+- [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Warnings banner stays centred (70ch column) when expanded on desktop — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
+- [x] Flood risk zones drawn as filled areas with a clear border (WMS recoloured on canvas, EPSG:3857, 512 px tiles; spring floods + ice jams + sea surge) + `production/zonas.js` zone registry with overlap = "paaugstināts risks" (hatched, popup with sources); LVĢMC warning areas as a second zone layer (`/api/bridinajumi?poligoni=1`) — done 2026-10-10 01:50 +03:00 by noiseparty (added 2026-10-10 01:50 +03:00 by noiseparty)
 - [x] "Kas notiks tālāk" block in the search result card: concrete next steps and what happens next (judging criterion 3) — done 2026-10-10 02:05 +03:00 by noiseparty: `talak` per scenario → 14 step families in `talak_gimenes` (scenariji.json), rendered at the end of every result card (added 2026-10-10 01:01 +03:00 by noiseparty)
 - [x] Rewrite the 119 scenario advice texts in `production/scenariji.json` to the "Jūs" form (the search result card shows them; the UI texts already use "Jūs") — done 2026-10-10 02:05 +03:00 by noiseparty: 124 of 125 rewritten (Sonnet + proofreading pass), keywords unchanged, tests 125/125 (added 2026-10-10 00:21 +03:00 by noiseparty)
 - [x] Road closures / accidents / lane closures / works / slippery road layer from LVC DATEX II via NAP: `/api/celi` (5 min cache, bbox, radius), `celi.js` layer + "Ceļu satiksme" line in the result card — done 2026-10-10 01:57 +03:00 by noiseparty; real feeds untested (no keys) (added 2026-10-10 01:39 +03:00 by noiseparty)
