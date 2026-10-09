@@ -57,11 +57,11 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — added 2026-10-10 02:09 +03:00 by noiseparty
 - [ ] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — added 2026-10-10 02:11 +03:00 by noiseparty
 - [ ] Satiksme: get real responses of the minute speed feed (ed1f0d2c) and border waiting times (cb730ba2) and check `_datex_merijumi` / `_satiksmes_robezas` against them (parsers follow the DATEX II v3 standard, no sample yet) — added 2026-10-10 02:22 +03:00 by noiseparty
-- [ ] Satiksme: check `/api/satiksme` on the VPS (region lookup SQL untested locally: no PostGIS on dev machines) — added 2026-10-10 02:22 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Satiksme on the VPS: zones work with real minute speeds (30 municipalities); border feed: failure reason in `kopas.*.kluda`, file-id/format fallbacks, JSON parser, `?debug=1` behind `MAP_DEBUG`; status-page components `satiksme` + `robezas` — done 2026-10-10 02:26 +03:00 by noiseparty (added 2026-10-10 02:22 +03:00 by noiseparty)
 - [x] Public info card: LR1 FM frequency, 112, cell broadcast, sirens, 72h checklist — done 2026-10-10 02:24 +03:00 by noiseparty: production/info.html "Svarīgi krīzē", printable, a source per block (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] NAP keys on the VPS (8 feeds) — done 2026-10-10 02:22 +03:00 by noiseparty: `/api/celi` reads the real names (NEGADIJUMI, REMONTI, 3 × SLIDENS); SLEGUMI/JOSLAS not subscribed, skipped (added 2026-10-10 01:57 +03:00 by noiseparty)
 - [x] `/api/satiksme`: traffic level per zone (municipality, else ~10 km grid) from counter sites + minute speeds, slippery-road points, border waiting times; field mapping in `notes/research/nap-satiksme.md` — done 2026-10-10 02:22 +03:00 by noiseparty; rendering is terminal A's zonas.js (added 2026-10-10 02:22 +03:00 by noiseparty)
