@@ -137,6 +137,10 @@ const Prognozes = (() => {
   kaste.querySelector('.prog-saturs').addEventListener('click', izveleties);
   kaste.querySelector('.prog-saturs').addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); izveleties(e); } });
 
+  kaste.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && kaste.classList.contains('atverts')) { atvert(false); kaste.querySelector('.prog-poga').focus(); }
+  });
+
   // Meklējot rezultāts ir galvenais: lente aizveras, lai neaizsedz karti
   document.getElementById('meklet-forma')?.addEventListener('submit', () => atvert(false));
 
