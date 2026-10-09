@@ -1,0 +1,75 @@
+{
+  "_apraksts": [
+    "Plūsmas 'Mana adrese krīzē' (production/plusma.js) 2. soļa pogas un to rezultāts 4. solī. Uzruna — 'Jūs'.",
+    "scenarijs: kods no scenariji.json (112 poga, 'Cits' klasifikators). galvena_vieta: kategorija, uz kuru ved lēmums.",
+    "lemums: rezultāta virsraksts un teksts; limenis: zals | dzeltens | oranzs | sarkans (krāsa).",
+    "Plūdiem lēmumu nosaka plūdu riska zona adresē (lemums_zona / lemums_nav_zona / lemums_nezinams).",
+    "apstakli: 3. soļa atbildes un padoms katrai (tikai to, ko reģistri par cilvēku nezina)."
+  ],
+  "situacijas": [
+    {
+      "kods": "pludi", "ikona": "🌊", "nosaukums": "Plūdi", "apraksts": "Ūdens ceļas, applūst ceļš vai pagrabs",
+      "scenarijs": "pludi", "galvena_vieta": "evakuacijas_punkts", "pludu_parbaude": true,
+      "lemums_zona": { "limenis": "sarkans", "virsraksts": "Jūsu adrese ir plūdu riska zonā",
+        "teksts": "Sagatavojieties evakuācijai: salieciet somu ar dokumentiem un zālēm, pārvietojiet auto un vērtīgas lietas augstāk. Ja ūdens tuvojas mājai vai pašvaldība izsludina evakuāciju, dodieties uz pulcēšanās vietu." },
+      "lemums_nav_zona": { "limenis": "dzeltens", "virsraksts": "Jūsu adrese nav plūdu riska kartēs",
+        "teksts": "Visticamāk varat palikt mājās. Neejiet un nebrauciet pa applūdušiem ceļiem un sekojiet brīdinājumiem. Ja ūdens tomēr ienāk mājā, dodieties augstāk un zvaniet 112." },
+      "lemums_nezinams": { "limenis": "oranzs", "virsraksts": "Plūdu risku Jūsu adresē neizdevās pārbaudīt",
+        "teksts": "Rīkojieties piesardzīgi: salieciet somu ar dokumentiem un zālēm un ziniet, kur ir tuvākā pulcēšanās vieta. Plūdu zonas var apskatīt kartē." },
+      "padomi": [
+        "Ja ūdens ienāk mājā, dodieties augstāk: uz augšējo stāvu vai paaugstinātu vietu.",
+        "Ja varat to izdarīt droši, atslēdziet elektrību. Neaiztieciet slēdžus un ierīces ūdenī.",
+        "Nebrauciet un neejiet pa applūdušu ceļu: jau 30 cm straujš ūdens var aiznest auto.",
+        "Paņemiet dokumentus, zāles, telefonu un lādētāju."
+      ]
+    },
+    {
+      "kods": "vetra", "ikona": "🌪️", "nosaukums": "Vētra / nav elektrības", "apraksts": "Stiprs vējš, nokrituši koki, nav strāvas",
+      "scenarijs": "nav_elektribas", "galvena_vieta": "izmitinasana",
+      "lemums": { "limenis": "dzeltens", "virsraksts": "Palieciet drošā vietā iekštelpās",
+        "teksts": "Ja mājā ir silti un droši, palieciet mājās. Ja kļūst auksti, jāuzlādē telefons vai māja ir bojāta, dodieties uz tuvāko izmitināšanas vietu." },
+      "padomi": [
+        "Vētras laikā palieciet iekštelpās, tālāk no logiem. Neejiet zem kokiem.",
+        "Par elektrības traucējumiem ziņojiet Sadales tīklam: 8404.",
+        "Neaiztieciet nokritušus elektrības vadus. Ja vads guļ uz ceļa, zvaniet 112.",
+        "Lietojiet lukturīti, nevis sveces. Ledusskapi turiet aizvērtu.",
+        "Apjautājieties, kā klājas kaimiņiem, īpaši veciem cilvēkiem."
+      ]
+    },
+    {
+      "kods": "evakuacija", "ikona": "🚌", "nosaukums": "Evakuācija", "apraksts": "Pašvaldība vai dienesti liek pamest mājas",
+      "scenarijs": "evakuacija", "galvena_vieta": "evakuacijas_punkts",
+      "lemums": { "limenis": "oranzs", "virsraksts": "Dodieties uz pulcēšanās vietu",
+        "teksts": "Paņemiet līdzi svarīgāko un dodieties uz tuvāko pulcēšanās vietu. Tur Jūs reģistrēs un pateiks, kur Jūs izmitinās." },
+      "padomi": [
+        "Paņemiet dokumentus, zāles, telefonu ar lādētāju, naudu, ūdeni, pārtiku un siltas drēbes 72 stundām.",
+        "Izslēdziet gāzi, ūdeni un elektrību, aizslēdziet māju.",
+        "Brauciet pa pašvaldības norādīto maršrutu. Ja tāda nav, izvēlieties lielākos ceļus.",
+        "Pasakiet tuviniekiem, kur dodaties."
+      ]
+    },
+    {
+      "kods": "sirena", "ikona": "📢", "nosaukums": "Trauksmes sirēna / ķīmiska noplūde", "apraksts": "Skan sirēna, ziņo par noplūdi vai uzbrukumu",
+      "scenarijs": "piesarnojums", "galvena_vieta": "patvertne",
+      "lemums": { "limenis": "oranzs", "virsraksts": "Ieslēdziet LR1 vai LTV1 un palieciet iekštelpās",
+        "teksts": "Sirēna nozīmē: uzziniet, kas noticis. Ja ziņo par ķīmisku noplūdi, palieciet iekštelpās un aizveriet logus. Ja ziņo par gaisa uzbrukumu, dodieties uz patvertni vai telpu bez logiem zemākajā stāvā." },
+      "padomi": [
+        "Aizveriet logus un durvis, izslēdziet ventilāciju.",
+        "Ja bijāt ārā, novelciet virsdrēbes un nomazgājieties.",
+        "Nezvaniet 112 tikai, lai uzzinātu, kas noticis: informācija ir LR1, LTV1 un 112.lv.",
+        "Palieciet vietā, līdz trauksme atcelta."
+      ]
+    }
+  ],
+  "cits": { "kods": "cits", "ikona": "✏️", "nosaukums": "Cits", "apraksts": "Aprakstiet savos vārdos" },
+  "apstakli": [
+    { "kods": "berni", "ikona": "👶", "nosaukums": "Ar mani ir bērni",
+      "padoms": "Paņemiet bērnu dokumentus, zāles, ūdeni un uzkodas. Norunājiet tikšanās vietu, ja pazūdat viens otram." },
+    { "kods": "kustibas", "ikona": "♿", "nosaukums": "Kustību ierobežojumi (man vai kādam līdzās)",
+      "padoms": "Ja Jums jāevakuējas, zvaniet 112 un lūdziet palīdzību evakuācijā. Pasakiet, kāda palīdzība vajadzīga (ratiņkrēsls, nestuves, pavadonis)." },
+    { "kods": "dzivnieki", "ikona": "🐕", "nosaukums": "Mājdzīvnieki",
+      "padoms": "Paņemiet pavadu vai pārvadāšanas kasti, barību un dzīvnieka pasi. Vai pulcēšanās un izmitināšanas vietas pieņem dzīvniekus, atvērtajos datos nav norādīts: jautājiet pašvaldībai." },
+    { "kods": "bez_auto", "ikona": "🚶", "nosaukums": "Nav auto vai cita transporta",
+      "padoms": "Ja jāevakuējas un nav transporta, zvaniet savai pašvaldībai vai 112: evakuācijā palīdz arī cilvēkiem bez auto." }
+  ]
+}
