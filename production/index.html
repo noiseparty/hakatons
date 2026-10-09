@@ -54,6 +54,9 @@
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
         <span class="punkts" style="background:#38bdf8"></span>Plūdu riska zonas (LVĢMC, 1 % un 10 %)</label>
+      <label class="kat parklajums"><input type="checkbox" id="zibens-slanis">
+        <span class="punkts" style="background:#facc15"></span>Zibens (pēdējās 30 min)</label>
+      <p id="zibens-teksts" class="piezime zibens-teksts" aria-live="polite" hidden></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence.</p>
@@ -103,6 +106,7 @@
 <script src="app.js"></script>
 <script src="meklesana.js"></script>
 <script src="bridinajumi.js"></script>
+<script src="zibens.js"></script>
 <script src="prognozes.js"></script>
 </body>
 </html>

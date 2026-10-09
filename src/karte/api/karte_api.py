@@ -16,6 +16,8 @@ Galapunkti:
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
                                        novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
+  GET /api/zibens                      zibens pēdējās 30 min (FMI, CC BY 4.0) + LVĢMC 24 h zibens režģis (CC0, kavējas 2–3 h)
+  GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
   GET /api/veseliba                    pārbaude
 
 Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
@@ -699,6 +701,115 @@ def prognozu_robezas(_q):
 # ---- /Prognoze / ziņas ----
 
 
+# ---- Zibens un augsne: /api/zibens, /api/augsne ----
+# Zibens: FMI (Ilmatieteen laitos) atvērtie dati, WFS, CC BY 4.0 — pēdējās 30 min. Papildus LVĢMC 24 h zibens režģis
+# (data.gov.lv, CC0; 5×5 km šūnas, kavējas ~2–3 h). Blitzortung NAV atļauts (licence to aizliedz).
+FMI_ZIBENS = ("https://opendata.fmi.fi/wfs?service=WFS&version=2.0.0&request=getFeature"
+              "&storedquery_id=fmi::observations::lightning::simple&bbox=20.8,55.6,28.3,58.1"
+              "&parameters=peak_current&starttime={no}&endtime={lidz}")
+ZIBENS_AVOTS = {"nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati", "licence": "CC BY 4.0",
+                "url": "https://en.ilmatieteenlaitos.fi/open-data"}
+LVGMC_ZIBENS = ("https://data.gov.lv/dati/dataset/1936ed28-16df-4588-819e-8a5143a50c81/resource/"
+                "a264bfb4-f52f-41f7-93fc-04214f4a2b5b/download/zibens_rezgis_operativie_dati.csv")
+LVGMC_ZIBENS_AVOTS = {"nosaukums": "LVĢMC telpiskie novērojumi (zibens režģis, 24 h)", "licence": "CC0 1.0",
+                      "url": "https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi"}
+ZIBENS_MIN = 30
+
+
+def _fmi_zibens():
+    import xml.etree.ElementTree as ET
+    lidz = datetime.now(timezone.utc).replace(microsecond=0)
+    no = lidz - timedelta(minutes=ZIBENS_MIN)
+    url = FMI_ZIBENS.format(no=no.strftime("%Y-%m-%dT%H:%M:%SZ"), lidz=lidz.strftime("%Y-%m-%dT%H:%M:%SZ"))
+    sakne = ET.fromstring(_lejupieladet(url, timeout=10))
+    ns = {"BsWfs": "http://xml.fmi.fi/schema/wfs/2.0", "gml": "http://www.opengis.net/gml/3.2"}
+    zibeni = {}  # (pos, laiks) → zibens: vairāki elementi (parametri) dalās vienā punktā un laikā
+    for e in sakne.iter("{http://xml.fmi.fi/schema/wfs/2.0}BsWfsElement"):
+        pos, laiks = e.findtext(".//gml:pos", "", ns).split(), e.findtext("BsWfs:Time", "", ns)
+        if len(pos) != 2 or not laiks:
+            continue
+        z = zibeni.setdefault((tuple(pos), laiks), {"lat": float(pos[0]), "lon": float(pos[1]), "laiks": laiks, "strava": None})
+        if e.findtext("BsWfs:ParameterName", "", ns) == "peak_current":
+            try:
+                z["strava"] = float(e.findtext("BsWfs:ParameterValue", "", ns))
+            except ValueError:
+                pass
+    return {"no": no.isoformat(), "lidz": lidz.isoformat(), "zibeni": sorted(zibeni.values(), key=lambda z: z["laiks"])}
+
+
+def _lvgmc_zibens():
+    sunas, pedejais = {}, None
+    for r in _csv(LVGMC_ZIBENS):
+        pedejais = max(pedejais or r["LAIKS"], r["LAIKS"])
+        try:
+            skaits = int(float(r["TOTAL"] or 0))
+        except ValueError:
+            continue
+        if skaits > 0:
+            s = sunas.setdefault((r["LAT"], r["LON"]), {"lat": round(float(r["LAT"]), 4), "lon": round(float(r["LON"]), 4),
+                                                         "skaits": 0, "pedejais": None})
+            s["skaits"] += skaits
+            s["pedejais"] = max(s["pedejais"] or r["LAIKS"], r["LAIKS"])
+    return {"lidz_lv": pedejais, "sunas": list(sunas.values())}
+
+
+def zibens(_q):
+    try:
+        fmi = _kesots("zibens_fmi", 60, _fmi_zibens)
+    except Kluda:
+        fmi = None
+    try:
+        rezgis = _kesots("zibens_lvgmc", 900, _lvgmc_zibens)
+    except Kluda:
+        rezgis = None
+    if fmi is None and rezgis is None:
+        raise Kluda(503, "zibens dati pašlaik nav pieejami")
+    return {
+        "minutes": ZIBENS_MIN,
+        "zibeni": fmi["zibeni"] if fmi else None, "skaits": len(fmi["zibeni"]) if fmi else None,
+        "no": fmi and fmi["no"], "lidz": fmi and fmi["lidz"], "avots": ZIBENS_AVOTS,
+        "rezgis_24h": rezgis, "rezgis_avots": LVGMC_ZIBENS_AVOTS,
+    }
+
+
+# Augsne: Open-Meteo (CC BY 4.0, bezmaksas nekomerciālai lietošanai, <10 000 pieprasījumu dienā). Konteksts, NAV brīdinājums.
+OPEN_METEO = ("https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&daily=precipitation_sum"
+              "&hourly=soil_moisture_3_to_9cm&past_days=26&forecast_days=3&timezone=Europe%2FRiga")
+AUGSNES_AVOTS = {"nosaukums": "Open-Meteo", "licence": "CC BY 4.0", "url": "https://open-meteo.com/"}
+# Heuristika (nav oficiāla skala): augsnes mitrums 3–9 cm, m³/m³. Latvijas māla/smilšmāla augsnēm piesātinājums
+# ir ~0,40–0,45, smiltīm ~0,30, tāpēc sliekšņi ir rupji: < 0,20 sausa, < 0,35 mitra, ≥ 0,35 ļoti mitra (gandrīz piesātināta).
+AUGSNES_SLIEKSNI = [(0.20, "sausa"), (0.35, "mitra")]
+
+
+def augsne(q):
+    lat, lon = _vieta(q)
+    lat, lon = round(lat, 2), round(lon, 2)  # ~1 km; kešs pēc tā
+
+    def iegut():
+        d = json.loads(_lejupieladet(OPEN_METEO.format(lat=lat, lon=lon), timeout=10))
+        sodien = _riga_tagad().strftime("%Y-%m-%d")
+        dienas = list(zip(d["daily"]["time"], d["daily"]["precipitation_sum"]))
+        pagatne = [v for t, v in dienas if t < sodien and v is not None]
+        nakotne = [v for t, v in dienas if t >= sodien and v is not None]
+        stunda = _riga_tagad().strftime("%Y-%m-%dT%H:00")
+        mitrums = None
+        for t, v in zip(d["hourly"]["time"], d["hourly"]["soil_moisture_3_to_9cm"]):
+            if t <= stunda and v is not None:
+                mitrums = v
+        stavoklis = None if mitrums is None else next(
+            (n for robeza, n in AUGSNES_SLIEKSNI if mitrums < robeza), "ļoti mitra")
+        return {
+            "nokrisni_pagatne_mm": round(sum(pagatne), 1), "dienas_pagatne": len(pagatne),
+            "nokrisni_prognoze_mm": round(sum(nakotne), 1), "dienas_prognoze": len(nakotne),
+            "augsnes_mitrums": mitrums, "augsne": stavoklis, "avots": AUGSNES_AVOTS,
+        }
+
+    return _kesots(("augsne", lat, lon), 3600, iegut)
+
+
+# ---- /Zibens un augsne ----
+
+
 def veseliba(_q):
     return {"ok": vaicat("select true")}
 
@@ -715,6 +826,8 @@ MARSRUTI = [
     (re.compile(r"^/api/udens/?$"), udens, 600),
     (re.compile(r"^/api/prognozes/?$"), prognozes, 300),
     (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
+    (re.compile(r"^/api/zibens/?$"), zibens, 60),
+    (re.compile(r"^/api/augsne/?$"), augsne, 3600),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
 ]
 

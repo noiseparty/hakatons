@@ -13,6 +13,8 @@ const krizesMeklesana = (() => {
     { kods: 'neatliekama_24h', nos: '24/7 neatliekamā palīdzība', ikona: '🏥' },
   ];
   const PLUDU_SCENARIJI = new Set(['pludi', 'udens_celas']);
+  // Nokrišņu un augsnes konteksta rinda (Open-Meteo caur /api/augsne): plūdiem, lietusgāzēm un vētrām
+  const LAIKA_SCENARIJI = new Set(['pludi', 'udens_celas', 'negaiss', 'vetra_jumts', 'viesulvetra']);
   const AVOTI_LVGMC = {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
@@ -202,6 +204,8 @@ const krizesMeklesana = (() => {
       document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
     }
     if (pludi) radtPludus(true);  // app.js: plūdu riska zonu slānis kartē
+    const laiks = galvenais && LAIKA_SCENARIJI.has(galvenais.kods);
+    if (galvenais?.kods === 'negaiss' && typeof Zibens !== 'undefined') Zibens.radit(true);  // zibens.js: pēdējās 30 min
     if (kodi.length || jaunsRegions) atjaunot();
 
     if (!no) {
@@ -223,12 +227,13 @@ const krizesMeklesana = (() => {
       grupas.forEach(g => { g.features = izveleties(g.features); });
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
       kaste.innerHTML = galva +
-        (pludi ? pluduBloks() : '') +
+        (pludi ? pluduBloks() : '') + (laiks ? augsnesBloks() : '') +
         kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
         (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>' + beigas;
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
       if (pludi) pluduDati(ll, signal);
+      if (laiks) augsnesDati(ll, signal);
     } catch (e) {
       if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>' + beigas;
     }
@@ -302,6 +307,22 @@ const krizesMeklesana = (() => {
         `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small><small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
+    });
+  }
+
+  // Nokrišņi pēdējās 26 dienās + augsnes mitrums: konteksts (cik ūdens zeme vēl var uzņemt), nevis brīdinājums
+  function augsnesBloks() {
+    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">🌧️</span><div><b>Nokrišņi un augsne</b><span>Ielādē…</span></div></li></ul>`;
+  }
+  function augsnesDati(ll, signal) {
+    const avots = '<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · CC BY 4.0';
+    iegut('/augsne?' + new URLSearchParams(ll), signal).then(a => {
+      const mm = x => String(Math.round(x)).replace('.', ',');
+      pluduRinda('rez-augsne', `<b>Nokrišņi un augsne</b><span>Pēdējās ${a.dienas_pagatne} dienās: ${mm(a.nokrisni_pagatne_mm)} mm nokrišņu` +
+        `${a.augsne ? `; augsne ${esc(a.augsne)}` : ''}</span><small>Nākamajās ${a.dienas_prognoze} dienās: ${mm(a.nokrisni_prognoze_mm)} mm. ` +
+        `Modeļa aprēķins šai vietai, nav brīdinājums.</small><small class="avots-rinda">${avots}</small>`);
+    }).catch(e => {
+      if (e.name !== 'AbortError') pluduRinda('rez-augsne', '<b>Nokrišņi un augsne</b><span>Datus neizdevās ielādēt.</span>');
     });
   }
 

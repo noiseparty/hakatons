@@ -48,10 +48,13 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] LVC road closures / slippery roads via NAP (keys exist; DATEX II parsing in the API, server-side only) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] After merging the forecast feed: check `/api/prognozes` and `/api/prognozes/robezas` live (first call ~10 s, robezas size) — added 2026-10-10 01:39 +03:00 by noiseparty
+- [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
+- [ ] After merging the lightning layer: check `/api/zibens` and `/api/augsne` live (FMI limit 600 req / 5 min; Open-Meteo <10k/day) — added 2026-10-10 01:56 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Lightning layer "Zibens (pēdējās 30 min)" (FMI open data WFS, CC BY 4.0, + LVĢMC 24 h grid, CC0) via `/api/zibens`; rain + soil moisture context line in the result card for flood/storm scenarios via `/api/augsne` (Open-Meteo, CC BY 4.0; not a warning); "negaiss" query turns the lightning layer on — done 2026-10-10 01:56 +03:00 by noiseparty (added 2026-10-10 01:56 +03:00 by noiseparty)
 - [x] "Prognoze / ziņas" feed on the map: `/api/prognozes` (LVĢMC place forecasts aggregated per novads, 3 days, + active warnings with polygons) and `prognozes.js` (feed panel, day tabs, novadi coloured, tap zooms); research catalogue `notes/research/04_lvgmc_un_oficialie_dati.md` — done 2026-10-10 01:39 +03:00 by noiseparty (forecast part of "Show current weather from LVĢMC on the map (observations + forecast)", added 2026-10-09 23:20 +03:00 by noiseparty)
 - [x] Merge PRs in order: `noiseparty/adresu-meklesana`, then `noiseparty/udens-limenis` (water level loads itself on merge) — done 2026-10-10 01:01 +03:00 by noiseparty: all of tonight's PRs merged in order (#31–#41) (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Consolidated TODO.md pass and `notes/stavoklis.md` rewrite after the merges — done 2026-10-10 01:01 +03:00 by noiseparty (added 2026-10-10 01:01 +03:00 by noiseparty)
