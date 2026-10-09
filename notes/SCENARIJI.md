@@ -1,6 +1,6 @@
 # SCENARIJI — dzīves, katastrofu un krīzes situācijas
 
-Produkta meklēšanas scenāriju saraksts (112 varianti). Katrs scenārijs = viena
+Produkta meklēšanas scenāriju saraksts (119 varianti). Katrs scenārijs = viena
 lietotāja situācija, kurā viņš meklē palīdzību. Kolonna **Atslēgvārdi** domāta
 meklēšanas / klasifikācijas funkcionalitātei — pēc tās scenāriju sasaista ar
 lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
@@ -42,6 +42,7 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 26 | Pārsprāgušas riepas | Nav rezerves riepas, tumst, attālā vietā | riepas, rezerve, caurums, tumsa |
 | 27 | Velo / moto avārija | Transports nederīgs, iespējami ievainojumi | velo, moto, avārija, ievainojums |
 | 28 | Sabiedriskais transports apstājies | Stāv starp pilsētām, nav jaunās informācijas | transports, apstājies, starp pilsētām |
+| 117 | Auto sabojājies ceļa malā | Stāv bīstami tuvu satiksmei, jāsauc tehniskā palīdzība | auto, ceļa malā, sabojājies, tehniskā palīdzība |
 
 ## C. Uguns un sprādzieni
 
@@ -89,6 +90,8 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 58 | Krampju lēkme | Epilepsija — kā palīdzēt un kad zvanīt | krampji, epilepsija, lēkme, palīdzība |
 | 59 | Stipra asiņošana | Griezums vai artērijas bojājums, jāaptur asinis | asiņošana, griezums, pārsējs, žņaugšana |
 | 60 | Aizrijies ar ēdienu | Elpošana bloķēta, Heimlica manevrs | aizrijies, elpošana, Heimlica |
+| 118 | Trauma — var kustēties | Ievainots, bet spēj paiest — jānovērtē stāvoklis, jānonāk pie ārsta | trauma, sāp, var kustēties, ārsts |
+| 119 | Trauma — nevar kustēties | Cilvēks pēc traumas nekustas — zvani 112, nedrīkst kustināt | trauma, nevar kustēties, 112, imobilizācija |
 
 ## F. Karš un militārs drauds
 
@@ -121,6 +124,7 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 80 | Draudi skolā | Evakuācija, bērnu drošība, komunikācija | skola, draudi, evakuācija, bērni |
 | 111 | Troksnis — kaimiņš trokšņo | Kaimiņš trokšņo naktī, nevar gulēt — kā risināt ar pašvaldību vai policiju | troksnis, kaimiņš, nakts, mūzika, dauzīšana |
 | 112 | Huligāni uz ielas | Agresīvi jaunieši tuvumā, jāapiet vai jāziņo policijai | huligāni, uz ielas, bars, agresīvi, pusaudži |
+| 116 | Logs izsists | Bojāts logs pēc vandala vai negadījuma, jāaizsargā telpa, jāziņo policijai | logs, izsists, stikli, vējš, vandalisms |
 
 ## H. Enerģija, tehnika un infrastruktūra
 
@@ -138,6 +142,9 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 90 | Lidmašīnas avārijas nosēšanās | Evakuācija pēc nosēšanās, palīdzība | lidmašīna, avārija, evakuācija |
 | 91 | Prāmja / kuģa bojājums | Glābšanas vestes, evakuācija uz krastu | prāmis, kuģis, glābšanas veste |
 | 92 | Sakaru tīkls nedarbojas | Ārkārtas numuri nav sasniedzami | sakari, tīkls, nav signāla, 112 |
+| 113 | Aizsalušas caurules | Mājā nav ūdens, caurules sasalušas ziemā — kā atsildīt droši | aizsalušas caurules, ūdens, ziema, sasalst |
+| 114 | Kanalizācija nestrādā | Notekas aizsērējušas, grīdas aka pārplūst, smaka | kanalizācija, aizsērējusi, notekas, smaka, pārplūst |
+| 115 | Lifts nedarbojas | Ēkā nevar kāpt augšstāvos, grūti cilvēkiem ar ierobežotu kustību | lifts, nedarbojas, augšstāvs, kāpt |
 
 ## I. Ūdens un ledus
 

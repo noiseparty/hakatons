@@ -14,13 +14,14 @@
   ],
   "dzivibas_draudi_scenarijs": "medicina",
   "dzivibas_draudi": [
-    "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nereaģē", "nevar pamodināt", "nekustas",
+    "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nereaģē", "nevar pamodināt", "nekustas", "nevar kustēt",
     "stipri asiņ", "nevar apturēt asiņ", "sirdslēkm", "infarkt", "insult", "krampj", "noslīk", "slīkst",
     "saindēj", "saindēš", "pārdozē", "pašnāvīb", "dzemdē", "ugunsgrēk", "deg māja", "deg dzīvokl", "112$",
     "не дыш", "без сознан", "сильное кровотеч", "инфаркт", "инсульт", "судорог", "тонет", "утону",
-    "отравл", "передоз", "суицид", "рожает", "пожар",
+    "отравл", "передоз", "суицид", "рожает", "пожар", "не может двигаться",
     "not breathing", "can't breathe", "cant breathe", "unconscious", "heavy bleeding", "won't stop bleeding",
-    "heart attack", "stroke", "seizure", "drowning", "poison", "overdose", "suicid", "in labor", "on fire"
+    "heart attack", "stroke", "seizure", "drowning", "poison", "overdose", "suicid", "in labor", "on fire",
+    "can't move", "cannot move"
   ],
   "scenariji": [
     {
@@ -52,7 +53,7 @@
         "ātrie$", "pirmā palīdz", "pirmo palīdz", "traum", "ievain", "sāp$", "sāpe", "sāpī", "slikti$", "slims$", "slima$",
         "saslim", "temperatūr", "drudz", "lūzum", "lauzt", "salauz", "asiņ", "brūc", "apdeg", "sirds", "infarkt",
         "insult", "elpo", "elpas trūk", "bezsamaņ", "ģībon", "noģīb", "krampj", "alerģ", "dzemd", "grūtniec", "sasit",
-        "sagriez", "iegriez", "kritu$", "veselīb", "saindē",
+        "sagriez", "iegriez", "kritu$", "veselīb", "saindē", "kustēt",
         "врач", "доктор", "больниц", "скорая", "скорую", "скорой", "медиц", "медпомощ", "ранен", "травм", "боль$",
         "болит", "больно", "болею", "кровь", "кровоточ", "кровотеч", "температур", "плохо", "сердц", "инфаркт",
         "инсульт", "дыш", "перелом", "сломал", "ожог", "обжег", "беремен", "роды", "аллерг", "судорог", "отравл",
@@ -83,9 +84,12 @@
       "padoms": "Zvani 112. Pamet telpas, aizver aiz sevis durvis un neizmanto liftu. Dūmos pārvietojies pieliecies pie grīdas.",
       "atslegvardi": [
         "ugun", "deg$", "degam", "dūm", "liesm", "gāzes noplūd", "gāzes smak", "smird pēc gāz", "glābēj", "vugd",
-        "iesprūd", "iestrēg", "applūd", "plūdi", "plūdu", "plūdos",
+        "iesprūd", "iestrēg", "applūd", "plūdi", "plūdu", "plūdos", "lift", "kanalizāc", "notek", "pārplūd",
+        "caurul", "aizsal",
         "пожар", "горит", "горим", "дым", "огонь", "огня", "запах газ", "утечка газ", "спасател", "наводнен", "затоп",
-        "fire", "smoke", "burning", "flame", "gas leak", "smell gas", "rescue", "trapped", "flood"
+        "лифт", "канализац", "засор", "прорв", "труб",
+        "fire", "smoke", "burning", "flame", "gas leak", "smell gas", "rescue", "trapped", "flood",
+        "elevator", "sewage", "drain", "pipe", "frozen"
       ]
     },
     {
@@ -98,12 +102,12 @@
       "atslegvardi": [
         "polic", "zagl", "zādz", "nozag", "aplaupī", "laupīš", "uzbruk", "draud", "vardarb", "piekāv", "pazud",
         "ielauz", "krāpn", "huligān", "nozieg", "bīstams cilvēk", "seko man", "ierocis", "ierocī",
-        "troksn", "kaimiņ", "dauz", "žūpo",
+        "troksn", "kaimiņ", "dauz", "žūpo", "izsist", "stikl", "vandal",
         "полиц", "вор$", "вора$", "воры", "краж", "украл", "ограб", "напал", "насил", "угрож", "пропал", "избил",
-        "мошен", "оружи", "шум", "сосед", "хулиган", "орут", "дебош",
+        "мошен", "оружи", "шум", "сосед", "хулиган", "орут", "дебош", "разбит", "вандал",
         "police", "thief", "theft", "stole", "robb", "attacked", "attacker", "assault", "violen", "threat",
         "missing", "break in", "burglar", "weapon", "gun$", "knife",
-        "nois", "neighbor", "neighbour", "hooligan"
+        "nois", "neighbor", "neighbour", "hooligan", "smash", "vandal", "window"
       ]
     },
     {
