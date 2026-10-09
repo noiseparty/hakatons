@@ -32,6 +32,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Map sidebar: quick buttons (Patvertne, Ārsts, Policija …) removed; search results section only shows after a search — done 2026-10-09 21:53 +03:00 by noiseparty (added 2026-10-09 21:53 +03:00 by noiseparty)
 - [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)
 - [x] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — `ielade.py --apvienot 35`: 3 shelters, 12 OSM fuel stations, 11 same-bank ATM stacks merged; separate buildings at one address kept — done 2026-10-09 21:40 +03:00 by noiseparty (added 2026-10-09 19:11 +03:00 by noiseparty)
 - [x] Crisis search: map always centres on the place named in the query ("lācis Ogre", "Rēzekne"), also when the scenario has no map layers or isn't recognised; zoom to the city + nearest per layer, not far-away 3rd results — done 2026-10-09 20:56 +03:00 by noiseparty
