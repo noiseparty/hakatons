@@ -14,6 +14,7 @@ Almost all source material is in **Latvian**; file and folder names, script CLI 
   - `ca-plani-hakatons/` — our track's kit (see below).
   - `vdaa-epakalpojumi/` — VDAA guidelines for Latvija.gov.lv e-services (15 principles, UX/UI, architecture, `07-atbilstibas-audita-kontrolsaraksts.md` audit checklist). `SKILL.md` there is a ready-made agent skill.
 - `src/`, `notes/` — our work.
+- `production/` — **the live site, https://map.repo.lv.** The VPS pulls `main` every minute and serves this dir as static files (no build step; the only server-side code is the map API below), so a merged change is public within ~1 minute. Build framework apps locally and commit the output here. Only this dir is public. Server headers block camera/microphone and iframing; geolocation is allowed. Full guide: `notes/deploy.md`.
 - `src/karte/` — the map's PostGIS database `map` on the VPS (schema, loaders, data snapshots) and its API, served at `map.repo.lv/api/*` (everything else on map.repo.lv is static files from `production/`). Adding a dataset: `src/karte/README.md`.
 - `.claude/skills/` — thin wrappers (`vdaa-epakalpojumi`, `celu-kartes-datubaze`) that point to the kit's own `SKILL.md` files in place, so their relative paths keep working; plus `todo` for maintaining `TODO.md`.
 

@@ -4,12 +4,24 @@ Team repo for the **AI Open Data 2026 hackathon** — track: **crisis prevention
 
 > **Not into git? Use [easy mode](easy/README.md)** — one-time setup, then just double-click `update` and `save`.
 
+## Live site: https://map.repo.lv
+
+**Whatever is in `production/` on `main` is the live website.** Merge a PR that changes `production/`
+and it's online within about a minute — nothing else to do.
+
+- Static files only (HTML/CSS/JS/images/GeoJSON), plus the map API. Frameworks: build locally, commit the build output into `production/`.
+- Only `production/` is public. Copy any data the page needs into it.
+- The map API is at `/api/*` (`src/karte/`). "Use my location" (`navigator.geolocation`) works; camera and microphone are blocked.
+
+Full guide (publishing, builds, limits, troubleshooting): [`notes/deploy.md`](notes/deploy.md).
+
 ## Layout
 
 | Path | What |
 |---|---|
 | `ai-open-data-2026-hakatons/` | Hackathon data, copied from [lata-org/ai-open-data-2026-hakatons](https://github.com/lata-org/ai-open-data-2026-hakatons). Treat as **read-only** — see `UPSTREAM.md` for the source commit. |
 | `ai-open-data-2026-hakatons/ca-plani-hakatons/` | Civil protection plans (CA plāni) — main dataset for our track. |
+| `production/` | **The live site** at https://map.repo.lv (static files; auto-deployed from `main`). |
 | `src/` | Our code. |
 | `notes/` | Ideas, research, pitch notes. |
 

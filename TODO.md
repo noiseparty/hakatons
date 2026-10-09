@@ -45,7 +45,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [x] Map layer: 37 hospitals with 24/7 emergency care (VM disaster medicine plan, annex 12), addresses checked, coordinates from VZD address register — done 2026-10-09 18:46 +03:00 by noiseparty
 - [x] Research crisis-map services & open data (taxonomy, ~55 Latvian sources, intl feeds + case studies, top-15 layers) → `notes/research/` — done 2026-10-09 18:36 +03:00 by noiseparty (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Map DB + API + filters: PostGIS db `map` on the VPS, `/api` (`src/karte/`), regions/cities from VZD, OSM ATMs/pharmacies/hospitals/police/fire/fuel, "nearest to me" with geolocation allowed for map.repo.lv — done 2026-10-09 18:11 +03:00 by noiseparty
+- [x] Decide if the prototype needs "use my location"; if so, allow geolocation for map.repo.lv on the VPS — done 2026-10-09 18:11 +03:00 by noiseparty with the map DB task above (added 2026-10-09 17:35 +03:00 by noiseparty)
 - [x] Publish OpenStreetMap map of Latvia with 781 public shelters (VUGD / 112.lv) at https://map.repo.lv — done 2026-10-09 17:41 +03:00 by noiseparty
+- [x] Document the production setup (map.repo.lv) in README, AGENTS, CLAUDE.md and `notes/deploy.md` — done 2026-10-09 17:35 +03:00 by noiseparty (added 2026-10-09 17:35 +03:00 by noiseparty) (#6)
 - [x] Add easy mode: one-click setup, update and save for teammates — done 2026-10-09 17:33 +03:00 by noiseparty
 - [x] Set up prod deploy to the VPS: `production/` on `main` → https://map.repo.lv, pulled every minute (see `notes/deploy.md`) — done 2026-10-09 17:30 +03:00 by noiseparty (added 2026-10-09 17:20 +03:00 by noiseparty)
 - [x] Add AGENTS.md so non-Claude agents (Mistral etc.) pick up the workflow — done 2026-10-09 17:23 +03:00 by noiseparty (added 2026-10-09 17:23 +03:00 by noiseparty)

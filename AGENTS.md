@@ -28,3 +28,14 @@ Claude Code reads `CLAUDE.md`; everyone else starts here.
   and the GitHub username (`gh api user --jq .login`). Never guess either.
 - Don't edit `ai-open-data-2026-hakatons/` (vendored, read-only). Our code goes in `src/`, notes in `notes/`.
 - The repo is public: never commit secrets. Keys go in `.env` or `dati/` (both gitignored).
+
+## Live site (`production/`)
+
+- `production/` on `main` **is** the live site, https://map.repo.lv. A merged change goes live within ~1 minute,
+  so only put finished, working files there. Don't touch it unless the user asks to publish.
+- Static files only, plus the map API at `/api/*` (`src/karte/`). For framework apps, build locally and commit the build output
+  into `production/`. Source stays in `src/`.
+- Only `production/` is public, so the page's data files must live inside it. Use relative paths.
+- Server headers block camera and microphone (geolocation is allowed) and forbid iframing. Don't build features
+  that depend on these without telling the user (they must ask @noiseparty to change the server).
+- Details: `notes/deploy.md`. Never try to SSH to the server or edit it; deploys happen only through `main`.
