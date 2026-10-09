@@ -1121,6 +1121,9 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
       "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
     ("augsne", "Nokrišņi un augsnes mitrums", "Open-Meteo modeļa dati (pārbaude: Ogre)",
      ("Open-Meteo", "https://open-meteo.com/", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
+    ("celi", "Ceļu slēgumi un negadījumi", "LVC DATEX II caur Nacionālo piekļuves punktu",
+     ("LVC ceļu notikumi (transportdata.gov.lv)", "https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf",
+      *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
 ]
@@ -1252,12 +1255,27 @@ def _parb_augsne():
     return "darbojas", f"Ogrē augsne {dati['augsne']}, {dati['dienas_pagatne']} dienās {_skaitlis_lv(dati['nokrisni_pagatne_mm'])} mm"
 
 
+def _parb_celi():
+    # tās pašas kopas un kešs (5 min) kā /api/celi; bez NAP atslēgām avots nav konfigurēts — pelēks, nevis sarkans
+    kopas = celu_notikumi_visi()
+    if not kopas:
+        return "nav_datu", "Avots vēl nav pieslēgts (nav NAP atslēgu)"
+    nepieejamas = sum(n is None for _, n in kopas)
+    if nepieejamas == len(kopas):
+        return "nedarbojas", "Neviena LVC datu kopa neatbild"
+    aktivi = sum(1 for _, n in kopas if n for x in n if x.get("aktivs"))
+    zinojums = "Spēkā " + _skaits(aktivi, "notikums", "notikumi") if aktivi else "Spēkā esošu notikumu nav"
+    if nepieejamas:
+        return "traucejumi", f"{zinojums}; {nepieejamas} no {len(kopas)} datu kopām neatbild"
+    return "darbojas", zinojums
+
+
 # kods → (pārbaude, virs cik ms "atbild lēni")
 STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
     "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
     "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
-    "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000),
+    "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000), "celi": (_parb_celi, 8000),
     "osm": (_parb_osm, 5000),
 }
 

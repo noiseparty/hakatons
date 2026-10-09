@@ -57,6 +57,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Status page round 2: flood check capped at 10 s, history read errors logged, grey "Nav datu" state; new rows for the LVĢMC forecast (cache age), FMI lightning, Open-Meteo soil/rain and LVC roads (grey until NAP keys) — done 2026-10-10 02:08 +03:00 by noiseparty (added 2026-10-10 02:08 +03:00 by noiseparty)
 - [x] Road closures / accidents / lane closures / works / slippery road layer from LVC DATEX II via NAP: `/api/celi` (5 min cache, bbox, radius), `celi.js` layer + "Ceļu satiksme" line in the result card — done 2026-10-10 01:57 +03:00 by noiseparty; real feeds untested (no keys) (added 2026-10-10 01:39 +03:00 by noiseparty)
 - [x] Lightning layer "Zibens (pēdējās 30 min)" (FMI open data WFS, CC BY 4.0, + LVĢMC 24 h grid, CC0) via `/api/zibens`; rain + soil moisture context line in the result card for flood/storm scenarios via `/api/augsne` (Open-Meteo, CC BY 4.0; not a warning); "negaiss" query turns the lightning layer on — done 2026-10-10 01:56 +03:00 by noiseparty (added 2026-10-10 01:56 +03:00 by noiseparty)
 - [x] Public status page https://map.repo.lv/statuss.html (site, API/DB, VZD addresses, LVĢMC warnings/flood WMS/water level, CA-plan points, shelters, OSM tiles; 24 h bar in 15-min steps + 7-day uptime; checker thread in the API, table `statuss_parbaudes`) — done 2026-10-10 01:35 +03:00 by noiseparty (added 2026-10-10 01:35 +03:00 by noiseparty)
