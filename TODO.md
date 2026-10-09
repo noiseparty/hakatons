@@ -37,6 +37,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Find open data from Latvian road weather stations / sensors / cameras (LVC: slippery roads, ice, temperature) and show it on the map — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Show current weather from LVĢMC on the map (observations + forecast) — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — added 2026-10-09 23:20 +03:00 by noiseparty
+- [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
+- [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 
 ## In progress
 
