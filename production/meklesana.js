@@ -135,6 +135,7 @@ const krizesMeklesana = (() => {
   // Telefonā rezultāti ir zem kartes (un panelis var būt aizvērts): atveram to un ritinām līdz rezultātiem
   function raditRezultatus() {
     if (!matchMedia('(max-width: 800px)').matches) return;
+    if (typeof Apaksa !== 'undefined') { el('jautajums').blur(); return Apaksa.atvert('puse'); }  // apaksa.js: lapa virs kartes
     if (document.body.classList.contains('panelis-slegts')) el('panelis-poga').click();
     el('jautajums').blur();
     setTimeout(() => kaste.scrollIntoView({ behavior: 'smooth', block: 'start' }), 250);
@@ -444,7 +445,9 @@ const krizesMeklesana = (() => {
     }
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
       .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
-    karte.fitBounds(L.latLngBounds(punkti), { padding: [40, 40], maxZoom: 15 });
+    // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
+    const apaksa = typeof Apaksa !== 'undefined' ? Apaksa.augstums() : 0;
+    karte.fitBounds(L.latLngBounds(punkti), { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40 + apaksa], maxZoom: 15 });
   }
 
   // Enter rezultātu sarakstā = klikšķis
