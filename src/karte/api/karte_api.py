@@ -19,6 +19,8 @@ Galapunkti:
   GET /api/zibens                      zibens pēdējās 30 min (FMI, CC BY 4.0) + LVĢMC 24 h zibens režģis (CC0, kavējas 2–3 h)
   GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
   GET /api/veseliba                    pārbaude
+  GET /api/celi?bbox=..|lat=..&lon=..&r=5000
+                                       ceļu slēgumi, negadījumi, remontdarbi, slidens ceļš (LVC DATEX II caur NAP, CC0)
   POST /api/meklejumi {vaicajums, atpazits, klikskis}
                                        biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāja datiem); 204
   GET /api/meklejumi/top?n=3           biežāk meklētie pēdējās 14 dienās (kešs 60 s)
@@ -835,6 +837,170 @@ def veseliba(_q):
     return {"ok": vaicat("select true")}
 
 
+# ---- Ceļu slēgumi un negadījumi: GET /api/celi (LVC DATEX II caur NAP transportdata.gov.lv, CC0) ----
+# Katrai NAP datu kopai sava bezmaksas atslēga (abonē "Datu ņēmēja" kontā); VPS: /etc/hakatons/map.env.
+# Bez atslēgas kopu izlaiž; bez nevienas — tukšs saraksts ar "avots nav konfigurēts".
+
+import xml.etree.ElementTree as ET  # noqa: E402
+
+NAP_BAZE = os.environ.get("NAP_BAZE", "https://www.transportdata.gov.lv")
+NAP_KOPAS = [  # (vides mainīgais ar atslēgu, notikuma tips, NAP kartīte)
+    ("NAP_API_KEY_SLEGUMI", "slegums", "75611a36-e66b-40cf-af2c-69db48c278cf"),
+    ("NAP_API_KEY_NEGADIJUMI", "negadijums", "e8659cdd-9372-41fd-8b28-e7c742895bdd"),
+    ("NAP_API_KEY_JOSLAS", "joslas_slegums", "82e20567-7e0d-4f58-8040-77d6fcb32899"),
+    ("NAP_API_KEY_REMONTI", "remonts", "35fa5c41-90ce-4b74-a4a3-08216d470134"),
+    ("NAP_API_KEY_SLIDENS", "slidens", "f3204a64-3dc3-4ed6-b6f0-872f58500735"),
+]
+CELU_TIPI = {"slegums": "Ceļš slēgts", "negadijums": "Negadījums", "joslas_slegums": "Slēgta josla",
+             "remonts": "Ceļa remontdarbi", "slidens": "Slidens ceļš"}
+CELA_NR = re.compile(r"\b([APV]\d{1,4})\b")
+_celu_pavedieni = ThreadPoolExecutor(max_workers=len(NAP_KOPAS))
+_celu_kludas = {}  # tips → laiks: pēc kļūdas bez kešas nākamais mēģinājums pēc minūtes
+
+
+def _datex_visi(el, vards):
+    """Pēcteči ar doto lokālo vārdu (ET.iter neprot {*})."""
+    return (e for e in el.iter() if e is not el and e.tag.rsplit("}", 1)[-1] == vards)
+
+
+def _datex_teksts(el, vards):
+    return next((e.text.strip() for e in _datex_visi(el, vards) if e.text and e.text.strip()), None)
+
+
+def _datex_laiks(teksts):
+    if not teksts:
+        return None
+    try:
+        t = datetime.fromisoformat(teksts.replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return t if t.tzinfo else t.replace(tzinfo=timezone.utc)
+
+
+def _datex_apraksts(sit):
+    """generalPublicComment teksts latviski (ja ir), citādi pirmais."""
+    vertibas = [(e.get("lang") or "", (e.text or "").strip())
+                for k in _datex_visi(sit, "generalPublicComment") for e in _datex_visi(k, "value")]
+    vertibas = [v for v in vertibas if v[1]]
+    return next((t for l, t in vertibas if l.lower() == "lv"), vertibas[0][1] if vertibas else None)
+
+
+def _datex_punkti(el):
+    punkti = []
+    for p in _datex_visi(el, "openlrCoordinates"):
+        lat, lon = _datex_teksts(p, "latitude"), _datex_teksts(p, "longitude")
+        try:
+            punkti.append((round(float(lat), 5), round(float(lon), 5)))
+        except (TypeError, ValueError):
+            continue
+    if not punkti:  # citi DATEX vietas veidi (pointCoordinates)
+        for p in _datex_visi(el, "pointCoordinates"):
+            try:
+                punkti.append((round(float(_datex_teksts(p, "latitude")), 5), round(float(_datex_teksts(p, "longitude")), 5)))
+            except (TypeError, ValueError):
+                continue
+    return punkti
+
+
+def _datex_notikumi(saturs, tips):
+    notikumi = []
+    for sit in _datex_visi(ET.fromstring(saturs), "situationRecord"):
+        if _datex_teksts(sit, "validityStatus") == "suspended":
+            continue
+        punkti = _datex_punkti(sit)
+        if not punkti or not all(55 <= la <= 59 and 20 <= lo <= 29 for la, lo in punkti):
+            continue
+        apraksts = _datex_apraksts(sit)
+        cels = CELA_NR.search(apraksts or "")
+        if len(punkti) > 60:  # līnija kartē: pietiek ar ~60 punktiem
+            punkti = punkti[:: math.ceil(len(punkti) / 60)] + [punkti[-1]]
+        notikumi.append({
+            "id": sit.get("id"), "tips": tips, "nosaukums": CELU_TIPI[tips],
+            "apraksts": (apraksts or "")[:600] or None, "cels": cels.group(1) if cels else None,
+            "lat": punkti[0][0], "lon": punkti[0][1], "linija": punkti if len(punkti) > 1 else None,
+            "no": _datex_teksts(sit, "overallStartTime"), "lidz": _datex_teksts(sit, "overallEndTime"),
+        })
+    return notikumi
+
+
+def _celu_kopa(atslega, tips):
+    pieprasijums = urllib.request.Request(
+        NAP_BAZE + "/api/v1/get/file/download-file", method="POST",
+        data=json.dumps({"file_id": "1", "format": "xml"}).encode(),
+        headers={"x-api-key": atslega, "Content-Type": "application/json",
+                 "User-Agent": "map.repo.lv (hakatons, karte_api.py)"})
+    with urllib.request.urlopen(pieprasijums, timeout=10) as r:
+        if r.status == 204:  # plūsma tukša (piem., slidens ceļš vasarā)
+            return []
+        saturs = r.read(10_000_001)
+        if len(saturs) > 10_000_000:
+            raise ValueError("NAP atbilde lielāka par 10 MB")
+        return _datex_notikumi(saturs, tips)
+
+
+def _celu_dati(tips, atslega):
+    with _kesas_slots:
+        pedeja_kluda = _celu_kludas.get(tips, 0)
+        ieraksts = _kesa.get(("celi", tips))
+    if not ieraksts and time.time() - pedeja_kluda < 60:
+        raise Kluda(503, "avots nav pieejams")
+    try:
+        return _kesots(("celi", tips), 300, lambda: _celu_kopa(atslega, tips))
+    except Kluda:
+        with _kesas_slots:
+            _celu_kludas[tips] = time.time()
+        raise
+
+
+def celu_notikumi_visi():
+    """[(tips, notikumi | None)] konfigurētajām kopām; None — kopa nav pieejama. Arī statusa lapai."""
+    kopas = [(t, os.environ.get(v, "").strip()) for v, t, _ in NAP_KOPAS]
+    kopas = [(t, a) for t, a in kopas if a]
+    darbi = [(t, _celu_pavedieni.submit(_celu_dati, t, a)) for t, a in kopas]
+    termins = time.monotonic() + 12
+    rez = []
+    for t, d in darbi:
+        try:
+            rez.append((t, d.result(timeout=max(0.0, termins - time.monotonic()))))
+        except Exception:  # arī termiņš: lēnā kopa turpina fonā un nākamajā pieprasījumā būs kešā
+            rez.append((t, None))
+    return rez
+
+
+def celi(q):
+    lat, lon = _vieta(q, obligata=False)
+    attalums_max = _skaitlis(q, "r", 100, 100000)
+    bbox = q.get("bbox", [""])[0]
+    if bbox:
+        try:
+            x1, y1, x2, y2 = (float(v) for v in bbox.split(","))
+        except ValueError:
+            raise Kluda(400, "bbox: minLon,minLat,maxLon,maxLat") from None
+    kopas = celu_notikumi_visi()
+    if not kopas:
+        return {"avots": "lvc-nap", "konfigurets": False, "piezime": "avots nav konfigurēts", "notikumi": []}
+    tagad = datetime.now(timezone.utc)
+    notikumi = []
+    for _t, saraksts in kopas:
+        for n in saraksts or []:
+            no, lidz = _datex_laiks(n["no"]), _datex_laiks(n["lidz"])
+            if lidz and lidz < tagad:
+                continue
+            if bbox and not (x1 <= n["lon"] <= x2 and y1 <= n["lat"] <= y2):
+                continue
+            n = {**n, "aktivs": not no or no <= tagad, "no": no.isoformat(timespec="seconds") if no else None,
+                 "lidz": lidz.isoformat(timespec="seconds") if lidz else None}
+            if lat is not None:
+                n["attalums_m"] = min(_attalums_m(lat, lon, la, lo) for la, lo in (n["linija"] or [(n["lat"], n["lon"])]))
+                if attalums_max and n["attalums_m"] > attalums_max:
+                    continue
+            notikumi.append(n)
+    seciba = list(CELU_TIPI)  # slēgumi un negadījumi pirmie
+    notikumi.sort(key=lambda n: (n.get("attalums_m", 0), not n["aktivs"], seciba.index(n["tips"]), n["no"] or ""))
+    return {"avots": "lvc-nap", "konfigurets": True, "notikumi": notikumi,
+            "nepieejami": [t for t, s in kopas if s is None]}
+
+
 # ---- Biežāk meklētais: POST /api/meklejumi, GET /api/meklejumi/top (tabula meklejumi, shema.sql) ----
 # Glabā tikai normalizētu vaicājumu un skaitītājus (bez IP vai citiem lietotāja datiem).
 
@@ -1184,6 +1350,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zibens/?$"), zibens, 60),
     (re.compile(r"^/api/augsne/?$"), augsne, 3600),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
+    (re.compile(r"^/api/celi/?$"), celi, 120),
     (re.compile(r"^/api/statuss/?$"), statuss, 60),
     (re.compile(r"^/api/meklejumi/top/?$"), meklejumi_top, 60),
 ]
