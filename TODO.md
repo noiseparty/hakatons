@@ -9,6 +9,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Add easy mode: one-click setup, update and save for teammates — done 2026-10-09 17:33 +03:00 by noiseparty
 - [x] Set up prod deploy to the VPS: `production/` on `main` → https://map.repo.lv, pulled every minute (see `notes/deploy.md`) — done 2026-10-09 17:30 +03:00 by noiseparty (added 2026-10-09 17:20 +03:00 by noiseparty)
 - [x] Add AGENTS.md so non-Claude agents (Mistral etc.) pick up the workflow — done 2026-10-09 17:23 +03:00 by noiseparty (added 2026-10-09 17:23 +03:00 by noiseparty)
 - [x] Write git workflow + TODO.md rules for all AI agents into README.md — done 2026-10-09 17:21 +03:00 by noiseparty (added 2026-10-09 17:21 +03:00 by noiseparty)
