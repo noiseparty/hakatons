@@ -32,7 +32,8 @@ def laiks(teksts):
     return datetime.strptime(teksts, "%Y.%m.%d %H:%M:%S").replace(tzinfo=timezone.utc)
 
 
-def main(izeja):
+def stacijas():
+    """GeoJSON features: pēdējais līmenis katrā stacijā. Lieto arī karte_api.py (/api/udens)."""
     merijumi = {}  # (stacija, parametrs) -> {laiks: vērtība}
     for r in lasit(DATI):
         if r["ABBREVIATION"] in ("LIMEN", "WTEMD") and r["VALUE"].strip():
@@ -63,7 +64,11 @@ def main(izeja):
                 "derigs_lidz": (pedejais + timedelta(hours=DERIGS_H)).isoformat(),
             },
         })
+    return features
 
+
+def main(izeja):
+    features = stacijas()
     with open(izeja, "w", encoding="utf-8") as f:
         json.dump({"type": "FeatureCollection", "features": features}, f, ensure_ascii=False)
     jaunakais = max((f["properties"]["laiks"] for f in features), default="—")
