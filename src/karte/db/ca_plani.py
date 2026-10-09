@@ -427,11 +427,11 @@ def main():
         gj = {"type": "FeatureCollection", "nosaukums": nos,
               "avots": "Pašvaldību civilās aizsardzības plāni (ai-open-data-2026-hakatons/ca-plani-hakatons/markdown); "
                        "izvilkts ar src/karte/db/ca_plani.py", "features": slani[slanis]}
-        (dati / fname).write_text(json.dumps(gj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
+        (dati / fname).write_text(json.dumps(gj, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
         print(f"{fname}: {len(slani[slanis])} punkti", file=sys.stderr)
     (dati / "ca_plani_parskats.json").write_text(json.dumps(parskats, ensure_ascii=False, indent=1) + "\n",
-                                                 encoding="utf-8")
-    (SAKNE / "notes" / "ca-plani-kvalitate.md").write_text(parskats_md(parskats), encoding="utf-8")
+                                                 encoding="utf-8", newline="\n")
+    (SAKNE / "notes" / "ca-plani-kvalitate.md").write_text(parskats_md(parskats), encoding="utf-8", newline="\n")
 
 
 REZULTATS = {"varis_address": "placed by VZD address", "plan_coords_swapped": "placed with lat/lon swapped",
