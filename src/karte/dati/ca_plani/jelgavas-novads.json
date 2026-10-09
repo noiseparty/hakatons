@@ -1,0 +1,17 @@
+{
+ "slug": "jelgavas-novads",
+ "statuss": "nav_publicets",
+ "piezime": "Jelgava county volume of the shared Jelgava city/county plan (same text also in markdown/jelgava/). Assembly points are referred to annex 6 and accommodation sites to annex 8; neither annex is in the folder.",
+ "atsauces": [
+  {
+   "fails": "40_lemuma_pielikums_civilas_aizsardzibas_plans_0.md",
+   "citats": "Jelgavas novadā katastrofu gadījumā noteiktas vairākas pulcēšanās vietas. No pulcēšanās vietām notiek tālāka evakuācijas koordinēšana. 6.pielikumā rādītas pulcēšanās vietas."
+  },
+  {
+   "fails": "40_lemuma_pielikums_civilas_aizsardzibas_plans_0.md",
+   "citats": "Apzinātās izmitināšanas vietas skatīt 8. pielikumā."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

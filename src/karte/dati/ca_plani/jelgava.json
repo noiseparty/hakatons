@@ -1,0 +1,33 @@
+{
+ "slug": "jelgava",
+ "statuss": "nav_publicets",
+ "piezime": "Shared Jelgava city + Jelgava county plan (2 volumes). Volume 1 (city) refers assembly points to annex 5 and accommodation to annex 7; volume 2 (county) to annexes 6 and 8. None of these annexes are in the folder; the converted volumes end with chapter 8.",
+ "atsauces": [
+  {
+   "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+   "citats": "- 5.pielikums. Evakuācijas pulcēšanās vietas Jelgavas pilsētā"
+  },
+  {
+   "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+   "citats": "7. pielikums. Apzinātās izmitināšanas vietas Jelgavas pilsētā"
+  },
+  {
+   "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+   "citats": "Pulcēšanās vietas Jelgavas pilsētā skatīt 5. pielikumā."
+  },
+  {
+   "fails": "12_5_pielikums2_Jelgavas_valstspilsetas_CA_plans.md",
+   "citats": "Apzinātās izmitināšanas vietas Jelgavas pilsētā skatīt 7. pielikumā."
+  },
+  {
+   "fails": "12_5_pielikums3_Jelgavas_novada_CA_plans.md",
+   "citats": "6.pielikumā rādītas pulcēšanās vietas."
+  },
+  {
+   "fails": "12_5_pielikums3_Jelgavas_novada_CA_plans.md",
+   "citats": "Apzinātās izmitināšanas vietas skatīt 8. pielikumā."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

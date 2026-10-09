@@ -1,0 +1,17 @@
+{
+ "slug": "rezeknes-novads",
+ "statuss": "kopigs_plans",
+ "piezime": "All files in this folder are pointer stubs with no content: Rēzeknes novads shares the Rēzekne city + Rēzeknes novads cooperation-territory CA plan, whose full conversion is in markdown/rezekne/. Extract lists from the rezekne slug.",
+ "atsauces": [
+  {
+   "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+   "citats": "> Šis dokuments ir Rēzeknes valstspilsētas un Rēzeknes novada kopīgās sadarbības teritorijas civilās aizsardzības plāna sastāvdaļa."
+  },
+  {
+   "fails": "Rezeknes-valstspilsetas-un-Rezeknes-novada-sadarbibas-teritorijas-Civilas-aizsardzibas-plans.md",
+   "citats": "> Pilnais konvertētais teksts pieejams: [markdown/rezekne/](../rezekne/)."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

@@ -1,0 +1,13 @@
+{
+ "slug": "ventspils",
+ "statuss": "nav_publicets",
+ "piezime": "The only file is a conversion of a scanned 203-page PDF with no text layer (front matter skenets: True); the body is just a warning that text could not be extracted, so no assembly or accommodation lists are available in Markdown. The original PDF would need OCR/visual reading.",
+ "atsauces": [
+  {
+   "fails": "plans_publiskais_2023.md",
+   "citats": "> **UZMANĪBU:** PDF bez teksta slāņa (skenēts dokuments, 203 lpp.). Automātiska teksta izguve nav iespējama — teksts jāatveido vizuāli (modelim lasot lapas)."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

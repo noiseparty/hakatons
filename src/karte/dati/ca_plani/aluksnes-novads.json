@@ -1,0 +1,29 @@
+{
+ "slug": "aluksnes-novads",
+ "statuss": "nav_publicets",
+ "piezime": "Plan refers to annex 6 (assembly points), annex 7 (potential evacuation points) and annex 10 (temporary accommodation list) — none of the annexes are in the folder. Section 7.7 points to annex 9 for accommodation while the annex list names it annex 10 (annex 9 is vehicles).",
+ "atsauces": [
+  {
+   "fails": "CAP_PLANS_2025.md",
+   "citats": "Alūksnes novadā iedzīvotāju evakuācijas gadījumā noteiktas vairākas pulcēšanās vietas (skatīt 6. pielikumu)."
+  },
+  {
+   "fails": "CAP_PLANS_2025.md",
+   "citats": "6. pielikums. Evakuācijas pulcēšanās vietas."
+  },
+  {
+   "fails": "CAP_PLANS_2025.md",
+   "citats": "7. pielikums. Potenciālie evakuācijas punkti Alūksnes novadā."
+  },
+  {
+   "fails": "CAP_PLANS_2025.md",
+   "citats": "10. pielikums. Pagaidu izmitināšanas vietu saraksts."
+  },
+  {
+   "fails": "CAP_PLANS_2025.md",
+   "citats": "Alūksnes novadā ir noteiktas potenciālās pagaidu izmitināšanas vietas (skat. 9.pielikumu)."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

@@ -1,0 +1,25 @@
+{
+ "slug": "siguldas-novads",
+ "statuss": "nav_publicets",
+ "piezime": "Section 6.2 refers assembly points to annex 9 ('Pulcēšanās vietas', public per the annex list) and 6.5 refers accommodation to annex 5, which is marked restricted ('Ierobežota pieejamība'). Neither annex is in the folder (only annex 27 is), so no lists could be extracted.",
+ "atsauces": [
+  {
+   "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+   "citats": "Siguldas novadā tiek noteiktās vairākas evakuācijas pulcēšanās vietas (9. pielikums)."
+  },
+  {
+   "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+   "citats": "|9.|Pulcēšanās vietas.|1-5|"
+  },
+  {
+   "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+   "citats": "|5|Pagaidu izmitināšana. (Ierobežota pieejamība)|1-5|"
+  },
+  {
+   "fails": "Siguldas-novada-sadarbibas-teritorijas-civilas-aizsardzibas-plans.md",
+   "citats": "Pašvaldībai pieejamās telpas ir skolas, pirmsskolas izglītības iestādes, kultūras centri, Mālpils dienesta viesnīcas un Mālpils tehnikuma telpas (5. pielikums)."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

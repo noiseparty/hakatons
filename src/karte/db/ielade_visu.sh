@@ -16,6 +16,9 @@ $L $D/zva_aptiekas.csv --avots zva-fdu --kategorija aptieka --nosaukums "{nosauk
 $L $D/iemic_vp_iecirkni.csv --avots iemic-vp --kategorija policija --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
 $L $D/iemic_pasvaldibu_policija.csv --avots iemic-pp --kategorija policija --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y
 $L $D/iemic_vugd_depo.csv --avots iemic-vugd --kategorija ugunsdzeseji --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
+# CA plāni: abi slāņi ir viens avots, tāpēc ielādē vienā reizē (atkārtota ielāde aizvieto visu avota saturu)
+python3 -c 'import json,sys; f=[x for p in sys.argv[1:] for x in json.load(open(p))["features"]]; json.dump({"type":"FeatureCollection","features":f},sys.stdout)'   $D/ca_pulcesanas_vietas.geojson $D/ca_izmitinasana.geojson > /tmp/ca_plani.geojson
+$L /tmp/ca_plani.geojson --avots ca-plani --kategorija "{kategorija}" --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 $L $D/osm_poi.geojson --avots osm --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
 
 psql "$MAP_DB_OWNER_DSN" -c "select o.avots, a.licence, o.kategorija, count(*) from objekti o join avoti a on a.kods = o.avots group by 1, 2, 3 order by 1, 3"

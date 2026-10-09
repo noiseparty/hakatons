@@ -1,0 +1,17 @@
+{
+ "slug": "dienvidkurzemes-novads",
+ "statuss": "kopigs_plans",
+ "piezime": "All files in this folder (incl. annex 12 'pulcēšanās vietas') are pointer stubs with no content: Dienvidkurzeme shares the Liepāja–Dienvidkurzeme cooperation-territory CA plan (Liepajas-DKN-ST-CAP), whose full conversion is in markdown/liepaja/. Extract lists from the liepaja slug.",
+ "atsauces": [
+  {
+   "fails": "dkn-lv_12-pielikums-pulcesanas-vietas.md",
+   "citats": "> Pilnais konvertētais pamatplāns pieejams: [markdown/liepaja/Liepajas-DKN-ST-CAP_2023ATJ.md](../liepaja/Liepajas-DKN-ST-CAP_2023ATJ.md)."
+  },
+  {
+   "fails": "liepaja-lv_12-pielikums-pulcesanas-vietas-evakuacijas-koridori-2026.md",
+   "citats": "> Šis dokuments ir Liepājas valstspilsētas un Dienvidkurzemes novada kopīgās sadarbības teritorijas civilās aizsardzības plāna sastāvdaļa (Liepajas-DKN-ST-CAP)."
+  }
+ ],
+ "evakuacijas_punkti": [],
+ "izmitinasana": []
+}

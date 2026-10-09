@@ -48,6 +48,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Rewrite the 119 scenario advice texts in `production/scenariji.json` to the "Jūs" form (the flow's "Cits" path shows them; the 4 main situations in `plusma.json` already use "Jūs") — added 2026-10-10 00:21 +03:00 by noiseparty
 - [ ] Flow: municipality civil-protection phone / plan link in the result card (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
 - [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the flow card — added 2026-10-10 00:21 +03:00 by noiseparty
+- [ ] Map popup: show `ipasibas.plans_url` as a link next to „Avots: … CA plāns, lpp. N” for `evakuacijas_punkts` / `izmitinasana` (needs production/app.js) — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
+- [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 
 ## In progress
 
@@ -57,6 +60,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [x] Flood risk zones and other LVĢMC layers (WMS/WFS or polygons in PostGIS; only sources with a licence) — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:15 +03:00 by noiseparty)
 - [x] Agree with the team on the 3–6 step flow "Kas man jādara?" (location/address → what's happening → situation → summary with result), draft in `notes/plusma.md`; then build it — done 2026-10-10 00:21 +03:00 by noiseparty (added 2026-10-09 20:56 +03:00 by noiseparty)
 - [x] Crisis search: add `udens_limenis` to the flood scenario in `production/scenariji.json`; optional 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) — done 2026-10-09 23:57 +03:00 by noiseparty (added 2026-10-09 20:34 +03:00 by noiseparty)
+- [x] CA plans → map: evacuation assembly points (`evakuacijas_punkts`, 730) and temporary accommodation (`izmitinasana`, 579, 104k places) from 29 municipal plans, each citing plan + page; 41 coordinate errors in official plans found and fixed via VZD address register — `src/karte/db/ca_plani.py`, report `notes/ca-plani-kvalitate.md` — done 2026-10-10 00:08 +03:00 by noiseparty (added 2026-10-10 00:08 +03:00 by noiseparty)
 - [x] Map sidebar: quick buttons (Patvertne, Ārsts, Policija …) removed; search results section only shows after a search — done 2026-10-09 21:53 +03:00 by noiseparty (added 2026-10-09 21:53 +03:00 by noiseparty)
 - [x] Map layout: "Ko tev vajag?" search bar centred in the header (no labels; above the map on mobile), map a bit lower, full marker list removed from the sidebar (filters and dropdowns stay) — done 2026-10-09 21:49 +03:00 by noiseparty (added 2026-10-09 21:49 +03:00 by noiseparty)
 - [x] Shelter data has duplicates (e.g. Ogre, "Zinību iela 3" twice with different spelling); dedupe on load — `ielade.py --apvienot 35`: 3 shelters, 12 OSM fuel stations, 11 same-bank ATM stacks merged; separate buildings at one address kept — done 2026-10-09 21:40 +03:00 by noiseparty (added 2026-10-09 19:11 +03:00 by noiseparty)
