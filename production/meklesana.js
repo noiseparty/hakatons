@@ -47,42 +47,58 @@ const krizesMeklesana = (() => {
   });
 
   // Biežāk meklētais: tukšajā laukā ieklikšķinot — 3 populārākie atpazītie vaicājumi (/api/meklejumi/top, kešs 60 s).
-  // Ja API nav pieejams — šie paši piemēri, lai nekad nav tukšs.
+  // Ja API nav pieejams vai atpazīto ir mazāk par 3 — papildina ar šiem piemēriem, lai nekad nav tukšs.
+  // Saglabāto tekstu nerāda: "atpazits" apgalvo klients, tāpēc katru vaicājumu klasificē vēlreiz un rāda tikai
+  // scenārija nosaukumu (+ vietu) no klasifikatora; neatpazītos vai tikai aptuveni atpazītos izmet.
   const POPULARI_REZERVE = ['nav elektrības', 'plūdi ogrē', 'tuvākā patvertne'];
   const populari = el('populari');
   const popPogas = populari.querySelector('.populari-pogas');
   let popularie = null, popularieLaiks = 0, popIelade = null;
+  let uzskaite = null;  // { vaicajums, klikskis } pēdējai skaitītajai meklēšanai (zinot(), zemāk)
+
+  function popularieNoVaicajumiem(vaicajumi) {
+    const rez = new Map();
+    for (const v of [...vaicajumi, ...POPULARI_REZERVE]) {
+      const k = klasifikators.klasificet(String(v));
+      const s = k.scenariji[0];
+      if (!s || k.aptuveni || k.dzivibas_draudi) continue;
+      const teksts = s.nosaukums + (k.vieta ? ' ' + k.vieta.nosaukums : '');
+      if (!rez.has(teksts)) rez.set(teksts, { teksts, kods: s.kods, nos: s.nosaukums + (k.vieta ? ' · ' + k.vieta.nosaukums : '') });
+      if (rez.size === 3) break;
+    }
+    return [...rez.values()];
+  }
 
   async function atvertPopularos() {
     const lauks = el('jautajums');
     if (lauks.value.trim() || lauks.disabled || !klasifikators) return;
     if (!popularie || Date.now() - popularieLaiks > 60000) {
-      popIelade ||= iegut('/meklejumi/top?n=3').then(d => d.vaicajumi, () => null).then(v => {
-        popularie = v?.length ? v : POPULARI_REZERVE;
+      popIelade ||= iegut('/meklejumi/top?n=10').then(d => d.vaicajumi, () => []).then(v => {
+        popularie = popularieNoVaicajumiem(Array.isArray(v) ? v : []);
         popularieLaiks = Date.now();
         popIelade = null;
       });
       await popIelade;
       if (lauks.value.trim() || !populari.contains(document.activeElement) && document.activeElement !== lauks) return;
     }
-    popPogas.innerHTML = popularie.map(v =>
-      `<button type="button" data-vaicajums="${esc(v)}">${esc(v.charAt(0).toUpperCase() + v.slice(1))}</button>`).join('');
+    popPogas.innerHTML = popularie.map(p =>
+      `<button type="button" data-teksts="${esc(p.teksts)}" data-kods="${esc(p.kods)}">${esc(p.nos)}</button>`).join('');
     populari.hidden = false;
-    lauks.setAttribute('aria-expanded', 'true');
   }
   function aizvertPopularos() {
     populari.hidden = true;
-    el('jautajums').setAttribute('aria-expanded', 'false');
   }
   el('jautajums').addEventListener('focus', atvertPopularos);
   el('jautajums').addEventListener('click', atvertPopularos);
   el('jautajums').addEventListener('input', () => { if (el('jautajums').value.trim()) aizvertPopularos(); else atvertPopularos(); });
   popPogas.addEventListener('click', e => {
-    const v = e.target.closest('button[data-vaicajums]')?.dataset.vaicajums;
-    if (!v) return;
+    const poga = e.target.closest('button[data-kods]');
+    const scenarijs = klasifikators?.scenariji.find(s => s.kods === poga?.dataset.kods);
+    if (!scenarijs) return;
     aizvertPopularos();
-    el('jautajums').value = v;
-    meklet(v);
+    el('jautajums').value = poga.dataset.teksts;
+    uzskaite = null;  // ieteikumu klikšķi neskaita, citādi tie paši sev pieskaita popularitāti
+    meklet(poga.dataset.teksts, scenarijs);  // ar scenāriju: teksts dod tikai vietu, meklet() neskaita
     raditRezultatus();
   });
   // Tastatūra: ↓ no lauka uz pirmo, ←/→/↑/↓ starp pogām, Escape aizver un atgriežas laukā
@@ -107,7 +123,6 @@ const krizesMeklesana = (() => {
 
   // Uzskaite: atpazītu vaicājumu (situācija vai slānis) vienreiz pēc meklēšanas un vienreiz, kad atver rezultātu.
   // Sūta tikai tekstu bez adreses; bez lietotāja datiem. Kļūdas klusi ignorē.
-  let uzskaite = null;
   function zinot(vaicajums, klikskis = false) {
     fetch(API + '/meklejumi', { method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ vaicajums, atpazits: true, klikskis }) }).catch(() => {});
