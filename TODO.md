@@ -6,7 +6,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## Pending
 - [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
-- [ ] Check licenses before using: Esri satellite basemap (map redesign; Esri terms, not open data) and `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` — added 2026-10-09 19:09 +03:00 by noiseparty
+- [ ] Esri satellite basemap is LIVE on map.repo.lv (came with the redesign, #18) but Esri imagery is not open data: remove it or replace with an open basemap — added 2026-10-09 20:48 +03:00 by noiseparty
+- [ ] Check the license of `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` before putting it on the map — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Load the team's interest-point datasets into the map DB (how-to: `src/karte/README.md`) — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Incidents layer: LVC live road events (closures, ice, accidents) into `objekti` with `derigs_lidz`; needs NAP API key — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Pick the problem/user and the 3–6 step flow for our prototype — added 2026-10-09 17:13 +03:00 by noiseparty
@@ -14,7 +15,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Live power-outage layer from Sadales tīkls JSON (`karte.sadalestikls.lv/lv/atslegumi-elektrotikla/unplanned`), cached; ask ST for permission (no licence) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Live weather/flood warnings banner + polygons (LVĢMC on data.gov.lv / MeteoAlarm Atom feed for Latvia) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Ogre river gauge (LVĢMC live level) vs 22.15 m threshold + flood zones → highlight affected addresses — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Load official CC0 layers: VUGD depots, police stations, hydrants/water intakes, ZVA pharmacies (daily), NVD medical institutions — added 2026-10-09 18:36 +03:00 by noiseparty
+- [ ] Remaining official CC0 layers: fire-water intake points (VKCP IĢIS `vkcp-igis-atklatas-udens-nemsanas-vietas`); refresh ZVA + IeM IC data daily (`valsts_dati.py` + `ielade_visu.sh`) — added 2026-10-09 20:48 +03:00 by noiseparty
+- [ ] Test the whole map on a real phone (location prompt, dropdowns, list, popups) — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Public info card: LR1 FM frequency, 112, cell broadcast, sirens, 72h checklist — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Commission-only layers: social-care providers (LM register), vulnerable-population density (GEOSTAT 1 km), Seveso/hazard sites, HES dams — added 2026-10-09 18:36 +03:00 by noiseparty
@@ -31,6 +33,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Official CC0 layers loaded: VUGD depots, VP + municipal police, ZVA pharmacies, IeM IC medical institutions (PR #14) — done 2026-10-09 20:48 +03:00 by noiseparty
 - [x] Crisis scenarios: all 119 from `notes/SCENARIJI.md` in the search classifier (own advice, map layers, 112), rare keywords weigh more, "Vai domāji…?" alternatives; #72/#73 not implemented as written (profiling) — done 2026-10-09 20:20 +03:00 by noiseparty (added 2026-10-09 18:46 +03:00 by noiseparty)
 - [x] Papildināt scenārijus: aizsalušas caurules, kanalizācija nestrādā, lifts nedarbojas, izsists logs, auto ceļa malā, trauma var/nevar kustēties — `notes/SCENARIJI.md` Nr 113–119, `production/scenariji.json` atslēgvārdi + "nevar kustēt" dzīvības draudos, 6 testi (70/70 ok) — done 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia (added 2026-10-09 20:15 +03:00 by iesalnieksjanLatvia)
 - [x] Papildināt scenārijus: troksnis kaimiņš, huligāni uz ielas — `notes/SCENARIJI.md` (Nr 111–112), `production/scenariji.json` policijas atslēgvārdi (troksn/kaimiņ/шум/сосед/nois/neighbor/hooligan) + 4 testi `src/meklesana/testi.json` (64/64 ok) — done 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia (added 2026-10-09 19:52 +03:00 by iesalnieksjanLatvia)
