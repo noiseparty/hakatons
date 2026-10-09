@@ -52,6 +52,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] Email info@rigassatiksme.lv asking for a GTFS-RT (live vehicle positions / delays) feed under an open licence; today only static GTFS (CC0) is open — added 2026-10-10 02:27 +03:00 by noiseparty
 - [ ] Storm replay (`vetra-2026`): use real LVC road events from `/api/celi` instead of the simulated A7/P103 closure — added 2026-10-10 02:27 +03:00 by noiseparty
+- [ ] Classifier: look at the remaining close pairs (sniegavētra / auto putenī / apmaldījies sniegā; gāzes smaka / noplūde ēkā) and add real user queries from the demo to `src/meklesana/vaicajumi.json` — added 2026-10-10 02:55 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -60,6 +61,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Classifier: 1 779 generated keywords (LV colloquial/typos, RU, EN), 497-query test set written blind to the keywords, scoring fixes (each word counts once, longer prefix wins ties), 'Vai domājāt' threshold 0.45; top-1 77,3 % → 93,8 % (held-out 82,2 → 89,5 %) — `notes/klasifikators.md` — done 2026-10-10 02:55 +03:00 by noiseparty (added 2026-10-10 02:55 +03:00 by noiseparty)
 - [x] Fire-water intake points (VKCP IĢIS, CC0; 1 117 open intakes, hydrants left out) as `udens_nemsana`, and public-transport stops as evacuation pick-up points from 3 CC0 GTFS feeds (Rīgas satiksme 1 643, ATD buses 10 179, vivi trains 138) as `pietura` with route counts; both off by default, linked to the fire / evacuation scenarios — done 2026-10-10 02:32 +03:00 by noiseparty; DB load is a VPS step (added 2026-10-09 20:48 +03:00 by noiseparty)
 - [x] Traffic as zones (zonas.js): novadi coloured by LVC traffic level (`/api/satiksme`), 77 counter sites as dots, border waits as markers, slippery-road 15 km zones (hatched) in the overlap logic, toggles + legend, result-card line "Satiksme šajā apvidū" — done 2026-10-10 02:31 +03:00 by noiseparty (added 2026-10-10 02:31 +03:00 by noiseparty)
 - [x] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — done 2026-10-10 02:28 +03:00 by noiseparty: risk map today/tomorrow in the Prognoze panel (`riski` in `/api/prognozes`: LVĢMC warnings, gusts, rain, FMI lightning +1, LVC slippery roads +1; ice and river levels not yet) (added 2026-10-09 23:20 +03:00 by noiseparty)

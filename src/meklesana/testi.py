@@ -74,7 +74,7 @@ MERKIS = 0.90  # top-1 precizitāte uz vaicajumi.json, zem kuras tests krīt
 def vaicajumu_parbaude(klasificet, viss=False):
     """Reālistisks vaicājumu kopums (vaicajumi.json; kā veidots — notes/klasifikators.md).
 
-    Pareizs = pirmais scenārijs ir starp "pienemami". Divdomīgajiem vēl jāparādās "Vai domājāt" (≥ 2 scenāriji),
+    Pareizs = pirmais scenārijs ir starp "pienemami". Divdomīgajiem skaita, vai "Vai domājāt" rāda vēl kādu pieņemamo,
     skaidrajiem — cik bieži "Vai domājāt" parādās lieki. Rāda precizitāti pa tipiem un 20 sliktākos scenārijus.
     Ar -v izdrukā arī visus kļūdainos vaicājumus.
     """
@@ -100,7 +100,7 @@ def vaicajumu_parbaude(klasificet, viss=False):
             prognozets[pirmais][1] += 1
         if v["tips"] == "divdomigs":
             divd += 1
-            divd_ar_citiem += len(kodi) >= 2
+            divd_ar_citiem += len(set(kodi) & set(v["pienemami"])) >= 2  # vismaz divi pieņemamie redzami
         else:
             skaidri += 1
             lieki += len(kodi) >= 2

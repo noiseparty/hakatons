@@ -14,9 +14,11 @@
     "rāda dzivibas_draudi_scenarijs.",
     "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
     "vietu_sinonimi: citvalodu vietvārdi → nosaukums tabulā regioni. Latviskās formas (Ogrē, Rīgas) atrod pats.",
-    "Pārbaude: src/meklesana/testi.json (vaicājums → sagaidāmais scenārijs).",
+    "Pārbaude: src/meklesana/testi.json (vaicājums → sagaidāmais scenārijs) un vaicajumi.json (497 reālistiski vaicājumi, mērķis ≥ 90 %; notes/klasifikators.md).",
+    "vai_domajat_slieksnis: citus scenārijus rāda kā 'Vai domājāt', ja tie sasniedz šo daļu no labākā punktiem (0.45; noskaņots ar vaicajumi.json).",
     "talak: 'Kas notiks tālāk' soļi no talak_gimenes (2–4: ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz); '_' = vispārīgie."
   ],
+  "vai_domajat_slieksnis": 0.45,
   "dzivibas_draudi_scenarijs": "medicina",
   "dzivibas_draudi": [
     "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nav pie samaņ", "zaudējis samaņ", "zaudējusi samaņ", "zaudēja samaņ", "nereaģē", "nevar pamodināt", "nekustas", "nevar kustēt", "samaņas zud",
@@ -126,7 +128,8 @@
       "atslegvardi": ["apmald", "nomald", "maldos", "mežā$", "meža$", "mežs$", "taku$", "takas", "taka$", "nezinu kur esmu", "neatrodu ceļu",
         "заблуд", "в лесу", "lost in the forest", "lost in the woods", "lost$",
         "mežos$", "mežu$", "meži$", "mežā apmald", "mežā nomald", "maldīj", "izeja no meža", "izkļūt no meža",
-        "biezokn", "apmlad", "лес$", "лесу$", "потерялся в лес", "forest$", "woods$", "in the woods"
+        "biezokn", "apmlad", "лес$", "лесу$", "потерялся в лес", "forest$", "woods$", "in the woods",
+        "nezinu kur atrodos"
       ]
     },
     {
@@ -136,7 +139,8 @@
       "atslegvardi": ["apmaldījos pilsēt", "apmaldījies pilsēt", "nomaldījos pilsēt", "pilsētā apmald", "nezinu adres", "nezinu kur esmu", "apjuk", "заблуд", "в городе", "lost$", "lost in the city", "pazudis pilsēt", "pazudu pilsēt", "esmu pazudis", "esmu pazudusi",
         "neatrodu māj", "nevaru atrast māj", "neatrodu viesnīc", "neatrodu adres", "kur es atrodos",
         "nezinu kur atrodos", "kā nokļūt mājās", "svešā pilsēt", "rīgā apmald", "не знаю где я", "потерялся в город",
-        "не знаю адрес", "where am i", "can't find my hotel", "lost in town"
+        "не знаю адрес", "where am i", "can't find my hotel", "lost in town",
+        "viesnīc", "hotel", "гостиниц"
       ]
     },
     {
@@ -145,19 +149,21 @@
       "padoms": "Palieciet uz vietas un zvaniet 112. Ja nav zonas, mēģiniet uzkāpt augstāk. Taupiet bateriju, turieties siltumā.",
       "atslegvardi": ["apmald", "nomald", "laukos", "purv", "vientul", "заблуд", "болот", "swamp", "lost$", "pazudis ārpus", "ārpus apdzīvot", "tālu no cilvēk",
         "tīrum", "pļav", "laukā apmald", "neviena cilvēk", "nekur nav māj", "nomaļ", "viensēt", "потерялся в пол",
-        "глуш", "никого вокруг", "middle of nowhere", "countryside", "marsh", "bog$"
+        "глуш", "никого вокруг", "middle of nowhere", "countryside", "marsh", "bog$",
+        "nezinu kur esmu", "nezinu kur atrodos"
       ]
     },
     {
       "kods": "pazudis_berns", "nr": 4, "grupa": "A", "nosaukums": "Pazudis bērns",
       "kategorijas": ["policija"], "zvanit112": true, "talak": "pazudis",
       "padoms": "Zvaniet 112 uzreiz, negaidiet. Pasakiet bērna aprakstu un apģērbu, kur un kad viņu redzējāt pēdējo reizi. Tirdzniecības centrā vai pasākumā uzreiz brīdiniet apsardzi.",
-      "atslegvardi": ["pazud", "nevaru atrast", "pazudis bērn", "pazuda bērn", "bērns pazud", "pazudis dēl", "pazuda meit", "pazudusi meit", "nevaru atrast bērn", "nevaru atrast dēl", "nevaru atrast meit", "pazaudēju bērn", "пропал ребен", "ребенок пропал", "потерял ребен", "пропал сын", "пропала доч",
+      "atslegvardi": ["pazud", "pazudis bērn", "pazuda bērn", "bērns pazud", "pazudis dēl", "pazuda meit", "pazudusi meit", "nevaru atrast bērn", "nevaru atrast dēl", "nevaru atrast meit", "pazaudēju bērn", "пропал ребен", "ребенок пропал", "потерял ребен", "пропал сын", "пропала доч",
         "missing child", "lost child", "my child", "my son", "my daughter",
         "neatrodu bērn", "neatrodu dēl", "neatrodu meit", "bērns aizgāj", "bērns nav mājās", "meita pazud",
         "pazaudēju dēl", "pazaudēju meit", "не могу найти ребен", "потерялся ребен", "потерял сын", "потеряла доч",
         "пропал мальчик", "пропала девочк", "lost my child", "lost my kid", "missing kid", "can't find my son",
-        "can't find my daughter"
+        "can't find my daughter",
+        "meit", "dēls$", "dēlu$", "dēla$", "mazdēl", "mazmeit", "дочь", "дочк", "сын$", "сына$", "daughter", "son$"
       ]
     },
     {
@@ -183,8 +189,7 @@
       "kods": "migla", "nr": 7, "grupa": "A", "nosaukums": "Apmaldījies biezā miglā",
       "kategorijas": [], "zvanit112": false, "talak": "pazudis",
       "padoms": "Apstājieties un nogaidiet, kamēr migla izklīst. Neejiet pa ceļa braucamo daļu. Ja apdraudēta veselība, zvaniet 112.",
-      "atslegvardi": ["migl", "redzamīb", "neko nevar redzēt", "туман", "fog",
-        "neko neredz", "neredzu neko", "dūmak", "bieza migl", "ничего не видно", "видимост", "mist$", "misty",
+      "atslegvardi": ["migl", "redzamīb", "neko nevar redzēt", "туман", "fog", "neredzu neko", "dūmak", "bieza migl", "ничего не видно", "видимост", "mist$", "misty",
         "can't see anything", "visibility", "haze"
       ]
     },
@@ -213,7 +218,7 @@
       "kategorijas": [], "zvanit112": true, "talak": "pazudis",
       "padoms": "Neturpiniet kāpt lejā pa stāvām nogāzēm tumsā. Palieciet uz vietas, turieties siltumā un zvaniet 112.",
       "atslegvardi": ["kaln", "nogāz", "krauj", "stāvs krast", "reljef", "горы", "в горах", "mountain", "cliff",
-        "klint", "stāvkrast", "stāvā nogāz", "nevaru tikt lejā", "paugur", "alpīn", "kāpās$", "скал", "обрыв", "склон",
+        "klint", "stāvkrast", "stāvā nogāz", "paugur", "alpīn", "kāpās$", "скал", "обрыв", "склон",
         "альпин", "steep", "slope", "ravine", "hills$", "climbing"
       ]
     },
@@ -224,7 +229,8 @@
       "atslegvardi": ["apmaldījos pie ezer", "apmaldījos pie upe", "apmaldījies pie ezer", "neatrodu krast", "neatrodu ceļu atpakaļ", "заблудился у озер", "lost by the lake", "pazudis ūdenstilp", "ūdenstilp",
         "pie ezera apmald", "pie upes apmald", "nomaldījos pie ezer", "nomaldījos pie upe", "pazudu pie ezer",
         "pazudu pie upe", "krastā apmald", "заблудился у рек", "заблудилась у озер", "заблудилась у рек",
-        "потерялся у озер", "lost by the river", "lost near the lake", "lost near the river", "lost on the shore"
+        "потерялся у озер", "lost by the river", "lost near the lake", "lost near the river", "lost on the shore",
+        "pie ezera"
       ]
     },
     {
@@ -243,7 +249,8 @@
       "atslegvardi": ["ārzem", "ārvalst", "vēstniecīb", "nesaprot valod", "за границ", "посольств", "abroad", "embassy",
         "konsulāt", "nesaprotu valod", "svešā valst", "citā valst", "ceļojum", "atvaļinājum", "pazaudēju pasi",
         "pase nozagt", "консульств", "потерял паспорт", "в другой стран", "за рубеж", "consulate", "lost my passport",
-        "in another country", "foreign country"
+        "in another country", "foreign country",
+        "nezinu kur esmu", "nezinu kur atrodos", "esmu ārzemēs"
       ]
     },
     {
@@ -272,7 +279,8 @@
       "atslegvardi": ["deg auto", "deg mašīn", "auto deg", "mašīna deg", "dūmi no motor", "dzinējs deg", "dzinēj", "горит машин", "car fire", "car is on fire",
         "auto aizdeg", "mašīna aizdeg", "aizdegās auto", "aizdegās mašīn", "dūmi no auto", "dūmi no mašīn",
         "motors dūmo", "motors deg", "загорелась машин", "горит авто", "машина горит", "из под капот", "car on fire",
-        "car caught fire", "engine fire", "smoke from the engine", "smoke from the hood"
+        "car caught fire", "engine fire", "smoke from the engine", "smoke from the hood",
+        "no motora", "из-под капота"
       ]
     },
     {
@@ -282,7 +290,8 @@
       "atslegvardi": ["auto ūden", "mašīna ūden", "iebrauc ūden", "iebrauca upē", "iebrauca ezer", "grimst", "машина в вод", "тонет машин", "car in water", "sinking car", "iebraucis ūden", "iebrauca ūden",
         "auto upē", "auto ezerā", "mašīna upē", "mašīna ezerā", "auto grimst", "mašīna grimst", "nobrauca upē",
         "машина тонет", "съехал в рек", "машина в рек", "машина в озер", "car sinking", "drove into the water",
-        "drove into the river", "car in the lake", "car in the river"
+        "drove into the river", "car in the lake", "car in the river",
+        "машина упала", "auto iebrauca ūdenī", "car in the water"
       ]
     },
     {
@@ -299,10 +308,11 @@
       "kods": "auto_neiet", "nr": 19, "grupa": "B", "nosaukums": "Auto neiedarbojas",
       "kategorijas": ["degviela"], "zvanit112": false, "talak": "cels",
       "padoms": "Ieslēdziet avārijas gaismas un sazinieties ar ceļu palīdzību vai apdrošinātāju. Ja esat attālā vietā un salst, zvaniet 112.",
-      "atslegvardi": ["neiedarb", "nepiedarb", "neiet auto", "auto neiet", "mašīna neiet", "nesāk", "akumulator", "не заводит", "сломал машин", "car won't start", "car broke down", "breakdown", "piedarbin", "nevar iedarbin", "nevar piedarbin",
+      "atslegvardi": ["neiedarb", "nepiedarb", "neiet auto", "auto neiet", "mašīna neiet", "akumulator", "не заводит", "сломал машин", "car won't start", "car broke down", "breakdown", "piedarbin", "nevar iedarbin", "nevar piedarbin",
         "nestartē", "neiestart", "piestart", "nevar iestart", "starter", "akums$", "akumu$", "akumlator", "akumualtor",
         "sēdies akum", "tukšs akum", "motors nesāk", "auto nesāk", "mašīna nesāk", "аккумулятор", "акб$", "стартер",
-        "прикурить", "dead battery", "jump start", "wont start", "engine won't"
+        "прикурить", "dead battery", "jump start", "wont start", "engine won't",
+        "nesāk$", "nesākas", "neiedarbojas"
       ]
     },
     {
@@ -312,7 +322,8 @@
       "atslegvardi": ["elektromobil", "elektroauto", "uzlādes stacij", "elektroauto izlād", "электромоб", "зарядн", "electric car", "ev$", "charging station",
         "elektriskais auto", "elektriskā auto", "elektro auto", "e auto", "elektromašīn", "tesla$", "uzlādes punkt",
         "izlādējies auto", "auto izlādēj", "mašīna izlādēj", "nevar uzlādēt auto", "электрокар", "электромашин",
-        "зарядка машин", "electric vehicle", "ev charger", "ev charging"
+        "зарядка машин", "electric vehicle", "ev charger", "ev charging",
+        "baterij", "uzlād"
       ]
     },
     {
@@ -322,7 +333,8 @@
       "atslegvardi": ["bloķēt", "sastrēg", "slēgts ceļ", "ceļš slēgt", "šosej", "стоим", "пробк", "дорога закрыт", "traffic jam", "road closed", "road blocked",
         "bloķēj", "korķ", "aizsprostots ceļ", "ceļš ciet", "ceļš ir slēgt", "apvedceļ", "apbraucamais ceļ", "перекрыт",
         "затор", "трасса закрыт", "шоссе", "объезд", "traffic$", "detour", "roadblock", "highway closed",
-        "blocked road"
+        "blocked road",
+        "nevar izbrauk"
       ]
     },
     {
@@ -351,7 +363,8 @@
       "padoms": "Palieciet auto. Zvaniet 112. Darbiniet dzinēju ~10 minūtes stundā sildīšanai un pārliecinieties, ka izpūtējs nav aizputināts (tvana gāze!). Ieslēdziet avārijas gaismas.",
       "atslegvardi": ["iestrēg", "iesprūd", "putenī", "puteni", "sniegavētr", "aizputin", "застрял", "метел", "snowed in", "stuck in snow", "blizzard", "auto ieslēgts", "auto iestrēg", "sniegavātr",
         "iestrēdz", "iestig", "kupen", "auto sniegā", "mašīna sniegā", "sniegā iestr", "buksē$", "buksēj", "сугроб",
-        "занесло снег", "буксу", "snowdrift", "car stuck", "stuck in the snow"
+        "занесло снег", "буксу", "snowdrift", "car stuck", "stuck in the snow",
+        "iestidzis sniegā", "iestrēdzis sniegā"
       ]
     },
     {
@@ -361,7 +374,8 @@
       "atslegvardi": ["aizsal", "sasal", "dīzel", "neparāv", "nepiedarb", "замерз дизел", "frozen diesel",
         "solārk", "parafin", "degviela sasal", "degviela aizsal", "degviela sabiez", "degvielas filtr",
         "filtrs aizsal", "kvēlsvec", "солярк", "дизель замерз", "парафин", "загустел", "diesel gel", "gelled",
-        "fuel frozen", "glow plug"
+        "fuel frozen", "glow plug",
+        "sabiezēj", "sabiezējusi degviel"
       ]
     },
     {
@@ -400,7 +414,8 @@
       "atslegvardi": ["meža ugun", "mežs deg", "deg mežs", "meža ugunsgrēk", "lauks deg", "kūdr", "ugunsgrēk", "dūm", "liesm", "лесной пожар", "лес горит", "forest fire", "wildfire",
         "mežā deg", "deg mežā", "mežā dūm", "deg lauk", "lauki deg", "deg labīb", "labība deg", "горит лес",
         "пожар в лесу", "лес в огне", "торф", "горит поле", "bushfire", "brush fire", "field fire", "peat fire",
-        "forest is burning", "woods on fire"
+        "forest is burning", "woods on fire",
+        "mežā$", "meža$", "mežs$"
       ]
     },
     {
@@ -430,7 +445,8 @@
       "atslegvardi": ["kaimiņ", "blakus māj", "blakus ēk", "deg$", "ugun", "liesm", "у соседей горит", "соседн", "neighbour's house", "next door fire",
         "deg kaimiņ", "blakus dzīvokl", "blakusmāj", "pretējā māj", "deg blakus", "deg pretī", "у соседей",
         "рядом горит", "напротив горит", "горит дом рядом", "neighbor s house", "neighbors house", "neighbours house",
-        "next door", "building next door"
+        "next door", "building next door",
+        "соседний дом", "соседняя квартир"
       ]
     },
     {
@@ -468,7 +484,8 @@
       "atslegvardi": ["sagruv", "sabruk", "iebruk", "sagrūst", "drup", "griesti iebr", "обруш", "завал", "collapse", "rubble", "sagrūš", "sagrušan", "māja sagruv", "ēka sagruv",
         "sagāzās māj", "sagāzās ēk", "griesti nokrit", "nokrita griesti", "griesti krīt", "siena nogruv",
         "plaisa sien", "plaisas sien", "gruveš", "balkons nokrit", "рухнул", "развалин", "обвал", "трещин в стен",
-        "потолок упал", "caved in", "cave in", "ceiling fell", "crack in the wall", "debris"
+        "потолок упал", "caved in", "cave in", "ceiling fell", "crack in the wall", "debris",
+        "iebrucis jumts", "jumts iebruc", "iegruvis jumts"
       ]
     },
 
@@ -498,7 +515,8 @@
       "atslegvardi": ["hipoterm", "pārsal", "drebu", "trīc no aukst", "ļoti salst", "ļoti auksti", "переохлаж", "замерза", "hypotherm", "freezing",
         "nevar sasild", "nevaru sasild", "zobi klab", "klabina zob", "trīcu$", "izmirc", "izmirk", "lūpas zil",
         "zilas lūp", "sastindz", "дрож", "трясет от холод", "окочен", "не могу согреться", "shivering", "shiver",
-        "can't get warm", "soaked and cold"
+        "can't get warm", "soaked and cold",
+        "runā nesakarīgi", "trīc"
       ]
     },
     {
@@ -572,7 +590,8 @@
       "padoms": "Ejiet tālāk no ēku malām, nenovietojiet auto zem jumta malas. Bīstamas lāstekas paziņojiet pašvaldībai vai ēkas pārvaldniekam.",
       "atslegvardi": ["lāstek", "sniegs no jumt", "snieg krīt", "jumta mal", "сосульк", "icicle", "snow falling from roof", "nogruvum", "sniega nogruv",
         "sniegs uz jumt", "sniegs nokrit", "nokrita snieg", "krīt no jumt", "ledus no jumt", "jumta tīrīš", "сосулек",
-        "снег с крыш", "лед с крыш", "falling ice", "ice falling", "roof snow"
+        "снег с крыш", "лед с крыш", "falling ice", "ice falling", "roof snow",
+        "no jumta krīt", "krīt sniegs", "krīt lāsteka"
       ]
     },
     {
@@ -580,7 +599,8 @@
       "kategorijas": ["patvertne"], "zvanit112": false, "talak": "vetra",
       "padoms": "Palieciet iekštelpās vidējā telpā bez logiem, zemākajā stāvā. Turieties tālāk no logiem. Ja esat ārā, meklējiet stipru ēku.",
       "atslegvardi": ["viesuļ", "viesul", "virpuļ", "orkān", "torn", "смерч", "торнадо", "ураган", "tornado", "hurricane",
-        "piltuv", "vēja vērpet", "taifūn", "тайфун", "вихр", "twister", "funnel cloud"
+        "piltuv", "vēja vērpet", "taifūn", "тайфун", "вихр", "twister", "funnel cloud",
+        "ураганный ветер", "plēš kokus", "lauž kokus"
       ]
     },
 
@@ -608,7 +628,8 @@
       "padoms": "Zvaniet 112. Ja cilvēkam ir adrenalīna autoinjektors, palīdziet to izmantot. Ja grūti elpot, ļaujiet sēdēt; ja vājš, noguldiet ar paceltām kājām.",
       "atslegvardi": ["alerģ", "anafilak", "dzēlien", "iedzēl", "bite$", "lapsen", "pietūk", "tūsk", "аллерг", "укус пчел", "отек", "allerg", "anaphyla", "bee sting", "swelling",
         "adrenalīn", "epipen", "autoinjektor", "sapamp", "uzpamp", "mēle pietūk", "kakls pietūk", "nātren", "riekst",
-        "опух", "укус ос", "крапивниц", "hives", "wasp", "throat swell", "epinephrin"
+        "опух", "укус ос", "крапивниц", "hives", "wasp", "throat swell", "epinephrin",
+        "grūti elpot"
       ]
     },
     {
@@ -627,7 +648,8 @@
       "atslegvardi": ["satricin", "sasit galv", "sasitu galv", "sitiens pa galv", "kritu uz galv", "сотрясен", "ударил голов", "concussion", "hit my head",
         "sasita galv", "sasitis galv", "atsitu galv", "atsita galv", "iesita galv", "trieciens pa galv",
         "galvas traum", "ударился голов", "ударилась голов", "травма голов", "head injury", "hit his head",
-        "hit her head", "knocked out"
+        "hit her head", "knocked out",
+        "pa galvu", "ar galvu", "atsitās ar galv"
       ]
     },
     {
@@ -645,7 +667,8 @@
       "padoms": "Uzreiz visi ārā svaigā gaisā, atveriet logus. Zvaniet 112. Pazīmes: galvassāpes, reibonis, nelabums vairākiem cilvēkiem vienlaikus. Izslēdziet sildītāju vai ģeneratoru.",
       "atslegvardi": ["tvana gāz", "tvan", "oglekļa monoksīd", "co detektor", "ģenerator telp", "угарн", "угар", "carbon monoxide", "co alarm",
         "aizbīdn", "krāsns$", "krāsni$", "dūmvad", "skursten", "garāžā ģenerator", "visiem sāp galv", "печк",
-        "дымоход", "заслонк", "monoxide", "chimney"
+        "дымоход", "заслонк", "monoxide", "chimney",
+        "ģenerator", "generator", "генератор"
       ]
     },
     {
@@ -691,7 +714,8 @@
       "padoms": "Ja cilvēks nevar runāt un elpot: 5 stipri sitieni starp lāpstiņām, tad 5 spiedieni vēdera augšdaļā (Heimliha paņēmiens). Atkārtojiet. Zvaniet 112.",
       "atslegvardi": ["aizrij", "aizrīj", "aizsprost", "heimli", "kaut kas kaklā", "подавил", "поперхн", "choking", "chok", "heimlich",
         "iesprūda kaklā", "iesprūdis kaklā", "iestrēga kaklā", "kauls kaklā", "nevar norīt", "nevar paklepot",
-        "zils sej", "застрял в горл", "кость в горл", "stuck in throat", "stuck in his throat", "can't swallow"
+        "zils sej", "застрял в горл", "кость в горл", "stuck in throat", "stuck in his throat", "can't swallow",
+        "nevar paelpot", "ar kaul"
       ]
     },
 
@@ -745,7 +769,7 @@
       "kods": "evakuacija", "nr": 66, "grupa": "F", "nosaukums": "Evakuācijas rīkojums",
       "kategorijas": ["evakuacijas_punkts", "pietura", "degviela"], "zvanit112": false, "talak": "kars",
       "padoms": "Ņemiet dokumentus, zāles, telefonu ar lādētāju, naudu, ūdeni, pārtiku un siltas drēbes. Aizslēdziet māju, izslēdziet gāzi un elektrību. Brauciet pa norādīto maršrutu.",
-      "atslegvardi": ["evaku", "jāpamet māj", "jāatstāj māj", "jābrauc prom", "braukt prom", "aizbrauk", "kur iet", "эвакуац", "уехать", "evacuat", "leave the city",
+      "atslegvardi": ["evaku", "jāpamet māj", "jāatstāj māj", "jābrauc prom", "braukt prom", "aizbrauk", "эвакуац", "уехать", "evacuat", "leave the city",
         "pulcēšanās viet", "pulcēšanas punkt", "kur pulcēt", "jāpamet dzīvok", "jāatstāj dzīvok", "ko ņemt līdzi",
         "ko paņemt līdzi", "pagaidu izmitin", "evokuāc", "эвакуир", "пункт сбора", "что взять с собой",
         "assembly point", "what to take", "temporary accommodation"
@@ -767,7 +791,8 @@
       "atslegvardi": ["nav ziņu", "nevaru sazvanīt", "nevar sazvanīt", "tuvinieki", "ģimen", "нет связи с", "не могу дозвон", "родные", "can't reach my family", "family$", "sakari izslēg", "nav ziņu no ģimen",
         "nevaru sazināties", "nevar sazināties", "neatbild uz zvan", "neceļ telefon", "radiniek", "tuvinieku",
         "не отвечает", "не берет трубк", "родственник", "не могу связаться", "relatives", "not answering",
-        "can't contact"
+        "can't contact",
+        "cant reach", "can't reach"
       ]
     },
     {
@@ -823,7 +848,8 @@
       "atslegvardi": ["teror", "uzbrukums pūl", "spridzin", "ķīlniek", "теракт", "террор", "заложник", "terror", "hostage", "teroristisks uzbrukum", "terorakt",
         "pamesta som", "atstāta som", "nepieskatīta som", "iebrauca pūlī", "ietriecās pūlī", "aktīvs šāvēj",
         "взрывчат", "смертник", "бесхозн", "bomb threat", "suicide bomber", "unattended bag", "suspicious package",
-        "active shooter", "car ramming"
+        "active shooter", "car ramming",
+        "uzbruk", "koncertzāl"
       ]
     },
     {
@@ -832,7 +858,8 @@
       "padoms": "Ejiet prom no gāzes, pret vēju, svaigā gaisā. Neberziet acis, skalojiet tās ar tīru ūdeni. Ja grūti elpot, zvaniet 112.",
       "atslegvardi": ["asaru gāz", "kairinoš", "piparu gāz", "dedzina acis", "acis graiž", "слезоточив", "перцов", "tear gas", "pepper spray",
         "acis asaro", "asaro acis", "acis dedz", "nevaru atvērt acis", "piparu sprej", "gāzes baloniņ",
-        "газов баллончик", "слезятся глаза", "режет глаза", "жжет глаза", "teargas", "eyes burning", "mace$", "cs gas"
+        "газов баллончик", "слезятся глаза", "режет глаза", "жжет глаза", "teargas", "eyes burning", "mace$", "cs gas",
+        "grūti elpot", "palaida gāz", "распылил", "в глаза"
       ]
     },
     {
@@ -841,7 +868,8 @@
       "padoms": "Neejiet konfrontēt. Ieslēdzieties telpā, kur var aizslēgt durvis, un zvaniet 112 klusā balsī. Ja varat droši izkļūt ārā, dariet to.",
       "atslegvardi": ["iebrucēj", "ielauž", "ielauz", "kāds ir mājā", "kāds mājā", "troksnis pie durv", "kāds pie durv", "вломил", "кто-то в доме", "intruder", "someone in my house", "break in",
         "lauž durv", "lauza durv", "uzlauza durv", "dzirdu soļus", "svešs mājā", "kāds staigā mājā", "zaglis mājā",
-        "ломятся", "ломают двер", "чужой в доме", "burglar", "home invasion", "breaking in"
+        "ломятся", "ломают двер", "чужой в доме", "burglar", "home invasion", "breaking in",
+        "zagl", "broke into", "someone broke"
       ]
     },
     {
@@ -849,7 +877,7 @@
       "kategorijas": ["policija"], "zvanit112": true, "talak": "kartiba",
       "padoms": "Nepretojieties: Jūsu drošība ir svarīgāka par mantām. Iegaumējiet uzbrucēja izskatu un virzienu. Zvaniet 112 un nobloķējiet bankas kartes.",
       "atslegvardi": ["aplaupī", "laupīš", "laupītāj", "atņēma", "izrāva somu", "ограб", "грабит", "robbed", "mugged", "mugging",
-        "laupīj", "nozaga som", "izrāva telefon", "pieprasīja naud", "kabatzagl", "грабеж", "отобрали", "вырвал сумк",
+        "laupīj", "izrāva telefon", "pieprasīja naud", "kabatzagl", "грабеж", "отобрали", "вырвал сумк",
         "robbery", "robber", "pickpocket", "snatched"
       ]
     },
@@ -857,9 +885,10 @@
       "kods": "panika_tc", "nr": 79, "grupa": "G", "nosaukums": "Panika tirdzniecības centrā",
       "kategorijas": [], "zvanit112": false, "talak": "kartiba",
       "padoms": "Nebēdziet pūlī. Ejiet uz tuvāko izeju pret pūļa plūsmu malu, turiet bērnus pie sevis. Ja nokrītat, aizsargājiet galvu un mēģiniet piecelties.",
-      "atslegvardi": ["panik", "tirdzniecības centr", "lielveikal", "drūzm", "паник", "торгов", "давка", "panic", "stampede", "shopping centre", "mall",
+      "atslegvardi": ["panik", "lielveikal", "drūzm", "паник", "торгов", "давка", "panic", "stampede", "shopping centre", "mall",
         "tc$", "spaids", "samīd", "mīdīšan", "avārijas izej", "izeja bloķēt", "akropol", "тц$", "толкучк", "затопт",
-        "crowd crush", "shopping center", "emergency exit"
+        "crowd crush", "shopping center", "emergency exit",
+        "pūl", "pūlis skrien"
       ]
     },
     {
@@ -896,7 +925,8 @@
       "padoms": "Sekojiet pašvaldības un ūdenssaimniecības informācijai par ūdens izdales vietām. Ja ūdens nāk duļķains, pirms dzeršanas to uzvāriet.",
       "atslegvardi": ["nav ūden", "ūdensvad", "dzeramais ūden", "dzeramā ūden", "krāns", "нет воды", "водопровод", "питьев", "no water", "drinking water", "water outage",
         "ūdens pazud", "nenāk ūden", "ūdens nenāk", "no krāna nenāk", "ūdensapgād", "atslēdza ūden", "воду отключ",
-        "вода не ид", "водоснабжен", "tap water", "water supply", "no running water", "water shut off"
+        "вода не ид", "водоснабжен", "tap water", "water supply", "no running water", "water shut off",
+        "netek", "no krāna", "из крана"
       ]
     },
     {
@@ -905,7 +935,8 @@
       "padoms": "Sildiet vienu istabu, aizklājiet logus, velciet kārtām. Nekad nesildieties ar gāzes plīti, grilu vai ģeneratoru telpā. Siltumu un uzlādi piedāvā pašvaldības noturības punkti.",
       "atslegvardi": ["apkur", "nav apkur", "nav siltum", "radiator", "sasalst caurul", "auksts dzīvokl", "отоплен", "нет тепла", "батарея холод", "no heating", "no heat", "bez siltum", "bez apkur",
         "nekurin", "nesilda", "apsild", "siltummezgl", "siltumapgād", "rīgas siltum", "auksti radiator", "не топят",
-        "холодные батаре", "теплоснабжен", "отопит", "heating$", "boiler"
+        "холодные батаре", "теплоснабжен", "отопит", "heating$", "boiler",
+        "radiatori auksti", "auksti radiatori", "отключили отоплен"
       ]
     },
     {
@@ -949,7 +980,8 @@
       "padoms": "Atstājiet auto ar atslēgu aizdedzē, ejiet uz tuvāko avārijas izeju prom no dūmiem. Zvaniet 112.",
       "atslegvardi": ["tunel", "pazemes", "apakšzem", "туннел", "tunnel",
         "тоннел", "подземн", "паркинг", "pazemē$", "pagrabstāvviet", "underpass", "underground", "car park",
-        "parking garage"
+        "parking garage",
+        "in the tunnel", "в тоннеле"
       ]
     },
     {
@@ -967,7 +999,8 @@
       "padoms": "Uzvelciet glābšanas vesti, sekojiet apkalpes norādēm un ejiet uz pulcēšanās vietu uz klāja.",
       "atslegvardi": ["prām", "kuģ", "glābšanas vest", "паром", "корабл", "спасательн жилет", "ferry", "ship", "life jacket",
         "jaht", "kuter", "kruīz", "glābšanas laiv", "glābšanas riņķ", "pār bort", "tallink", "судн", "яхта$",
-        "за борт", "спасательн шлюпк", "vessel", "yacht", "cruise", "lifeboat", "overboard"
+        "за борт", "спасательн шлюпк", "vessel", "yacht", "cruise", "lifeboat", "overboard",
+        "kuģis grimst", "kugis grimst", "корабль тонет"
       ]
     },
     {
@@ -977,7 +1010,8 @@
       "atslegvardi": ["nav zonas", "nav signāl", "nav tīkl", "sakari nedarb", "nav sakar", "nav interneta", "нет связи", "нет сети", "no signal", "no network", "no internet", "tīkls nedarb", "sakaru tīkl", "telefons nestrādā",
         "nav uztveršan", "pazudis tīkl", "mobilais tīkl", "nav wifi", "nevaru piezvanīt", "nevar piezvanīt",
         "neiet cauri", "не ловит", "сеть пропал", "связь пропал", "нет интернет", "нет сигнал", "no service",
-        "no reception", "network down", "no wifi"
+        "no reception", "network down", "no wifi",
+        "мобильная связ", "не работает связ", "nav zvana"
       ]
     },
 
@@ -987,7 +1021,8 @@
       "padoms": "Zvaniet 112. Neejiet pie cietušā pa ledu stāvus: tuvojieties guļus un pasniedziet garu koku, virvi vai šalli. Izglābto uzreiz nogādājiet siltumā.",
       "atslegvardi": ["ielūz", "iekrit āliņģ", "iekrita ūdenī", "zem ledus", "ledain", "āliņģ", "провалил", "под лёд", "под лед", "fell through the ice", "icy water", "ledainā ūden", "iekritis ūden", "iekrita ūden",
         "izlūz", "ledū iekrit", "iekrita āliņ", "makšķernie", "ledus ūden", "полынь", "ледян вод", "through the ice",
-        "under the ice", "broke through", "ice hole"
+        "under the ice", "broke through", "ice hole",
+        "netiek ārā"
       ]
     },
     {
@@ -1033,7 +1068,8 @@
       "atslegvardi": ["ūdens ceļ", "ūdens nāk", "applūst pagrab", "pagrabā ūden", "ūdens līmen", "вода поднима", "затопил", "water rising", "basement flood", "paaugstin", "līmenis ceļ",
         "pagrabs applūd", "ūdens pagrab", "pagrabs pilns ar ūden", "ūdens dzīvokl", "ūdens uz grīd", "ūdens pa grīd",
         "вода в подвал", "подвал затоп", "залило подвал", "заливает", "вода прибыва", "flooded basement",
-        "water in the basement", "water coming in"
+        "water in the basement", "water coming in",
+        "ceļas ūdens", "ūdens ceļas", "pagrabā ceļas"
       ]
     },
 
@@ -1053,7 +1089,8 @@
       "padoms": "Pārbaudiet informāciju oficiālos avotos: 112.lv, LSM, LR1 un valsts iestāžu kontos. Nepārsūtiet nepārbaudītas ziņas.",
       "atslegvardi": ["viltus ziņ", "dezinform", "baumas", "vai tā ir taisnība", "фейк", "дезинформ", "fake news", "disinformation", "rumor",
         "baum", "propagand", "melīg", "nepatiesa inform", "vai tā ir patiesība", "vai var ticēt", "слух", "правда ли",
-        "вброс", "пропаганд", "hoax", "misinformation", "is it true", "rumour"
+        "вброс", "пропаганд", "hoax", "misinformation", "is it true", "rumour",
+        "izplata", "baumo"
       ]
     },
     {
@@ -1073,7 +1110,8 @@
       "atslegvardi": ["datu noplūd", "identitāt", "parol", "uzlauz", "krāpniek", "pikšķer", "взлом", "пароль", "мошенник", "hacked", "password", "phishing", "identity theft", "identitātes noplūd", "dati nozagt",
         "smart id", "smartid", "bankas kont", "nozaga kont", "cert lv", "divu soļu", "krāpnieciska sait", "фишинг",
         "утечка данн", "украли данн", "аккаунт", "data breach", "leaked", "scam link", "account compromised",
-        "stolen identity"
+        "stolen identity",
+        "nopludināt", "e-past", "epast", "dati nopl"
       ]
     },
     {
@@ -1082,7 +1120,8 @@
       "padoms": "Neiepērcieties panikā. Turiet mājās 72 stundu krājumu: ūdeni, ilgi glabājamu pārtiku. Palīdzību sniedz pašvaldības sociālais dienests.",
       "atslegvardi": ["pārtik", "veikali tukš", "nav ko ēst", "krājum", "еда", "продукт", "пустые полки", "food$", "empty shelves",
         "plaukti tukš", "tukši plaukt", "nav maizes", "nav ēdien", "ēdiens beidz", "veikalā nav", "izsalk", "нет еды",
-        "магазин пуст", "голод", "no food", "grocery", "hungry", "stockpil"
+        "магазин пуст", "голод", "no food", "grocery", "hungry", "stockpil",
+        "nav pārtik", "veikalos nav", "plaukti tukši"
       ]
     },
     {
@@ -1110,8 +1149,7 @@
       "kods": "suni", "nr": 106, "grupa": "K", "nosaukums": "Uzbrūk suņi",
       "kategorijas": ["policija", "neatliekama_24h"], "zvanit112": false, "talak": "dzivnieki",
       "padoms": "Nebēdziet un neskatieties sunim acīs. Ja uzbrūk, pasargājiet seju un kaklu, aizsedziet ar somu vai jaku. Kodumu parādiet ārstam un ziņojiet policijai.",
-      "atslegvardi": ["suņ", "suns$", "suns uzbr", "sakoda", "iekoda suns", "suns iekoda", "собак", "укусил", "dog$", "dogs", "bitten", "suņu bar", "suņi uzbr", "uzbrūk suns", "uzbrūk suņi", "klaiņojoš",
-        "sakod", "iekod", "agresīvs suns", "bezsaimnieka sun", "бродяч", "покусал", "кусает", "собачий укус",
+      "atslegvardi": ["suņ", "suns$", "suns uzbr", "sakoda", "iekoda suns", "suns iekoda", "собак", "dog$", "dogs", "bitten", "suņu bar", "suņi uzbr", "uzbrūk suns", "uzbrūk suņi", "klaiņojoš", "agresīvs suns", "bezsaimnieka sun", "бродяч", "покусал", "кусает", "собачий укус",
         "dog bite", "stray dog", "dog attack"
       ]
     },
@@ -1138,7 +1176,8 @@
       "padoms": "Brauciet lēni, nebiediet dzīvniekus ar signālu. Ja tie ir uz ceļa, ziņojiet 112, lai novērstu avāriju.",
       "atslegvardi": ["liellop", "govis", "gov$", "zirg", "aitas", "izbēg", "коров", "скот", "cows", "cattle", "livestock",
         "govs$", "lopi$", "lopu$", "mājlop", "ganāmpulk", "aitu$", "kazas$", "bullis", "elektrogan", "лошад", "стадо",
-        "horses", "sheep", "bull$", "loose animals"
+        "horses", "sheep", "bull$", "loose animals",
+        "govs uz", "govis uz", "uz šosejas gov"
       ]
     },
     {
@@ -1165,7 +1204,8 @@
       "padoms": "Neiesaistieties sarunās, ejiet prom pa apgaismotu ielu vai uz veikalu. Ja Jūs apdraud, zvaniet 112, citādi ziņojiet 110.",
       "atslegvardi": ["huligān", "agresīv", "pusaudž", "bars$", "uzmācas", "хулиган", "пристают", "hooligan", "gang", "harass",
         "uzmāc", "piesienas", "apsaukā", "provocē", "metas virsū", "piedzēr", "iedzēruš", "приста", "гопник", "пьяны",
-        "компания подростк", "drunk", "youths", "bothering me", "catcall"
+        "компания подростк", "drunk", "youths", "bothering me", "catcall",
+        "met pudel", "bļauj", "pudeles uz"
       ]
     },
     {
@@ -1174,7 +1214,8 @@
       "padoms": "Aizveriet galveno ūdens krānu, ja caurule var būt plīsusi. Atsildiet caurules lēnām ar fēnu vai siltu dvieli, nekad ar atklātu uguni. Sazinieties ar namu pārvaldnieku.",
       "atslegvardi": ["aizsalušas caurul", "sasalušas caurul", "caurules aizsal", "caurules sasal", "aizsal", "caurul", "замерзл труб", "трубы замерзл", "frozen pipe", "pipes froze",
         "plīsusi caurul", "ūdensvads aizsal", "krāns aizsal", "sasalis ūdensvad", "atkaus", "лопнула труб",
-        "прорвало труб", "замерз водопровод", "burst pipe", "frozen water pipe"
+        "прорвало труб", "замерз водопровод", "burst pipe", "frozen water pipe",
+        "nav ūden"
       ]
     },
     {
@@ -1193,7 +1234,8 @@
       "atslegvardi": ["lifts nedarb", "lifts nestrādā", "lifts sabojāj", "lifts neiet", "augšstāv", "nevar uzkāpt", "nevar nokāpt", "лифт не работ", "elevator not working", "lift not working", "elevator out of order",
         "lifts salūz", "lifts bojāts", "ratiņkrēsl", "nevar tikt lejā", "nevar tikt augšā", "kustību traucēj",
         "лифт сломал", "лифт не ход", "инвалидная коляск", "не могу спуститься", "elevator broken", "lift broken",
-        "wheelchair", "can't use the stairs"
+        "wheelchair", "can't use the stairs",
+        "lift is broken", "elevator is broken"
       ]
     },
     {
@@ -1221,7 +1263,8 @@
       "padoms": "Apsēdieties un novērtējiet stāvokli. Ja sāpes ir stipras vai ir pietūkums vai deformācija, dodieties uz traumpunktu vai slimnīcu. Nepārslogojiet savainoto vietu, lieciet aukstu kompresi.",
       "atslegvardi": ["var kustēt", "var paiet", "var staigāt", "sāp kāj", "sāp rok", "sasit", "sastiep", "traum", "может ходить", "can walk", "sprained",
         "kliboj", "zilum", "nobrāz", "potīt", "samežģ", "auksta kompres", "ledus kompres", "kāja sāp", "roka sāp",
-        "ушиб", "растяжен", "хромаю", "травмпункт", "синяк", "bruise", "limping", "twisted ankle"
+        "ушиб", "растяжен", "хромаю", "травмпункт", "синяк", "bruise", "limping", "twisted ankle",
+        "varu staigāt", "varu paiet"
       ]
     },
     {
@@ -1231,7 +1274,8 @@
       "atslegvardi": ["nevar kustēt", "nevar piecelt", "nekustas pēc", "nevar pakustin", "не может двигаться", "не может встать", "can't move", "cannot move", "can't get up",
         "nevar pakustēt", "nejūt kāj", "nejūtu kāj", "mugurkaul", "paralīz", "nekustīg", "nokrita no augstum",
         "kritiens no augstum", "не может пошевел", "позвоночник", "не чувствует ног", "парализ", "paraly", "spine",
-        "can't feel my legs", "can't stand up", "neck injury"
+        "can't feel my legs", "can't stand up", "neck injury",
+        "nevaru pakustināt", "nevaru pakustēties", "cant move", "не могу пошевел"
       ]
     }
   ],
