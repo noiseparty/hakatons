@@ -1,0 +1,88 @@
+id,nosaukums,adrese,telefons,epasts,parvalde,x,y
+76865,VUGD Talsu daļa,"Krišjāņa Valdemāra iela 94, Talsi",67439060,talsi@vugd.gov.lv,Kurzemes reģiona pārvalde,414396.68560000043,346496.1087999996
+76866,VUGD Dundagas postenis,"Bānīša iela 2, Dundaga",63242101,dundaga@vugd.gov.lv,Kurzemes reģiona pārvalde,401061.48319999967,374911.22849999927
+76867,VUGD Rojas postenis,"Bangu iela 2, Roja",67085995,roja@vugd.gov.lv,Kurzemes reģiona pārvalde,428742.93039999995,374169.12879999913
+76868,VUGD Liepājas 1. daļa,"Ganību iela 63/67, Liepāja",63404489,liepaja1@vugd.gov.lv,Kurzemes reģiona pārvalde,316585.00629999954,266032.11470000073
+76869,VUGD Aizputes postenis,"Ceriņu iela 8A, Aizpute",63448959,aizpute@vugd.gov.lv,Kurzemes reģiona pārvalde,353994.84130000044,288921.82799999975
+76870,VUGD Priekules postenis,"Galvenā iela 6, Priekule",67439072,priekule@vugd.gov.lv,Kurzemes reģiona pārvalde,351321.56149999984,258381.88489999995
+76871,VUGD Liepājas 2. daļa,"Pulvera iela 18, Liepāja",63404491,liepaja2@vugd.gov.lv,Kurzemes reģiona pārvalde,318102.67459999956,269938.1962000001
+76872,VUGD Kuldīgas daļa,"Lauku iela 40, Kuldīga",67439057,kuldiga@vugd.gov.lv,Kurzemes reģiona pārvalde,375698.76379999984,315359.4812000003
+76873,VUGD Alsungas postenis,"Skolas iela 24, Alsunga",67439078,alsunga@vugd.gov.lv,Kurzemes reģiona pārvalde,351599.12239999976,317525.62209999934
+76874,VUGD Skrundas postenis,"Ventas iela 2, Skrunda",67085996,skrunda@vugd.gov.lv,Kurzemes reģiona pārvalde,378820.89219999965,282773.5616999995
+76875,VUGD Saldus daļa,"Skrundas iela 28, Saldus",67439058,saldus@vugd.gov.lv,Kurzemes reģiona pārvalde,407217.4578,280588.31519999914
+76876,VUGD Ventspils daļa,"Inženieru iela 1, Ventspils",67439059,ventspils@vugd.gov.lv,Kurzemes reģiona pārvalde,353754.62210000027,362484.94150000066
+76877,VUGD Piltenes postenis,"Skolas iela 8, Piltene",63661595,piltene@vugd.gov.lv,Kurzemes reģiona pārvalde,359614.59690000024,344909.5724999998
+76878,VUGD 1. daļa,"Lastādijas iela 3, Rīga",67023510; 67075901,rrp1@vugd.gov.lv,Rīgas reģiona pārvalde,507176.5274,310966.1495999992
+76879,VUGD 2. daļa,"Jaunpils iela 13, Rīga",67209692,rrp2@vugd.gov.lv,Rīgas reģiona pārvalde,502630.67760000005,309393.2327999994
+76880,VUGD 3. daļa,"Matīsa iela 11, Rīga",67023530,rrp3@vugd.gov.lv,Rīgas reģiona pārvalde,507969.8334999997,312761.02859999985
+76881,VUGD 4. daļa,"Slokas iela 44, Jūrmala",67023594,rrp4@vugd.gov.lv,Rīgas reģiona pārvalde,486040.2034,313401.30030000024
+76882,VUGD Bulduru postenis,"Piestātnes iela 14A, Jūrmala",67023513,bulduri@vugd.gov.lv,Rīgas reģiona pārvalde,489365.3339999998,314839.5047999993
+76883,VUGD Slokas postenis,"Raiņa iela 3A, Jūrmala",67732400,sloka@vugd.gov.lv,Rīgas reģiona pārvalde,476826.37399999984,311026.7237999998
+76884,VUGD Ķemeru postenis,"Bišu iela 3A, Jūrmala",67765501,kemeri@vugd.gov.lv,Rīgas reģiona pārvalde,469454.4874999998,311171.8548000008
+76885,VUGD 5. daļa,"Slokas iela 66, Rīga",67023550,rrp5@vugd.gov.lv,Rīgas reģiona pārvalde,503734.36539999954,312764.08589999937
+76886,VUGD 6. daļa,"Vijciema iela 1, Rīga",67023560,rrp6@vugd.gov.lv,Rīgas reģiona pārvalde,510951.71690000035,315345.5337000005
+76887,VUGD 7. daļa,"Tvaika iela 7, Rīga",67023570,rrp7@vugd.gov.lv,Rīgas reģiona pārvalde,507084.65330000035,317323.84300000034
+76888,VUGD Jaunciema postenis,"Jaunciema gatve 167, Rīga","67023576, 67348761",jaunciems@vugd.gov.lv,Rīgas reģiona pārvalde,510514.3309000004,322603.80030000024
+76889,VUGD 8. daļa,"Krustpils iela 10, Rīga",67023580,rrp8@vugd.gov.lv,Rīgas reģiona pārvalde,511577.6297000004,308736.4000000004
+76890,VUGD Bolderājas postenis,"Lignuma iela 4A, Rīga","67023559, 67351133",rrpbolderaja.sp@vugd.gov.lv,Rīgas reģiona pārvalde,503758.65419999976,320086.29759999923
+76891,VUGD Saulkrastu daļa,"Rīgas iela 86B, Saulkrasti",67023537,saulkrasti@vugd.gov.lv,Rīgas reģiona pārvalde,524851.1260000002,345280.41420000046
+76892,VUGD Olaines daļa,"Rīgas iela 14, Olaine","67023539, 67965051",olaine@vugd.gov.lv,Rīgas reģiona pārvalde,496265.69460000005,294666.2048000004
+76893,VUGD Ogres daļa,"Rīgas iela 4, Ogre","67023592, 65035967",ogre@vugd.gov.lv,Rīgas reģiona pārvalde,536756.0506999996,296782.4770999998
+76894,VUGD Ķeipenes postenis,"Plauži, Ķeipenes pag.",65033630,keipene.sp@vugd.gov.lv,Rīgas reģiona pārvalde,575867.1738999998,305139.41899999976
+76895,VUGD Siguldas daļa,"Depo iela 1, Sigulda","67023536, 67971390",sigulda@vugd.gov.lv,Rīgas reģiona pārvalde,552094.2759999996,334264.3258999996
+76896,VUGD Baldones postenis,"Pārupes iela 15, Baldone","67023538, 67917707",baldone@vugd.gov.lv,Rīgas reģiona pārvalde,524071.59130000044,288311.6157000009
+76897,VUGD Daugavpils 1.daļa,"Siguldas iela 20, Daugavpils",67439026; 67439006,daugavpils1@vugd.gov.lv,Latgales reģiona pārvalde,660104.2474999996,195139.33579999954
+76898,VUGD Ādažu daļa,Ādažu sils,67086231,adazi@vugd.gov.lv,Rīgas reģiona pārvalde,522643.4369000001,328520.5413000006
+76899,VUGD Daugavpils 3.daļa,"Vasarnīcu iela 20A, Daugavpils",67439006; 65431026,daugavpils3@vugd.gov.lv,Latgales reģiona pārvalde,662128.5067999996,197670.57120000012
+76900,VUGD Daugavpils 2.daļa,"Piekrastes iela 23, Daugavpils",65430854,daugavpils2@vugd.gov.lv,Latgales reģiona pārvalde,658194.3404000001,197653.34979999997
+76901,VUGD Ilūkstes postenis,"Raiņa iela 21, Ilūkste",67439017,ilukste@vugd.gov.lv,Latgales reģiona pārvalde,642519.9848999996,205794.24110000022
+76902,VUGD Višķu postenis,"24A, Višķu tehnikums",65432330,viski@vugd.gov.lv,Latgales reģiona pārvalde,672072.7582999999,216360.4285000004
+76903,VUGD Balvu daļa,"Ezera iela 37, Balvi",64501688,balvi@vugd.gov.lv,Latgales reģiona pārvalde,698598.7355000004,336994.2368000001
+76904,VUGD Tilžas postenis,"Raiņa iela 21, Tilža",64520181,tilza@vugd.gov.lv,Latgales reģiona pārvalde,704734.1917000003,311537.04590000026
+76905,VUGD Viļakas postenis,"Tautas iela 13, Viļaka",64522991,vilaka@vugd.gov.lv,Latgales reģiona pārvalde,721976.6211999999,343449.06159999967
+76906,VUGD Krāslavas daļa,"Rīgas iela 104, Krāslava",65681690,kraslava@vugd.gov.lv,Latgales reģiona pārvalde,698360.9691000003,198389.3038999997
+76907,VUGD Dagdas postenis,"Daugavpils iela 16A, Dagda",67439018,dagda@vugd.gov.lv,Latgales reģiona pārvalde,719497.6260000002,222013.75510000065
+76908,VUGD Preiļu daļa,"Aglonas iela 20, Preiļi",67439029; 67439010,preili@vugd.gov.lv,Latgales reģiona pārvalde,668897.0104999999,241921.30709999986
+76909,VUGD Līvānu daļa,"Rīgas iela 2S, Līvāni",67439001,livani@vugd.gov.lv,Latgales reģiona pārvalde,634868.5148999998,245992.14570000023
+76910,VUGD Rēzeknes daļa,"Skolas iela 1, Rēzekne",64624366,rezekne@vugd.gov.lv,Latgales reģiona pārvalde,704782.5372000001,268041.8353000004
+76911,VUGD Maltas postenis,"1. maija iela 37, Malta",64634001,malta@vugd.gov.lv,Latgales reģiona pārvalde,695191.0455,248850.96829999983
+76912,VUGD Viļānu postenis,"Rīgas iela 53A, Viļāni",67023578,vilani@vugd.gov.lv,Latgales reģiona pārvalde,679882.3505999995,272767.17870000005
+76913,VUGD Ludzas daļa,"Skolas iela 39, Ludza",65707163,ludza@vugd.gov.lv,Latgales reģiona pārvalde,728590.3602,272694.36280000024
+76914,VUGD Kārsavas postenis,"Stacijas iela 12, Kārsava",65733001,karsava@vugd.gov.lv,Latgales reģiona pārvalde,724456.6096999999,299903.41000000015
+76915,VUGD Zilupes postenis,"Meža iela 9, Zilupe",65723001; 65722211,zilupe@vugd.gov.lv,Latgales reģiona pārvalde,754295.5067999996,256869.24799999967
+76916,VUGD Jelgavas daļa,"Dobeles iela 16, Jelgava",67437544; 63037569,jelgava@vugd.gov.lv,Zemgales reģiona pārvalde,482753.0292999996,278937.63749999925
+76917,VUGD Elejas postenis,"Bauskas iela 1, Eleja",63061101,eleja@vugd.gov.lv,Zemgales reģiona pārvalde,480630.0131999999,252384.0725999996
+76918,VUGD Kalnciema postenis,"Lielupes iela 1, Kalnciems",63069200,kalnciems@vugd.gov.lv,Zemgales reģiona pārvalde,476646.93759999983,295053.2131999992
+76919,VUGD Aizkraukles daļa,"Dārza iela 9, Aizkraukle",65124035,aizkraukle@vugd.gov.lv,Zemgales reģiona pārvalde,576162.807,273168.0119000003
+76920,VUGD Jaunjelgavas postenis,"Lauku iela 6B, Jaunjelgava",65152303,jaunjelgava@vugd.gov.lv,Zemgales reģiona pārvalde,565948.7741,274776.90850000083
+76921,VUGD Neretas postenis,"Kalēju iela 45, Nereta",65176101,nereta@vugd.gov.lv,Zemgales reģiona pārvalde,581286.5713,229778.75620000064
+76922,VUGD Pļaviņu postenis,"Atvaru iela 5, Pļaviņas",65134101,plavinas@vugd.gov.lv,Zemgales reģiona pārvalde,606796.1423000004,276203.3577999994
+76923,VUGD Bauskas daļa,"Skolas iela 17, Bauska",63960602,bauska@vugd.gov.lv,Zemgales reģiona pārvalde,511303.2882000003,251010.6333000008
+76924,VUGD Iecavas postenis,"Baldones iela 65A, Iecava",67439122; 63941001,iecava@vugd.gov.lv,Zemgales reģiona pārvalde,513629.56909999996,273125.6556000002
+76925,VUGD Vecumnieku postenis,"Bauskas iela 3, Vecumnieki",63976232,vecumnieki@vugd.gov.lv,Zemgales reģiona pārvalde,531942.5319999997,273599.1910999995
+76926,VUGD Dobeles daļa,"Brīvības iela 7A, Dobele",67439110,dobele@vugd.gov.lv,Zemgales reģiona pārvalde,455678.92370000016,275871.81829999946
+76927,VUGD Auces postenis,"Bēnes iela 8, Auce",63745501,auce@vugd.gov.lv,Zemgales reģiona pārvalde,432311.5943999998,258457.3275000006
+76928,VUGD Jēkabpils daļa,"Bebru iela 100, Jēkabpils",67439111,jekabpils@vugd.gov.lv,Zemgales reģiona pārvalde,616419.5542000001,262368.27520000003
+76929,VUGD Aknīstes postenis,"Saltupes iela 7, Aknīste",65266101,akniste@vugd.gov.lv,Zemgales reģiona pārvalde,608144.1355999997,225800.35620000027
+76930,VUGD Viesītes postenis,"Smilšu iela 39T, Viesīte",67439131,viesite@vugd.gov.lv,Zemgales reģiona pārvalde,597291.5031000003,245454.8389999997
+76931,VUGD Tukuma daļa,"J. Raiņa iela 24, Tukums",63107314; 63107317,tukums@vugd.gov.lv,Zemgales reģiona pārvalde,448494.7122999998,314120.2874999996
+76932,VUGD Kandavas postenis,"Ūdenstornis Liepās, Kandava",67439133,kandava@vugd.gov.lv,Zemgales reģiona pārvalde,425333.26049999986,323147.53390000015
+76933,VUGD Valmieras daļa,"Tērbatas iela 9, Valmiera",64233478,valmiera@vugd.gov.lv,Vidzemes reģiona pārvalde,585435.8176999995,378610.46660000086
+76934,VUGD Rūjienas postenis,"Ganību iela 6, Rūjiena",64263001,rujiena@vugd.gov.lv,Vidzemes reģiona pārvalde,578495.9800000004,418179.1833999995
+76935,VUGD Mazsalacas postenis,"Rīgas iela 3, Mazsalaca",64251001,mazsalaca@vugd.gov.lv,Vidzemes reģiona pārvalde,562840.1220000004,413345.81079999916
+76936,VUGD Alūksnes daļa,"Ziemeru iela 4, Alūksne",64301498,aluksne@vugd.gov.lv,Vidzemes reģiona pārvalde,681739.5206000004,369761.3019999992
+76937,VUGD Apes postenis,"Dzirnavu iela 2A, Ape",64381401,ape@vugd.gov.lv,Vidzemes reģiona pārvalde,661237.8106000004,380567.20600000024
+76938,VUGD Jaunpiebalgas postenis,"Brāļu Kaudzīšu iela 9, Jaunpiebalga",64162101,jaunpiebalga@vugd.gov.lv,Vidzemes reģiona pārvalde,622900.6218999997,339318.41139999963
+76939,VUGD Gulbenes daļa,"Brīvības iela 42, Gulbene",67439184,gulbene@vugd.gov.lv,Vidzemes reģiona pārvalde,666492.5658,339466.4855000004
+76940,VUGD Limbažu daļa,"Noliktavu iela 1, Limbaži",64023601,limbazi@vugd.gov.lv,Vidzemes reģiona pārvalde,543581.0565999998,374618.9779000003
+76941,VUGD Salacgrīvas postenis,"Vidzemes iela 31, Salacgrīva",64233483,salacgriva@vugd.gov.lv,Vidzemes reģiona pārvalde,521553.48220000044,400255.02720000036
+76942,VUGD Alojas postenis,"Jūras iela 34, Aloja",64031101,aloja@vugd.gov.lv,Vidzemes reģiona pārvalde,552153.5595000004,403176.69999999925
+76943,VUGD Madonas daļa,"Skolas iela 44, Madona",67439188,madona@vugd.gov.lv,Vidzemes reģiona pārvalde,634198.8804000001,303611.2620000001
+76944,VUGD Cesvaines postenis,"Kraukļu depo, Kraukļi",67439183,cesvaine@vugd.gov.lv,Vidzemes reģiona pārvalde,640228.6172000002,321042.3763999995
+76945,VUGD Ērgļu postenis,"Rīgas iela 20, Ērgļi",64871101,ergli@vugd.gov.lv,Vidzemes reģiona pārvalde,599717.0994999995,307186.5022
+76946,VUGD Lubānas postenis,"Oskara Kalpaka iela 8, Lubāna",64894001,lubana@vugd.gov.lv,Vidzemes reģiona pārvalde,665701.4374000002,309806.0538999997
+76947,VUGD Varakļānu postenis,"1. maija laukums 2, Varakļāni",64866601,varaklani@vugd.gov.lv,Vidzemes reģiona pārvalde,668920.3503999999,277432.8175000008
+76948,VUGD Valkas daļa,"Vienības gatve 11, Valka",67439170,valka@vugd.gov.lv,Vidzemes reģiona pārvalde,619910.3165999996,404513.26400000043
+76949,VUGD Smiltenes postenis,"Valkas iela 1A, Smiltene",67439194,smiltene@vugd.gov.lv,Vidzemes reģiona pārvalde,614152.5789999999,366798.51290000044
+76950,VUGD Strenču postenis,"Ugunsdzēsēju iela 12, Strenči",64731101,strenci@vugd.gov.lv,Vidzemes reģiona pārvalde,600704.2030999996,388762.71440000087
+76951,VUGD Cēsu daļa,"Ata Kronvalda iela 52, Cēsis",67439161,cesis@vugd.gov.lv,Vidzemes reģiona pārvalde,577556.2786999997,352200.0267999992

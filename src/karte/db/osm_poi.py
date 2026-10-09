@@ -1,4 +1,7 @@
-"""Interešu punkti no OpenStreetMap (Overpass API, ODbL) → src/karte/dati/osm_poi.geojson.
+"""Bankomāti un DUS no OpenStreetMap (Overpass API, ODbL) → src/karte/dati/osm_poi.geojson.
+
+Tikai tām kategorijām, kurām nav valsts atvērto datu (aptiekas, slimnīcas, policija, VUGD nāk no data.gov.lv:
+valsts_dati.py).
 
 Palaišana (lokāli vai VPS, tikai standarta bibliotēka):
   python src/karte/db/osm_poi.py
@@ -18,10 +21,6 @@ import urllib.request
 # kategorijas kods → OSM tags
 KATEGORIJAS = {
     "bankomats": ("amenity", "atm"),
-    "aptieka": ("amenity", "pharmacy"),
-    "slimnica": ("amenity", "hospital"),
-    "policija": ("amenity", "police"),
-    "ugunsdzeseji": ("amenity", "fire_station"),
     "degviela": ("amenity", "fuel"),
 }
 SERVERI = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
