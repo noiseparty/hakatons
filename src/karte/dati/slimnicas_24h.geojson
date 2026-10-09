@@ -1,0 +1,709 @@
+{
+ "type": "FeatureCollection",
+ "avots": "Veselības ministrijas 04.03.2026. rīkojums Nr. 01-01.1/26, Valsts katastrofu medicīnas plāna 12. pielikums",
+ "features": [
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.088059,
+     56.92198
+    ]
+   },
+   "properties": {
+    "nr": 1,
+    "nosaukums": "Valsts SIA \"Bērnu klīniskā universitātes slimnīca\"",
+    "adrese": "Vienības gatve 45, Rīga, LV-1004",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102021945"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.06594,
+     56.93138
+    ]
+   },
+   "properties": {
+    "nr": 2,
+    "nosaukums": "Valsts SIA \"Paula Stradiņa Klīniskā universitātes slimnīca\"",
+    "adrese": "Pilsoņu iela 13 k-15, Rīga, LV-1002",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "OSM node/9625153862 (PSKUS Neatliekamās medicīnas centrs)"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.24486,
+     56.96626
+    ]
+   },
+   "properties": {
+    "nr": 3,
+    "nosaukums": "SIA \"Rīgas Austrumu klīniskā universitātes slimnīca\"",
+    "adrese": "Hipokrāta iela 2, Rīga, LV-1079",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "OSM node/2530780593 (Neatliekamās medicīnas un pacientu uzņemšanas klīnika)"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.858937,
+     56.980645
+    ]
+   },
+   "properties": {
+    "nr": 4,
+    "nosaukums": "SIA \"Jūrmalas slimnīca\"",
+    "adrese": "Vienības prospekts 19/21, Jūrmala, LV-2010",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101747035"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.619728,
+     56.819598
+    ]
+   },
+   "properties": {
+    "nr": 5,
+    "nosaukums": "SIA \"Ogres rajona slimnīca\"",
+    "adrese": "Slimnīcas iela 2, Ogre, Ogres nov., LV-5001",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 104370383"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.156352,
+     56.969047
+    ]
+   },
+   "properties": {
+    "nr": 6,
+    "nosaukums": "SIA \"Tukuma slimnīca\"",
+    "adrese": "Raudas iela 8, Tukums, Tukuma nov., LV-3101",
+    "regions": "Rīgas",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101215093"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.099836,
+     56.552791
+    ]
+   },
+   "properties": {
+    "nr": 7,
+    "nosaukums": "SIA \"Liepājas reģionālā slimnīca\"",
+    "adrese": "Slimnīcas iela 25, Liepāja, LV-3414",
+    "regions": "Kurzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101082500"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.543825,
+     57.387105
+    ]
+   },
+   "properties": {
+    "nr": 8,
+    "nosaukums": "SIA \"Ziemeļkurzemes reģionālā slimnīca\"",
+    "adrese": "Inženieru iela 60, Ventspils, LV-3601",
+    "regions": "Kurzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102367634"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.955023,
+     56.961036
+    ]
+   },
+   "properties": {
+    "nr": 9,
+    "nosaukums": "SIA \"Kuldīgas slimnīca\"",
+    "adrese": "Aizputes iela 22, Kuldīga, Kuldīgas nov., LV-3301",
+    "regions": "Kurzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102220187"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.591912,
+     55.898366
+    ]
+   },
+   "properties": {
+    "nr": 10,
+    "nosaukums": "SIA \"Daugavpils reģionālā slimnīca\"",
+    "adrese": "Vasarnīcu iela 20, Daugavpils, LV-5417",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101810368"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.342848,
+     56.507909
+    ]
+   },
+   "properties": {
+    "nr": 11,
+    "nosaukums": "SIA \"Rēzeknes slimnīca\"",
+    "adrese": "18. novembra iela 41, Rēzekne, LV-4601",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101664848"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.72699,
+     56.291619
+    ]
+   },
+   "properties": {
+    "nr": 12,
+    "nosaukums": "SIA \"Preiļu slimnīca\"",
+    "adrese": "Raiņa bulvāris 13, Preiļi, Preiļu nov., LV-5301",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101332855"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.174831,
+     55.886701
+    ]
+   },
+   "properties": {
+    "nr": 13,
+    "nosaukums": "SIA \"Krāslavas slimnīca\"",
+    "adrese": "Rīgas iela 159, Krāslava, Krāslavas nov., LV-5601",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101491707"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.173725,
+     56.354345
+    ]
+   },
+   "properties": {
+    "nr": 14,
+    "nosaukums": "SIA \"Līvānu slimnīca\"",
+    "adrese": "Zaļā iela 44, Līvāni, Līvānu nov., LV-5316",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 103166533"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.714072,
+     56.542855
+    ]
+   },
+   "properties": {
+    "nr": 15,
+    "nosaukums": "SIA \"Ludzas medicīnas centrs\"",
+    "adrese": "Raiņa iela 43, Ludza, Ludzas nov., LV-5701",
+    "regions": "Latgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102599033"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.385004,
+     57.518104
+    ]
+   },
+   "properties": {
+    "nr": 16,
+    "nosaukums": "SIA \"Vidzemes slimnīca\"",
+    "adrese": "Jumaras iela 195, Valmiera, Valmieras nov., LV-4201",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101020353"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.236649,
+     56.851267
+    ]
+   },
+   "properties": {
+    "nr": 17,
+    "nosaukums": "Madonas novada pašvaldības SIA \"Madonas slimnīca\"",
+    "adrese": "Rūpniecības iela 38, Madona, Madonas nov., LV-4801",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101394545"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.25549,
+     57.14008
+    ]
+   },
+   "properties": {
+    "nr": 18,
+    "nosaukums": "SIA \"Balvu un Gulbenes slimnīcu apvienība\"",
+    "adrese": "Vidzemes iela 2, Balvi, Balvu nov., LV-4501",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101610980"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.255865,
+     57.315527
+    ]
+   },
+   "properties": {
+    "nr": 19,
+    "nosaukums": "SIA \"Cēsu klīnika\"",
+    "adrese": "Slimnīcas iela 9, Cēsis, Cēsu nov., LV-4101",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101579241"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     27.039639,
+     57.437378
+    ]
+   },
+   "properties": {
+    "nr": 20,
+    "nosaukums": "SIA \"Alūksnes slimnīca\"",
+    "adrese": "Pils iela 1, Alūksne, Alūksnes nov., LV-4301",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102338170"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.716871,
+     57.51533
+    ]
+   },
+   "properties": {
+    "nr": 21,
+    "nosaukums": "SIA \"Limbažu slimnīca\"",
+    "adrese": "Klostera iela 3, Limbaži, Limbažu nov., LV-4001",
+    "regions": "Vidzemes",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102188596"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.750238,
+     56.657248
+    ]
+   },
+   "properties": {
+    "nr": 22,
+    "nosaukums": "SIA \"Jelgavas pilsētas slimnīca\"",
+    "adrese": "Brīvības bulvāris 6, Jelgava, LV-3002",
+    "regions": "Zemgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101757720"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.841991,
+     56.497061
+    ]
+   },
+   "properties": {
+    "nr": 23,
+    "nosaukums": "SIA \"Jēkabpils reģionālā slimnīca\"",
+    "adrese": "Andreja Pormaļa iela 125, Jēkabpils, Jēkabpils nov., LV-5201",
+    "regions": "Zemgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101503558"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.269449,
+     56.622029
+    ]
+   },
+   "properties": {
+    "nr": 24,
+    "nosaukums": "SIA \"Dobeles un apkārtnes slimnīca\"",
+    "adrese": "Ādama iela 2, Dobele, Dobeles nov., LV-3701",
+    "regions": "Zemgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101550814"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.254246,
+     56.603151
+    ]
+   },
+   "properties": {
+    "nr": 25,
+    "nosaukums": "SIA \"Aizkraukles klīnika\"",
+    "adrese": "Bērzu iela 5, Aizkraukle, Aizkraukles nov., LV-5101",
+    "regions": "Zemgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101629741"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.192216,
+     56.408505
+    ]
+   },
+   "properties": {
+    "nr": 26,
+    "nosaukums": "SIA \"Bauskas slimnīca\"",
+    "adrese": "Dārza iela 7 k-1, Bauska, Bauskas nov., LV-3901",
+    "regions": "Zemgales",
+    "specializeta": false,
+    "piezime": "Neatliekamā medicīniskā palīdzība 24/7",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101099276"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.136918,
+     56.983294
+    ]
+   },
+   "properties": {
+    "nr": 27,
+    "nosaukums": "Valsts SIA \"Traumatoloģijas un ortopēdijas slimnīca\"",
+    "adrese": "Duntes iela 22, Rīga, LV-1005",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101826453"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.090712,
+     56.916603
+    ]
+   },
+   "properties": {
+    "nr": 28,
+    "nosaukums": "Rīgas pašvaldības SIA \"Rīgas 2. slimnīca\"",
+    "adrese": "Ģimnastikas iela 1, Rīga, LV-1004",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101835198"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.66773,
+     56.9591
+    ]
+   },
+   "properties": {
+    "nr": 29,
+    "nosaukums": "Valsts SIA \"Nacionālais rehabilitācijas centrs \"Vaivari\"\"",
+    "adrese": "Asaru prospekts 61, Jūrmala, LV-2008",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101705672"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.133275,
+     56.966652
+    ]
+   },
+   "properties": {
+    "nr": 30,
+    "nosaukums": "Rīgas pašvaldības SIA \"Rīgas Dzemdību nams\"",
+    "adrese": "Miera iela 45, Rīga, LV-1013",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101952902"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.122079,
+     56.994998
+    ]
+   },
+   "properties": {
+    "nr": 31,
+    "nosaukums": "Valsts SIA \"Nacionālais psihiskās veselības centrs\"",
+    "adrese": "Tvaika iela 2, Rīga, LV-1005",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102009786"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     25.697689,
+     57.627703
+    ]
+   },
+   "properties": {
+    "nr": 32,
+    "nosaukums": "Valsts SIA \"Strenču psihoneiroloģiskā slimnīca\"",
+    "adrese": "Valkas iela 11, Strenči, Valmieras nov., LV-4730",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 102678523"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     23.692467,
+     56.638022
+    ]
+   },
+   "properties": {
+    "nr": 33,
+    "nosaukums": "Valsts SIA \"Slimnīca \"Ģintermuiža\"\"",
+    "adrese": "Filozofu iela 69, Jelgava, LV-3008",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101159867"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     26.562374,
+     55.87748
+    ]
+   },
+   "properties": {
+    "nr": 34,
+    "nosaukums": "Valsts SIA \"Daugavpils psihoneiroloģiskā slimnīca\"",
+    "adrese": "Lielā Dārza iela 60/62, Daugavpils, LV-5417",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101800791"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.844321,
+     57.156721
+    ]
+   },
+   "properties": {
+    "nr": 35,
+    "nosaukums": "SIA \"Siguldas slimnīca\"",
+    "adrese": "Lakstīgalas iela 13, Sigulda, Siguldas nov., LV-2150",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101288413"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     20.99701,
+     56.49997
+    ]
+   },
+   "properties": {
+    "nr": 36,
+    "nosaukums": "VSIA \"Piejūras slimnīca\"",
+    "adrese": "Jūrmalas iela 2, Liepāja, LV-3401",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101694960"
+   }
+  },
+  {
+   "type": "Feature",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     24.356986,
+     57.86325
+    ]
+   },
+   "properties": {
+    "nr": 37,
+    "nosaukums": "VSIA \"Bērnu psihoneiroloģiskā slimnīca \"Ainaži\"\"",
+    "adrese": "Valdemāra iela 46, Ainaži, Limbažu nov., LV-4035",
+    "regions": "Specializētās",
+    "specializeta": true,
+    "piezime": "Neatliekamā palīdzība atbilstoši specializācijai",
+    "koord_avots": "VZD adrešu reģistrs, adreses kods 101437927"
+   }
+  }
+ ]
+}

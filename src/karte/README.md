@@ -19,6 +19,7 @@ Caddy (map.repo.lv) ──/api/*──► karte_api.py :8920 (hakatons-map-api.s
 | `db/ielade.py` | Ielādē GeoJSON vai CSV (lat/lon) kā vienu **avotu**; atkārtota ielāde aizvieto šī avota saturu. |
 | `db/osm_poi.py` | Bankomāti, aptiekas, slimnīcas, policija, ugunsdzēsēji, DUS no OpenStreetMap → `dati/osm_poi.geojson`. |
 | `dati/` | Ielādējamie faili (avota momentuzņēmumi). Nav publiski. |
+| `db/slimnicas_24h.py` | 37 slimnīcas ar 24/7 neatliekamo palīdzību (VM 04.03.2026. rīkojums, Valsts katastrofu medicīnas plāna 12. pielikums) → `dati/slimnicas_24h.geojson`. Koordinātas no VZD adrešu reģistra (`aw_eka.csv`), PSKUS un RAKUS — uzņemšanas ieeja no OSM. Adreses pārbaudītas; `atseviski_dati/hospitals.csv` koordinātas bija aptuvenas (līdz 118 km nobīde), tāpēc netiek lietotas. |
 | `api/karte_api.py` | API (Python standarta bibliotēka + psycopg). Galapunkti aprakstīti faila sākumā. |
 | `serveris/` | Caddy un systemd failu kopijas, kas uzstādītas VPS. |
 
@@ -48,6 +49,8 @@ Esošie avoti:
 python3 src/karte/db/ielade.py src/karte/dati/patvertnes.geojson --avots vugd-112 --kategorija patvertne \
     --id "{_nr}" --nosaukums "{veids}" --adrese "{iela} {nr}, {vieta}"
 python3 src/karte/db/ielade.py src/karte/dati/osm_poi.geojson --avots osm --nosaukums "{name}" --adrese "{adrese}"
+python3 src/karte/db/ielade.py src/karte/dati/slimnicas_24h.geojson --avots vm-24h --kategorija neatliekama_24h \
+    --id "{nr}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 bash src/karte/db/regioni.sh      # robežas (reizi mēnesī pietiek)
 ```
 
