@@ -13,6 +13,8 @@ Updated 2026-10-10 02:26. Almost everything is merged (`notes/stavoklis.md` has 
 
 ## Freeze (1 h before the pitch)
 
+- **One-command check** (morning and right before going on stage; also warms the caches): `uv run --no-project --python 3.12 --with playwright --with httpx src/testi/parbaude.py [--url https://map.repo.lv] [--screenshots ekr]` — API facts + demo path at 390×844 and 1280×800, red/green table, exit 1 on red.
+
 - No merges after the freeze. Every merge is live within ~1 min.
 - Warm the slow upstreams:
   - open map.repo.lv once (forecast cache);
