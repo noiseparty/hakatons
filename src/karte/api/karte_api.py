@@ -949,7 +949,12 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
      ("Publiskās patvertnes (112.lv)", "https://www.112.lv/lv/patvertnes", "Licence nav norādīta", None)),
     ("prognozes", "Laika prognoze", "Cik sena ir LVĢMC prognoze kartes lentē",
      ("LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
-      "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam", *_CC0)),
+      PROGNOZU_AVOTS["url"], *_CC0)),
+    ("zibens", "Zibens (pēdējās 30 min)", "FMI zibens novērojumi Latvijas apgabalā",
+     ("Ilmatieteen laitos (FMI) atvērtie dati", "https://en.ilmatieteenlaitos.fi/open-data",
+      "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
+    ("augsne", "Nokrišņi un augsnes mitrums", "Open-Meteo modeļa dati (pārbaude: Ogre)",
+     ("Open-Meteo", "https://open-meteo.com/", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
 ]
@@ -1008,7 +1013,13 @@ def _parb_pludi():
         "feature_count": 10,
     }
     url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
-    if "features" not in json.loads(_lejupieladet(url, timeout=STATUSS_TAIMAUTS)):
+    try:
+        atbilde = _lejupieladet(url, timeout=STATUSS_TAIMAUTS)
+    except Exception as e:
+        if _statuss_kluda(e).startswith("Neatbildēja"):  # lēns, bet strādājošs serviss (mēdz atbildēt 1–30 s)
+            return "traucejumi", f"Neatbildēja {STATUSS_TAIMAUTS} s laikā (serviss mēdz atbildēt lēni)"
+        raise
+    if "features" not in json.loads(atbilde):
         return "nedarbojas", "Atbildes formāts nav nolasāms"
     return "darbojas", None
 
@@ -1057,11 +1068,30 @@ def _parb_osm():
     return "darbojas", None
 
 
+def _parb_zibens():
+    # caur to pašu kešu kā /api/zibens (60 s): ne vairāk FMI pieprasījumu kā kartei
+    dati = _kesots("zibens_fmi", 60, _fmi_zibens)
+    vecums = (datetime.now(timezone.utc) - datetime.fromisoformat(dati["lidz"])).total_seconds()
+    if vecums > 300:  # _kesots atdeva veco vērtību: FMI neatbild
+        return "nedarbojas", f"FMI neatbild; pēdējie dati pirms {_laiks_pirms(vecums)}"
+    n = len(dati["zibeni"])
+    return "darbojas", (_skaits(n, "zibens", "zibeņi") + " Latvijā" if n else "Pēdējās 30 min zibens nav reģistrēts")
+
+
+def _parb_augsne():
+    # caur /api/augsne kešu (1 h vienai vietai): viens Open-Meteo pieprasījums stundā
+    dati = augsne({"lat": ["56.82"], "lon": ["24.6"]})
+    if dati["augsne"] is None:
+        return "traucejumi", "Augsnes mitruma vērtības nav"
+    return "darbojas", f"Ogrē augsne {dati['augsne']}, {dati['dienas_pagatne']} dienās {_skaitlis_lv(dati['nokrisni_pagatne_mm'])} mm"
+
+
 # kods → (pārbaude, virs cik ms "atbild lēni")
 STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
     "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
     "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
+    "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000),
     "osm": (_parb_osm, 5000),
 }
 
