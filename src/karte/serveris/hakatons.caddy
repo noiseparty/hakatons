@@ -1,0 +1,28 @@
+# Hackathon map (VARAM/LATA AI Open Data 2026, crisis track). Static files from the
+# production/ dir of github.com/noiseparty/hakatons, pulled every minute by
+# hakatons-sync.timer into /srv/hakatons. No login, public repo. Added 2026-10-09.
+# Copy of /etc/caddy/sites/hakatons.caddy (source of truth is this file in the repo).
+map.repo.lv {
+	# The map's "show nearest to me" needs geolocation on our own pages (common blocks it).
+	# Must come BEFORE `import common` and be deferred (>), so it is applied after common's header.
+	header >Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+	import common
+
+	# API: src/karte/api/karte_api.py (hakatons-map-api.service), Postgres db `map`.
+	handle /api/* {
+		reverse_proxy 127.0.0.1:8920
+	}
+
+	handle {
+		root * /srv/hakatons/production
+		try_files {path} {path}/ {path}.html
+		file_server
+	}
+	handle_errors 404 {
+		respond "map.repo.lv: nothing published yet (production/ in noiseparty/hakatons)" 404
+	}
+	log {
+		output file /var/log/caddy/hakatons.log
+		format console
+	}
+}

@@ -4,66 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Latvijas karte · map.repo.lv</title>
-<meta name="description" content="OpenStreetMap karte ar Latvijas publiskajām patvertnēm (VUGD / 112.lv).">
+<meta name="description" content="Patvertnes, bankomāti, aptiekas, slimnīcas un citi objekti Latvijas kartē, tuvākie tev.">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<style>
-  html, body { height: 100%; margin: 0; font-family: system-ui, sans-serif; color: #1c1917; }
-  body { display: flex; flex-direction: column; }
-  header { padding: .5rem .75rem; background: #fff; border-bottom: 1px solid #e7e5e4; display: flex; gap: .75rem; align-items: baseline; flex-wrap: wrap; }
-  header h1 { font-size: 1.05rem; margin: 0; }
-  header p { margin: 0; font-size: .85rem; color: #57534e; }
-  #karte { flex: 1; min-height: 0; }
-  .popup b { display: block; margin-bottom: .2rem; }
-  .popup small { color: #57534e; }
-</style>
+<link rel="stylesheet" href="stils.css">
 </head>
 <body>
 <header>
   <h1>Latvijas karte</h1>
-  <p id="statuss">Ielādē patvertnes…</p>
+  <p id="statuss" role="status">Ielādē…</p>
 </header>
-<div id="karte" role="application" aria-label="Latvijas karte"></div>
+<main>
+  <aside id="panelis">
+    <section id="vieta">
+      <button id="atrast" type="button">📍 Rādīt tuvākos man</button>
+      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot tavu atrašanās vietu. Tā netiek saglabāta.</p>
+    </section>
+
+    <section>
+      <label for="regions" class="virsraksts">Reģions vai pilsēta</label>
+      <select id="regions"><option value="">Visa Latvija</option></select>
+    </section>
+
+    <section>
+      <span class="virsraksts">Ko rādīt</span>
+      <div id="kategorijas"></div>
+    </section>
+
+    <section>
+      <span class="virsraksts" id="saraksts-virsraksts">Saraksts</span>
+      <ol id="saraksts"></ol>
+    </section>
+  </aside>
+  <div id="karte" role="application" aria-label="Karte"></div>
+</main>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script>
-  const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
-  const karte = L.map('karte', {
-    maxBounds: latvija.pad(0.3),
-    minZoom: 6,
-    preferCanvas: true
-  }).fitBounds(latvija);
-
-  const osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
-  }).addTo(karte);
-
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-
-  const patvertnes = L.geoJSON(null, {
-    pointToLayer: (_, ll) => L.circleMarker(ll, { radius: 6, color: '#fff', weight: 1.5, fillColor: '#b91c1c', fillOpacity: .9 }),
-    onEachFeature: (f, layer) => {
-      const p = f.properties;
-      const adrese = [p.iela, p.nr].filter(Boolean).join(' ');
-      layer.bindPopup(
-        '<div class="popup"><b>' + esc(p.veids || 'Patvertne') + '</b>' +
-        esc(adrese) + (adrese ? '<br>' : '') + '<small>' + esc(p.vieta) + '</small>' +
-        (p.komentars ? '<br><small>' + esc(p.komentars) + '</small>' : '') + '</div>'
-      );
-    }
-  }).addTo(karte);
-
-  L.control.layers({ 'OpenStreetMap': osm }, { 'Publiskās patvertnes': patvertnes }, { collapsed: false }).addTo(karte);
-  L.control.scale({ imperial: false }).addTo(karte);
-  karte.attributionControl.addAttribution('Patvertnes: <a href="https://www.112.lv/lv/patvertnes">VUGD / 112.lv</a>');
-
-  const statuss = document.getElementById('statuss');
-  fetch('dati/patvertnes.geojson')
-    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
-    .then(gj => { patvertnes.addData(gj); statuss.textContent = gj.features.length + ' publiskās patvertnes (VUGD / 112.lv)'; })
-    .catch(() => { statuss.textContent = 'Patvertņu datus neizdevās ielādēt.'; });
-</script>
+<script src="app.js"></script>
 </body>
 </html>
