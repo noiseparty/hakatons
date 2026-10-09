@@ -15,9 +15,12 @@ Palaišana (VPS):
 import argparse
 import csv
 import json
+import math
 import os
+import re
 import string
 import sys
+import unicodedata
 
 import psycopg
 from psycopg.types.json import Jsonb
@@ -63,6 +66,61 @@ def lasit(cels, args):
         yield ipasibas, float(lon), float(lat)
 
 
+def _norm(teksts):
+    teksts = unicodedata.normalize("NFKD", teksts or "").encode("ascii", "ignore").decode().lower()
+    return re.sub(r"[^a-z0-9]", "", teksts)
+
+
+def _sakrit(a, b, pa_dalam=False):
+    """Vai teksti nozīmē to pašu: vienādi bez garumzīmēm/pieturzīmēm, viens tukšs vai (adresei) viena
+    adreses daļas ir otras apakškopa ("Dikļi, Valmieras novads" ⊂ "Dikļi, Dikļu pagasts, Valmieras novads")."""
+    if not a or not b or _norm(a) == _norm(b):
+        return True
+    if not pa_dalam:
+        return False
+    da, db = ({_norm(x) for x in t.split(",")} - {""} for t in (a, b))
+    return da <= db or db <= da
+
+
+def apvienot_dublikatus(rindas, metri, srid):
+    """Izmet viena avota dublikātus: tā pati kategorija, ≤ metri, saderīgs nosaukums, adrese un (ja ir)
+    operator/brand.
+    Ja nosaukums un adrese ir burtiski vienādi un punkti nesakrīt (> 1 m), tās ir dažādas ēkas vienā
+    adresē (piem. 112.lv patvertnes) un paliek abas. Paliek punkts ar vairāk aizpildītām īpašībām."""
+
+    def attalums(r, s):
+        dx, dy = r[8] - s[8], r[9] - s[9]
+        if srid == 4326:
+            dx *= 111320 * math.cos(math.radians(r[9]))
+            dy *= 110540
+        return math.hypot(dx, dy)
+
+    def pilniba(r):
+        return (bool(r[1]), bool(r[2]), sum(v not in (None, "") for v in r[3].obj.values()))
+
+    ids = sorted(rindas, key=lambda k: pilniba(rindas[k]), reverse=True)
+    izmesti = {}
+    for i, a in enumerate(ids):
+        if a in izmesti:
+            continue
+        ra = rindas[a]
+        for b in ids[i + 1:]:
+            rb = rindas[b]
+            if b in izmesti or ra[0] != rb[0] or attalums(ra, rb) > metri:
+                continue
+            if not (_sakrit(ra[1], rb[1]) and _sakrit(ra[2], rb[2], pa_dalam=True)):
+                continue
+            if not all(_sakrit(ra[3].obj.get(k), rb[3].obj.get(k)) for k in ("operator", "brand")):
+                continue  # piem. SEB un Citadele bankomāti vienā vietā bez nosaukuma (OSM)
+            if ra[1] and ra[2] and (ra[1], ra[2]) == (rb[1], rb[2]) and attalums(ra, rb) > 1:
+                continue
+            izmesti[b] = a
+    for b, a in izmesti.items():
+        rindas[a][3].obj.setdefault("dublikati", []).append(b)
+        del rindas[b]
+    return len(izmesti)
+
+
 def main():
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("fails")
@@ -78,6 +136,8 @@ def main():
     p.add_argument("--atdalitajs", default=",", help="CSV atdalītājs")
     p.add_argument("--kodejums", default="utf-8-sig", help="CSV kodējums, piem. cp1257")
     p.add_argument("--srid", type=int, default=4326, help="koordinātu sistēma, piem. 3059 (LKS-92 TM: lon=x, lat=y)")
+    p.add_argument("--apvienot", type=float, default=0, metavar="M",
+                   help="apvienot dublikātus ≤ M metru attālumā (skat. apvienot_dublikatus); noklusēti izslēgts")
     p.add_argument("--dsn", default=os.environ.get("MAP_DB_OWNER_DSN"))
     args = p.parse_args()
     if not args.dsn:
@@ -103,6 +163,8 @@ def main():
         )
     if not rindas:
         sys.exit("Failā nav neviena derīga punkta Latvijā; nekas netika mainīts.")
+    if args.apvienot:
+        print(f"{args.avots}: {apvienot_dublikatus(rindas, args.apvienot, args.srid)} dublikāti apvienoti")
 
     with psycopg.connect(args.dsn) as conn, conn.cursor() as cur:
         cur.execute("create temp table jauni (like objekti including defaults) on commit drop")
