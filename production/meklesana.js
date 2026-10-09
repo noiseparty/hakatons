@@ -18,6 +18,7 @@ const krizesMeklesana = (() => {
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
   };
   let klasifikators = null;
+  let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
   let pedejais = null;          // { teksts, scenarijs } — atkārto, kad mainās atrašanās vieta vai reģions
   let pieprasijums = null;
   const rezultatuSlanis = L.layerGroup().addTo(karte);
@@ -30,6 +31,7 @@ const krizesMeklesana = (() => {
     try {
       const noteikumi = await (await fetch('scenariji.json')).json();
       klasifikators = Klasifikators.izveidot(noteikumi, regioniSaraksts);
+      talakGimenes = noteikumi.talak_gimenes || {};
     } catch {
       el('jautajums').disabled = true;
       el('jautajums').placeholder = 'Meklēšana nav pieejama';
@@ -182,7 +184,7 @@ const krizesMeklesana = (() => {
       (bezDatiem ? '<p class="piezime kluda">Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.</p>' : '');
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
-    const beigas = vaiDomaji + notiritPoga();
+    const beigas = talakBloks(galvenais) + vaiDomaji + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
     if (!galvenais && !kurTeksts) {
@@ -232,6 +234,16 @@ const krizesMeklesana = (() => {
     } catch (e) {
       if (e.name !== 'AbortError') kaste.innerHTML = galva + '<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>' + beigas;
     }
+  }
+
+  // "Kas notiks tālāk": kartītes noslēgums — ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz
+  function talakBloks(scenarijs) {
+    const soli = Array.isArray(scenarijs?.talak) ? scenarijs.talak : talakGimenes[scenarijs?.talak] || talakGimenes._;
+    if (!soli?.length) return '';
+    return '<div class="talak"><h3>Kas notiks tālāk</h3><ol>' + soli.map(t => {
+      const m = /^(Tagad|Tālāk):\s*/.exec(t);
+      return '<li>' + (m ? `<b>${m[1]}:</b> ${esc(t.slice(m[0].length))}` : esc(t)) + '</li>';
+    }).join('') + '</ol></div>';
   }
 
   // Specializētās slimnīcas (dzemdību nams, psihiatrija; ipasibas.specializeta) pēc vispārējām, citādi pēc attāluma.

@@ -215,3 +215,8 @@ strong.nē { color: var(--zals); }
   .prognozes.atverts { inset: 40% 0 18px 0; }  /* OSM atsauce apakšā paliek redzama */
   .prog-panelis { width: auto; height: 100%; border-radius: var(--radiuss) var(--radiuss) 0 0; }
 }
+
+/* "Kas notiks tālāk" — rezultāta kartītes noslēgums (meklesana.js, scenariji.json talak_gimenes) */
+.talak { margin: .8rem 0 .4rem; padding: .6rem .75rem; border-radius: var(--radiuss); background: var(--zils-gaiss); border-left: 4px solid var(--zils); }
+.talak h3 { margin: 0 0 .35rem; font-size: .95rem; color: var(--zils-tumss); }
+.talak ol { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .3rem; font-size: .86rem; line-height: 1.35; }
