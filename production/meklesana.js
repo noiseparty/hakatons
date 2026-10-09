@@ -17,8 +17,6 @@ const krizesMeklesana = (() => {
       el('jautajums').placeholder = 'Meklēšana nav pieejama';
       return;
     }
-    el('atras-pogas').innerHTML = klasifikators.scenariji.filter(s => s.atra_poga)
-      .map(s => `<button type="button" data-scenarijs="${esc(s.kods)}">${esc(s.atra_poga)}</button>`).join('');
     const q = new URLSearchParams(location.search).get('q');
     if (q) { el('jautajums').value = q; meklet(q); }
   }
@@ -27,12 +25,6 @@ const krizesMeklesana = (() => {
     e.preventDefault();
     const teksts = el('jautajums').value.trim();
     if (teksts) meklet(teksts); else notirit();
-  });
-  el('atras-pogas').addEventListener('click', e => {
-    const s = klasifikators?.scenariji.find(s => s.kods === e.target.closest('[data-scenarijs]')?.dataset.scenarijs);
-    if (!s) return;
-    el('jautajums').value = s.nosaukums;
-    meklet(s.nosaukums, s);
   });
   kaste.addEventListener('click', e => {
     const darbiba = e.target.closest('[data-darbiba]')?.dataset.darbiba;

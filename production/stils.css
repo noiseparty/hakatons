@@ -107,7 +107,7 @@ button.otra:hover { background: var(--zils-gaiss); }
 .atras-pogas { display: flex; flex-wrap: wrap; gap: 6px; }
 .atras-pogas button { width: auto; padding: .35rem .6rem; font-size: .85rem; border-radius: 999px; }
 .atras-pogas button:hover { background: var(--zils-gaiss); border-color: var(--zils); }
-#rezultati { margin-top: .75rem; border-top: 1px solid var(--robeza); padding-top: .6rem; }
+#meklesana:has(#rezultati[hidden]) { display: none; }  /* bez rezultātiem sadaļa paslēpta */
 .zvanit112 { display: block; text-align: center; padding: .75rem; border-radius: var(--radiuss); background: var(--sarkans); color: #fff; font-size: 1.15rem; font-weight: 700; text-decoration: none; }
 .sapratu { margin: .6rem 0 .3rem; font-size: .9rem; }
 .padoms { margin: .3rem 0; padding: .45rem .6rem; font-size: .85rem; background: var(--zils-gaiss); border-left: 3px solid var(--zils); border-radius: 4px; }
