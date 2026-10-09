@@ -345,3 +345,19 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .meklet-rinda .runa-valodas button { width: 100%; min-height: 44px; text-align: left; background: none; color: var(--teksts); border-color: transparent; font-weight: 400; }
 .meklet-rinda .runa-valodas button[aria-checked="true"] { font-weight: 700; background: var(--zils-gaiss); }
 .runa-valodas p { margin: .3rem .2rem 0; font-size: .75rem; color: var(--teksts2); background: none; padding: 0; border-radius: 0; }
+/* ==== Saraksts (saraksts.js): kartes objekti kā teksta saraksts ==== */
+.saraksts-poga { margin: 0 0 .5rem; }
+.saraksts-dialogs { width: min(560px, calc(100vw - 16px)); max-height: calc(100dvh - 16px); padding: 0; border: 0; border-radius: var(--radiuss); box-shadow: 0 8px 32px rgba(0, 0, 0, .3); }
+.saraksts-dialogs::backdrop { background: rgba(0, 0, 0, .45); }
+.saraksts-galva { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .6rem .85rem; background: var(--zils); color: #fff; }
+.saraksts-galva h2 { margin: 0; font-size: 1.05rem; color: #fff; }
+.saraksts-aizvert { width: 44px; height: 44px; flex: none; padding: 0; font-size: 1.1rem; background: transparent; color: #fff; border-color: rgba(255, 255, 255, .5); }
+.saraksts-dialogs > .piezime { margin: .6rem .85rem 0; }
+.saraksts-ul { list-style: none; margin: 0; padding: 0 .85rem; }
+.saraksts-ul li { padding: .7rem 0; border-bottom: 1px solid var(--robeza); }
+.saraksts-ul h3 { margin: 0; font-size: 1rem; }
+.saraksts-ul p { margin: .15rem 0 0; font-size: .9rem; }
+.saraksts-meta { color: var(--teksts2); }
+.saraksts-ul .marsruts, .saraksts-ul .popup-avots { display: block; margin-top: .3rem; }
+.saraksts-karte { width: auto; margin-top: .45rem; min-height: 44px; }
+.saraksts-vel { display: block; width: calc(100% - 1.7rem); margin: .6rem .85rem .85rem; min-height: 44px; }
