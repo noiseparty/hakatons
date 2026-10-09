@@ -11,6 +11,7 @@ Galapunkti:
                                        adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
   GET /api/bridinajumi?lat=..&lon=..   LVĢMC hidrometeoroloģiskie brīdinājumi (spēkā esošie); ar lat/lon —
                                        vai brīdinājums attiecas uz šo vietu (attiecas)
+                                       ?poligoni=1 — arī brīdinājumu apgabali [[lat, lon], ...] (zonas.js)
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
   GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
@@ -321,13 +322,14 @@ def _punkts_poligona(lat, lon, poligons):
 
 def bridinajumi(q):
     lat, lon = _vieta(q, obligata=False)
+    ar_poligoniem = q.get("poligoni", [""])[0] == "1"  # zonas.js zīmē brīdinājumu apgabalus kartē
     tagad = _riga_tagad()
     rez = []
     for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
         if b["lidz"] and b["lidz"] < tagad:
             continue
         rez.append({
-            **{k: v for k, v in b.items() if k != "poligoni"},
+            **{k: v for k, v in b.items() if k != "poligoni" or ar_poligoniem},
             "no": b["no"].isoformat() if b["no"] else None,
             "lidz": b["lidz"].isoformat() if b["lidz"] else None,
             "attiecas": any(_punkts_poligona(lat, lon, p) for p in b["poligoni"]) if lat is not None else None,

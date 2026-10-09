@@ -1,0 +1,272 @@
+{
+  "_apraksts": "Demo scenāriji (production/demo.js). Viss, ko scenārijs ieliek kartē, ir SIMULĀCIJA; tuvākās vietas (tuvakie, pelekot) ņem no īstajiem /api/objekti datiem. Zonas: aplis (centrs [lat, lon], radiuss_m; arpus_skata — neiekļaut kartes skatā), geojson (url) vai regioni (VZD robežas no /api/regioni). Pārskats par datiem: notes/demo-scenariji.md.",
+  "scenariji": [
+    {
+      "kods": "vejs",
+      "nosaukums": "Dzeltenais brīdinājums: stiprs vējš",
+      "ikona": "💨",
+      "isi": "Kurzemes piekraste, brāzmas līdz 20 m/s",
+      "vieta": { "lat": 56.5075, "lon": 21.0115, "nosaukums": "Liepāja, centrs" },
+      "bridinajums": {
+        "limenis": 1, "paradiba": "Stiprs vējš", "lidz_h": 12,
+        "regioni": ["100003044", "100016495", "100003060", "100016333"],
+        "teksts": "Kurzemes piekrastē dienvidrietumu vējš, brāzmās 15–20 m/s.",
+        "riski": "Var lūzt koku zari, tikt bojāti vadi un izkārtnes. Iespējami īslaicīgi elektroapgādes traucējumi."
+      },
+      "slani": null,
+      "notiek": [
+        "LVĢMC izsludinājis dzelteno brīdinājumu par stipru vēju Kurzemes piekrastē (simulācija).",
+        "Brāzmas līdz 20 m/s: lūzt zari, var pārtrūkt vadi, jūrā augsti viļņi."
+      ],
+      "darit": [
+        "Nostipriniet vai ienesiet telpās balkona un pagalma priekšmetus.",
+        "Neatstājiet automašīnu zem kokiem; parkos un mežā tagad neejiet.",
+        "Turieties tālāk no jūras krasta un moliem.",
+        "Uzlādējiet telefonu un sagatavojiet lukturīti, ja pazūd elektrība.",
+        "Nokritušam vadam nepieskarieties un neejiet tuvāk par 10 m; ziņojiet Sadales tīklam (8404)."
+      ],
+      "zvanit112": "teksts",
+      "avoti": ["bridinajumi", "regioni"]
+    },
+    {
+      "kods": "vetra",
+      "nosaukums": "Sarkanais brīdinājums: vētra",
+      "ikona": "🌪️",
+      "isi": "Rīga, Jūrmala, Mārupe; brāzmas 30+ m/s",
+      "vieta": { "lat": 56.9496, "lon": 24.1052, "nosaukums": "Rīga, Vecrīga" },
+      "bridinajums": {
+        "limenis": 3, "paradiba": "Vētra", "lidz_h": 8,
+        "regioni": ["100003003", "100003036", "100016583"],
+        "teksts": "Rietumu vētra, brāzmās 28–33 m/s. Stipras lietusgāzes, pērkona negaiss.",
+        "riski": "Bīstami dzīvībai: krīt koki un būvju daļas, bojāti jumti, plaši elektroapgādes un sakaru pārtraukumi, slēgti ceļi."
+      },
+      "slani": ["patvertne", "neatliekama_24h"],
+      "notiek": [
+        "LVĢMC izsludinājis sarkano brīdinājumu par vētru Rīgā un Pierīgā (simulācija).",
+        "Brāzmas virs 30 m/s: krīt koki, tiek norauti jumti, plaši nav elektrības."
+      ],
+      "darit": [
+        "Palieciet telpās, prom no logiem. Ja māja nav droša, dodieties uz tuvāko patvertni (zemāk) tagad, pirms vētras pīķa.",
+        "Nebrauciet, ja nav obligāti: ceļus aizšķērso koki.",
+        "Atvienojiet elektroierīces no tīkla; sagatavojiet ūdeni, lukturīti, radio uz baterijām.",
+        "Ja kāds ievainots vai iesprostots, zvaniet 112.",
+        "Nokritušam vadam nepieskarieties un neejiet tuvāk par 10 m."
+      ],
+      "tuvakie": [
+        { "kategorija": "patvertne", "nos": "Tuvākā patvertne", "ikona": "🛡️" },
+        { "kategorija": "izmitinasana", "nos": "Izmitināšanas vieta (pašvaldības CA plāns)", "ikona": "🏠" },
+        { "kategorija": "neatliekama_24h", "nos": "24/7 neatliekamā palīdzība", "ikona": "🏥" }
+      ],
+      "zvanit112": "teksts",
+      "avoti": ["bridinajumi", "regioni", "objekti"]
+    },
+    {
+      "kods": "drons",
+      "nosaukums": "Drona novērojums pilsētā",
+      "ikona": "🛸",
+      "isi": "Rēzekne: slēgta zona 1 km rādiusā",
+      "vieta": { "lat": 56.5085, "lon": 27.3335, "nosaukums": "Jūsu vieta (Rēzekne)" },
+      "bridinajums": {
+        "limenis": 3, "paradiba": "Gaisa telpas apdraudējums", "lidz_h": 2, "vards": "Brīdinājums",
+        "teksts": "Rēzeknē novērots nezināms bezpilota lidaparāts. Zona 1 km rādiusā slēgta.",
+        "riski": "Neejiet tuvāk, nefilmējiet, nepieskarieties atlūzām. Sekojiet šūnu apraides ziņām un 112.lv."
+      },
+      "zonas": [
+        { "id": "zona", "tips": "aplis", "centrs": [56.5105, 27.3325], "radiuss_m": 1000, "krasa": "#b91c1c",
+          "nosaukums": "Slēgtā zona", "apraksts": "Drona novērojuma vieta, 1 km rādiuss. Izvairieties no zonas." }
+      ],
+      "markieri": [
+        { "lat": 56.5105, "lon": 27.3325, "ikona": "🛸", "nosaukums": "Drona novērojuma vieta" }
+      ],
+      "slani": ["patvertne"],
+      "notiek": [
+        "Rēzeknes centrā novērots nezināms drons; policija un VUGD slēguši zonu 1 km rādiusā (simulācija).",
+        "Jūs atrodaties zonas iekšpusē."
+      ],
+      "darit": [
+        "Izvairieties no zonas: virzieties prom no tās centra, pa ielām, nevis cauri zonai.",
+        "Ejiet uz tuvāko patvertni ārpus zonas (zemāk, ar maršrutu). Ja nevarat, ejiet telpās, iekšējā telpā bez logiem.",
+        "Nefilmējiet un neejiet tuvāk; drona atlūzām nepieskarieties, ziņojiet 112.",
+        "Sekojiet šūnu apraides ziņām, 112.lv un Latvijas Radio 1."
+      ],
+      "tuvakie": [
+        { "kategorija": "patvertne", "nos": "Tuvākā patvertne ārpus zonas", "ikona": "🛡️", "arpus": ["zona"], "prom_no": "zona", "linija": true, "limit": 60 }
+      ],
+      "fakti": [
+        { "ikona": "📰", "virsraksts": "Tā jau ir noticis", "teksts": "2026. gada 7. maija naktī Rēzeknē, Komunālajā ielā, naftas bāzē nokrita divi droni; maijā šūnu apraides brīdinājumi skāra vairākus austrumu novadus, un 112.lv uz brīdi nebija pieejams pārslodzes dēļ.",
+          "avots": { "nos": "LSM, 23.05.2026", "url": "https://www.lsm.lv/raksts/zinas/latvija/23.05.2026-sunapraides-bridinajumu-prblemu-del-secina-112lv-lietotnes-uzlabosanai-vajag-vel-600-000-eiro.a648459/" } }
+      ],
+      "zvanit112": "teksts",
+      "avoti": ["objekti"]
+    },
+    {
+      "kods": "nakts",
+      "nosaukums": "Naktī sagriezta roka",
+      "ikona": "🩹",
+      "isi": "Plkst. 03:00, Saulkrasti: kur ir 24/7 palīdzība",
+      "laiks": "03:00",
+      "vieta": { "lat": 57.2621, "lon": 24.4135, "nosaukums": "Jūsu vieta (Saulkrasti)" },
+      "slani": ["neatliekama_24h"],
+      "notiek": [
+        "Ir 03:00. Jūs dziļi sagriezāt roku; brūce asiņo.",
+        "Aptiekas un ģimenes ārsts naktī nestrādā; vajag 24/7 neatliekamās palīdzības nodaļu."
+      ],
+      "darit": [
+        "Nospiediet brūci ar tīru drānu vai pārsēju un turiet stingri 10 minūtes, neatlaižot.",
+        "Paceliet roku virs sirds līmeņa. Ja asinis izsūcas cauri, uzlieciet vēl vienu drānu virsū, pirmo nenoņemot.",
+        "Dziļai vai plīsušai brūcei vajag ārstu: šuves labāk uzlikt dažu stundu laikā. Brauciet uz 24/7 nodaļu (zemāk); paši pie stūres nesēdieties.",
+        "Ja šaubāties, ģimenes ārstu konsultatīvais tālrunis 66016001 strādā visu diennakti."
+      ],
+      "draudi": "Ja asiņošana neapstājas pēc 10 minūšu spiediena, asinis šļācas vai cilvēks kļūst bāls un vārgs, zvaniet 112.",
+      "tuvakie": [
+        { "kategorija": "neatliekama_24h", "nos": "Tuvākā 24/7 neatliekamā palīdzība", "ikona": "🏥", "linija": true }
+      ],
+      "slegtas": { "kategorija": "aptieka", "n": 4, "teksts": "Naktī, visticamāk, slēgta. Darba laiks nav atvērtajos datos." },
+      "avoti": ["objekti"]
+    },
+    {
+      "kods": "pludi-ogre",
+      "nosaukums": "Plūdi Ogrē: kur ir augstāka vieta",
+      "ikona": "🌊",
+      "isi": "Daugava un Ogre kāpj; augstākās vietas no reljefa",
+      "vieta": { "lat": 56.8139, "lon": 24.6093, "nosaukums": "Ogre, Brīvības iela" },
+      "bridinajums": {
+        "limenis": 2, "paradiba": "Plūdi", "lidz_h": 24,
+        "regioni": ["100003470", "100016688"],
+        "teksts": "Ogres upē un Daugavā strauji ceļas ūdens līmenis; zemākās teritorijas var applūst.",
+        "riski": "Applūst ielas un pagrabi, var tikt slēgti ceļi un tilti. Elektroapgādes traucējumi."
+      },
+      "zonas": [
+        { "id": "augstumi", "tips": "geojson", "url": "demo/augstumi-ogre.geojson", "krasa": "#16a34a",
+          "nosaukums": "Augstākā vieta", "apraksts": "Reljefs ≥ 23 m virs jūras līmeņa: ~5 m virs Daugavas ūdens Ogrē (~18 m). LĢIA digitālais reljefa modelis." }
+      ],
+      "pludi": true,
+      "slani": ["evakuacijas_punkts", "izmitinasana", "udens_limenis"],
+      "notiek": [
+        "Pēc stipra lietus Ogres upē un Daugavā ceļas ūdens līmenis (simulācija).",
+        "Zilā krāsā: LVĢMC plūdu riska zonas. Zaļā krāsā: vietas ≥ 23 m virs jūras līmeņa, ~5 m virs Daugavas ūdens (LĢIA reljefa modelis)."
+      ],
+      "darit": [
+        "Ja māja ir plūdu riska zonā, dodieties uz augstāku vietu (zaļā) vai pulcēšanās vietu pirms ūdens kāpj.",
+        "Neejiet un nebrauciet pa applūdušu ielu: 30 cm straujš ūdens var aiznest automašīnu.",
+        "Izslēdziet elektrību un gāzi, ja ūdens tuvojas mājai; dokumentus un zāles ņemiet līdzi.",
+        "Ja nevarat izkļūt paši, zvaniet 112 un lūdziet palīdzību evakuācijā."
+      ],
+      "tuvakie": [
+        { "kategorija": "evakuacijas_punkts", "nos": "Evakuācijas pulcēšanās vieta", "ikona": "🚩" },
+        { "kategorija": "izmitinasana", "nos": "Izmitināšanas vieta", "ikona": "🏠" },
+        { "kategorija": "udens_limenis", "nos": "Tuvākais upes līmeņa postenis", "ikona": "📏" }
+      ],
+      "zvanit112": "teksts",
+      "avoti": ["bridinajumi", "pludi", "dem", "objekti"]
+    },
+    {
+      "kods": "vetra-2026",
+      "nosaukums": "Vētra 22.–23.08.2026 (atkārtojums)",
+      "ikona": "⚡",
+      "isi": "Bauska: nav elektrības, nestrādā kartes un bankomāti",
+      "vieta": { "lat": 56.4085, "lon": 24.1925, "nosaukums": "Jūsu vieta (Bauska)" },
+      "bridinajums": {
+        "limenis": 3, "paradiba": "Vētra", "lidz_h": 6,
+        "regioni": ["100016575", "100003140"],
+        "teksts": "Atkārtojam 2026. gada 22.–23. augusta vētru. Brāzmas naktī virs 30 m/s.",
+        "riski": "Oficiālas informācijas par elektrības atjaunošanu Jūsu ielā nav. Šī simulācija rāda, ko lietotne Jums būtu teikusi."
+      },
+      "zonas": [
+        { "id": "bez-el-1", "tips": "aplis", "centrs": [56.4045, 24.1905], "radiuss_m": 2600, "krasa": "#44403c", "nosaukums": "Nav elektrības", "apraksts": "Bauska: elektroapgādes pārtraukums (simulācija)." },
+        { "id": "bez-el-2", "tips": "aplis", "centrs": [56.6005, 24.2120], "radiuss_m": 2400, "arpus_skata": true, "krasa": "#44403c", "nosaukums": "Nav elektrības", "apraksts": "Iecava: elektroapgādes pārtraukums (simulācija)." },
+        { "id": "bez-el-3", "tips": "aplis", "centrs": [56.4450, 24.2900], "radiuss_m": 4500, "krasa": "#44403c", "nosaukums": "Nav elektrības", "apraksts": "Lauku teritorija: elektroapgādes pārtraukums (simulācija)." }
+      ],
+      "linijas": [
+        { "koord": [[56.42536, 24.18342], [56.43409, 24.17781], [56.44468, 24.16619]], "nosaukums": "A7: koks pāri ceļam, slēgts (simulācija)" },
+        { "koord": [[56.3963, 24.15923], [56.39627, 24.15401], [56.39714, 24.13797]], "nosaukums": "P103: koki pāri ceļam, slēgts (simulācija)" },
+        { "koord": [[56.3669, 24.27657], [56.37427, 24.26812], [56.38054, 24.26102]], "nosaukums": "A7 uz Lietuvu: sastrēgums, koki (simulācija)" }
+      ],
+      "markieri": [
+        { "lat": 56.4343, "lon": 24.1778, "ikona": "🌳", "nosaukums": "Nokritis koks (simulācija)" },
+        { "lat": 56.3963, "lon": 24.1540, "ikona": "🌳", "nosaukums": "Nokritis koks (simulācija)" },
+        { "lat": 56.4146, "lon": 24.1825, "ikona": "🌳", "nosaukums": "Nokritis koks, Kalna iela (simulācija)" },
+        { "lat": 56.3743, "lon": 24.2681, "ikona": "🚗", "nosaukums": "Sastrēgums (simulācija)" }
+      ],
+      "slani": ["patvertne", "izmitinasana", "evakuacijas_punkts"],
+      "pelekot": [
+        { "kategorija": "bankomats", "nos": "Tuvākais strādājošais bankomāts", "ikona": "🏧", "teksts": "Nedarbojas: nav elektrības (simulācija)" },
+        { "kategorija": "degviela", "nos": "Tuvākā DUS ar elektrību", "ikona": "⛽", "teksts": "Nevar uzpildīt: nav elektrības (simulācija)" }
+      ],
+      "notiek": [
+        "Naktī vētra nogāza kokus uz vadiem: Bauskā, Iecavā un apkārtnē nav elektrības (simulācija pēc 22.–23.08.2026).",
+        "Nestrādā karšu terminālis veikalā, bankomāti un DUS sūkņi elektrības zonā (pelēkie punkti).",
+        "A7 un P103 aizšķērso koki; uz Rīgu un Lietuvu veidojas sastrēgumi.",
+        "Oficiālas informācijas, kad būs elektrība, nav; mobilais tīkls darbojas ar pārtraukumiem."
+      ],
+      "darit": [
+        "Paņemiet skaidru naudu tuvākajā strādājošajā bankomātā ārpus elektrības zonas (zemāk).",
+        "Ieslēdziet radio uz baterijām vai auto radio: Latvijas Radio 1 (Rīgā 90,7 FM).",
+        "Ledusskapi neatveriet bez vajadzības: aizvērts tas turēs aukstumu ~24 h.",
+        "Siltums un uzlāde: izmitināšanas vieta vai patvertne (zemāk).",
+        "Par nokritušiem vadiem ziņojiet Sadales tīklam (8404); 112 zvaniet tikai, ja apdraudēta dzīvība."
+      ],
+      "tuvakie": [
+        { "kategorija": "izmitinasana", "nos": "Silta vieta: izmitināšana (CA plāns)", "ikona": "🏠" },
+        { "kategorija": "patvertne", "nos": "Tuvākā patvertne", "ikona": "🛡️" }
+      ],
+      "fakti": [
+        { "ikona": "💨", "virsraksts": "Brāzmas virs 30 m/s", "teksts": "Naktī uz 23.08. brāzmas pārsniedza 30 m/s; bojājumi pārvades un sadales tīklā, vairāk Vidzemē un Latgalē.",
+          "avots": { "nos": "Sadales tīkls, 23.08.2026 (LV portāls)", "url": "https://lvportals.lv/dienaskartiba/393543-sadales-tikls-vetras-seku-likvidacija-iesaistitas-206-brigades-iedzivotaji-aicinati-zinot-par-bojajumiem-elektrolinijas-2026" } },
+        { "ikona": "🔌", "virsraksts": "~260 000 klientu bez elektrības", "teksts": "23.08. plkst. 13 bez elektrības ~245 000 klientu; kopā skarti ~260 000. Lielākie pārtraukumi: Bauskas, Krāslavas, Madonas, Rēzeknes, Jelgavas novadā. 26.08. rītā vēl ~11 000.",
+          "avots": { "nos": "LSM, 26.08.2026", "url": "https://eng.lsm.lv/article/economy/economy/26.08.2026-most-households-have-electricity-restored-after-storm-in-latvia.a660364/" } },
+        { "ikona": "🚒", "virsraksts": "3 080 izsaukumi VUGD", "teksts": "No 22.08. pusdienlaika līdz 24.08. plkst. 9: 3 080 izsaukumi par vētras postījumiem, visbiežāk koki pāri ceļiem. 1 bojāgājušais, 3 cietušie.",
+          "avots": { "nos": "VUGD, 24.08.2026 (LV portāls)", "url": "https://lvportals.lv/dienaskartiba/393556-brivdienas-sanemti-vairak-neka-3000-pieteikumi-uz-veja-raditiem-postijumiem-2026" } },
+        { "ikona": "⛽", "virsraksts": "Tikai ~70 no ~500 DUS ar ģeneratoru", "teksts": "Bez elektrības un sakariem nestrādāja DUS un karšu maksājumi; Saeimas komisija prasa rezerves barošanu un nacionālo viesabonēšanu.",
+          "avots": { "nos": "Saeimas Tautsaimniecības komisija (LV portāls)", "url": "https://lvportals.lv/dienaskartiba/394194-tautsaimniecibas-komisija-krizes-bridi-neviens-novads-nedrikst-palikt-bez-pieejas-degvielai-2026" } },
+        { "ikona": "📄", "virsraksts": "4 800 apdrošināšanas pieteikumu", "teksts": "Nedēļā pēc vētras: 4 800 atlīdzību pieteikumu, 8,05 milj. EUR rezervēti.",
+          "avots": { "nos": "Latvijas Apdrošinātāju asociācija, 28.08.2026 (LV portāls)", "url": "https://lvportals.lv/dienaskartiba/393792-apdrosinataji-pec-nedelas-nogales-vetras-sanemusi-jau-4800-atlidzibas-pieteikumu-2026" } }
+      ],
+      "zvanit112": "teksts",
+      "avoti": ["regioni", "objekti"]
+    },
+    {
+      "kods": "bez-sakariem",
+      "nosaukums": "Nav elektrības un mobilo sakaru",
+      "ikona": "📵",
+      "isi": "Visa pilsēta vai novads: ko darīt bezsaistē",
+      "regionu_izvele": ["100003003", "100003470", "100003140", "100003052", "100003044", "100003011", "100003807"],
+      "bez_sakariem": {
+        "nezinams": ["aptieka", "bankomats", "degviela", "udens_limenis"],
+        "doties": [
+          { "kategorija": "ugunsdzeseji", "nos": "VUGD depo: ziņot par nelaimi bez telefona", "ikona": "🚒", "n": 2 },
+          { "kategorija": "policija", "nos": "Policija", "ikona": "👮", "n": 1 },
+          { "kategorija": "neatliekama_24h", "nos": "24/7 neatliekamā palīdzība", "ikona": "🏥", "n": 1 },
+          { "kategorija": "evakuacijas_punkts", "nos": "Pulcēšanās vietas (CA plāns)", "ikona": "🚩", "n": 3 }
+        ]
+      },
+      "bridinajums": {
+        "limenis": 2, "paradiba": "Elektroapgādes un sakaru pārtraukums", "lidz_h": 48, "vards": "Brīdinājums",
+        "teksts": "Visā teritorijā nav elektrības un mobilo sakaru. Atjaunošanas laiks nav zināms.",
+        "riski": "Nestrādā karšu maksājumi, bankomāti, DUS, mobilais internets. Šī lapa bez interneta neatvērsies: izdrukājiet to tagad."
+      },
+      "slani": [],
+      "notiek": [
+        "Visā teritorijā nav elektrības un mobilo sakaru (simulācija).",
+        "Vai aptiekas, bankomāti un DUS strādā, nav zināms (pelēkie punkti ar „?”)."
+      ],
+      "darit": [
+        "Ieslēdziet radio uz baterijām vai auto radio: Latvijas Radio 1 (Rīgā 90,7 FM) ziņo oficiālo informāciju.",
+        "Taupiet telefona akumulatoru: lidmašīnas režīms, ieslēdziet reizi stundā. 112 var savienot arī caur cita operatora tīklu.",
+        "Ja telefons nestrādā un vajag palīdzību, ejiet uz tuvāko VUGD depo vai policiju (saraksts zemāk).",
+        "Ja jāatstāj māja, ejiet uz pašvaldības pulcēšanās vietu (saraksts zemāk).",
+        "Krājumi vismaz 3 dienām: 3 l ūdens dienā cilvēkam, pārtika bez gatavošanas, zāles, skaidra nauda."
+      ],
+      "druka": true,
+      "zvanit112": "teksts",
+      "avoti": ["regioni", "objekti"]
+    }
+  ],
+  "avoti": {
+    "bridinajumi": { "nos": "Brīdinājuma forma kā LVĢMC hidrometeoroloģiskajiem brīdinājumiem (teksts simulēts)", "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", "licence": "CC0" },
+    "regioni": { "nos": "Pašvaldību robežas: VZD Valsts adrešu reģistrs", "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati", "licence": "CC BY 4.0" },
+    "objekti": { "nos": "Tuvākās vietas: kartes datu bāze (avots un licence katras vietas logā)", "url": "", "licence": "" },
+    "pludi": { "nos": "LVĢMC plūdu riska kartes 2026–2031", "url": "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1", "licence": "CC0" },
+    "dem": { "nos": "LĢIA digitālais reljefa modelis 20 m", "url": "https://www.lgia.gov.lv/lv/digit%C4%81lais-reljefa-modelis", "licence": "CC BY 4.0" }
+  }
+}
