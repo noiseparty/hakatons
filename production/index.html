@@ -58,6 +58,9 @@
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
         <span class="punkts" style="background:#38bdf8"></span>Plūdu riska zonas (LVĢMC, 1 % un 10 %)</label>
+      <label class="kat parklajums"><input type="checkbox" id="zibens-slanis">
+        <span class="punkts" style="background:#facc15"></span>Zibens (pēdējās 30 min)</label>
+      <p id="zibens-teksts" class="piezime zibens-teksts" aria-live="polite" hidden></p>
       <label class="kat parklajums"><input type="checkbox" id="celu-slanis">
         <span class="punkts" style="background:#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
@@ -110,6 +113,7 @@
 <script src="app.js"></script>
 <script src="meklesana.js"></script>
 <script src="bridinajumi.js"></script>
+<script src="zibens.js"></script>
 <script src="prognozes.js"></script>
 <script src="celi.js"></script>
 </body>
