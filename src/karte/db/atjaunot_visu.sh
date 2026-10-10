@@ -129,6 +129,10 @@ darit psql "$MAP_DB_OWNER_DSN" -q -c "$OSM_ATM_DUBLIKATI" || KLUDAS+=(osm-atm-du
 # Simulēti prototipa dati (atseviski_dati/README.md): kartē marķēti "SIMULĒTI DATI — prototips"
 statisks sim-udens atseviski_dati/udens.csv --kategorija udens_punkts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 statisks sim-energija atseviski_dati/energija.csv --kategorija uzlades_stacija --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+# Bīstami objekti (Seveso, E-PRTR) un LM sociālo pakalpojumu sniedzēji: momentuzņēmumi no bistami_soc.py (lokāli; vajag VZD aw_eka.csv)
+statisks eva-seveso $REPO/bistami_seveso.geojson --kategorija bistams_objekts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+statisks lvgmc-eprtr $REPO/bistami_eprtr.geojson --kategorija bistams_objekts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+statisks lm-soc $REPO/soc_pakalpojumi.geojson --kategorija soc_pakalpojumi --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 # CA plāni: abi slāņi ir viens avots, tāpēc vienā failā (ca_plani.py vajag kadastra DB, tāpēc to palaiž lokāli un PR)
 CA=/tmp/ca_plani.$$.geojson
 if [ "$PARBAUDE" = 1 ]; then echo "+ apvienot $REPO/ca_pulcesanas_vietas.geojson + $REPO/ca_izmitinasana.geojson > $CA"
