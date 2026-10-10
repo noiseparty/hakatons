@@ -58,6 +58,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — added 2026-10-10 03:30 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -66,6 +67,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] "No dead ends" card audit `src/testi/kartites.py` (127 scenarios × 4 places at 375 px + 5 edge cases); fixed: 8 scenarios whose first keyword led elsewhere, silent verdict line when LVĢMC fails, API failure shown as "no data", empty layers now say so — 476/508 → 508/508, edge cases 3/5 → 5/5 — done 2026-10-10 03:30 +03:00 by noiseparty (added 2026-10-10 03:30 +03:00 by noiseparty)
 - [x] Classifier round 2: keystroke time at CPU ×4 max 61 → 28 ms (same results), demo-event keywords + scenarios #120 smoke from a big fire, #121 e-services down, 66 fresh RU/EN/demo queries (81,8 % before fixes), 563-query set 95,0 % — `notes/klasifikators.md` — done 2026-10-10 03:10 +03:00 by noiseparty (added 2026-10-10 03:10 +03:00 by noiseparty)
 - [x] Shareable and printable result: URL state ?q=&lat=&lon= (opening it restores the result), "Dalīties" (Web Share / copy link) and "Drukāt" (card only, with a QR code from vendored qrcode-generator, MIT) — done 2026-10-10 03:04 +03:00 by noiseparty (added 2026-10-10 03:04 +03:00 by noiseparty)
 - [x] Offline mode: service worker (shell network-first, tiles cache-first, /api network-first with saved time), manifest + icons (add to home screen), offline banner + "saglabātie dati" line in the card, last 3 cards reopen offline, "Saglabāt manu apkārtni" (tiles z12–15) — done 2026-10-10 03:00 +03:00 by noiseparty (added 2026-10-10 03:00 +03:00 by noiseparty)
