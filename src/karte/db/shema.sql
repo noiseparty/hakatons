@@ -312,3 +312,7 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ==== Ikdienas atjaunošana (atjaunot_visu.sh, hakatons-dati.timer) ====
+-- Kad avots pēdējo reizi veiksmīgi ielādēts (ielade.py to ieraksta; Datu avoti panelis un statusa lapas "Datu vecums").
+alter table avoti add column if not exists atjaunots timestamptz;

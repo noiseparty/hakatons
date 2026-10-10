@@ -80,3 +80,30 @@ how-to in `src/karte/README.md`. Credentials live only in `/etc/hakatons/map.env
 
 `map.repo.lv` allows `geolocation=(self)` (the shared Caddy `common` block blocks it for other sites).
 The live Caddy and systemd files are copied in `src/karte/serveris/`; keep them in sync when changing the server.
+
+## Daily data refresh (`hakatons-dati.timer`)
+
+Every day at 04:30 (Europe/Riga) `hakatons-dati.service` runs `src/karte/db/atjaunot_visu.sh`. It:
+
+1. applies `shema.sql` (idempotent, so new tables and columns land without a manual step);
+2. downloads the daily sources into **`/var/lib/hakatons/dati`**, never into the git checkout `/srv/hakatons` (the minute sync would fight with it):
+   - `valsts_dati.py`: ZVA pharmacies, IeM IC hospitals, police, VUGD depots, VKCP water intakes;
+   - `osm_poi.py`: OSM ATMs and fuel;
+   - `gtfs.py`: Rīgas satiksme, ATD and VIVI stops;
+3. loads every source downloaded **in this run** with `ielade.py`. If a download fails, the database keeps yesterday's rows, and the run ends with exit code 1;
+4. reloads the static snapshots from the repo (112.lv shelters, VM 24/7 hospitals, CA plans) only when the file changed (sha256 kept in `/var/lib/hakatons/ielades/`). `ca_plani.py` itself needs the cadastre DB, so it still runs locally and its GeoJSON comes in by PR.
+
+`ielade.py` is safe to re-run:
+- it upserts by `(avots, avota_id)`;
+- it deletes rows missing from the new file **only if the file has ≥ 90 %** of the previous count. Otherwise it keeps the old rows and exits with 3, which the script reports as a warning;
+- `--atlaut-samazinajumu` overrides the guard for a deliberate shrink;
+- every successful load writes `avoti.atjaunots`. The "Datu avoti" panel shows it per source, and the status page has a "Datu vecums" row that is red when a daily source is older than 48 h.
+
+```bash
+systemctl list-timers hakatons-dati.timer                 # next run
+journalctl -u hakatons-dati -n 100                        # last run
+systemctl start hakatons-dati.service                     # run now
+sudo -u deploy bash -c 'cd /srv/hakatons && set -a && . /etc/hakatons/map.env && set +a && bash src/karte/db/atjaunot_visu.sh --parbaude'   # dry run
+```
+
+A full reload from the repo snapshots (no download) is still `bash src/karte/db/ielade_visu.sh`, which is `atjaunot_visu.sh --visi`.

@@ -1,0 +1,25 @@
+# /etc/systemd/system/hakatons-dati.service — ikdienas datu atjaunošana (src/karte/db/atjaunot_visu.sh).
+# Lejupielādē ZVA, IeM IC, VKCP, OSM un GTFS uz /var/lib/hakatons/dati (nevis git kopijā /srv/hakatons) un ielādē
+# datubāzē map. Palaiž hakatons-dati.timer katru dienu 04:30 (Rīgas laiks). Žurnāls: journalctl -u hakatons-dati
+# Ar roku: systemctl start hakatons-dati.service
+[Unit]
+Description=map.repo.lv: daily refresh of open-data snapshots into map DB
+After=network-online.target postgresql.service
+Wants=network-online.target
+ConditionPathExists=/srv/hakatons/src/karte/db/atjaunot_visu.sh
+
+[Service]
+Type=oneshot
+User=deploy
+Group=deploy
+EnvironmentFile=/etc/hakatons/map.env
+Environment=HAKATONS_DATI=/var/lib/hakatons/dati HAKATONS_STAVOKLIS=/var/lib/hakatons/ielades PYTHONIOENCODING=utf-8
+StateDirectory=hakatons
+WorkingDirectory=/srv/hakatons
+ExecStart=/usr/bin/bash src/karte/db/atjaunot_visu.sh
+TimeoutStartSec=1800
+Nice=10
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
