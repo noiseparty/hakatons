@@ -35,6 +35,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
+- [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 - [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
@@ -52,6 +54,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Liepāja + Dienvidkurzeme assembly points: the kit's annex 12 files were pointer stubs; extracted the official 2026 annex 12 PDF (faili.liepaja.lv, sha256 = kit) → `src/karte/dati/ca_plani/liepaja-12-pielikums-2026.md`; 53 rows, 46 placed via VZD (7 street-only addresses not found); assembly points 730 → 776, unpublished municipalities 12 → 10 — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] Link previews: Open Graph + Twitter card meta tags (og:title, og:description, og:image 1200×630 with the map + verdict, og:url canonical, twitter:card summary_large_image), `<meta name=description>`, favicon set and theme-color, on index.html, info.html, statuss.html, slaidi.html, trukstosie.html; test with a WhatsApp/Telegram/Slack paste and opengraph.xyz — done 2026-10-10 03:47 +03:00 by noiseparty: #97 (og.png, canonical, favicons) (added 2026-10-10 03:16 +03:00 by noiseparty)
 - [x] "Noturības punkti" (resilience points) layer: culture centres/libraries/schools with heat/charging/water/wifi/generator flags + status & `last_updated` — done 2026-10-10 03:47 +03:00 by noiseparty: #75: 1 172 OSM candidates live, statuses "nav zināms" (6 h freshness rule) (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Result card: municipality civil-protection phone / plan link (from `pasvaldibas.csv`); nearest address for a GPS location — done 2026-10-10 03:47 +03:00 by noiseparty: #73: municipality line + nearest address for a GPS location (added 2026-10-10 00:21 +03:00 by noiseparty)

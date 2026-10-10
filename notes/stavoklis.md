@@ -68,7 +68,7 @@ An address in the query sets the reference point (e.g. "plūdi Mednieku iela 9 O
 | Layer | Objects | Source |
 |---|---:|---|
 | `patvertne` | 778 | VUGD / 112.lv (⚠ no open licence) |
-| `evakuacijas_punkts` | 730 | municipal CA plans (29 municipalities), plan + page per point |
+| `evakuacijas_punkts` | 776 | municipal CA plans (31 municipalities), plan + page per point |
 | `izmitinasana` | 579 (104 213 places) | municipal CA plans |
 | `neatliekama_24h` | 37 | VM disaster medicine plan, annex 12 |
 | `slimnica` | 69 | IeM IC (CC0) |
@@ -103,7 +103,7 @@ curl -s https://map.repo.lv/api/meklejumi/top     # 200 instead of 503
 - **Traffic free-flow speed** is an estimate (highest speed seen per counter, 80 km/h until 5 readings); speed limits aren't subscribed.
 - **Riga public transport live:** no open real-time feed (see `notes/demo-scenariji.md` → "Missing data across scenarios").
 - **"Biežāk meklētais"** shows built-in examples until the schema step runs.
-- **Unpublished lists:** 12 municipalities don't publish their assembly-point/accommodation lists.
+- **Unpublished lists:** 10 municipalities don't publish their assembly-point/accommodation lists (Liepāja + Dienvidkurzeme: assembly points found in the official 2026 annex 12).
 - **Shelters licence:** 112.lv shelters have no open licence (⚠ in the UI).
 - **River-level danger thresholds** (PRIS) need LVĢMC permission, so we show level and trend only.
 
