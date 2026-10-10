@@ -30,7 +30,7 @@
         galapunkti ir tikai šai lapai.</li>
       <li><b>Saudzīgi, lūdzu:</b> atbildes ir kešotas (Cache-Control); netaisiet vairāk par ~1 pieprasījumu sekundē no
         vienas lietotnes un kešojiet paši. Ārējie avoti (LVĢMC, FMI, NAP, OSRM) tiek sasniegti tikai caur mūsu kešu.</li>
-      <li><b>Formāts:</b> JSON (UTF-8), koordinātas WGS-84; kļūdas — <code>{"kluda": "…"}</code> ar HTTP 400 / 404 / 503.</li>
+      <li><b>Formāts:</b> JSON (UTF-8), koordinātas WGS-84; kļūdas — <code>{"kluda": "…"}</code> ar HTTP 400 / 404 / 429 / 503; <code>/api/pludi</code> var atbildēt 202 (avots vēl rēķina). Izņēmumi: flīzes ir PNG, plūsma — Atom, kalendārs — iCalendar.</li>
       <li><b>Mašīnlasāmi:</b> <a href="openapi.json">openapi.json</a> (OpenAPI 3.1) — der jebkuram OpenAPI rīkam.</li>
     </ul>
     <h2>Kā lietot savā lietotnē</h2>
@@ -41,6 +41,26 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <nav class="raditajs" aria-label="Galapunkti"><h2>Galapunkti</h2><ul>{{RADITAJS}}</ul></nav>
 
   {{GALAPUNKTI}}
+
+  <section class="galapunkts" id="izmainas">
+    <h2>Izmaiņas 2026-10-10</h2>
+    <ul>
+      <li><b>Jauns:</b> <a href="#api-prognoze"><code>/api/prognoze</code></a> — 24 stundu prognoze tuvākajai apdzīvotajai vietai (LVĢMC, CC0).</li>
+      <li><b>Jauns:</b> <a href="#api-pludi-flize-paka-z-x-y-png"><code>/api/pludi/flize/&lt;paka&gt;/&lt;z&gt;/&lt;x&gt;/&lt;y&gt;.png</code></a> — plūdu zonu flīzes
+        (6 paketes: 1 % un 10 %), diska kešs, 404 un „aizņemts” rezerve.</li>
+      <li><b>Papildināts:</b> <a href="#api-udens"><code>/api/udens</code></a> — <code>slieksnis</code>, <code>kritiskais</code>, <code>statuss</code>,
+        <code>lidz_kritiskajam_m</code> un sliekšņa avots (stacijām ar slieksni CA plānā), arī prognozes <code>statuss</code>.</li>
+      <li><b>Papildināts:</b> <a href="#api-bridinajumi"><code>/api/bridinajumi</code></a> — rezerves avots Meteoalarm:
+        <code>rezerves</code>, <code>avots</code>, <code>atruna</code>, <code>izdots</code>, <code>ielasits</code>.</li>
+      <li><b>Papildināts:</b> <a href="#api-veseliba"><code>/api/veseliba</code></a> — <code>bridinajumi</code>: LVĢMC pret Meteoalarm un
+        <code>rezerves_aktivs</code>.</li>
+      <li><b>Papildināts:</b> <a href="#api-zinojumi"><code>/api/zinojumi</code></a> — balsīm ir limiti, pārsniedzot — HTTP 429.</li>
+      <li><b>Papildināts:</b> <a href="#api-prognozes"><code>/api/prognozes</code></a> — zibens ieraksti un <code>bridinajumu_poligoni</code>;
+        <a href="#api-pasvaldiba"><code>/api/pasvaldiba</code></a> — katram avotam sava licence (<code>avoti[]</code>).</li>
+      <li><b>Joprojām gaidāms:</b> plūdu zonas atbildes lauki <code>zinams</code>, <code>metode</code>, <code>avots</code> — vēl nav ielaisti
+        (pludi-nosakums zars nav sapludināts), tāpēc šeit nav aprakstīti.</li>
+    </ul>
+  </section>
 
   <section class="galapunkts" id="statistika">
     <h2><code>/api/veseliba?statistika=1</code> — ko nozīmē skaitītāji</h2>

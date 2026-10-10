@@ -543,7 +543,7 @@
   "/api/pasvaldiba": {
    "get": {
     "summary": "Pašvaldība punktā",
-    "description": "Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.\n\nVPVKAC dati ir no 2023. gada novembra; valstspilsētām un Ventspils novadam tādu nav, tāpēc kartīte rāda arī UR kontaktus.",
+    "description": "Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.\n\nAtbildē lauks avoti ir saraksts {nosaukums, licence, url}: katram datu avotam sava licence. VPVKAC dati ir no 2023. gada novembra; valstspilsētām tādu nav. 404, ja punkts nav nevienā pašvaldībā.",
     "parameters": [
      {
       "name": "lat",
@@ -566,21 +566,31 @@
       "example": "24.6046"
      }
     ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "kontakti",
+      "nozime": "pašvaldības e-pasts, tālrunis, adrese, mājas lapa (UR, CC0; tālrunis tikai kā teksts)"
+     },
+     {
+      "lauks": "avoti[]",
+      "nozime": "{nosaukums, licence, url}: CA plāni (oficiāls dokuments), UR iestāžu saraksts (CC0), VPVKAC kontakti 2023-11 (CC0)"
+     }
+    ],
     "x-avoti": [
      {
-      "nosaukums": "Pašvaldību CA plāni (oficiāli dokumenti)",
+      "nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)",
       "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons",
       "licence": "Oficiāls dokuments"
+     },
+     {
+      "nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts",
+      "url": "https://data.gov.lv/dati/dataset/public-persons-institutions",
+      "licence": "CC0 1.0"
      },
      {
       "nosaukums": "VPVKAC kontakti (2023-11)",
       "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti",
       "licence": "CC0 1.0"
-     },
-     {
-      "nosaukums": "map.repo.lv (atvasināti dati)",
-      "url": "https://github.com/noiseparty/hakatons",
-      "licence": "CC BY 4.0"
      }
     ],
     "x-kesa-sekundes": 3600,
@@ -597,14 +607,14 @@
          "majas_lapa": "https://www.ogresnovads.lv/lv",
          "ca_plans_url": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
          "ca_lapa": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
-         "vpvkac": {
-          "punkts": "Ikšķile",
-          "nosaukums": "Ogres novada Ikšķiles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ikšķiles VPVKAC)",
-          "adrese": "Peldu iela 22, Ikšķiles pilsēta, Ogres nov., LV-5052",
-          "talrunis": "66954861",
-          "epasts": "ikskile@pakalpojumucentri.lv"
-         },
+         "vpvkac": null,
          "vpvkac_skaits": 6,
+         "kontakti": {
+          "epasts": "ogredome@ogresnovads.lv",
+          "talrunis": "+37165071160",
+          "adrese": "Brīvības iela 33, Ogre, Ogres nov., LV-5001",
+          "majas_lapa": "https://www.ogresnovads.lv"
+         },
          "avoti": [
           {
            "nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)",
@@ -612,10 +622,11 @@
            "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"
           },
           {
-           "nosaukums": "VPVKAC kontakti (2023-11)",
+           "nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts",
            "licence": "CC0 1.0",
-           "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"
-          }
+           "url": "https://data.gov.lv/dati/dataset/public-persons-institutions"
+          },
+          "… (+1)"
          ]
         }
        }
@@ -633,7 +644,7 @@
   "/api/bridinajumi": {
    "get": {
     "summary": "LVĢMC brīdinājumi",
-    "description": "Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.\n\nLaiki — Latvijas vietējie.",
+    "description": "Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.\n\nLaiki — Latvijas vietējie. Ja LVĢMC datne > 15 min nav pieejama vai > 15 min nerāda nevienu brīdinājumu, atbilde nāk no Meteoalarm (tie paši LVĢMC brīdinājumi): tā pati forma + rezerves: true (skat. lauku tabulu).",
     "parameters": [
      {
       "name": "lat",
@@ -665,6 +676,36 @@
       }
      }
     ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "bridinajumi[]",
+      "nozime": "id, limenis (1–3), paradiba, no, lidz, apgabali, attiecas (true | false | null bez lat/lon)"
+     },
+     {
+      "lauks": "rezerves",
+      "nozime": "tikai rezerves atbildē: true — dati no Meteoalarm, nevis LVĢMC data.gov.lv"
+     },
+     {
+      "lauks": "avots",
+      "nozime": "\"lvgmc-bridinajumi\" parastā atbildē; rezerves atbildē — Meteoalarm avota apraksts"
+     },
+     {
+      "lauks": "izdevejs, licence, url",
+      "nozime": "rezerves atbildē: \"LVĢMC (caur Meteoalarm)\", CC BY 4.0 (Meteoalarm noteikumi), saite"
+     },
+     {
+      "lauks": "atruna",
+      "nozime": "rezerves atbildē: Meteoalarm atrunas teksts (jārāda lietotājam)"
+     },
+     {
+      "lauks": "bridinajumi[].izdots",
+      "nozime": "rezerves atbildē katram brīdinājumam: izdošanas laiks"
+     },
+     {
+      "lauks": "ielasits",
+      "nozime": "rezerves atbildē: kad Meteoalarm ielasīts"
+     }
+    ],
     "x-avoti": [
      {
       "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
@@ -680,7 +721,7 @@
        "application/json": {
         "example": {
          "avots": "lvgmc-bridinajumi",
-         "laiks_lv": "2026-10-10T03:46",
+         "laiks_lv": "2026-10-10T05:27",
          "bridinajumi": [
           {
            "id": "28210",
@@ -690,23 +731,10 @@
            "paradiba": "Vējš",
            "regioni": "Latvija",
            "no": "2026-10-09T14:00:00",
-           "lidz": "2026-10-10T06:00:00",
+           "lidz": "2026-10-10T07:00:00",
            "teksts": "09.-10.10.2026. nakts pirmajā pusē rietumu, ziemeļrietumu vējš saglabāsies brāzmās līdz 20-24 m/s. Vējš pakāpeniski pierims 09.-10.10. nakts…",
            "riski": "ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…",
            "attiecas": true
-          },
-          {
-           "id": "28227",
-           "nr": "10/30",
-           "krasa": "Dzeltens",
-           "limenis": 1,
-           "paradiba": "Vējš",
-           "regioni": "Rīga",
-           "no": "2026-10-09T19:00:00",
-           "lidz": "2026-10-10T04:00:00",
-           "teksts": "09.10.2026. laika periodā no 19:00 līdz 23:00 dienvidrietumu, rietumu vējš pastiprināsies brāzmās līdz 20-24 m/s.",
-           "riski": "ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…",
-           "attiecas": false
           }
          ]
         }
@@ -782,10 +810,91 @@
     }
    }
   },
+  "/api/pludi/flize/{paka}/{z}/{x}/{y}.png": {
+   "get": {
+    "summary": "Plūdu zonu flīze (PNG)",
+    "description": "Gatava 512 × 512 px caurspīdīga PNG flīze kartes slānim (XYZ, EPSG:3857, z 5–18): LVĢMC plūdu riska zonas, kas iet caur mūsu diska kešu, jo ĢeoLatvija WMS atbild 5–30 s un mēdz 504. Der Leaflet/MapLibre L.tileLayer.\n\nAtbilde ir image/png, nevis JSON; galvene X-Flize: kesa | jauna | veca | tukss (ārpus paketes pārklājuma) | aiznemts | kluda. Kešs: diskā 30 dienas (≤ 500 MB), HTTP 24 h (ETag, 304); veca flīze 1 h; aiznemts un kluda — no-store. Uz LVĢMC ≤ 4 pieprasījumi reizē: kas 5 s netiek pie kārtas, saņem 1 × 1 caurspīdīgu PNG (X-Flize: aiznemts) un jāmēģina vēlāk; neizdevusies flīze 60 s netiek pieprasīta (502, vai veca flīze, ja ir). Nederīga paka vai flīze ārpus robežām — 404 {kluda}; klients var atkāpties uz tiešo WMS.",
+    "parameters": [
+     {
+      "name": "paka",
+      "in": "path",
+      "required": true,
+      "description": "pali, ledus vai juras = 1 % (reizi 100 gados) applūšana; pali10, ledus10, juras10 = 10 % varbūtība (pavasara pali / ledus sastrēgumi / jūras vējuzplūdi)",
+      "schema": {
+       "type": "string"
+      },
+      "example": "pali"
+     },
+     {
+      "name": "z",
+      "in": "path",
+      "required": true,
+      "description": "tālummaiņa 5–18",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "12"
+     },
+     {
+      "name": "x",
+      "in": "path",
+      "required": true,
+      "description": "flīzes kolonna, 0 … 2^z − 1",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "2330"
+     },
+     {
+      "name": "y",
+      "in": "path",
+      "required": true,
+      "description": "flīzes rinda, 0 … 2^z − 1 (0 = ziemeļi)",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "1195"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)",
+      "url": "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 86400,
+    "responses": {
+     "200": {
+      "description": "PNG flīze; galvene X-Flize: kesa | jauna | veca | tukss | aiznemts",
+      "content": {
+       "image/png": {
+        "schema": {
+         "type": "string",
+         "format": "binary"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "404": {
+      "description": "Nederīga paka vai flīze ārpus robežām: {kluda}"
+     },
+     "502": {
+      "description": "LVĢMC neatbild un vecas flīzes nav: 1 × 1 PNG, no-store"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
   "/api/udens": {
    "get": {
     "summary": "Ūdens līmenis upēs",
-    "description": "Tuvākās LVĢMC hidroloģiskās stacijas: līmenis (cm virs posteņa nulles), izmaiņa 24 h, prognoze 7 dienām.\n\nBīstamības līmeņi nav atvērtie dati, tāpēc to nav. Prognoze ir ~35 no 74 stacijām.",
+    "description": "Tuvākās LVĢMC hidroloģiskās stacijas: līmenis (cm virs posteņa nulles), izmaiņa 24 h, prognoze 7 dienām.\n\nValsts bīstamības līmeņi nav atvērtie dati; slieksnis ir tikai stacijām, kam to nosaka pašvaldības CA plāns (Ogre, Pļaviņas, Liepājas ezers), citām slieksnis, kritiskais un statuss ir null. Prognoze ir ~35 no 74 stacijām.",
     "parameters": [
      {
       "name": "lat",
@@ -818,6 +927,36 @@
       "example": "1"
      }
     ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "stacijas[].limenis_m, izmaina_24h_cm …",
+      "nozime": "līmenis un izmaiņa; vecs = true, ja mērījums vecāks par derīguma laiku"
+     },
+     {
+      "lauks": "stacijas[].slieksnis",
+      "nozime": "m LAS: līmenis, no kura CA plāns runā par applūšanas risku (vai null)"
+     },
+     {
+      "lauks": "stacijas[].kritiskais",
+      "nozime": "m LAS: kritiskais līmenis (vai null)"
+     },
+     {
+      "lauks": "stacijas[].statuss",
+      "nozime": "normals | paaugstinats | kritisks pēc sliekšņa (vai null, ja stacijai sliekšņa nav)"
+     },
+     {
+      "lauks": "stacijas[].lidz_kritiskajam_m",
+      "nozime": "cik metru vēl līdz kritiskajam"
+     },
+     {
+      "lauks": "stacijas[].slieksnis_pienemts, vieta, sliekshna_avots",
+      "nozime": "vai slieksnis ir pieņēmums, vietas nosaukums un avots (CA plāns ar lpp.)"
+     },
+     {
+      "lauks": "stacijas[].prognoze",
+      "nozime": "7 dienu prognoze: mediana_m/mediana_cm, josla_50_cm, josla_90_cm, izmaina_cm, virziens (kāpj | krīt | stabils), statuss, datums, avots = lvgmc-hidro-prognoze; null, ja stacijai prognozes nav"
+     }
+    ],
     "x-avoti": [
      {
       "nosaukums": "LVĢMC hidroloģiskie novērojumi",
@@ -843,50 +982,108 @@
            "stacija": "HD073401",
            "nosaukums": "Ogre",
            "limenis_cm": 56,
-           "limenis_m": 20.62,
-           "nulle_m": 20.06,
-           "izmaina_24h_cm": 0,
-           "udens_temp": null,
-           "laiks": "2026-10-10T00:00:00Z",
-           "derigs_lidz": "2026-10-10T06:00:00+00:00",
-           "lat": 56.8128,
-           "lon": 24.6417,
-           "attalums_m": 2297,
-           "vecs": false,
-           "prognoze": null
+           "…": "+18 lauki"
           },
           {
            "stacija": "HD073418",
            "nosaukums": "Stariņi",
            "limenis_cm": -31,
-           "limenis_m": 23.16,
-           "nulle_m": 23.47,
-           "izmaina_24h_cm": 2,
-           "udens_temp": 11.0,
-           "laiks": "2026-10-10T00:00:00Z",
-           "derigs_lidz": "2026-10-10T06:00:00+00:00",
-           "lat": 56.868056,
-           "lon": 24.61,
-           "attalums_m": 5731,
-           "vecs": false,
-           "prognoze": {
-            "datums": "2026-10-17",
-            "dienas": 7,
-            "mediana_cm": -21,
-            "josla_50_cm": [
-             -36,
-             -4
-            ],
-            "josla_90_cm": [
-             -46,
-             13
-            ],
-            "izmaina_cm": -13,
-            "virziens": "krīt",
-            "avots": "lvgmc-hidro-prognoze"
-           }
+           "…": "+14 lauki"
           }
          ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/prognoze": {
+   "get": {
+    "summary": "Prognoze 24 stundām vietai",
+    "description": "Tuvākās apdzīvotās vietas LVĢMC stundu prognoze nākamajām 24 h: temperatūra, brāzmas, nokrišņi, negaiss un no tiem atvasināti riski (tuvināti LVĢMC kritērijiem, nav oficiāli brīdinājumi). Ja stundu ir par maz — prognoze: null.\n\nAvota dati tiek kešoti 30 min; izdota — prognozes izdošanas laiks.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "prognoze",
+      "nozime": "objekts vai null: no, lidz (vietējais laiks), stundas, tmin/tmax °C, nokrisni_mm (summa), brazmas_max m/s, negaiss_max, riski (saraksts)"
+     },
+     {
+      "lauks": "vieta",
+      "nozime": "{id, nosaukums, attalums_m} — tuvākā apdzīvotā vieta, kuras prognoze atdota"
+     },
+     {
+      "lauks": "izdota",
+      "nozime": "prognozes izdošanas laiks vai null"
+     },
+     {
+      "lauks": "avots",
+      "nozime": "{nosaukums, licence, url}"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+      "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "prognoze": {
+          "no": "2026-10-10T05:00:00",
+          "lidz": "2026-10-11T04:00:00",
+          "stundas": 24,
+          "tmin": 6.3,
+          "tmax": 11.9,
+          "nokrisni_mm": 0.8,
+          "brazmas_max": 9.9,
+          "negaiss_max": 0.0,
+          "riski": []
+         },
+         "vieta": {
+          "id": "P766",
+          "nosaukums": "Ogre",
+          "attalums_m": 595
+         },
+         "izdota": "2026-10-10T00:54:06Z",
+         "avots": {
+          "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+          "licence": "CC0 1.0",
+          "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
+         }
         }
        }
       }
@@ -903,13 +1100,33 @@
   "/api/prognozes": {
    "get": {
     "summary": "Laika prognoze pa novadiem",
-    "description": "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni: bridinajumu_poligoni = [{id, limenis, paradiba, poligons: [[lat, lon], …]}] (vienkāršoti, 4 zīmes aiz komata; tos zīmē kartes zonas).\n\nSliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.",
+    "description": "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni: bridinajumu_poligoni = [{id, limenis, paradiba, poligons: [[lat, lon], …]}] (vienkāršoti, 4 zīmes aiz komata; tos zīmē kartes zonas). Ziņu lentē katram novadam ar zibeni pēdējās 30 min ir ieraksts veids = \"zibens\" (FMI, CC BY 4.0).\n\nSliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi. Zibens ieraksti atjaunojas ik 60 s, pārējais — ik 5 min (HTTP kešs 5 min).",
     "parameters": [],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "zinas[]",
+      "nozime": "ziņu lente: veids (vējš, nokrišņi, … vai zibens), limenis, vieta, virsraksts, teksts, regioni, bbox, avots; zibens ieraksti tikai novadiem ar izlādēm pēdējās 30 min"
+     },
+     {
+      "lauks": "bridinajumu_poligoni[]",
+      "nozime": "{id, limenis, paradiba, poligons: [[lat, lon], …]} kartes zonām"
+     }
+    ],
     "x-avoti": [
      {
       "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
       "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa",
       "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi (poligoni)",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati (zibens ziņas)",
+      "url": "https://en.ilmatieteenlaitos.fi/open-data",
+      "licence": "CC BY 4.0"
      }
     ],
     "x-kesa-sekundes": 300,
@@ -919,16 +1136,16 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks_lv": "2026-10-10T03:44",
-         "prognoze_mainita": "Fri, 09 Oct 2026 20:43:14 GMT",
+         "laiks_lv": "2026-10-10T05:23",
+         "prognoze_mainita": "Sat, 10 Oct 2026 00:55:15 GMT",
          "dienas": [
-          {
-           "datums": "2026-10-10",
-           "nosaukums": "Šodien"
-          },
           {
            "datums": "2026-10-11",
            "nosaukums": "Rīt"
+          },
+          {
+           "datums": "2026-10-12",
+           "nosaukums": "Parīt"
           },
           "… (+1)"
          ],
@@ -939,12 +1156,12 @@
            "limenis": 1,
            "datums": "2026-10-10",
            "diena": "Šobrīd",
-           "virsraksts": "Šobrīd brāzmas līdz 19 m/s (Daugavgrīva, 03:00)",
-           "teksts": "LVĢMC stacijās ar brāzmām no 15 m/s: 4 (arī Ventspils 17, Dagda 17, Rēzekne 16 m/s).",
+           "virsraksts": "Šobrīd brāzmas līdz 18 m/s (Daugavgrīva, 04:00)",
+           "teksts": "LVĢMC stacijās ar brāzmām no 15 m/s: 3 (arī Ventspils 17, Rēzekne 16 m/s).",
            "regioni": [
             "100003003",
             "100003060",
-            "… (+2)"
+            "… (+1)"
            ],
            "bbox": [
             23.721111,
@@ -962,20 +1179,20 @@
            "veids": "riski",
            "paradiba": "Risks",
            "limenis": 2,
-           "datums": "2026-10-10",
-           "diena": "Šodien",
-           "virsraksts": "Šodien paaugstināts risks: Rīga un Pierīga (brāzmas līdz 20 m/s), Kurzeme (brāzmas līdz 22 m/s), Latgale (LVĢMC dzeltens brīdinājums: vējš),…",
-           "teksts": "Novadi ar paaugstinātu risku: 42. Riska karte apvieno LVĢMC brīdinājumus, prognozi, zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis of…",
+           "datums": "2026-10-11",
+           "diena": "Rīt",
+           "virsraksts": "Rīt paaugstināts risks: Kurzeme (nokrišņi līdz 21 mm), Latgale (nokrišņi līdz 17 mm), Vidzeme (nokrišņi līdz 16 mm)",
+           "teksts": "Novadi ar paaugstinātu risku: 6. Riska karte apvieno LVĢMC brīdinājumus, prognozi, zibeni, slidenus ceļus un upju līmeni; tas ir mūsu aprēķi…",
            "regioni": [
-            "100016768",
-            "100016550",
-            "… (+40)"
+            "100016333",
+            "100016495",
+            "… (+4)"
            ],
            "bbox": [
             20.9621,
-            55.6747,
+            55.7834,
             28.2415,
-            58.0856
+            57.9905
            ],
            "avots": {
             "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
@@ -983,48 +1200,48 @@
             "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
            }
           },
-          "… (+13)"
+          "… (+7)"
          ],
          "regioni": {
           "100016727": {
            "nosaukums": "Preiļu novads",
            "planosanas_regions": "Latgalē",
            "dienas": {
-            "2026-10-10": {
-             "brazmas": 16.7,
-             "brazmas_vieta": "Ščadrinieki",
-             "nokrisni": 4.9,
-             "nokrisni_vieta": "Vēveri",
-             "tmax": 12.5,
-             "tmin": 6.4,
-             "varbutiba": 0.0,
-             "ikona": 1506,
-             "vietas": 650,
-             "laiks": "mākoņains, brīžiem skaidrojas, lietus"
-            },
             "2026-10-11": {
-             "brazmas": 9.6,
-             "brazmas_vieta": "Ūgaiņi-Puduļi",
-             "nokrisni": 1.2,
-             "nokrisni_vieta": "Zukuli",
-             "tmax": 12.1,
-             "tmin": 8.7,
+             "brazmas": 9.5,
+             "brazmas_vieta": "Červoniki",
+             "nokrisni": 7.0,
+             "nokrisni_vieta": "Rotka",
+             "tmax": 11.6,
+             "tmin": 9.5,
              "varbutiba": 0.0,
-             "ikona": 1105,
+             "ikona": 1407,
              "vietas": 650,
-             "laiks": "apmācies"
+             "laiks": "apmācies, migla, lietus"
             },
             "2026-10-12": {
-             "brazmas": 6.4,
-             "brazmas_vieta": "Ūsāni",
-             "nokrisni": 1.1,
-             "nokrisni_vieta": "Gadzāni",
-             "tmax": 12.6,
-             "tmin": 6.3,
+             "brazmas": 6.8,
+             "brazmas_vieta": "Spričvecumi",
+             "nokrisni": 5.1,
+             "nokrisni_vieta": "Šilova",
+             "tmax": 12.3,
+             "tmin": 6.5,
              "varbutiba": 0.0,
              "ikona": 1403,
              "vietas": 650,
              "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            },
+            "2026-10-13": {
+             "brazmas": 3.5,
+             "brazmas_vieta": "Šumski",
+             "nokrisni": 0.0,
+             "nokrisni_vieta": "Želvi",
+             "tmax": 11.9,
+             "tmin": 5.0,
+             "varbutiba": 0.0,
+             "ikona": 1103,
+             "vietas": 650,
+             "laiks": "mākoņains, brīžiem skaidrojas"
             }
            }
           },
@@ -1032,37 +1249,37 @@
            "nosaukums": "Aizkraukles novads",
            "planosanas_regions": "Zemgalē",
            "dienas": {
-            "2026-10-10": {
-             "brazmas": 15.7,
-             "brazmas_vieta": "Stukmaņi",
-             "nokrisni": 8.4,
-             "nokrisni_vieta": "Irši",
-             "tmax": 12.0,
-             "tmin": 6.0,
-             "varbutiba": 0.0,
-             "ikona": 1506,
-             "vietas": 41,
-             "laiks": "mākoņains, brīžiem skaidrojas, lietus"
-            },
             "2026-10-11": {
              "brazmas": 9.0,
-             "brazmas_vieta": "Pilskalne",
-             "nokrisni": 0.3,
-             "nokrisni_vieta": "Ķūģi",
-             "tmax": 13.0,
-             "tmin": 8.9,
+             "brazmas_vieta": "Bitāni",
+             "nokrisni": 5.3,
+             "nokrisni_vieta": "Vecbebri",
+             "tmax": 12.7,
+             "tmin": 9.0,
              "varbutiba": 0.0,
-             "ikona": 1103,
+             "ikona": 1504,
              "vietas": 41,
-             "laiks": "mākoņains, brīžiem skaidrojas"
+             "laiks": "apmācies, lietus"
             },
             "2026-10-12": {
-             "brazmas": 6.8,
-             "brazmas_vieta": "Pilskalne",
-             "nokrisni": 4.1,
-             "nokrisni_vieta": "Sproģi",
+             "brazmas": 7.4,
+             "brazmas_vieta": "Gricgale",
+             "nokrisni": 0.8,
+             "nokrisni_vieta": "Koknese",
              "tmax": 12.0,
-             "tmin": 5.6,
+             "tmin": 4.6,
+             "varbutiba": 0.0,
+             "ikona": 1403,
+             "vietas": 41,
+             "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            },
+            "2026-10-13": {
+             "brazmas": 3.5,
+             "brazmas_vieta": "Ērberģe",
+             "nokrisni": 0.0,
+             "nokrisni_vieta": "Ķūģi",
+             "tmax": 12.6,
+             "tmin": 4.5,
              "varbutiba": 0.0,
              "ikona": 1403,
              "vietas": 41,
@@ -1074,37 +1291,37 @@
            "nosaukums": "Siguldas novads",
            "planosanas_regions": "Rīgā un Pierīgā",
            "dienas": {
-            "2026-10-10": {
-             "brazmas": 15.4,
-             "brazmas_vieta": "Kārļzemnieki",
-             "nokrisni": 15.9,
-             "nokrisni_vieta": "Lēdurga",
-             "tmax": 12.0,
-             "tmin": 7.4,
+            "2026-10-11": {
+             "brazmas": 10.0,
+             "brazmas_vieta": "Nurmiži",
+             "nokrisni": 6.2,
+             "nokrisni_vieta": "Lode",
+             "tmax": 12.2,
+             "tmin": 8.2,
              "varbutiba": 0.0,
              "ikona": 1506,
              "vietas": 32,
              "laiks": "mākoņains, brīžiem skaidrojas, lietus"
             },
-            "2026-10-11": {
-             "brazmas": 9.9,
-             "brazmas_vieta": "Lēdurga",
-             "nokrisni": 1.9,
-             "nokrisni_vieta": "Plānupe",
-             "tmax": 12.8,
-             "tmin": 7.8,
-             "varbutiba": 0.0,
-             "ikona": 1103,
-             "vietas": 32,
-             "laiks": "mākoņains, brīžiem skaidrojas"
-            },
             "2026-10-12": {
-             "brazmas": 5.6,
-             "brazmas_vieta": "Ķipari",
-             "nokrisni": 1.0,
-             "nokrisni_vieta": "Nurmiži",
-             "tmax": 12.0,
-             "tmin": 6.3,
+             "brazmas": 5.9,
+             "brazmas_vieta": "Nurmiži",
+             "nokrisni": 0.0,
+             "nokrisni_vieta": "Ķipari",
+             "tmax": 12.2,
+             "tmin": 5.7,
+             "varbutiba": 0.0,
+             "ikona": 1403,
+             "vietas": 32,
+             "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            },
+            "2026-10-13": {
+             "brazmas": 3.8,
+             "brazmas_vieta": "More",
+             "nokrisni": 0.0,
+             "nokrisni_vieta": "Ķipari",
+             "tmax": 12.8,
+             "tmin": 4.1,
              "varbutiba": 0.0,
              "ikona": 1403,
              "vietas": 32,
@@ -1115,22 +1332,6 @@
           "…": "+39 lauki"
          },
          "bridinajumu_poligoni": [
-          {
-           "id": "28227",
-           "limenis": 1,
-           "paradiba": "Vējš",
-           "poligons": [
-            [
-             56.8708,
-             24.2751
-            ],
-            [
-             56.8601,
-             24.3071
-            ],
-            "… (+23)"
-           ]
-          },
           {
            "id": "28210",
            "limenis": 1,
@@ -1196,95 +1397,25 @@
          },
          "riski": {
           "100016727": {
-           "sodien": 1,
+           "sodien": 0,
            "rit": 0,
-           "iemesli": [
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
-             "avots": {
-              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
-             },
-             "klat": false
-            },
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "brāzmas līdz 17 m/s (Ščadrinieki)",
-             "avots": {
-              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
-             },
-             "klat": false
-            }
-           ]
+           "iemesli": []
           },
           "100016630": {
-           "sodien": 1,
+           "sodien": 0,
            "rit": 0,
-           "iemesli": [
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
-             "avots": {
-              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
-             },
-             "klat": false
-            },
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "brāzmas līdz 16 m/s (Stukmaņi)",
-             "avots": {
-              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
-             },
-             "klat": false
-            }
-           ]
+           "iemesli": []
           },
           "100016768": {
-           "sodien": 1,
+           "sodien": 0,
            "rit": 0,
-           "iemesli": [
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
-             "avots": {
-              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
-             },
-             "klat": false
-            },
-            {
-             "diena": "sodien",
-             "limenis": 1,
-             "teksts": "brāzmas līdz 15 m/s (Kārļzemnieki)",
-             "avots": {
-              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
-              "licence": "CC0 1.0",
-              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
-             },
-             "klat": false
-            },
-            "… (+1)"
-           ]
+           "iemesli": []
           },
           "…": "+39 lauki"
          },
          "riska_dienas": {
-          "sodien": "2026-10-10",
-          "rit": "2026-10-11"
+          "sodien": "2026-10-11",
+          "rit": "2026-10-12"
          },
          "riska_limeni": {
           "0": "nav",
@@ -2137,7 +2268,7 @@
   "/api/zinojumi": {
    "get": {
     "summary": "Iedzīvotāju ziņojumi",
-    "description": "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina un apstrid (citi iedzīvotāji, POST …/apstiprinat|apstridet); ziņojumu ar apstrid > apstiprina + 2 vairs nerāda.\n\nJa apdraudēta dzīvība, zvaniet 112.",
+    "description": "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina un apstrid (citi iedzīvotāji, POST …/apstiprinat|apstridet); ziņojumu ar apstrid > apstiprina + 2 vairs nerāda.\n\nJa apdraudēta dzīvība, zvaniet 112. Balsošana (POST) ir ierobežota: ≤ 60 balsis minūtē visiem kopā, ≤ 20 stundā vienam ziņojumam un ≤ 30 stundā no viena tīkla (IP tikai kā jaucējvērtība) — pārsniedzot, HTTP 429 {kluda}. Atbildes ar 429 nekešo.",
     "parameters": [
      {
       "name": "dienas",
@@ -2157,6 +2288,20 @@
       "schema": {
        "type": "string"
       }
+     }
+    ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "zinojumi[]",
+      "nozime": "id, tips, apraksts, lat/lon (~1 km), laiks, apstiprina, apstrid, statuss"
+     },
+     {
+      "lauks": "avots, atruna",
+      "nozime": "licence CC BY 4.0 un norāde, ka tā nav oficiāla informācija"
+     },
+     {
+      "lauks": "pieejams",
+      "nozime": "false, ja ziņojumu tabula nav pieejama"
      }
     ],
     "x-avoti": [
@@ -2300,7 +2445,7 @@
   "/api/veseliba": {
    "get": {
     "summary": "Veselības pārbaude",
-    "description": "Vai API un datubāze atbild; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
+    "description": "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).\n\nNekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno.",
     "parameters": [
      {
       "name": "statistika",
@@ -2311,6 +2456,24 @@
        "type": "integer"
       },
       "example": "1"
+     }
+    ],
+    "x-atbildes-lauki": [
+     {
+      "lauks": "ok",
+      "nozime": "datubāze atbild"
+     },
+     {
+      "lauks": "bridinajumi.lvgmc / meteoalarm",
+      "nozime": "spēkā esošo brīdinājumu skaits katrā avotā (null, ja kešā vēl nav)"
+     },
+     {
+      "lauks": "bridinajumi.lvgmc_atbildeja",
+      "nozime": "kad pēdējo reizi atbildēja LVĢMC (ISO, UTC) vai null"
+     },
+     {
+      "lauks": "bridinajumi.rezerves_aktivs",
+      "nozime": "true, ja /api/bridinajumi pēdējās 20 min atbildēja no Meteoalarm"
      }
     ],
     "x-avoti": [
@@ -2328,32 +2491,44 @@
        "application/json": {
         "example": {
          "ok": true,
+         "bridinajumi": {
+          "lvgmc": 1,
+          "meteoalarm": 4,
+          "lvgmc_atbildeja": "2026-10-10T02:22:34+00:00",
+          "rezerves_aktivs": false
+         },
          "statistika": {
-          "db_vaicajumi": 587,
+          "db_vaicajumi": 2802,
           "db_parslodze": 0,
           "kesa": {
-           "prognozes_atbilde": {
-            "no_kesas": 68,
-            "uz_avotu": 2,
-            "novecojusi": 1,
-            "gaidija": 1
-           },
-           "prognozu_regioni": {
-            "no_kesas": 1,
+           "pasvaldibas": {
+            "no_kesas": 127,
             "uz_avotu": 1,
             "novecojusi": 0,
             "gaidija": 0
            },
            "bridinajumi": {
-            "no_kesas": 134,
-            "uz_avotu": 1,
-            "novecojusi": 0,
+            "no_kesas": 1089,
+            "uz_avotu": 3,
+            "novecojusi": 5,
+            "gaidija": 1
+           },
+           "zibens_fmi": {
+            "no_kesas": 16,
+            "uz_avotu": 21,
+            "novecojusi": 23,
             "gaidija": 0
            },
-           "…": "+18 lauki"
+           "…": "+23 lauki"
+          },
+          "flizes": {
+           "kluda": 72,
+           "aiznemts": 22,
+           "jauna": 207,
+           "kesa": 581
           },
           "db_vienlaicigi": 16,
-          "pavedieni": 28
+          "pavedieni": 30
          }
         }
        }
