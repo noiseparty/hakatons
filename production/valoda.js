@@ -358,5 +358,13 @@ const Valoda = (() => {
   document.addEventListener('focusin', e => { if (piemerLauki().includes(e.target) && !e.target.disabled) e.target.placeholder = piemerFraze(); });
   document.addEventListener('valoda-maina', () => piemerLauki().forEach(l => { if (!l.disabled) l.placeholder = piemerFraze(); }));
 
-  return { t, aktiva, noteikt, izveleties, padomiPiezime, lietot };
+  // Datums visās valodās vienādi: DD/MM/YYYY vai (ar laiku) DD/MM/YYYY HH:MM. Ņem Date, ISO tekstu vai milisekundes (vietējais laiks).
+  function fmtDatums(vertiba, arLaiku = false) {
+    const d = vertiba instanceof Date ? vertiba : new Date(vertiba);
+    if (isNaN(d)) return '';
+    const p = n => String(n).padStart(2, '0');
+    return `${p(d.getDate())}/${p(d.getMonth() + 1)}/${d.getFullYear()}` + (arLaiku ? ` ${p(d.getHours())}:${p(d.getMinutes())}` : '');
+  }
+
+  return { t, aktiva, noteikt, izveleties, padomiPiezime, lietot, fmtDatums };
 })();

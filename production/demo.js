@@ -289,8 +289,7 @@ const Demo = (() => {
     const b = sc.bridinajums;
     if (!b) { josla.hidden = true; return; }
     const [klase, vards] = LIMENI[b.limenis];
-    const lidz = new Date(Date.now() + (b.lidz_h || 6) * 3600e3)
-      .toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+    const lidz = Valoda.fmtDatums(new Date(Date.now() + (b.lidz_h || 6) * 3600e3), true);  // DD/MM/YYYY HH:MM visās valodās
     const kur = r ? r.nosaukums : (b.regioni || []).map(k => regioni[k]?.nosaukums).filter(Boolean).join(', ');
     josla.className = 'bridinajums demo-josla ' + klase;
     josla.innerHTML = `<details><summary>${ZIME} ${Ik('brid')} ${b.vards ? esc(b.vards) : vards + ' brīdinājums'}: ${esc(b.paradiba.toLowerCase())}` +
