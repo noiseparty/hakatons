@@ -2797,7 +2797,7 @@ def pasvaldiba(q):
          "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"},
         {"nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/dataset/public-persons-institutions"},
-        {"nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "licence": "CC0 1.0",
+        {"nosaukums": "VPVKAC kontakti (2023-11)", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
 
 
