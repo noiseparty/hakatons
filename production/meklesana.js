@@ -113,7 +113,7 @@ const krizesMeklesana = (() => {
     try { localStorage.setItem(PIRMA_MEKLESANA, '1'); } catch { /* privātais režīms */ }
   }
   const pirmaisSkats = (ievads = 'Uzrakstiet vienā rindā, kas notiek un kur: pilsēta, adrese ar mājas numuru vai „Rādīt tuvākos man”.') =>
-    `<div class="pirmais-skats" role="group" aria-label="${t('Piemēri, kā meklēt')}"><p class="ps-ievads" data-t="${esc(ievads)}">${t(ievads)}</p>` +
+    `<div class="pirmais-skats" role="group" data-t-aria="Piemēri, kā meklēt" aria-label="${t('Piemēri, kā meklēt')}"><p class="ps-ievads" data-t="${esc(ievads)}">${t(ievads)}</p>` +
     `<div class="ps-cipi">${PIEMERI.map(([q, ik]) => `<button type="button" class="ps-cips" data-piemers="${esc(q)}">${Ik(ik)}<span data-t="${esc(q)}">${esc(t(q))}</span></button>`).join('')}</div>` +
     `<p class="ps-dati">${Ik('info')}<span>${t('Atbildi saliekam no atvērtajiem datiem: LVĢMC brīdinājumi un plūdu kartes, VZD adreses, pašvaldību civilās aizsardzības plāni, slimnīcas un patvertnes. Katrai rindai ir avots un licence.')}</span></p></div>`;
   document.addEventListener('click', e => {
