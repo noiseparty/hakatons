@@ -1103,3 +1103,11 @@ body.druka-rezultats #rezultati .rez-skats[data-s="1"], body.druka-rezultats #re
 /* Meklēšanas lauka ieteikums virs "Biežāk meklētais" (tikai tukšam laukam; ieteikumu režīmā paslēpts) */
 header .populari p.populari-ieteikums { margin: 0 0 .5rem; font-size: .85rem; text-transform: none; letter-spacing: 0; color: var(--teksts2); }
 .populari.ieteikumi .populari-ieteikums { display: none; }
+
+/* 3. solis (rīcība) pie zināmas situācijas: rīcības plāns PAŠĀ AUGŠĀ (pēc 112 rindas), tad atbilde (lēmums, brīdinājumi,
+   prognoze, fakti) un tuvākās vietas. 2. solis ("Atbilde") joprojām rāda tikai atbildi. */
+#rezultati[data-skats="3"] { display: flex; flex-direction: column; }
+#rezultati[data-skats="3"] .draudi { order: -3; }
+#rezultati[data-skats="3"] .rez-skats[data-s="3"] { order: -2; }
+#rezultati[data-skats="3"] .rez-skats[data-s="2"] { display: block; }
+#rezultati[data-skats="3"] .rez-skats[data-s="2"] .uz-planu, #rezultati[data-skats="3"] .rez-skats[data-s="3"] [data-skats-uz="2"] { display: none; }
