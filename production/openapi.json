@@ -2134,7 +2134,7 @@
   "/api/statuss": {
    "get": {
     "summary": "Sistēmas statuss",
-    "description": "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.",
+    "description": "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).",
     "parameters": [],
     "x-avoti": [
      {
@@ -2445,7 +2445,7 @@
   "/api/veseliba": {
    "get": {
     "summary": "Veselības pārbaude",
-    "description": "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).\n\nNekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno.",
+    "description": "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).\n\nNekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno.",
     "parameters": [
      {
       "name": "statistika",
