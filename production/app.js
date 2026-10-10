@@ -378,6 +378,7 @@ async function atjaunot(spiest = true) {
     objektuSlanis.clearLayers();
     redzamie = []; ieladets = null; gaida = null;
     statuss('Slāņi izslēgti');
+    document.dispatchEvent(new Event('karte:objekti'));  // saraksts.js pārzīmē
     return;
   }
   const v = skataVaicajums();
@@ -423,10 +424,12 @@ async function atjaunot(spiest = true) {
     ieladets = { atslega: v.atslega, filtri: v.filtri, robezas: v.robezas, zoom: karte.getZoom(), apgriezts: !!gj.apgriezts };
     gaida = null;
     skaitit();
+    document.dispatchEvent(new Event('karte:objekti'));  // saraksts.js pārzīmē
   } catch (e) {
     if (e.name === 'AbortError') return;
     gaida = null;
     statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
+    document.dispatchEvent(new CustomEvent('karte:objekti', { detail: { kluda: true } }));
   }
 }
 

@@ -167,6 +167,8 @@ const Avoti = (() => {
   }
 
   const atverts = kods => pecKoda[kods]?.atverts !== false;
+  // Avota ieraksts (nosaukums, izdevējs, licence, saites) — saraksts.js īsajai atzīmei un CSV kolonnām
+  const dati = kods => pecKoda[kods] || null;
 
-  return { ieladet, rinda, atverts };
+  return { ieladet, rinda, atverts, dati };
 })();
