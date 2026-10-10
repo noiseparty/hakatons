@@ -84,3 +84,6 @@ a { color: var(--zils-tumss); }
   .saturs { padding-top: 22px; }
   .josla { height: 32px; gap: 2px; }
 }
+
+/* Ikonas no ikonas/ikonas.svg (info.html, trukstosie.html, statuss.html) */
+.ik { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -.2em; }

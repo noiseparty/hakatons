@@ -57,15 +57,15 @@ const Apaksa = (() => {
     const draudi = kaste.querySelector('.draudi');
     const pludi = kaste.querySelector('#rez-pludi div > span');
     const josla = el('bridinajums');
-    let t = '', klase = '';
+    let t = '', klase = '', ikona = '';
     if (draudi) { t = teksts(draudi); klase = 'sarkans'; }
     else if (pludi && !/Pārbauda/.test(pludi.textContent)) {
-      t = '🌊 Plūdu riska zona: ' + teksts(pludi);
+      t = 'Plūdu riska zona: ' + teksts(pludi); ikona = 'pludi';
       klase = pludi.querySelector('.jā') ? 'oranzs' : '';
     } else if (josla && !josla.hidden && !josla.classList.contains('zals')) {
       t = teksts(josla.querySelector('summary') || josla); klase = 'dzeltens';
     } else t = teksts(kaste.querySelector('.zvanit-teksts')) || teksts(kaste.querySelector('.sapratu')) || 'Meklēšanas rezultāts';
-    spriedums.textContent = t;
+    spriedums.innerHTML = (ikona ? Ik(ikona) + ' ' : '') + esc(t);
     lapa.dataset.spriedums = klase;
     // Galvenā darbība: maršruts uz pirmo (tuvāko) vietu kartītē
     const saite = kaste.querySelector('li[data-lat] .marsruts a');
@@ -73,7 +73,7 @@ const Apaksa = (() => {
     darbiba.hidden = !saite;
     if (saite) {
       darbiba.href = saite.href;
-      darbiba.textContent = '🧭 Maršruts: ' + teksts(vieta);
+      darbiba.innerHTML = Ik('marsruts') + ' Maršruts: ' + esc(teksts(vieta));
       darbiba.setAttribute('aria-label', 'Maršruts uz tuvāko vietu: ' + teksts(vieta));
     }
   }

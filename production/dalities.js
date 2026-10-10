@@ -24,7 +24,7 @@ const Dalities = (() => {
 
   const pogas = () => `<div class="dalities-pogas">
       <button type="button" class="otra" data-darbiba="dalities"><span aria-hidden="true">↗</span> Dalīties</button>
-      <button type="button" class="otra" data-darbiba="drukat"><span aria-hidden="true">🖨</span> Drukāt</button>
+      <button type="button" class="otra" data-darbiba="drukat">${Ik('drukat')} Drukāt</button>
     </div><p class="dalities-zina piezime" role="status" hidden></p>`;
 
   function virsraksts() {

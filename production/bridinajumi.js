@@ -23,7 +23,7 @@ const Bridinajumi = (() => {
       josla.className = 'bridinajums ' + (max ? LIMENIS[max][0] : 'zals');
       josla.innerHTML = !sheit.length
         ? `<span>✓ ${kur}: LVĢMC brīdinājumu šobrīd nav${vieta && visi.length ? ` <small>(citur Latvijā: ${visi.length})</small>` : ''}</span>`
-        : `<details><summary>⚠ ${vieta ? kur + ': ' : ''}${sheit.map(b => `${LIMENIS[b.limenis]?.[1] || esc(b.krasa)} brīdinājums: ` +
+        : `<details><summary>${Ik('brid')} ${vieta ? kur + ': ' : ''}${sheit.map(b => `${LIMENIS[b.limenis]?.[1] || esc(b.krasa)} brīdinājums: ` +
             `${esc(b.paradiba.toLowerCase())}${b.regioni && !vieta ? ` (${esc(b.regioni)})` : ''}${b.lidz ? `, līdz ${laiks(b.lidz)}` : ''}`).join(' · ')}</summary>` +
           sheit.map(b => `<p>${esc(b.teksts)}</p><p class="riski">${esc(b.riski).replace(/\n/g, '<br>')}</p>`).join('') +
           `<p class="avots-rinda">Avots: ${AVOTS}</p></details>`;
