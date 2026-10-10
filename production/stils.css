@@ -1074,3 +1074,7 @@ body.druka-rezultats #rezultati .rez-skats[data-s="1"], body.druka-rezultats #re
 .uz-planu small { font-weight: 400; opacity: .9; }
 .ricibas-plans h3 { margin: 0 0 .3rem; font-size: 1rem; }
 .ricibas-plans > button { margin-top: .5rem; }
+
+/* Meklēšanas lauka ieteikums virs "Biežāk meklētais" (tikai tukšam laukam; ieteikumu režīmā paslēpts) */
+header .populari p.populari-ieteikums { margin: 0 0 .5rem; font-size: .85rem; text-transform: none; letter-spacing: 0; color: var(--teksts2); }
+.populari.ieteikumi .populari-ieteikums { display: none; }
