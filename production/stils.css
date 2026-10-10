@@ -493,3 +493,7 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 /* Abonēšana (RSS / kalendārs) rezultāta kartītē un prognožu panelī */
 .abonet-rinda, .prog-abonet { margin: .2rem 0 .3rem; font-size: .82rem; color: var(--teksts2); }
 .abonet-rinda a, .prog-abonet a { color: var(--zils-tumss); }
+/* ==== Galvenes "Ziņot" poga (zinot.js); A un D to novieto savos izkārtojumos ==== */
+.galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
+.galvene-poga:hover { background: rgba(0, 0, 0, .32); }
+@media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
