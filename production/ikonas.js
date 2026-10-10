@@ -3,7 +3,7 @@
 //    licences: ikonas/LICENSES.md). Emocijzīmes UI nelieto: tās telefonos izskatās dažādi un ekrāna lasītāji tās nolasa.
 //  • Formas pa slāņu grupām, lai slāņus var atšķirt arī bez krāsas: medicīna — krusts, infrastruktūra — trijstūris,
 //    ūdens — lāse, transports — kvadrāts, patvertnes un dienesti — aplis. Ikonas.markeris(): 26 px forma 44 × 44 px
-//    pieskāriena laukumā (garām trāpīts pieskāriens tik un tā atver punktu).
+//    apaļā pieskāriena laukumā; pārklājoties atveras tuvākais punkts (app.js atvertTuvako).
 const Ikonas = (() => {
   const SPRAITS = 'ikonas/ikonas.svg';
   const ik = (nos, klase = '') => nos ? `<svg class="ik${klase ? ' ' + klase : ''}" aria-hidden="true" focusable="false"><use href="${SPRAITS}#${nos}"></use></svg>` : '';
