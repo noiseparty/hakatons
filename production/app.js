@@ -88,7 +88,10 @@ async function iegut(cels, signal, prioritate) {
 
 function grupasIkona(grupa) {
   const skaiti = {};
-  for (const m of grupa.getAllChildMarkers()) skaiti[m.options.fillColor] = (skaiti[m.options.fillColor] || 0) + 1;
+  for (const m of grupa.getAllChildMarkers()) {
+    const kr = m.options.grupasKrasa || m.options.fillColor;
+    skaiti[kr] = (skaiti[kr] || 0) + 1;
+  }
   const n = grupa.getChildCount();
   let lidz = 0;
   const dalas = Object.entries(skaiti).sort((a, b) => b[1] - a[1])
@@ -245,7 +248,9 @@ function aizpilditKategorijas(saraksts) {
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
       <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? '' : 'disabled'}>
         ${Ikonas.formaHTML(k.kods)}${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">' + Ik('uzmanibu') + '</span>'}
-        <span class="skaits">${k.skaits}</span></label>`).join('');
+        <span class="skaits">${k.skaits}</span></label>` + (k.kods === 'bankomats' ? `<p class="slana-legenda">
+        ${Ikonas.formaSvg('bankomats', k.krasa, 16, 'forma-rinda')} kritiskais (strādā arī krīzē, banku saraksts)
+        ${Ikonas.formaSvg('bankomats', '#fff', 16, 'forma-rinda')} cits bankomāts</p>` : '')).join('');
     kaste.append(div);
   }
   kaste.querySelectorAll('input').forEach(i => { if (i.checked) stavoklis.kategorijas.add(i.value); });
@@ -287,6 +292,17 @@ function udensLimenis(i) {
   return r.join('<br>');
 }
 
+// Bankomāta marķieris = tā pati trīsstūra forma no ikonas.js. Kritiskais (banku saraksts) — pilns, lielāks trīsstūris
+// slāņa krāsā ar klasi "kritiskais"; citi — balts trīsstūris. fillColor paliek slāņa krāsa, lai grupu aplis (grupasIkona) skaita pareizi.
+function bankomataMarkieris(ll, p, k, title = '') {
+  const krit = (p.ipasibas || {}).kritiskais === '1';
+  const krasa = k.krasa || '#1d4ed8';
+  const ikona = Ikonas.markeris('bankomats', krit ? krasa : '#fff', krit ? 32 : 24);
+  ikona.options.className += krit ? ' kritiskais' : ' bankomats-cits';
+  return L.marker(ll, { icon: ikona, fillColor: krasa, grupasKrasa: krasa, kritiskais: krit, title,
+    zIndexOffset: krit ? 1000 : 0 });
+}
+
 function popupSaturs(p, ll) {
   const k = kategorijas[p.kategorija] || {};
   const i = p.ipasibas || {};
@@ -299,6 +315,11 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
+  if (p.kategorija === 'bankomats' && i.bankas) {
+    rindas.push(`<small>${esc(i.bankas)}${+i.skaits > 1 ? ` · ${esc(i.skaits)} bankomāti` : ''} · ${i.iemaksas === '1' ? 'iemaksas un izmaksas' : 'tikai izmaksas'}` +
+      ` · ${i.pieejamiba_24h === '1' ? '24/7' : 'ierobežots darba laiks'}</small>`);
+    if (i.kritiskais === '1') rindas.push('<span class="krit-zime">KRITISKAIS</span> <small>Kritiskais bankomāts: skaidra nauda arī krīzes laikā (banku saraksts, 22.09.2026)</small>');
+  }
   if (p.kategorija === 'patvertne') rindas.push('<small>Ietilpība, piekļūstamība ar ratiņkrēslu, mājdzīvnieki: nav norādīts (112.lv datos šo ziņu nav)</small>');
   if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
   if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
@@ -325,8 +346,9 @@ async function atjaunot() {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
       // forma pēc slāņu grupas (ikonas.js), 44 px pieskāriena laukums; fillColor — grupu apļa krāsām (grupasIkona)
-      f._slanis = L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e',
-        title: nosaukums(f.properties) || k.nosaukums || '' })
+      const nos = nosaukums(f.properties) || k.nosaukums || '';
+      f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k, nos)
+        : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: nos }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
     }
     objektuSlanis.addLayers(gj.features.map(f => f._slanis));

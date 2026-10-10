@@ -1,0 +1,846 @@
+id,adrese,lat,lon,pieejamiba,veids,kritiskais,banka
+500-001,"RĪGA, Marupes ielā 10a",56.932094,24.072768,IEROB,COM,0,Citadele
+500-002,"RĪGA, Dižozolu iela 2",56.902843,24.094761,IEROB,COM,0,Citadele
+500-003,"LIEPĀJA, Ziemeļu ielā 13",56.535064,21.012421,IEROB,COM,0,Citadele
+500-004,"CĒSIS, Raunas ielā 13",57.312865,25.276533,NEIEROB,COM,0,Citadele
+500-005,"RĪGA, Kleistu ielā 28",56.943035,24.165628,IEROB,COM,0,Citadele
+500-006,"RĪGA, Ķīšezera ielā 6",56.991570,24.165800,IEROB,COM,0,Citadele
+500-007,"JELGAVA, Satiksmes iela 35",56.656548,23.699549,IEROB,COM,0,Citadele
+500-008,"JELGAVA, Katoļu iela 18",56.647468,23.726369,IEROB,COM,0,Citadele
+500-009,"RĪGAS RAJONS, Rīgas raj., Mārupes pag., Lidosta ""RĪGA""",56.921597,23.979431,NEIEROB,COM,0,Citadele
+500-010,"DAUGAVPILS, Aveņu ielā 26",55.901520,26.527344,IEROB,COM,0,Citadele
+500-011,"DAUGAVPILS, Smilšu iela 92a",55.886753,26.553751,IEROB,COM,0,Citadele
+500-012,"RĪGA, Gobas iela 13",57.034188,24.048564,IEROB,COM,0,Citadele
+500-013,"RĪGA, Vestienas ielā 35",56.942673,24.165738,IEROB,COM,0,Citadele
+500-014,"RĪGA, Stacijas Laukums 2",56.946747,24.119647,IEROB,COM,0,Citadele
+500-016,"JŪRMALA, Dārzkopības iela 19",56.974915,23.854100,IEROB,COM,0,Citadele
+500-017,"RĪGA, Tilta ielā 32",56.995549,24.129982,IEROB,COM,0,Citadele
+500-018,"RĪGA, Kr. Barona iela 46",56.954271,24.127804,IEROB,COM,0,Citadele
+500-019,"TALSI, Dundagas ielā 18",57.247944,22.578695,IEROB,COM,0,Citadele
+500-020,"OGRE, Mālkalnes prospēkts 3",56.821781,24.595503,NEIEROB,COM,0,Citadele
+500-021,"RĪGA, Eksporta ielā 1c",56.955654,24.097643,NEIEROB,COM,0,Citadele
+500-022,"RĪGA, Maskavas ielā 250",56.917366,24.173321,NEIEROB,COM,0,Citadele
+500-023,"LIMBAŽI, Rīgas ielā 8",57.512672,24.716139,NEIEROB,COM,0,Citadele
+500-024,"RĪGA, Kuģu ielā 22",56.942123,24.095243,NEIEROB,COM,0,Citadele
+500-025,"RĪGA, Kokneses prospektā 18",57.001228,24.159655,NEIEROB,COM,0,Citadele
+500-026,"RĪGA, Kungu iela 1",56.947836,24.106974,NEIEROB,COM,0,Citadele
+500-027,"RĪGA, A. Dombrovska ielā 23",57.031744,24.108706,NEIEROB,COM,0,Citadele
+500-028,"LĪVĀNI, Rīgas ielā 37A",56.348357,26.177542,NEIEROB,COM,0,Citadele
+500-029,"LUDZA, Stacijas ielā 30",56.544525,27.720749,NEIEROB,COM,0,Citadele
+500-030,"JELGAVA, Brīvības b. 1",56.657158,23.742903,NEIEROB,COM,0,Citadele
+500-031,"RĪGA, A.Saharova ielā 21",56.938164,24.202602,NEIEROB,COM,0,Citadele
+500-032,"RĪGA, Brīvības gatvē 409",56.989551,24.239334,NEIEROB,COM,0,Citadele
+500-033,"SALASPILS, Skolas ielā 4d",56.855274,24.335075,NEIEROB,COM,0,Citadele
+500-034,"RĪGA, Čiekurkalna 1. Līnijā 1, K-1",56.983307,24.157293,NEIEROB,COM,0,Citadele
+500-035,"RĒZEKNE, Atbrīvošanas ielā 112",56.509495,27.333138,NEIEROB,COM,0,Citadele
+500-036,"RĪGA, Ieriķu ielā 41b",56.966293,24.182003,NEIEROB,COM,0,Citadele
+500-037,"ĶEKAVA, Rīgas iela 22A",56.831600,24.232900,IEROB,COM,0,Citadele
+500-038,"RĪGA, Gailezera iela 8",56.968062,24.236808,IEROB,COM,0,Citadele
+500-039,"BALOŽI, Baložu iela 5",56.883000,24.149690,IEROB,COM,0,Citadele
+500-040,"VENTSPILS, Poruka ielā 16",57.385662,21.546602,IEROB,COM,0,Citadele
+500-041,"JĒKABPILS, Rīgas iela 109",56.501479,25.873155,IEROB,COM,0,Citadele
+500-042,"RĒZEKNE, Stacijas ielā 20A",56.518046,27.347568,IEROB,COM,0,Citadele
+500-043,"MADONA, Rupniecības iela 49",56.859797,26.231431,IEROB,COM,0,Citadele
+500-044,"RĪGA, Maza Rencēnu ielā 1",56.926942,24.179458,IEROB,COM,0,Citadele
+500-045,"RĪGA, Republikas laukums 2a",56.953319,24.100308,IEROB,COM,1,Citadele
+500-046,"RĪGA, Grostonas iela 1",56.964318,24.119794,IEROB,COM,0,Citadele
+500-047,"RĪGA, Pilsoņu ielā 1K-1",56.937069,24.070865,IEROB,COM,0,Citadele
+500-048,"RĪGA, Prāgas iela 1",56.944962,24.114777,IEROB,COM,0,Citadele
+500-050,"RĪGA, Duntes ielā 19a",56.986607,24.133015,IEROB,COM,0,Citadele
+500-051,"RĪGAS RAJONS, Rīgas raj., Mārupes pag., Lidosta ""RĪGA""",56.922357,23.979139,NEIEROB,COM,0,Citadele
+500-052,"RĪGA, Slokas ielā 115",56.960579,24.037024,IEROB,COM,0,Citadele
+500-053,"LIEPĀJA, Jaunā ostmala 3/5",56.514942,21.018187,IEROB,COM,1,Citadele
+500-055,"Rīga, Brīvības gatve 201",56.904579,24.054910,IEROB,COM,0,Citadele
+500-056,"RĪGA, Stirnu ielā 26",56.958683,24.185210,IEROB,COM,0,Citadele
+500-057,"DAUGAVPILS, Cietokšņa ielā 60",55.875221,26.520490,NEIEROB,COM,0,Citadele
+500-058,"VENTSPILS, Pils ielā 17",57.396607,21.567875,NEIEROB,COM,0,Citadele
+500-059,"LUDZA, Kr.Barona 41/18",56.546378,27.724682,NEIEROB,COM,0,Citadele
+500-060,"DAUGAVPILS, Stradnieku 103",55.880836,26.559724,NEIEROB,COM,0,Citadele
+500-061,"RĪGA, Dzirnavu ielā 43",56.957367,24.115781,NEIEROB,COM,0,Citadele
+500-063,"RĪGA, Melnsila iela 22",56.945290,24.065180,NEIEROB,COM,0,Citadele
+500-064,"BALVI, Bērzpils ielā 15",57.128763,27.266668,NEIEROB,COM,0,Citadele
+500-065,"RĪGA, Bauskas ielā 86",56.915039,24.113585,NEIEROB,COM,0,Citadele
+500-066,"KRĀSLAVA, Rīgas iela 28",55.897118,27.161894,NEIEROB,COM,0,Citadele
+500-067,"KĀRSAVA, Vienības 53",56.786983,27.675280,NEIEROB,COM,0,Citadele
+500-068,"RĪGA, Brīvības iela 90",56.959622,24.129383,NEIEROB,COM,0,Citadele
+500-069,"BAUSKA, Zaļā ielā 3",56.407035,24.193718,NEIEROB,COM,0,Citadele
+500-070,"RĪGA, Raiņa bulvāris 25",56.949198,24.117323,NEIEROB,COM,0,Citadele
+500-071,"ALŪKSNE, Pils ielā 29",57.423790,27.051383,NEIEROB,COM,0,Citadele
+500-072,"RĪGA, Brīvības gatve 310",56.978897,24.186155,NEIEROB,COM,0,Citadele
+500-073,"VALMIERA, Fabrikas 2",57.533333,25.423447,NEIEROB,COM,0,Citadele
+500-074,"LIEPĀJA, Lielā ielā 13",56.507513,21.010663,IEROB,COM,0,Citadele
+500-075,"RĪGA, Nīcgales ielā 2",56.959568,24.174864,IEROB,CRM,0,Citadele
+500-076,"RĪGA, Dzirnavu ielā 67",56.954488,24.121145,IEROB,CRM,0,Citadele
+500-077,"JŪRMALA, Viestura ielā 22",56.974789,23.858463,IEROB,CRM,1,Citadele
+500-078,"RĪGA, Audēju ielā 16",56.948154,24.112963,IEROB,CRM,0,Citadele
+500-079,"RĪGA, Lidoņu ielā 27",56.968781,24.059834,IEROB,CRM,0,Citadele
+500-080,"JELGAVA, Driksas ielā 4",56.650948,23.723885,IEROB,CRM,0,Citadele
+500-081,"RĪGA, A.Deglava ielā 67",56.950089,24.187334,IEROB,CRM,0,Citadele
+500-082,"RĪGA, Mūkusalas  ielā 71",56.925623,24.105803,IEROB,CRM,0,Citadele
+500-083,"RĪGA, Lielirbes ielā 29",56.929451,24.037334,IEROB,CRM,1,Citadele
+500-084,"RĪGA, Kr. Valdemāra ielā 112",56.974289,24.136721,IEROB,CRM,0,Citadele
+500-085,"RĪGA, A.Deglava ielā 67",56.950089,24.187334,IEROB,CRM,0,Citadele
+500-086,"AIZKRAUKLE, Gaismas 35",56.610141,25.259536,IEROB,CRM,0,Citadele
+500-087,"LIMBAŽI, Rīgas iela 23A",57.508218,24.714496,NEIEROB,CRM,0,Citadele
+500-088,"MADONA, Saules ielā 6",56.851694,26.220623,IEROB,CRM,0,Citadele
+500-089,"JĒKABPILS, Brīvības iela 108",56.494950,25.870190,IEROB,CRM,1,Citadele
+500-090,"OGRE, Rīgas ielā 23",56.816490,24.585601,IEROB,CRM,1,Citadele
+500-092,"JŪRMALA, Talsu šosejā 29, Jūrmala",56.960873,23.615562,IEROB,CRM,0,Citadele
+500-093,"SIGULDA, Strēlnieku ielā 2",57.143105,24.844379,IEROB,CRM,0,Citadele
+500-094,"MĀRUPE, Daugavas iela 31",56.973733,24.163182,IEROB,CRM,0,Citadele
+500-095,"RĪGA, Nometņu iela 64",56.935697,24.071670,IEROB,CRM,0,Citadele
+500-096,"KULDĪGA, Liepājas iela 44",56.966961,21.958399,IEROB,CRM,0,Citadele
+500-097,"RĪGA, 13. Janvāra iela 8",56.946472,24.117065,IEROB,CRM,0,Citadele
+500-098,"RĪGA, Stacijas Laukums 2",56.946869,24.120639,IEROB,CRM,0,Citadele
+500-099,"LUDZA, Raiņa ielā 40a",56.540783,27.711157,IEROB,CRM,0,Citadele
+500-100,"JELGAVA, Rīgas 11a",56.662041,23.746882,IEROB,CRM,0,Citadele
+500-101,"RĪGA, Kurzemes pr. 1a",56.953915,24.039284,IEROB,CRM,0,Citadele
+500-102,"DAUGAVPILS, Cietokšņa ielā 60",55.873013,26.518208,IEROB,CRM,0,Citadele
+500-103,"LĪVĀNI, Domes iela 4a",56.355728,26.174347,IEROB,CRM,0,Citadele
+500-104,"BAUSKA, Pionieru ielā 2",56.406044,24.187775,IEROB,CRM,0,Citadele
+500-105,"RĪGA, Anniņmuižas bulvārī 40a",56.960530,24.012988,IEROB,CRM,0,Citadele
+500-106,"RĪGA, Brīvības gatvē 372",56.983082,24.202515,IEROB,CRM,1,Citadele
+500-107,"DAUGAVPILS, Rīgas ielā 34",55.871594,26.518681,NEIEROB,CRM,1,Citadele
+500-108,"CĒSIS, Valmieras ielā 17A",57.317100,25.280800,IEROB,CRM,0,Citadele
+500-109,"RĪGA, Lielirbes ielā 29",56.929615,24.036623,IEROB,CRM,0,Citadele
+500-110,"RĒZEKNE, Galdnieku iela 8",56.501989,27.330180,NEIEROB,CRM,1,Citadele
+500-111,"RĪGA, Vienības Gatvē 113",56.908213,24.081678,IEROB,CRM,0,Citadele
+500-112,"RĪGA, Imantas 15,līnija 7",56.944508,24.012058,IEROB,CRM,0,Citadele
+500-113,"JELGAVA, Matera 23/25",56.651013,23.720121,NEIEROB,CRM,1,Citadele
+500-114,"GULBENE, Rīgas 47",57.173155,26.756900,NEIEROB,CRM,1,Citadele
+500-115,"RĪGA, Maskavas ielā 257",56.923539,24.176556,IEROB,CRM,0,Citadele
+500-116,"RĪGA, Maskavas ielā 257",56.923412,24.176857,IEROB,CRM,0,Citadele
+500-117,"RĪGA, Republikas laukums 2a",56.953518,24.100662,NEIEROB,CRM,0,Citadele
+500-118,"LIEPĀJA, Lielā ielā 13",56.507513,21.010663,IEROB,CRM,0,Citadele
+500-119,"TUKUMS, Brīvības laukums 9",56.966358,23.154631,NEIEROB,CRM,1,Citadele
+500-120,"BALVI, Brīvības iela 57",57.132771,27.266270,IEROB,CRM,0,Citadele
+500-121,"VALMIERA, Rīgas ielā 4",57.538704,25.423576,IEROB,CRM,0,Citadele
+500-122,"RĒZEKNE, Atbrīvošanas alejā 141a",56.523277,27.340373,IEROB,CRM,0,Citadele
+500-123,"RĪGA, Centrāltirgus iela 3k-2",56.943595,24.114841,IEROB,CRM,0,Citadele
+500-124,"Dreiliņi, Biķeru ielā 4, Stopiņu novads",56.951241,24.252485,IEROB,CRM,0,Citadele
+500-125,"RĪGA, Ieriķu ielā 3",56.966571,24.165172,IEROB,CRM,0,Citadele
+500-126,"JĒKABPILS, Vienības ielā 7",56.495504,25.878254,IEROB,CRM,0,Citadele
+500-127,"RĪGA, Mīlgrāvja ielā 14",57.025975,24.139336,IEROB,CRM,0,Citadele
+500-128,"LIEPĀJA, Klaipēdas ielā 62",56.491531,21.003735,IEROB,CRM,0,Citadele
+500-130,"RĪGA, Maskavas ielā 357",56.905396,24.191637,IEROB,CRM,0,Citadele
+500-131,"SMILTENE, Kalēju iela7",57.425587,25.897305,IEROB,CRM,0,Citadele
+500-132,"VALMIERA, Diakonāta ielā 6",57.536169,25.420815,NEIEROB,CRM,1,Citadele
+500-133,"TALSI, Lielā ielā 4",57.244682,22.587504,NEIEROB,CRM,1,Citadele
+500-134,"PREIĻI, Rīgas ielā 4D",56.299704,26.709780,IEROB,CRM,0,Citadele
+500-135,"ĀDAŽI, Rīgas gatvē 5",57.071226,24.320007,IEROB,CRM,0,Citadele
+500-136,"RĪGA, Āzenes ielā 5",56.949509,24.082664,IEROB,CRM,0,Citadele
+500-137,"VENTSPILS, Lielais prospekts 3/5",57.387703,21.580192,IEROB,CRM,1,Citadele
+500-138,"SALACGRĪVA, Rīgas iela 13",57.751128,24.357055,IEROB,CRM,0,Citadele
+500-139,"RĪGA, A.Saharova ielā 20a",56.941677,24.206432,IEROB,CRM,1,Citadele
+500-140,"RĪGA, Vienības Gatvē 194a",56.896924,24.078568,IEROB,CRM,0,Citadele
+500-141,"SALDUS, Striķu ielā 10C",56.664904,22.495291,IEROB,CRM,0,Citadele
+500-142,"SALASPILS, Skolas ielā 4e",56.854573,24.336250,IEROB,CRM,0,Citadele
+500-143,"RĪGA, Jaunmoku ielā 13",56.931134,24.038781,IEROB,CRM,0,Citadele
+500-144,"RĪGA, Stacijas Laukums 2",56.946859,24.119365,IEROB,CRM,0,Citadele
+500-147,"Carnikava, Atpūtas iela 1",57.129235,24.277448,IEROB,COM,0,Citadele
+500-148,"Daugavpils, Cietokšņa iela 72A",55.878046,26.513571,IEROB,CRM,0,Citadele
+500-149,"Daugavpils, 18. Novembra iela 136",55.877096,26.551232,IEROB,COM,0,Citadele
+500-150,"Rēzekne, Atbrīvošanas aleja 138",56.514557,27.336220,IEROB,CRM,0,Citadele
+500-151,"Rīga, Brīvības gatve 372",56.983082,24.202515,IEROB,CRM,0,Citadele
+717-001,"Rīga, Ieriķu iela 3",56.966325,24.161226,IEROB,CRM,0,Swedbank
+717-002,"Rīga, Latgales iela 257",56.924250,24.174928,IEROB,CRM,0,Swedbank
+717-003,"Rīga, Latgales iela 257",56.924250,24.174928,IEROB,CRM,0,Swedbank
+717-004,"Rīga, Latgales iela 257",56.924250,24.174928,IEROB,CRM,0,Swedbank
+717-005,"Rīga, Latgales iela 257",56.924250,24.174928,IEROB,CRM,0,Swedbank
+717-006,"Rīga, Ieriķu iela 3",56.966325,24.161226,IEROB,CRM,0,Swedbank
+717-007,"Rīga, Ieriķu iela 3",56.966325,24.161226,IEROB,CRM,0,Swedbank
+717-008,"Rīga, Brīvības gatve 372",56.982605,24.203336,IEROB,CRM,0,Swedbank
+717-009,"Rīga, Lielirbes iela 29",56.929771,24.036558,IEROB,CRM,0,Swedbank
+717-010,"Rīga, Lielirbes iela 29",56.929771,24.036558,IEROB,CRM,0,Swedbank
+717-011,"Rīga, Mūkusalas iela 71",56.925626,24.105834,IEROB,CRM,0,Swedbank
+717-012,"Rīga, Mūkusalas iela 71",56.925626,24.105834,IEROB,CRM,0,Swedbank
+717-013,"Rīga, Mūkusalas iela 71",56.925626,24.105834,IEROB,CRM,0,Swedbank
+717-014,"Rīga, Brīvības gatve 372",56.982605,24.203336,IEROB,CRM,0,Swedbank
+717-015,"Rīga, Audēju iela 16",56.948016,24.112719,IEROB,CRM,0,Swedbank
+717-016,"Rīga, Brīvības gatve 372",56.982605,24.203336,IEROB,CRM,0,Swedbank
+717-017,"Rīga, Dzirnavu iela 67",56.954564,24.120746,IEROB,CRM,0,Swedbank
+717-018,"Rīga, Dzirnavu iela 67",56.954564,24.120746,IEROB,CRM,0,Swedbank
+717-019,"Rīga, Audēju iela 16",56.948016,24.112719,IEROB,CRM,0,Swedbank
+717-020,"Rīga, Kurzemes prospekts 1a",56.953973,24.038502,IEROB,CRM,0,Swedbank
+717-021,"Rīga, Kurzemes prospekts 1a",56.953973,24.038502,IEROB,CRM,0,Swedbank
+717-022,"Rīga, A. Saharova iela 20A",56.941618,24.206810,IEROB,CRM,0,Swedbank
+717-023,"Rīga, A. Saharova iela 20A",56.941618,24.206810,IEROB,CRM,1,Swedbank
+717-024,"Rīga, 13. Janvāra iela 8",56.946342,24.116838,IEROB,CRM,0,Swedbank
+717-025,"Jelgava, Driksas iela 4",56.650921,23.724099,IEROB,CRM,1,Swedbank
+717-026,"Jelgava, Driksas iela 4",56.650921,23.724099,IEROB,CRM,0,Swedbank
+717-027,"Liepāja, Klaipēdas iela 62",56.491729,21.003708,IEROB,CRM,0,Swedbank
+717-028,"Ventspils, Kuldīgas iela 25a",57.392137,21.564320,NEIEROB,CRM,1,Swedbank
+717-029,"Ventspils, Kuldīgas iela 25a",57.392137,21.564320,NEIEROB,CRM,1,Swedbank
+717-030,"Valmiera, Rīgas iela 4",57.538535,25.423773,IEROB,CRM,0,Swedbank
+717-031,"Daugavpils, Rīgas iela 9",55.872010,26.517589,IEROB,CRM,0,Swedbank
+717-032,"Daugavpils, Rīgas iela 22",55.870370,26.515281,NEIEROB,CRM,1,Swedbank
+717-033,"Daugavpils, 18. Novembra iela 136",55.876953,26.551113,IEROB,CRM,0,Swedbank
+717-034,"Rēzekne, Kr. Valdemāra iela 16a",56.513901,27.337099,IEROB,CRM,0,Swedbank
+717-035,"Liepāja, Tirgoņu iela 18",56.506759,21.009279,NEIEROB,CRM,1,Swedbank
+717-036,"Liepāja, Tirgoņu iela 18",56.506759,21.009279,NEIEROB,CRM,1,Swedbank
+717-037,"Jelgava, Katoļu iela 18",56.647491,23.726359,IEROB,CRM,0,Swedbank
+717-038,"Jelgava, Katoļu iela 18",56.647491,23.726359,IEROB,CRM,0,Swedbank
+717-039,"Rīga, Rusova iela 1",56.989630,24.166711,IEROB,CRM,0,Swedbank
+717-040,"Rīga, A. Saharova iela 2",56.932156,24.201797,IEROB,CRM,0,Swedbank
+717-041,"Rīga, A. Saharova iela 2",56.932156,24.201797,IEROB,CRM,0,Swedbank
+717-042,"Rīga, Vienības gatve 113",56.908207,24.081678,IEROB,CRM,0,Swedbank
+717-043,"Rīga, Vienības gatve 113",56.908207,24.081678,IEROB,CRM,0,Swedbank
+717-044,"Rīga, Duntes iela 19a",56.986293,24.132697,IEROB,CRM,0,Swedbank
+717-045,"Rīga, A.Dombrovska 23",57.031557,24.109413,IEROB,CRM,1,Swedbank
+717-046,"Rīga, A.Dombrovska 23",57.031557,24.109413,IEROB,CRM,0,Swedbank
+717-047,"Smiltene, Atmodas iela 4",57.420993,25.906029,IEROB,CRM,0,Swedbank
+717-048,"Rīga, Lielirbes iela 29",56.929771,24.036558,IEROB,CRM,0,Swedbank
+717-049,"Rīga, A. Deglava iela 67",56.950146,24.187378,IEROB,CRM,0,Swedbank
+717-050,"Rīga, A. Deglava iela 67",56.950146,24.187378,IEROB,CRM,0,Swedbank
+717-051,"Salaspils, Skolas iela 4e",56.852984,24.335802,IEROB,CRM,0,Swedbank
+717-052,"Ādaži, Rīgas gatve 5",57.071214,24.320093,IEROB,CRM,0,Swedbank
+717-053,"Sigulda, Strēlnieku iela 2",57.143320,24.844682,IEROB,CRM,0,Swedbank
+717-054,"Ogre, Rīgas iela 23",56.816484,24.585622,IEROB,CRM,0,Swedbank
+717-055,"Liepāja, Jaunā Ostmala 3/5",56.515010,21.018216,IEROB,CRM,0,Swedbank
+717-056,"Liepāja, Jaunā Ostmala 3/5",56.515010,21.018216,IEROB,CRM,0,Swedbank
+717-057,"Iecava, Rīgas iela 27",56.597866,24.196917,IEROB,CRM,0,Swedbank
+717-058,"Jelgava, Rīgas iela 11a",56.661891,23.746238,IEROB,CRM,0,Swedbank
+717-059,"Ķekava, Rīgas iela 22a",56.831853,24.232312,IEROB,CRM,0,Swedbank
+717-060,"Aizkraukle, Bērzu iela 7",56.604389,25.254709,NEIEROB,CRM,1,Swedbank
+717-061,"Rīga, Kr. Valdemāra iela 112",56.974556,24.136916,IEROB,CRM,0,Swedbank
+717-062,"Rīga, Tilta iela 32",56.995741,24.130573,IEROB,CRM,1,Swedbank
+717-063,"Rīga, K. Ulmaņa gatve 88a",56.929118,24.024843,IEROB,CRM,0,Swedbank
+717-064,"Rīga, K. Ulmaņa gatve 88a",56.929118,24.024842,IEROB,CRM,0,Swedbank
+717-065,"Rīga, A. Saharova iela 23a",56.939045,24.202754,IEROB,CRM,0,Swedbank
+717-066,"Rīga, Prūšu iela 2",56.914925,24.177791,IEROB,CRM,0,Swedbank
+717-067,"Rīga, Grostonas iela 1",56.964676,24.119000,IEROB,CRM,0,Swedbank
+717-068,"Rīga, Stacijas laukums 2",56.946785,24.119276,NEIEROB,CRM,0,Swedbank
+717-069,"Rīga, Slokas iela 115",56.960405,24.037772,IEROB,CRM,0,Swedbank
+717-070,"Rīga, Slokas iela 115",56.960405,24.037772,IEROB,CRM,0,Swedbank
+717-071,"Rīga, Stacijas laukums 2",56.946898,24.120925,IEROB,CRM,0,Swedbank
+717-072,"Dobele, Baznīcas iela 14",56.624754,23.283073,IEROB,CRM,0,Swedbank
+717-073,"Rīga, Krasta iela 46",56.934744,24.142800,IEROB,CRM,0,Swedbank
+717-074,"Ogre, Mednieku iela 23",56.825243,24.602636,IEROB,CRM,0,Swedbank
+717-075,"Cēsis, Uzvaras bulvāris 12",57.314210,25.278155,NEIEROB,CRM,1,Swedbank
+717-076,"Jelgava, Rīgas iela 48",56.668050,23.761103,IEROB,CRM,1,Swedbank
+717-077,"Daugavpils, Cietokšņa iela 60",55.873942,26.517518,IEROB,CRM,1,Swedbank
+717-078,"Rīga, Nometņu iela 64",56.935914,24.072527,IEROB,CRM,0,Swedbank
+717-079,"Ventspils, Talsu iela 6",57.401923,21.584911,IEROB,CRM,0,Swedbank
+717-080,"Cēsis, Jāņa Poruka iela 19",57.314417,25.293952,IEROB,CRM,0,Swedbank
+717-081,"Rīga, Latgales iela 400",56.897933,24.204337,IEROB,CRM,0,Swedbank
+717-082,"Rīga, Latgales iela 400",56.897933,24.204337,IEROB,CRM,0,Swedbank
+717-083,"Jelgava, Pasta iela 47",56.648368,23.725730,IEROB,CRM,1,Swedbank
+717-084,"Tukums, Pils iela 15a",56.965953,23.161584,IEROB,CRM,1,Swedbank
+717-085,"Rīga, Nīcgales iela 2",56.959344,24.174944,IEROB,CRM,0,Swedbank
+717-086,"Madona, Saules iela 6",56.851968,26.221175,IEROB,CRM,0,Swedbank
+717-087,"Valmiera, G. Apiņa iela 10a",57.542064,25.417273,IEROB,CRM,0,Swedbank
+717-088,"Rīga, Hipokrāta iela 28",56.959544,24.239255,IEROB,CRM,0,Swedbank
+717-090,"Rīga, A. Čaka iela 55",56.954618,24.132862,IEROB,CRM,0,Swedbank
+717-091,"Rīga, Pilsoņu iela 1",56.935109,24.069246,IEROB,CRM,0,Swedbank
+717-092,"Rīga, Imantas 15. līnija 7",56.944625,24.010872,IEROB,CRM,0,Swedbank
+717-093,"Rīga, Juglas krastmala 2",56.989449,24.244955,IEROB,CRM,0,Swedbank
+717-094,"Rīga, Mārupes iela 10A",56.932774,24.071988,IEROB,CRM,0,Swedbank
+717-095,"Jūrmala, Viestura iela 22",56.974704,23.858971,IEROB,CRM,0,Swedbank
+717-096,"Kuldīga, Liepājas iela 44",56.968314,21.961040,IEROB,CRM,0,Swedbank
+717-097,"Ventspils, J. Poruka iela 16",57.385887,21.546331,IEROB,CRM,0,Swedbank
+717-098,"Sigulda, Vidus iela 1",57.153008,24.847990,IEROB,CRM,0,Swedbank
+717-099,"Saldus, Striķu iela 2",56.666237,22.493876,NEIEROB,CRM,1,Swedbank
+717-100,"Rīga, Gobas iela 13",57.034191,24.048524,IEROB,CRM,0,Swedbank
+717-101,"Bauska, Pionieru iela 2",56.406508,24.189337,IEROB,CRM,0,Swedbank
+717-102,"Rēzekne, Latgales iela 18",56.499606,27.329035,IEROB,CRM,0,Swedbank
+717-103,"Rēzekne, Atbrīvošanas aleja 141a",56.523304,27.340394,IEROB,CRM,0,Swedbank
+717-104,"Jēkabpils, Vienības iela 7",56.495469,25.878393,IEROB,CRM,0,Swedbank
+717-105,"Jēkabpils, Brīvības iela 108",56.495063,25.869943,IEROB,CRM,0,Swedbank
+717-106,"Talsi, Dundagas iela 18",57.247499,22.579785,IEROB,CRM,0,Swedbank
+717-107,"Talsi, Rīgas iela 8",57.238580,22.586197,IEROB,CRM,0,Swedbank
+717-108,"Alūksne, Pils iela 9B",57.424079,27.049982,IEROB,CRM,0,Swedbank
+717-109,"Olaine, Veselības iela 1",56.784656,23.936414,IEROB,CRM,0,Swedbank
+717-110,"Varakļāni, Pils iela 7d",56.611009,26.758765,IEROB,CRM,0,Swedbank
+717-111,"Mārupe, Daugavas iela 31",56.904408,24.055006,IEROB,CRM,0,Swedbank
+717-112,"Carnikava, Rīgas iela 14a",57.128617,24.276438,IEROB,CRM,0,Swedbank
+717-113,"Koknese, 1905. gada iela 8a",56.644496,25.433824,IEROB,CRM,0,Swedbank
+717-114,"Dreiliņi, Biķeru iela 4",56.951131,24.254058,IEROB,CRM,0,Swedbank
+717-115,"Rīga, Āzenes iela 5",56.949828,24.082394,IEROB,CRM,0,Swedbank
+717-116,"Gulbene, Brīvības iela 56",57.172102,26.752248,IEROB,CRM,0,Swedbank
+717-117,"Jūrmala, Strēlnieku prospekts 1",56.967439,23.769872,IEROB,CRM,0,Swedbank
+717-118,"Rīga, Dižozolu iela 2",56.908054,24.095054,IEROB,CRM,1,Swedbank
+717-119,"Madona, Rūpniecības iela 49",56.860156,26.231216,IEROB,CRM,1,Swedbank
+717-121,"Rīga, Lidoņu iela 27",56.969433,24.059805,IEROB,CRM,0,Swedbank
+717-122,"Bauska, Pionieru iela 2",56.406494,24.189266,IEROB,CRM,0,Swedbank
+717-123,"Krāslava, Rīgas iela 36",55.895448,27.164571,IEROB,CRM,0,Swedbank
+717-124,"Viļāni, Brīvības iela 2",56.549914,26.922112,IEROB,CRM,0,Swedbank
+717-125,"Jūrmala, Talsu šoseja 25",56.960370,23.617620,IEROB,CRM,1,Swedbank
+717-126,"Līvāni, Domes iela 4A",56.355734,26.174385,IEROB,CRM,0,Swedbank
+717-127,"Rīga, Matīsa iela 25",56.957307,24.134665,IEROB,CRM,0,Swedbank
+717-128,"Aizpute, Zvaigžņu iela 2",56.719005,21.607324,IEROB,CRM,0,Swedbank
+717-129,"Rūjiena, Brīvības iela 8",57.896798,25.326048,IEROB,CRM,0,Swedbank
+717-130,"Ludza, Latgales iela 61",56.543853,27.711395,IEROB,CRM,0,Swedbank
+717-131,"Rīga, A. Deglava iela 110",56.947531,24.193660,IEROB,CRM,0,Swedbank
+717-132,"Valmiera, Fabrikas iela 2",57.533651,25.424011,IEROB,CRM,0,Swedbank
+717-133,"Rīga, Pulkveža Brieža iela 33a",56.965291,24.106121,IEROB,CRM,0,Swedbank
+717-134,"Tukums, Pasta iela 14",56.967485,23.157795,IEROB,CRM,0,Swedbank
+717-135,"Saldus, Jelgavas iela 1",56.666328,22.494478,IEROB,CRM,0,Swedbank
+717-136,"Rīga, Jaunmoku iela 13",56.931292,24.039703,IEROB,CRM,0,Swedbank
+717-137,"Limbaži, Stacijas iela 8",57.513608,24.722458,IEROB,CRM,1,Swedbank
+717-138,"Rīga, Latgales iela 357",56.905680,24.191325,IEROB,CRM,0,Swedbank
+717-139,"Preiļi, Rēzeknes iela 4A",56.294535,26.725412,IEROB,CRM,0,Swedbank
+717-140,"Rīga, Anniņmuižas bulvāris 40a",56.960482,24.012547,IEROB,CRM,0,Swedbank
+717-141,"Daugavpils, Cietokšņa iela 60",55.873942,26.517518,IEROB,CRM,0,Swedbank
+717-142,"Rīga, Balasta dambis 15",56.949046,24.089847,IEROB,CRM,1,Swedbank
+717-143,"Rīga, Stirnu iela 26",56.959087,24.185811,IEROB,CRM,0,Swedbank
+717-144,"Daugavpils, Raipoles iela 11a",55.900290,26.526285,IEROB,CRM,0,Swedbank
+717-145,"Rīga, Brīvības gatve 201",56.973906,24.162819,IEROB,CRM,0,Swedbank
+717-146,"Rīga, Firsa Sadovņikova iela 14",56.941272,24.133177,IEROB,CRM,0,Swedbank
+717-147,"Vangaži, Gaujas iela 10",57.092586,24.546945,NEIEROB,COM,0,Swedbank
+717-148,"Rēzekne, Atmodas iela 6A",56.524167,27.350917,NEIEROB,COM,1,Swedbank
+717-149,"Lieģi, Parka iela 2",56.579145,21.335980,IEROB,COM,0,Swedbank
+717-150,"Jūrmala, Ventspils šoseja 32 (Sloka)",56.946765,23.622393,IEROB,COM,0,Swedbank
+717-151,"Preiļi, Daugavpils iela 66a",56.280304,26.721303,IEROB,COM,0,Swedbank
+717-152,"Ugāle, ""Stūris""",57.276851,22.020442,NEIEROB,COM,0,Swedbank
+717-153,"Ķekava, Gaismas iela 17C",56.824322,24.229703,NEIEROB,COM,1,Swedbank
+717-155,"Liepāja, Jūras iela 25/29",56.510900,21.006580,IEROB,COM,0,Swedbank
+717-156,"Rīga, Gobas iela 13",57.034191,24.048524,IEROB,COM,1,Swedbank
+717-157,"Ainaži, K Valdemāra iela 36",57.864635,24.358536,NEIEROB,COM,1,Swedbank
+717-158,"Rīga, Matīsa iela 23",56.957250,24.133216,IEROB,COM,0,Swedbank
+717-160,"Rīga, Latgales iela 427b",56.897483,24.210622,NEIEROB,COM,0,Swedbank
+717-161,"Rīga, Anniņmuižas bulvāris 90",56.954167,24.007925,NEIEROB,COM,0,Swedbank
+717-162,"Ventspils, Baznīcas iela 2",57.395593,21.567319,NEIEROB,COM,1,Swedbank
+717-163,"Pāvilosta, Dzintaru iela 69",56.887144,21.189125,IEROB,COM,0,Swedbank
+717-164,"Rīga, Vienības gatve 144",56.910162,24.087200,NEIEROB,COM,0,Swedbank
+717-165,"Rīga, Melnsila iela 22",56.945242,24.065276,IEROB,COM,0,Swedbank
+717-166,"Rīga, Latgales iela 267",56.920277,24.172563,IEROB,COM,0,Swedbank
+717-167,"Balvi, Brīvības iela 57",57.132727,27.266399,IEROB,COM,0,Swedbank
+717-168,"Ikšķile, Skolas iela 4a",56.838142,24.496976,IEROB,COM,0,Swedbank
+717-169,"Staicele, Lielā iela 6",57.835748,24.746309,NEIEROB,COM,0,Swedbank
+717-170,"Olaine, Stacijas iela 8",56.785881,23.943303,IEROB,COM,0,Swedbank
+717-171,"Rīga, Mūkusalas iela 73",56.922915,24.106850,IEROB,COM,0,Swedbank
+717-172,"Rīga, Lāčplēša iela 70b",56.950018,24.132222,NEIEROB,COM,0,Swedbank
+717-173,"Loja ""Valma""",57.153724,24.646580,IEROB,COM,0,Swedbank
+717-174,"Ādaži, Rīgas gatve 21",57.075317,24.318853,IEROB,COM,0,Swedbank
+717-175,"Valka, Raiņa iela 7",57.775151,26.021585,IEROB,COM,0,Swedbank
+717-176,"Rīga, Kleistu iela 9",56.962573,24.022069,NEIEROB,COM,0,Swedbank
+717-177,"Rīga, Baltāsbaznīcas iela 42",57.036674,24.090578,IEROB,COM,0,Swedbank
+717-178,"Salaspils, Skolas iela 4D",56.854339,24.335534,IEROB,COM,0,Swedbank
+717-179,"Mārupe, Upesgrīvas iela 1",56.926240,24.039315,NEIEROB,COM,0,Swedbank
+717-180,"Tukums, Talsu iela 4",56.967287,23.152438,NEIEROB,COM,0,Swedbank
+717-181,"Rīga, Dambja iela 10",56.988367,24.130370,NEIEROB,COM,0,Swedbank
+717-182,"Rīga, Biķernieku iela 143",56.956632,24.239429,IEROB,COM,0,Swedbank
+717-183,"Valmiera, Rīgas iela 15",57.537971,25.419305,NEIEROB,COM,1,Swedbank
+717-184,"Valmiera, Rubenes iela 51",57.547086,25.419690,NEIEROB,COM,0,Swedbank
+717-185,"Valle, Mazie Melderi",56.511014,24.725649,IEROB,COM,0,Swedbank
+717-186,"Jelgava, Satiksmes iela 35",56.656399,23.700300,IEROB,COM,0,Swedbank
+717-187,"Rīga, Stacijas laukums 2",56.946785,24.119276,IEROB,COM,0,Swedbank
+717-188,"Rīga, Biķernieku iela 16A-91",56.970542,24.180891,NEIEROB,COM,0,Swedbank
+717-189,"Rīga, Prāgas iela 1",56.945050,24.114683,IEROB,COM,0,Swedbank
+717-190,"Iecava, E.Virzas iela 2",56.595360,24.198956,IEROB,COM,0,Swedbank
+717-191,"Rīga, Juglas iela 45",56.978238,24.253293,NEIEROB,COM,1,Swedbank
+717-192,"Rīga, Mazā Rencēnu iela 1",56.928401,24.180006,IEROB,COM,0,Swedbank
+717-193,"Rīga, Kr. Barona iela 46",56.954115,24.127540,NEIEROB,COM,1,Swedbank
+717-194,"Preiļi, Brīvības iela 2",56.294619,26.723469,NEIEROB,COM,1,Swedbank
+717-195,"Valmiera, Rīgas iela 74",57.532702,25.393505,IEROB,COM,0,Swedbank
+717-196,"Ķegums, Ķeguma prospekts 5c",56.743749,24.718084,IEROB,COM,0,Swedbank
+717-197,"Rēzekne, Pulkveža Brieža iela 26",56.506244,27.334924,NEIEROB,COM,0,Swedbank
+717-198,"Riebiņi, Saules iela 7",56.339942,26.799789,IEROB,COM,0,Swedbank
+717-199,"Dobele, Muldavas iela 3a",56.628371,23.279936,IEROB,COM,0,Swedbank
+717-200,"Rugāji, Kurmenes iela 36",57.001688,27.130322,IEROB,COM,0,Swedbank
+717-201,"Jelgava, Ausekļa iela 4",56.656492,23.721082,NEIEROB,COM,0,Swedbank
+717-202,"Jelgava, Rīgas iela 53B",56.668617,23.758116,IEROB,COM,0,Swedbank
+717-203,"Pļaviņas, Daugavas iela 85",56.617790,25.734467,IEROB,COM,0,Swedbank
+717-204,"Rīga, Nīcgales iela 53",56.945172,24.173252,NEIEROB,COM,0,Swedbank
+717-205,"Rīga, Brīvības iela 188",56.967284,24.148846,IEROB,COM,0,Swedbank
+717-206,"Ogre, Brīvības iela 11",56.816121,24.603473,NEIEROB,COM,1,Swedbank
+717-207,"Jelgava, Rūpniecības iela 77a",56.636739,23.705353,IEROB,COM,0,Swedbank
+717-208,"Rēzekne, 18.Novembra iela 16",56.509800,27.334200,NEIEROB,COM,1,Swedbank
+717-209,"Cēsis, Uzvaras bulvaris 12",57.314210,25.278155,NEIEROB,COM,1,Swedbank
+717-210,"Liepāja, Kārļa Zāles laukums 8",56.511154,21.016891,IEROB,COM,0,Swedbank
+717-211,"Gulbene, Brīvības iela 56",57.172102,26.752248,IEROB,COM,0,Swedbank
+717-212,"Rīga, Kr. Valdemāra iela 62a",56.966025,24.131113,IEROB,COM,0,Swedbank
+717-213,"Daugavpils, Strādnieku iela 103",55.881038,26.559569,NEIEROB,COM,0,Swedbank
+717-214,"Jūrmala, Raiņa iela 74 (Kauguri)",56.953533,23.612731,IEROB,COM,0,Swedbank
+717-215,"Liepāja, Kuršu laukums 11",56.505112,21.011100,NEIEROB,COM,1,Swedbank
+717-216,"Jēkabpils, Viestura iela 34a",56.490305,25.864187,NEIEROB,COM,1,Swedbank
+717-217,"Rīga, Centrāltirgus iela 3 k-4",56.943754,24.114816,IEROB,COM,0,Swedbank
+717-218,"Lielvārde, Lāčplēša iela 14",56.718073,24.814353,IEROB,COM,0,Swedbank
+717-219,"Gulbene, Rīgas iela 47",57.173129,26.757018,NEIEROB,COM,1,Swedbank
+717-220,"Valmiera, Stacijas iela 11",57.531056,25.430241,NEIEROB,COM,0,Swedbank
+717-221,"Jēkabpils, Brīvības iela 131",56.495399,25.869600,NEIEROB,COM,1,Swedbank
+717-223,"Jūrmala, Dārzkopības iela 19",56.975132,23.853927,IEROB,COM,0,Swedbank
+717-224,"Daugavpils, Viestura iela 10",55.871271,26.525018,IEROB,COM,0,Swedbank
+717-226,"Špoģi, Šosejas iela 2",56.075647,26.732954,IEROB,COM,0,Swedbank
+717-227,"Tukums, Kurzemes iela 2a",56.970560,23.164898,NEIEROB,COM,0,Swedbank
+717-228,"Aknīste, Skolas iela 5",56.161625,25.741525,IEROB,COM,0,Swedbank
+717-229,"Ventspils, Tārgales iela 63",57.399992,21.605485,NEIEROB,COM,0,Swedbank
+717-230,"Pilsrundāle, ""Pilsrundāles veikals""",56.416238,24.028722,IEROB,COM,0,Swedbank
+717-231,"Baltinava, Kārsavas iela 4",56.945938,27.643680,IEROB,COM,0,Swedbank
+717-232,"Cēsis, Valmieras iela 27",57.320183,25.288891,NEIEROB,COM,0,Swedbank
+717-233,"Rīga, Dammes iela 46",56.966043,24.009572,NEIEROB,COM,0,Swedbank
+717-234,"Rīga, Brīvības ielas 149",56.965717,24.143255,NEIEROB,COM,0,Swedbank
+717-235,"Jaunolaine, Baznīcas iela 10",56.801785,23.985034,NEIEROB,COM,0,Swedbank
+717-236,"Rīga, Tallinas iela  76",56.957540,24.146007,NEIEROB,COM,0,Swedbank
+717-237,"Jelgava, Matera iela 23/25",56.650799,23.719900,NEIEROB,COM,0,Swedbank
+717-238,"Rīga, Brīvības gatve 263",56.978790,24.184067,NEIEROB,COM,0,Swedbank
+717-239,"Ventspils, Celtnieku iela 3-96",57.408247,21.596820,NEIEROB,COM,0,Swedbank
+717-240,"Rīga, Parādes iela 8",57.040944,24.029054,IEROB,COM,0,Swedbank
+717-241,"Vecvārkava, Vītolu iela 2",56.199617,26.500503,IEROB,COM,0,Swedbank
+717-242,"Sala, Susējas iela 9",56.507628,25.764867,NEIEROB,COM,0,Swedbank
+717-243,"Kuldīga, Pilsētas laukums 4a",56.969223,21.959206,NEIEROB,COM,1,Swedbank
+717-244,"Ērgļi, Rīgas iela 13",56.897389,25.635079,IEROB,COM,0,Swedbank
+717-245,"Rencēni, Valmieras iela 13",57.729769,25.429036,IEROB,COM,0,Swedbank
+717-246,"Rīga, Nīcgales iela 2",56.959291,24.174811,NEIEROB,COM,0,Swedbank
+717-247,"Rīga, Prāgas iela 1",56.945050,24.114683,IEROB,COM,0,Swedbank
+717-248,"Zasa, ""Meijas""",56.291766,25.982153,IEROB,COM,0,Swedbank
+717-249,"Daugavpils, Smilšu iela 98a",55.889367,26.553240,NEIEROB,COM,1,Swedbank
+717-250,"Rīga, Raunas iela 37",56.968375,24.179745,NEIEROB,COM,0,Swedbank
+717-251,"Rīga, Dzirciema iela 31A",56.955479,24.052661,IEROB,COM,0,Swedbank
+717-252,"Liepāja, A.Pumpura iela 5",56.508020,21.013782,NEIEROB,COM,1,Swedbank
+717-254,"Zaube, ""Kooperatīvs""",56.996655,25.260015,IEROB,COM,0,Swedbank
+717-255,"Iecava, Rīgas iela 14",56.596273,24.194205,IEROB,COM,0,Swedbank
+717-256,"Nereta, Raiņa iela 6",56.204082,25.307827,IEROB,COM,0,Swedbank
+717-257,"Bauska, Slimnīcas iela 7",56.407851,24.195854,NEIEROB,COM,1,Swedbank
+717-258,"Rīga, Mīlgrāvja iela 2",57.021281,24.135325,NEIEROB,COM,0,Swedbank
+717-259,"Inčukalns, Atmodas iela 4",57.097710,24.687218,NEIEROB,COM,0,Swedbank
+717-260,"Jēkabpils, Rīgas iela 126",56.501768,25.874755,NEIEROB,COM,1,Swedbank
+717-261,"Ventspils, J. Poruka iela 16",57.385887,21.546331,NEIEROB,COM,0,Swedbank
+717-262,"Rīga, Strēlnieku iela 1",56.958796,24.106105,NEIEROB,COM,0,Swedbank
+717-263,"Rīga, A.Bieziņa iela 8",56.945325,24.022700,IEROB,COM,0,Swedbank
+717-264,"Plācis, ""Bērzi""",57.362459,24.977500,IEROB,COM,0,Swedbank
+717-265,"Rēzekne, Atbrīvošanas aleja 98",56.505842,27.330449,NEIEROB,COM,0,Swedbank
+717-266,"Garkalne, Vidzemes šoseja 13",57.045176,24.415348,IEROB,COM,0,Swedbank
+717-267,"Ventspils, Aleksandra iela 16",57.390710,21.569443,IEROB,COM,0,Swedbank
+717-268,"Talsi, Lielā iela 2",57.244284,22.590737,IEROB,COM,1,Swedbank
+717-269,"Trikāta, Nākotnes iela 3",57.544282,25.709545,NEIEROB,COM,0,Swedbank
+717-270,"Kūkas, Kūkas Nr. 3",56.543985,26.093246,IEROB,COM,0,Swedbank
+717-271,"Rīga, Dižozolu iela 2",56.908054,24.095054,IEROB,COM,0,Swedbank
+717-272,"Dobele, Zaļā iela 19",56.619826,23.284384,NEIEROB,COM,0,Swedbank
+717-273,"Rīga, Dzērvju iela 6",56.930590,24.166938,NEIEROB,COM,0,Swedbank
+717-274,"Cibla, Eversmuižas iela 1",56.549551,27.880825,IEROB,COM,0,Swedbank
+717-275,"Rīga, Tilta iela 1",56.994891,24.125559,IEROB,COM,0,Swedbank
+717-277,"Skrunda, Ventas iela 16",56.673885,22.014927,NEIEROB,COM,0,Swedbank
+717-278,"Rīga, K. Ulmaņa gatve 122",56.939851,24.000052,IEROB,COM,0,Swedbank
+717-279,"Saulkrasti, Ainažu iela 20",57.266336,24.414753,NEIEROB,COM,1,Swedbank
+717-280,"Rīga, Elizabetes iela 55",56.954923,24.117686,IEROB,COM,0,Swedbank
+717-281,"Rīga, Ķīpsalas iela 8",56.955588,24.079266,IEROB,COM,0,Swedbank
+717-282,"Rīga, Kalnciema iela 17a",56.945269,24.072307,NEIEROB,COM,0,Swedbank
+717-283,"Ilūkstē, Pilskalnes ielā 2A",55.977240,26.296251,NEIEROB,COM,0,Swedbank
+717-284,"Eleja, Lietuvas iela 28",56.416370,23.683576,IEROB,COM,0,Swedbank
+717-285,"Olaine, Veselības iela 1",56.784656,23.936414,NEIEROB,COM,0,Swedbank
+717-286,"Gaujiena, „Gaujas”",57.517245,26.399263,NEIEROB,COM,0,Swedbank
+717-287,"Saldus, Rīgas iela 1",56.663196,22.491972,IEROB,COM,0,Swedbank
+717-288,"Vecumnieki, Rīgas iela 24b",56.606300,24.521151,NEIEROB,COM,0,Swedbank
+717-289,"Rīga, Lidoņu iela 27",56.969433,24.059805,NEIEROB,COM,0,Swedbank
+717-290,"Rīga, Juglas krastmala 2",56.989573,24.245093,NEIEROB,COM,1,Swedbank
+717-291,"Ogre, Vidus prospekts 1",56.819735,24.591669,NEIEROB,COM,0,Swedbank
+717-292,"Liepāja, Ganību iela 175/177",56.486081,21.017000,IEROB,COM,0,Swedbank
+717-293,"Rīga, Gaiļezera iela 8",56.969053,24.232276,IEROB,COM,0,Swedbank
+717-294,"Kandava, Abavas iela 4b",57.038060,22.782793,NEIEROB,COM,1,Swedbank
+717-296,"Sigulda, Dārza iela 28",57.156466,24.872501,NEIEROB,COM,1,Swedbank
+717-297,"Liepāja, Brīvības iela 164",56.535300,21.060767,IEROB,COM,0,Swedbank
+717-299,"Ventspils, Lielais prospekts 3/5",57.387718,21.580209,IEROB,COM,0,Swedbank
+717-300,"Daugavpils, Cietokšņa iela 60",55.873942,26.517518,NEIEROB,COM,0,Swedbank
+717-301,"Brocēni, Lielcieceres iela 1a",56.682820,22.567185,NEIEROB,COM,0,Swedbank
+717-302,"Sigulda, Ventas iela 1",57.141777,24.844318,NEIEROB,COM,0,Swedbank
+717-303,"Smiltene, Baznīcas laukums 2",57.424702,25.901600,NEIEROB,COM,0,Swedbank
+717-304,"Jūrmala, Talsu šoseja 29 (Kauguri)",56.960889,23.615582,IEROB,COM,0,Swedbank
+717-305,"Jaunmārupe, Mazcenu aleja 5/1",56.879528,23.945803,IEROB,COM,0,Swedbank
+717-306,"Engure, Jūras iela 62",57.162717,23.228478,NEIEROB,COM,1,Swedbank
+717-307,"Rīga, Valērijas Seiles iela 6",56.937548,24.156353,NEIEROB,COM,0,Swedbank
+717-309,"Ropaži, ""Kastanīši""",56.973145,24.633852,NEIEROB,COM,0,Swedbank
+717-310,"Mālpils, Nākotnes iela 5",57.010028,24.955403,NEIEROB,COM,0,Swedbank
+717-311,"Lizums, ""Akācijas""",57.188033,26.370253,NEIEROB,COM,0,Swedbank
+717-312,"Lubāna, O.Kalpaka iela 5",56.901958,26.721948,NEIEROB,COM,1,Swedbank
+717-313,"Ventspils, J. Poruka iela 5",57.386851,21.549085,IEROB,COM,0,Swedbank
+717-314,"Tukums, Meža iela 22",56.969860,23.162331,NEIEROB,COM,0,Swedbank
+717-315,"Madliena, ""Tirdzniecības centrs""",56.845224,25.155215,NEIEROB,COM,1,Swedbank
+717-316,"Stende, Brīvības iela 20",57.145696,22.534564,NEIEROB,COM,0,Swedbank
+717-318,"Grobiņa, Lielā iela 74",56.535113,21.168170,IEROB,COM,0,Swedbank
+717-319,"Piņķi, Rigas iela 5",56.944142,23.910070,NEIEROB,COM,0,Swedbank
+717-320,"Liepāja, Slimnicas iela 25",56.552692,21.099919,IEROB,COM,0,Swedbank
+717-321,"Nīca, Dārza iela 2A",56.348620,21.065938,NEIEROB,COM,0,Swedbank
+717-322,"Aizkraukle, Gaismas iela 22",56.608281,25.259959,IEROB,COM,0,Swedbank
+717-324,"Kocēni, Alejas iela 8",57.520279,25.339854,NEIEROB,COM,0,Swedbank
+717-325,"Naukšēni, ""Strēlnieki""",57.883436,25.451083,NEIEROB,COM,0,Swedbank
+717-326,"Priekule, Galvenā iela 1",56.447360,21.585173,NEIEROB,COM,0,Swedbank
+717-328,"Daugavpils, Ģimnāzijas iela 46",55.871974,26.517105,NEIEROB,COM,0,Swedbank
+717-329,"Daugavpils, Šaurā iela 31",55.894018,26.546123,NEIEROB,COM,1,Swedbank
+717-330,"Kārsava, Vienības iela 72b",56.781598,27.686497,IEROB,COM,0,Swedbank
+717-331,Jaunpils „Jāņkrogs”,56.729980,23.016588,NEIEROB,COM,1,Swedbank
+717-332,"Taurene, ""Lauras""",57.159358,25.663220,IEROB,COM,0,Swedbank
+717-333,"Rīga, Elizabetes iela 71/73",56.952150,24.120574,NEIEROB,COM,0,Swedbank
+717-334,"Saldus, Brīvības iela 30",56.668799,22.490022,IEROB,COM,0,Swedbank
+717-335,"Rīga, Kurzemes prospekts 141",56.960051,23.996909,IEROB,COM,0,Swedbank
+717-336,"Daugavpils, Sakņu iela 15",55.874014,26.521439,NEIEROB,COM,0,Swedbank
+717-337,"Rīga, Prūšu iela 2b",56.914863,24.177626,NEIEROB,COM,1,Swedbank
+717-338,"Kroņauce,""Tišas""",56.512994,23.338214,NEIEROB,COM,0,Swedbank
+717-339,"Baloži, Rīgas iela 14",56.875234,24.118521,NEIEROB,COM,0,Swedbank
+717-340,"Kalnciems, Vidus iela 1",56.800236,23.612135,IEROB,COM,0,Swedbank
+717-341,"Stopiņu nov., ""Melnais suns""",56.947463,24.359779,IEROB,COM,0,Swedbank
+717-342,"Dagda, Daugavpils iela 8a",56.094349,27.535963,IEROB,COM,0,Swedbank
+717-343,"Daugavpils, Arhitektu iela 3",55.891739,26.559794,IEROB,COM,1,Swedbank
+717-344,"Augšlīgatne, Nītaures iela 5",57.184209,25.034131,IEROB,COM,0,Swedbank
+717-345,"Ozolnieki, Meliorācijas iela 2",56.688807,23.790838,NEIEROB,COM,0,Swedbank
+717-346,"Dundaga, Talsu iela 20",57.506731,22.349281,IEROB,COM,0,Swedbank
+717-347,"Malta, 1. maija iela 72",56.346711,27.164202,IEROB,COM,0,Swedbank
+717-348,"Rauna, Valmieras iela 1a",57.332353,25.608999,NEIEROB,COM,0,Swedbank
+717-349,"Jaunpiebalga, Gaujas iela 25B",57.177328,26.032712,IEROB,COM,0,Swedbank
+717-350,"Skrīveri, Daugavas iela 97",56.649731,25.120806,IEROB,COM,0,Swedbank
+717-351,"Sabile, Ventspils iela 9",57.045863,22.572737,IEROB,COM,0,Swedbank
+717-352,"Bēne, Stacijas iela 10",56.482531,23.067555,IEROB,COM,0,Swedbank
+717-353,"Baldone, Rīgas iela 79 k.1",56.742711,24.397834,NEIEROB,COM,0,Swedbank
+717-354,"Rīga, Ulbrokas iela 4",56.941103,24.215986,NEIEROB,COM,1,Swedbank
+717-355,"Rīga, Biķernieku iela 160",56.958113,24.255416,IEROB,COM,0,Swedbank
+717-356,"Liepāja, O. Kalpaka iela 74",56.533543,21.003556,IEROB,COM,0,Swedbank
+717-358,"Liepāja, Pulkveža Brieža iela 11",56.553260,21.016450,IEROB,COM,0,Swedbank
+717-359,"Ķekavas novads, ""Džutas""",56.896219,24.138787,IEROB,COM,0,Swedbank
+717-360,"Jaunjelgava, Jelgavas iela 44",56.617626,25.088903,IEROB,COM,0,Swedbank
+717-361,"Rīga, Jaunciema gatve 174",57.043953,24.173742,IEROB,COM,0,Swedbank
+717-362,"Rīga, Dzelzavas iela 6a",56.963506,24.166954,IEROB,COM,0,Swedbank
+717-363,"Suntaži, ""Tautas nams""",56.904190,24.927242,IEROB,COM,0,Swedbank
+717-364,"Paurupes, Rucava, Rucavas pagasts, Dienvidkurzemes novads",56.159241,21.161333,IEROB,COM,0,Swedbank
+717-365,"Brīvības iela 15, Vaiņode",56.416836,21.854677,IEROB,COM,0,Swedbank
+717-366,"Roja, Selgas iela 2",57.505603,22.801125,IEROB,COM,0,Swedbank
+717-367,"Rīga, Skanstes iela 17",56.967987,24.118778,IEROB,CRM,0,Swedbank
+717-368,"Aloja, Rīgas iela 1b",57.766186,24.883078,IEROB,COM,0,Swedbank
+717-369,"Rīga, Satekles iela 2B",56.946919,24.119148,IEROB,CRM,0,Swedbank
+717-370,"Salacgrīva, Rīgas iela 13",57.751242,24.357219,IEROB,COM,0,Swedbank
+717-371,"Valdemārpils, Lielā iela 6",57.371383,22.591972,IEROB,COM,0,Swedbank
+717-372,"Mazsalaca, Baznīcas iela 2",57.859651,25.056620,IEROB,COM,0,Swedbank
+717-374,"Aizkraukle, Gaismas iela 35",56.610149,25.258760,IEROB,CRM,0,Swedbank
+717-375,"Talsi, Dundagas iela 21",57.251315,22.579466,IEROB,COM,1,Swedbank
+717-376,"Ape, Stacijas iela 4",57.538853,26.694478,IEROB,COM,0,Swedbank
+814-002,"Ādaži, Rīgas gatve 5",57.071210,24.320090,IEROB,CRM,0,Luminor
+814-003,"Aizkraukle, Gaismas iela 35",56.610189,25.259247,IEROB,CRM,1,Luminor
+814-004,"Bauska, Pionieru iela 2",56.405780,24.188552,IEROB,CRM,0,Luminor
+814-005,"Cēsis, Jāņa Poruka iela 19",57.314452,25.292225,IEROB,COM,0,Luminor
+814-006,"Cēsis, Valmieras iela 17a",57.317460,25.281533,IEROB,CRM,0,Luminor
+814-007,"Cēsis, Vienības lauk. 2",57.313959,25.275548,NEIEROB,COM,0,Luminor
+814-008,"Daugavpils, 18.novembra iela 136",55.877121,26.551209,IEROB,COM,0,Luminor
+814-009,"Daugavpils, Cietokšņa iela 48",55.871781,26.519318,NEIEROB,COM,0,Luminor
+814-010,"Daugavpils, Cietokšņa iela 48",55.871781,26.519318,IEROB,CRM,0,Luminor
+814-011,"Daugavpils, Cietokšņa iela 60",55.873003,26.518325,IEROB,CRM,0,Luminor
+814-012,"Daugavpils, Cietokšņa iela 60",55.875365,26.520772,IEROB,CRM,0,Luminor
+814-013,"Daugavpils, Cietokšņa iela 72a",55.877928,26.513562,IEROB,CRM,0,Luminor
+814-014,"Daugavpils, Raipoles iela 11a",55.900349,26.526419,NEIEROB,COM,0,Luminor
+814-015,"Daugavpils, Rīgas iela 9",55.871290,26.517340,IEROB,COM,0,Luminor
+814-016,"Daugavpils, Smilšu iela 92b",55.886848,26.553804,IEROB,COM,0,Luminor
+814-017,"Daugavpils, Viestura iela 10",55.871163,26.524906,NEIEROB,COM,1,Luminor
+814-018,"Dobele, Brīvības iela 30",56.626401,23.286521,IEROB,CRM,1,Luminor
+814-019,"Grobiņa, Lielā iela 29",56.535391,21.165040,IEROB,COM,0,Luminor
+814-020,"Jēkabpils, Vienības iela 7",56.495597,25.878476,IEROB,CRM,0,Luminor
+814-021,"Jēkabpils, Vienības iela 1a",56.493678,25.874744,NEIEROB,COM,1,Luminor
+814-022,"Jelgava, Dobeles šoseja 7",56.650893,23.706922,IEROB,COM,0,Luminor
+814-023,"Jelgava, Katoļu iela 18",56.648020,23.727210,IEROB,CRM,0,Luminor
+814-024,"Jelgava, Rīgas iela 11a",56.661800,23.746500,IEROB,CRM,0,Luminor
+814-025,"Jelgava, Rīgas iela 48",56.668151,23.761034,IEROB,CRM,0,Luminor
+814-026,"Jelgava, Rūpniecības iela 77a",56.636828,23.705500,NEIEROB,COM,1,Luminor
+814-028,"Jūrmala, Jomas iela 36",56.972473,23.798177,NEIEROB,COM,1,Luminor
+814-029,"Jūrmala, Strēlnieku prospekts 1",56.967312,23.769993,IEROB,CRM,0,Luminor
+814-030,"Jūrmala, Talsu šoseja 29",56.961770,23.612920,IEROB,COM,0,Luminor
+814-032,"Ķekava, Rīgas iela 22a",56.831930,24.232270,IEROB,CRM,0,Luminor
+814-033,"Ķekavas nov., Džutas",56.895800,24.139500,IEROB,COM,0,Luminor
+814-034,"Kuldīga, Pilsētas laukums 5",56.969323,21.961689,IEROB,CRM,0,Luminor
+814-035,"Lielvārde, Lāčplēša iela 23b",56.716970,24.809093,IEROB,COM,0,Luminor
+814-036,"Liepāja, Ganību iela 175/177",56.485979,21.016906,IEROB,COM,0,Luminor
+814-037,"Liepāja, Jaunā Ostmala 3/5",56.514754,21.017584,IEROB,CRM,0,Luminor
+814-038,"Liepāja, K.Zāles iela 8",56.511612,21.017200,IEROB,COM,0,Luminor
+814-039,"Liepāja, Klaipēdas iela 62",56.492039,21.003628,IEROB,CRM,0,Luminor
+814-040,"Liepāja, Kuršu iela 7-9",56.504444,21.010142,IEROB,COM,0,Luminor
+814-041,"Liepāja, Lielā iela 13",56.507638,21.010566,NEIEROB,COM,0,Luminor
+814-042,"Liepāja, O.Kalpaka iela 86",56.536471,21.002533,NEIEROB,COM,1,Luminor
+814-043,"Liepāja, Radio iela 16",56.510440,21.011426,NEIEROB,COM,0,Luminor
+814-044,"Liepāja, Radio iela 16",56.510441,21.011427,IEROB,CRM,0,Luminor
+814-047,"Limbaži, Cēsu iela 23",57.513115,24.721217,IEROB,CRM,0,Luminor
+814-048,"Ludza, Stacijas iela 30",56.544532,27.720889,IEROB,COM,0,Luminor
+814-049,"Madona, Rūpniecības iela 49",56.858971,26.231814,IEROB,COM,0,Luminor
+814-050,"Mārupe, Pededzes iela 1",56.905346,24.053693,IEROB,CRM,0,Luminor
+814-051,"Mārupe, Malduguņu iela 2",56.926668,24.036108,IEROB,CRM,0,Luminor
+814-052,"Mārupes nov., Lidosta „Rīga” 10/1",56.921960,23.979290,NEIEROB,COM,0,Luminor
+814-053,"Mārupes nov., Lidosta „Rīga” 10/1",56.921960,23.979290,NEIEROB,CRM,0,Luminor
+814-054,"Mārupes nov., Lidosta „Rīga” 10/1",56.922196,23.979134,NEIEROB,COM,0,Luminor
+814-055,"Ogre, Mednieku iela 21/23",56.825800,24.603080,IEROB,COM,0,Luminor
+814-056,"Ogre, Rīgas iela 33",56.817770,24.576395,IEROB,CRM,1,Luminor
+814-057,"Olaine, Zemgales iela 29",56.784480,23.937750,NEIEROB,COM,0,Luminor
+814-058,"Piņķi, Rīgas iela 8",56.947800,23.899230,NEIEROB,COM,0,Luminor
+814-059,"Rēzekne, Atbrīvošanas aleja 138",56.514653,27.336413,IEROB,COM,0,Luminor
+814-060,"Rēzekne, Galdnieku iela 8",56.502039,27.329973,IEROB,CRM,1,Luminor
+814-061,"Rīga, A.Deglava iela 160a",56.943652,24.222938,IEROB,COM,0,Luminor
+814-062,"Rīga, A.Deglava iela 67",56.950172,24.187271,IEROB,CRM,0,Luminor
+814-063,"Rīga, A.Dombrovska iela 74",57.036262,24.097566,NEIEROB,COM,0,Luminor
+814-064,"Rīga, A.Saharova iela 20a",56.941547,24.206723,IEROB,CRM,1,Luminor
+814-066,"Rīga, Anniņmuižas bulv. 40a",56.960441,24.012967,IEROB,CRM,0,Luminor
+814-067,"Rīga, Audēju iela 16",56.947640,24.113120,IEROB,CRM,0,Luminor
+814-068,"Rīga, Biķernieku iela 143",56.956435,24.239825,IEROB,CRM,0,Luminor
+814-069,"Rīga, Biķeru iela 4",56.951009,24.253089,IEROB,COM,0,Luminor
+814-070,"Rīga, Brīvības gatve 265",56.979080,24.184420,NEIEROB,COM,0,Luminor
+814-071,"Rīga, Brīvības gatve 372",56.982958,24.202935,IEROB,CRM,0,Luminor
+814-072,"Rīga, Brīvības gatve 372",56.982030,24.204339,IEROB,CRM,0,Luminor
+814-073,"Rīga, Brīvības iela 90",56.959584,24.129152,NEIEROB,COM,0,Luminor
+814-074,"Rīga, Centrāltirgus iela 3-k.2",56.944031,24.116130,IEROB,COM,0,Luminor
+814-075,"Rīga, Duntes iela 19a",56.986420,24.133021,IEROB,CRM,0,Luminor
+814-076,"Rīga, Dzelzavas iela 74",56.956060,24.192560,NEIEROB,COM,0,Luminor
+814-077,"Rīga, Dzirnavu iela 67",56.954694,24.120693,IEROB,CRM,0,Luminor
+814-078,"Rīga, Gaiļezera iela 8",56.967997,24.236822,IEROB,COM,0,Luminor
+814-079,"Rīga, Gobas iela 15c",57.033380,24.048731,NEIEROB,COM,0,Luminor
+814-080,"Rīga, Grēcinieku iela 34",56.946294,24.105786,NEIEROB,COM,0,Luminor
+814-081,"Rīga, Gustava Zemgala gatve 74",56.975820,24.165238,NEIEROB,COM,0,Luminor
+814-082,"Rīga, Ieriķu iela 3",56.965970,24.162990,IEROB,CRM,0,Luminor
+814-083,"Rīga, Ilūkstes iela 24a",56.941685,24.195841,NEIEROB,COM,0,Luminor
+814-084,"Rīga, Juglas krastmala 2",56.989585,24.244855,IEROB,CRM,0,Luminor
+814-086,"Rīga, Āzenes iela 5",56.949430,24.082510,IEROB,COM,0,Luminor
+814-087,"Rīga, Kaļķu iela 2",56.948030,24.107320,NEIEROB,COM,0,Luminor
+814-088,"Rīga, Kr.Barona iela 3",56.951280,24.121150,NEIEROB,COM,0,Luminor
+814-089,"Rīga, Kr.Valdemāra iela 112",56.974372,24.136769,IEROB,CRM,0,Luminor
+814-092,"Rīga, Kurbada iela 8",56.947524,24.136865,NEIEROB,COM,1,Luminor
+814-093,"Rīga, Kurzemes prospekts 1a",56.953600,24.037920,IEROB,CRM,0,Luminor
+814-094,"Rīga, Lielirbes iela 29",56.929440,24.035100,IEROB,CRM,0,Luminor
+814-095,"Rīga, Lubānas iela 117a",56.932189,24.200236,NEIEROB,COM,0,Luminor
+814-096,"Rīga, Mārupes iela 1a",56.935244,24.070927,NEIEROB,CRM,0,Luminor
+814-097,"Rīga, Latgales iela 257",56.923158,24.177115,IEROB,CRM,0,Luminor
+814-098,"Rīga, Latgales iela 257",56.923158,24.177115,IEROB,CRM,0,Luminor
+814-099,"Rīga, Latgales iela 357",56.920041,24.190907,IEROB,CRM,0,Luminor
+814-100,"Rīga, Marijas iela 2a",56.948216,24.120792,NEIEROB,CRM,1,Luminor
+814-101,"Rīga, Matīsa iela 25",56.957120,24.133350,NEIEROB,CRM,0,Luminor
+814-102,"Rīga, Melnsila iela 22",56.945293,24.065007,IEROB,COM,0,Luminor
+814-103,"Rīga, Mūkusalas iela 71",56.926440,24.105120,IEROB,CRM,0,Luminor
+814-104,"Rīga, Mūkusalas iela 73",56.922970,24.107170,IEROB,COM,0,Luminor
+814-105,"Rīga, Nīcgales iela 2a",56.959329,24.175687,IEROB,COM,0,Luminor
+814-106,"Rīga, P.Brieža iela 33a",56.965040,24.105830,IEROB,CRM,0,Luminor
+814-107,"Rīga, Prāgas iela 1",56.944923,24.114867,IEROB,COM,0,Luminor
+814-108,"Rīga, Rušonu iela 17a",56.914581,24.184165,NEIEROB,COM,0,Luminor
+814-109,"Rīga, Rusova iela 1",56.989552,24.166492,IEROB,COM,1,Luminor
+814-110,"Rīga, Skanstes iela 12",56.970602,24.118856,NEIEROB,COM,1,Luminor
+814-111,"Rīga, Skanstes iela 12",56.970602,24.118856,IEROB,CRM,0,Luminor
+814-112,"Rīga, Slokas iela 115",56.960714,24.037110,IEROB,COM,0,Luminor
+814-113,"Rīga, Stacijas laukums 2",56.947634,24.121291,IEROB,CRM,0,Luminor
+814-114,"Rīga, Stacijas laukums 2",56.946860,24.119450,IEROB,CRM,0,Luminor
+814-115,"Rīga, Stirnu iela 26",56.959360,24.185820,IEROB,COM,0,Luminor
+814-116,"Rīga, Tilta iela 32",56.995491,24.129955,IEROB,COM,0,Luminor
+814-117,"Rīga, Vaļņu iela 2",56.948806,24.112539,NEIEROB,COM,0,Luminor
+814-118,"Rīga, Vienības gatve 194A",56.896642,24.078987,IEROB,CRM,0,Luminor
+814-119,"Rīga, Zolitūdes iela 34",56.949297,23.999837,NEIEROB,COM,0,Luminor
+814-120,"Rīga, Valdeķu 51a",56.902950,24.093220,NEIEROB,COM,0,Luminor
+814-121,"Salacgrīva, Vidzemes iela 3a",57.751811,24.358784,IEROB,COM,0,Luminor
+814-122,"Salaspils, Skolas iela 4e",56.852980,24.335800,NEIEROB,COM,0,Luminor
+814-123,"Saldus, Apvedceļš 11",56.682324,22.471225,NEIEROB,COM,1,Luminor
+814-124,"Saldus, Brīvības iela 30",56.668418,22.490377,IEROB,CRM,0,Luminor
+814-125,"Saldus, Jelgavas iela 1",56.666431,22.494440,NEIEROB,COM,0,Luminor
+814-127,"Sigulda, Strēlnieku iela 2",57.143274,24.844588,IEROB,CRM,0,Luminor
+814-128,"Sigulda, Vidus iela 1",57.153530,24.847920,IEROB,COM,0,Luminor
+814-129,"Smiltene, Baznīcas laukums 2",57.424460,25.903890,IEROB,COM,0,Luminor
+814-131,"Tukums, Kurzemes iela 36",56.972012,23.153257,IEROB,CRM,0,Luminor
+814-132,"Valmiera, Rīgas iela 74",57.532855,25.392878,IEROB,COM,0,Luminor
+814-133,"Valmiera, G. Apiņa iela 10a",57.542104,25.416972,IEROB,COM,0,Luminor
+814-134,"Valmiera, Matīšu šoseja 6",57.540989,25.399601,IEROB,COM,0,Luminor
+814-135,"Valmiera, Rīgas iela 13",57.538080,25.419761,NEIEROB,CRM,1,Luminor
+814-136,"Valmiera, Rīgas iela 4",57.538519,25.423553,IEROB,CRM,0,Luminor
+814-137,"Valmiera, Stacijas iela 29",57.526941,25.434818,NEIEROB,COM,0,Luminor
+814-138,"Ventspils, Aleksandra iela 16/18",57.390341,21.569492,NEIEROB,COM,1,Luminor
+814-139,"Ventspils, Celtnieku iela 17",57.407843,21.599489,IEROB,COM,0,Luminor
+814-140,"Ventspils, Ganību iela 22/24",57.389835,21.562657,IEROB,CRM,0,Luminor
+814-141,"Ventspils, Lidotāju iela 21",57.402720,21.590220,NEIEROB,COM,0,Luminor
+814-142,"Ventspils, Lielais prospekts 3/5",57.387703,21.580324,IEROB,CRM,0,Luminor
+814-143,"Rīga, A. Dombrovska iela 23",57.031853,24.109005,IEROB,COM,0,Luminor
+814-144,"Talsi, Rīgas iela 8",57.238822,22.583711,IEROB,CRM,0,Luminor
+814-145,"Saulkrasti, Ainažu iela 30",57.272427,24.417211,IEROB,COM,0,Luminor
+814-146,"Liepāja, Ziemeļu iela 13",56.535230,21.012499,IEROB,COM,0,Luminor
+900-001,"Rīga, Līvciema iela 46",56.903398,24.102884,IEROB,COM,0,SEB
+900-002,"Rīga, A.Deglava iela 110",56.947362,24.193620,IEROB,COM,0,SEB
+900-003,"Viļaka, Balvu iela 5",57.184242,27.670825,IEROB,COM,0,SEB
+900-004,"Gulbene, Blaumaņa iela 24",57.168179,26.765620,IEROB,COM,0,SEB
+900-005,"Jūrmala, Jomas iela 37",56.973076,23.799891,IEROB,COM,0,SEB
+900-007,"Sigulda, Vidzemes šoseja 16",57.144612,24.859554,IEROB,COM,0,SEB
+900-008,"Rīga, Prāgas iela 1",56.945139,24.114528,NEIEROB,COM,0,SEB
+900-009,"Rīga, Duntes iela 19a",56.986680,24.132638,IEROB,COM,0,SEB
+900-010,"Rīga, Nīcgales iela 2",56.959528,24.175278,IEROB,COM,0,SEB
+900-011,"Rīga, Hipokrāta iela 2",56.967472,24.243667,IEROB,COM,0,SEB
+900-012,"Rīga, Biķernieku iela 160",56.956711,24.254100,IEROB,COM,0,SEB
+900-013,"Daugavpils, Aveņu iela 26",55.901216,26.527428,IEROB,COM,0,SEB
+900-014,"Liepāja, Klaipēdas iela 104c",56.487271,21.005087,IEROB,COM,0,SEB
+900-015,"Rīga, A.Saharova iela 2",56.933167,24.202222,IEROB,COM,0,SEB
+900-016,"Rīga, Stacijas laukums 2a",56.946700,24.119440,IEROB,COM,0,SEB
+900-017,"Liepāja, Kuršu laukums 7/9",56.505194,21.011056,IEROB,COM,0,SEB
+900-018,"Preiļi, Rīgas iela 4d",56.298759,26.706973,IEROB,COM,0,SEB
+900-019,"Saldus, Brīvības iela 30",56.668444,22.490472,IEROB,COM,0,SEB
+900-020,"Rīga, 13. janvāra iela 8",56.946417,24.116917,IEROB,COM,0,SEB
+900-021,"Daugavpils, Stacijas iela 129K",55.884509,26.509810,IEROB,COM,0,SEB
+900-022,"Ādaži, Rīgas gatve 51",57.075244,24.319078,IEROB,COM,0,SEB
+900-023,"Liepāja, Lielā iela 13",56.507500,21.010778,IEROB,COM,0,SEB
+900-024,"Rīga, Vienības gatve 194a, k-1",56.896756,24.078483,IEROB,COM,0,SEB
+900-025,"Garkalnes novads, Siguldas šoseja 6",57.003056,24.287972,IEROB,COM,0,SEB
+900-026,"Liepāja, Klaipēdas iela 62",56.491667,21.003389,IEROB,COM,0,SEB
+900-027,"Rīga, Nīcgales iela 46a",56.944626,24.171175,IEROB,COM,0,SEB
+900-028,"Salacgrīva, Rīgas iela 13",57.750987,24.357162,IEROB,COM,0,SEB
+900-029,"Rīga, Pilsoņu iela 1 K1",56.936927,24.070952,NEIEROB,COM,0,SEB
+900-030,"Rīga, Mūkusalas iela 93",56.915832,24.118934,NEIEROB,COM,0,SEB
+900-031,"Rīga, Dzirciema iela 16",56.953639,24.054861,NEIEROB,COM,0,SEB
+900-032,"Rīga, Sarkandaugavas 9",56.998534,24.123343,IEROB,COM,0,SEB
+900-033,"Zilupe, Brīvības iela 32",56.389094,28.120179,NEIEROB,COM,0,SEB
+900-034,"Rīga, Spīķeru iela 1",56.944904,24.120201,NEIEROB,COM,0,SEB
+900-035,"Rīga, Brīvības gatve 232",56.973266,24.167084,NEIEROB,COM,0,SEB
+900-036,"Rīga, Matīsa iela 25",56.957056,24.133861,NEIEROB,COM,0,SEB
+900-037,"Rīga, Pilsoņu iela 13",56.932417,24.069083,NEIEROB,COM,0,SEB
+900-038,"Rīga, Dižozolu iela 2",56.902840,24.094900,IEROB,COM,0,SEB
+900-039,"Rīga, A.Dombrovska iela 23",57.031833,24.109139,NEIEROB,COM,0,SEB
+900-040,"Rīga, Lidoņu iela 27",56.968689,24.059386,IEROB,COM,0,SEB
+900-041,"Rīga, A.Saharova iela 14",56.937333,24.203972,NEIEROB,COM,0,SEB
+900-042,"Rīga, Brīvības gatve 310",56.978847,24.186101,NEIEROB,COM,0,SEB
+900-043,"Rīga, Kr.Barona iela 4",56.949361,24.117778,NEIEROB,COM,0,SEB
+900-044,"Rīga, Brīvības iela 90",56.959325,24.129446,NEIEROB,COM,0,SEB
+900-045,"Rīga, Brīvības iela 78",56.958722,24.126028,NEIEROB,COM,0,SEB
+900-046,"Rīga, Ruses iela 5",56.948111,24.002861,NEIEROB,COM,0,SEB
+900-047,"Rīga, Kr.Barona iela 117",56.964278,24.145861,NEIEROB,COM,0,SEB
+900-048,"Rīga, Marijas iela 14",56.950250,24.124690,NEIEROB,COM,0,SEB
+900-049,"Rīga, Juglas krastmala 2",56.989627,24.244802,NEIEROB,COM,1,SEB
+900-050,"Rīga, Kalnciema iela 41",56.942408,24.062605,NEIEROB,COM,0,SEB
+900-051,"Rīga, Vienības gatve 49",56.920238,24.088215,NEIEROB,COM,0,SEB
+900-052,"Ikšķile, Melioratoru 1a",56.836597,24.499179,NEIEROB,COM,0,SEB
+900-053,"Valmiera, Rīgas iela 40",57.537224,25.410606,NEIEROB,COM,1,SEB
+900-055,"Aizkraukle, Spīdolas iela 11",56.600361,25.252666,NEIEROB,COM,0,SEB
+900-056,"Valka, Rīgas iela 17",57.773907,26.019642,NEIEROB,COM,0,SEB
+900-057,"Rēzekne, Maskavas iela 16",56.526636,27.354725,NEIEROB,COM,1,SEB
+900-058,"Limbaži, Stacijas iela 22",57.509583,24.721194,NEIEROB,COM,0,SEB
+900-059,"Valmiera, Stacijas iela 11",57.531056,25.430247,NEIEROB,COM,0,SEB
+900-060,"Tukums, Alīnes iela 1a",56.957668,23.179827,NEIEROB,COM,0,SEB
+900-061,"Jaunkalsnava, Pietnieki",56.688796,25.969863,NEIEROB,COM,0,SEB
+900-062,"Jelgava, Pasta iela 37",56.651321,23.722723,NEIEROB,COM,0,SEB
+900-063,"Talsi, Lielā iela 17",57.244256,22.589957,NEIEROB,COM,0,SEB
+900-064,"Ogre, Brīvības iela 15a",56.821306,24.604472,NEIEROB,COM,0,SEB
+900-065,"Daugavpils, Strādnieku iela 103",55.881038,26.559569,NEIEROB,COM,1,SEB
+900-066,"Sigulda, L. Paegles iela 3",57.157083,24.850028,NEIEROB,COM,0,SEB
+900-067,"Kuldīga, Liepājas iela 1",56.968575,21.970732,NEIEROB,COM,0,SEB
+900-068,"Jēkabpils, Rīgas iela 103a",56.501281,25.875528,NEIEROB,COM,0,SEB
+900-069,"Aizkraukle, Druvas iela 2",56.606528,25.262139,NEIEROB,COM,0,SEB
+900-070,"Ķegums, Ķeguma prospekts 1a",56.744639,24.720222,NEIEROB,COM,0,SEB
+900-071,"Jelgava, Lielā iela 49",56.650917,23.704194,NEIEROB,COM,0,SEB
+900-072,"Sigulda, Vidus iela 1",57.153064,24.847878,IEROB,CRM,0,SEB
+900-073,"Ogre, Mālkalnes prospekts 3",56.821998,24.594803,NEIEROB,COM,0,SEB
+900-074,"Dobele, Krasta iela 7",56.616414,23.283080,NEIEROB,COM,0,SEB
+900-075,"Ulbroka, Peldu iela 2",56.939520,24.291650,NEIEROB,COM,0,SEB
+900-076,"Krāslava, Rīgas iela 28",55.896130,27.163589,NEIEROB,COM,0,SEB
+900-077,"Madona, Saules iela 39b",56.856991,26.224521,NEIEROB,COM,0,SEB
+900-078,"Viļāni, Raiņa iela 23k1",56.549848,26.922244,NEIEROB,COM,0,SEB
+900-079,"Iecava, Rīgas iela 27",56.597838,24.196973,NEIEROB,COM,0,SEB
+900-080,"Limbaži, Rīgas iela 23a",57.508058,24.714560,NEIEROB,COM,0,SEB
+900-081,"Strenči, Rīgas iela 7",57.627247,25.684683,IEROB,COM,0,SEB
+900-082,"Viesīte, Smilšu iela 2",56.342371,25.567621,NEIEROB,COM,0,SEB
+900-083,"Cēsis, Piebalgas iela 85",57.296769,25.302998,NEIEROB,COM,0,SEB
+900-084,"Rūjiena, Brīvības iela 8",57.897385,25.324685,NEIEROB,COM,0,SEB
+900-085,"Varakļāni, Rīgas iela 13",56.609639,26.752528,NEIEROB,COM,0,SEB
+900-086,"Krāslava, Baznīcas iela 1",55.897472,27.171056,NEIEROB,COM,0,SEB
+900-087,"Cesvaine, Pils iela 1A",56.968351,26.309488,NEIEROB,COM,0,SEB
+900-088,"Liepāja, M. Ķempes iela 9",56.483244,21.021489,NEIEROB,COM,1,SEB
+900-089,"Ventspils, Talsu iela 6",57.401939,21.584699,NEIEROB,COM,1,SEB
+900-090,"Balvi, Brīvības iela 65",57.130813,27.267127,NEIEROB,COM,0,SEB
+900-091,"Aglona, Somersetas iela 35",56.130028,27.008611,NEIEROB,COM,0,SEB
+900-092,"Dundaga, Talsu iela 1",57.510122,22.351253,NEIEROB,COM,0,SEB
+900-093,"Valmiera, Tērbatas iela 18",57.543989,25.430979,NEIEROB,COM,1,SEB
+900-094,"Cēsis, Bērzaines iela 6",57.312442,25.263534,NEIEROB,COM,0,SEB
+900-095,"Alūksne, Tirgotāju ielā 13",57.420786,27.050529,NEIEROB,COM,0,SEB
+900-096,"Cēsis, Raiņa iela 26/28",57.309520,25.276988,NEIEROB,COM,0,SEB
+900-097,"Smiltene, Daugavas iela 1a",57.426194,25.899472,NEIEROB,COM,0,SEB
+900-098,"Ludza, Latgales iela 124",56.546309,27.725738,NEIEROB,COM,0,SEB
+900-099,"Mērsrags, Zvejnieku iela 3",57.336445,23.122156,NEIEROB,COM,0,SEB
+900-100,"Jēkabpils, Pasta iela 16a",56.497167,25.866750,NEIEROB,COM,0,SEB
+900-102,"Jēkabpils, Rīgas iela 218h",56.515914,25.856948,NEIEROB,COM,1,SEB
+900-104,"Baldone, Rīgas iela 67",56.742476,24.392330,NEIEROB,COM,0,SEB
+900-105,"Jelgava, Pērnavas iela 4i",56.668278,23.758250,NEIEROB,COM,1,SEB
+900-106,"Kuldīga, Gravas iela 1",56.973583,21.957611,NEIEROB,COM,0,SEB
+900-107,"Alsunga, Skolas iela 3",56.979625,21.569853,NEIEROB,COM,0,SEB
+900-108,"Ragana, Tirgus iela 5",57.180472,24.712972,NEIEROB,COM,0,SEB
+900-109,"Olaine, T. Zeiferta iela 6",56.788833,23.941278,NEIEROB,COM,0,SEB
+900-110,"Salaspils, Dienvidu iela 7",56.860663,24.367776,IEROB,COM,0,SEB
+900-111,"Tukums, Eksporta iela 6",56.952802,23.115994,NEIEROB,COM,0,SEB
+900-112,"Priekuļi, Cēsu prospekts 44",57.313510,25.358426,NEIEROB,COM,0,SEB
+900-113,"Jēkabpils, Brīvības iela 301A",56.499076,25.837614,NEIEROB,COM,0,SEB
+900-114,"Daugavpils, Inženieru iela 1",55.893250,26.560806,NEIEROB,COM,0,SEB
+900-115,"Vītiņkalni, Inčukalna novads",57.124866,24.658450,NEIEROB,COM,0,SEB
+900-116,"Saulkrasti, Ainažu iela 28",57.272920,24.416320,NEIEROB,COM,0,SEB
+900-118,"Rīga, Mūkusalas iela 71",56.927148,24.103184,IEROB,CRM,0,SEB
+900-119,"Piņķi, Rīgas iela 23",56.946024,23.920357,IEROB,CRM,0,SEB
+900-120,"Rīga, Lielirbes iela 29",56.929550,24.037515,IEROB,CRM,0,SEB
+900-121,"Rīga, A.Deglava iela 67",56.950173,24.187171,IEROB,CRM,0,SEB
+900-122,"Rīga, Stacijas laukums 2a",56.946970,24.121180,IEROB,CRM,1,SEB
+900-123,"Valdlauči, Meistaru iela 1",56.908190,24.146560,NEIEROB,CRM,0,SEB
+900-124,"Rīga, Āzenes iela 5",56.950020,24.082100,IEROB,CRM,0,SEB
+900-125,"Rīga, Ieriķu iela 3",56.966686,24.165045,IEROB,CRM,0,SEB
+900-126,"Rīga, Brīvības gatve 372",56.982509,24.203662,IEROB,CRM,0,SEB
+900-127,"Rīga, Dzirnavu iela 67",56.954911,24.121599,IEROB,CRM,0,SEB
+900-128,"Rīga, Kurzemes prospekts 1a",56.953928,24.037737,IEROB,CRM,0,SEB
+900-129,"Rīga, Audēju 16",56.948125,24.112641,IEROB,CRM,0,SEB
+900-130,"Rīga, A.Deglava iela 100",56.948728,24.187048,IEROB,CRM,0,SEB
+900-131,"Liepāja, Kārļa Zāles laukums 8",56.511209,21.016975,IEROB,CRM,0,SEB
+900-132,"Rīga, Pulkveža Brieža iela 33a",56.965439,24.105053,IEROB,CRM,0,SEB
+900-133,"Rīga, Vaļņu iela 11",56.949895,24.110794,NEIEROB,CRM,1,SEB
+900-134,"Rīga, Nometņu iela 61",56.936083,24.070723,IEROB,CRM,1,SEB
+900-135,"Rīga, Kr.Barona iela 46",56.954194,24.127917,IEROB,CRM,0,SEB
+900-136,"Rīga, Latgales iela 257b",56.924338,24.176106,IEROB,CRM,0,SEB
+900-137,"Rīga, Latgales iela 257b",56.924338,24.174621,IEROB,CRM,0,SEB
+900-139,"Rīga, Slokas iela 115",56.960269,24.037506,IEROB,CRM,0,SEB
+900-140,"Rīga, Jaunmoku iela 13",56.931433,24.039478,IEROB,CRM,0,SEB
+900-141,"Rīga, Stirnu iela 26",56.958389,24.186028,IEROB,CRM,0,SEB
+900-142,"Rīga, Jūrmalas gatve 85",56.954110,24.006380,IEROB,CRM,0,SEB
+900-143,"Rīga, Latgales iela 357",56.905583,24.191806,IEROB,CRM,0,SEB
+900-144,"Ozolnieki, Skolas 1b",56.691942,23.788181,IEROB,CRM,0,SEB
+900-145,"Skrunda, Ventas iela 16",56.674018,22.013531,IEROB,CRM,0,SEB
+900-146,"Valmiera, Rīgas iela 4",57.538740,25.423523,IEROB,CRM,0,SEB
+900-147,"Aizkraukle, Gaismas iela 35",56.610380,25.259480,IEROB,CRM,0,SEB
+900-148,"Liepāja, Zivju iela 11/13",56.505800,21.011813,NEIEROB,CRM,1,SEB
+900-149,"Valka, Rīgas ielā 25",57.771625,26.016403,NEIEROB,CRM,0,SEB
+900-150,"Jūrmala, Talsu šoseja 29",56.960833,23.615361,IEROB,CRM,1,SEB
+900-151,"Ventspils, Lielais prospekts 3/5",57.387626,21.580193,IEROB,CRM,0,SEB
+900-152,"Aizpute, Zvaigžņu iela 2",56.718856,21.606552,IEROB,CRM,0,SEB
+900-153,"Talsi, Rīgas iela 8",57.238791,22.584709,IEROB,CRM,0,SEB
+900-155,"Saldus, Jelgavas iela 1",56.666668,22.495065,NEIEROB,CRM,1,SEB
+900-156,"Balvi, Partizānu iela 8",57.132501,27.263987,IEROB,CRM,0,SEB
+900-157,"Ādaži, Rīgas gatve 5",57.071370,24.320010,IEROB,CRM,0,SEB
+900-158,"Kandava, Lielā iela 1",57.033681,22.783788,IEROB,CRM,0,SEB
+900-160,"Preiļi, Tirgus laukums 4",56.293867,26.723540,IEROB,CRM,0,SEB
+900-161,"Madona, Rūpniecības iela 49",56.859995,26.231177,IEROB,CRM,0,SEB
+900-162,"Jelgava, Rīgas iela 11a",56.661534,23.745719,IEROB,CRM,0,SEB
+900-163,"Salaspils, Skolas iela 4e",56.854308,24.336434,IEROB,CRM,0,SEB
+900-164,"Rēzekne, Atbrīvošanas aleja 81",56.505051,27.329218,IEROB,CRM,1,SEB
+900-165,"Madona, Saules iela 6",56.851803,26.220877,IEROB,CRM,0,SEB
+900-166,"Auce, Aspazijas laukums 3",56.465727,22.895036,IEROB,CRM,0,SEB
+900-167,"Ķekava, Rīgas iela 22a",56.831965,24.232149,IEROB,CRM,0,SEB
+900-168,"Daugavpils, Cietokšņa iela 60",55.873056,26.518611,IEROB,CRM,0,SEB
+900-169,"Bauska, Slimnīcas iela 8",56.407503,24.194720,NEIEROB,CRM,0,SEB
+900-170,"Rēzekne, Atbrīvošanas alejā 138",56.514516,27.336472,IEROB,CRM,0,SEB
+900-171,"Ogre, Rīgas iela 23",56.816484,24.585622,IEROB,CRM,0,SEB
+900-172,"Saldus, Jelgavas iela 1",56.666671,22.495082,NEIEROB,CRM,0,SEB
+900-173,"Talsi, Dundagas iela 18",57.247690,22.578634,IEROB,CRM,0,SEB
+900-174,"Dobele, Brīvības iela 30",56.627798,23.288968,IEROB,CRM,0,SEB
+900-175,"Smiltene, Dārza iela 11",57.423880,25.908516,NEIEROB,CRM,0,SEB
+900-176,"Ogre, Skolas iela 2a",56.816097,24.599643,NEIEROB,CRM,1,SEB
+900-177,"Tukums, Kurzemes iela 36",56.971971,23.153377,IEROB,CRM,0,SEB
+900-178,"Līvāni, Rīgas iela 89",56.355134,26.175211,IEROB,CRM,0,SEB
+900-179,"Alūksne, Lielā ezera 2a",57.423680,27.049562,NEIEROB,CRM,0,SEB
+900-180,"Cēsis, Pils iela 4",57.313043,25.273644,NEIEROB,CRM,1,SEB
+900-181,"Kuldīga, Liepājas iela 44",56.968354,21.960900,IEROB,CRM,0,SEB
+900-182,"Lielvārde, Lāčplēša iela 23b",56.716966,24.809184,IEROB,CRM,0,SEB
+900-183,"Liepāja, Jaunā Ostmala 3/5",56.514528,21.017972,IEROB,CRM,0,SEB
+900-184,"Jēkabpils, Vecpilsētas laukums 3A",56.497814,25.866587,NEIEROB,CRM,1,SEB
+900-185,"Krāslava, Brīvības iela 17",55.896264,27.166170,IEROB,CRM,0,SEB
+900-187,"Rīga, Grostonas iela 1",56.964377,24.119779,IEROB,CRM,0,SEB
+900-188,"Rīga, Ieriķu iela 3",56.965986,24.161012,IEROB,CRM,0,SEB
+900-189,"Bauska, Pionieru iela 2",56.405847,24.188360,IEROB,CRM,0,SEB
+900-190,"Jelgava, Lielā iela 1",56.652680,23.729610,NEIEROB,CRM,1,SEB
+900-191,"Rīga, Brīvības gatve 372",56.982130,24.204760,IEROB,CRM,0,SEB
+900-192,"Jēkabpils, Vienības iela 7",56.495498,25.878415,IEROB,CRM,0,SEB
+900-193,"Alūksne, Pils iela 9b",57.429006,27.039789,IEROB,CRM,0,SEB
+900-194,"Tukums, Pasta iela 14",56.967526,23.157409,IEROB,CRM,0,SEB
+900-195,"Sigulda, Strēlnieku iela 2",57.143306,24.844422,IEROB,CRM,0,SEB
+900-196,"Dagda, Alejas iela 4",56.095011,27.536867,IEROB,CRM,0,SEB
+900-197,"Smiltene, Baznīcas laukums 2",57.424189,25.904090,IEROB,CRM,0,SEB
+900-198,"Dobele, Brīvības iela 12",56.625098,23.280349,NEIEROB,CRM,0,SEB
+900-199,"Ventspils, Poruka iela 16",57.385809,21.546079,IEROB,CRM,0,SEB
+900-200,"Gulbene, Ozolu iela 2a",57.172865,26.759585,NEIEROB,CRM,0,SEB
+900-201,"Limbaži, Rīgas iela 8",57.512924,24.715738,IEROB,CRM,0,SEB
+900-202,"Daugavpils, Rīgas iela 9",55.871871,26.517791,IEROB,CRM,1,SEB
+900-203,"Rīga, K.Valdemāra iela 112",56.974243,24.135645,IEROB,CRM,0,SEB
+900-204,"Ludza, Stacijas iela 30",56.544609,27.720745,NEIEROB,CRM,0,SEB
+900-205,"Jūrmala, Viestura iela  22",56.974985,23.858638,IEROB,CRM,0,SEB
+900-206,"Rīga, Lielirbes iela 29",56.929600,24.037490,IEROB,CRM,0,SEB
+900-207,"Rīga, Anniņmuižas bulvāris 40A",56.960230,24.011840,IEROB,CRM,0,SEB
+900-208,"Valmiera, Rīgas iela 74",57.532600,25.393180,IEROB,CRM,0,SEB
+900-209,"Rīga, Biķeru iela 4",56.951358,24.251875,IEROB,CRM,0,SEB
+900-210,"Vecpiebalga, Alauksta iela 2",57.060503,25.816606,NEIEROB,COM,0,SEB
+900-211,"Carnikava, Atpūtas iela 1",57.129121,24.277304,IEROB,COM,0,SEB
+900-212,"Rīga, Elizabetes iela 95",56.948230,24.123360,IEROB,CRM,1,SEB
+900-213,"Cēsis, Gaujas iela 29",57.307100,25.253180,NEIEROB,CRM,0,SEB
+900-214,"Rīga, Andreja Saharova iela 30",56.945600,24.208450,IEROB,COM,0,SEB
+900-215,"Kuldīga, Sūru iela 2",56.966930,21.958724,IEROB,CRM,0,SEB
+900-216,"Liepāja, Ziemeļu iela 10",56.534290,21.013603,IEROB,COM,0,SEB

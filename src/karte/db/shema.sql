@@ -334,3 +334,15 @@ create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
 grant select, insert on zinojumi to map_api;
 grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
 grant usage on sequence zinojumi_id_seq to map_api;
+
+-- ---- Banku bankomāti (src/karte/db/bankomati.py; bankomats kategorija) ----
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('bankas-atm', 'Bankomātu saraksts hakatonam, ar kritiskajiem bankomātiem (22.09.2026)', 'Bankas (SEB, Swedbank, Luminor, Citadele) / Finance Latvia',
+   'Licence nav norādīta', null, false, null,
+   'Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx (nav repozitorijā) → src/karte/dati/bankomati_bankas.csv, bankomati_vietas.csv (bankomati.py)',
+   'Bankomāti: banka, iemaksas/izmaksas, 24/7 vai ierobežots laiks, kritiskais bankomāts (skaidra nauda arī krīzes laikā)',
+   'Komandas lēmums: rādām ar ⚠, kā 112.lv patvertnes. 845 bankomāti, 111 kritiskie; vienā adresē vairāki — viens punkts. OSM bankomāti ≤ 40 m no šiem (tās pašas bankas vai bez operatora) netiek rādīti.', 21)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;

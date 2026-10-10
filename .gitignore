@@ -45,3 +45,6 @@ ekr-demo/
 
 # NAP atbilžu paraugi (lokāli; saīsinātas kopijas: notes/research/paraugi/nap_*.xml)
 api-data-samples/
+
+# Banku bankomātu saraksts (15 MB, licence nav norādīta) — tikai lokāli; repozitorijā CSV (src/karte/dati/bankomati_*.csv)
+atseviski_dati/*.xlsx
