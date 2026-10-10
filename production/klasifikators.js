@@ -130,8 +130,8 @@ const Klasifikators = (() => {
     const draudi = noteikumi.dzivibas_draudi.map(raksts);
     const vietas = sagatavotVietas(regioni, noteikumi.vietu_sinonimi);
     const vietuVardi = new Set(vietas.map(v => v.forma.trim()).filter(f => !f.includes(' ')));
-    // "Vai domājāt…?": citi scenāriji, kas sasniedz šo daļu no labākā punktiem (noskaņots ar src/meklesana/vaicajumi.json)
-    const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.45;
+    // "Vai domājāt…?": citi scenāriji, kas ir ne vairāk kā 15 % zem labākā (slieksnis 0.85; src/meklesana/vaicajumi.json)
+    const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.85;
 
     // Ātrumam: atslēgvārdi pēc pirmajiem 1–3 burtiem (ar atstarpi, ja īsāks) — vaicājumā meklējam tikai tos,
     // kuru sākums ir kādā vaicājuma vārda sākumā. s = scenārija nr. sarakstā, −1 = dzīvības draudi.
@@ -291,7 +291,7 @@ const Klasifikators = (() => {
       const rez = scenariji.map((s, i) => { const [p, b] = punkti(atr.pec[i]); return { s, punkti: p, burti: b }; });
       const max = Math.max(...rez.map(x => x.punkti));
       // Pirmais = galvenais; citi ("Vai domāji…?") tikai, ja sasniedz `slieksnis` daļu no labākā. Vienādiem paliek secība failā.
-      const atrasti = rez.filter(x => x.punkti && (x.punkti === max || x.punkti > max * slieksnis))
+      const atrasti = rez.filter(x => x.punkti && x.punkti >= max * slieksnis)
         // vienādiem punktiem — garāks (konkrētāks) atrastais vārda sākums ("бомбоубежищ" pirms "бомб"), tad secība failā
         .sort((a, b) => b.punkti - a.punkti || b.burti - a.burti).slice(0, 3);
       // "cilvēks neelpo" bez cita scenārija → noklusētais (medicīna)

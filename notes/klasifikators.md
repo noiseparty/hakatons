@@ -44,6 +44,10 @@ Krīzē trūkstoša izeja maksā vairāk nekā lieka poga; rādām labāko + lī
 ir patiešām tuvi scenāriji (sniegavētra / auto putenī / apmaldījies sniegā, gāzes smaka / gāzes noplūde ēkā).
 Faila izmērs: 78 → 113 KB (gzip 23 → 36 KB).
 
+2026-10-10 rīts: pēc #111 lieka poga parādījās 189 no 548 skaidrajiem vaicājumiem, tāpēc slieksni pacēlām uz 0,85
+(alternatīvu rāda tikai, ja tā ir ne vairāk kā 15 % zem labākā). Lieka poga 66/548, divdomīgajiem alternatīva
+redzama 13/61 (bija 33/61); top-1 nemainās (96,1 %).
+
 ## 2. kārta (2026-10-10 nakts): ātrums, demo notikumi, jauni RU/EN vaicājumi
 
 **Ātrums.** Pārbaudījām ar Playwright 375×740 un 4× palēninātu CPU; laiku mērījām katram taustiņa nospiedumam
