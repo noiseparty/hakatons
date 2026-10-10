@@ -778,8 +778,8 @@ const krizesMeklesana = (() => {
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
       .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
     // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
-    const apaksa = typeof Apaksa !== 'undefined' ? Apaksa.augstums() : 0;
-    karte.fitBounds(L.latLngBounds(punkti), { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40 + apaksa], maxZoom: 15 });
+    const atst = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes() : { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40] };
+    karte.fitBounds(L.latLngBounds(punkti), { ...atst, maxZoom: 15 });
   }
 
   // Enter rezultātu sarakstā = klikšķis

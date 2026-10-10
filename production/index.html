@@ -45,7 +45,8 @@
 <header>
   <div class="galva-kreisi">
     <button id="izmainas-poga" type="button" aria-label="Izmaiņu žurnāls" aria-haspopup="dialog" aria-expanded="false" title="Kas jauns">#</button>
-    <h1>Krīzes karte</h1>
+    <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2 4 5.2v6.1c0 5 3.4 9.4 8 10.7 4.6-1.3 8-5.7 8-10.7V5.2z" fill="#fff" fill-opacity=".18" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 7v6m0 3.2v.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></span>
+    <h1>Krīzes karte<small class="apakstitls">Latvija · map.repo.lv</small></h1>
   </div>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
@@ -60,11 +61,14 @@
     </div>
   </form>
   <div class="galva-labi">
-    <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog">Ziņot</button>
+    <!-- LV / EN / RU valodu slēdzis (makets) vēl nav veidots: meklēšana jau saprot LV/RU/EN -->
+    <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog" aria-label="Ziņot par bīstamību"><svg class="ikona" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3 2 20h20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4m0 3v.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="teksts">Ziņot</span></button>
+    <a id="par-datiem" class="par-datiem" href="statuss.html">Par datiem</a>
     <p id="statuss" role="status">Ielādē…</p>
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#izvelne"></use></svg> Filtri</button>
   </div>
 </header>
+<p class="zvanit-josla">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
 <div id="bridinajums" class="bridinajums gaida" role="status">Ielādē LVĢMC brīdinājumus…</div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
@@ -126,6 +130,7 @@
       <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
       <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
       <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#atrast"></use></svg></button>
+      <button id="slani-poga" type="button" title="Kartes slāņi" aria-label="Kartes slāņi"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m3 13 9 5 9-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
     </div>
     <div id="prognozes" class="prognozes" hidden>
       <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#prognoze"></use></svg> <span class="prog-poga-teksts">Prognoze</span></button>
@@ -187,6 +192,7 @@
 <script src="izmainas.js"></script>
 <script src="kajene.js"></script>
 <script src="atskanot.js"></script>
+<script src="sheet.js"></script>
 <script src="darbvirsma.js"></script>
 </body>
 </html>
