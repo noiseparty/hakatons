@@ -598,6 +598,9 @@ const krizesMeklesana = (() => {
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
         (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
+        // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
+        `<p class="abonet-rinda">Abonēt brīdinājumus: <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
+        ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">Kalendārs</a></p>` +
         `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)${c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : ''}</small>`;
     }).catch(() => {});
   }

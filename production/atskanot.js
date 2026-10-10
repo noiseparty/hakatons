@@ -1,18 +1,18 @@
 // Atskaņošana prezentācijai: demo scenāriji pēc kārtas (pa 20 s), katram arī tipiskais meklēšanas vaicājums, lai
 // redzama rezultāta kartīte. Poga "Atskaņot" demo paneļa galvā vai saite ?demo=atskanot[&saraksts=a,b,c&ilgums=20].
+// Noklusēti — visi demo/scenariji.json scenāriji paneļa secībā ("Reāli notikumi", tad "Simulācijas"); saraksts= — savs.
 // Taustiņi (datorā): atstarpe — pauze, → nākamais, ← iepriekšējais, Escape — beigt. Beigās "Beigt demo".
 // Lieto demo.js publiskās funkcijas (Demo.sakt, Demo.beigt, Demo.atvert) un meklesana.js (krizesMeklesana.meklet);
 // demo.js netiek mainīts. Vaicājums: scenārija lauks `vaicajums` (demo/scenariji.json), ja ir, citādi VAICAJUMI.
 const Atskanot = (() => {
   if (typeof Demo === 'undefined') return null;
-  const NOKLUSETAIS = ['vetra-2026', 'pludi-ogre', 'drons', 'bez-sakariem'];
   const VAICAJUMI = {
     'vetra-2026': 'vētra Bauskā', 'pludi-ogre': 'plūdi Ogrē', drons: 'drons Rēzeknē', 'bez-sakariem': 'nav elektrības Rīgā',
     vetra: 'vētra Rīgā', vejs: 'stiprs vējš Liepājā', nakts: 'sagriezta roka Saulkrastos',
   };
   const q = new URLSearchParams(location.search);
   const saraksts = (q.get('saraksts') || '').split(',').map(s => s.trim()).filter(Boolean);
-  const SARAKSTS = saraksts.length ? saraksts : NOKLUSETAIS;
+  const SARAKSTS = saraksts.length ? saraksts : null;  // null — visi paneļa secībā
   const ILGUMS = Math.min(120, Math.max(5, +q.get('ilgums') || 20)) * 1000;
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
@@ -36,13 +36,16 @@ const Atskanot = (() => {
 
   // Poga demo paneļa galvā (demo.js to nepārzīmē)
   document.querySelector('#demo-panelis .demo-galva')?.insertAdjacentHTML('afterend',
-    '<div class="atskanot-rinda"><button type="button" class="atskanot-sakt">' + Ik('atskanot') + ' Atskaņot visus pēc kārtas</button>' +
-    '<small>pa ' + ILGUMS / 1000 + ' s; datorā atstarpe — pauze, ← → — iepriekšējais / nākamais</small></div>');
+    '<div class="atskanot-rinda"><button type="button" class="atskanot-sakt">' + Ik('atskanot') + ' Atskaņot ' + (SARAKSTS ? 'izvēlētos' : 'visus') +
+    ' pēc kārtas</button><small>pa ' + ILGUMS / 1000 + ' s katru; datorā atstarpe — pauze, ← → — iepriekšējais / nākamais</small></div>');
   document.querySelector('#demo-panelis .atskanot-sakt')?.addEventListener('click', () => sakt());
 
   async function ieladet() {
     if (!dati) {
       try { dati = await (await fetch('demo/scenariji.json')).json(); } catch { dati = { scenariji: [] }; }
+    }
+    if (!SARAKSTS) {  // tā pati secība kā demo panelī (demo.js zimetSarakstu): vispirms reālie notikumi, tad simulācijas
+      return [...dati.scenariji.filter(s => s.grupa === 'reals'), ...dati.scenariji.filter(s => s.grupa !== 'reals')];
     }
     return dati.scenariji.filter(s => SARAKSTS.includes(s.kods)).sort((a, b) => SARAKSTS.indexOf(a.kods) - SARAKSTS.indexOf(b.kods));
   }
@@ -91,7 +94,7 @@ const Atskanot = (() => {
 
   function zimet() {
     const sc = soli[solis];
-    josla.querySelector('.atskanot-solis').textContent = `${solis + 1}/${soli.length}`;
+    josla.querySelector('.atskanot-solis').textContent = `${solis + 1} / ${soli.length}`;
     josla.querySelector('.atskanot-nos').innerHTML = `${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}`;
     josla.querySelector('.atskanot-laiks').textContent = Math.ceil(atlikums / 1000) + ' s';
     progress.style.width = '0%';

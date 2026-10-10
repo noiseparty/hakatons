@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="format-detection" content="telephone=no">
+  <title>Krīzes karte · map.repo.lv Mobilais skats</title>
+  <style>
+    :root {
+      --color-primary: #172B3F;
+      --color-primary-light: #243E56;
+      --color-carmine: #9E3039;
+      --color-bg: #F4F6F8;
+      --color-surface: #FFFFFF;
+      --color-surface-subtle: #EDF2F7;
+      --color-border: #D1D9E2;
+      --color-text-main: #0F172A;
+      --color-text-muted: #475569;
+      --color-text-light: #64748B;
+
+      /* Warnings scale */
+      --sev-yellow-bg: #FEF9C3;
+      --sev-yellow-border: #D4A12B;
+      --sev-yellow-text: #713F12;
+
+      --sev-orange-bg: #FFEDD5;
+      --sev-orange-border: #D66D25;
+      --sev-orange-text: #8E3E07;
+
+      --sev-red-bg: #FEE2E2;
+      --sev-red-border: #BA2525;
+      --sev-red-text: #7D1212;
+
+      /* Family colours */
+      --family-safe: #0F766E;
+      --family-safe-bg: #CCFBF1;
+      --family-health: #7E22CE;
+      --family-health-bg: #F3E8FF;
+      --family-infra: #334155;
+      --family-infra-bg: #E2E8F0;
+      --family-hazard: #B45309;
+      --family-hazard-bg: #FEF3C7;
+
+      --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: var(--font-stack);
+      background-color: #1A202C;
+      color: var(--color-text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    /* Mobile viewport frame simulation */
+    .mobile-frame {
+      width: 100%;
+      max-width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #FFFFFF;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* National carmine ribbon */
+    .carmine-ribbon {
+      height: 3px;
+      background: var(--color-carmine);
+      width: 100%;
+      flex-shrink: 0;
+      z-index: 50;
+    }
+
+    /* Mobile Header */
+    .header {
+      background: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      z-index: 40;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .coat-arms {
+      width: 22px;
+      height: 22px;
+      color: var(--color-carmine);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-primary);
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--color-text-light);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .lang-pill {
+      display: flex;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      overflow: hidden;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .lang-pill span {
+      padding: 3px 6px;
+      background: var(--color-surface);
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .lang-pill span.active {
+      background: var(--color-primary);
+      color: #FFF;
+    }
+
+    .info-icon-btn {
+      background: none;
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 4px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      cursor: pointer;
+    }
+
+    /* 112 Mandatory non-negotiable warning bar */
+    .crisis-notice {
+      background: #FEF2F2;
+      border-bottom: 1px solid #FECACA;
+      padding: 6px 12px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--sev-red-text);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      z-index: 39;
+    }
+
+    .crisis-notice svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+      stroke: var(--sev-red-text);
+    }
+
+    /* Map container */
+    .map-container {
+      flex: 1;
+      position: relative;
+      background-color: #dce2e8;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    /* Map simulated canvas layer */
+    .map-canvas-mock {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 75% 35%, rgba(186, 37, 37, 0.08) 0%, transparent 65%),
+        radial-gradient(circle at 45% 45%, rgba(214, 109, 37, 0.12) 0%, transparent 70%),
+        linear-gradient(135deg, #e4e9ed 0%, #d5dde4 100%);
+    }
+
+    /* Grid lines for map simulation */
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      background-size: 60px 60px;
+      background-image: 
+        linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+    }
+
+    /* Vector SVG River and Flood Zones */
+    .map-svg-overlay {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    /* Map floating action buttons */
+    .map-floating-controls {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 20;
+    }
+
+    .map-ctrl-btn {
+      width: 36px;
+      height: 36px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      cursor: pointer;
+      color: var(--color-primary);
+    }
+
+    .map-ctrl-btn:active {
+      background: var(--color-surface-subtle);
+    }
+
+    .layer-style-toggle {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 3px;
+      display: flex;
+      gap: 2px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      z-index: 20;
+    }
+
+    .layer-style-btn {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .layer-style-btn.active {
+      background: var(--color-primary);
+      color: #FFFFFF;
+    }
+
+    /* Pin markers on map */
+    .map-marker {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    .marker-pin {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--family-safe);
+      color: white;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .marker-pin.hazard {
+      background: var(--sev-orange-border);
+    }
+
+    .marker-pin.warning {
+      background: var(--sev-red-border);
+    }
+
+    .marker-pin.hospital {
+      background: var(--family-health);
+      border-radius: 6px;
+    }
+
+    .marker-popup {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #FFFFFF;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+      border: 1px solid var(--color-border);
+      pointer-events: none;
+    }
+
+    /* BOTTOM SHEET */
+    .bottom-sheet {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #FFFFFF;
+      border-radius: 18px 18px 0 0;
+      box-shadow: 0 -4px 24px rgba(15, 23, 42, 0.22);
+      z-index: 30;
+      display: flex;
+      flex-direction: column;
+      transition: height 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 86%;
+    }
+
+    /* 3 Snap States */
+    .bottom-sheet.snap-peek {
+      height: 140px;
+    }
+
+    .bottom-sheet.snap-half {
+      height: 52%;
+    }
+
+    .bottom-sheet.snap-full {
+      height: 84%;
+    }
+
+    /* Grab Handle */
+    .sheet-handle-bar {
+      padding: 8px 0 4px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: grab;
+      touch-action: none;
+      user-select: none;
+    }
+
+    .sheet-handle-pill {
+      width: 42px;
+      height: 4px;
+      background: #CBD5E1;
+      border-radius: 2px;
+      margin-bottom: 6px;
+    }
+
+    /* Snap preset buttons for mockup demo */
+    .snap-presets-row {
+      display: flex;
+      gap: 6px;
+      padding: 0 12px 6px 12px;
+      border-bottom: 1px solid var(--color-surface-subtle);
+      width: 100%;
+      justify-content: center;
+    }
+
+    .snap-btn {
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      border: 1px solid var(--color-border);
+      background: #F8FAFC;
+      color: var(--color-text-muted);
+      cursor: pointer;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .snap-btn.active {
+      background: var(--color-primary);
+      color: #FFFFFF;
+      border-color: var(--color-primary);
+    }
+
+    /* Sheet Content container */
+    .sheet-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0 12px 20px 12px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Search Bar in Sheet */
+    .sheet-search-wrap {
+      margin-top: 4px;
+      position: relative;
+    }
+
+    .search-input-box {
+      width: 100%;
+      padding: 9px 36px 9px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      font-size: 13.5px;
+      font-family: inherit;
+      background: var(--color-surface-subtle);
+      color: var(--color-text-main);
+      font-weight: 500;
+    }
+
+    .search-input-box:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      background: #FFF;
+    }
+
+    .search-btn-icon {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--color-primary);
+      border: none;
+      border-radius: 6px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Quick topics chips */
+    .chips-carousel {
+      display: flex;
+      gap: 5px;
+      overflow-x: auto;
+      padding: 8px 0;
+      scrollbar-width: none;
+    }
+
+    .chips-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .topic-chip {
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 14px;
+      border: 1px solid var(--color-border);
+      background: #FFFFFF;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+    .topic-chip.active {
+      background: var(--color-primary);
+      color: #FFFFFF;
+      border-color: var(--color-primary);
+    }
+
+    /* Live status banner */
+    .status-mini-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 10px;
+      background: #F8FAFC;
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--color-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .status-dots {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 600;
+    }
+
+    .dot-warning-orange {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sev-orange-border);
+    }
+
+    .dot-warning-yellow {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sev-yellow-border);
+    }
+
+    /* Result Card (Mobile condensed) */
+    .result-card {
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: #FFFFFF;
+      overflow: hidden;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .warning-callout-strip {
+      background: var(--sev-orange-bg);
+      border-left: 4px solid var(--sev-orange-border);
+      padding: 8px 10px;
+      font-size: 11.5px;
+      color: var(--sev-orange-text);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .warning-callout-title {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .decision-line-block {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--color-surface-subtle);
+    }
+
+    .decision-badge-yes {
+      display: inline-block;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: var(--sev-red-text);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .decision-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      line-height: 1.25;
+    }
+
+    .decision-text mark {
+      background: #FEE2E2;
+      color: var(--sev-red-text);
+      padding: 0 4px;
+      border-radius: 2px;
+    }
+
+    .address-caption {
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Facts Grid */
+    .facts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--color-surface-subtle);
+      background: #F8FAFC;
+    }
+
+    .fact-item {
+      padding: 8px 10px;
+      border-right: 1px solid var(--color-surface-subtle);
+    }
+
+    .fact-item:last-child {
+      border-right: none;
+    }
+
+    .fact-label {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      font-weight: 600;
+    }
+
+    .fact-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .fact-delta-up {
+      font-size: 11px;
+      color: var(--sev-red-text);
+      font-weight: 700;
+    }
+
+    .fact-sub {
+      font-size: 10px;
+      color: var(--color-text-light);
+    }
+
+    /* Places List */
+    .places-section {
+      padding: 10px 12px;
+    }
+
+    .section-head-mini {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--color-text-light);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .place-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--color-surface-subtle);
+    }
+
+    .place-item:last-child {
+      border-bottom: none;
+    }
+
+    .place-tag {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--family-safe);
+      background: var(--family-safe-bg);
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-bottom: 2px;
+    }
+
+    .place-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    .place-addr {
+      font-size: 11px;
+      color: var(--color-text-muted);
+    }
+
+    .place-citation {
+      font-size: 10px;
+      color: var(--color-text-light);
+      margin-top: 2px;
+    }
+
+    .place-side {
+      text-align: right;
+      flex-shrink: 0;
+      padding-left: 8px;
+    }
+
+    .place-dist {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-text-main);
+    }
+
+    .route-link {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-primary);
+      text-decoration: underline;
+      display: block;
+      margin-top: 3px;
+    }
+
+    /* What to do list */
+    .what-to-do-box {
+      background: #F8FAFC;
+      border: 1px solid var(--color-surface-subtle);
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 8px;
+    }
+
+    .what-to-do-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-text-main);
+      margin-bottom: 6px;
+    }
+
+    .todo-step {
+      font-size: 11.5px;
+      color: var(--color-text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .step-num {
+      font-weight: 700;
+      color: var(--color-primary);
+    }
+
+    /* Card Footer Action Buttons */
+    .card-actions-row {
+      display: flex;
+      gap: 6px;
+      padding: 10px 12px;
+      background: #F8FAFC;
+      border-top: 1px solid var(--color-surface-subtle);
+    }
+
+    .btn-card-action {
+      flex: 1;
+      padding: 7px 0;
+      text-align: center;
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 5px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-primary);
+      cursor: pointer;
+    }
+
+    .btn-card-action.primary {
+      background: var(--color-primary);
+      color: #FFFFFF;
+      border-color: var(--color-primary);
+    }
+
+    /* Tab switcher inside Half/Full sheet */
+    .sheet-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--color-border);
+      margin-top: 6px;
+      margin-bottom: 10px;
+    }
+
+    .sheet-tab {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .sheet-tab.active {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    /* Layer list inside tab */
+    .layer-group-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-text-light);
+      text-transform: uppercase;
+      margin: 10px 0 6px 0;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .layer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid var(--color-surface-subtle);
+    }
+
+    .layer-identity {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-main);
+    }
+
+    .layer-shape {
+      width: 10px;
+      height: 10px;
+    }
+
+    .layer-shape.circle { border-radius: 50%; background: var(--family-safe); }
+    .layer-shape.square { border-radius: 2px; background: var(--family-health); }
+    .layer-shape.diamond { transform: rotate(45deg); width: 8px; height: 8px; background: var(--family-infra); }
+    .layer-shape.triangle { 
+      width: 0; 
+      height: 0; 
+      border-left: 6px solid transparent; 
+      border-right: 6px solid transparent; 
+      border-bottom: 10px solid var(--sev-orange-border); 
+    }
+
+    .layer-count-badge {
+      font-size: 10px;
+      background: var(--color-surface-subtle);
+      color: var(--color-text-muted);
+      padding: 1px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+    }
+
+    .toggle-switch {
+      width: 32px;
+      height: 18px;
+      background: var(--color-primary);
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .toggle-knob {
+      width: 14px;
+      height: 14px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      right: 2px;
+    }
+
+    /* Live Situācija Feed Tab content */
+    .feed-card {
+      border: 1px solid var(--color-border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      margin-bottom: 6px;
+      background: #FFFFFF;
+    }
+
+    .feed-card.orange {
+      border-left: 3px solid var(--sev-orange-border);
+    }
+
+    .feed-card.yellow {
+      border-left: 3px solid var(--sev-yellow-border);
+    }
+
+    .feed-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+
+    .feed-sub {
+      font-size: 10.5px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+    }
+
+    /* Modal "Par datiem & AI" */
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 60;
+      display: none;
+      align-items: flex-end;
+    }
+
+    .modal-content {
+      background: #FFFFFF;
+      width: 100%;
+      border-radius: 16px 16px 0 0;
+      max-height: 85%;
+      overflow-y: auto;
+      padding: 16px;
+    }
+
+    .modal-close-btn {
+      float: right;
+      background: none;
+      border: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text-muted);
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- 375px Mobile Frame Simulation -->
+  <div class="mobile-frame" id="mobileApp">
+    
+    <!-- Carmine Ribbon -->
+    <div class="carmine-ribbon"></div>
+
+    <!-- Mobile Header -->
+    <header class="header">
+      <div class="brand-wrap">
+        <svg class="coat-arms" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4z"/>
+          <path d="M12 7v10M8 11h8" stroke-width="1.5"/>
+        </svg>
+        <div>
+          <h1 class="brand-title">Krīzes karte</h1>
+          <div class="brand-sub">LATVIJA · MAP.REPO.LV</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="lang-pill">
+          <span class="active">LV</span>
+          <span>EN</span>
+          <span>RU</span>
+        </div>
+        <button class="info-icon-btn" onclick="toggleDataModal(true)">
+          Par datiem
+        </button>
+      </div>
+    </header>
+
+    <!-- 112 Rule Line (Text-only, no tel: links) -->
+    <div class="crisis-notice">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <span>Ja apdraudēta dzīvība vai veselība, zvaniet 112.</span>
+    </div>
+
+    <!-- Map Area Behind Bottom-Sheet -->
+    <div class="map-container" id="mapView">
+      <div class="map-canvas-mock">
+        <div class="map-grid"></div>
+        
+        <!-- Vector Map Elements (River Ogre, Daugava, Flood zones) -->
+        <svg class="map-svg-overlay" viewBox="0 0 390 500" preserveAspectRatio="none">
+          <!-- River Daugava -->
+          <path d="M-20 220 C 120 230, 240 260, 420 270" fill="none" stroke="#93C5FD" stroke-width="32" stroke-linecap="round" opacity="0.6"/>
+          <!-- River Ogre tributary -->
+          <path d="M 230 40 C 220 120, 210 180, 210 245" fill="none" stroke="#60A5FA" stroke-width="14" stroke-linecap="round" opacity="0.7"/>
+
+          <!-- Flood zone 1% (orange border + translucent fill) -->
+          <ellipse cx="205" cy="210" rx="95" ry="60" fill="rgba(214, 109, 37, 0.18)" stroke="#D66D25" stroke-width="1.8" stroke-dasharray="4 2"/>
+          <ellipse cx="205" cy="210" rx="60" ry="36" fill="rgba(214, 109, 37, 0.28)" stroke="#BA2525" stroke-width="1.5"/>
+        </svg>
+
+        <!-- Map Marker 1: User Query Location (Brīvības iela 15, Ogre) -->
+        <div class="map-marker" style="top: 40%; left: 52%;" onclick="focusSheet('half')">
+          <div class="marker-pin warning">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/>
+              <circle cx="12" cy="9" r="2.5"/>
+            </svg>
+          </div>
+          <div class="marker-popup">Brīvības 15 (Plūdu riska zonā)</div>
+        </div>
+
+        <!-- Map Marker 2: Ogres Valsts ģimnāzija (Evacuation) -->
+        <div class="map-marker" style="top: 25%; left: 45%;">
+          <div class="marker-pin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+              <polyline points="9 22 9 12 15 12 15 22"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Map Marker 3: Ogres rajona slimnīca (Health) -->
+        <div class="map-marker" style="top: 32%; left: 80%;">
+          <div class="marker-pin hospital">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"/>
+              <line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map Floating Style Switcher (Karte / Reljefs) -->
+      <div class="layer-style-toggle">
+        <button class="layer-style-btn active" id="btnMapStyleKarte" onclick="setMapStyle('karte')">Karte</button>
+        <button class="layer-style-btn" id="btnMapStyleReljefs" onclick="setMapStyle('reljefs')">Reljefs</button>
+      </div>
+
+      <!-- Map Right Floating Controls -->
+      <div class="map-floating-controls">
+        <button class="map-ctrl-btn" title="Pietuvināt" onclick="alert('Pietuvināts')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="map-ctrl-btn" title="Attālināt" onclick="alert('Attālināts')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="map-ctrl-btn" title="Mana atrašanās vieta" onclick="useLocationMock()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="3 11 22 2 13 21 11 13 3 11"/>
+          </svg>
+        </button>
+        <button class="map-ctrl-btn" title="Slāņi" onclick="switchSheetTab('layers'); setSnap('half');">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+            <polyline points="2 17 12 22 22 17"/>
+            <polyline points="2 12 12 17 22 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE BOTTOM SHEET -->
+    <div class="bottom-sheet snap-half" id="bottomSheet">
+      
+      <!-- Grab Handle + Interactive Snap Toggle Buttons for Demo -->
+      <div class="sheet-handle-bar" onclick="cycleSnap()">
+        <div class="sheet-handle-pill"></div>
+        <div class="snap-presets-row" onclick="event.stopPropagation()">
+          <button class="snap-btn" id="snapBtnPeek" onclick="setSnap('peek')">Peek (140px)</button>
+          <button class="snap-btn active" id="snapBtnHalf" onclick="setSnap('half')">Half (52%)</button>
+          <button class="snap-btn" id="snapBtnFull" onclick="setSnap('full')">Full (84%)</button>
+        </div>
+      </div>
+
+      <!-- Sheet Scrollable Content -->
+      <div class="sheet-body">
+        
+        <!-- Search bar inside sheet (Front door) -->
+        <div class="sheet-search-wrap">
+          <input type="text" class="search-input-box" id="searchInput" value="plūdi Ogrē, Brīvības 15" placeholder="Kas notiek un kur? Piem.: plūdi Ogrē">
+          <button class="search-btn-icon" title="Meklēt" onclick="setSnap('full')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"/>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Quick filter chips -->
+        <div class="chips-carousel">
+          <span class="topic-chip active" onclick="filterChip(this)">Plūdi</span>
+          <span class="topic-chip" onclick="filterChip(this)">Nav elektrības</span>
+          <span class="topic-chip" onclick="filterChip(this)">Evakuācija</span>
+          <span class="topic-chip" onclick="filterChip(this)">Patvertne</span>
+          <span class="topic-chip" onclick="filterChip(this)">Ārsts</span>
+          <span class="topic-chip" onclick="filterChip(this)">Ceļi</span>
+        </div>
+
+        <!-- Sheet tabs: Rezultāts / Slāņi / Situācija tagad -->
+        <div class="sheet-tabs">
+          <div class="sheet-tab active" id="tabBtnResult" onclick="switchSheetTab('result')">Rezultāts (Lēmums)</div>
+          <div class="sheet-tab" id="tabBtnLayers" onclick="switchSheetTab('layers')">Kartes slāņi</div>
+          <div class="sheet-tab" id="tabBtnSituation" onclick="switchSheetTab('situation')">Situācija tagad (LVĢMC)</div>
+        </div>
+
+        <!-- TAB 1: RESULT CARD -->
+        <div id="tabContentResult">
+          <!-- Situation Strip / freshness -->
+          <div class="status-mini-bar">
+            <div class="status-dots">
+              <span class="dot-warning-orange"></span> 2 oranži
+              <span class="dot-warning-yellow" style="margin-left:6px;"></span> 5 dzelteni
+            </div>
+            <div>Atjaunots šodien 14:05</div>
+          </div>
+
+          <!-- RESULT CARD (Strict order from Section 5.2) -->
+          <div class="result-card">
+            <!-- 1. Warnings for this place -->
+            <div class="warning-callout-strip">
+              <div class="warning-callout-title">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                  <line x1="12" y1="9" x2="12" y2="13"/>
+                  <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                <span>LVĢMC: Oranžais līmenis (Ogre)</span>
+              </div>
+              <span style="font-size:10px; font-weight:600;">Spēkā līdz 12.10. 20:00</span>
+            </div>
+
+            <!-- 2. Decision line (Large, doesn't rely only on colour) -->
+            <div class="decision-line-block">
+              <span class="decision-badge-yes">Apstiprināts hidro-risks</span>
+              <div class="decision-text">
+                Jūsu norādītā adrese <mark>IR</mark> plūdu riska zonā (1% varbūtība gadā).
+              </div>
+              <div class="address-caption">
+                Adrese: <strong>Brīvības iela 15, Ogre</strong> (Attālums līdz upei: 140 m)
+              </div>
+            </div>
+
+            <!-- 3. Facts row -->
+            <div class="facts-grid">
+              <div class="fact-item">
+                <div class="fact-label">LVĢMC stacija · Ogre</div>
+                <div class="fact-val">
+                  +2,42 m <span class="fact-delta-up">▲ +18 cm</span>
+                </div>
+                <div class="fact-sub">24 h pieauguma tendence</div>
+              </div>
+              <div class="fact-item">
+                <div class="fact-label">Satiksmes ierobežojums</div>
+                <div class="fact-val" style="color:var(--sev-orange-text); font-size:12.5px;">
+                  Ceļš P5 slēgts
+                </div>
+                <div class="fact-sub">3,2 km attālumā (Pārplūdis)</div>
+              </div>
+            </div>
+
+            <!-- 4. Nearest places -->
+            <div class="places-section">
+              <div class="section-head-mini">
+                <span>Tuvākās drošās vietas</span>
+                <span>Pēc attāluma</span>
+              </div>
+
+              <!-- Place 1 -->
+              <div class="place-item">
+                <div>
+                  <span class="place-tag">Evakuācijas pulcēšanās vieta</span>
+                  <div class="place-name">Ogres Valsts ģimnāzija</div>
+                  <div class="place-addr">Gunāra Astras iela 1, Ogre</div>
+                  <div class="place-citation">Avots: Ogres novada CA plāns, 14. lpp. · CC BY 4.0</div>
+                </div>
+                <div class="place-side">
+                  <div class="place-dist">450 m</div>
+                  <a href="#" class="route-link" onclick="alert('Atver navigāciju'); return false;">Maršruts ↗</a>
+                </div>
+              </div>
+
+              <!-- Place 2 -->
+              <div class="place-item">
+                <div>
+                  <span class="place-tag">Pagaidu izmitināšana</span>
+                  <div class="place-name">Ogres novada sporta centrs</div>
+                  <div class="place-addr">Skolas iela 12 (Ietilpība: 240 vietas)</div>
+                  <div class="place-citation">Avots: Ogres novada CA plāns, 21. lpp.</div>
+                </div>
+                <div class="place-side">
+                  <div class="place-dist">1,2 km</div>
+                  <a href="#" class="route-link" onclick="alert('Atver navigāciju'); return false;">Maršruts ↗</a>
+                </div>
+              </div>
+
+              <!-- Place 3: Hospital -->
+              <div class="place-item">
+                <div>
+                  <span class="place-tag" style="color:var(--family-health); background:var(--family-health-bg);">Slimnīca 24/7</span>
+                  <div class="place-name">Ogres rajona slimnīca</div>
+                  <div class="place-addr">Slimnīcas iela 2, Ogre</div>
+                  <div class="place-citation">Avots: Veselības ministrija / IeM IC</div>
+                </div>
+                <div class="place-side">
+                  <div class="place-dist">2,4 km</div>
+                  <a href="#" class="route-link" onclick="alert('Atver navigāciju'); return false;">Maršruts ↗</a>
+                </div>
+              </div>
+
+              <!-- 5. What to do now -->
+              <div class="what-to-do-box">
+                <div class="what-to-do-title">Rīcība plūdu draudu gadījumā:</div>
+                <div class="todo-step"><span class="step-num">1.</span> Sagatavojiet personu apliecinošus dokumentus un medikamentus 72 stundām.</div>
+                <div class="todo-step"><span class="step-num">2.</span> Izslēdziet elektroenerģijas padevi un gāzes padevi pirms telpu atstāšanas.</div>
+                <div class="todo-step"><span class="step-num">3.</span> Pārvietojiet vērtīgās mantas un mājdzīvniekus uz augstākiem stāviem.</div>
+                <div class="todo-step"><span class="step-num">4.</span> Ja ūdens strauji kāpj un ceļi nogriezti, zvaniet 112 un dodieties uz ēkas jumtu.</div>
+              </div>
+            </div>
+
+            <!-- 6. Footer Actions -->
+            <div class="card-actions-row">
+              <button class="btn-card-action" onclick="setSnap('peek')">Rādīt kartē</button>
+              <button class="btn-card-action" onclick="navigator.clipboard?.writeText(window.location.href); alert('Saite nokopēta starpliktuvē');">Kopīgot</button>
+              <button class="btn-card-action primary" onclick="document.getElementById('searchInput').value=''; document.getElementById('searchInput').focus();">Jauna meklēšana</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: LAYERS LIST -->
+        <div id="tabContentLayers" style="display:none;">
+          <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:8px;">
+            Atlasiet kartē attēlojamos civilās aizsardzības un bīstamības slāņus:
+          </div>
+
+          <!-- Safe places -->
+          <div class="layer-group-title">
+            <span>Drošās vietas (Zaļš / Aplis)</span>
+            <span>3 slāņi</span>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape circle"></span>
+              <span>Publiskās patvertnes</span>
+              <span class="layer-count-badge">778</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape circle"></span>
+              <span>Evakuācijas pulcēšanās vietas</span>
+              <span class="layer-count-badge">730</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape circle"></span>
+              <span>Pagaidu izmitināšana</span>
+              <span class="layer-count-badge">579</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+
+          <!-- Health -->
+          <div class="layer-group-title">
+            <span>Veselība (Violets / Kvadrāts)</span>
+            <span>3 slāņi</span>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape square"></span>
+              <span>Neatliekamā palīdzība 24/7</span>
+              <span class="layer-count-badge">37</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape square"></span>
+              <span>Slimnīcas</span>
+              <span class="layer-count-badge">69</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+
+          <!-- Hazards -->
+          <div class="layer-group-title">
+            <span>Bīstamība (Oranžs / Trīsstūris)</span>
+            <span>3 slāņi</span>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape triangle"></span>
+              <span>Plūdu riska zonas (10% / 1%)</span>
+              <span class="layer-count-badge">LVĢMC</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+          <div class="layer-row">
+            <div class="layer-identity">
+              <span class="layer-shape triangle"></span>
+              <span>Ūdens līmeņa stacijas</span>
+              <span class="layer-count-badge">60</span>
+            </div>
+            <div class="toggle-switch"><div class="toggle-knob"></div></div>
+          </div>
+        </div>
+
+        <!-- TAB 3: SITUATION NOW -->
+        <div id="tabContentSituation" style="display:none;">
+          <div style="font-size:12px; color:var(--color-text-muted); margin-bottom:8px;">
+            Valsts mēroga operatīvie brīdinājumi un upju tendences:
+          </div>
+
+          <div class="feed-card orange">
+            <div class="feed-head">
+              <span>Plūdu draudi: Ogre & Daugava</span>
+              <span style="color:var(--sev-orange-text);">Oranžs</span>
+            </div>
+            <div class="feed-sub">Ogres, Aizkraukles novads · Spēkā līdz 12.10. 20:00</div>
+          </div>
+
+          <div class="feed-card yellow">
+            <div class="feed-head">
+              <span>Spēcīgs vējš brāzmās līdz 21 m/s</span>
+              <span style="color:var(--sev-yellow-text);">Dzeltens</span>
+            </div>
+            <div class="feed-sub">Piejūras rajoni, Rīga · Spēkā līdz 11.10. 18:00</div>
+          </div>
+
+          <div style="font-size:11px; font-weight:700; color:var(--color-text-light); text-transform:uppercase; margin:10px 0 4px 0;">
+            Straujākais ūdens līmeņa kāpums (LVĢMC):
+          </div>
+
+          <div class="feed-card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:12px; font-weight:700;">Ogre · Lejtece</div>
+              <div style="font-size:10.5px; color:var(--color-text-light);">+2,42 m kopējais līmenis</div>
+            </div>
+            <div style="text-align:right;">
+              <span style="color:var(--sev-red-text); font-weight:700; font-size:13px;">▲ +18 cm</span>
+              <div style="font-size:9.5px; color:var(--color-text-muted);">/ 24 stundās</div>
+            </div>
+          </div>
+
+          <div class="feed-card" style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:12px; font-weight:700;">Daugava · Jēkabpils</div>
+              <div style="font-size:10.5px; color:var(--color-text-light);">+5,80 m kopējais līmenis</div>
+            </div>
+            <div style="text-align:right;">
+              <span style="color:var(--sev-red-text); font-weight:700; font-size:13px;">▲ +12 cm</span>
+              <div style="font-size:9.5px; color:var(--color-text-muted);">/ 24 stundās</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal "Par datiem & AI" -->
+    <div class="modal-backdrop" id="dataModal">
+      <div class="modal-content">
+        <button class="modal-close-btn" onclick="toggleDataModal(false)">&times;</button>
+        <h2 style="font-size:16px; font-weight:700; color:var(--color-primary); margin-bottom:6px;">Par datiem un mākslīgo intelektu</h2>
+        <p style="font-size:12px; color:var(--color-text-muted); margin-bottom:12px;">
+          Krīzes karte (map.repo.lv) izmanto tikai oficiālus valsts un pašvaldību datus.
+        </p>
+
+        <div style="background:#F1F5F9; border-radius:6px; padding:10px; font-size:11.5px; margin-bottom:12px;">
+          <strong>Kā tika izmantots AI:</strong> Pašvaldību civilās aizsardzības plāni (visu 42 novadu) tika apstrādāti ar LLM, lai strukturēti izgūtu evakuācijas un izmitināšanas vietas ar precīzu lappuses norādi. Procesā tika identificētas un novērstas 41 koordinātu kļūda oficiālajos plānos.
+          <br><br>
+          <em>Reāllaika meklēšana un lēmumu pieņemšana darbojas deterministiski pēc stingriem noteikumiem — bez AI ģenerēšanas izpildlaikā.</em>
+        </div>
+
+        <h3 style="font-size:13px; font-weight:700; margin-bottom:6px;">Datu avoti un licences:</h3>
+        <ul style="font-size:11px; color:var(--color-text-muted); line-height:1.6; padding-left:16px;">
+          <li><strong>LVĢMC:</strong> Hidrometeoroloģiskie brīdinājumi, ūdens līmeņa mērījumi, plūdu riska kartes (CC BY 4.0)</li>
+          <li><strong>LVC / DATEX II:</strong> Valsts ceļu satiksmes ierobežojumi, remonti, slēgumi</li>
+          <li><strong>VUGD / 112.lv:</strong> Publiskās patvertņu vietas</li>
+          <li><strong>Pašvaldības:</strong> Civilās aizsardzības plāni (2024–2026)</li>
+          <li><strong>VM / IeM IC:</strong> Neatliekamās medicīnas un slimnīcu reģistrs</li>
+        </ul>
+        <button class="btn-card-action primary" style="width:100%; margin-top:14px; padding:8px 0;" onclick="toggleDataModal(false)">Aizvērt</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Bottom sheet state management
+    const sheet = document.getElementById('bottomSheet');
+    let currentSnap = 'half';
+
+    function setSnap(snap) {
+      currentSnap = snap;
+      sheet.classList.remove('snap-peek', 'snap-half', 'snap-full');
+      sheet.classList.add('snap-' + snap);
+
+      document.querySelectorAll('.snap-btn').forEach(b => b.classList.remove('active'));
+      if(snap === 'peek') document.getElementById('snapBtnPeek').classList.add('active');
+      if(snap === 'half') document.getElementById('snapBtnHalf').classList.add('active');
+      if(snap === 'full') document.getElementById('snapBtnFull').classList.add('active');
+    }
+
+    function cycleSnap() {
+      if (currentSnap === 'peek') setSnap('half');
+      else if (currentSnap === 'half') setSnap('full');
+      else setSnap('peek');
+    }
+
+    function focusSheet(snap) {
+      setSnap(snap);
+    }
+
+    // Tabs
+    function switchSheetTab(tabId) {
+      document.querySelectorAll('.sheet-tab').forEach(t => t.classList.remove('active'));
+      document.getElementById('tabContentResult').style.display = 'none';
+      document.getElementById('tabContentLayers').style.display = 'none';
+      document.getElementById('tabContentSituation').style.display = 'none';
+
+      if (tabId === 'result') {
+        document.getElementById('tabBtnResult').classList.add('active');
+        document.getElementById('tabContentResult').style.display = 'block';
+      } else if (tabId === 'layers') {
+        document.getElementById('tabBtnLayers').classList.add('active');
+        document.getElementById('tabContentLayers').style.display = 'block';
+      } else if (tabId === 'situation') {
+        document.getElementById('tabBtnSituation').classList.add('active');
+        document.getElementById('tabContentSituation').style.display = 'block';
+      }
+    }
+
+    // Topic chips
+    function filterChip(chip) {
+      document.querySelectorAll('.topic-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      document.getElementById('searchInput').value = chip.innerText.toLowerCase() + " Ogrē";
+      switchSheetTab('result');
+      setSnap('half');
+    }
+
+    // Map base style switcher
+    function setMapStyle(style) {
+      document.getElementById('btnMapStyleKarte').classList.toggle('active', style === 'karte');
+      document.getElementById('btnMapStyleReljefs').classList.toggle('active', style === 'reljefs');
+      const canvas = document.querySelector('.map-canvas-mock');
+      if (style === 'reljefs') {
+        canvas.style.filter = 'contrast(1.15) sepia(0.12)';
+      } else {
+        canvas.style.filter = 'none';
+      }
+    }
+
+    // Location
+    function useLocationMock() {
+      alert("Atrašanās vieta noteikta: Ogre, Brīvības iela 15 (± 15 m)");
+      setSnap('half');
+    }
+
+    // Modal
+    function toggleDataModal(show) {
+      document.getElementById('dataModal').style.display = show ? 'flex' : 'none';
+    }
+  </script>
+</body>
+</html>

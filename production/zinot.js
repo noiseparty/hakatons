@@ -1,4 +1,4 @@
-// "Ziņot par bīstamību": iedzīvotāju ziņojumi (nokritis koks, ceļš, elektrolīnija, applūdums) pēc lacukarte.lv parauga.
+// "Ziņot par bīstamību" (poga #zinot-poga galvenē, saite rezultāta kartītē; Zinot.atvert() citiem moduļiem): iedzīvotāju ziņojumi (nokritis koks, ceļš, elektrolīnija, applūdums) pēc lacukarte.lv parauga.
 // Forma dialoglodziņā: tips → īss teksts → vieta (mana atrašanās vieta vai pieskāriens kartei) → apstiprinājums.
 // Slānis "Iedzīvotāju ziņojumi" (izslēgts pēc noklusējuma): pelēki punkti ~1 km precizitātē, pēdējās 7 dienas,
 // logā "Apstiprinu" / "Nav taisnība". Balsojumu atceras pārlūks (localStorage), serveris IP neglabā.

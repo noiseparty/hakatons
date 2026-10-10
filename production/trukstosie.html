@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 20 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/trukstosie.html">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 20 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
@@ -37,7 +37,7 @@
   </div>
 </header>
 <main class="saturs info trukstosie">
-<p>Stāvoklis 2026-10-10 rītā. Visi 20 datu avoti, ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir <b>otra puse</b>: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: <code>notes/research/02</code>, <code>04</code>, <code>05</code>, <code>notes/demo-scenariji.md</code>, <code>notes/ca-plani-kvalitate.md</code>, nakts atradumi, apkopoti 2026-10-10.</p>
+<p>Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas licences <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg>, kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir <b>otra puse</b>: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: <code>notes/research/02</code>, <code>04</code>, <code>05</code>, <code>notes/demo-scenariji.md</code>, <code>notes/ca-plani-kvalitate.md</code>, nakts atradumi, apkopoti 2026-10-10.</p>
 <section class="bloks" aria-labelledby="d1"><h2 id="d1">1. Dzīvībai svarīgi, bet nepubliski (TOP prasības)</h2>
 <article class="dati"><h3><span class="nr">1</span> <b>Patvertņu saraksts</b> (781 publiskās patvertnes)</h3><dl><dt>Kam pieder</dt><dd>VUGD / IeM IC, publicēts 112.lv</dd><dt>Kāpēc vajag krīzē</dt><dd>Tuvākā patvertne — visbiežākais jautājums</dd><dt>Šodien</dt><dd>Rādām no 112.lv <b>bez atvērtas licences</b> (<svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> kartē). Nav ietilpības, nav pieejamības ratiņkrēslam, nav info par dzīvniekiem, nav operatora, nav statusa (atvērta / pilna / slēgta)</dd><dt>Prasām</dt><dd>Publicēt data.gov.lv ar CC0, pievienot ietilpību, pieejamību, dzīvnieku pieņemšanu, atbildīgo un <b>dzīvo statusu</b></dd></dl></article>
 <article class="dati"><h3><span class="nr">2</span> <b>Evakuācijas pulcēšanās vietas un izmitināšanas vietas</b></h3><dl><dt>Kam pieder</dt><dd>42 pašvaldības (CA plāni, MK 658)</dd><dt>Kāpēc vajag krīzē</dt><dd>"Kur man jāiet?"</dd><dt>Šodien</dt><dd>Izvilkām ar MI no PDF: 730 punkti, 579 izmitināšanas vietas, <b>41 koordinātu kļūda</b> oficiālajos plānos; <b>12 pašvaldības</b> sarakstus tur nepublicētos pielikumos (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …); Ventspils plāns ir skenēts — <b>pat ar OCR</b> (2026-10-10) saraksti nav pieejami: tie ir 4.–16. pielikumā, kas publiskajā failā ir tikai titullapas "Ierobežotas pieejamības informācija" (lpp. 71–83)</dd><dt>Prasām</dt><dd>Vienots mašīnlasāms formāts (GeoJSON/CSV) ar adresi, koordinātām, ietilpību; publicēt pielikumus; ĢeoLatvija slānis</dd></dl></article>
@@ -70,5 +70,6 @@
 <ul><li><b>CA plānu koordinātas:</b> 41 kļūda 42 plānos (piem., Jūrmalas pulcēšanās vieta Nr. 10 Melluži ar 56.064 nevis 56.964 — 100 km Lietuvā). Labojām ar VZD adrešu reģistru. Saraksts: <code>notes/ca-plani-kvalitate.md</code>.</li><li><b>Plūdu riska WMS</b> (geo-dpps) atbild 1–30 s, brīžiem 503/504 — nav piemērots reāllaika lietotnei bez kešatmiņas.</li><li><b>LVĢMC zibens režģis</b> nāk ar 2–3 h nokavēšanos; reāllaikā izmantojam Somijas FMI (CC BY 4.0), jo Latvijā atvērtu reāllaika zibens datu nav.</li><li><b>Hidroloģiskās prognozes</b> ir m v.j.l. (LAS-2000,5), novērojumi — cm virs staciju nulles; pārrēķina tabula nav publicēta.</li><li><b>Prognožu fails</b> apdzīvotām vietām ir 16,6 MB dienā bez CORS — jālasa caur savu serveri.</li></ul></section>
   <p class="piezime drukai">map.repo.lv/trukstosie.html · avots: notes/missing_data.md repozitorijā github.com/noiseparty/hakatons</p>
 </main>
+<script src="kajene.js"></script>
 </body>
 </html>

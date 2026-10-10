@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<title>Atvērtais API · Krīzes karte</title>
+<meta name="description" content="map.repo.lv atvērtais API: drošās vietas, brīdinājumi, plūdu risks, ūdens līmenis, ceļi un satiksme no Latvijas atvērtajiem datiem — ar avotu un licenci katram galapunktam.">
+<link rel="stylesheet" href="statuss.css">
+<link rel="stylesheet" href="api.css">
+</head>
+<body>
+<!-- Ģenerēts ar src/api_docs/sagatavot.py no src/api_docs/sablons.html — labojiet tur, nevis šeit. -->
+<header class="augsa">
+  <div class="augsa-iekss">
+    <h1>Krīzes karte <span>· Atvērtais API</span></h1>
+    <a class="atpakal" href="./">← Uz karti</a>
+  </div>
+</header>
+<main class="saturs api">
+  <section class="ievads">
+    <p><b>Mēs ne tikai lietojam atvērtos datus — mēs tos arī publicējam.</b> Viss, ko rāda karte, ir pieejams kā atvērts
+      JSON API: {{SKAITS}} galapunkti, katram avots, licence un keša laiks. Bez atslēgas, bez reģistrācijas.</p>
+    <ul>
+      <li><b>Licence.</b> Mūsu atvasinātie dati (biežāk meklētais, iedzīvotāju ziņojumi, satiksmes zonas, pašvaldību
+        apkopojums, statuss) — <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, atsauce „map.repo.lv”.
+        Caurlaistie dati — avota licence (norādīta pie katra galapunkta; punktiem — <code>properties.avots</code> un
+        <a href="#api-avoti"><code>/api/avoti</code></a>). 112.lv patvertnēm atvērta licence nav norādīta.</li>
+      <li><b>CORS:</b> visi GET galapunkti atļauti no jebkuras vietnes (<code>Access-Control-Allow-Origin: *</code>). POST
+        galapunkti ir tikai šai lapai.</li>
+      <li><b>Saudzīgi, lūdzu:</b> atbildes ir kešotas (Cache-Control); netaisiet vairāk par ~1 pieprasījumu sekundē no
+        vienas lietotnes un kešojiet paši. Ārējie avoti (LVĢMC, FMI, NAP, OSRM) tiek sasniegti tikai caur mūsu kešu.</li>
+      <li><b>Formāts:</b> JSON (UTF-8), koordinātas WGS-84; kļūdas — <code>{"kluda": "…"}</code> ar HTTP 400 / 404 / 503.</li>
+      <li><b>Mašīnlasāmi:</b> <a href="openapi.json">openapi.json</a> (OpenAPI 3.1) — der jebkuram OpenAPI rīkam.</li>
+    </ul>
+    <h2>Kā lietot savā lietotnē</h2>
+<pre>const r = await fetch('https://map.repo.lv/api/objekti?kategorijas=patvertne&amp;lat=56.95&amp;lon=24.11&amp;limit=3');
+const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas pēc attāluma (properties.attalums_m)</pre>
+  </section>
+
+  <nav class="raditajs" aria-label="Galapunkti"><h2>Galapunkti</h2><ul>{{RADITAJS}}</ul></nav>
+
+  {{GALAPUNKTI}}
+
+  <section class="galapunkts" id="statistika">
+    <h2><code>/api/veseliba?statistika=1</code> — ko nozīmē skaitītāji</h2>
+    <ul>
+      <li><code>ok</code> — datubāze atbild.</li>
+      <li><code>statistika.kesa.&lt;avots&gt;</code>: <code>no_kesas</code> — atbildēts no kešas; <code>uz_avotu</code> — cik reižu
+        tiešām pieprasīts ārējais avots; <code>novecojusi</code> — atdota novecojusi vērtība, kamēr fonā atjauno
+        (lietotājs negaida); <code>gaidija</code> — pieprasījums gaidīja, jo vērtības vēl nebija nemaz.</li>
+      <li><code>db_vaicajumi</code> — datubāzes vaicājumi kopš palaišanas; <code>db_parslodze</code> — cik reižu visi
+        <code>db_vienlaicigi</code> savienojumi bija aizņemti 10 s (atbilde 503); <code>pavedieni</code> — aktīvie pavedieni.</li>
+    </ul>
+  </section>
+
+  <section class="galapunkts">
+    <h2>POST galapunkti (tikai map.repo.lv lapai)</h2>
+    <ul>{{POST}}</ul>
+  </section>
+
+  <p class="piezime">Pirmkods: <a href="https://github.com/noiseparty/hakatons">github.com/noiseparty/hakatons</a>
+    (<code>src/karte/api/karte_api.py</code>). Šī lapa ģenerēta ar <code>src/api_docs/sagatavot.py</code>; piemēri ir īstas
+    atbildes ģenerēšanas brīdī, saīsinātas. Datu stāvoklis: <a href="statuss.html">statusa lapa</a>.</p>
+</main>
+<script src="kajene.js"></script>
+</body>
+</html>

@@ -32,6 +32,8 @@ Galapunkti:
   POST /api/meklejumi {vaicajums, atpazits, klikskis}
                                        biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāja datiem); 204
   GET /api/meklejumi/top?n=3           biežāk meklētie pēdējās 14 dienās (kešs 60 s)
+  GET /api/plusma.xml[?regions=<kods|ATVK>]  Atom plūsma: brīdinājumi, rītdienas prognoze, upes, ceļi, zibens (kešs 5 min)
+  GET /api/kalendars.ics[?regions=..]  brīdinājumi kā iCalendar notikumi (kalendāra lietotnēm)
   GET /api/statuss                     statusa lapa: vietnes, API un datu avotu stāvoklis, 24 h pa 15 min, 7 dienu pieejamība
 
 Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
@@ -2728,6 +2730,227 @@ def zinojumi_moderacija(dati):
 # ==== Ziņojumi — beigas ====
 
 
+# ---- Abonēšana bez lietotnes: GET /api/plusma.xml (Atom 1.0) un /api/kalendars.ics (iCalendar) ----
+# Pašvaldībai (?regions=<VZD kods vai ATVK>) vai visai Latvijai: LVĢMC brīdinājumi, rītdienas prognoze (brāzmas ≥ 15 m/s
+# vai nokrišņi ≥ 15 mm), upes, kas 24 h kāpušas > 10 cm, LVC slēgumi un negadījumi, zibens pēdējās 30 min. Viss no tiem
+# pašiem kešotajiem datiem, ko rāda karte; plūsma kešota 5 min. <id> ir stabili (tas pats notikums — tas pats id).
+
+import email.utils  # noqa: E402
+import xml.etree.ElementTree as _ET  # noqa: E402
+
+ABONET_VIETNE = "https://map.repo.lv/"
+ABONET_BRAZMAS, ABONET_NOKRISNI, ABONET_UDENS_CM = 15, 15, 10
+_CC0_AVOTS = ("CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/")
+
+
+def _abonet_regions(q):
+    """(kods, nosaukums) vai (None, "Latvija"); pieņem VZD kodu (regioni.kods) vai pašvaldības ATVK."""
+    vertiba = q.get("regions", [""])[0].strip()
+    if not vertiba:
+        return None, "Latvija"
+    if not KODS.match(vertiba):
+        raise Kluda(400, "regions: VZD kods vai ATVK")
+    pasv = _kesots("pasvaldibas", 3600, _pasvaldibas_dati)
+    kods = next((k for k, v in pasv.items() if v.get("atvk") == vertiba), vertiba)
+    vardi = _kesots("regionu_vardi", 3600, lambda: {r["kods"]: r for r in regioni({})})
+    if kods not in vardi:
+        raise Kluda(404, "reģions nav atrasts")
+    return kods, vardi[kods]["nosaukums"]
+
+
+def _punkti_regiona(kods, punkti):
+    """[(lat, lon)] → [bool]: vai punkts ir reģionā (PostGIS); bez datubāzes — pēc reģiona bbox."""
+    if not punkti or kods is None:
+        return [True] * len(punkti)
+    try:
+        return vaicat("""select coalesce(json_agg(st_contains(r.geom, st_setsrid(st_makepoint(p.lon, p.lat), 4326)) order by p.n), '[]')
+                         from regioni r, unnest(%s::float8[], %s::float8[]) with ordinality as p(lat, lon, n)
+                         where r.kods = %s""", ([a for a, _ in punkti], [b for _, b in punkti], kods), timeout="5s")
+    except (psycopg.Error, Kluda):
+        bbox = _kesots("regionu_vardi", 3600, lambda: {r["kods"]: r for r in regioni({})})[kods]["bbox"]
+        return [bbox[1] <= a <= bbox[3] and bbox[0] <= b <= bbox[2] for a, b in punkti]
+
+
+def _riga_uz_utc(teksts):
+    """LVĢMC vietējais laiks (bez zonas) → UTC datetime."""
+    if not teksts:
+        return None
+    t = datetime.fromisoformat(teksts)
+    if t.tzinfo:
+        return t.astimezone(timezone.utc)
+    try:
+        from zoneinfo import ZoneInfo
+        return t.replace(tzinfo=ZoneInfo("Europe/Riga")).astimezone(timezone.utc)
+    except Exception:  # bez tzdata: vasarā UTC+3, ziemā UTC+2 (aptuveni)
+        return (t - timedelta(hours=3 if 3 < t.month < 11 else 2)).replace(tzinfo=timezone.utc)
+
+
+def _abonet_ieraksti(kods, nosaukums):
+    """Plūsmas ieraksti: [{id, virsraksts, teksts, laiks (UTC), saite, avots: (nosaukums, url, licence), no, lidz}]."""
+    vietne = ABONET_VIETNE + (f"?regions={kods}" if kods else "")
+    rez = []
+    prog = prognozes({})
+    br = {b["id"]: b for b in bridinajumi({})["bridinajumi"]}
+    for z in prog["zinas"]:
+        if z["veids"] != "bridinajums" or (kods and kods not in z.get("regioni", [])):
+            continue
+        b = br.get(z.get("id"), {})
+        no, lidz = _riga_uz_utc(b.get("no")), _riga_uz_utc(b.get("lidz"))
+        rez.append({"id": f"tag:map.repo.lv,2026:bridinajums:{z.get('id')}", "virsraksts": z["virsraksts"],
+                    "teksts": z["teksts"] + (("\n\n" + b["riski"]) if b.get("riski") else ""), "laiks": no or datetime.now(timezone.utc),
+                    "saite": vietne, "no": no, "lidz": lidz, "krasa": b.get("krasa"), "paradiba": z.get("paradiba"),
+                    "avots": ("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", "CC0 1.0")})
+    # rītdienas prognoze
+    rit = (_riga_tagad().date() + timedelta(days=1)).isoformat()
+    try:
+        mainita = email.utils.parsedate_to_datetime(prog.get("prognoze_mainita")) if prog.get("prognoze_mainita") else None
+    except (TypeError, ValueError):
+        mainita = None
+    prog_avots = ("LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+                  "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa", "CC0 1.0")
+    regioni_prog = {kods: prog["regioni"].get(kods)} if kods else prog["regioni"]
+    for rk, r in regioni_prog.items():
+        d = (r or {}).get("dienas", {}).get(rit)
+        if not d:
+            continue
+        dalas = []
+        if (d.get("brazmas") or 0) >= ABONET_BRAZMAS:
+            dalas.append(f"brāzmas līdz {round(d['brazmas'])} m/s ({d.get('brazmas_vieta') or ''})".replace(" ()", ""))
+        if (d.get("nokrisni") or 0) >= ABONET_NOKRISNI:
+            dalas.append(f"nokrišņi līdz {round(d['nokrisni'])} mm ({d.get('nokrisni_vieta') or ''})".replace(" ()", ""))
+        if dalas:
+            rez.append({"id": f"tag:map.repo.lv,2026:prognoze:{rk}:{rit}", "virsraksts": f"Rīt {r['nosaukums']}: " + ", ".join(dalas),
+                        "teksts": f"{d.get('laiks') or ''}. Prognoze nav oficiāls brīdinājums.".lstrip(". "),
+                        "laiks": mainita or datetime.now(timezone.utc), "saite": ABONET_VIETNE + f"?regions={rk}", "avots": prog_avots})
+    # upes, kas kāpj
+    try:
+        stacijas = [f["properties"] | {"lat": f["geometry"]["coordinates"][1], "lon": f["geometry"]["coordinates"][0]}
+                    for f in _kesots("udens", 900, lambda: udens_limenis.stacijas(timeout=20))]
+    except Kluda:
+        stacijas = []
+    kapj = [x for x in stacijas if (x.get("izmaina_24h_cm") or 0) > ABONET_UDENS_CM]
+    for x, ir in zip(kapj, _punkti_regiona(kods, [(x["lat"], x["lon"]) for x in kapj])):
+        if ir:
+            laiks = datetime.fromisoformat(x["laiks"].replace("Z", "+00:00"))
+            rez.append({"id": f"tag:map.repo.lv,2026:udens:{x['stacija']}:{laiks.date().isoformat()}",
+                        "virsraksts": f"{x['nosaukums']}: ūdens līmenis 24 h cēlies par {x['izmaina_24h_cm']} cm (tagad {x['limenis_cm']} cm)",
+                        "teksts": "Līmenis cm virs posteņa nulles. Bīstamības līmeņi nav atvērtie dati.", "laiks": laiks,
+                        "saite": vietne, "avots": ("LVĢMC hidroloģiskie novērojumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi", "CC0 1.0")})
+    # ceļu slēgumi un negadījumi
+    tagad = datetime.now(timezone.utc)
+    notikumi = [n for t, saraksts in celu_notikumi_visi() if t in ("slegums", "negadijums", "joslas_slegums") for n in (saraksts or [])
+                if not (_datex_laiks(n["lidz"]) and _datex_laiks(n["lidz"]) < tagad) and not (_datex_laiks(n["no"]) and _datex_laiks(n["no"]) > tagad)]
+    redzeti = set()
+    for n, ir in zip(notikumi, _punkti_regiona(kods, [(n["lat"], n["lon"]) for n in notikumi])):
+        if ir and n["id"] not in redzeti:
+            redzeti.add(n["id"])
+            rez.append({"id": f"tag:map.repo.lv,2026:celi:{n['id']}", "virsraksts": n["nosaukums"] + (f" · {n['cels']}" if n.get("cels") else ""),
+                        "teksts": n.get("apraksts") or "", "laiks": _datex_laiks(n["no"]) or tagad, "saite": vietne,
+                        "avots": ("LVC ceļu notikumi (DATEX II, transportdata.gov.lv)", "https://transportdata.gov.lv/", "CC0 1.0")})
+    # zibens pēdējās 30 min
+    try:
+        z = zibens({})
+    except Kluda:
+        z = {}
+    zibeni = z.get("zibeni") or []
+    skaits = sum(_punkti_regiona(kods, [(x["lat"], x["lon"]) for x in zibeni])) if zibeni else 0
+    if skaits:
+        lidz = datetime.fromisoformat(z["lidz"])
+        rez.append({"id": f"tag:map.repo.lv,2026:zibens:{kods or 'latvija'}:{lidz.strftime('%Y%m%d%H')}",
+                    "virsraksts": f"Zibens pēdējās 30 min: {skaits} izlādes ({nosaukums})",
+                    "teksts": "Negaisa laikā turieties prom no kokiem un ūdens; ja apdraudēta dzīvība, zvaniet 112.", "laiks": lidz,
+                    "saite": vietne, "avots": ("Ilmatieteen laitos (FMI) atvērtie dati", "https://en.ilmatieteenlaitos.fi/open-data", "CC BY 4.0")})
+    rez.sort(key=lambda e: e["laiks"], reverse=True)
+    return rez
+
+
+def _iso(t):
+    return t.astimezone(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z")
+
+
+def _atom(kods, nosaukums, ieraksti):
+    A = "http://www.w3.org/2005/Atom"
+    _ET.register_namespace("", A)
+    f = _ET.Element(f"{{{A}}}feed", {"{http://www.w3.org/XML/1998/namespace}lang": "lv"})
+
+    def pievienot(vecaks, tags, teksts=None, **atr):
+        e = _ET.SubElement(vecaks, f"{{{A}}}{tags}", atr)
+        if teksts is not None:
+            e.text = teksts
+        return e
+
+    pievienot(f, "id", f"tag:map.repo.lv,2026:plusma:{kods or 'latvija'}")
+    pievienot(f, "title", f"Krīzes karte: {nosaukums} — brīdinājumi un situācija")
+    pievienot(f, "subtitle", "LVĢMC brīdinājumi, rītdienas prognoze, upju līmenis, ceļu slēgumi un zibens no atvērtajiem datiem.")
+    pievienot(f, "link", rel="self", href=ABONET_VIETNE + "api/plusma.xml" + (f"?regions={kods}" if kods else ""))
+    pievienot(f, "link", rel="alternate", href=ABONET_VIETNE + (f"?regions={kods}" if kods else ""))
+    pievienot(f, "updated", _iso(max((e["laiks"] for e in ieraksti), default=datetime.now(timezone.utc))))
+    autors = pievienot(f, "author")
+    pievienot(autors, "name", "map.repo.lv")
+    pievienot(autors, "uri", ABONET_VIETNE)
+    pievienot(f, "rights", "Apkopojums CC BY 4.0 (map.repo.lv); dati — katra ieraksta avota licence.")
+    for e in ieraksti:
+        x = pievienot(f, "entry")
+        pievienot(x, "id", e["id"])
+        pievienot(x, "title", e["virsraksts"])
+        pievienot(x, "updated", _iso(e["laiks"]))
+        pievienot(x, "link", rel="alternate", href=e["saite"])
+        nos, url, licence = e["avots"]
+        laiki = (f"\nSpēkā: {_iso(e['no'])} — {_iso(e['lidz'])}" if e.get("no") and e.get("lidz") else "")
+        pievienot(x, "summary", f"{e['teksts']}{laiki}\n\nAvots: {nos} ({url}) · {licence}. Ja apdraudēta dzīvība, zvaniet 112.")
+    return '<?xml version="1.0" encoding="utf-8"?>\n' + _ET.tostring(f, encoding="unicode")
+
+
+def _ics_teksts(t):
+    return t.replace("\\", "\\\\").replace(";", "\\;").replace(",", "\\,").replace("\r\n", "\\n").replace("\n", "\\n")
+
+
+def _ics_locit(rinda):
+    """RFC 5545: rindas ne garākas par 75 oktetiem; turpinājums sākas ar atstarpi (UTF-8 burtus nepārdala)."""
+    b = rinda.encode("utf-8")
+    if len(b) <= 75:
+        return rinda
+    dalas, cur = [], ""
+    for ch in rinda:
+        if len((cur + ch).encode("utf-8")) > (75 if not dalas else 74):
+            dalas.append(cur)
+            cur = ""
+        cur += ch
+    dalas.append(cur)
+    return "\r\n ".join(dalas)
+
+
+def _ics(kods, nosaukums, ieraksti):
+    tagad = _iso(datetime.now(timezone.utc)).replace("-", "").replace(":", "")
+    ut = lambda t: _iso(t).replace("-", "").replace(":", "")  # noqa: E731
+    rindas = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//map.repo.lv//Krizes karte//LV", "CALSCALE:GREGORIAN",
+              "METHOD:PUBLISH", f"X-WR-CALNAME:{_ics_teksts('Brīdinājumi: ' + nosaukums)}", "X-PUBLISHED-TTL:PT30M",
+              "REFRESH-INTERVAL;VALUE=DURATION:PT30M"]
+    for e in ieraksti:
+        if not e["id"].startswith("tag:map.repo.lv,2026:bridinajums:") or not e.get("no"):
+            continue
+        lidz = e.get("lidz") or (e["no"] + timedelta(hours=24))
+        nos, url, licence = e["avots"]
+        rindas += ["BEGIN:VEVENT", f"UID:{e['id'].rsplit(':', 1)[1]}-{kods or 'latvija'}@map.repo.lv", f"DTSTAMP:{tagad}",
+                   f"DTSTART:{ut(e['no'])}", f"DTEND:{ut(lidz)}", f"SUMMARY:{_ics_teksts(e['virsraksts'])}",
+                   f"DESCRIPTION:{_ics_teksts(e['teksts'] + chr(10) + chr(10) + f'Avots: {nos} · {licence}. Ja apdraudēta dzīvība, zvaniet 112.')}",
+                   f"URL:{e['saite']}", "TRANSP:TRANSPARENT", "END:VEVENT"]
+    rindas.append("END:VCALENDAR")
+    return "\r\n".join(_ics_locit(r) for r in rindas) + "\r\n"
+
+
+def plusma(q):
+    kods, nosaukums = _abonet_regions(q)
+    xml = _kesots(("plusma", kods), 300, lambda: _atom(kods, nosaukums, _abonet_ieraksti(kods, nosaukums)))
+    return {"_saturs": xml, "_tips": "application/atom+xml; charset=utf-8"}
+
+
+def kalendars(q):
+    kods, nosaukums = _abonet_regions(q)
+    ics = _kesots(("kalendars", kods), 300, lambda: _ics(kods, nosaukums, _abonet_ieraksti(kods, nosaukums)))
+    return {"_saturs": ics, "_tips": "text/calendar; charset=utf-8"}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -2752,6 +2975,8 @@ MARSRUTI = [
     (re.compile(r"^/api/statuss/?$"), statuss, 60),
     (re.compile(r"^/api/meklejumi/top/?$"), meklejumi_top, 60),
     (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
+    (re.compile(r"^/api/plusma\.xml$"), plusma, 300),
+    (re.compile(r"^/api/kalendars\.ics$"), kalendars, 300),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
@@ -2773,6 +2998,8 @@ class Apstradatajs(BaseHTTPRequestHandler):
                 continue
             try:
                 rez = funkcija(*m.groups()) if m.groups() else funkcija(q)
+                if isinstance(rez, dict) and "_saturs" in rez:  # Atom / iCalendar
+                    return self._teksts(rez["_saturs"], rez["_tips"], kesot)
                 if isinstance(rez, dict) and "_statuss" in rez:  # piem., 202 "ielādējas"
                     statuss = rez.pop("_statuss")
                     return self._atbilde(statuss, rez, 0)
@@ -2821,8 +3048,40 @@ class Apstradatajs(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(b)))
         self.send_header("Cache-Control", f"public, max-age={kesot}" if kesot else "no-store")
+        if self.command in ("GET", "HEAD"):  # atvērts API: GET no jebkuras vietnes (api.html); POST — tikai mūsu lapai
+            self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
-        self.wfile.write(b)
+        if self.command != "HEAD":
+            self.wfile.write(b)
+
+    def _teksts(self, saturs, tips, kesot):
+        b = saturs.encode()
+        self.send_response(200)
+        self.send_header("Content-Type", tips)
+        self.send_header("Content-Length", str(len(b)))
+        self.send_header("Cache-Control", f"public, max-age={kesot}")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(b)
+
+    do_HEAD = do_GET
+
+    def do_OPTIONS(self):
+        """CORS preflight tikai GET maršrutiem (POST paliek same-origin)."""
+        cels = urlparse(self.path).path
+        if any(r.match(cels) for r, *_ in MARSRUTI):
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Max-Age", "86400")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.send_response(204 if any(r.match(cels) for r, _ in POST_MARSRUTI) else 404)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
 
 
 def main():
