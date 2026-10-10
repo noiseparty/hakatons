@@ -658,6 +658,7 @@ document.addEventListener('click', e => { if (!e.target.closest('.meklesana')) e
 // Valodas maiņa (valoda.js): elementi ar data-tlv (latviskais teksts) tiek pārtulkoti uz vietas; pārējo (rezultāti,
 // logi) pārzīmē nākamā meklēšana vai atvēršana.
 document.addEventListener('valoda-maina', () => {
+  if (typeof aktivoSlaNuJosla === 'function') aktivoSlaNuJosla();
   document.querySelectorAll('[data-tlv]').forEach(e => {
     if (e.tagName === 'OPTGROUP') e.label = Valoda.t(e.dataset.tlv); else e.textContent = Valoda.t(e.dataset.tlv);
   });
@@ -746,7 +747,7 @@ function aktivoSlaNuJosla() {
     h.after(kaste);
   }
   const rindas = [
-    ...[...stavoklis.kategorijas].map(k => `<button type="button" class="slana-zimite" data-kods="${esc(k)}" aria-label="${esc(Tulk('Noņemt slāni'))}: ${esc(kategorijas[k]?.nosaukums || k)}"><span>${esc(kategorijas[k]?.nosaukums || k)}</span><b aria-hidden="true">×</b></button>`),
+    ...[...stavoklis.kategorijas].map(k => `<button type="button" class="slana-zimite" data-kods="${esc(k)}" aria-label="${esc(Tulk('Noņemt slāni'))}: ${esc(Valoda.t(kategorijas[k]?.nosaukums || k))}"><span>${esc(Valoda.t(kategorijas[k]?.nosaukums || k))}</span><b aria-hidden="true">×</b></button>`),
     ...parklajumuIeejas().map(i => { const n = i.closest('label').textContent.replace(/\s+/g, ' ').trim();
       return `<button type="button" class="slana-zimite" data-id="${esc(i.id)}" aria-label="${esc(Tulk('Noņemt slāni'))}: ${esc(n)}"><span>${esc(n)}</span><b aria-hidden="true">×</b></button>`; }),
   ];
