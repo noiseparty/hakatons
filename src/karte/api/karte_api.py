@@ -3771,8 +3771,11 @@ def pasvaldiba(q):
     (src/karte/db/pasvaldibas.py → src/karte/dati/pasvaldibas.json)."""
     lat, lon = _vieta(q)
     kods = _punktu_kesa.iegut(("pasvaldiba", round(lat, 4), round(lon, 4)), lambda: vaicat(
-        """select kods from regioni where tips in ('novads', 'valstspilseta')
-           and st_contains(geom, st_setsrid(st_makepoint(%s, %s), 4326)) limit 1""", (lon, lat), timeout="2s"))
+        """with p as (select st_setsrid(st_makepoint(%s, %s), 4326) g)
+           select kods from regioni, p where tips in ('novads', 'valstspilseta')
+             and geom && st_expand(p.g, 0.05)               -- indekss (GiST); 0.05° ≈ 3-5 km
+             and st_dwithin(geom::geography, p.g::geography, 2000)  -- 0 m = punkts iekšā; līdz 2 km = krasts/upe/neprecīza vieta
+           order by st_distance(geom::geography, p.g::geography), kods limit 1""", (lon, lat), timeout="2s"))
     if not kods:
         raise Kluda(404, "vieta nav nevienā pašvaldībā")
     dati = _kesots("pasvaldibas", 3600, _pasvaldibas_dati).get(kods)
