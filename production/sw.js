@@ -12,13 +12,13 @@
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
 // - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
 //   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
-const VERSION = '2026-10-10nav1';
+const VERSION = '2026-10-10nav2';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 // Saraksts ģenerēts: uv run --no-project --python 3.12 src/testi/sw_faili.py --rakstit (no index/info/statuss/api/trukstosie
 // .html un to JS/CSS/JSON atsaucēm). Pēc jauna faila pievienošanas palaidiet to un nomainiet VERSION.
 const SHELL_FAILI = [
   './', 'map', 'index.html', 'map.html', 'info.html', 'statuss.html', 'api.html', 'trukstosie.html', 'sakums.css',
-  'ikonas/ikona.svg', 'sakums.js', 'scenariji.json', 'vendor/leaflet/leaflet.css',
+  'ikonas/ikona.svg', 'favicon.ico', 'sakums.js', 'scenariji.json', 'vendor/leaflet/leaflet.css',
   'vendor/leaflet/MarkerCluster.css', 'manifest.webmanifest', 'ikonas/ikona-32.png', 'ikonas/ikona-180.png',
   'stils.css', 'demo.css', 'izmainas.css', 'darbvirsma.css', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js',
   'vendor/leaflet/leaflet.markercluster.js', 'pieejamiba.js', 'atjaunot.js', 'offline.js', 'ikonas.js', 'avoti.js',
