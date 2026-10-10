@@ -710,13 +710,13 @@ const krizesMeklesana = (() => {
       li.className = 'udens-secinajums udens-' + STATUSA_KLASE[s.statuss];
       bloks.prepend(li);
     }
-    const kur = esc(s.vieta || s.nosaukums);
+    const kur = `ūdens līmenis (${esc(s.vieta || s.nosaukums)})`;
     const t = s.statuss === 'kritisks'
-      ? (zona === true ? `<b>Šī adrese ir plūdu riska zonā, un ${kur} ūdens līmenis ir virs kritiskā.</b> Plūdu zonas adreses var applūst: esiet gatavi doties uz evakuācijas vietu un sekojiet pašvaldības norādēm.`
-        : zona === false ? `<b>${kur} ūdens līmenis ir virs kritiskā.</b> Šī adrese nav plūdu riska zonā, bet plūdu zonas adreses tuvumā var applūst; izvairieties no tām.`
-          : `<b>${kur} ūdens līmenis ir virs kritiskā.</b> Plūdu riska zonas adreses var applūst.`)
-      : (zona === true ? `<b>Šī adrese ir plūdu riska zonā, un ${kur} ūdens līmenis ir paaugstināts.</b> Sekojiet līmenim un sagatavojieties.`
-        : `<b>${kur} ūdens līmenis ir paaugstināts.</b> Sekojiet līmenim un LVĢMC brīdinājumiem.`);
+      ? (zona === true ? `<b>Šī vieta ir plūdu riska zonā, un ${kur} ir virs kritiskā.</b> Plūdu zonas adreses var applūst: esiet gatavi doties uz evakuācijas vietu un sekojiet pašvaldības norādēm.`
+        : zona === false ? `<b>${kur[0].toUpperCase() + kur.slice(1)} ir virs kritiskā.</b> Šī vieta nav plūdu riska zonā, bet plūdu zonas adreses tuvumā var applūst; izvairieties no tām.`
+          : `<b>${kur[0].toUpperCase() + kur.slice(1)} ir virs kritiskā.</b> Plūdu riska zonas adreses var applūst.`)
+      : (zona === true ? `<b>Šī vieta ir plūdu riska zonā, un ${kur} ir paaugstināts.</b> Sekojiet līmenim un sagatavojieties.`
+        : `<b>${kur[0].toUpperCase() + kur.slice(1)} ir paaugstināts.</b> Sekojiet līmenim un LVĢMC brīdinājumiem.`);
     li.innerHTML = `<span class="ikona">${Ik('brid')}</span><div><span>${t}</span>${s.statuss === 'kritisks' ? zonuPoga() : ''}</div>`;
   }
   // "Ogre pie Ogres: 21,40 m, 0,75 m zem kritiskā 22,15 m, +0,12 m/24 h" (slieksnis no CA plāna, src/karte/db/udens_slieksni.json)
