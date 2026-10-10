@@ -1,9 +1,11 @@
 // Atskaņošana prezentācijai: demo scenāriji pēc kārtas (pa 20 s), katram arī tipiskais meklēšanas vaicājums, lai
-// redzama rezultāta kartīte. Poga "Atskaņot" demo paneļa galvā vai saite ?demo=atskanot[&saraksts=a,b,c&ilgums=20].
-// Noklusēti — visi demo/scenariji.json scenāriji paneļa secībā ("Reāli notikumi", tad "Simulācijas"); saraksts= — savs.
-// Taustiņi (datorā): atstarpe — pauze, → nākamais, ← iepriekšējais, Escape — beigt. Beigās "Beigt demo".
-// Lieto demo.js publiskās funkcijas (Demo.sakt, Demo.beigt, Demo.atvert) un meklesana.js (krizesMeklesana.meklet);
-// demo.js netiek mainīts. Vaicājums: scenārija lauks `vaicajums` (demo/scenariji.json), ja ir, citādi VAICAJUMI.
+// redzama rezultāta kartīte ar lēmumu. Poga "Atskaņot" demo paneļa galvā vai saite ?demo=atskanot[&saraksts=a,b,c&ilgums=20].
+// Noklusēti — visi demo/scenariji.json scenāriji paneļa secībā (Demo.kartiba: reālie notikumi pēc veida, tad simulācijas).
+// Vadība galvenes rindā (n/19, iepriekšējais, pauze, nākamais, "Beigt demo"): tā neaizsedz karti, uznirstošos logus un
+// apakšējās lapas lēmuma rindu; demo panelis atskaņošanas laikā aizvērts, telefonā lapa vismaz "Puse".
+// Taustiņi (datorā): atstarpe — pauze, → nākamais, ← iepriekšējais, Escape — beigt.
+// Lieto demo.js (Demo.sakt, Demo.beigt, Demo.atvert, Demo.kartiba), apaksa.js (Apaksa) un meklesana.js (krizesMeklesana.meklet).
+// Vaicājums: scenārija lauks `vaicajums` (demo/scenariji.json), ja ir, citādi VAICAJUMI.
 const Atskanot = (() => {
   if (typeof Demo === 'undefined') return null;
   const VAICAJUMI = {
@@ -17,19 +19,22 @@ const Atskanot = (() => {
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   let dati = null, solis = -1, sakums = 0, atlikums = ILGUMS, pauze = false, taimeris = null, aktivs = false, paaudze = 0;
+  let sakumaPludi = false;  // plūdu slānis pirms atskaņošanas: katrs solis sākas no tā (citādi plūdu meklējums to atstāj ieslēgtu)
+  const pludiKa = ieslegti => { if (typeof radtPludus === 'function' && el('pludu-slanis') && el('pludu-slanis').checked !== ieslegti) radtPludus(ieslegti); };
 
-  // Josla kartes augšā: nosaukums, solis, atpakaļskaitīšana, progress, pogas
-  el('kartes-laukums').insertAdjacentHTML('beforeend', `
+  // Josla galvenes rindā (pārklāj galvenes saturu, karte paliek brīva): solis, nosaukums, atpakaļskaitīšana, pogas, progress
+  document.querySelector('header').insertAdjacentHTML('beforeend', `
     <div id="atskanot-josla" class="atskanot-josla" role="region" aria-label="Demo atskaņošana" hidden>
-      <div class="atskanot-teksts"><span class="atskanot-solis"></span> <b class="atskanot-nos"></b>
-        <span class="atskanot-laiks" aria-live="off"></span></div>
-      <div class="atskanot-progress" aria-hidden="true"><span></span></div>
+      <span class="demo-zime">SIMULĀCIJA</span>
+      <span class="atskanot-solis"></span>
+      <div class="atskanot-teksts"><b class="atskanot-nos"></b><span class="atskanot-laiks" aria-live="off"></span></div>
       <div class="atskanot-pogas">
-        <button type="button" data-a="ieprieks" aria-label="Iepriekšējais scenārijs">${Ik('atpakal-solis')}</button>
-        <button type="button" data-a="pauze" aria-label="Pauze">${Ik('pauze')}</button>
-        <button type="button" data-a="nakamais" aria-label="Nākamais scenārijs">${Ik('uz-prieksu')}</button>
-        <button type="button" data-a="beigt" aria-label="Beigt atskaņošanu">${Ik('apturet')} Beigt</button>
+        <button type="button" data-a="ieprieks" aria-label="Iepriekšējais scenārijs" title="Iepriekšējais (←)">${Ik('atpakal-solis')}</button>
+        <button type="button" data-a="pauze" aria-label="Pauze" title="Pauze (atstarpe)">${Ik('pauze')}</button>
+        <button type="button" data-a="nakamais" aria-label="Nākamais scenārijs" title="Nākamais (→)">${Ik('uz-prieksu')}</button>
+        <button type="button" data-a="beigt" aria-label="Beigt demo" title="Beigt demo (Escape)">${Ik('apturet')}<span>Beigt demo</span></button>
       </div>
+      <div class="atskanot-progress" aria-hidden="true"><span></span></div>
     </div>`);
   const josla = el('atskanot-josla');
   const progress = josla.querySelector('.atskanot-progress span');
@@ -41,22 +46,30 @@ const Atskanot = (() => {
   document.querySelector('#demo-panelis .atskanot-sakt')?.addEventListener('click', () => sakt());
 
   async function ieladet() {
+    if (!SARAKSTS) return Demo.kartiba();  // tā pati secība kā demo panelī
     if (!dati) {
       try { dati = await (await fetch('demo/scenariji.json')).json(); } catch { dati = { scenariji: [] }; }
     }
-    if (!SARAKSTS) {  // tā pati secība kā demo panelī (demo.js zimetSarakstu): vispirms reālie notikumi, tad simulācijas
-      return [...dati.scenariji.filter(s => s.grupa === 'reals'), ...dati.scenariji.filter(s => s.grupa !== 'reals')];
-    }
     return dati.scenariji.filter(s => SARAKSTS.includes(s.kods)).sort((a, b) => SARAKSTS.indexOf(a.kods) - SARAKSTS.indexOf(b.kods));
   }
+  // Telefonā apakšējā lapa ar meklēšanas kartīti vismaz "Puse" (lēmuma rinda redzama); demo panelis aizvērts
+  const lapaRedzama = () => {
+    Demo.atvert(false);
+    if (typeof Apaksa !== 'undefined' && Apaksa.aktiva() && Apaksa.stavoklis() === 'peek') Apaksa.atvert('puse');
+  };
 
   let soli = [];
   async function sakt() {
     soli = await ieladet();
     if (!soli.length) return;
+    if (!aktivs) {
+      if (document.body.classList.contains('demo-aktivs')) Demo.beigt();  // sākts no atvērta scenārija
+      sakumaPludi = !!el('pludu-slanis')?.checked;
+    }
     aktivs = true;
     josla.hidden = false;
     document.body.classList.add('atskano');
+    lapaRedzama();
     iet(0);
   }
 
@@ -69,6 +82,8 @@ const Atskanot = (() => {
     sakums = performance.now();
     zimet();
     // vispirms meklēšana (rezultāta kartīte), tad scenārijs — lai kartes skats paliek scenārija
+    if (document.body.classList.contains('demo-aktivs')) Demo.beigt();  // iepriekšējais scenārijs: slāņi kā pirms tā
+    pludiKa(sakumaPludi);
     const vaicajums = sc.vaicajums || VAICAJUMI[sc.kods];
     if (vaicajums && typeof krizesMeklesana !== 'undefined') {
       el('jautajums').value = vaicajums;
@@ -76,7 +91,8 @@ const Atskanot = (() => {
       try { await Promise.race([krizesMeklesana.meklet(vaicajums), new Promise(r => setTimeout(r, 6000))]); } catch { /* kartīte nav obligāta */ }
     }
     if (mana !== paaudze || !aktivs) return;
-    await Demo.sakt(sc.kods);
+    lapaRedzama();  // pirms Demo.sakt: skats pielāgojas lapas augstumam (Apaksa.atstarpes)
+    await Demo.sakt(sc.kods, null, { panelis: false });
     if (mana !== paaudze || !aktivs) return;
     sakums = performance.now();  // laiks skaitās no brīža, kad scenārijs ir redzams
     clearInterval(taimeris);
@@ -94,7 +110,7 @@ const Atskanot = (() => {
 
   function zimet() {
     const sc = soli[solis];
-    josla.querySelector('.atskanot-solis').textContent = `${solis + 1} / ${soli.length}`;
+    josla.querySelector('.atskanot-solis').textContent = `${solis + 1}/${soli.length}`;
     josla.querySelector('.atskanot-nos').innerHTML = `${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}`;
     josla.querySelector('.atskanot-laiks').textContent = Math.ceil(atlikums / 1000) + ' s';
     progress.style.width = '0%';
@@ -123,6 +139,7 @@ const Atskanot = (() => {
     josla.classList.remove('pauze');
     document.body.classList.remove('atskano');
     Demo.beigt();
+    pludiKa(sakumaPludi);
   }
 
   josla.addEventListener('click', e => {

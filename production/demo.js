@@ -1,12 +1,20 @@
-// Demo panelis (labā mala; telefonā — apakšā): simulēti krīzes scenāriji, kas maina karti. Dati: demo/scenariji.json.
-// Viss, ko scenārijs ieliek (brīdinājums, zonas, notikumi), ir ar zīmi SIMULĀCIJA; tuvākās vietas — īstie dati no /api/objekti.
-// "Beigt demo" atjauno slāņus, plūdu slāni un kartes skatu. Saite ?demo=<kods>[&regions=<kods>] atver scenāriju uzreiz.
-// Lieto app.js globālos (karte, stavoklis, kategorijas, regioni, iegut, atjaunot, kopsavilkumi, statuss, radtPludus,
-// popupSaturs, marsrutaSaites, attalums, nosaukums, esc, el); app.js netiek mainīts.
+// Demo panelis (datorā — kreisajā kolonnā; telefonā — apakšā virs kartes): simulēti krīzes scenāriji, kas maina karti.
+// Dati: demo/scenariji.json. Viss, ko scenārijs ieliek (brīdinājums, zonas, notikumi), ir ar zīmi SIMULĀCIJA; tuvākās
+// vietas — īstie dati no /api/objekti. Demo laikā galvenes rindā ir josla "SIMULĀCIJA · scenārijs · Scenāriji · Beigt demo"
+// (tā neaizsedz karti, uznirstošos logus un lapas lēmuma rindu). "Beigt demo" atjauno slāņus, plūdu slāni un kartes skatu.
+// Saite ?demo=<kods>[&regions=<kods>] atver scenāriju uzreiz. Lieto app.js globālos (karte, stavoklis, kategorijas, regioni,
+// iegut, atjaunot, kopsavilkumi, statuss, radtPludus, popupSaturs, marsrutaSaites, attalums, nosaukums, esc, el).
 const Demo = (() => {
   const LIMENI = { 1: ['dzeltens', 'Dzeltenais', '#eab308'], 2: ['oranzs', 'Oranžais', '#ea580c'], 3: ['sarkans', 'Sarkanais', '#b91c1c'] };
   const telefons = () => matchMedia('(max-width: 800px)').matches;
   const ZIME = '<span class="demo-zime">SIMULĀCIJA</span>';
+  // Paneļa grupas: reālie notikumi pēc krīzes veida (scenārija "tips"), tad simulācijas tajā pašā secībā
+  const TIPI = [['pludi', 'Plūdi'], ['vetra', 'Vētra'], ['karstums', 'Karstums'], ['elektriba', 'Elektrība un BRELL'],
+    ['drosiba', 'Droni un drošība'], ['ugunsgreks', 'Ugunsgrēki, dūmi, gāze'], ['sakari', 'Sakari un e-pakalpojumi'], ['veseliba', 'Veselība']];
+  const tipaVieta = s => { const i = TIPI.findIndex(([k]) => k === s.tips); return i < 0 ? TIPI.length : i; };
+  const kartot = saraksts => saraksts.map((s, i) => [s, i]).sort((a, b) => tipaVieta(a[0]) - tipaVieta(b[0]) || a[1] - b[1]).map(([s]) => s);
+  const reali = () => kartot(dati.scenariji.filter(s => s.grupa === 'reals'));
+  const simulacijas = () => kartot(dati.scenariji.filter(s => s.grupa !== 'reals'));
   let dati = null;
   let aktivs = null;          // { sc, regions }
   let saglabats = null;       // stāvoklis pirms demo, lai "Beigt demo" to atjaunotu
@@ -25,19 +33,52 @@ const Demo = (() => {
       <div id="demo-saturs"></div>
     </aside>`);
   el('bridinajums').insertAdjacentHTML('afterend', '<div id="demo-josla" class="bridinajums demo-josla" role="status" hidden></div>');
-  const panelis = el('demo-panelis'), saturs = el('demo-saturs'), josla = el('demo-josla');
+  // Galvenes josla demo laikā (bez atskaņošanas; atskaņošanas josla — atskanot.js — ir tajā pašā vietā)
+  document.querySelector('header').insertAdjacentHTML('beforeend', `
+    <div id="demo-galvene" class="demo-galvene" role="region" aria-label="Demo režīms" hidden>${ZIME}
+      <b class="demo-galvene-nos"></b>
+      <button type="button" class="demo-galvene-poga" data-darbiba="demo-panelis" aria-controls="demo-panelis" aria-expanded="false">${Ik('saraksts')}<span>Scenāriji</span></button>
+      <button type="button" class="demo-galvene-poga demo-galvene-beigt" data-darbiba="beigt">${Ik('apturet')}<span>Beigt demo</span></button>
+    </div>`);
+  const panelis = el('demo-panelis'), saturs = el('demo-saturs'), josla = el('demo-josla'), galvene = el('demo-galvene');
+  const atvertsJa = () => document.body.classList.contains('demo-atverts');
+
+  // Datorā panelis ir kreisās kolonnas (#panelis, darbvirsma.js) pirmais elements, telefonā — kartes laukumā (apakšā)
+  const plats = matchMedia('(min-width: 801px)');
+  function novietotPaneli() {
+    const kol = el('panelis');
+    if (plats.matches && kol) {
+      if (kol.firstElementChild !== panelis) kol.prepend(panelis);
+      if (atvertsJa()) document.body.classList.remove('dv-kreisa-slegta');  // sakļauta kreisā kolonna atveras
+    } else if (panelis.parentElement !== laukums) laukums.append(panelis);
+  }
+  plats.addEventListener('change', () => setTimeout(() => { novietotPaneli(); karte.invalidateSize(); }, 0));
 
   function atvert(atverts) {
-    const bija = document.body.classList.contains('demo-atverts');
+    const bija = atvertsJa();
     document.body.classList.toggle('demo-atverts', atverts);
     el('demo-cilne').setAttribute('aria-expanded', atverts);
+    galvene.querySelector('[data-darbiba="demo-panelis"]').setAttribute('aria-expanded', atverts);
+    if (atverts) novietotPaneli();
+    if (atverts && plats.matches) el('panelis').scrollTop = 0;
     if (atverts && !dati) ieladet().then(zimetSarakstu);
+    if (bija !== atverts) setTimeout(() => karte.invalidateSize(), 0);
     // telefonā panelis aizsedz kartes apakšu: pēc atvēršanas/aizvēršanas scenārija vietu rāda vēlreiz
     if (aktivs && bija !== atverts && telefons()) setTimeout(radit, 300);
   }
-  el('demo-cilne').addEventListener('click', () => atvert(!document.body.classList.contains('demo-atverts')));
+  el('demo-cilne').addEventListener('click', () => atvert(!atvertsJa()));
   panelis.querySelector('.demo-aizvert').addEventListener('click', () => atvert(false));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape' && document.body.classList.contains('demo-atverts')) atvert(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && atvertsJa()) atvert(false); });
+  // "Beigt demo" (panelī vai galvenē) beidz arī atskaņošanu; meklēšana (meklesana.js) sauc Demo.beigt() tieši
+  const beigtLietotajs = () => (typeof Atskanot !== 'undefined' && Atskanot?.aktivs ? Atskanot.beigt() : beigt());
+  galvene.addEventListener('click', e => {
+    const d = e.target.closest('[data-darbiba]')?.dataset.darbiba;
+    if (d === 'beigt') beigtLietotajs();
+    if (d === 'demo-panelis') atvert(!atvertsJa());
+  });
+  // Telefonā atvērts uznirstošais logs: demo cilne un SIMULĀCIJA zīme kartē paslēpjas, lai neaizsegtu to
+  karte.on('popupopen', () => document.body.classList.add('demo-popups'));
+  karte.on('popupclose', () => document.body.classList.remove('demo-popups'));
 
   async function ieladet() {
     try {
@@ -50,16 +91,20 @@ const Demo = (() => {
 
   function zimetSarakstu() {
     if (!dati) return;
-    const poga = s => `<li><button type="button" data-demo="${esc(s.kods)}"
+    // rinda: ikona · nosaukums · datums un vieta · "Simulēts" (izdomātiem gadījumiem)
+    const poga = s => `<li><button type="button" data-demo="${esc(s.kods)}" title="${esc(s.isi || '')}"
         ${aktivs?.sc.kods === s.kods ? 'aria-current="true"' : ''}><span class="demo-ikona-l">${Ikonas.no(s.ikona)}</span>
-        <span><b>${esc(s.nosaukums)}</b><small>${esc(s.isi)}</small></span></button></li>`;
-    const grupa = (virsraksts, apraksts, saraksts) => saraksts.length
-      ? `<h3 class="demo-grupa">${virsraksts}</h3><p class="piezime">${apraksts}</p><ul class="demo-saraksts">${saraksts.map(poga).join('')}</ul>` : '';
+        <span class="demo-rinda"><b>${esc(s.nosaukums)}</b><small>${[s.kad, s.kur].filter(Boolean).map(esc).join(' · ')}</small></span>
+        ${s.grupa === 'reals' ? '' : '<span class="demo-sim">Simulēts</span>'}</button></li>`;
+    const saraksts = sc => `<ul class="demo-saraksts">${sc.map(poga).join('')}</ul>`;
+    const pecTipa = sc => TIPI.map(([k, nos]) => [nos, sc.filter(s => s.tips === k)]).concat([['Citi', sc.filter(s => tipaVieta(s) === TIPI.length)]])
+      .filter(([, x]) => x.length).map(([nos, x]) => `<h4 class="demo-tips">${esc(nos)}</h4>${saraksts(x)}`).join('');
+    const r = reali(), s = simulacijas();
     saturs.innerHTML =
-      grupa('Reāli notikumi', 'Kas notika Latvijā (skaitļi ar avotiem) un ko Jūs redzētu šajā lietotnē. Karte rāda simulāciju; tuvākās vietas ir īstie dati.',
-        dati.scenariji.filter(s => s.grupa === 'reals')) +
-      grupa('Simulācijas', 'Izdomāti krīzes gadījumi. Brīdinājumi, zonas un notikumi ir simulēti; tuvākās vietas, maršruti un avoti ir īstie kartes dati.',
-        dati.scenariji.filter(s => s.grupa !== 'reals')) +
+      (r.length ? '<h3 class="demo-grupa">Reāli notikumi</h3><p class="piezime">Kas notika Latvijā (skaitļi ar avotiem) un ko Jūs redzētu šajā lietotnē. ' +
+        'Karte rāda simulāciju; tuvākās vietas ir īstie dati.</p>' + pecTipa(r) : '') +
+      (s.length ? '<h3 class="demo-grupa">Simulācijas</h3><p class="piezime">Izdomāti krīzes gadījumi. Brīdinājumi, zonas un notikumi ir simulēti; ' +
+        'tuvākās vietas, maršruti un avoti ir īstie kartes dati.</p>' + saraksts(s) : '') +
       (aktivs ? beigtPoga() : '');
   }
   const beigtPoga = () => '<button type="button" class="galvena demo-beigt" data-darbiba="beigt">' + Ik('apturet') + ' Beigt demo, rādīt īsto karti</button>';
@@ -68,7 +113,7 @@ const Demo = (() => {
     const b = e.target.closest('button');
     const kods = b?.dataset.demo;
     if (kods) sakt(kods);
-    if (b?.dataset.darbiba === 'beigt') beigt();
+    if (b?.dataset.darbiba === 'beigt') beigtLietotajs();
     if (b?.dataset.darbiba === 'demo-saraksts') zimetSarakstu();  // ne "saraksts": to tver saraksts.js
     if (b?.dataset.darbiba === 'drukat') print();
     const li = e.target.closest('li[data-lat]');
@@ -105,16 +150,16 @@ const Demo = (() => {
   const ll = f => [f.geometry.coordinates[1], f.geometry.coordinates[0]];
   const ikona = (teksts, klase = '') => L.divIcon({ html: `<span>${Ikonas.no(teksts) || esc(teksts)}</span>`, className: 'demo-ikona ' + klase, iconSize: [30, 30] });
 
-  // Kartes laukums, ko neaizsedz panelis (labajā malā vai telefonā apakšā)
+  // Kartes laukums, ko neaizsedz apakšējā lapa vai telefonā atvērtais panelis (datorā panelis ir kreisajā kolonnā, ne kartē)
   function atstarpes() {
-    if (!document.body.classList.contains('demo-atverts')) return { padding: [40, 40] };
-    return telefons()
-      ? (typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes(panelis.offsetHeight) : { paddingTopLeft: [20, 20], paddingBottomRight: [20, panelis.offsetHeight + 20] })
-      : { paddingTopLeft: [30, 30], paddingBottomRight: [panelis.offsetWidth + 30, 30] };
+    const atverts = atvertsJa() && telefons();
+    if (typeof Apaksa !== 'undefined' && Apaksa.aktiva()) return Apaksa.atstarpes(Math.max(Apaksa.augstums(), atverts ? panelis.offsetHeight : 0));
+    return telefons() ? { paddingTopLeft: [20, 20], paddingBottomRight: [20, (atverts ? panelis.offsetHeight : 0) + 20] } : { padding: [40, 40] };
   }
 
   // ---- Scenārija sākšana un beigšana ----
-  async function sakt(kods, regions) {
+  // iestatijumi.panelis: false — paneli neatver (atskaņošana: telefonā redzama lapa ar meklēšanas kartīti)
+  async function sakt(kods, regions, iestatijumi = {}) {
     if (!dati && !(await ieladet())) return;
     const sc = dati.scenariji.find(s => s.kods === kods);
     if (!sc) return;
@@ -127,7 +172,9 @@ const Demo = (() => {
     aktivs = { sc, regions };
     document.body.classList.add('demo-aktivs');
     el('demo-karte-zime').hidden = false;
-    atvert(true);
+    galvene.querySelector('.demo-galvene-nos').innerHTML = `${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}`;
+    galvene.hidden = false;
+    if (iestatijumi.panelis !== false) atvert(true);
     if (telefons() && !document.body.classList.contains('panelis-slegts')) el('panelis-poga').click();
     history.replaceState(null, '', '?' + new URLSearchParams(regions ? { demo: kods, regions } : { demo: kods }));
     slanis.clearLayers();
@@ -211,6 +258,7 @@ const Demo = (() => {
     slanis.remove();
     document.body.classList.remove('demo-aktivs');
     el('demo-karte-zime').hidden = true;
+    galvene.hidden = true;
     josla.hidden = true;
     history.replaceState(null, '', location.pathname);
     if (saglabats) {
@@ -461,5 +509,8 @@ const Demo = (() => {
     })();
   }
 
-  return { sakt, beigt, atvert };
+  // Paneļa secība (atskanot.js atskaņo tieši tādā): reālie notikumi pēc veida, tad simulācijas
+  const kartiba = async () => (dati || await ieladet()) ? [...reali(), ...simulacijas()] : [];
+
+  return { sakt, beigt, atvert, kartiba, atstarpes };
 })();
