@@ -1,0 +1,29 @@
+<?xml version="1.0" ?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="lv">
+ <id>tag:map.repo.lv,2026:plusma:100016688</id>
+ <title>Krīzes karte: Ogres novads — brīdinājumi un situācija</title>
+ <subtitle>LVĢMC brīdinājumi, rītdienas prognoze, upju līmenis, ceļu slēgumi un zibens no atvērtajiem datiem.</subtitle>
+ <link rel="self" href="https://map.repo.lv/api/plusma.xml?regions=100016688"/>
+ <link rel="alternate" href="https://map.repo.lv/?regions=100016688"/>
+ <updated>2026-10-10T00:44:30Z</updated>
+ <author>
+  <name>map.repo.lv</name>
+  <uri>https://map.repo.lv/</uri>
+ </author>
+ <rights>Apkopojums CC BY 4.0 (map.repo.lv); dati — katra ieraksta avota licence.</rights>
+ <entry>
+  <id>tag:map.repo.lv,2026:udens:HD073401:2026-10-10</id>
+  <title>Ogre: ūdens līmenis 24 h cēlies par 25 cm (tagad 80 cm)</title>
+  <updated>2026-10-10T00:44:30Z</updated>
+  <link rel="alternate" href="https://map.repo.lv/?regions=100016688"/>
+  <summary>Līmenis cm virs posteņa nulles. Bīstamības līmeņi nav atvērtie dati.
+
+Avots: LVĢMC hidroloģiskie novērojumi (https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi) · CC0 1.0. Ja apdraudēta dzīvība, zvaniet 112.</summary>
+ </entry>
+ <entry>
+  <id>tag:map.repo.lv,2026:zibens:100016688:2026101000</id>
+  <title>Zibens pēdējās 30 min: 2 izlādes (Ogres novads)</title>
+  <updated>2026-10-10T00:44:30Z</updated>
+  <link rel="alternate" href="https://map.repo.lv/?regions=100016688"/>
+  <summary>Negaisa laikā turieties prom no kokiem un ūdens; ja apdraudēta dzīvība, zvaniet 112.
+…

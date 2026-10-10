@@ -1,0 +1,22 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//map.repo.lv//Krizes karte//LV
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Brīdinājumi: Ogres novads
+X-PUBLISHED-TTL:PT30M
+REFRESH-INTERVAL;VALUE=DURATION:PT30M
+BEGIN:VEVENT
+UID:28210-100016688@map.repo.lv
+DTSTAMP:20261010T004430Z
+DTSTART:20261009T110000Z
+DTEND:20261010T030000Z
+SUMMARY:Dzeltens brīdinājums: vējš (Latvija)\, līdz 10.10. 06:00
+DESCRIPTION:Brāzmās līdz 20–24 m/s\; koki\, vadi\; uzmanieties.\n\nESI
+  INFORMĒTS par stipru vēju!\n\nAvots: LVĢMC hidrometeoroloģiskie brīd
+ inājumi · CC0 1.0. Ja apdraudēta dzīvība\, zvaniet 112.
+URL:https://map.repo.lv/?regions=100016688
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
+…

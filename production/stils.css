@@ -484,3 +484,7 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinojums-popup small { display: block; }
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
 .zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
+
+/* Abonēšana (RSS / kalendārs) rezultāta kartītē un prognožu panelī */
+.abonet-rinda, .prog-abonet { margin: .2rem 0 .3rem; font-size: .82rem; color: var(--teksts2); }
+.abonet-rinda a, .prog-abonet a { color: var(--zils-tumss); }
