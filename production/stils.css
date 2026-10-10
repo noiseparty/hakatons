@@ -202,6 +202,15 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .avots-rinda a { color: inherit; }
 strong.jā { color: var(--sarkans); }
 strong.nē { color: #287a41; }
+/* Upes līmenis pret CA plāna slieksni (meklesana.js statusaRinda / pluduSecinajums) */
+.udens-statuss { border-left: 4px solid; padding: .15rem .45rem; margin: .1rem 0 .2rem; border-radius: 0 var(--radiuss-maza) var(--radiuss-maza) 0; }
+.udens-statuss.udens-normals { border-color: #287a41; background: #edf7f0; color: #1d5c30; }
+.udens-statuss.udens-paaugstinats { border-color: var(--brid-oranzs-mala); background: var(--brid-oranzs-fons); color: var(--brid-oranzs-teksts); }
+.udens-statuss.udens-kritisks { border-color: var(--brid-sarkans-mala); background: var(--brid-sarkans-fons); color: var(--brid-sarkans-teksts); }
+.fakti li.udens-secinajums { border-radius: var(--radiuss-maza); padding: .45rem; border-bottom: 0; margin-bottom: .2rem; }
+.fakti li.udens-secinajums.udens-paaugstinats { background: var(--brid-oranzs-fons); color: var(--brid-oranzs-teksts); }
+.fakti li.udens-secinajums.udens-kritisks { background: var(--brid-sarkans-fons); color: var(--brid-sarkans-teksts); }
+.udens-zonas-poga { align-self: flex-start; min-height: 44px; }
 
 @media (max-width: 800px) {
   /* Telefonā statuss netiek saīsināts */

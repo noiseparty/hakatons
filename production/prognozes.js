@@ -58,7 +58,7 @@ const Prognozes = (() => {
     const rd = riskaDiena(diena), risks = rd && dati.riski?.[f.id];
     const iemesli = risks ? risks.iemesli.filter(i => i.diena === rd) : [];
     const riskaHtml = risks ? `<span class="riska-limenis riska-${risks[rd]}">Risks ${esc(dn.toLowerCase())}: ${RISKA_NOS[risks[rd]]}</span>` +
-      (iemesli.length ? '<ul class="riska-iemesli">' + iemesli.map(i => `<li>${esc(i.teksts)}${i.klat ? ' (+1)' : ''} — ` +
+      (iemesli.length ? '<ul class="riska-iemesli">' + iemesli.map(i => `<li>${esc(i.teksts)}${i.klat ? ` (+${i.limenis})` : ''} — ` +
         `<a href="${esc(i.avots.url)}" target="_blank" rel="noopener">${esc(i.avots.nosaukums)}</a>, ${esc(i.avots.licence)}</li>`).join('') + '</ul>'
         : '<small>Brīdinājumu un sliekšņu pārsniegumu nav.</small><br>') : '';
     // logs nedrīkst palikt zem pogas / slēdža / leģendas kartes augšā
@@ -96,7 +96,8 @@ const Prognozes = (() => {
     kaste.querySelector('.prog-saturs').innerHTML = zinasHtml() +
       (riskaDiena(diena)
         ? `<p class="piezime">Riska karte (šodien un rīt): augstākais no LVĢMC brīdinājuma krāsas, brāzmām (no 15 / 20 / 25 m/s) ` +
-          `un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC). ` +
+          `un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC); +1 par ledu LVĢMC brīdinājumā; ` +
+          `+1 / +2, ja upes līmenis paaugstināts / kritisks pret CA plāna slieksni (Ogre, Pļaviņas, Liepājas ezers). ` +
           `Sliekšņi ir mūsu heuristika, tas <b>nav oficiāls brīdinājums</b>. Pieskarieties novadam, lai redzētu iemeslus. `
         : `<p class="piezime">Krāsas kartē: dienas lielākās brāzmas, nokrišņi un temperatūra novadā pēc LVĢMC prognozes 6 427 vietām; ` +
           `sliekšņi ir mūsu (dzeltens ≈ brāzmas no 20 m/s vai nokrišņi no 15 mm), tas <b>nav oficiāls brīdinājums</b>. `) +

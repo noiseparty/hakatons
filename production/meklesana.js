@@ -291,6 +291,11 @@ const krizesMeklesana = (() => {
     const darbiba = e.target.closest('[data-darbiba]')?.dataset.darbiba;
     if (darbiba === 'notirit') notirit();
     if (darbiba === 'atrast') atrastMani();
+    if (darbiba === 'pludu-zonas') {  // kritisks upes līmenis: plūdu zonu slānis kartē; telefonā lapu nolaiž, lai karte redzama
+      radtPludus(true);
+      if (typeof Apaksa !== 'undefined' && Apaksa.aktiva()) Apaksa.atvert('peek');
+      else if (matchMedia('(max-width: 800px)').matches) el('karte')?.scrollIntoView({ block: 'start' });
+    }
     const cits = klasifikators?.scenariji.find(s => s.kods === e.target.closest('[data-cits]')?.dataset.cits);
     if (cits && pedejais) meklet(pedejais.teksts, cits);
     const li = e.target.closest('li[data-lat]');
@@ -622,9 +627,50 @@ const krizesMeklesana = (() => {
       <li id="rez-udens"><span class="ikona">${Ik('limenis')}</span><div><b>Tuvākā upe vai ezers</b><span>Ielādē…</span></div></li></ul>`;
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
+  // Abu atbilžu kopsavilkums (adrese plūdu zonā? × upes statuss pret CA plāna slieksni): rinda bloka augšā
+  let pluduStavoklis = {};
   function pluduDati(ll, signal) {
+    pluduStavoklis = { zona: undefined, stacija: null };
     pluduZona(ll, signal, 0);
     pluduUdens(ll, signal);
+  }
+  const mLv = v => (v < 0 ? '−' : '') + Math.abs(v).toFixed(2).replace('.', ',');
+  const STATUSA_NOS = { 'normāls': 'Normāls līmenis', 'paaugstināts': 'Paaugstināts līmenis', 'kritisks': 'Kritisks līmenis' };
+  const STATUSA_KLASE = { 'normāls': 'normals', 'paaugstināts': 'paaugstinats', 'kritisks': 'kritisks' };
+  const zonuPoga = () => `<button type="button" class="otra udens-zonas-poga" data-darbiba="pludu-zonas">${Ik('pludi')} Rādīt plūdu zonas kartē</button>`;
+  function pluduSecinajums() {
+    const { zona, stacija: s } = pluduStavoklis;
+    const bloks = kaste.querySelector('#rez-pludi-bloks');
+    if (!bloks || !s || s.statuss === 'normāls') return;
+    let li = bloks.querySelector('#rez-pludi-secinajums');
+    if (!li) {
+      li = document.createElement('li');
+      li.id = 'rez-pludi-secinajums';
+      li.className = 'udens-secinajums udens-' + STATUSA_KLASE[s.statuss];
+      bloks.prepend(li);
+    }
+    const kur = esc(s.vieta || s.nosaukums);
+    const t = s.statuss === 'kritisks'
+      ? (zona === true ? `<b>Šī adrese ir plūdu riska zonā, un ${kur} ūdens līmenis ir virs kritiskā.</b> Plūdu zonas adreses var applūst: esiet gatavi doties uz evakuācijas vietu un sekojiet pašvaldības norādēm.`
+        : zona === false ? `<b>${kur} ūdens līmenis ir virs kritiskā.</b> Šī adrese nav plūdu riska zonā, bet plūdu zonas adreses tuvumā var applūst; izvairieties no tām.`
+          : `<b>${kur} ūdens līmenis ir virs kritiskā.</b> Plūdu riska zonas adreses var applūst.`)
+      : (zona === true ? `<b>Šī adrese ir plūdu riska zonā, un ${kur} ūdens līmenis ir paaugstināts.</b> Sekojiet līmenim un sagatavojieties.`
+        : `<b>${kur} ūdens līmenis ir paaugstināts.</b> Sekojiet līmenim un LVĢMC brīdinājumiem.`);
+    li.innerHTML = `<span class="ikona">${Ik('brid')}</span><div><span>${t}</span>${s.statuss === 'kritisks' ? zonuPoga() : ''}</div>`;
+  }
+  // "Ogre pie Ogres: 21,40 m, 0,75 m zem kritiskā 22,15 m, +0,12 m/24 h" (slieksnis no CA plāna, src/karte/db/udens_slieksni.json)
+  function statusaRinda(s) {
+    const lidz = s.lidz_kritiskajam_m;
+    const att = lidz == null ? '' : lidz > 0 ? `, ${mLv(lidz)} m zem kritiskā ${mLv(s.kritiskais)} m`
+      : `, ${mLv(-lidz)} m virs kritiskā ${mLv(s.kritiskais)} m`;
+    const izm = s.izmaina_24h_cm;
+    const tend = izm == null ? '' : `, ${izm > 0 ? '+' : ''}${mLv(izm / 100)} m/24 h`;
+    const a = s.sliekshna_avots;
+    const avots = a ? `Slieksnis: <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nosaukums)}</a>${a.lpp ? ', ' + esc(a.lpp) + ' lpp.' : ''}` +
+      (s.slieksnis_pienemts ? ` „Paaugstināts” sākas ${mLv(s.kritiskais - s.slieksnis)} m zem kritiskā (mūsu pieņēmums, plānā tāda sliekšņa nav).` : '') : '';
+    const pr = s.prognoze?.statuss && s.prognoze.statuss !== 'normāls' ? ` LVĢMC prognoze pēc ${s.prognoze.dienas} dienām: ${esc(s.prognoze.statuss)} (${mLv(s.prognoze.mediana_m)} m).` : '';
+    return `<span class="udens-statuss udens-${STATUSA_KLASE[s.statuss]}"><b>${STATUSA_NOS[s.statuss]}</b> · ${esc(s.vieta || s.nosaukums)}: ` +
+      `${mLv(s.limenis_m)} m${att}${tend}</span>${pr ? `<small>${pr}</small>` : ''}${avots ? `<small>${avots}</small>` : ''}`;
   }
   // /api/pludi atbild ne ilgāk par 25 s; ja LVĢMC karšu serviss vēl rēķina — 202 {ielade}: vēlreiz pēc 10 s (≤ 2 reizes)
   function pluduZona(ll, signal, meginajums) {
@@ -639,6 +685,8 @@ const krizesMeklesana = (() => {
         ? `<strong class="jā">Jā</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${String(v.varbutiba_proc).replace('.', ',')} % varbūtība gadā)`).join(', ')}`
         : p.nepilnigi ? 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.' : '<strong class="nē">Nē</strong>: nav applūstošā teritorijā (10 %, 1 % un 0,5 % kartes).';
       pluduRinda('rez-pludi', `<b>Plūdu riska zona</b><span>${t}</span><small class="avots-rinda">${AVOTI_LVGMC.pludi}</small>`);
+      pluduStavoklis.zona = p.zona ? true : p.nepilnigi ? undefined : false;
+      pluduSecinajums();
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-pludi', '<b>Plūdu riska zona</b><span>Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).</span>');
     });
@@ -659,8 +707,13 @@ const krizesMeklesana = (() => {
       const izm = s.izmaina_24h_cm;
       const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: nemainās';
       const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-      pluduRinda('rez-udens', `<b>Tuvākā upe vai ezers</b><span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): ${s.limenis_cm} cm${tend}` +
-        `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small>${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
+      // statuss: tuvākā no 3 stacijām ar slieksni (CA plānā) un svaigu mērījumu, ne tālāk par 30 km
+      const ss = d.stacijas.find(x => x.statuss && !x.vecs && x.limenis_m != null && x.attalums_m <= 30000);
+      pluduStavoklis.stacija = ss || null;
+      pluduRinda('rez-udens', `<b>Tuvākā upe vai ezers</b>${ss ? statusaRinda(ss) : ''}<span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): ${s.limenis_cm} cm${tend}` +
+        `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}.${ss ? '' : ' Bīstamības līmeņi šai stacijai nav publiski pieejami (LVĢMC sliekšņi nav atvērtie dati).'}</small>` +
+        `${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
+      pluduSecinajums();
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
     });

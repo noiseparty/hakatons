@@ -18,6 +18,8 @@ Galapunkti:
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
   GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
                                        + prognoze 7 dienām (LVĢMC hidroloģiskās prognozes, kešs 1 h)
+                                       + slieksnis, kritiskais (m LAS), statuss normāls|paaugstināts|kritisks
+                                       stacijām ar slieksni CA plānā (src/karte/db/udens_slieksni.json), citām null
   GET /api/adreses/tuvaka?lat=..&lon=.. tuvākā VZD adrese (≤ 300 m) atrašanās vietai
   GET /api/pasvaldiba?lat=..&lon=..    pašvaldība punktā: CA plāns, tīmekļvietne, VPVKAC tālrunis (teksts)
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
@@ -579,7 +581,8 @@ def udens(q):
         p = f["properties"]
         slon, slat = f["geometry"]["coordinates"]
         laiks = datetime.fromisoformat(p["laiks"].replace("Z", "+00:00"))
-        rez.append({**p, "lat": slat, "lon": slon, "attalums_m": _attalums_m(lat, lon, slat, slon),
+        rez.append({**p, **udens_limenis.ar_slieksni(p), "lat": slat, "lon": slon,
+                    "attalums_m": _attalums_m(lat, lon, slat, slon),
                     "vecs": tagad - laiks > timedelta(hours=udens_limenis.DERIGS_H)})
     rez.sort(key=lambda s: s["attalums_m"])
     rez = rez[:limit]
@@ -634,7 +637,9 @@ def _hidro_prognoze_stacijai(dienas, st):
     # virziens pēc paša modeļa trajektorijas (mediāna pēc 7 dienām pret šodienu): salīdzinot ar mērījumu, iejauktos
     # modeļa nobīde (prognoze izdota iepriekšējā dienā), un "kāpj" varētu nozīmēt tikai to
     izmaina = round((med - dienas[sakums][2]) * 100)
+    s = udens_limenis.slieksni().get(st.get("stacija"))
     return {
+        "mediana_m": round(med, 2), "statuss": udens_limenis.statuss(med, s),
         "datums": merkis, "dienas": (datetime.fromisoformat(merkis).date() - sodien).days,
         "mediana_cm": cm(med) if cm else None, "josla_50_cm": [cm(v75), cm(v25)] if cm else None,
         "josla_90_cm": [cm(v95), cm(v5)] if cm else None,
@@ -869,7 +874,8 @@ def _bridinajumu_zinas(regioni_, vietas, tagad):
 
 # Riska karte: līmenis 0–3 katram novadam šodien un rīt. HEURISTIKA, nevis oficiāls vērtējums:
 # max(LVĢMC brīdinājuma krāsa, brāzmu un nokrišņu prognoze) + 1 par zibeni pēdējās 30 min (tikai šodien)
-# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā); ne vairāk par 3.
+# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā) + 1 par ledu LVĢMC brīdinājuma tekstā
+# + 1 / + 2 par upes līmeni paaugstināts / kritisks (udens_slieksni.json, sliekšņi no CA plāniem); ne vairāk par 3.
 RISKA_BRAZMAS = [(15, 1), (20, 2), (25, 3)]   # diennakts maks. brāzmas, m/s
 RISKA_NOKRISNI = [(15, 1), (30, 2)]           # diennakts nokrišņu summa, mm
 RISKA_LIMENI = {0: "nav", 1: "paaugstināts", 2: "augsts", 3: "ļoti augsts"}
@@ -906,6 +912,62 @@ def _tuvaka_vieta_regions(vietas):
     return atrast
 
 
+LEDUS_VARDI = re.compile(r"\bledus\b|\bledū\b|\bledu\b|vižņ", re.IGNORECASE)
+UDENS_AVOTA_URL = "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi"
+UPJU_STATUSA_LIMENIS = {"paaugstināts": 1, "kritisks": 2}
+
+
+def _min_ledu(b):
+    """Vai brīdinājuma parādībā / tekstā / riskos minēts ledus (ledus iešana, ledus sastrēgumi, vižņi)."""
+    return bool(LEDUS_VARDI.search(" ".join(b.get(k) or "" for k in ("paradiba", "teksts", "riski"))))
+
+
+def _m_lv(x):
+    return f"{x:.2f}".replace(".", ",")
+
+
+def _upju_iemesli(stacijas, hidro, atrast, atslegas):
+    """Riska kartes iemesli no upju līmeņa: [(reģiona kods, diena, +1/+2, teksts, avots)]. Tikai stacijas ar slieksni
+    (udens_slieksni.json) un svaigu mērījumu; "rit" pēc LVĢMC prognozes mediānas rītdienai, ja tā ir, citādi pēc
+    mērījuma (upes līmenis dienas laikā mainās lēni)."""
+    slieksni = udens_limenis.slieksni()
+    rez = []
+    for f in stacijas or []:
+        p = f.get("properties") or {}
+        s = slieksni.get(p.get("stacija"))
+        lim = p.get("limenis_m")
+        if not s or lim is None:
+            continue
+        try:
+            laiks = datetime.fromisoformat(p["laiks"].replace("Z", "+00:00"))
+        except (KeyError, ValueError, AttributeError):
+            continue
+        if datetime.now(timezone.utc) - laiks > timedelta(hours=udens_limenis.DERIGS_H):
+            continue
+        lon, lat = f["geometry"]["coordinates"]
+        kods = atrast(lat, lon)
+        if not kods:
+            continue
+        ko = "Ezera" if "ezer" in (s.get("vieta") or "").lower() else "Upes"
+        avots = {"nosaukums": f"LVĢMC ūdens līmenis; slieksnis: {(s.get('avots') or {}).get('nosaukums', 'CA plāns')}"
+                              + (f", {s['avots']['lpp']} lpp." if (s.get("avots") or {}).get("lpp") else ""),
+                 "licence": "CC0 1.0", "url": UDENS_AVOTA_URL}
+        vieta = s.get("vieta") or p.get("nosaukums")
+        for diena, datums in atslegas:
+            vertiba, prognoze = lim, False
+            if diena != "sodien":
+                med = (hidro.get(p["stacija"]) or {}).get(datums)
+                if med:
+                    vertiba, prognoze = med[2], True
+            st = udens_limenis.statuss(vertiba, s)
+            if st not in UPJU_STATUSA_LIMENIS:
+                continue
+            rez.append((kods, diena, UPJU_STATUSA_LIMENIS[st],
+                        f"{ko} līmenis {'pēc prognozes ' if prognoze else ''}{st}: {vieta} {_m_lv(vertiba)} m "
+                        f"(kritiskais {_m_lv(s['kritiskais_m'])} m)", avots))
+    return rez
+
+
 def _riski(dati, regioni_, vietas, tagad, dienas):
     """{kods: {"sodien": n, "rit": n, "iemesli": [{diena, limenis, teksts, avots, klat}]}} pirmajām divām dienām."""
     atslegas = list(zip(["sodien", "rit"], dienas[:2]))
@@ -919,11 +981,13 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
         r["iemesli"].append({"diena": diena, "limenis": limenis, "teksts": teksts, "avots": avots, "klat": klat})
 
     # LVĢMC brīdinājumi: līmenis dienām, kuras pārklāj brīdinājuma laiks
+    ledus = {}  # (kods, diena) → parādība: brīdinājumā minēts ledus (ledus iešana, sastrēgumi, vižņi); +1 pēc prognozes
     try:
         for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
             if b["lidz"] and b["lidz"] < tagad:
                 continue
             _p, skarti = _bridinajumu_skartie(b, vietas)
+            ar_ledu = _min_ledu(b)
             for diena, datums in atslegas:
                 d0 = datetime.strptime(datums, "%Y-%m-%d")
                 if (b["no"] and b["no"] >= d0 + timedelta(days=1)) or (b["lidz"] and b["lidz"] < d0):
@@ -931,6 +995,8 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
                 for kods in skarti:
                     pievienot(kods, diena, b["limenis"], f"LVĢMC {b['krasa'].lower()} brīdinājums: {b['paradiba'].lower()}",
                               BRIDINAJUMU_AVOTS)
+                    if ar_ledu:
+                        ledus.setdefault((kods, diena), b["paradiba"])
     except Kluda:
         pass
     # Prognoze: (bez zibens/ceļiem) brāzmas un nokrišņi; prognoze aprēķina "klat" pirms zibens, lai max darbojas pareizi
@@ -944,8 +1010,23 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
             if lim:
                 pievienot(kods, diena, lim, f"nokrišņi līdz {_skaitlis_lv(r['nokrisni'])} mm" +
                           (f" ({r['nokrisni_vieta']})" if r.get("nokrisni_vieta") else ""), PROGNOZU_AVOTS)
+    # Ledus no jau ielādēto brīdinājumu teksta (bez jauna pieprasījuma): +1 tajās dienās, kuras brīdinājums aptver
+    for (kods, diena), paradiba in ledus.items():
+        pievienot(kods, diena, 1, f"ledus (LVĢMC brīdinājums: {paradiba.lower()})", BRIDINAJUMU_AVOTS, klat=True)
     if vietas:
         atrast = _tuvaka_vieta_regions(vietas)
+        # Upju līmenis pret sliekšņiem (udens_slieksni.json): +1 paaugstināts, +2 kritisks; šodien pēc mērījuma,
+        # rīt pēc LVĢMC hidroloģiskās prognozes mediānas (ja nav — pēc mērījuma)
+        try:
+            stacijas = _kesots("udens", 900, lambda: udens_limenis.stacijas(timeout=20))
+            try:
+                hidro = _kesots("hidro_prognoze", 3600, _hidro_prognozes) if time.time() - _hidro_kluda[0] > 300 else {}
+            except Kluda:
+                _hidro_kluda[0], hidro = time.time(), {}
+            for kods, diena, limenis, teksts, avots in _upju_iemesli(stacijas, hidro, atrast, atslegas):
+                pievienot(kods, diena, limenis, teksts, avots, klat=True)
+        except Kluda:
+            pass
         # Zibens pēdējās 30 min (FMI) — tikai šodien, +1
         try:
             skaits = {}
@@ -1035,7 +1116,7 @@ def _risku_zinas(riski, regioni_, dienas, sodien):
             "veids": "riski", "paradiba": "Risks", "limenis": seciba[0][1][0], "datums": datums, "diena": nos,
             "virsraksts": f"{nos} paaugstināts risks: " + ", ".join(dalas),
             "teksts": f"Novadi ar paaugstinātu risku: {len(kodi)}. Riska karte apvieno LVĢMC brīdinājumus, prognozi, "
-                      "zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
+                      "zibeni, slidenus ceļus un upju līmeni; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
             "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": PROGNOZU_AVOTS,
         })
     return zinas
