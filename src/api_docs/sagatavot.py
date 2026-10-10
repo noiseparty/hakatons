@@ -4,7 +4,7 @@ Katram GET galapunktam vienreiz pieprasa piemēru no https://map.repo.lv (≈ 25
 atbildi un ieliek lapā. Pārbauda, vai SPEC apraksta visus maršrutus no karte_api.py (MARSRUTI) — jaunu galapunktu bez
 apraksta skripts neļauj.
 
-  uv run --no-project --python 3.12 src/api_docs/sagatavot.py [--bez-piemeriem]
+  uv run --no-project --python 3.12 src/api_docs/sagatavot.py [--bez-piemeriem | --piemeri-no-lapas]
 """
 
 import argparse
@@ -44,7 +44,9 @@ SPEC = [
     ("/api/objekti", "Punkti kartē", "Kartes objekti (GeoJSON FeatureCollection). Ar lat/lon — sakārtoti pēc attāluma, ar attalums_m.",
      [("kategorijas", "string", "slāņu kodi ar komatu (no /api/kategorijas)", "patvertne,evakuacijas_punkts", False),
       ("regions", "string", "tikai šajā reģionā (kods)", "", False), (*LAT, False), (*LON, False),
-      ("limit", "integer", "cik punktu (1–20000, noklusēti 5000)", "3", False),
+      ("bbox", "string", "kartes skats minLon,minLat,maxLon,maxLat: tikai punkti taisnstūrī, īsās īpašības (ko rāda "
+       "punkta logs), ≤ 5000; ja vairāk — izlase pa slāņiem un \"apgriezts\": true", "24.55,56.80,24.66,56.84", False),
+      ("limit", "integer", "cik punktu (1–20000, ar bbox ≤ 5000; noklusēti 5000)", "3", False),
       ("kritiskais", "integer", "1 — tikai kritiskie (banku bankomāti, kas strādā arī krīzē)", "", False)],
      "?kategorijas=evakuacijas_punkts&lat=56.8166&lon=24.6046&limit=2",
      [("Katram punktam savs avots (properties.avots)", "/api/avoti", "skat. /api/avoti", None)],
@@ -64,7 +66,9 @@ SPEC = [
       ("VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti", *CC0), MUSU],
      "VPVKAC dati ir no 2022. gada; valstspilsētām tādu nav."),
     ("/api/bridinajumi", "LVĢMC brīdinājumi", "Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.",
-     [(*LAT, False), (*LON, False)], "?lat=56.8166&lon=24.6046",
+     [(*LAT, False), (*LON, False),
+      ("poligoni", "integer", "1 — pievienot brīdinājumu apgabalus poligoni: [[[lat, lon], …], …] (pilnā izšķirtspējā)", "", False)],
+     "?lat=56.8166&lon=24.6046",
      [("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", *CC0)],
      "Laiki — Latvijas vietējie."),
     ("/api/pludi", "Plūdu riska zona punktā", "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).",
@@ -76,7 +80,8 @@ SPEC = [
      [("LVĢMC hidroloģiskie novērojumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi", *CC0),
       ("LVĢMC hidroloģiskās prognozes", "https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes", *CC0)],
      "Bīstamības līmeņi nav atvērtie dati, tāpēc to nav. Prognoze ir ~35 no 74 stacijām."),
-    ("/api/prognozes", "Laika prognoze pa novadiem", "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni.",
+    ("/api/prognozes", "Laika prognoze pa novadiem", "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni: "
+     "bridinajumu_poligoni = [{id, limenis, paradiba, poligons: [[lat, lon], …]}] (vienkāršoti, 4 zīmes aiz komata; tos zīmē kartes zonas).",
      [], "", [("LVĢMC meteoroloģiskās prognozes apdzīvotām vietām", "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa", *CC0)],
      "Sliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi."),
     ("/api/prognozes/robezas", "Novadu robežas prognozei", "Vienkāršotas novadu un valstspilsētu robežas (GeoJSON) kartes iekrāsošanai.", [], "",
@@ -106,7 +111,8 @@ SPEC = [
     ("/api/statuss", "Sistēmas statuss", "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.", [], "", [MUSU], None),
     ("/api/meklejumi/top", "Biežāk meklētais", "Biežāk meklētie atpazītie vaicājumi pēdējās 14 dienās (bez lietotāju datiem).",
      [("n", "integer", "1–10, noklusēti 3", "5", False)], "?n=5", [MUSU], None),
-    ("/api/zinojumi", "Iedzīvotāju ziņojumi", "Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.",
+    ("/api/zinojumi", "Iedzīvotāju ziņojumi", "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina "
+     "un apstrid (citi iedzīvotāji, POST …/apstiprinat|apstridet); ziņojumu ar apstrid > apstiprina + 2 vairs nerāda.",
      [("dienas", "integer", "1–7", "7", False), ("bbox", "string", "minLon,minLat,maxLon,maxLat", "", False)], "",
      [("Iedzīvotāju ziņojumi (map.repo.lv)", "https://map.repo.lv/", *CCBY)], "Ja apdraudēta dzīvība, zvaniet 112."),
     ("/api/plusma.xml", "Abonēt: Atom/RSS plūsma", "Pašvaldības (vai visas Latvijas) situācija kā Atom 1.0 plūsma jebkurai RSS "
@@ -130,7 +136,8 @@ SPEC = [
 POST = [
     ("/api/meklejumi", "biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāju datiem)"),
     ("/api/zinojumi", "jauns iedzīvotāja ziņojums (moderēts)"),
-    ("/api/zinojumi/moderacija, /api/zinojumi/{id}/{darbība}", "moderēšana (ar atslēgu)"),
+    ("/api/zinojumi/{id}/apstiprinat, /api/zinojumi/{id}/apstridet", "balss par ziņojumu (bez datiem; ≤ 60 minūtē visiem kopā) → {id, apstiprina, apstrid}"),
+    ("/api/zinojumi/moderacija, /api/zinojumi/{id}/slept|radit", "moderēšana (ar atslēgu)"),
 ]
 
 
@@ -193,6 +200,29 @@ def piemers(cels, vaicajums):
         return url, None, {"kluda": str(e)}
 
 
+def ieprieksejie_piemeri():
+    """Piemēri no esošās production/api.html (--piemeri-no-lapas): pārģenerē aprakstus bez neviena pieprasījuma vietnei."""
+    f = SAKNE / "production" / "api.html"
+    rez = {}
+    if not f.exists():
+        return rez
+    for pid, bloks in re.findall(r'<section class="galapunkts" id="([^"]+)">(.*?)</section>', f.read_text(encoding="utf-8"), re.S):
+        m = re.search(r'<span class="statuss">(.*?)</span>', bloks)
+        statuss = html.unescape(m.group(1)) if m else None
+        if statuss and re.fullmatch(r"HTTP \d+", statuss):
+            statuss = int(statuss[5:])
+        m = re.search(r"<pre>(.*?)</pre>", bloks, re.S)
+        atbilde = None
+        if m:
+            teksts = html.unescape(m.group(1))
+            try:
+                atbilde = json.loads(teksts)
+            except ValueError:
+                atbilde = teksts
+        rez[pid] = (statuss, atbilde)
+    return rez
+
+
 def lic(avots):
     nos, url, licence, lurl = avots
     n = f'<a href="{html.escape(url)}">{html.escape(nos)}</a>' if url and url.startswith(("http", "/")) else html.escape(nos)
@@ -209,7 +239,11 @@ def kesas_teksts(s):
 def main():
     a = argparse.ArgumentParser()
     a.add_argument("--bez-piemeriem", action="store_true")
+    a.add_argument("--piemeri-no-lapas", action="store_true",
+                   help="piemērus ņemt no esošās production/api.html (nepieprasa vietni); jauniem galapunktiem — bez piemēra")
+    a.add_argument("--atjaunot", default="", help="ar --piemeri-no-lapas: šiem ceļiem (ar komatu) piemēru tomēr pieprasīt no vietnes")
     args = a.parse_args()
+    vecie = ieprieksejie_piemeri() if args.piemeri_no_lapas else {}
 
     kesas = marsruti()
     aprakstiti = {s[0] for s in SPEC}
@@ -220,9 +254,12 @@ def main():
 
     kartites, openapi_celi = [], {}
     for cels, virsraksts, apraksts, param, vaicajums, avoti, piezime in SPEC:
-        url, statuss, atbilde = (None, None, None) if args.bez_piemeriem else piemers(cels, vaicajums)
-        print(f"{cels}: {statuss}", file=sys.stderr)
         pid = re.sub(r"[^a-z0-9]+", "-", cels.lower()).strip("-")
+        if args.piemeri_no_lapas and cels not in args.atjaunot.split(","):
+            url, (statuss, atbilde) = None, vecie.get(pid, (None, None))
+        else:
+            url, statuss, atbilde = (None, None, None) if args.bez_piemeriem else piemers(cels, vaicajums)
+        print(f"{cels}: {statuss}", file=sys.stderr)
         rindas = "".join(
             f"<tr><td><code>{html.escape(p[0])}</code>{'' if not (len(p) > 4 and p[4]) else ' <small>obligāts</small>'}</td>"
             f"<td>{html.escape(p[1])}</td><td>{html.escape(p[2])}</td></tr>" for p in param)

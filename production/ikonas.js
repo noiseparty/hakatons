@@ -9,10 +9,10 @@ const Ikonas = (() => {
   const ik = (nos, klase = '') => nos ? `<svg class="ik${klase ? ' ' + klase : ''}" aria-hidden="true" focusable="false"><use href="${SPRAITS}#${nos}"></use></svg>` : '';
 
   const GRUPAS = {
-    krusts: ['slimnica', 'neatliekama_24h', 'aptieka'],
-    trijsturis: ['degviela', 'bankomats', 'uzlades_stacija', 'noturibas_punkts', 'udens_nemsana'],
+    krusts: ['slimnica', 'neatliekama_24h', 'aptieka', 'veterinars'],
+    trijsturis: ['degviela', 'bankomats', 'uzlades_stacija', 'noturibas_punkts', 'udens_nemsana', 'wifi_punkts'],
     lase: ['udens_limenis', 'udens_punkts'],
-    kvadrats: ['pietura', 'celi', 'robezas'],
+    kvadrats: ['pietura', 'ev_uzlade', 'celi', 'robezas'],
     aplis: ['patvertne', 'evakuacijas_punkts', 'izmitinasana', 'policija', 'ugunsdzeseji'],
   };
   const PEC_KATEGORIJAS = Object.fromEntries(Object.entries(GRUPAS).flatMap(([f, k]) => k.map(x => [x, f])));
