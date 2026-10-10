@@ -770,7 +770,7 @@ function aktivoSlaNuJosla() {
 // × (data-kods = kategorija, data-id = pārklājuma slēdzis) un "Notīrīt visus" (data-visi): panelī un darbvirsmas leģendā
 document.addEventListener('click', e => {
   const b = e.target.closest('button[data-kods], button[data-id], button[data-visi]');
-  if (!b || !b.closest('.aktivie-slani, .dv-legenda')) return;
+  if (!b || !b.closest('.aktivie-slani, .dv-legenda, .dv-aktivie')) return;
   if (b.dataset.visi) return notiritVisus();
   const i = b.dataset.kods ? el('kategorijas').querySelector(`input[value="${CSS.escape(b.dataset.kods)}"]`) : el(b.dataset.id);
   if (i) { i.checked = false; i.dispatchEvent(new Event('change', { bubbles: true })); }

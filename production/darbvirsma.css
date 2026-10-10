@@ -90,11 +90,17 @@
     color: var(--zils-primars); background: none; border: 0; }
   .dv-atrast svg { width: 16px; height: 16px; }
   .dv-atrast:hover { text-decoration: underline; text-underline-offset: 2px; }
-  .dv-cipi { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
-  .dv-cips { width: auto; min-height: 32px; padding: 0 12px; font-size: 13px; font-weight: 500; color: var(--teksts-galv); background: var(--pelks-2);
-    border: 1px solid var(--pelks-3); border-radius: 999px; transition: background-color .15s, border-color .15s; }
-  .dv-cips:hover { background: #E2E8F0; border-color: #CBD5E1; }
-  .dv-cips[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+  .dv-aktivie { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 16px; }
+  .dv-aktivs { display: inline-flex; align-items: center; gap: 6px; box-sizing: border-box; height: 28px; padding: 0 2px 0 8px; font-size: 13px; font-weight: 500; color: var(--teksts-galv);
+    background: var(--pelks-2); border: 1px solid var(--pelks-3); border-radius: 999px; max-width: 100%; }
+  .dv-aktivs svg, .dv-aktivs .punkts { flex: none; width: 14px; height: 14px; }
+  .dv-aktivs .punkts { display: inline-block; border-radius: 50%; }
+  .dv-aktivs .dv-leg-nos { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dv-akt-x { width: 22px; min-width: 22px; height: 22px; min-height: 22px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: inherit; font-size: 16px; line-height: 1; cursor: pointer; }
+  .dv-akt-x:hover { background: var(--pelks-3); }
+  .dv-akt-visi { width: auto; min-height: 28px; padding: 0 6px; font: inherit; font-size: 13px; color: var(--zils-primars); background: none; border: 0; cursor: pointer; }
+  .dv-akt-visi:hover { text-decoration: underline; text-underline-offset: 2px; }
+  .dv-akt-tukss { font-size: 13px; color: var(--teksts-sek, #64748b); }
   .dv-valsts { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 16px -24px 0; padding: 12px 24px;
     font-size: 13px; font-weight: 600; background: var(--pelks-2); border-top: 1px solid var(--pelks-3); border-bottom: 1px solid var(--pelks-3); }
   .dv-pirmais { margin: 16px 0 0; padding: 14px 16px; background: var(--pelks-1); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte); }
@@ -250,3 +256,8 @@
 .dv-legenda .dv-leg-x:hover { background: var(--pelks-1); }
 .dv-legenda .notirit-visus { display: block; width: 100%; min-height: 36px; padding: 0 12px; font: inherit; font-weight: 600; color: var(--teksts-galv); cursor: pointer; background: var(--pelks-1); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
 .dv-legenda .notirit-visus:hover { background: var(--pelks-2); }
+.dv-legenda summary { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.dv-legenda summary .dv-leg-notirit[hidden] { display: none; }
+.dv-legenda summary .dv-leg-notirit { display: inline-block; width: auto; min-height: 24px; padding: 0; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none;
+  color: var(--zils-primars); background: none; border: 0; text-decoration: underline; text-underline-offset: 2px; }
+.dv-legenda summary .dv-leg-notirit:hover { background: none; }

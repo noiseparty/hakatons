@@ -22,10 +22,6 @@ const Darbvirsma = (() => {
     zinot: '<svg viewBox="0 0 24 24" aria-hidden="true" class="dv-zinot-ikona"><path d="M4 10v4h3l6 4V6L7 10H4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     pilns: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   };
-  const CIPI = [  // maketa čipi → vaicājums (scenārijs); "Ceļi" ieslēdz arī LVC ceļu slēgumu slāni
-    ['Plūdi', 'plūdi'], ['Nav elektrības', 'nav elektrības'], ['Evakuācija', 'evakuācija'], ['Patvertne', 'patvertne'],
-    ['Ārsts', 'ārsts'], ['Ceļi', 'ceļš slēgts', 'celu-slanis'],
-  ];
   const AVOTI = {
     bridinajumi: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi" target="_blank" rel="noopener">LVĢMC</a>',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC</a>',
@@ -58,8 +54,7 @@ const Darbvirsma = (() => {
 
   const ievads = elements('section', 'dv-ievads', '<h2 data-t="Noskaidrojiet situāciju savā adresē">Noskaidrojiet situāciju savā adresē</h2><div class="dv-forma-vieta"></div>' +
     `<button type="button" class="dv-atrast">${IKONAS.vieta}<span data-t="Izmantot manu atrašanās vietu">Izmantot manu atrašanās vietu</span></button>` +
-    '<div class="dv-cipi" role="group" aria-label="Biežākās situācijas" data-t-aria="Biežākās situācijas">' +
-    CIPI.map(([t, q, sl]) => `<button type="button" class="dv-cips" data-q="${q}"${sl ? ` data-slanis="${sl}"` : ''} aria-pressed="false"><span data-t="${t}">${t}</span></button>`).join('') + '</div>');
+    '<div class="dv-aktivie" role="group" aria-label="Ieslēgtie slāņi" data-t-aria="Ieslēgtie slāņi"></div>');
   // Pirmais skats (meklesana.js): ko rakstīt + 3 piemēri; CSS to paslēpj pēc pirmās meklēšanas (body.ir-meklets)
   const pirmais = elements('div', 'dv-pirmais', krizesMeklesana.pirmaisSkats());
   const valsts = elements('div', 'dv-valsts', '<span class="dv-valsts-nos" data-t="Kopējā situācija valstī:">Kopējā situācija valstī:</span>' +
@@ -78,7 +73,8 @@ const Darbvirsma = (() => {
     bloks('dv-udens', 'Upju ūdens līmenis (pieaugums)', '', AVOTI.udens) +
     bloks('dv-celi', 'Satiksmes ierobežojumi', 'LVC DATEX II', AVOTI.celi), { id: 'dv-situacija', 'aria-label': 'Situācija tagad (Latvija)', 'data-t-aria': 'Situācija tagad (Latvija)' });
 
-  const legenda = elements('details', 'dv-legenda', '<summary data-t="Kartes leģenda &amp; simboli">Kartes leģenda &amp; simboli</summary><ul></ul>');
+  const aktivie = ievads.querySelector('.dv-aktivie');
+  const legenda = elements('details', 'dv-legenda', '<summary><span data-t="Kartes leģenda &amp; simboli">Kartes leģenda &amp; simboli</span><button type="button" class="notirit-visus dv-leg-notirit" data-visi="1" data-t="Notīrīt visus" hidden>Notīrīt visus</button></summary><ul></ul>');
   legenda.open = true;
   const situacijasPoga = elements('button', 'dv-rikis-poga', IKONAS.panelis,
     { type: 'button', title: 'Situācija tagad', 'aria-label': 'Situācija tagad (labais panelis)', 'data-t-title': 'Situācija tagad', 'data-t-aria': 'Situācija tagad (labais panelis)', 'aria-controls': 'dv-situacija', 'aria-pressed': 'true' });
@@ -233,20 +229,6 @@ const Darbvirsma = (() => {
   ievads.querySelector('.dv-atrast').addEventListener('click', () => $('atrast')?.click());
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && ieslegts && !atvilktne.hidden) raditAtvilktni(false); });
 
-  // Čipi: aktīvs ir tas, kura vaicājums ir laukā; pārraksta tekstu — neviens nav aktīvs
-  ievads.querySelector('.dv-cipi').addEventListener('click', e => {
-    const b = e.target.closest('[data-q]');
-    if (!b) return;
-    const sl = b.dataset.slanis && $(b.dataset.slanis);
-    if (sl && !sl.checked) sl.click();
-    $('jautajums').value = b.dataset.q;
-    forma.requestSubmit();
-    atzimetCipu();
-  });
-  const atzimetCipu = () => ievads.querySelectorAll('.dv-cips').forEach(c =>
-    c.setAttribute('aria-pressed', c.dataset.q === $('jautajums').value.trim().toLowerCase()));
-  $('jautajums').addEventListener('input', atzimetCipu);
-
   // ---- Brīdinājumu josla (bridinajumi.js): "Aizvērt" līdz brīdim, kad teksts mainās ----
   function brJosla() {
     const br = $('bridinajums');
@@ -271,8 +253,16 @@ const Darbvirsma = (() => {
     const parklajumi = [...document.querySelectorAll('.parklajums input:checked')].map(i => i.closest('label'))
       .map(l => [l.querySelector('.punkts')?.style.background || '#999', l.textContent.trim(), l.querySelector('input').id]);
     const T = k => typeof Valoda !== 'undefined' ? Valoda.t(k) : k;
+    // sānjoslas čipi: ieslēgtie slāņi ar × un "Notīrīt visus" (klikšķi: app.js, tas pats apstrādātājs kas leģendai)
+    const cx = (atr, t, ik) => `<span class="dv-aktivs">${ik}<span class="dv-leg-nos">${esc(t)}</span><button type="button" class="dv-akt-x" ${atr} aria-label="${esc(Valoda.t('Noņemt slāni'))}: ${esc(t)}">×</button></span>`;
+    aktivie.innerHTML = (kodi.length || parklajumi.length)
+      ? kodi.map(k => cx(`data-kods="${esc(k)}"`, Valoda.t(kategorijas[k].nosaukums), Ikonas.formaHTML(k))).join('') +
+        parklajumi.map(([k, t, id]) => cx(`data-id="${esc(id)}"`, t, `<span class="punkts" style="background:${esc(k)}"></span>`)).join('') +
+        `<button type="button" class="dv-akt-visi" data-visi="1">${esc(Valoda.t('Notīrīt visus'))}</button>`
+      : `<span class="dv-akt-tukss">${esc(Valoda.t('Nav ieslēgtu slāņu'))}</span>`;
     const x = (atr, t) => `<button type="button" class="dv-leg-x" ${atr} aria-label="${esc(T('Noņemt slāni'))}: ${esc(t)}">×</button>`;
     if (!kodi.length && !parklajumi.length) {
+      legenda.querySelector('.dv-leg-notirit').hidden = true;
       ul.innerHTML = `<li class="dv-leg-tukss">${Valoda.t('Neviens slānis nav ieslēgts. Atveriet „Slāņu vadība”.')}</li>`;
       return;
     }
@@ -281,9 +271,11 @@ const Darbvirsma = (() => {
     // tā pati marķiera forma kā kartē (ikonas.js), nevis tikai krāsa
     ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(Valoda.t(GRUPAS[g] || g))}</li>` +
       kk.map(k => `<li>${Ikonas.formaHTML(k)}<span class="dv-leg-nos">${esc(Valoda.t(kategorijas[k].nosaukums))}</span>${x(`data-kods="${esc(k)}"`, kategorijas[k].nosaukums)}</li>`).join('')).join('') +
-      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t, id]) => `<li><span class="punkts" style="background:${esc(k)}"></span><span class="dv-leg-nos">${esc(t)}</span>${x(`data-id="${esc(id)}"`, t)}</li>`).join('') : '') +
-      `<li class="dv-leg-visi"><button type="button" class="notirit-visus" data-visi="1">${esc(T('Notīrīt visus'))}</button></li>`;
+      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t, id]) => `<li><span class="punkts" style="background:${esc(k)}"></span><span class="dv-leg-nos">${esc(t)}</span>${x(`data-id="${esc(id)}"`, t)}</li>`).join('') : '');
+    legenda.querySelector('.dv-leg-notirit').hidden = false;
   }
+  legenda.querySelector('summary').addEventListener('click', e => { if (e.target.closest('.dv-leg-notirit')) e.preventDefault(); });  // nesakļauj leģendu; notīra app.js
+  document.addEventListener('click', e => { if (ieslegts && e.target.closest('[data-visi]')) setTimeout(atjaunotLegendu, 300); });  // "Notīrīt visus" (app.js) change nesūta
   document.addEventListener('change', e => { if (ieslegts && e.target.matches('input[type="checkbox"]')) setTimeout(atjaunotLegendu, 0); });
   let legendasTaimeris = null;  // slāņus maina arī meklēšana (meklesana.js) — leģendu atjauno pēc kartes izmaiņām
   karte.on('layeradd layerremove', () => { if (!ieslegts) return; clearTimeout(legendasTaimeris); legendasTaimeris = setTimeout(atjaunotLegendu, 200); });

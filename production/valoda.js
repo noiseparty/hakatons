@@ -159,6 +159,7 @@ const Valoda = (() => {
     'koordinātas var būt aptuvenas': { ru: 'координаты могут быть приблизительными', en: 'coordinates may be approximate' },
     'SIMULĒTI DATI — prototips': { ru: 'СИМУЛИРОВАННЫЕ ДАННЫЕ — прототип', en: 'SIMULATED DATA — prototype' },
     'Notīrīt visus': { ru: 'Очистить все', en: 'Clear all' },
+    'Nav ieslēgtu slāņu': { ru: 'Нет включённых слоёв', en: 'No layers on' },
     'Noņemt slāni': { ru: 'Убрать слой', en: 'Remove layer' },
     'Ieslēgtie slāņi': { ru: 'Включённые слои', en: 'Active layers' },
     'Kā tas tapa': { ru: 'Как это сделано', en: 'How it was made' },
