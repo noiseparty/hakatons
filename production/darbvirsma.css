@@ -167,6 +167,8 @@
   .dv-legenda ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
   .dv-legenda li { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--teksts-galv); }
   .dv-legenda .punkts { flex: none; }
+  /* atvērta slāņu atvilktne (z-index 1002, 360 px) sedz leģendas kreiso malu: leģenda pārvietojas tai blakus, lai "Notīrīt visus" paliek nospiežams */
+  .dv-atvilktne:not([hidden]) ~ .dv-legenda { left: 376px; max-width: calc(100% - 376px - 72px); }
   .dv-leg-grupa { grid-column: 1 / -1; margin-top: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts-blavs) !important; }
   .dv-leg-tukss { grid-column: 1 / -1; color: var(--teksts-blavs) !important; }
   body.dv .leaflet-bottom.leaflet-left { left: 352px; }  /* mērogs blakus leģendai (330 px + 16 px mala) */

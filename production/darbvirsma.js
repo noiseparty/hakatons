@@ -230,34 +230,43 @@ const Darbvirsma = (() => {
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && ieslegts && !atvilktne.hidden) raditAtvilktni(false); });
 
   // ---- Brīdinājumu josla (bridinajumi.js): "Aizvērt" līdz brīdim, kad teksts mainās ----
+  // joslas teksts bez "Aizvērt" pogas (valodas neatkarīgi: poga tiek tulkota, tāpēc teksts netiek meklēts pēc vārda)
+  const brTeksts = br => { const k = br.cloneNode(true); k.querySelector('.dv-br-aizvert')?.remove(); return k.textContent.trim(); };
+  function brPoga() {  // poga tiek izveidota/pievienota pēc valodas pielietošanas, tāpēc tulko arī šeit un uz valodas maiņu
+    brAizvert.querySelector('span').textContent = Valoda.t('Aizvērt');
+    brAizvert.setAttribute('aria-label', Valoda.t('Aizvērt brīdinājumu joslu'));
+  }
   function brJosla() {
     const br = $('bridinajums');
     if (!br || !ieslegts) return;
-    const teksts = br.textContent.replace('Aizvērt', '').trim();
+    brPoga();
+    const teksts = brTeksts(br);
     if (br.dataset.dvAizverts && br.dataset.dvAizverts !== teksts) delete br.dataset.dvAizverts;
     if (br.dataset.dvAizverts) br.hidden = true;
     if (!br.contains(brAizvert) && br.firstElementChild) br.append(brAizvert);
   }
   brAizvert.addEventListener('click', () => {
     const br = $('bridinajums');
-    br.dataset.dvAizverts = br.textContent.replace('Aizvērt', '').trim();
+    br.dataset.dvAizverts = brTeksts(br);
     br.hidden = true;
     setTimeout(() => karte.invalidateSize(), 0);
   });
   if ($('bridinajums')) new MutationObserver(() => brJosla()).observe($('bridinajums'), { childList: true });
+  document.addEventListener('valoda-maina', () => { if (ieslegts) brPoga(); });
 
   // ---- Leģenda: ieslēgtie slāņi ar to krāsām (no /api/kategorijas, app.js) ----
   function atjaunotLegendu() {
     const ul = legenda.querySelector('ul');
     const kodi = [...(stavoklis.kategorijas || [])].filter(k => kategorijas[k]);
     const parklajumi = [...document.querySelectorAll('.parklajums input:checked')].map(i => i.closest('label'))
-      .map(l => [l.querySelector('.punkts')?.style.background || '#999', l.textContent.trim(), l.querySelector('input').id]);
+      .map(l => [l.querySelector('.punkts')?.style.background || l.querySelector('svg.forma g')?.getAttribute('fill') || '#999', l.textContent.trim(), l.querySelector('input').id,
+        l.querySelector('svg')?.outerHTML || '']);  // pārklājumam: tā pati forma slāņa krāsā / ikona (ikonas.js), nevis pelēks punkts
     const T = k => typeof Valoda !== 'undefined' ? Valoda.t(k) : k;
     // sānjoslas čipi: ieslēgtie slāņi ar × un "Notīrīt visus" (klikšķi: app.js, tas pats apstrādātājs kas leģendai)
     const cx = (atr, t, ik) => `<span class="dv-aktivs">${ik}<span class="dv-leg-nos">${esc(t)}</span><button type="button" class="dv-akt-x" ${atr} aria-label="${esc(Valoda.t('Noņemt slāni'))}: ${esc(t)}">×</button></span>`;
     aktivie.innerHTML = (kodi.length || parklajumi.length)
       ? kodi.map(k => cx(`data-kods="${esc(k)}"`, Valoda.t(kategorijas[k].nosaukums), Ikonas.formaHTML(k))).join('') +
-        parklajumi.map(([k, t, id]) => cx(`data-id="${esc(id)}"`, t, `<span class="punkts" style="background:${esc(k)}"></span>`)).join('') +
+        parklajumi.map(([k, t, id, sv]) => cx(`data-id="${esc(id)}"`, t, sv || `<span class="punkts" style="background:${esc(k)}"></span>`)).join('') +
         `<button type="button" class="dv-akt-visi" data-visi="1">${esc(Valoda.t('Notīrīt visus'))}</button>`
       : `<span class="dv-akt-tukss">${esc(Valoda.t('Nav ieslēgtu slāņu'))}</span>`;
     const x = (atr, t) => `<button type="button" class="dv-leg-x" ${atr} aria-label="${esc(T('Noņemt slāni'))}: ${esc(t)}">×</button>`;
@@ -271,7 +280,7 @@ const Darbvirsma = (() => {
     // tā pati marķiera forma kā kartē (ikonas.js), nevis tikai krāsa
     ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(Valoda.t(GRUPAS[g] || g))}</li>` +
       kk.map(k => `<li>${Ikonas.formaHTML(k)}<span class="dv-leg-nos">${esc(Valoda.t(kategorijas[k].nosaukums))}</span>${x(`data-kods="${esc(k)}"`, kategorijas[k].nosaukums)}</li>`).join('')).join('') +
-      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t, id]) => `<li><span class="punkts" style="background:${esc(k)}"></span><span class="dv-leg-nos">${esc(t)}</span>${x(`data-id="${esc(id)}"`, t)}</li>`).join('') : '');
+      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t, id, sv]) => `<li>${sv || `<span class="punkts" style="background:${esc(k)}"></span>`}<span class="dv-leg-nos">${esc(t)}</span>${x(`data-id="${esc(id)}"`, t)}</li>`).join('') : '');
     legenda.querySelector('.dv-leg-notirit').hidden = false;
   }
   legenda.querySelector('summary').addEventListener('click', e => { if (e.target.closest('.dv-leg-notirit')) e.preventDefault(); });  // nesakļauj leģendu; notīra app.js
