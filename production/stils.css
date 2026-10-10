@@ -512,8 +512,13 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats .druka-qr svg { width: 32mm; height: 32mm; flex: none; }
   body.druka-rezultats .druka-qr p { margin: 0 0 .3rem; overflow-wrap: anywhere; }
   /* Viena A4 lapa: kompakts izkārtojums, tuvākās vietas līdz 2 katrā grupā, bez statusa un abonēšanas rindām, bez kartes/soļu joslas */
+<<<<<<< HEAD
   @page { size: A4; margin: 5mm; }
   body.druka-rezultats #rezultati { font-size: 9pt; line-height: 1.12; }
+=======
+  @page { size: A4; margin: 6mm; }
+  body.druka-rezultats #rezultati { font-size: 9pt; line-height: 1.18; }
+>>>>>>> origin/main
   body.druka-rezultats #rezultati * { box-shadow: none !important; overflow: visible !important; max-height: none !important; }
   body.druka-rezultats #rezultati > * { margin-top: .1rem; margin-bottom: .1rem; }
   body.druka-rezultats #rezultati .fakti { margin: .1rem 0; }
@@ -536,10 +541,13 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats #rezultati .pludi-metode { display: none !important; }
   body.druka-rezultats #rezultati .padoms { padding: .15rem .4rem; }
   body.druka-rezultats #rezultati .talak { padding: .15rem .4rem; }
+<<<<<<< HEAD
   body.druka-rezultats #rezultati .popup-avots br { display: none !important; }
   body.druka-rezultats #rezultati .bez-licences::before { content: ' · '; }
   body.druka-rezultats #rezultati #rez-udens > div > span:not(.udens-statuss) { display: none !important; }
   body.druka-rezultats #rezultati .krit-zime ~ small, body.druka-rezultats #rezultati .ca-avots + small { margin: 0; }
+=======
+>>>>>>> origin/main
   body.druka-rezultats #rezultati .pasvaldiba-rinda ~ .pasvaldiba-rinda, body.druka-rezultats #rezultati #rez-augsne,
   body.druka-rezultats #rezultati #rez-udens small:not(.avots-rinda) { display: none !important; }
   body.druka-rezultats .druka-qr { margin-top: .4rem; padding-top: .3rem; }
@@ -876,7 +884,7 @@ body.ir-meklets .dv-pirmais { display: none; }
 
   /* Kartes uznirstošie logi nekad nav augstāki par redzamo karti: saturs ritinās, ✕ paliek augšā (44 px) */
   body.apaksa-aktiva .leaflet-popup-content-wrapper { display: flex; flex-direction: column; max-height: min(60vh, calc(100dvh - 200px - env(safe-area-inset-top)), var(--popup-augstums, 100dvh)); overflow: hidden; }
-  body.apaksa-aktiva.popups-atverts #demo-cilne { display: none; }  /* sheet.js: kamēr logs atvērts, demo cilne to neaizsedz */
+  body.apaksa-aktiva.popups-atverts #demo-cilne, body.apaksa-aktiva.popups-bez-pillas .pamatkarte { display: none; }  /* sheet.js: kamēr logs atvērts, demo cilne to neaizsedz */
   body.apaksa-aktiva .leaflet-popup-content { overflow-y: auto; overscroll-behavior: contain; margin: 12px 14px; padding-right: 22px; min-height: 0; }
   body.apaksa-aktiva .leaflet-container a.leaflet-popup-close-button { z-index: 2; width: 44px; height: 44px; font: 24px/44px system-ui, sans-serif; top: 0; right: 0; }
 

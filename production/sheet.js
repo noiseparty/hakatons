@@ -188,19 +188,33 @@ const Lapa = (() => {
   // aizvēršanas atgriežas. Demo cilne, kamēr logs atvērts, paslēpta (stils.css body.popups-atverts).
   const SMAILE = 24, POPUP_MIN = 160;
   let ieprieksStavoklis = null, atvertais = null;
-  const popupVieta = (a = Apaksa.atstarpes()) => karte.getSize().y - a.paddingTopLeft[1] - 8 - a.paddingBottomRight[1] - SMAILE;
-  function popupAtstarpes() {
+  // Augšējā atstarpe pēc FAKTISKĀS "Karte | Reljefs" apakšmalas (joslas var būt augstākas par 44 px: LVĢMC + demo kopā, atvērta josla);
+  // paslēpta poga (body.popups-bez-pillas) vairs vietu neaizņem. Apaksa.atstarpes() nemainām — tikai pielāgojam te.
+  function atst() {
+    const a = Apaksa.atstarpes();
+    const josl = el('kartes-joslas')?.offsetHeight || 0;
+    const pill = document.querySelector('.pamatkarte');
+    const k = karte.getContainer().getBoundingClientRect().top;
+    const pb = pill && pill.offsetParent ? pill.getBoundingClientRect().bottom - k + 6 : josl + 8;
+    return { paddingTopLeft: [a.paddingTopLeft[0], Math.max(pb, josl + 8)], paddingBottomRight: a.paddingBottomRight };
+  }
+  const popupVieta = (a = atst()) => karte.getSize().y - a.paddingTopLeft[1] - 8 - a.paddingBottomRight[1] - SMAILE;
+  function popupAtstarpes(augstums) {
     const o = L.Popup.prototype.options;
     if (!telefons.matches) {
       delete o.autoPanPaddingTopLeft; delete o.autoPanPaddingBottomRight; o.maxWidth = 300;
       karte.getContainer().style.removeProperty('--popup-augstums');
       return;
     }
-    const a = Apaksa.atstarpes();
+    document.body.classList.remove('popups-bez-pillas');
+    let a = atst();
+    // nav vietas logam virs lapas ar "Karte | Reljefs" → poga uz laiku paslēpta (kā demo cilne), atbrīvo ~50 px
+    const h = typeof augstums === 'number' ? augstums : atvertais?.getElement()?.querySelector('.leaflet-popup-content-wrapper')?.offsetHeight || 0;
+    if (h && popupVieta(a) < h) { document.body.classList.add('popups-bez-pillas'); a = atst(); }
     const labi = a.paddingBottomRight[0];
     // platums: saturs + 50 px (malas, vieta ✕) starp kreiso malu (10 px) un kartes pogām labajā pusē
     o.maxWidth = Math.min(300, innerWidth - 10 - labi - 50);
-    o.autoPanPaddingTopLeft = L.point(10, a.paddingTopLeft[1] + 8);  // + ēna zem "Karte | Reljefs"
+    o.autoPanPaddingTopLeft = L.point(10, a.paddingTopLeft[1] + 6);  // + ēna zem "Karte | Reljefs"
     o.autoPanPaddingBottomRight = L.point(labi, a.paddingBottomRight[1]);
     karte.getContainer().style.setProperty('--popup-augstums', Math.max(POPUP_MIN, popupVieta(a)) + 'px');
   }
@@ -216,18 +230,21 @@ const Lapa = (() => {
         ieprieksStavoklis ??= st;
         Apaksa.atvert('peek');
       }
-      popupAtstarpes();
+      popupAtstarpes(w ? w.offsetHeight : 0);
     }
     return leafletPan.apply(this, arguments);
   };
   lapa.addEventListener('apaksa:stavoklis', popupAtstarpes);
-  karte.on('popupopen', e => { atvertais = e.popup; document.body.classList.add('popups-atverts'); });
+  karte.on('popupopen', e => {
+    atvertais = e.popup; document.body.classList.add('popups-atverts');
+    el('kartes-joslas')?.querySelectorAll('details[open]').forEach(d => d.removeAttribute('open'));  // atvērta josla (līdz 45 %) logu neaizsegtu
+  });
   karte.on('popupclose', e => {
     e.popup._lapaSagatavota = false;
     setTimeout(() => {  // cits logs var atvērties tajā pašā brīdī (autoClose) — tad lapu neatjauno
       if (atvertais !== e.popup) return;
       atvertais = null;
-      document.body.classList.remove('popups-atverts');
+      document.body.classList.remove('popups-atverts', 'popups-bez-pillas');
       if (ieprieksStavoklis && Apaksa.stavoklis() === 'peek') Apaksa.atvert(ieprieksStavoklis);
       ieprieksStavoklis = null;
     }, 0);
@@ -237,6 +254,10 @@ const Lapa = (() => {
     if (atvertais && e.target.closest?.('.leaflet-popup') && typeof atvertais._adjustPan === 'function') atvertais._adjustPan();
   }, true);
 
+  // "Karte | Reljefs" un pogas sēž zem joslām: nobīde seko joslu faktiskajam augstumam (LVĢMC + demo kopā > 44 px)
+  const joslasH = () => { const j = el('kartes-joslas'); document.body.style.setProperty('--joslas-h', j && j.offsetHeight ? j.offsetHeight + 4 + 'px' : '0px'); };
+  if (window.ResizeObserver) new ResizeObserver(joslasH).observe(el('kartes-joslas'));
+  joslasH();
   telefons.addEventListener('change', () => { novietot(); popupAtstarpes(); });
   addEventListener('resize', popupAtstarpes);
   novietot();
