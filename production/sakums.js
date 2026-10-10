@@ -99,5 +99,13 @@
     }).join('');
   }
 
+  const forma = $('meklet');
+  if (forma) forma.addEventListener('submit', e => {
+    e.preventDefault();
+    const q = $('vaicajums').value.trim();
+    if (!q) { $('vaicajums').focus(); return; }
+    location.href = '/map?q=' + encodeURIComponent(q);
+  });
+
   skaiti(); statuss(); avoti();
 })();

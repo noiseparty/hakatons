@@ -19,9 +19,15 @@
     <h1>Krīzes karte: viena meklēšana, viens lēmums</h1>
     <p>Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
       kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.</p>
+    <form class="meklet" role="search" id="meklet" action="/map" method="get">
+      <label for="vaicajums" data-t>Kas Jums vajadzīgs?</label>
+      <div class="rinda">
+        <input id="vaicajums" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē" data-t-placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+        <button type="submit" class="poga" data-t>Meklēt</button>
+      </div>
+    </form>
     <div class="cta">
-      <a class="poga" href="/map">Atvērt karti</a>
-      <a class="saite-hero" href="/map">Vai meklēt situāciju</a>
+      <a class="saite-hero sek" href="/map" data-t>Atvērt karti</a>
     </div>
   </div>
 </header>
