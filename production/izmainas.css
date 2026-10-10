@@ -1,0 +1,23 @@
+/* Izmaiņu žurnāls (izmainas.js): poga # pirms nosaukuma un logs "Kas jauns" */
+.galva-kreisi { display: flex; align-items: center; gap: .5rem; min-width: 0; }
+#izmainas-poga { flex: none; width: 44px; height: 44px; padding: 0; font-size: 1.15rem; font-weight: 700; color: #fff;
+  background: rgba(255, 255, 255, .15); border: 1px solid rgba(255, 255, 255, .4); }
+#izmainas-poga:hover { background: rgba(255, 255, 255, .28); }
+
+.izmainas { width: min(560px, calc(100vw - 24px)); max-height: min(80vh, 720px); padding: 0; border: 0; border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .3); color: var(--teksts); }
+.izmainas::backdrop { background: rgba(15, 23, 42, .45); }
+.izmainas[open] { display: flex; flex-direction: column; }
+.izmainas-galva { display: flex; align-items: center; justify-content: space-between; padding: .6rem .6rem .6rem 1rem; border-bottom: 1px solid var(--robeza); }
+.izmainas-galva h2 { margin: 0; font-size: 1.1rem; color: var(--zils); }
+.izmainas-aizvert { width: 44px; height: 44px; padding: 0; border: 0; font-size: 1.1rem; color: var(--teksts2); }
+.izmainas-saturs { overflow-y: auto; padding: .2rem 1rem 1rem; }
+.izmainas-saturs h3 { margin: .9rem 0 .3rem; font-size: .85rem; text-transform: uppercase; letter-spacing: .04em; color: var(--teksts2); }
+.izmainas-saturs ul { margin: 0; padding-left: 1.1rem; }
+.izmainas-saturs li { margin: .35rem 0; font-size: .92rem; line-height: 1.4; }
+.izmainas-saturs a { color: var(--zils); font-weight: 600; }
+
+@media (max-width: 800px) {
+  .izmainas { width: 100vw; max-width: 100vw; max-height: 85vh; margin: auto 0 0; border-radius: 14px 14px 0 0; }  /* no apakšas */
+}
+.galva-kreisi h1 { min-width: 0; }

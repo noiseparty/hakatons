@@ -1,5 +1,9 @@
 """Ielādē punktu datu kopu tabulā objekti, aizvietojot visu iepriekšējo tā paša avota saturu.
 
+Droši palaist atkārtoti: rindas atjauno pēc (avots, avota_id). Rindas, kuru jaunajā failā nav, dzēš tikai tad, ja
+failā ir vismaz 90 % no iepriekšējā skaita (sargs pret tukšu vai pusē pārtrauktu lejupielādi; --atlaut-samazinajumu
+to atceļ). Tad iznākuma kods ir 3, un vecās rindas paliek. Pēc ielādes avoti.atjaunots = now().
+
 Ievade: GeoJSON (Point) vai CSV ar koordinātu kolonnām (WGS-84). Citus formātus (Excel, XML,
 API, adreses bez koordinātām) vispirms pārveido uz vienu no šiem, skat. src/karte/README.md.
 
@@ -138,6 +142,8 @@ def main():
     p.add_argument("--srid", type=int, default=4326, help="koordinātu sistēma, piem. 3059 (LKS-92 TM: lon=x, lat=y)")
     p.add_argument("--apvienot", type=float, default=0, metavar="M",
                    help="apvienot dublikātus ≤ M metru attālumā (skat. apvienot_dublikatus); noklusēti izslēgts")
+    p.add_argument("--atlaut-samazinajumu", action="store_true",
+                   help="dzēst trūkstošās rindas arī tad, ja jaunajā failā ir < 90 %% no iepriekšējā skaita")
     p.add_argument("--dsn", default=os.environ.get("MAP_DB_OWNER_DSN"))
     args = p.parse_args()
     if not args.dsn:
@@ -186,8 +192,15 @@ def main():
         nezinamas = [r[0] for r in cur.fetchall()]
         if nezinamas:
             sys.exit(f"Nezināmas kategorijas: {nezinamas}. Pievieno tās shema.sql (kategorijas).")
-        cur.execute("delete from objekti where avots = %s and avota_id not in (select avota_id from jauni)", (args.avots,))
-        dzesti = cur.rowcount
+        cur.execute("select (select count(*) from objekti where avots = %s), (select count(*) from jauni)", (args.avots,))
+        bija, jauni = cur.fetchone()
+        sargs = bija > 0 and jauni < 0.9 * bija and not args.atlaut_samazinajumu
+        if sargs:  # tukša vai nepilnīga lejupielāde nedrīkst izdzēst slāni
+            dzesti = 0
+            print(f"{args.avots}: jaunajā failā {jauni} no {bija} (< 90 %); vecās rindas netiek dzēstas", file=sys.stderr)
+        else:
+            cur.execute("delete from objekti where avots = %s and avota_id not in (select avota_id from jauni)", (args.avots,))
+            dzesti = cur.rowcount
         cur.execute(
             """insert into objekti (kategorija, nosaukums, adrese, ipasibas, avots, avota_id, derigs_no, derigs_lidz, geom)
                select kategorija, nosaukums, adrese, ipasibas, avots, avota_id, derigs_no, derigs_lidz, geom from jauni
@@ -197,6 +210,12 @@ def main():
                  geom = excluded.geom, atjaunots = now()"""
         )
         print(f"{args.avots}: {cur.rowcount} ielādēti, {dzesti} dzēsti")
+        # ielādes laiks avotam (Datu avoti panelis, statusa lapas "Datu vecums"); kolonna arī shema.sql
+        cur.execute("alter table avoti add column if not exists atjaunots timestamptz")
+        if not sargs:  # nepilnīga ielāde nav "atjaunots"
+            cur.execute("update avoti set atjaunots = now() where kods = %s", (args.avots,))
+    if sargs:
+        sys.exit(3)
 
 
 if __name__ == "__main__":

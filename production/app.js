@@ -6,12 +6,12 @@ const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
 const pamatkartes = {
   karte: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 19, crossOrigin: true,  // CORS: sw.js flīzes saglabā bezsaistei
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
   }),
   // reljefs (augstumi, upju ielejas): OSM dati + SRTM, atvērta licence (Esri satelītattēli nav atvērtie dati)
   reljefs: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    maxZoom: 17,
+    maxZoom: 17, crossOrigin: true,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki, SRTM · stils &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC BY-SA)'
   })
 };
@@ -174,8 +174,10 @@ async function tuvakaPatvertne() {
 }
 el('tuvaka').addEventListener('click', tuvakaPatvertne);
 
-// Ja atļauja jau dota iepriekš, nosakām vietu uzreiz (bez jauna jautājuma).
-navigator.permissions?.query({ name: 'geolocation' }).then(p => { if (p.state === 'granted') atrastMani(); }).catch(() => {});
+// Ja atļauja jau dota iepriekš, nosakām vietu uzreiz (bez jauna jautājuma). Pēc DOMContentLoaded: atbilde var pienākt
+// ātrāk, nekā ielādēts meklesana.js (krizesMeklesana), — Chrome/Android ierīču testā tā bija JS kļūda.
+addEventListener('DOMContentLoaded', () => navigator.permissions?.query({ name: 'geolocation' })
+  .then(p => { if (p.state === 'granted') atrastMani(); }).catch(() => {}));
 
 // ---- Reģioni ----
 function aizpilditRegionus(saraksts) {
@@ -221,8 +223,8 @@ function radtRegionu(kods) {
 }
 
 // ---- Kategorijas ----
-// Lieli slāņi (~12 000 pieturu, ūdens ņemšanas vietas) sākumā izslēgti; tos ieslēdz filtrā vai meklēšanas scenārijs
-const IZSLEGTI_SAKUMA = new Set(['pietura', 'udens_nemsana']);
+// Sākumā visi slāņi izslēgti (lietotāja lēmums 2026-10-10): karte = pamatkarte, brīdinājumi un meklēšana. Slāņus ieslēdz
+// meklēšanas rezultāts (meklesana.js), demo scenārijs (demo.js) vai lietotājs filtros; tā arī netiek ielādēti ~4 000 objektu.
 
 function aizpilditKategorijas(saraksts) {
   kategorijas = Object.fromEntries(saraksts.map(k => [k.kods, k]));
@@ -236,7 +238,7 @@ function aizpilditKategorijas(saraksts) {
     div.className = 'grupa';
     div.dataset.grupa = grupa;
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
-      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${!k.skaits ? 'disabled' : IZSLEGTI_SAKUMA.has(k.kods) ? '' : 'checked'}>
+      <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? '' : 'disabled'}>
         <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
         <span class="skaits">${k.skaits}</span></label>`).join('');
     kaste.append(div);
@@ -306,7 +308,7 @@ async function atjaunot() {
   if (pieprasijums) pieprasijums.abort();
   pieprasijums = new AbortController();
   objektuSlanis.clearLayers();
-  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Izvēlieties vismaz vienu slāni.'); return; }
+  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Slāņi izslēgti'); return; }
   const q = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].join(','), limit: 20000 });
   if (stavoklis.regions) q.set('regions', stavoklis.regions);
   if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }

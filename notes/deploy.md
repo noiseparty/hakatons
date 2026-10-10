@@ -80,3 +80,51 @@ how-to in `src/karte/README.md`. Credentials live only in `/etc/hakatons/map.env
 
 `map.repo.lv` allows `geolocation=(self)` (the shared Caddy `common` block blocks it for other sites).
 The live Caddy and systemd files are copied in `src/karte/serveris/`; keep them in sync when changing the server.
+
+## Bezsaistes režīms (service worker, `production/sw.js`)
+
+- `production/offline.js` reģistrē `sw.js` tikai https (un localhost testiem). Lapa un mūsu JS/CSS/JSON: **vispirms tīkls**,
+  bez tīkla — saglabātā kopija. Tāpēc parastie `production/` labojumi ir redzami uzreiz, kā līdz šim (VPS nav build soļa).
+- `VERSION` failā `sw.js` jāpalielina **tikai** tad, ja mainās pats `sw.js` vai tā `SHELL_FAILI` saraksts (jauns JS fails
+  index.html) — citādi jaunais fails bezsaistē nebūs saglabāts līdz nākamajai ielādei ar tīklu. Pārlūks `sw.js` atjauno pats.
+- Kešatmiņas: `shell-<VERSION>` (veco izdzēš), `cdn-v1` (Leaflet no unpkg), `flizes-v1` (OSM/OpenTopoMap, ~2500 flīžu),
+  `api-v1` (/api/* ar laiku `x-sw-saglabats`; bezsaistē mainīgie dati ≤ 6 h, vietas un slāņi ≤ 7 dienas).
+- "Saglabāt manu apkārtni" (filtru panelī): flīzes z12–15, ≤ 400 (OSM noteikumi: bez masveida lejupielādes), + pamatdati.
+- Pārbaude: Playwright `context.set_offline()` neietekmē service worker pieprasījumus — testā jāaptur pats serveris
+  (skat. PR „Offline mode”).
+## Daily data refresh (`hakatons-dati.timer`)
+
+Every day at 04:30 (Europe/Riga) `hakatons-dati.service` runs `src/karte/db/atjaunot_visu.sh`. It:
+
+1. applies `shema.sql` (idempotent, so new tables and columns land without a manual step);
+2. downloads the daily sources into **`/var/lib/hakatons/dati`**, never into the git checkout `/srv/hakatons` (the minute sync would fight with it):
+   - `valsts_dati.py`: ZVA pharmacies, IeM IC hospitals, police, VUGD depots, VKCP water intakes;
+   - `osm_poi.py`: OSM ATMs and fuel;
+   - `gtfs.py`: Rīgas satiksme, ATD and VIVI stops;
+3. loads every source downloaded **in this run** with `ielade.py`. If a download fails, the database keeps yesterday's rows, and the run ends with exit code 1;
+4. reloads the static snapshots from the repo (112.lv shelters, VM 24/7 hospitals, CA plans) only when the file changed (sha256 kept in `/var/lib/hakatons/ielades/`). `ca_plani.py` itself needs the cadastre DB, so it still runs locally and its GeoJSON comes in by PR.
+
+`ielade.py` is safe to re-run:
+- it upserts by `(avots, avota_id)`;
+- it deletes rows missing from the new file **only if the file has ≥ 90 %** of the previous count. Otherwise it keeps the old rows and exits with 3, which the script reports as a warning;
+- `--atlaut-samazinajumu` overrides the guard for a deliberate shrink;
+- every successful load writes `avoti.atjaunots`. The "Datu avoti" panel shows it per source, and the status page has a "Datu vecums" row that is red when a daily source is older than 48 h.
+
+```bash
+systemctl list-timers hakatons-dati.timer                 # next run
+journalctl -u hakatons-dati -n 100                        # last run
+systemctl start hakatons-dati.service                     # run now
+sudo -u deploy bash -c 'cd /srv/hakatons && set -a && . /etc/hakatons/map.env && set +a && bash src/karte/db/atjaunot_visu.sh --parbaude'   # dry run
+```
+
+A full reload from the repo snapshots (no download) is still `bash src/karte/db/ielade_visu.sh`, which is `atjaunot_visu.sh --visi`.
+
+**If the unit fails:** `journalctl -u hakatons-dati -n 50 --no-pager`. The first line of every run is
+`sākam …, lietotājs=…, DATI=…`. If it's missing, the failure is in systemd itself (`ExecStartPre`, `User=`,
+`EnvironmentFile=`). After changing the unit: `cp src/karte/serveris/hakatons-dati.* /etc/systemd/system/ && systemctl daemon-reload`.
+
+**Root fallback** (runs the same refresh without systemd, as `deploy`, with the same env file and folders; root reads `map.env`, `sudo -E` passes it on):
+
+```bash
+(install -d -o deploy -g deploy /var/lib/hakatons/dati /var/lib/hakatons/ielades && set -a && . /etc/hakatons/map.env && set +a && cd /srv/hakatons && sudo -E -u deploy HAKATONS_DATI=/var/lib/hakatons/dati HAKATONS_STAVOKLIS=/var/lib/hakatons/ielades bash src/karte/db/atjaunot_visu.sh)
+```
