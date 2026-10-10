@@ -25,3 +25,9 @@ The user built two mock-ups with Google Stitch ("Krīzes karte · map.repo.lv Pr
 4. Element styling (cards, chips, pills, icons) is the part the user wants to improve; keep the structure.
 
 Screenshots of the mock-ups are in the user's chat (not in the repo).
+
+## Icons and marker shapes (user, 2026-10-10 03:22 +03:00)
+
+- **Marker shapes by group**, so layers are distinguishable at a glance: medical = **cross**; infrastructure = **triangle**; water = **drop** (the user will provide the SVG library for these in a later prompt); transport = **square**; shelters and critical services = **circle**.
+- **Replace every emoji** used in the UI (banner, layer list, popups, result card, status page, demo panel, feed) with icons from https://github.com/basmilius/meteocons (MIT): weather, warnings, lightning, wind, rain, thermometer, moon/sun for night scenarios. Ship as an inline SVG sprite in production/ (no CDN), with `aria-hidden` and a text label next to each.
+- Order: first UI task once the night's feature work is done.

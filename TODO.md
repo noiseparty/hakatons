@@ -4,6 +4,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 `main` is protected — change this file via a branch + PR, never by pushing to `main`.
 
 ## Pending
+- [ ] UI icons: marker SHAPES per group — medical = cross, infrastructure = triangle, water = drop (SVG set to be given by the user later), transport = square, shelters and critical services = circle; replace every emoji in the UI with icons from https://github.com/basmilius/meteocons (MIT; weather/warning/lightning/wind/rain/temperature) as an inline SVG sprite, no CDN — added 2026-10-10 03:22 +03:00 by noiseparty
 - [ ] Link previews: Open Graph + Twitter card meta tags (og:title, og:description, og:image 1200×630 with the map + verdict, og:url canonical, twitter:card summary_large_image), `<meta name=description>`, favicon set and theme-color, on index.html, info.html, statuss.html, slaidi.html, trukstosie.html; test with a WhatsApp/Telegram/Slack paste and opengraph.xyz — added 2026-10-10 03:16 +03:00 by noiseparty
 - [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
@@ -29,7 +30,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
 - [ ] Result card: municipality civil-protection phone / plan link (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
 - [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the result card — added 2026-10-10 00:21 +03:00 by noiseparty
-- [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Load LVĢMC observations (data.gov.lv `hidrometeorologiskie-noverojumi`, CC0) to show real gust maxima, e.g. for the 22–23.08.2026 storm replay — added 2026-10-10 01:58 +03:00 by noiseparty
 - [ ] Offline mode: service worker + cached data/tiles for the user's area (demo 7 can only say "print it now") — added 2026-10-10 01:58 +03:00 by noiseparty
@@ -61,10 +61,16 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] Morning: gentle live check after the load-hardening merge (`src/testi/slodze.py --klienti 5 --ilgums 30 --rps 2 --tikai-kesa --statistika`) — added 2026-10-10 03:26 +03:00 by noiseparty
 
 - [ ] VPS: set `MAP_MOD_TOKEN=<long random>` in `/etc/hakatons/map.env` and `systemctl restart hakatons-map-api` to enable moderation (without it, hiding is off; reports still work) — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Reports: check after merge that the API created table `zinojumi` (`journalctl -u hakatons-map-api | grep zinojumi:` empty) and one report round-trips on the phone — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
+
+- [ ] Ask Ventspils valstspilsēta + novads to publish the assembly/accommodation parts of CA-plan annexes 4–16 (only cover pages are public; plan p. 48/50 points to them) — added 2026-10-10 03:23 +03:00 by noiseparty
+
+- [ ] Send the data-request letters on Monday (`notes/vestules.md`): VUGD pasts@vugd.gov.lv, Sadales tīkls st@sadalestikls.lv (verify), LVĢMC lvgmc@lvgmc.lv (verify), Rīgas satiksme info@rigassatiksme.lv, LVC lvceli@lvceli.lv, VARAM pasts@varam.gov.lv, VDAA pasts@vdaa.gov.lv, and the 12 municipalities (addresses in the letters file); fill in the team contact first — added 2026-10-10 03:29 +03:00 by noiseparty
+- [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -74,6 +80,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 ## Done
 - [x] Demo panel: 9 real Latvian events with sourced figures (BRELL 2025, drones Gaigalava 2024 / Rēzekne 2026, Jēkabpils ice-jam flood 2023, Stiklu purvs fire 2018, Ulmaņa gatve warehouse fire 2026, Bauskas iela gas explosion 2026, port scrap-metal fire 2026, DDoS 2025), panel grouped "Reāli notikumi" / "Simulācijas", smoke-cone zones, `vaicajums` for replay (`notes/demo-scenariji.md`) — done 2026-10-10 03:18 +03:00 by noiseparty (added 2026-10-10 03:18 +03:00 by noiseparty)
+- [x] API load hardening for judging day: load-test scripts (live gentle + local with fake upstreams), server queue 128, stale-while-revalidate cache, /api/pludi ≤ 25 s → 202 + card retry, objekti/point LRU, DB concurrency cap, JSON 500, /api/veseliba?statistika=1; results in `notes/slodze.md` — done 2026-10-10 03:26 +03:00 by noiseparty (added 2026-10-10 03:26 +03:00 by noiseparty)
+- [x] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — done 2026-10-10 03:23 +03:00 by noiseparty: OCR'd (Tesseract lav) → `src/karte/dati/ca_plani/ventspils-ocr.md`; the lists are in annexes 4–16, which are only 'ierobežotas pieejamības' cover pages in the public file (lpp. 71–83), so **nothing to extract**; ventspils.json + ca-plani-kvalitate.md now cite this (added 2026-10-10 00:08 +03:00 by noiseparty)
 - [x] Device matrix of the live site (iPhone SE/14, Pixel 7, Galaxy S9+, iPad Mini; location on/off) + fixes: 44 px tap targets on phones, geolocation JS race, Demo tab covering the forecast ✕ (`notes/telefonu-tests.md`, `src/demo/ierices.py`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
 - [x] All map layers off on page load (search result / demo turn on what they need; "Beigt demo" back to all off) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
 - [x] Changelog: "#" button before "Krīzes karte" opens "Kas jauns" (`production/izmainas.json`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
