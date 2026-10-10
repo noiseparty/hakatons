@@ -91,3 +91,33 @@ pielāgotos testam. Abas atbildes dod drošu padomu, un otrā parādās "Vai dom
 - "vējš plēš kokus, kur slēpties" (patvertne ir pieņemama atbilde);
 - "bērnam krampji un augsta temperatūra" (medicīna);
 - "vecmamma sabruka un neelpo" (sabruk = ēka). Šeit 112 rinda parādās jebkurā gadījumā.
+
+## 3. kārta (2026-10-10 rīts): tuvie pāri un demo vaicājumi
+
+Abus tuvos pārus tomēr salabojām: atšķirību var nolasīt no vārdiem. Gāzei izšķir vieta (kāpņu telpa, pagrabs,
+visa māja pret virtuvi un plīti), sniegam — kustība (braucu, šoseja, трасса, driving pret kājām, пешком, on foot;
+iestrēdzis pret riteņi buksē).
+- **Gāze.** Smakas frāzes ("smird pēc gāz", "пахнет газ", "gas smell" …) tagad ir abiem scenārijiem. Tāpēc tās
+  sver 1/√2 un uzvarētāju nenosaka. Ja punkti vienādi, uzvar "Gāzes smaka dzīvoklī" (tas failā ir pirmais), un
+  otrs parādās "Vai domājāt". Noplūdei ēkā pievienotas vietas (kāpņu telp, pagrab, visā māj, daudzdzīvokļu,
+  подъезд, подвал, stairwell, basement). Smakai dzīvoklī: virtuv, plīt, кухн, kitchen, stove.
+- **Sniegs.** "Sniegavētra ceļā" ieguva braukšanas vārdus. "brauc"/"brauk" ir arī pie "Apledojuši ceļi", tāpēc
+  tie sver mazāk. "Apmaldījies sniegā" ieguva iešanu kājām un kopīgos "nezinu kur esmu", "заблуд". No "Auto
+  iestrēdzis putenī" izņemts "sniegavētr": "sniegavētra" bez "iestrēdzis" nozīmē braukšanu, nevis iestrēgšanu.
+- Šos vārdus izmēģinājām un izmetām, jo tie ir pārāk vispārīgi un salauza citus vaicājumus: "uz ceļa", "ceļā",
+  "на дороге", "on the road", "dzīvoklī", "apartment", "квартир", "building", "hallway", "kaimiņ", "kāpn".
+
+`vaicajumi.json` papildinājām ar 46 vaicājumiem:
+- 14 unikālie demo paneļa vaicājumi (scenāriju ir 16, bet "drons Rēzekne" atkārtojas trīs reizes);
+- 32 jauni vaicājumi par abiem pāriem (LV, RU/EN, bez garumzīmēm, ar vietu).
+
+Jaunos rakstījām paši, redzot atslēgvārdus, tāpēc tie nav neatkarīgs novērtējums. Pirms labojumiem pareizi bija
+36 no 46.
+
+| Stāvoklis | Kopā (609) | paturēti (186) | sākotnējie 563 | to paturētie (172) |
+|---|---:|---:|---:|---:|
+| `main` + jaunie vaicājumi | 571 (93,8 %) | 168 (90,3 %) | 535 (95,0 %) | 156 (90,7 %) |
+| + atslēgvārdi | **585 (96,1 %)** | **170 (91,4 %)** | 539 (95,7 %) | 156 (90,7 %) |
+
+Salaboti 14 vaicājumi, salauzts neviens. Vecie testi joprojām zaļi: 125/125 un 121/121. Lieka "Vai domājāt" poga
+skaidrajiem vaicājumiem parādās biežāk: 182 → 189 no 548.

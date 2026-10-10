@@ -1,5 +1,5 @@
 // Atskaņošana prezentācijai: demo scenāriji pēc kārtas (pa 20 s), katram arī tipiskais meklēšanas vaicājums, lai
-// redzama rezultāta kartīte. Poga "▶ Atskaņot" demo paneļa galvā vai saite ?demo=atskanot[&saraksts=a,b,c&ilgums=20].
+// redzama rezultāta kartīte. Poga "Atskaņot" demo paneļa galvā vai saite ?demo=atskanot[&saraksts=a,b,c&ilgums=20].
 // Noklusēti — visi demo/scenariji.json scenāriji paneļa secībā ("Reāli notikumi", tad "Simulācijas"); saraksts= — savs.
 // Taustiņi (datorā): atstarpe — pauze, → nākamais, ← iepriekšējais, Escape — beigt. Beigās "Beigt demo".
 // Lieto demo.js publiskās funkcijas (Demo.sakt, Demo.beigt, Demo.atvert) un meklesana.js (krizesMeklesana.meklet);
@@ -25,10 +25,10 @@ const Atskanot = (() => {
         <span class="atskanot-laiks" aria-live="off"></span></div>
       <div class="atskanot-progress" aria-hidden="true"><span></span></div>
       <div class="atskanot-pogas">
-        <button type="button" data-a="ieprieks" aria-label="Iepriekšējais scenārijs">⏮</button>
-        <button type="button" data-a="pauze" aria-label="Pauze">⏸</button>
-        <button type="button" data-a="nakamais" aria-label="Nākamais scenārijs">⏭</button>
-        <button type="button" data-a="beigt" aria-label="Beigt atskaņošanu">■ Beigt</button>
+        <button type="button" data-a="ieprieks" aria-label="Iepriekšējais scenārijs">${Ik('atpakal-solis')}</button>
+        <button type="button" data-a="pauze" aria-label="Pauze">${Ik('pauze')}</button>
+        <button type="button" data-a="nakamais" aria-label="Nākamais scenārijs">${Ik('uz-prieksu')}</button>
+        <button type="button" data-a="beigt" aria-label="Beigt atskaņošanu">${Ik('apturet')} Beigt</button>
       </div>
     </div>`);
   const josla = el('atskanot-josla');
@@ -36,7 +36,7 @@ const Atskanot = (() => {
 
   // Poga demo paneļa galvā (demo.js to nepārzīmē)
   document.querySelector('#demo-panelis .demo-galva')?.insertAdjacentHTML('afterend',
-    '<div class="atskanot-rinda"><button type="button" class="atskanot-sakt">▶ Atskaņot ' + (SARAKSTS ? 'izvēlētos' : 'visus') +
+    '<div class="atskanot-rinda"><button type="button" class="atskanot-sakt">' + Ik('atskanot') + ' Atskaņot ' + (SARAKSTS ? 'izvēlētos' : 'visus') +
     ' pēc kārtas</button><small>pa ' + ILGUMS / 1000 + ' s katru; datorā atstarpe — pauze, ← → — iepriekšējais / nākamais</small></div>');
   document.querySelector('#demo-panelis .atskanot-sakt')?.addEventListener('click', () => sakt());
 
@@ -95,11 +95,11 @@ const Atskanot = (() => {
   function zimet() {
     const sc = soli[solis];
     josla.querySelector('.atskanot-solis').textContent = `${solis + 1} / ${soli.length}`;
-    josla.querySelector('.atskanot-nos').textContent = `${sc.ikona || ''} ${sc.nosaukums}`;
+    josla.querySelector('.atskanot-nos').innerHTML = `${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}`;
     josla.querySelector('.atskanot-laiks').textContent = Math.ceil(atlikums / 1000) + ' s';
     progress.style.width = '0%';
     const p = josla.querySelector('[data-a="pauze"]');
-    p.textContent = pauze ? '▶' : '⏸';
+    p.innerHTML = Ik(pauze ? 'atskanot' : 'pauze');
     p.setAttribute('aria-label', pauze ? 'Turpināt' : 'Pauze');
   }
 
@@ -110,7 +110,7 @@ const Atskanot = (() => {
     pauze = !pauze;
     josla.classList.toggle('pauze', pauze);
     const p = josla.querySelector('[data-a="pauze"]');
-    p.textContent = pauze ? '▶' : '⏸';
+    p.innerHTML = Ik(pauze ? 'atskanot' : 'pauze');
     p.setAttribute('aria-label', pauze ? 'Turpināt' : 'Pauze');
   }
 

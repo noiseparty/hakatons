@@ -1,0 +1,193 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+<!-- Ikonas: Meteocons (Bas Milius, MIT, laikapstākļi) un Lucide (ISC, pārējās). Licences: ikonas/LICENSES.md. Ģenerē: python src/ikonas/spraits.py production/ikonas/ikonas.svg -->
+<symbol id="brid" viewBox="0 0 128 128"><!-- meteocons weather-alert --><g id="brid-weather-alert__weather-alert" clip-path="url(#brid-weather-alert__clip0_2045_48112)"><g id="brid-weather-alert__Sky"><g id="brid-weather-alert__Clouds"><g id="brid-weather-alert__Cloud"><path id="brid-weather-alert__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.289 14.954S30.871 89.002 37.953 89h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.323-13.26-13.611-12.942"/></g></g></g><g id="brid-weather-alert__Alert"><path id="brid-weather-alert__Exclamation" fill="#202939" d="M89.402 68.5c1.155-2 4.041-2 5.196 0l12.124 21c1.155 2-.288 4.5-2.598 4.5H79.876c-2.31 0-3.753-2.5-2.598-4.5z"/><path id="brid-weather-alert__ExclamationMark" fill="#fff" d="M92.758 84.59h-1.494l-.846-5.022v-3.384h3.168v3.384zm.846 4.41H90.4v-3.006h3.204z"/></g></g><defs><clipPath id="brid-weather-alert__clip0_2045_48112"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="brid-dzeltens" viewBox="0 0 128 128"><!-- meteocons code-yellow --><g id="brid-dzeltens-code-yellow__code-yellow"><g id="brid-dzeltens-code-yellow__Alarm"><path id="brid-dzeltens-code-yellow__Exclamation" fill="#fde047" d="M58.77 39.304c2.293-4.08 8.167-4.08 10.46 0L91.017 78.06c2.249 4-.642 8.94-5.23 8.94H42.213c-4.588 0-7.479-4.94-5.23-8.94z"/><path id="brid-dzeltens-code-yellow__ExclamationMark" fill="#fff" d="M65.264 68.65h-2.49l-1.41-8.37v-5.64h5.28v5.64zm1.41 7.35h-5.34v-5.01h5.34z"/></g></g></symbol>
+<symbol id="brid-oranzs" viewBox="0 0 128 128"><!-- meteocons code-orange --><g id="brid-oranzs-code-orange__code-orange"><g id="brid-oranzs-code-orange__Alarm"><path id="brid-oranzs-code-orange__Exclamation" fill="#fb923c" d="M58.77 39.304c2.293-4.08 8.167-4.08 10.46 0L91.017 78.06c2.249 4-.642 8.94-5.23 8.94H42.213c-4.588 0-7.479-4.94-5.23-8.94z"/><path id="brid-oranzs-code-orange__ExclamationMark" fill="#fff" d="M65.264 68.65h-2.49l-1.41-8.37v-5.64h5.28v5.64zm1.41 7.35h-5.34v-5.01h5.34z"/></g></g></symbol>
+<symbol id="brid-sarkans" viewBox="0 0 128 128"><!-- meteocons code-red --><g id="brid-sarkans-code-red__code-red"><g id="brid-sarkans-code-red__Alarm"><path id="brid-sarkans-code-red__Exclamation" fill="#ef4444" d="M58.77 39.304c2.293-4.08 8.167-4.08 10.46 0L91.017 78.06c2.249 4-.642 8.94-5.23 8.94H42.213c-4.588 0-7.479-4.94-5.23-8.94z"/><path id="brid-sarkans-code-red__ExclamationMark" fill="#fff" d="M65.264 68.65h-2.49l-1.41-8.37v-5.64h5.28v5.64zm1.41 7.35h-5.34v-5.01h5.34z"/></g></g></symbol>
+<symbol id="vejs" viewBox="0 0 128 128"><!-- meteocons wind --><g id="vejs-wind__wind"><g id="vejs-wind__Wind"><path id="vejs-wind__Wind Line 1" stroke="#e2e8f0" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M87.79 40.135c6.186-6.788 17.21-1.73 17.21 7.311C105 53.275 100.522 58 95 58H24"/><path id="vejs-wind__Wind Line 1_2" stroke="#e2e8f0" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M60.128 87.868C66.42 94.518 78 89.872 78 80.556 78 74.726 73.35 70 67.615 70H24"/></g></g></symbol>
+<symbol id="lietus" viewBox="0 0 128 128"><!-- meteocons rain --><g id="lietus-rain__rain" clip-path="url(#lietus-rain__clip0_2045_39587)"><g id="lietus-rain__Sky"><g id="lietus-rain__Clouds"><g id="lietus-rain__Cloud"><path id="lietus-rain__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.289 14.954S30.871 89.002 37.953 89h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.323-13.26-13.611-12.942"/></g></g></g><g id="lietus-rain__Precipitation"><g id="lietus-rain__Raindrops"><path id="lietus-rain__Raindrop 1" stroke="#0a5ad4" stroke-linecap="round" stroke-width="4" d="M52 83v12" transform="translate(0 8)"/><path id="lietus-rain__Raindrop 2" stroke="#0a5ad4" stroke-linecap="round" stroke-width="4" d="M64 83v12"/><path id="lietus-rain__Raindrop 3" stroke="#0a5ad4" stroke-linecap="round" stroke-width="4" d="M76 83v12" transform="translate(0 8)"/></g></g></g><defs><clipPath id="lietus-rain__clip0_2045_39587"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="zibens" viewBox="0 0 128 128"><!-- meteocons lightning-bolt --><g id="zibens-lightning-bolt__lightning-bolt"><g id="zibens-lightning-bolt__Lightning"><path id="zibens-lightning-bolt__Lightning Bolt" fill="#f6a823" d="m60 43-8 22.91h8L56 85l20-26.727H64L72 43z"/></g></g></symbol>
+<symbol id="negaiss" viewBox="0 0 128 128"><!-- meteocons thunderstorms --><g id="negaiss-thunderstorms__thunderstorms" clip-path="url(#negaiss-thunderstorms__clip0_2045_39851)"><g id="negaiss-thunderstorms__Sky"><g id="negaiss-thunderstorms__Clouds"><g id="negaiss-thunderstorms__Cloud"><path id="negaiss-thunderstorms__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.288 14.954.668 7.07 6.81 12.594 13.891 12.592h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.322-13.26-13.611-12.942"/></g></g></g><g id="negaiss-thunderstorms__Lightning"><path id="negaiss-thunderstorms__Lightning Bolt" fill="#f6a823" d="m60 68-8 22.91h8L56 110l20-26.727H64L72 68z"/></g></g><defs><clipPath id="negaiss-thunderstorms__clip0_2045_39851"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="sniegs" viewBox="0 0 128 128"><!-- meteocons snowflake --><g id="sniegs-snowflake__snowflake" clip-path="url(#sniegs-snowflake__clip0_2045_48568)"><g id="sniegs-snowflake__Snowflake"><path id="sniegs-snowflake__Snowflake_2" fill="#72b9d5" fill-rule="evenodd" d="m81.05 68.06 7.136 4.122h.03c2.55 1.262 3.522 4.55 2.11 6.984-1.428 2.463-4.779 3.214-7.12 1.652l-7.166-4.121a17.5 17.5 0 0 1-7.014 4.03V89c0 2.728-2.286 5-5.01 5-2.725 0-5.01-2.272-5.01-5v-8.242a16.8 16.8 0 0 1-7.046-4.03l-7.135 4.12c-2.36 1.36-5.497.503-6.848-1.833-1.363-2.358-.498-5.488 1.837-6.833l7.106-4.152a17.5 17.5 0 0 1 0-8.09l-7.136-4.122c-2.55-1.262-3.522-4.55-2.11-6.984 1.429-2.463 4.779-3.214 7.12-1.652l7.136 4.121a17.56 17.56 0 0 1 7.045-4.06V39c0-2.728 2.285-5 5.01-5s5.01 2.272 5.01 5v8.242a17 17 0 0 1 7.045 4.03l7.136-4.12c2.363-1.361 5.481-.53 6.847 1.833 1.365 2.362.526 5.473-1.837 6.833L81.05 59.97c.633 2.66.633 5.43 0 8.09M64 72a8 8 0 1 0 0-16 8 8 0 0 0 0 16" clip-rule="evenodd"/></g></g><defs><clipPath id="sniegs-snowflake__clip0_2045_48568"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="pludi" viewBox="0 0 128 128"><!-- meteocons water-tide-high --><g id="pludi-water-tide-high__water-tide-high"><g id="pludi-water-tide-high__Water"><path id="pludi-water-tide-high__Water_2" fill="#2563eb" d="M34 58.5a3 3 0 0 1 1.2-2.4l4.875-3.656a3 3 0 0 1 3.752.122l3.22 2.76a3 3 0 0 0 3.905 0l3.22-2.76a3 3 0 0 1 3.753-.122L62.2 55.65a3 3 0 0 0 3.6 0l4.275-3.206a3 3 0 0 1 3.752.122l3.22 2.76a3 3 0 0 0 3.905 0l3.22-2.76a3 3 0 0 1 3.753-.122L92.8 56.1a3 3 0 0 1 1.2 2.4V72a6 6 0 0 1-6 6H40a6 6 0 0 1-6-6z"/><g id="pludi-water-tide-high__Arrow"><path id="pludi-water-tide-high___Arrow Detail" stroke="#202939" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M64 43V25m0 0-6 6.9m6-6.9 6 6.9"/></g></g></g></symbol>
+<symbol id="prognoze" viewBox="0 0 128 128"><!-- meteocons partly-cloudy-day --><g id="prognoze-partly-cloudy-day__partly-cloudy-day" clip-path="url(#prognoze-partly-cloudy-day__clip0_2045_39567)"><g id="prognoze-partly-cloudy-day__Sky"><g id="prognoze-partly-cloudy-day__Mask group"><mask id="prognoze-partly-cloudy-day__mask0_2045_39567" width="128" height="128" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><g id="prognoze-partly-cloudy-day__Cloud Mask"><path id="prognoze-partly-cloudy-day__Subtract" fill="#000" fill-rule="evenodd" d="M128 0H0v128h128zM37.952 93h53.023c9.252 0 17.023-7.647 17.023-16.972 0-8.006-5.693-14.678-13.073-16.477.437-9.65-5.25-18.942-14.374-22.759-9.444-3.95-20.485-1.18-27.02 6.446-4.96-1.642-10.55-.942-14.957 2.053-4.428 3.009-7.143 7.99-7.39 13.247-7.12 2.925-11.856 10.313-11.106 18.246.864 9.145 8.75 16.218 17.874 16.216" clip-rule="evenodd"/></g></mask><g mask="url(#prognoze-partly-cloudy-day__mask0_2045_39567)"><g id="prognoze-partly-cloudy-day__Sun"><circle id="prognoze-partly-cloudy-day__Core" cx="39" cy="51" r="9" fill="#f8af18"/><g id="prognoze-partly-cloudy-day__Rays"><path fill="#f8af18" d="M37.688 31.313a1.312 1.312 0 1 1 2.624 0v6.125a1.312 1.312 0 1 1-2.624 0zM51.993 36.15a1.312 1.312 0 1 1 1.856 1.857l-4.33 4.33a1.312 1.312 0 1 1-1.857-1.855zM58.688 49.688a1.312 1.312 0 1 1 0 2.624h-6.126a1.312 1.312 0 1 1 0-2.624zM53.85 63.993a1.312 1.312 0 1 1-1.857 1.856l-4.33-4.33a1.312 1.312 0 1 1 1.855-1.857zM37.688 64.563a1.312 1.312 0 1 1 2.624 0v6.124a1.312 1.312 0 1 1-2.624 0zM28.482 59.662a1.312 1.312 0 1 1 1.856 1.856l-4.331 4.331a1.312 1.312 0 1 1-1.856-1.856zM25.438 49.688a1.312 1.312 0 1 1 0 2.624h-6.125a1.312 1.312 0 1 1 0-2.624zM30.338 40.482a1.312 1.312 0 1 1-1.856 1.856l-4.331-4.331a1.312 1.312 0 1 1 1.856-1.856z"/></g></g></g></g><g id="prognoze-partly-cloudy-day__Clouds"><g id="prognoze-partly-cloudy-day__Cloud"><path id="prognoze-partly-cloudy-day__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.289 14.954S30.871 89.002 37.953 89h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.323-13.26-13.611-12.942"/></g></g></g></g><defs><clipPath id="prognoze-partly-cloudy-day__clip0_2045_39567"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="viesulis" viewBox="0 0 128 128"><!-- meteocons tornado --><g id="viesulis-tornado__tornado" clip-path="url(#viesulis-tornado__clip0_3112_28665)"><g id="viesulis-tornado__Tornado"><path id="viesulis-tornado__Line 5" stroke="#94a3b8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M56 90h16"/><path id="viesulis-tornado__Line 4" stroke="#94a3b8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M47 77h34"/><path id="viesulis-tornado__Line 3" stroke="#94a3b8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M42 64h45"/><path id="viesulis-tornado__Line 2" stroke="#94a3b8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M37 51h54"/><path id="viesulis-tornado__Line 1" stroke="#94a3b8" stroke-linecap="round" stroke-miterlimit="10" stroke-width="4" d="M32 38h64"/></g></g><defs><clipPath id="viesulis-tornado__clip0_3112_28665"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="uguns" viewBox="0 0 128 128"><!-- meteocons fire-alert --><g id="uguns-fire-alert__fire-alert" clip-path="url(#uguns-fire-alert__clip0_3112_28681)"><g id="uguns-fire-alert__Mask group"><mask id="uguns-fire-alert__mask0_3112_28681" width="128" height="128" x="0" y="0" maskUnits="userSpaceOnUse" style="mask-type:alpha"><path id="uguns-fire-alert__Alert Mask" fill="#000" fill-rule="evenodd" d="M128 128H0V0h128zM97.196 67c-2.31-4-8.083-4-10.392 0L74.68 88c-2.31 4 .577 9 5.196 9h24.248c4.619 0 7.506-5 5.196-9z" clip-rule="evenodd"/></mask><g mask="url(#uguns-fire-alert__mask0_3112_28681)"><g id="uguns-fire-alert__Fire"><path id="uguns-fire-alert__Vector" fill="#f97316" d="M55.507 27.773a.01.01 0 0 1 0-.013 3.177 3.177 0 0 1 4.267.129c1.647 1.578 3.12 3.32 4.54 5.088a76 76 0 0 1 4.436 6.11c.805 1.235 2.607 1.333 3.535.189.148-.177.295-.367.442-.558 1.059-1.333 2.371-3.007 4.126-3.007 1.795 0 3.055 1.62 4.126 3.007q.262.348.523.653a64 64 0 0 1 5.05 7.129C90.196 52.472 94 60.975 94 70.526 94 87.355 80.564 101 63.993 101 47.423 101 34 87.368 34 70.54c0-12.395 5.506-23.129 10.784-30.611a77 77 0 0 1 7.314-8.857c1.096-1.14 2.206-2.267 3.408-3.286a.01.01 0 0 0 .001-.013m8.727 60.18c3.39 0 6.39-.952 9.217-2.857 5.64-4 7.153-12 3.764-18.284-.603-1.225-2.143-1.306-3.014-.272l-3.376 3.986a2.126 2.126 0 0 1-3.309-.068c-2.317-3.007-6.577-8.49-8.747-11.292-.724-.939-2.036-1.088-2.88-.259-2.452 2.422-6.899 7.728-6.899 14.19 0 9.333 6.778 14.856 15.231 14.856z"/><path id="uguns-fire-alert__Vector_2" fill="#facc15" d="M64.234 87.953c3.39 0 6.39-.952 9.217-2.857 5.64-4 7.153-11.999 3.764-18.284-.603-1.225-2.143-1.306-3.014-.272l-3.376 3.986a2.126 2.126 0 0 1-3.309-.068c-2.317-3.007-6.577-8.49-8.747-11.292-.724-.939-2.036-1.088-2.88-.259-2.452 2.422-6.9 7.728-6.9 14.19 0 9.333 6.78 14.856 15.232 14.856z"/></g></g></g><g id="uguns-fire-alert__Alert"><path id="uguns-fire-alert__Exclamation" fill="#202939" d="M89.402 68.5c1.155-2 4.041-2 5.196 0l12.124 21c1.155 2-.288 4.5-2.598 4.5H79.876c-2.31 0-3.753-2.5-2.598-4.5z"/><path id="uguns-fire-alert__ExclamationMark" fill="#fff" d="M92.758 84.59h-1.494l-.846-5.022v-3.384h3.168v3.384zm.846 4.41H90.4v-3.006h3.204z"/></g></g><defs><clipPath id="uguns-fire-alert__clip0_3112_28681"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="limenis" viewBox="0 0 128 128"><!-- meteocons raindrop-measure --><g id="limenis-raindrop-measure__raindrop-measure"><path id="limenis-raindrop-measure__Ruler" stroke="#e5e7eb" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M84 34h8v60h-8m2-30h6m-4 14h4m-4-30h4"/><path id="limenis-raindrop-measure__Background" fill="#bfdbfe" d="M64.5 34C52.63 52 45 63.25 45 74.175S53.726 94 64.5 94 84 85.125 84 74.175 76.37 51.975 64.5 34"/><g id="limenis-raindrop-measure__Mask group"><mask id="limenis-raindrop-measure__mask0_2045_48521" width="39" height="30" x="45" y="64" maskUnits="userSpaceOnUse" style="mask-type:alpha"><rect id="limenis-raindrop-measure__Water Level" width="39" height="30" x="45" y="64" fill="#000"/></mask><g mask="url(#limenis-raindrop-measure__mask0_2045_48521)"><path id="limenis-raindrop-measure__Raindrop" fill="#2563eb" d="M64.5 34C52.63 52 45 63.25 45 74.175S53.726 94 64.5 94 84 85.125 84 74.175 76.37 51.975 64.5 34"/></g></g></g></symbol>
+<symbol id="temp" viewBox="0 0 128 128"><!-- meteocons thermometer --><g id="temp-thermometer__thermometer" clip-path="url(#temp-thermometer__clip0_2045_49286)"><g id="temp-thermometer__Thermometer Mercury"><circle id="temp-thermometer__Reservoir" cx="64" cy="83" r="9" fill="#dc2626"/><rect id="temp-thermometer__Value" width="6" height="29" x="61" y="50" fill="#dc2626" rx="3"/></g><g id="temp-thermometer__Thermometer Glass"><path id="temp-thermometer__Glass" fill="#dbeafe" fill-opacity=".25" stroke="#bfdbfe" stroke-linecap="round" stroke-linejoin="round" d="M50.5 83.191a13.05 13.05 0 0 1 1.523-6.14 13.5 13.5 0 0 1 4.261-4.776.5.5 0 0 0 .216-.41V38.778c0-1.926.786-3.776 2.191-5.142A7.62 7.62 0 0 1 64 31.5c1.993 0 3.903.77 5.309 2.137a7.17 7.17 0 0 1 2.191 5.142v3.268H65a.5.5 0 0 0 0 1h6.5v6.78H65a.5.5 0 1 0 0 1h6.5v6.778H65a.5.5 0 0 0 0 1h6.5V71.84a.5.5 0 0 0 .216.411 13.5 13.5 0 0 1 4.266 4.787A13.05 13.05 0 0 1 77.5 83.19v.002C77.5 90.543 71.48 96.5 64 96.5s-13.5-5.957-13.5-13.308z"/></g></g><defs><clipPath id="temp-thermometer__clip0_2045_49286"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="nakts" viewBox="0 0 128 128"><!-- meteocons clear-night --><g id="nakts-clear-night__clear-night"><g id="nakts-clear-night__Moon"><path id="nakts-clear-night__Moon_2" fill="#72b9d5" d="M60.962 32C44.676 33.758 32 47.362 32 63.898 32 81.627 46.567 96 64.536 96 79.682 96 92.373 85.775 96 71.95 74.381 74.266 55.329 53.463 60.962 32"/></g></g></symbol>
+<symbol id="diena" viewBox="0 0 128 128"><!-- meteocons clear-day --><g id="diena-clear-day__clear-day"><g id="diena-clear-day__Sun"><circle id="diena-clear-day__Core" cx="64" cy="64" r="20" fill="#f8af18"/><g id="diena-clear-day__Rays"><path fill="#f8af18" d="M61 19a3 3 0 1 1 6 0v14a3 3 0 0 1-6 0zM93.699 30.059A3 3 0 1 1 97.94 34.3l-9.9 9.9a3 3 0 1 1-4.242-4.243zM109 61a3 3 0 1 1 0 6H95a3 3 0 1 1 0-6zM97.941 93.699a3 3 0 1 1-4.243 4.242l-9.899-9.9a3 3 0 1 1 4.243-4.242zM61 95a3 3 0 1 1 6 0v14a3 3 0 1 1-6 0zM39.958 83.799a3 3 0 1 1 4.243 4.243l-9.9 9.9a3 3 0 1 1-4.242-4.243zM33 61a3 3 0 1 1 0 6H19a3 3 0 0 1 0-6zM44.201 39.958a3 3 0 1 1-4.243 4.243l-9.9-9.9a3 3 0 1 1 4.243-4.242z"/></g></g></g></symbol>
+<symbol id="migla" viewBox="0 0 128 128"><!-- meteocons fog --><g id="migla-fog__fog" clip-path="url(#migla-fog__clip0_2045_39785)"><g id="migla-fog__Sky"><g id="migla-fog__Clouds"><g id="migla-fog__Cloud"><path id="migla-fog__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.289 14.954S30.871 89.002 37.953 89h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.323-13.26-13.611-12.942"/></g></g></g><g id="migla-fog__Precipitation"><path id="migla-fog__Line 2" stroke="#e2e8f0" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M40 95h48"/><path id="migla-fog__Line 1" stroke="#e2e8f0" stroke-linecap="round" stroke-miterlimit="10" stroke-width="3" d="M40 103h48"/></g></g><defs><clipPath id="migla-fog__clip0_2045_39785"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="dumi" viewBox="0 0 128 128"><!-- meteocons smoke --><g id="dumi-smoke__smoke" clip-path="url(#dumi-smoke__clip0_2045_39752)"><g id="dumi-smoke__Sky"><g id="dumi-smoke__Clouds"><g id="dumi-smoke__Cloud"><path id="dumi-smoke__Cloud_2" fill="#e6effc" d="M90.389 63.086c2.295-9.204-2.648-18.95-11.38-22.604-8.744-3.658-19.181-.344-24.172 7.73-4.3-2.587-9.862-2.434-14.013.387-4.14 2.814-6.324 7.915-5.474 12.855-6.957 1.315-11.957 7.885-11.289 14.954S30.871 89.002 37.953 89h53.024C98.045 89 104 83.119 104 76.028c0-7.327-6.323-13.26-13.611-12.942"/></g></g></g><g id="dumi-smoke__Smoke"><path id="dumi-smoke__Smoke 1" fill="#94a3b8" d="M62.5 110a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9"/><path id="dumi-smoke__Smoke 2" fill="#94a3b8" d="M53.5 101a7.5 7.5 0 1 0 0-15 7.5 7.5 0 0 0 0 15"/><path id="dumi-smoke__Smoke 3" fill="#94a3b8" d="M71.5 89C77.299 89 82 84.299 82 78.5S77.299 68 71.5 68 61 72.701 61 78.5 65.701 89 71.5 89"/></g></g><defs><clipPath id="dumi-smoke__clip0_2045_39752"><rect width="128" height="128" fill="#fff"/></clipPath></defs></symbol>
+<symbol id="slimnica" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide hospital --><path d="M12 7v4" />
+  <path d="M14 21v-3a2 2 0 0 0-4 0v3" />
+  <path d="M14 9h-4" />
+  <path d="M18 11h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-9a2 2 0 0 1 2-2h2" />
+  <path d="M18 21V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16" /></symbol>
+<symbol id="maja" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide house --><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" />
+  <path d="M3 10a2 2 0 0 1 .709-1.528l7-6a2 2 0 0 1 2.582 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" /></symbol>
+<symbol id="patvertne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide shield --><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" /></symbol>
+<symbol id="karogs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide flag --><path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528" /></symbol>
+<symbol id="vieta" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide map-pin --><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
+  <circle cx="12" cy="10" r="3" /></symbol>
+<symbol id="vugd" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide fire-extinguisher --><path d="M15 6.5V3a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v3.5" />
+  <path d="M9 18h8" />
+  <path d="M18 3h-3" />
+  <path d="M11 3a6 6 0 0 0-6 6v11" />
+  <path d="M5 13h4" />
+  <path d="M17 10a4 4 0 0 0-8 0v10a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2Z" /></symbol>
+<symbol id="zales" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide pill --><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z" />
+  <path d="m8.5 8.5 7 7" /></symbol>
+<symbol id="degviela" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide fuel --><path d="M14 13h2a2 2 0 0 1 2 2v2a2 2 0 0 0 4 0v-6.998a2 2 0 0 0-.59-1.42L18 5" />
+  <path d="M14 21V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v16" />
+  <path d="M2 21h13" />
+  <path d="M3 9h11" /></symbol>
+<symbol id="kontakts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide plug --><path d="M12 22v-5" />
+  <path d="M15 8V2" />
+  <path d="M17 8a1 1 0 0 1 1 1v4a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V9a1 1 0 0 1 1-1z" />
+  <path d="M9 8V2" /></symbol>
+<symbol id="drukat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide printer --><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+  <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+  <rect x="6" y="14" width="12" height="8" rx="1" /></symbol>
+<symbol id="mikrofons" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide mic --><path d="M12 19v3" />
+  <path d="M19 10v2a7 7 0 0 1-14 0v-2" />
+  <rect x="9" y="2" width="6" height="13" rx="3" /></symbol>
+<symbol id="marsruts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide navigation --><polygon points="3 11 22 2 13 21 11 13 3 11" /></symbol>
+<symbol id="remonts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide construction --><rect x="2" y="6" width="20" height="8" rx="1" />
+  <path d="M17 14v7" />
+  <path d="M7 14v7" />
+  <path d="M17 3v3" />
+  <path d="M7 3v3" />
+  <path d="M10 14 2.3 6.3" />
+  <path d="m14 6 7.7 7.7" />
+  <path d="m8 6 8 8" /></symbol>
+<symbol id="auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide car --><path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
+  <circle cx="7" cy="17" r="2" />
+  <path d="M9 17h6" />
+  <circle cx="17" cy="17" r="2" /></symbol>
+<symbol id="avarija" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide siren --><path d="M7 18v-6a5 5 0 1 1 10 0v6" />
+  <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" />
+  <path d="M21 12h1" />
+  <path d="M18.5 4.5 18 5" />
+  <path d="M2 12h1" />
+  <path d="M12 2v1" />
+  <path d="m4.929 4.929.707.707" />
+  <path d="M12 12v6" /></symbol>
+<symbol id="cisterna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide cylinder --><ellipse cx="12" cy="5" rx="9" ry="3" />
+  <path d="M3 5v14a9 3 0 0 0 18 0V5" /></symbol>
+<symbol id="rupnica" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide factory --><path d="M12 16h.01" />
+  <path d="M16 16h.01" />
+  <path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.769-.422l-4.462 2.844A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.769-.422L9.77 10.922A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z" />
+  <path d="M8 16h.01" /></symbol>
+<symbol id="eka" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide building --><path d="M12 10h.01" />
+  <path d="M12 14h.01" />
+  <path d="M12 6h.01" />
+  <path d="M16 10h.01" />
+  <path d="M16 14h.01" />
+  <path d="M16 6h.01" />
+  <path d="M8 10h.01" />
+  <path d="M8 14h.01" />
+  <path d="M8 6h.01" />
+  <path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3" />
+  <rect x="4" y="2" width="16" height="20" rx="2" /></symbol>
+<symbol id="taimeris" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide timer --><line x1="10" x2="14" y1="2" y2="2" />
+  <line x1="12" x2="15" y1="14" y2="11" />
+  <circle cx="12" cy="14" r="8" /></symbol>
+<symbol id="zinot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide megaphone --><path d="M11 6a13 13 0 0 0 8.4-2.8A1 1 0 0 1 21 4v12a1 1 0 0 1-1.6.8A13 13 0 0 0 11 14H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+  <path d="M6 14a12 12 0 0 0 2.4 7.2 2 2 0 0 0 3.2-2.4A8 8 0 0 1 10 14" />
+  <path d="M8 6v8" /></symbol>
+<symbol id="zinas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide newspaper --><path d="M15 18h-5" />
+  <path d="M18 14h-8" />
+  <path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-4 0v-9a2 2 0 0 1 2-2h2" />
+  <rect width="8" height="4" x="10" y="6" rx="1" /></symbol>
+<symbol id="pleksteris" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide bandage --><path d="M10 10.01h.01" />
+  <path d="M10 14.01h.01" />
+  <path d="M14 10.01h.01" />
+  <path d="M14 14.01h.01" />
+  <path d="M18 6v12" />
+  <path d="M6 6v12" />
+  <rect x="2" y="6" width="20" height="12" rx="2" /></symbol>
+<symbol id="nauda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide banknote --><rect width="20" height="12" x="2" y="6" rx="2" />
+  <circle cx="12" cy="12" r="2" />
+  <path d="M6 12h.01M18 12h.01" /></symbol>
+<symbol id="dokuments" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide file-text --><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+  <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+  <path d="M10 9H8" />
+  <path d="M16 13H8" />
+  <path d="M16 17H8" /></symbol>
+<symbol id="bez-sakariem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide phone-off --><path d="M10.1 13.9a14 14 0 0 0 3.732 2.668 1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2 18 18 0 0 1-12.728-5.272" />
+  <path d="M22 2 2 22" />
+  <path d="M4.76 13.582A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 .244.473" /></symbol>
+<symbol id="policija" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide shield-user --><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+  <path d="M6.376 18.91a6 6 0 0 1 11.249.003" />
+  <circle cx="12" cy="11" r="4" /></symbol>
+<symbol id="telefons" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide smartphone --><rect width="14" height="20" x="5" y="2" rx="2" ry="2" />
+  <path d="M12 18h.01" /></symbol>
+<symbol id="atkartot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide repeat --><path d="m17 2 4 4-4 4" />
+  <path d="M3 11v-1a4 4 0 0 1 4-4h14" />
+  <path d="m7 22-4-4 4-4" />
+  <path d="M21 13v1a4 4 0 0 1-4 4H3" /></symbol>
+<symbol id="autobuss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide bus --><path d="M8 6v6" />
+  <path d="M15 6v6" />
+  <path d="M2 12h19.6" />
+  <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3" />
+  <circle cx="7" cy="18" r="2" />
+  <path d="M9 18h5" />
+  <circle cx="16" cy="18" r="2" /></symbol>
+<symbol id="logs" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide app-window --><rect x="2" y="4" width="20" height="16" rx="2" />
+  <path d="M10 4v4" />
+  <path d="M2 8h20" />
+  <path d="M6 4v4" /></symbol>
+<symbol id="ekrans" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide monitor --><rect width="20" height="14" x="2" y="3" rx="2" />
+  <line x1="8" x2="16" y1="21" y2="21" />
+  <line x1="12" x2="12" y1="17" y2="21" /></symbol>
+<symbol id="karte" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide map --><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z" />
+  <path d="M15 5.764v15" />
+  <path d="M9 3.236v15" /></symbol>
+<symbol id="pulkstenis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide clock --><circle cx="12" cy="12" r="10" />
+  <path d="M12 6v6l4 2" /></symbol>
+<symbol id="slegts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide ban --><circle cx="12" cy="12" r="10" />
+  <path d="M4.929 4.929 19.07 19.071" /></symbol>
+<symbol id="lejupielade" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide download --><path d="M12 15V3" />
+  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+  <path d="m7 10 5 5 5-5" /></symbol>
+<symbol id="atrast" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide locate --><line x1="2" x2="5" y1="12" y2="12" />
+  <line x1="19" x2="22" y1="12" y2="12" />
+  <line x1="12" x2="12" y1="2" y2="5" />
+  <line x1="12" x2="12" y1="19" y2="22" />
+  <circle cx="12" cy="12" r="7" /></symbol>
+<symbol id="atpakal-solis" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide skip-back --><path d="M17.971 4.285A2 2 0 0 1 21 6v12a2 2 0 0 1-3.029 1.715l-9.997-5.998a2 2 0 0 1-.003-3.432z" />
+  <path d="M3 20V4" /></symbol>
+<symbol id="pauze" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide pause --><rect x="14" y="3" width="5" height="18" rx="1" />
+  <rect x="5" y="3" width="5" height="18" rx="1" /></symbol>
+<symbol id="uz-prieksu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide skip-forward --><path d="M21 4v16" />
+  <path d="M6.029 4.285A2 2 0 0 0 3 6v12a2 2 0 0 0 3.029 1.715l9.997-5.998a2 2 0 0 0 .003-3.432z" /></symbol>
+<symbol id="atskanot" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide play --><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z" /></symbol>
+<symbol id="apturet" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide square --><rect width="18" height="18" x="3" y="3" rx="2" /></symbol>
+<symbol id="koks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide tree-deciduous --><path d="M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z" />
+  <path d="M12 19v3" /></symbol>
+<symbol id="drons" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide plane --><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z" /></symbol>
+<symbol id="info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide info --><circle cx="12" cy="12" r="10" />
+  <path d="M12 16v-4" />
+  <path d="M12 8h.01" /></symbol>
+<symbol id="uzmanibu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide triangle-alert --><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
+  <path d="M12 9v4" />
+  <path d="M12 17h.01" /></symbol>
+<symbol id="lase" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide droplet --><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z" /></symbol>
+<symbol id="dalities" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide share-2 --><circle cx="18" cy="5" r="3" />
+  <circle cx="6" cy="12" r="3" />
+  <circle cx="18" cy="19" r="3" />
+  <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
+  <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></symbol>
+<symbol id="izvelne" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide menu --><path d="M4 5h16" />
+  <path d="M4 12h16" />
+  <path d="M4 19h16" /></symbol>
+<symbol id="saraksts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide list --><path d="M3 5h.01" />
+  <path d="M3 12h.01" />
+  <path d="M3 19h.01" />
+  <path d="M8 5h13" />
+  <path d="M8 12h13" />
+  <path d="M8 19h13" /></symbol>
+<symbol id="aizvert" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><!-- lucide x --><path d="M18 6 6 18" />
+  <path d="m6 6 12 12" /></symbol>
+</svg>

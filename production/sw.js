@@ -8,13 +8,13 @@
 // - /api/*: vispirms tīkls; katru veiksmīgo atbildi saglabā ar laiku (galvene x-sw-saglabats). Bez tīkla —
 //   saglabātā, ja nav vecāka par 6 h (mainīgie dati: brīdinājumi, ūdens, ceļi, satiksme…) vai 7 dienām (vietas,
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
-const VERSION = '2026-10-10f-filtri';
+const VERSION = '2026-10-10s-radio';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
   'avoti.js', 'klasifikators.js', 'app.js', 'zonas.js', 'meklesana.js', 'runa.js', 'apaksa.js', 'saraksts.js',
-  'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json',
-  'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
+  'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json', 'lr1.json', 'darbvirsma.js', 'darbvirsma.css',
+  'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'ikonas.js', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
   'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
   'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
   'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json',
@@ -22,6 +22,7 @@ const SHELL_FAILI = [
 const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
 const FLIZU_MAX = 2500;
+const API_MAX = 300;  // saglabātās /api atbildes (ar kartes skatiem); vecākās izmet
 const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes|augsne|statuss|meklejumi)/;
 const H6 = 6 * 3600e3, D7 = 7 * 24 * 3600e3;
 
@@ -82,7 +83,8 @@ async function api(req) {
   const maxVecums = API_MAINIGIE.test(url.pathname) ? H6 : D7;
   try {
     const r = await tikls(req, 8000);
-    if (r.ok) c.put(req, await arLaiku(r)).catch(() => {});
+    // kartes skata punkti (/api/objekti?bbox=…) — katrs skats savs URL, tāpēc API kešam robeža (vecākos izmet)
+    if (r.ok) c.put(req, await arLaiku(r)).then(() => { if (url.searchParams.has('bbox')) apgriezt(c, API_MAX); }).catch(() => {});
     return r;
   } catch (e) {
     const k = await noKesas(c, req, maxVecums);
