@@ -1,0 +1,2261 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "map.repo.lv krīzes kartes API",
+  "version": "2026-10-10",
+  "description": "Atvērts API: tuvākās drošās vietas, brīdinājumi, plūdu risks, ūdens līmenis, ceļi un satiksme no Latvijas atvērtajiem datiem. Katram galapunktam avots un licence laukā x-avoti. Mūsu atvasinātie dati — CC BY 4.0; caurlaistie dati — avota licence. Dokumentācija: https://map.repo.lv/api.html",
+  "license": {
+   "name": "CC BY 4.0 (atvasinātie dati); avotu licences — x-avoti",
+   "url": "https://creativecommons.org/licenses/by/4.0/"
+  },
+  "contact": {
+   "url": "https://github.com/noiseparty/hakatons"
+  }
+ },
+ "servers": [
+  {
+   "url": "https://map.repo.lv"
+  }
+ ],
+ "paths": {
+  "/api/kategorijas": {
+   "get": {
+    "summary": "Kartes slāņi",
+    "description": "Visi slāņi ar objektu skaitu, krāsu, grupu un avotu kodiem.\n\nAvotu licences: /api/avoti.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": [
+         {
+          "kods": "patvertne",
+          "nosaukums": "Publiskās patvertnes",
+          "grupa": "patvertnes",
+          "krasa": "#b91c1c",
+          "kartiba": 10,
+          "skaits": 778,
+          "avoti": [
+           "vugd-112"
+          ]
+         },
+         {
+          "kods": "evakuacijas_punkts",
+          "nosaukums": "Evakuācijas pulcēšanās vietas (pašvaldību CA plāni)",
+          "grupa": "patvertnes",
+          "krasa": "#0f766e",
+          "kartiba": 11,
+          "skaits": 730,
+          "avoti": [
+           "ca-plani"
+          ]
+         },
+         "… (+14)"
+        ]
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/avoti": {
+   "get": {
+    "summary": "Datu avoti",
+    "description": "Katrs avots: izdevējs, licence, datu kopas saite, ieguve, kā lietots kartē, objektu skaits un ielādes laiks.\n\nAvots bez atvērtas licences: atverts = false (112.lv patvertnes).",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": [
+         {
+          "kods": "vugd-112",
+          "nosaukums": "Publiskās patvertnes (112.lv patvertņu karte)",
+          "izdevejs": "VUGD / Iekšlietu ministrijas Informācijas centrs",
+          "licence": "Licence nav norādīta",
+          "licences_url": null,
+          "atverts": false,
+          "datu_kopa_url": "https://www.112.lv/lv/patvertnes",
+          "lejupielade": "https://services9.arcgis.com/f2QOaaoX08g1sAc2/arcgis/rest/services/PatvertnesDati_view/FeatureServer/0",
+          "lietojums": "Patvertnes (781)",
+          "piezime": "Nav publicēts data.gov.lv; dati nolasīti no publiskā 112.lv ArcGIS kartes servisa (hakatona komplekts). Atvērta ir tikai Rīgas patvertņu kop…",
+          "kartiba": 10,
+          "skaits": 778,
+          "ieladets": "2026-10-10T03:09:31.427269+03:00",
+          "atjaunots": "2026-10-10T03:09:31.427269+03:00"
+         },
+         {
+          "kods": "ca-plani",
+          "nosaukums": "Pašvaldību civilās aizsardzības plāni",
+          "izdevejs": "Katra pašvaldība (izdevējs un plāna saite norādīti katram punktam)",
+          "licence": "Oficiāls dokuments, nav autortiesību objekts (Autortiesību likuma 6. pants)",
+          "licences_url": "https://likumi.lv/ta/id/5138-autortiesibu-likums",
+          "atverts": true,
+          "datu_kopa_url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons",
+          "lejupielade": "Plānu PDF/DOCX no pašvaldību tīmekļvietnēm (ipasibas.plans_url), pārveidoti Markdown; vietas izvilktas ar AI + regex, katra pārbaudīta pret …",
+          "lietojums": "Evakuācijas pulcēšanās vietas; pagaidu izmitināšanas vietas",
+          "piezime": "Koordinātas no plāna; ja plānā tikai adrese vai koordinātas ir kļūdainas, tās ģeokodētas ar VZD adrešu reģistru. Kvalitāte: notes/ca-plani-k…",
+          "kartiba": 15,
+          "skaits": 1309,
+          "ieladets": "2026-10-10T03:09:33.355065+03:00",
+          "atjaunots": "2026-10-10T03:09:33.355065+03:00"
+         },
+         "… (+20)"
+        ]
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/regioni": {
+   "get": {
+    "summary": "Pašvaldības un pilsētas",
+    "description": "Novadi, valstspilsētas un pilsētas ar kodu (VZD adrešu reģistrs) un bbox, bez ģeometrijas.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "VZD Valsts adrešu reģistra atvērtie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": [
+         {
+          "kods": "100003366",
+          "nosaukums": "Ainaži",
+          "tips": "pilseta",
+          "novads_kods": "100016606",
+          "bbox": [
+           24.33581,
+           57.82798,
+           24.3811,
+           57.87674
+          ]
+         },
+         {
+          "kods": "100003077",
+          "nosaukums": "Aizkraukle",
+          "tips": "pilseta",
+          "novads_kods": "100016630",
+          "bbox": [
+           25.20666,
+           56.56974,
+           25.27975,
+           56.62155
+          ]
+         },
+         "… (+115)"
+        ]
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/regioni/{kods}": {
+   "get": {
+    "summary": "Reģiona robeža",
+    "description": "Viena reģiona robeža kā GeoJSON Feature (vienkāršota ~50 m).",
+    "parameters": [
+     {
+      "name": "kods",
+      "in": "path",
+      "required": true,
+      "description": "reģiona kods no /api/regioni (ceļā)",
+      "schema": {
+       "type": "string"
+      },
+      "example": "100016688"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "VZD Valsts adrešu reģistra atvērtie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "type": "Feature",
+         "id": "100016688",
+         "properties": {
+          "kods": "100016688",
+          "nosaukums": "Ogres novads",
+          "tips": "novads"
+         },
+         "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+           [
+            [
+             [
+              24.8698,
+              56.92606
+             ],
+             [
+              24.8959,
+              56.92292
+             ],
+             "… (+808)"
+            ]
+           ]
+          ]
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/objekti": {
+   "get": {
+    "summary": "Punkti kartē",
+    "description": "Kartes objekti (GeoJSON FeatureCollection). Ar lat/lon — sakārtoti pēc attāluma, ar attalums_m.\n\nLicence katram punktam pēc avota: CC0 (IeM IC, ZVA, LVĢMC), CC BY 4.0 (VZD), ODbL (OSM), oficiāli dokumenti (CA plāni); 112.lv patvertnēm licence nav norādīta.",
+    "parameters": [
+     {
+      "name": "kategorijas",
+      "in": "query",
+      "required": false,
+      "description": "slāņu kodi ar komatu (no /api/kategorijas)",
+      "schema": {
+       "type": "string"
+      },
+      "example": "patvertne,evakuacijas_punkts"
+     },
+     {
+      "name": "regions",
+      "in": "query",
+      "required": false,
+      "description": "tikai šajā reģionā (kods)",
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "lat",
+      "in": "query",
+      "required": false,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": false,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "description": "cik punktu (1–20000, noklusēti 5000)",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "3"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "Katram punktam savs avots (properties.avots)",
+      "url": "/api/avoti",
+      "licence": "skat. /api/avoti"
+     }
+    ],
+    "x-kesa-sekundes": 60,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "type": "FeatureCollection",
+         "features": [
+          {
+           "type": "Feature",
+           "id": 25820,
+           "geometry": {
+            "type": "Point",
+            "coordinates": [
+             24.600546,
+             56.81713
+            ]
+           },
+           "properties": {
+            "kategorija": "evakuacijas_punkts",
+            "nosaukums": "Ogres novada kultūras centrs",
+            "adrese": "Brīvības iela 15, Ogre, Ogres novads,LV-5001",
+            "avots": "ca-plani",
+            "pasvaldiba": "100016688",
+            "pilseta": "100003470",
+            "attalums_m": 255,
+            "ipasibas": {
+             "id": "ogres-novads-evak-1",
+             "lpp": 121,
+             "adrese": "Brīvības iela 15, Ogre, Ogres novads,LV-5001",
+             "…": "+18 lauki"
+            }
+           }
+          },
+          {
+           "type": "Feature",
+           "id": 25821,
+           "geometry": {
+            "type": "Point",
+            "coordinates": [
+             24.599828,
+             56.815241
+            ]
+           },
+           "properties": {
+            "kategorija": "evakuacijas_punkts",
+            "nosaukums": "Ogres pilsētas dzelzceļa stacija",
+            "adrese": "Skolas iela 1, Ogre, Ogres novads,LV-5001",
+            "avots": "ca-plani",
+            "pasvaldiba": "100016688",
+            "pilseta": "100003470",
+            "attalums_m": 328,
+            "ipasibas": {
+             "id": "ogres-novads-evak-2",
+             "lpp": 121,
+             "adrese": "Skolas iela 1, Ogre, Ogres novads,LV-5001",
+             "…": "+18 lauki"
+            }
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/adreses": {
+   "get": {
+    "summary": "Adrešu meklēšana",
+    "description": "VZD adreses ar koordinātām; bez garumzīmēm, pēc vārdu daļām; mājas numurs augstāk.",
+    "parameters": [
+     {
+      "name": "q",
+      "in": "query",
+      "required": true,
+      "description": "adrese vai tās daļa (vismaz viens vārds ar 3+ burtiem)",
+      "schema": {
+       "type": "string"
+      },
+      "example": "brivibas 15 ogre"
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "description": "1–20, noklusēti 8",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "2"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "VZD Valsts adrešu reģistra atvērtie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": [
+         {
+          "kods": "101354237",
+          "adrese": "Brīvības iela 15, Ogre, Ogres nov., LV-5001",
+          "lat": 56.816905,
+          "lon": 24.602338
+         },
+         {
+          "kods": "101354245",
+          "adrese": "Brīvības iela 15A, Ogre, Ogres nov., LV-5001",
+          "lat": 56.816914,
+          "lon": 24.604365
+         }
+        ]
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/adreses/tuvaka": {
+   "get": {
+    "summary": "Tuvākā adrese",
+    "description": "Tuvākā VZD adrese punktam (≤ 300 m), citādi {}.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "VZD Valsts adrešu reģistra atvērtie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "adrese": "Brīvības iela 15A, Ogre, Ogres nov., LV-5001",
+         "kods": "101354245",
+         "attalums_m": 38
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/pasvaldiba": {
+   "get": {
+    "summary": "Pašvaldība punktā",
+    "description": "Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.\n\nVPVKAC dati ir no 2022. gada; valstspilsētām tādu nav.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "Pašvaldību CA plāni (oficiāli dokumenti)",
+      "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons",
+      "licence": "Oficiāls dokuments"
+     },
+     {
+      "nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)",
+      "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "kods": "100016688",
+         "nosaukums": "Ogres novads",
+         "tips": "novads",
+         "atvk": "0040000",
+         "majas_lapa": "https://www.ogresnovads.lv/lv",
+         "ca_plans_url": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
+         "ca_lapa": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
+         "vpvkac": {
+          "punkts": "Ikšķile",
+          "nosaukums": "Ogres novada Ikšķiles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ikšķiles VPVKAC)",
+          "adrese": "Peldu iela 22, Ikšķiles pilsēta, Ogres nov., LV-5052",
+          "talrunis": "66954861",
+          "epasts": "ikskile@pakalpojumucentri.lv"
+         },
+         "vpvkac_skaits": 6,
+         "avoti": [
+          {
+           "nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)",
+           "licence": "Oficiāls dokuments",
+           "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"
+          },
+          {
+           "nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)",
+           "licence": "CC0 1.0",
+           "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"
+          }
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/bridinajumi": {
+   "get": {
+    "summary": "LVĢMC brīdinājumi",
+    "description": "Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.\n\nLaiki — Latvijas vietējie.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": false,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": false,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": "lvgmc-bridinajumi",
+         "laiks_lv": "2026-10-10T03:34",
+         "bridinajumi": [
+          {
+           "id": "28210",
+           "nr": "10/17",
+           "krasa": "Dzeltens",
+           "limenis": 1,
+           "paradiba": "Vējš",
+           "regioni": "Latvija",
+           "no": "2026-10-09T14:00:00",
+           "lidz": "2026-10-10T06:00:00",
+           "teksts": "09.-10.10.2026. nakts pirmajā pusē rietumu, ziemeļrietumu vējš saglabāsies brāzmās līdz 20-24 m/s. Vējš pakāpeniski pierims 09.-10.10. nakts…",
+           "riski": "ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…",
+           "attiecas": true
+          },
+          {
+           "id": "28227",
+           "nr": "10/30",
+           "krasa": "Dzeltens",
+           "limenis": 1,
+           "paradiba": "Vējš",
+           "regioni": "Rīga",
+           "no": "2026-10-09T19:00:00",
+           "lidz": "2026-10-10T04:00:00",
+           "teksts": "09.10.2026. laika periodā no 19:00 līdz 23:00 dienvidrietumu, rietumu vējš pastiprināsies brāzmās līdz 20-24 m/s.",
+           "riski": "ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…",
+           "attiecas": false
+          }
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/pludi": {
+   "get": {
+    "summary": "Plūdu riska zona punktā",
+    "description": "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).\n\nAvots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)",
+      "url": "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": "lvgmc-pludi",
+         "zona": false,
+         "veidi": [],
+         "nepilnigi": false
+        }
+       }
+      }
+     },
+     "202": {
+      "description": "Avots vēl rēķina: {ielade: true}, mēģiniet pēc 10 s"
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/udens": {
+   "get": {
+    "summary": "Ūdens līmenis upēs",
+    "description": "Tuvākās LVĢMC hidroloģiskās stacijas: līmenis (cm virs posteņa nulles), izmaiņa 24 h, prognoze 7 dienām.\n\nBīstamības līmeņi nav atvērtie dati, tāpēc to nav. Prognoze ir ~35 no 74 stacijām.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "description": "1–10, noklusēti 3",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "1"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC hidroloģiskie novērojumi",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "LVĢMC hidroloģiskās prognozes",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": "lvgmc-hidro",
+         "stacijas": [
+          {
+           "stacija": "HD073401",
+           "nosaukums": "Ogre",
+           "limenis_cm": 55,
+           "limenis_m": 20.61,
+           "nulle_m": 20.06,
+           "izmaina_24h_cm": 0,
+           "udens_temp": null,
+           "laiks": "2026-10-09T23:00:00Z",
+           "derigs_lidz": "2026-10-10T05:00:00+00:00",
+           "lat": 56.8128,
+           "lon": 24.6417,
+           "attalums_m": 2297,
+           "vecs": false,
+           "prognoze": null
+          },
+          {
+           "stacija": "HD073418",
+           "nosaukums": "Stariņi",
+           "limenis_cm": -32,
+           "limenis_m": 23.15,
+           "nulle_m": 23.47,
+           "izmaina_24h_cm": 1,
+           "udens_temp": 11.1,
+           "laiks": "2026-10-09T23:00:00Z",
+           "derigs_lidz": "2026-10-10T05:00:00+00:00",
+           "lat": 56.868056,
+           "lon": 24.61,
+           "attalums_m": 5731,
+           "vecs": false,
+           "prognoze": {
+            "datums": "2026-10-17",
+            "dienas": 7,
+            "mediana_cm": -21,
+            "josla_50_cm": [
+             -36,
+             -4
+            ],
+            "josla_90_cm": [
+             -46,
+             13
+            ],
+            "izmaina_cm": -13,
+            "virziens": "krīt",
+            "avots": "lvgmc-hidro-prognoze"
+           }
+          }
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/prognozes": {
+   "get": {
+    "summary": "Laika prognoze pa novadiem",
+    "description": "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni.\n\nSliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+      "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "laiks_lv": "2026-10-10T03:30",
+         "prognoze_mainita": "Fri, 09 Oct 2026 20:43:14 GMT",
+         "dienas": [
+          {
+           "datums": "2026-10-10",
+           "nosaukums": "Šodien"
+          },
+          {
+           "datums": "2026-10-11",
+           "nosaukums": "Rīt"
+          },
+          "… (+1)"
+         ],
+         "zinas": [
+          {
+           "veids": "noverojums",
+           "paradiba": "Vējš",
+           "limenis": 1,
+           "datums": "2026-10-10",
+           "diena": "Šobrīd",
+           "virsraksts": "Šobrīd brāzmas līdz 19 m/s (Daugavgrīva, 03:00)",
+           "teksts": "LVĢMC stacijās ar brāzmām no 15 m/s: 4 (arī Ventspils 17, Dagda 17, Rēzekne 16 m/s).",
+           "regioni": [
+            "100003003",
+            "100003060",
+            "… (+2)"
+           ],
+           "bbox": [
+            23.721111,
+            56.86,
+            24.321111000000002,
+            57.260000000000005
+           ],
+           "avots": {
+            "nosaukums": "LVĢMC hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)",
+            "licence": "CC0 1.0",
+            "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi"
+           }
+          },
+          {
+           "veids": "riski",
+           "paradiba": "Risks",
+           "limenis": 2,
+           "datums": "2026-10-10",
+           "diena": "Šodien",
+           "virsraksts": "Šodien paaugstināts risks: Rīga un Pierīga (brāzmas līdz 20 m/s), Kurzeme (brāzmas līdz 22 m/s), Latgale (LVĢMC dzeltens brīdinājums: vējš),…",
+           "teksts": "Novadi ar paaugstinātu risku: 42. Riska karte apvieno LVĢMC brīdinājumus, prognozi, zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis of…",
+           "regioni": [
+            "100016768",
+            "100016550",
+            "… (+40)"
+           ],
+           "bbox": [
+            20.9621,
+            55.6747,
+            28.2415,
+            58.0856
+           ],
+           "avots": {
+            "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+            "licence": "CC0 1.0",
+            "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
+           }
+          },
+          "… (+13)"
+         ],
+         "regioni": {
+          "100016727": {
+           "nosaukums": "Preiļu novads",
+           "planosanas_regions": "Latgalē",
+           "dienas": {
+            "2026-10-10": {
+             "brazmas": 16.7,
+             "brazmas_vieta": "Ščadrinieki",
+             "nokrisni": 4.9,
+             "nokrisni_vieta": "Vēveri",
+             "tmax": 12.5,
+             "tmin": 6.4,
+             "varbutiba": 0.0,
+             "ikona": 1506,
+             "vietas": 650,
+             "laiks": "mākoņains, brīžiem skaidrojas, lietus"
+            },
+            "2026-10-11": {
+             "brazmas": 9.6,
+             "brazmas_vieta": "Ūgaiņi-Puduļi",
+             "nokrisni": 1.2,
+             "nokrisni_vieta": "Zukuli",
+             "tmax": 12.1,
+             "tmin": 8.7,
+             "varbutiba": 0.0,
+             "ikona": 1105,
+             "vietas": 650,
+             "laiks": "apmācies"
+            },
+            "2026-10-12": {
+             "brazmas": 6.4,
+             "brazmas_vieta": "Ūsāni",
+             "nokrisni": 1.1,
+             "nokrisni_vieta": "Gadzāni",
+             "tmax": 12.6,
+             "tmin": 6.3,
+             "varbutiba": 0.0,
+             "ikona": 1403,
+             "vietas": 650,
+             "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            }
+           }
+          },
+          "100016630": {
+           "nosaukums": "Aizkraukles novads",
+           "planosanas_regions": "Zemgalē",
+           "dienas": {
+            "2026-10-10": {
+             "brazmas": 15.7,
+             "brazmas_vieta": "Stukmaņi",
+             "nokrisni": 8.4,
+             "nokrisni_vieta": "Irši",
+             "tmax": 12.0,
+             "tmin": 6.0,
+             "varbutiba": 0.0,
+             "ikona": 1506,
+             "vietas": 41,
+             "laiks": "mākoņains, brīžiem skaidrojas, lietus"
+            },
+            "2026-10-11": {
+             "brazmas": 9.0,
+             "brazmas_vieta": "Pilskalne",
+             "nokrisni": 0.3,
+             "nokrisni_vieta": "Ķūģi",
+             "tmax": 13.0,
+             "tmin": 8.9,
+             "varbutiba": 0.0,
+             "ikona": 1103,
+             "vietas": 41,
+             "laiks": "mākoņains, brīžiem skaidrojas"
+            },
+            "2026-10-12": {
+             "brazmas": 6.8,
+             "brazmas_vieta": "Pilskalne",
+             "nokrisni": 4.1,
+             "nokrisni_vieta": "Sproģi",
+             "tmax": 12.0,
+             "tmin": 5.6,
+             "varbutiba": 0.0,
+             "ikona": 1403,
+             "vietas": 41,
+             "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            }
+           }
+          },
+          "100016768": {
+           "nosaukums": "Siguldas novads",
+           "planosanas_regions": "Rīgā un Pierīgā",
+           "dienas": {
+            "2026-10-10": {
+             "brazmas": 15.4,
+             "brazmas_vieta": "Kārļzemnieki",
+             "nokrisni": 15.9,
+             "nokrisni_vieta": "Lēdurga",
+             "tmax": 12.0,
+             "tmin": 7.4,
+             "varbutiba": 0.0,
+             "ikona": 1506,
+             "vietas": 32,
+             "laiks": "mākoņains, brīžiem skaidrojas, lietus"
+            },
+            "2026-10-11": {
+             "brazmas": 9.9,
+             "brazmas_vieta": "Lēdurga",
+             "nokrisni": 1.9,
+             "nokrisni_vieta": "Plānupe",
+             "tmax": 12.8,
+             "tmin": 7.8,
+             "varbutiba": 0.0,
+             "ikona": 1103,
+             "vietas": 32,
+             "laiks": "mākoņains, brīžiem skaidrojas"
+            },
+            "2026-10-12": {
+             "brazmas": 5.6,
+             "brazmas_vieta": "Ķipari",
+             "nokrisni": 1.0,
+             "nokrisni_vieta": "Nurmiži",
+             "tmax": 12.0,
+             "tmin": 6.3,
+             "varbutiba": 0.0,
+             "ikona": 1403,
+             "vietas": 32,
+             "laiks": "mākoņains, brīžiem skaidrojas, migla"
+            }
+           }
+          },
+          "…": "+39 lauki"
+         },
+         "bridinajumu_poligoni": [
+          {
+           "id": "28227",
+           "limenis": 1,
+           "paradiba": "Vējš",
+           "poligons": [
+            [
+             56.8708,
+             24.2751
+            ],
+            [
+             56.8601,
+             24.3071
+            ],
+            "… (+23)"
+           ]
+          },
+          {
+           "id": "28210",
+           "limenis": 1,
+           "paradiba": "Vējš",
+           "poligons": [
+            [
+             56.2791,
+             28.2415
+            ],
+            [
+             56.3579,
+             28.1938
+            ],
+            "… (+323)"
+           ]
+          }
+         ],
+         "sliekshni": {
+          "brazmas": [
+           [
+            15,
+            0
+           ],
+           [
+            20,
+            1
+           ],
+           "… (+2)"
+          ],
+          "nokrisni": [
+           [
+            10,
+            0
+           ],
+           [
+            15,
+            1
+           ],
+           "… (+2)"
+          ],
+          "karstums": [
+           [
+            27,
+            0
+           ],
+           [
+            30,
+            1
+           ],
+           "… (+1)"
+          ],
+          "sals": [
+           [
+            0,
+            0
+           ],
+           [
+            -20,
+            1
+           ],
+           "… (+2)"
+          ]
+         },
+         "riski": {
+          "100016727": {
+           "sodien": 1,
+           "rit": 0,
+           "iemesli": [
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
+             "avots": {
+              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
+             },
+             "klat": false
+            },
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "brāzmas līdz 17 m/s (Ščadrinieki)",
+             "avots": {
+              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
+             },
+             "klat": false
+            }
+           ]
+          },
+          "100016630": {
+           "sodien": 1,
+           "rit": 0,
+           "iemesli": [
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
+             "avots": {
+              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
+             },
+             "klat": false
+            },
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "brāzmas līdz 16 m/s (Stukmaņi)",
+             "avots": {
+              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
+             },
+             "klat": false
+            }
+           ]
+          },
+          "100016768": {
+           "sodien": 1,
+           "rit": 0,
+           "iemesli": [
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "LVĢMC dzeltens brīdinājums: vējš",
+             "avots": {
+              "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi"
+             },
+             "klat": false
+            },
+            {
+             "diena": "sodien",
+             "limenis": 1,
+             "teksts": "brāzmas līdz 15 m/s (Kārļzemnieki)",
+             "avots": {
+              "nosaukums": "LVĢMC meteoroloģiskās prognozes apdzīvotām vietām",
+              "licence": "CC0 1.0",
+              "url": "https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa"
+             },
+             "klat": false
+            },
+            "… (+1)"
+           ]
+          },
+          "…": "+39 lauki"
+         },
+         "riska_dienas": {
+          "sodien": "2026-10-10",
+          "rit": "2026-10-11"
+         },
+         "riska_limeni": {
+          "0": "nav",
+          "1": "paaugstināts",
+          "2": "augsts",
+          "3": "ļoti augsts"
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/prognozes/robezas": {
+   "get": {
+    "summary": "Novadu robežas prognozei",
+    "description": "Vienkāršotas novadu un valstspilsētu robežas (GeoJSON) kartes iekrāsošanai.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "VZD Valsts adrešu reģistra atvērtie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 86400,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "type": "FeatureCollection",
+         "features": [
+          {
+           "type": "Feature",
+           "id": "100016727",
+           "properties": {
+            "kods": "100016727",
+            "nosaukums": "Preiļu novads"
+           },
+           "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+             [
+              [
+               27.135,
+               56.095
+              ],
+              [
+               27.095,
+               56.102
+              ],
+              "… (+159)"
+             ]
+            ]
+           }
+          },
+          {
+           "type": "Feature",
+           "id": "100016630",
+           "properties": {
+            "kods": "100016630",
+            "nosaukums": "Aizkraukles novads"
+           },
+           "geometry": {
+            "type": "Polygon",
+            "coordinates": [
+             [
+              [
+               25.018,
+               56.549
+              ],
+              [
+               24.981,
+               56.552
+              ],
+              "… (+177)"
+             ]
+            ]
+           }
+          },
+          "… (+40)"
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/zibens": {
+   "get": {
+    "summary": "Zibens",
+    "description": "Zibens izlādes pēdējās 30 min Latvijas apgabalā + LVĢMC 24 h zibens režģis.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati",
+      "url": "https://en.ilmatieteenlaitos.fi/open-data",
+      "licence": "CC BY 4.0"
+     },
+     {
+      "nosaukums": "LVĢMC telpiskie novērojumi (zibens režģis)",
+      "url": "https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 60,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "minutes": 30,
+         "zibeni": [],
+         "skaits": 0,
+         "no": "2026-10-10T00:04:20+00:00",
+         "lidz": "2026-10-10T00:34:20+00:00",
+         "avots": {
+          "nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati",
+          "licence": "CC BY 4.0",
+          "url": "https://en.ilmatieteenlaitos.fi/open-data"
+         },
+         "rezgis_24h": {
+          "lidz_lv": "2026-10-09 23:00:00",
+          "sunas": []
+         },
+         "rezgis_avots": {
+          "nosaukums": "LVĢMC telpiskie novērojumi (zibens režģis, 24 h)",
+          "licence": "CC0 1.0",
+          "url": "https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi"
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/augsne": {
+   "get": {
+    "summary": "Nokrišņi un augsnes mitrums",
+    "description": "Nokrišņi pēdējās 26 dienās un nākamajās 3, augsnes mitrums 3–9 cm (modeļa dati, nav brīdinājums).",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": true,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": true,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "Open-Meteo",
+      "url": "https://open-meteo.com/",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 3600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "nokrisni_pagatne_mm": 56.7,
+         "dienas_pagatne": 26,
+         "nokrisni_prognoze_mm": 5.9,
+         "dienas_prognoze": 3,
+         "augsnes_mitrums": 0.417,
+         "augsne": "ļoti mitra",
+         "avots": {
+          "nosaukums": "Open-Meteo",
+          "licence": "CC BY 4.0",
+          "url": "https://open-meteo.com/"
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/marsruts": {
+   "get": {
+    "summary": "Maršruts",
+    "description": "Kājām vai ar auto, var apiet slēgtas zonas (izvairities).\n\nLīdz 60 km. Lūdzu, nelietojiet masveidā — FOSSGIS serveris ir bezmaksas.",
+    "parameters": [
+     {
+      "name": "no",
+      "in": "query",
+      "required": true,
+      "description": "sākums lat,lon",
+      "schema": {
+       "type": "string"
+      },
+      "example": "56.8166,24.6046"
+     },
+     {
+      "name": "uz",
+      "in": "query",
+      "required": true,
+      "description": "galamērķis lat,lon",
+      "schema": {
+       "type": "string"
+      },
+      "example": "56.8139,24.6093"
+     },
+     {
+      "name": "veids",
+      "in": "query",
+      "required": false,
+      "description": "kajam (noklusēti) vai auto",
+      "schema": {
+       "type": "string"
+      },
+      "example": "kajam"
+     },
+     {
+      "name": "izvairities",
+      "in": "query",
+      "required": false,
+      "description": "zonas: c:lat,lon,r_m vai poligons lat,lon;lat,lon;… atdalītas ar |",
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "FOSSGIS OSRM (routing.openstreetmap.de), OpenStreetMap dati",
+      "url": "https://routing.openstreetmap.de/about.html",
+      "licence": "ODbL 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 600,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "dross": true,
+         "apiet_zonu": false,
+         "veids": "kajam",
+         "no_zonas": false,
+         "attalums_m": 489,
+         "ilgums_s": 391,
+         "koord": [
+          [
+           56.81661,
+           24.60457
+          ],
+          [
+           56.81651,
+           24.60446
+          ],
+          "… (+16)"
+         ],
+         "zonas": 0,
+         "avots": {
+          "nosaukums": "FOSSGIS OSRM (routing.openstreetmap.de), OpenStreetMap dati",
+          "licence": "ODbL 1.0",
+          "url": "https://routing.openstreetmap.de/about.html"
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/noverojumi": {
+   "get": {
+    "summary": "Laikapstākļi tagad",
+    "description": "LVĢMC meteostaciju jaunākās brāzmas, vējš, temperatūra, nokrišņi; ar lat/lon — tuvākās.",
+    "parameters": [
+     {
+      "name": "lat",
+      "in": "query",
+      "required": false,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": false,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     },
+     {
+      "name": "limit",
+      "in": "query",
+      "required": false,
+      "description": "1–100",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "2"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC meteoroloģiskie operatīvie dati",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": {
+          "nosaukums": "LVĢMC hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)",
+          "licence": "CC0 1.0",
+          "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi"
+         },
+         "vecs_h": 3,
+         "stacijas": [
+          {
+           "id": "LIELPECI",
+           "nosaukums": "Lielpēči",
+           "lat": 56.804167,
+           "lon": 24.713889,
+           "nokrisni_1h": 0.5,
+           "laiks": "2026-10-10T00:00:00Z",
+           "vecs": false,
+           "attalums_m": 6794
+          },
+          {
+           "id": "RIGASLU",
+           "nosaukums": "Rīga Universitāte",
+           "lat": 56.954797,
+           "lon": 24.104686,
+           "brazmas": 13.3,
+           "vejs": 7.0,
+           "virziens": 276.0,
+           "temp": 9.6,
+           "nokrisni_1h": 0.0,
+           "laiks": "2026-10-10T00:00:00Z",
+           "vecs": false,
+           "attalums_m": 34035
+          }
+         ],
+         "maks_brazmas": {
+          "nosaukums": "Daugavgrīva",
+          "brazmas": 19.3,
+          "laiks": "2026-10-10T00:00:00Z",
+          "lat": 57.06,
+          "lon": 24.021111
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/celi": {
+   "get": {
+    "summary": "Ceļu slēgumi un negadījumi",
+    "description": "Spēkā esošie un plānotie notikumi uz valsts autoceļiem: negadījumi, remontdarbi, slidens ceļš.",
+    "parameters": [
+     {
+      "name": "bbox",
+      "in": "query",
+      "required": false,
+      "description": "minLon,minLat,maxLon,maxLat",
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "name": "lat",
+      "in": "query",
+      "required": false,
+      "description": "platums (WGS-84), Latvijā 55–59",
+      "schema": {
+       "type": "number"
+      },
+      "example": "56.8166"
+     },
+     {
+      "name": "lon",
+      "in": "query",
+      "required": false,
+      "description": "garums (WGS-84), Latvijā 20–29",
+      "schema": {
+       "type": "number"
+      },
+      "example": "24.6046"
+     },
+     {
+      "name": "r",
+      "in": "query",
+      "required": false,
+      "description": "rādiuss metros (100–100000) ap lat/lon",
+      "schema": {
+       "type": "number"
+      },
+      "example": "5000"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVC DATEX II caur Nacionālo piekļuves punktu",
+      "url": "https://transportdata.gov.lv/",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 120,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": "lvc-nap",
+         "konfigurets": true,
+         "notikumi": [
+          {
+           "id": "6a54b699bf732a1a4c9649e1",
+           "tips": "remonts",
+           "nosaukums": "Ceļa būvdarbi",
+           "apraksts": "Slēgta labās puses brauktuve (Ogres virzienā). Divvirzienu satiksme pārslēgta uz Rīgas virziena  brauktuvi.\nLīdz ar slēgto labo brauktuvi na…",
+           "cels": null,
+           "lat": 56.83479,
+           "lon": 24.50249,
+           "linija": [
+            [
+             56.83479,
+             24.50249
+            ],
+            [
+             56.83399,
+             24.50466
+            ],
+            "… (+31)"
+           ],
+           "no": "2026-07-13T08:00:00+03:00",
+           "lidz": "2027-03-10T17:00:00+02:00",
+           "aktivs": true,
+           "attalums_m": 2793
+          },
+          {
+           "id": "6a4c92c9bf732a1a4c9648cc",
+           "tips": "remonts",
+           "nosaukums": "Ceļa būvdarbi",
+           "apraksts": "Būvdarbi, ātruma ierobežojums 50 km/h",
+           "cels": null,
+           "lat": 56.86408,
+           "lon": 24.561,
+           "linija": [
+            [
+             56.86408,
+             24.561
+            ],
+            [
+             56.86402,
+             24.56109
+            ],
+            "… (+11)"
+           ],
+           "no": "2026-07-07T08:46:04+03:00",
+           "lidz": "2026-10-15T16:46:04+03:00",
+           "aktivs": true,
+           "attalums_m": 5366
+          },
+          "… (+2)"
+         ],
+         "nepieejami": []
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/satiksme": {
+   "get": {
+    "summary": "Satiksme zonās",
+    "description": "Satiksmes līmenis pa pašvaldībām no uzskaites iekārtām (minūšu ātrums), slidenā ceļa vietas, robežu gaidīšana.\n\nBrīvas plūsmas ātrums ir novērtējums; zonu apkopojums — atvasināti dati (CC BY 4.0).",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "LVC satiksmes intensitāte un ātrums, slidens ceļš (NAP)",
+      "url": "https://transportdata.gov.lv/",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 60,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": "lvc-nap",
+         "laiks": "2026-10-10T00:34:21+00:00",
+         "kopas": {
+          "vietas": {
+           "konfigurets": true,
+           "pieejams": true,
+           "kluda": null,
+           "nosaukums": "Satiksmes uzskaites iekārtu atrašanās vietas",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/fef717ac-c832-49b2-8589-521084cdb595",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "merijumi": {
+           "konfigurets": true,
+           "pieejams": true,
+           "kluda": null,
+           "nosaukums": "Satiksmes intensitāte un ātrums valsts autoceļos (minūtes dati)",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/ed1f0d2c-6ad8-4823-b132-71fc69993d1c",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "slidens_meteo": {
+           "konfigurets": true,
+           "pieejams": true,
+           "kluda": null,
+           "nosaukums": "Īslaicīgi slidens ceļš (meteostaciju dati)",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/46cd2e45-33b7-492c-a163-a9dd5508ede4",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "slidens_uzturetaji": {
+           "konfigurets": true,
+           "pieejams": true,
+           "kluda": null,
+           "nosaukums": "Īslaicīgi slidens ceļš (ceļu uzturētāju ziņojumi)",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/6749e127-7520-4790-8d6a-ad4a0270d1fe",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "slidens_sic": {
+           "konfigurets": true,
+           "pieejams": true,
+           "kluda": null,
+           "nosaukums": "Īslaicīgi slidens ceļš (Satiksmes informācijas centrs)",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/f3204a64-3dc3-4ed6-b6f0-872f58500735",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          },
+          "robezas": {
+           "konfigurets": true,
+           "pieejams": false,
+           "kluda": "HTTP 403: Access forbidden!",
+           "nosaukums": "Robežšķērsošanas gaidīšanas laiks",
+           "datu_kopa_url": "https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae",
+           "licence": "CC0 1.0",
+           "licences_url": "https://creativecommons.org/publicdomain/zero/1.0/"
+          }
+         },
+         "zonas": [
+          {
+           "kods": "100016534",
+           "nosaukums": "Jelgavas novads",
+           "bbox": [
+            23.39246,
+            56.32052,
+            24.12297,
+            56.89573
+           ],
+           "tips": "regions",
+           "limenis": 1,
+           "limenis_teksts": "lēns",
+           "atrums_vid": 45.1,
+           "atrums_brivs": 80.0,
+           "plusma_h": 5,
+           "merijumi": 3,
+           "iekartas": 3,
+           "laiks": "2026-10-10T00:30:00.000Z"
+          },
+          {
+           "kods": "100016630",
+           "nosaukums": "Aizkraukles novads",
+           "bbox": [
+            24.89175,
+            56.14491,
+            25.94847,
+            56.82936
+           ],
+           "tips": "regions",
+           "limenis": 0,
+           "limenis_teksts": "brīvs",
+           "atrums_vid": 82.5,
+           "atrums_brivs": 80.0,
+           "plusma_h": 3,
+           "merijumi": 2,
+           "iekartas": 2,
+           "laiks": "2026-10-10T00:27:00.000Z"
+          },
+          "… (+28)"
+         ],
+         "punkti": [
+          {
+           "id": "68c924b023ee40cfa9508f1e",
+           "lat": 57.62094,
+           "lon": 24.38794,
+           "nosaukums": null,
+           "zona": "100016606",
+           "atrums": 82.1,
+           "atrums_brivs": 80.0,
+           "plusma_h": 1,
+           "limenis": 0,
+           "limenis_teksts": "brīvs",
+           "laiks": "2026-10-10T00:30:00.000Z"
+          },
+          {
+           "id": "68ca545e23ee40cfa9508f1f",
+           "lat": 57.02544,
+           "lon": 24.31899,
+           "nosaukums": null,
+           "zona": "100016784",
+           "atrums": 89.1,
+           "atrums_brivs": 80.0,
+           "plusma_h": 2,
+           "limenis": 0,
+           "limenis_teksts": "brīvs",
+           "laiks": "2026-10-10T00:31:00.000Z"
+          },
+          "… (+75)"
+         ],
+         "stacijas": [
+          {
+           "id": "662653c6e44f14a1fe01c428",
+           "lat": 57.16879,
+           "lon": 24.96795,
+           "nosaukums": "Slippery",
+           "slidens": true,
+           "cela_temp": null,
+           "gaisa_temp": null,
+           "laiks": "2026-10-10T00:20:00.000Z",
+           "avots": "slidens_meteo"
+          }
+         ],
+         "robezas": [],
+         "piezime": "Līmenis: vidējais ātrums pret brīvas plūsmas ātrumu iekārtā (≥ 75 % brīvs, ≥ 50 % lēns, citādi sastrēgums). Brīvas plūsmas ātrums ir novērtē…"
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/statuss": {
+   "get": {
+    "summary": "Sistēmas statuss",
+    "description": "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.",
+    "parameters": [],
+    "x-avoti": [
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 60,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "laiks": "2026-10-10T00:34:02+00:00",
+         "intervals_min": 15,
+         "komponenti": [
+          {
+           "kods": "vietne",
+           "nosaukums": "Karte (map.repo.lv)",
+           "apraksts": "Vai lapa atveras",
+           "avots": {
+            "nosaukums": "map.repo.lv pirmkods",
+            "url": "https://github.com/noiseparty/hakatons",
+            "licence": null,
+            "licences_url": null
+           },
+           "stavoklis": "darbojas",
+           "zinojums": "Atbild 0,6 s",
+           "parbaudits": "2026-10-10T03:30:01+03:00",
+           "ilgums_ms": 599,
+           "joslas": [
+            {
+             "sakums": "2026-10-09T00:45:00+00:00",
+             "stavoklis": null
+            },
+            {
+             "sakums": "2026-10-09T01:00:00+00:00",
+             "stavoklis": null
+            },
+            "… (+94)"
+           ],
+           "pieejamiba_7d": 100.0
+          },
+          {
+           "kods": "api",
+           "nosaukums": "API un datubāze",
+           "apraksts": "Kartes objekti, slāņi un avoti",
+           "avots": null,
+           "stavoklis": "darbojas",
+           "zinojums": "19056 objekti kartē",
+           "parbaudits": "2026-10-10T03:30:01+03:00",
+           "ilgums_ms": 218,
+           "joslas": [
+            {
+             "sakums": "2026-10-09T00:45:00+00:00",
+             "stavoklis": null
+            },
+            {
+             "sakums": "2026-10-09T01:00:00+00:00",
+             "stavoklis": null
+            },
+            "… (+94)"
+           ],
+           "pieejamiba_7d": 100.0
+          },
+          "… (+15)"
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/meklejumi/top": {
+   "get": {
+    "summary": "Biežāk meklētais",
+    "description": "Biežāk meklētie atpazītie vaicājumi pēdējās 14 dienās (bez lietotāju datiem).",
+    "parameters": [
+     {
+      "name": "n",
+      "in": "query",
+      "required": false,
+      "description": "1–10, noklusēti 3",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "5"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 60,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "vaicajumi": [
+          "nav elektrības",
+          "plūdi ogrē",
+          "… (+3)"
+         ]
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/zinojumi": {
+   "get": {
+    "summary": "Iedzīvotāju ziņojumi",
+    "description": "Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.\n\nJa apdraudēta dzīvība, zvaniet 112.",
+    "parameters": [
+     {
+      "name": "dienas",
+      "in": "query",
+      "required": false,
+      "description": "1–7",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "7"
+     },
+     {
+      "name": "bbox",
+      "in": "query",
+      "required": false,
+      "description": "minLon,minLat,maxLon,maxLat",
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "Iedzīvotāju ziņojumi (map.repo.lv)",
+      "url": "https://map.repo.lv/",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 15,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "avots": {
+          "nosaukums": "Iedzīvotāju ziņojumi (map.repo.lv)",
+          "licence": "CC BY 4.0",
+          "licences_url": "https://creativecommons.org/licenses/by/4.0/"
+         },
+         "atruna": "Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0. Ja apdraudēta dzīvība, zvaniet 112.",
+         "dienas": 7,
+         "tipi": {
+          "koks": "Nokritis koks",
+          "cels": "Neizbraucams ceļš",
+          "elektriba": "Bojāta elektrolīnija",
+          "udens": "Applūdums",
+          "cits": "Cita bīstamība"
+         },
+         "pieejams": true,
+         "zinojumi": []
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/veseliba": {
+   "get": {
+    "summary": "Veselības pārbaude",
+    "description": "Vai API un datubāze atbild; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
+    "parameters": [
+     {
+      "name": "statistika",
+      "in": "query",
+      "required": false,
+      "description": "1 — pievienot skaitītājus",
+      "schema": {
+       "type": "integer"
+      },
+      "example": "1"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 0,
+    "responses": {
+     "200": {
+      "description": "JSON",
+      "content": {
+       "application/json": {
+        "example": {
+         "ok": true,
+         "statistika": {
+          "db_vaicajumi": 1384,
+          "db_parslodze": 0,
+          "kesa": {
+           "statuss": {
+            "no_kesas": 8,
+            "uz_avotu": 4,
+            "novecojusi": 2,
+            "gaidija": 0
+           },
+           "zibens_fmi": {
+            "no_kesas": 6,
+            "uz_avotu": 4,
+            "novecojusi": 3,
+            "gaidija": 0
+           },
+           "noverojumi": {
+            "no_kesas": 29,
+            "uz_avotu": 1,
+            "novecojusi": 0,
+            "gaidija": 0
+           },
+           "…": "+18 lauki"
+          },
+          "db_vienlaicigi": 16,
+          "pavedieni": 30
+         }
+        }
+       }
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  }
+ }
+}

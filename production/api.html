@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<title>Atvērtais API · Krīzes karte</title>
+<meta name="description" content="map.repo.lv atvērtais API: drošās vietas, brīdinājumi, plūdu risks, ūdens līmenis, ceļi un satiksme no Latvijas atvērtajiem datiem — ar avotu un licenci katram galapunktam.">
+<link rel="stylesheet" href="statuss.css">
+<link rel="stylesheet" href="api.css">
+</head>
+<body>
+<!-- Ģenerēts ar src/api_docs/sagatavot.py no src/api_docs/sablons.html — labojiet tur, nevis šeit. -->
+<header class="augsa">
+  <div class="augsa-iekss">
+    <h1>Krīzes karte <span>· Atvērtais API</span></h1>
+    <a class="atpakal" href="./">← Uz karti</a>
+  </div>
+</header>
+<main class="saturs api">
+  <section class="ievads">
+    <p><b>Mēs ne tikai lietojam atvērtos datus — mēs tos arī publicējam.</b> Viss, ko rāda karte, ir pieejams kā atvērts
+      JSON API: 23 galapunkti, katram avots, licence un keša laiks. Bez atslēgas, bez reģistrācijas.</p>
+    <ul>
+      <li><b>Licence.</b> Mūsu atvasinātie dati (biežāk meklētais, iedzīvotāju ziņojumi, satiksmes zonas, pašvaldību
+        apkopojums, statuss) — <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, atsauce „map.repo.lv”.
+        Caurlaistie dati — avota licence (norādīta pie katra galapunkta; punktiem — <code>properties.avots</code> un
+        <a href="#api-avoti"><code>/api/avoti</code></a>). 112.lv patvertnēm atvērta licence nav norādīta.</li>
+      <li><b>CORS:</b> visi GET galapunkti atļauti no jebkuras vietnes (<code>Access-Control-Allow-Origin: *</code>). POST
+        galapunkti ir tikai šai lapai.</li>
+      <li><b>Saudzīgi, lūdzu:</b> atbildes ir kešotas (Cache-Control); netaisiet vairāk par ~1 pieprasījumu sekundē no
+        vienas lietotnes un kešojiet paši. Ārējie avoti (LVĢMC, FMI, NAP, OSRM) tiek sasniegti tikai caur mūsu kešu.</li>
+      <li><b>Formāts:</b> JSON (UTF-8), koordinātas WGS-84; kļūdas — <code>{"kluda": "…"}</code> ar HTTP 400 / 404 / 503.</li>
+      <li><b>Mašīnlasāmi:</b> <a href="openapi.json">openapi.json</a> (OpenAPI 3.1) — der jebkuram OpenAPI rīkam.</li>
+    </ul>
+    <h2>Kā lietot savā lietotnē</h2>
+<pre>const r = await fetch('https://map.repo.lv/api/objekti?kategorijas=patvertne&amp;lat=56.95&amp;lon=24.11&amp;limit=3');
+const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas pēc attāluma (properties.attalums_m)</pre>
+  </section>
+
+  <nav class="raditajs" aria-label="Galapunkti"><h2>Galapunkti</h2><ul><li><a href="#api-kategorijas"><code>/api/kategorijas</code></a> — Kartes slāņi</li><li><a href="#api-avoti"><code>/api/avoti</code></a> — Datu avoti</li><li><a href="#api-regioni"><code>/api/regioni</code></a> — Pašvaldības un pilsētas</li><li><a href="#api-regioni-kods"><code>/api/regioni/{kods}</code></a> — Reģiona robeža</li><li><a href="#api-objekti"><code>/api/objekti</code></a> — Punkti kartē</li><li><a href="#api-adreses"><code>/api/adreses</code></a> — Adrešu meklēšana</li><li><a href="#api-adreses-tuvaka"><code>/api/adreses/tuvaka</code></a> — Tuvākā adrese</li><li><a href="#api-pasvaldiba"><code>/api/pasvaldiba</code></a> — Pašvaldība punktā</li><li><a href="#api-bridinajumi"><code>/api/bridinajumi</code></a> — LVĢMC brīdinājumi</li><li><a href="#api-pludi"><code>/api/pludi</code></a> — Plūdu riska zona punktā</li><li><a href="#api-udens"><code>/api/udens</code></a> — Ūdens līmenis upēs</li><li><a href="#api-prognozes"><code>/api/prognozes</code></a> — Laika prognoze pa novadiem</li><li><a href="#api-prognozes-robezas"><code>/api/prognozes/robezas</code></a> — Novadu robežas prognozei</li><li><a href="#api-zibens"><code>/api/zibens</code></a> — Zibens</li><li><a href="#api-augsne"><code>/api/augsne</code></a> — Nokrišņi un augsnes mitrums</li><li><a href="#api-marsruts"><code>/api/marsruts</code></a> — Maršruts</li><li><a href="#api-noverojumi"><code>/api/noverojumi</code></a> — Laikapstākļi tagad</li><li><a href="#api-celi"><code>/api/celi</code></a> — Ceļu slēgumi un negadījumi</li><li><a href="#api-satiksme"><code>/api/satiksme</code></a> — Satiksme zonās</li><li><a href="#api-statuss"><code>/api/statuss</code></a> — Sistēmas statuss</li><li><a href="#api-meklejumi-top"><code>/api/meklejumi/top</code></a> — Biežāk meklētais</li><li><a href="#api-zinojumi"><code>/api/zinojumi</code></a> — Iedzīvotāju ziņojumi</li><li><a href="#api-veseliba"><code>/api/veseliba</code></a> — Veselības pārbaude</li></ul></nav>
+
+  
+<section class="galapunkts" id="api-kategorijas">
+  <h2><span class="metode">GET</span> <code>/api/kategorijas</code> — Kartes slāņi</h2>
+  <p>Visi slāņi ar objektu skaitu, krāsu, grupu un avotu kodiem.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Avotu licences: /api/avoti.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/kategorijas"><code>/api/kategorijas</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>[
+ {
+  &quot;kods&quot;: &quot;patvertne&quot;,
+  &quot;nosaukums&quot;: &quot;Publiskās patvertnes&quot;,
+  &quot;grupa&quot;: &quot;patvertnes&quot;,
+  &quot;krasa&quot;: &quot;#b91c1c&quot;,
+  &quot;kartiba&quot;: 10,
+  &quot;skaits&quot;: 778,
+  &quot;avoti&quot;: [
+   &quot;vugd-112&quot;
+  ]
+ },
+ {
+  &quot;kods&quot;: &quot;evakuacijas_punkts&quot;,
+  &quot;nosaukums&quot;: &quot;Evakuācijas pulcēšanās vietas (pašvaldību CA plāni)&quot;,
+  &quot;grupa&quot;: &quot;patvertnes&quot;,
+  &quot;krasa&quot;: &quot;#0f766e&quot;,
+  &quot;kartiba&quot;: 11,
+  &quot;skaits&quot;: 730,
+  &quot;avoti&quot;: [
+   &quot;ca-plani&quot;
+  ]
+ },
+ &quot;… (+14)&quot;
+]</pre></details>
+</section>
+<section class="galapunkts" id="api-avoti">
+  <h2><span class="metode">GET</span> <code>/api/avoti</code> — Datu avoti</h2>
+  <p>Katrs avots: izdevējs, licence, datu kopas saite, ieguve, kā lietots kartē, objektu skaits un ielādes laiks.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Avots bez atvērtas licences: atverts = false (112.lv patvertnes).</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/avoti"><code>/api/avoti</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>[
+ {
+  &quot;kods&quot;: &quot;vugd-112&quot;,
+  &quot;nosaukums&quot;: &quot;Publiskās patvertnes (112.lv patvertņu karte)&quot;,
+  &quot;izdevejs&quot;: &quot;VUGD / Iekšlietu ministrijas Informācijas centrs&quot;,
+  &quot;licence&quot;: &quot;Licence nav norādīta&quot;,
+  &quot;licences_url&quot;: null,
+  &quot;atverts&quot;: false,
+  &quot;datu_kopa_url&quot;: &quot;https://www.112.lv/lv/patvertnes&quot;,
+  &quot;lejupielade&quot;: &quot;https://services9.arcgis.com/f2QOaaoX08g1sAc2/arcgis/rest/services/PatvertnesDati_view/FeatureServer/0&quot;,
+  &quot;lietojums&quot;: &quot;Patvertnes (781)&quot;,
+  &quot;piezime&quot;: &quot;Nav publicēts data.gov.lv; dati nolasīti no publiskā 112.lv ArcGIS kartes servisa (hakatona komplekts). Atvērta ir tikai Rīgas patvertņu kop…&quot;,
+  &quot;kartiba&quot;: 10,
+  &quot;skaits&quot;: 778,
+  &quot;ieladets&quot;: &quot;2026-10-10T03:09:31.427269+03:00&quot;,
+  &quot;atjaunots&quot;: &quot;2026-10-10T03:09:31.427269+03:00&quot;
+ },
+ {
+  &quot;kods&quot;: &quot;ca-plani&quot;,
+  &quot;nosaukums&quot;: &quot;Pašvaldību civilās aizsardzības plāni&quot;,
+  &quot;izdevejs&quot;: &quot;Katra pašvaldība (izdevējs un plāna saite norādīti katram punktam)&quot;,
+  &quot;licence&quot;: &quot;Oficiāls dokuments, nav autortiesību objekts (Autortiesību likuma 6. pants)&quot;,
+  &quot;licences_url&quot;: &quot;https://likumi.lv/ta/id/5138-autortiesibu-likums&quot;,
+  &quot;atverts&quot;: true,
+  &quot;datu_kopa_url&quot;: &quot;https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons&quot;,
+  &quot;lejupielade&quot;: &quot;Plānu PDF/DOCX no pašvaldību tīmekļvietnēm (ipasibas.plans_url), pārveidoti Markdown; vietas izvilktas ar AI + regex, katra pārbaudīta pret …&quot;,
+  &quot;lietojums&quot;: &quot;Evakuācijas pulcēšanās vietas; pagaidu izmitināšanas vietas&quot;,
+  &quot;piezime&quot;: &quot;Koordinātas no plāna; ja plānā tikai adrese vai koordinātas ir kļūdainas, tās ģeokodētas ar VZD adrešu reģistru. Kvalitāte: notes/ca-plani-k…&quot;,
+  &quot;kartiba&quot;: 15,
+  &quot;skaits&quot;: 1309,
+  &quot;ieladets&quot;: &quot;2026-10-10T03:09:33.355065+03:00&quot;,
+  &quot;atjaunots&quot;: &quot;2026-10-10T03:09:33.355065+03:00&quot;
+ },
+ &quot;… (+20)&quot;
+]</pre></details>
+</section>
+<section class="galapunkts" id="api-regioni">
+  <h2><span class="metode">GET</span> <code>/api/regioni</code> — Pašvaldības un pilsētas</h2>
+  <p>Novadi, valstspilsētas un pilsētas ar kodu (VZD adrešu reģistrs) un bbox, bez ģeometrijas.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati">VZD Valsts adrešu reģistra atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/regioni"><code>/api/regioni</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>[
+ {
+  &quot;kods&quot;: &quot;100003366&quot;,
+  &quot;nosaukums&quot;: &quot;Ainaži&quot;,
+  &quot;tips&quot;: &quot;pilseta&quot;,
+  &quot;novads_kods&quot;: &quot;100016606&quot;,
+  &quot;bbox&quot;: [
+   24.33581,
+   57.82798,
+   24.3811,
+   57.87674
+  ]
+ },
+ {
+  &quot;kods&quot;: &quot;100003077&quot;,
+  &quot;nosaukums&quot;: &quot;Aizkraukle&quot;,
+  &quot;tips&quot;: &quot;pilseta&quot;,
+  &quot;novads_kods&quot;: &quot;100016630&quot;,
+  &quot;bbox&quot;: [
+   25.20666,
+   56.56974,
+   25.27975,
+   56.62155
+  ]
+ },
+ &quot;… (+115)&quot;
+]</pre></details>
+</section>
+<section class="galapunkts" id="api-regioni-kods">
+  <h2><span class="metode">GET</span> <code>/api/regioni/{kods}</code> — Reģiona robeža</h2>
+  <p>Viena reģiona robeža kā GeoJSON Feature (vienkāršota ~50 m).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>kods</code> <small>obligāts</small></td><td>string</td><td>reģiona kods no /api/regioni (ceļā)</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati">VZD Valsts adrešu reģistra atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/regioni/100016688"><code>/api/regioni/100016688</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;type&quot;: &quot;Feature&quot;,
+ &quot;id&quot;: &quot;100016688&quot;,
+ &quot;properties&quot;: {
+  &quot;kods&quot;: &quot;100016688&quot;,
+  &quot;nosaukums&quot;: &quot;Ogres novads&quot;,
+  &quot;tips&quot;: &quot;novads&quot;
+ },
+ &quot;geometry&quot;: {
+  &quot;type&quot;: &quot;MultiPolygon&quot;,
+  &quot;coordinates&quot;: [
+   [
+    [
+     [
+      24.8698,
+      56.92606
+     ],
+     [
+      24.8959,
+      56.92292
+     ],
+     &quot;… (+808)&quot;
+    ]
+   ]
+  ]
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-objekti">
+  <h2><span class="metode">GET</span> <code>/api/objekti</code> — Punkti kartē</h2>
+  <p>Kartes objekti (GeoJSON FeatureCollection). Ar lat/lon — sakārtoti pēc attāluma, ar attalums_m.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>kategorijas</code></td><td>string</td><td>slāņu kodi ar komatu (no /api/kategorijas)</td></tr><tr><td><code>regions</code></td><td>string</td><td>tikai šajā reģionā (kods)</td></tr><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>limit</code></td><td>integer</td><td>cik punktu (1–20000, noklusēti 5000)</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="/api/avoti">Katram punktam savs avots (properties.avots)</a> · skat. /api/avoti<br>
+     <b>Kešs:</b> 60 s (Cache-Control) <br><b>Piezīme:</b> Licence katram punktam pēc avota: CC0 (IeM IC, ZVA, LVĢMC), CC BY 4.0 (VZD), ODbL (OSM), oficiāli dokumenti (CA plāni); 112.lv patvertnēm licence nav norādīta.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/objekti?kategorijas=evakuacijas_punkts&amp;lat=56.8166&amp;lon=24.6046&amp;limit=2"><code>/api/objekti?kategorijas=evakuacijas_punkts&amp;lat=56.8166&amp;lon=24.6046&amp;limit=2</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;type&quot;: &quot;FeatureCollection&quot;,
+ &quot;features&quot;: [
+  {
+   &quot;type&quot;: &quot;Feature&quot;,
+   &quot;id&quot;: 25820,
+   &quot;geometry&quot;: {
+    &quot;type&quot;: &quot;Point&quot;,
+    &quot;coordinates&quot;: [
+     24.600546,
+     56.81713
+    ]
+   },
+   &quot;properties&quot;: {
+    &quot;kategorija&quot;: &quot;evakuacijas_punkts&quot;,
+    &quot;nosaukums&quot;: &quot;Ogres novada kultūras centrs&quot;,
+    &quot;adrese&quot;: &quot;Brīvības iela 15, Ogre, Ogres novads,LV-5001&quot;,
+    &quot;avots&quot;: &quot;ca-plani&quot;,
+    &quot;pasvaldiba&quot;: &quot;100016688&quot;,
+    &quot;pilseta&quot;: &quot;100003470&quot;,
+    &quot;attalums_m&quot;: 255,
+    &quot;ipasibas&quot;: {
+     &quot;id&quot;: &quot;ogres-novads-evak-1&quot;,
+     &quot;lpp&quot;: 121,
+     &quot;adrese&quot;: &quot;Brīvības iela 15, Ogre, Ogres novads,LV-5001&quot;,
+     &quot;…&quot;: &quot;+18 lauki&quot;
+    }
+   }
+  },
+  {
+   &quot;type&quot;: &quot;Feature&quot;,
+   &quot;id&quot;: 25821,
+   &quot;geometry&quot;: {
+    &quot;type&quot;: &quot;Point&quot;,
+    &quot;coordinates&quot;: [
+     24.599828,
+     56.815241
+    ]
+   },
+   &quot;properties&quot;: {
+    &quot;kategorija&quot;: &quot;evakuacijas_punkts&quot;,
+    &quot;nosaukums&quot;: &quot;Ogres pilsētas dzelzceļa stacija&quot;,
+    &quot;adrese&quot;: &quot;Skolas iela 1, Ogre, Ogres novads,LV-5001&quot;,
+    &quot;avots&quot;: &quot;ca-plani&quot;,
+    &quot;pasvaldiba&quot;: &quot;100016688&quot;,
+    &quot;pilseta&quot;: &quot;100003470&quot;,
+    &quot;attalums_m&quot;: 328,
+    &quot;ipasibas&quot;: {
+     &quot;id&quot;: &quot;ogres-novads-evak-2&quot;,
+     &quot;lpp&quot;: 121,
+     &quot;adrese&quot;: &quot;Skolas iela 1, Ogre, Ogres novads,LV-5001&quot;,
+     &quot;…&quot;: &quot;+18 lauki&quot;
+    }
+   }
+  }
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-adreses">
+  <h2><span class="metode">GET</span> <code>/api/adreses</code> — Adrešu meklēšana</h2>
+  <p>VZD adreses ar koordinātām; bez garumzīmēm, pēc vārdu daļām; mājas numurs augstāk.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>q</code> <small>obligāts</small></td><td>string</td><td>adrese vai tās daļa (vismaz viens vārds ar 3+ burtiem)</td></tr><tr><td><code>limit</code></td><td>integer</td><td>1–20, noklusēti 8</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati">VZD Valsts adrešu reģistra atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/adreses?q=brivibas%2015%20ogre&amp;limit=2"><code>/api/adreses?q=brivibas%2015%20ogre&amp;limit=2</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>[
+ {
+  &quot;kods&quot;: &quot;101354237&quot;,
+  &quot;adrese&quot;: &quot;Brīvības iela 15, Ogre, Ogres nov., LV-5001&quot;,
+  &quot;lat&quot;: 56.816905,
+  &quot;lon&quot;: 24.602338
+ },
+ {
+  &quot;kods&quot;: &quot;101354245&quot;,
+  &quot;adrese&quot;: &quot;Brīvības iela 15A, Ogre, Ogres nov., LV-5001&quot;,
+  &quot;lat&quot;: 56.816914,
+  &quot;lon&quot;: 24.604365
+ }
+]</pre></details>
+</section>
+<section class="galapunkts" id="api-adreses-tuvaka">
+  <h2><span class="metode">GET</span> <code>/api/adreses/tuvaka</code> — Tuvākā adrese</h2>
+  <p>Tuvākā VZD adrese punktam (≤ 300 m), citādi {}.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati">VZD Valsts adrešu reģistra atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/adreses/tuvaka?lat=56.8166&amp;lon=24.6046"><code>/api/adreses/tuvaka?lat=56.8166&amp;lon=24.6046</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;adrese&quot;: &quot;Brīvības iela 15A, Ogre, Ogres nov., LV-5001&quot;,
+ &quot;kods&quot;: &quot;101354245&quot;,
+ &quot;attalums_m&quot;: 38
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-pasvaldiba">
+  <h2><span class="metode">GET</span> <code>/api/pasvaldiba</code> — Pašvaldība punktā</h2>
+  <p>Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons">Pašvaldību CA plāni (oficiāli dokumenti)</a> · <a href="https://likumi.lv/ta/id/5138-autortiesibu-likums">Oficiāls dokuments</a> ; <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti">VPVKAC paplašinātā tīkla kontaktpunkti (2022)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> VPVKAC dati ir no 2022. gada; valstspilsētām tādu nav.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/pasvaldiba?lat=56.8166&amp;lon=24.6046"><code>/api/pasvaldiba?lat=56.8166&amp;lon=24.6046</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;kods&quot;: &quot;100016688&quot;,
+ &quot;nosaukums&quot;: &quot;Ogres novads&quot;,
+ &quot;tips&quot;: &quot;novads&quot;,
+ &quot;atvk&quot;: &quot;0040000&quot;,
+ &quot;majas_lapa&quot;: &quot;https://www.ogresnovads.lv/lv&quot;,
+ &quot;ca_plans_url&quot;: &quot;https://www.ogresnovads.lv/lv/media/127114/download?attachment&quot;,
+ &quot;ca_lapa&quot;: &quot;https://www.ogresnovads.lv/lv/media/127114/download?attachment&quot;,
+ &quot;vpvkac&quot;: {
+  &quot;punkts&quot;: &quot;Ikšķile&quot;,
+  &quot;nosaukums&quot;: &quot;Ogres novada Ikšķiles pilsētas valsts un pašvaldības vienotais klientu apkalpošanas centrs (Ikšķiles VPVKAC)&quot;,
+  &quot;adrese&quot;: &quot;Peldu iela 22, Ikšķiles pilsēta, Ogres nov., LV-5052&quot;,
+  &quot;talrunis&quot;: &quot;66954861&quot;,
+  &quot;epasts&quot;: &quot;ikskile@pakalpojumucentri.lv&quot;
+ },
+ &quot;vpvkac_skaits&quot;: 6,
+ &quot;avoti&quot;: [
+  {
+   &quot;nosaukums&quot;: &quot;CA plāni hakatonam (pašvaldību tīmekļvietnes)&quot;,
+   &quot;licence&quot;: &quot;Oficiāls dokuments&quot;,
+   &quot;url&quot;: &quot;https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons&quot;
+  },
+  {
+   &quot;nosaukums&quot;: &quot;VPVKAC paplašinātā tīkla kontaktpunkti (2022)&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti&quot;
+  }
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-bridinajumi">
+  <h2><span class="metode">GET</span> <code>/api/bridinajumi</code> — LVĢMC brīdinājumi</h2>
+  <p>Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Laiki — Latvijas vietējie.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/bridinajumi?lat=56.8166&amp;lon=24.6046"><code>/api/bridinajumi?lat=56.8166&amp;lon=24.6046</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: &quot;lvgmc-bridinajumi&quot;,
+ &quot;laiks_lv&quot;: &quot;2026-10-10T03:34&quot;,
+ &quot;bridinajumi&quot;: [
+  {
+   &quot;id&quot;: &quot;28210&quot;,
+   &quot;nr&quot;: &quot;10/17&quot;,
+   &quot;krasa&quot;: &quot;Dzeltens&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;paradiba&quot;: &quot;Vējš&quot;,
+   &quot;regioni&quot;: &quot;Latvija&quot;,
+   &quot;no&quot;: &quot;2026-10-09T14:00:00&quot;,
+   &quot;lidz&quot;: &quot;2026-10-10T06:00:00&quot;,
+   &quot;teksts&quot;: &quot;09.-10.10.2026. nakts pirmajā pusē rietumu, ziemeļrietumu vējš saglabāsies brāzmās līdz 20-24 m/s. Vējš pakāpeniski pierims 09.-10.10. nakts…&quot;,
+   &quot;riski&quot;: &quot;ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…&quot;,
+   &quot;attiecas&quot;: true
+  },
+  {
+   &quot;id&quot;: &quot;28227&quot;,
+   &quot;nr&quot;: &quot;10/30&quot;,
+   &quot;krasa&quot;: &quot;Dzeltens&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;paradiba&quot;: &quot;Vējš&quot;,
+   &quot;regioni&quot;: &quot;Rīga&quot;,
+   &quot;no&quot;: &quot;2026-10-09T19:00:00&quot;,
+   &quot;lidz&quot;: &quot;2026-10-10T04:00:00&quot;,
+   &quot;teksts&quot;: &quot;09.10.2026. laika periodā no 19:00 līdz 23:00 dienvidrietumu, rietumu vējš pastiprināsies brāzmās līdz 20-24 m/s.&quot;,
+   &quot;riski&quot;: &quot;ESI INFORMĒTS par stipru vēju!\nNolauzti koku zari, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gaisu.\nAtsevišķos rajonos var tikt tr…&quot;,
+   &quot;attiecas&quot;: false
+  }
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-pludi">
+  <h2><span class="metode">GET</span> <code>/api/pludi</code> — Plūdu riska zona punktā</h2>
+  <p>Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1">LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> Avots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/pludi?lat=56.81096&amp;lon=24.61059"><code>/api/pludi?lat=56.81096&amp;lon=24.61059</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: &quot;lvgmc-pludi&quot;,
+ &quot;zona&quot;: false,
+ &quot;veidi&quot;: [],
+ &quot;nepilnigi&quot;: false
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-udens">
+  <h2><span class="metode">GET</span> <code>/api/udens</code> — Ūdens līmenis upēs</h2>
+  <p>Tuvākās LVĢMC hidroloģiskās stacijas: līmenis (cm virs posteņa nulles), izmaiņa 24 h, prognoze 7 dienām.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>limit</code></td><td>integer</td><td>1–10, noklusēti 3</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi">LVĢMC hidroloģiskie novērojumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes">LVĢMC hidroloģiskās prognozes</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 10 min (Cache-Control) <br><b>Piezīme:</b> Bīstamības līmeņi nav atvērtie dati, tāpēc to nav. Prognoze ir ~35 no 74 stacijām.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/udens?lat=56.8166&amp;lon=24.6046&amp;limit=2"><code>/api/udens?lat=56.8166&amp;lon=24.6046&amp;limit=2</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: &quot;lvgmc-hidro&quot;,
+ &quot;stacijas&quot;: [
+  {
+   &quot;stacija&quot;: &quot;HD073401&quot;,
+   &quot;nosaukums&quot;: &quot;Ogre&quot;,
+   &quot;limenis_cm&quot;: 55,
+   &quot;limenis_m&quot;: 20.61,
+   &quot;nulle_m&quot;: 20.06,
+   &quot;izmaina_24h_cm&quot;: 0,
+   &quot;udens_temp&quot;: null,
+   &quot;laiks&quot;: &quot;2026-10-09T23:00:00Z&quot;,
+   &quot;derigs_lidz&quot;: &quot;2026-10-10T05:00:00+00:00&quot;,
+   &quot;lat&quot;: 56.8128,
+   &quot;lon&quot;: 24.6417,
+   &quot;attalums_m&quot;: 2297,
+   &quot;vecs&quot;: false,
+   &quot;prognoze&quot;: null
+  },
+  {
+   &quot;stacija&quot;: &quot;HD073418&quot;,
+   &quot;nosaukums&quot;: &quot;Stariņi&quot;,
+   &quot;limenis_cm&quot;: -32,
+   &quot;limenis_m&quot;: 23.15,
+   &quot;nulle_m&quot;: 23.47,
+   &quot;izmaina_24h_cm&quot;: 1,
+   &quot;udens_temp&quot;: 11.1,
+   &quot;laiks&quot;: &quot;2026-10-09T23:00:00Z&quot;,
+   &quot;derigs_lidz&quot;: &quot;2026-10-10T05:00:00+00:00&quot;,
+   &quot;lat&quot;: 56.868056,
+   &quot;lon&quot;: 24.61,
+   &quot;attalums_m&quot;: 5731,
+   &quot;vecs&quot;: false,
+   &quot;prognoze&quot;: {
+    &quot;datums&quot;: &quot;2026-10-17&quot;,
+    &quot;dienas&quot;: 7,
+    &quot;mediana_cm&quot;: -21,
+    &quot;josla_50_cm&quot;: [
+     -36,
+     -4
+    ],
+    &quot;josla_90_cm&quot;: [
+     -46,
+     13
+    ],
+    &quot;izmaina_cm&quot;: -13,
+    &quot;virziens&quot;: &quot;krīt&quot;,
+    &quot;avots&quot;: &quot;lvgmc-hidro-prognoze&quot;
+   }
+  }
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-prognozes">
+  <h2><span class="metode">GET</span> <code>/api/prognozes</code> — Laika prognoze pa novadiem</h2>
+  <p>LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa">LVĢMC meteoroloģiskās prognozes apdzīvotām vietām</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Sliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/prognozes"><code>/api/prognozes</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;laiks_lv&quot;: &quot;2026-10-10T03:30&quot;,
+ &quot;prognoze_mainita&quot;: &quot;Fri, 09 Oct 2026 20:43:14 GMT&quot;,
+ &quot;dienas&quot;: [
+  {
+   &quot;datums&quot;: &quot;2026-10-10&quot;,
+   &quot;nosaukums&quot;: &quot;Šodien&quot;
+  },
+  {
+   &quot;datums&quot;: &quot;2026-10-11&quot;,
+   &quot;nosaukums&quot;: &quot;Rīt&quot;
+  },
+  &quot;… (+1)&quot;
+ ],
+ &quot;zinas&quot;: [
+  {
+   &quot;veids&quot;: &quot;noverojums&quot;,
+   &quot;paradiba&quot;: &quot;Vējš&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;datums&quot;: &quot;2026-10-10&quot;,
+   &quot;diena&quot;: &quot;Šobrīd&quot;,
+   &quot;virsraksts&quot;: &quot;Šobrīd brāzmas līdz 19 m/s (Daugavgrīva, 03:00)&quot;,
+   &quot;teksts&quot;: &quot;LVĢMC stacijās ar brāzmām no 15 m/s: 4 (arī Ventspils 17, Dagda 17, Rēzekne 16 m/s).&quot;,
+   &quot;regioni&quot;: [
+    &quot;100003003&quot;,
+    &quot;100003060&quot;,
+    &quot;… (+2)&quot;
+   ],
+   &quot;bbox&quot;: [
+    23.721111,
+    56.86,
+    24.321111000000002,
+    57.260000000000005
+   ],
+   &quot;avots&quot;: {
+    &quot;nosaukums&quot;: &quot;LVĢMC hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)&quot;,
+    &quot;licence&quot;: &quot;CC0 1.0&quot;,
+    &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi&quot;
+   }
+  },
+  {
+   &quot;veids&quot;: &quot;riski&quot;,
+   &quot;paradiba&quot;: &quot;Risks&quot;,
+   &quot;limenis&quot;: 2,
+   &quot;datums&quot;: &quot;2026-10-10&quot;,
+   &quot;diena&quot;: &quot;Šodien&quot;,
+   &quot;virsraksts&quot;: &quot;Šodien paaugstināts risks: Rīga un Pierīga (brāzmas līdz 20 m/s), Kurzeme (brāzmas līdz 22 m/s), Latgale (LVĢMC dzeltens brīdinājums: vējš),…&quot;,
+   &quot;teksts&quot;: &quot;Novadi ar paaugstinātu risku: 42. Riska karte apvieno LVĢMC brīdinājumus, prognozi, zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis of…&quot;,
+   &quot;regioni&quot;: [
+    &quot;100016768&quot;,
+    &quot;100016550&quot;,
+    &quot;… (+40)&quot;
+   ],
+   &quot;bbox&quot;: [
+    20.9621,
+    55.6747,
+    28.2415,
+    58.0856
+   ],
+   &quot;avots&quot;: {
+    &quot;nosaukums&quot;: &quot;LVĢMC meteoroloģiskās prognozes apdzīvotām vietām&quot;,
+    &quot;licence&quot;: &quot;CC0 1.0&quot;,
+    &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa&quot;
+   }
+  },
+  &quot;… (+13)&quot;
+ ],
+ &quot;regioni&quot;: {
+  &quot;100016727&quot;: {
+   &quot;nosaukums&quot;: &quot;Preiļu novads&quot;,
+   &quot;planosanas_regions&quot;: &quot;Latgalē&quot;,
+   &quot;dienas&quot;: {
+    &quot;2026-10-10&quot;: {
+     &quot;brazmas&quot;: 16.7,
+     &quot;brazmas_vieta&quot;: &quot;Ščadrinieki&quot;,
+     &quot;nokrisni&quot;: 4.9,
+     &quot;nokrisni_vieta&quot;: &quot;Vēveri&quot;,
+     &quot;tmax&quot;: 12.5,
+     &quot;tmin&quot;: 6.4,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1506,
+     &quot;vietas&quot;: 650,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, lietus&quot;
+    },
+    &quot;2026-10-11&quot;: {
+     &quot;brazmas&quot;: 9.6,
+     &quot;brazmas_vieta&quot;: &quot;Ūgaiņi-Puduļi&quot;,
+     &quot;nokrisni&quot;: 1.2,
+     &quot;nokrisni_vieta&quot;: &quot;Zukuli&quot;,
+     &quot;tmax&quot;: 12.1,
+     &quot;tmin&quot;: 8.7,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1105,
+     &quot;vietas&quot;: 650,
+     &quot;laiks&quot;: &quot;apmācies&quot;
+    },
+    &quot;2026-10-12&quot;: {
+     &quot;brazmas&quot;: 6.4,
+     &quot;brazmas_vieta&quot;: &quot;Ūsāni&quot;,
+     &quot;nokrisni&quot;: 1.1,
+     &quot;nokrisni_vieta&quot;: &quot;Gadzāni&quot;,
+     &quot;tmax&quot;: 12.6,
+     &quot;tmin&quot;: 6.3,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1403,
+     &quot;vietas&quot;: 650,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, migla&quot;
+    }
+   }
+  },
+  &quot;100016630&quot;: {
+   &quot;nosaukums&quot;: &quot;Aizkraukles novads&quot;,
+   &quot;planosanas_regions&quot;: &quot;Zemgalē&quot;,
+   &quot;dienas&quot;: {
+    &quot;2026-10-10&quot;: {
+     &quot;brazmas&quot;: 15.7,
+     &quot;brazmas_vieta&quot;: &quot;Stukmaņi&quot;,
+     &quot;nokrisni&quot;: 8.4,
+     &quot;nokrisni_vieta&quot;: &quot;Irši&quot;,
+     &quot;tmax&quot;: 12.0,
+     &quot;tmin&quot;: 6.0,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1506,
+     &quot;vietas&quot;: 41,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, lietus&quot;
+    },
+    &quot;2026-10-11&quot;: {
+     &quot;brazmas&quot;: 9.0,
+     &quot;brazmas_vieta&quot;: &quot;Pilskalne&quot;,
+     &quot;nokrisni&quot;: 0.3,
+     &quot;nokrisni_vieta&quot;: &quot;Ķūģi&quot;,
+     &quot;tmax&quot;: 13.0,
+     &quot;tmin&quot;: 8.9,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1103,
+     &quot;vietas&quot;: 41,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas&quot;
+    },
+    &quot;2026-10-12&quot;: {
+     &quot;brazmas&quot;: 6.8,
+     &quot;brazmas_vieta&quot;: &quot;Pilskalne&quot;,
+     &quot;nokrisni&quot;: 4.1,
+     &quot;nokrisni_vieta&quot;: &quot;Sproģi&quot;,
+     &quot;tmax&quot;: 12.0,
+     &quot;tmin&quot;: 5.6,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1403,
+     &quot;vietas&quot;: 41,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, migla&quot;
+    }
+   }
+  },
+  &quot;100016768&quot;: {
+   &quot;nosaukums&quot;: &quot;Siguldas novads&quot;,
+   &quot;planosanas_regions&quot;: &quot;Rīgā un Pierīgā&quot;,
+   &quot;dienas&quot;: {
+    &quot;2026-10-10&quot;: {
+     &quot;brazmas&quot;: 15.4,
+     &quot;brazmas_vieta&quot;: &quot;Kārļzemnieki&quot;,
+     &quot;nokrisni&quot;: 15.9,
+     &quot;nokrisni_vieta&quot;: &quot;Lēdurga&quot;,
+     &quot;tmax&quot;: 12.0,
+     &quot;tmin&quot;: 7.4,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1506,
+     &quot;vietas&quot;: 32,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, lietus&quot;
+    },
+    &quot;2026-10-11&quot;: {
+     &quot;brazmas&quot;: 9.9,
+     &quot;brazmas_vieta&quot;: &quot;Lēdurga&quot;,
+     &quot;nokrisni&quot;: 1.9,
+     &quot;nokrisni_vieta&quot;: &quot;Plānupe&quot;,
+     &quot;tmax&quot;: 12.8,
+     &quot;tmin&quot;: 7.8,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1103,
+     &quot;vietas&quot;: 32,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas&quot;
+    },
+    &quot;2026-10-12&quot;: {
+     &quot;brazmas&quot;: 5.6,
+     &quot;brazmas_vieta&quot;: &quot;Ķipari&quot;,
+     &quot;nokrisni&quot;: 1.0,
+     &quot;nokrisni_vieta&quot;: &quot;Nurmiži&quot;,
+     &quot;tmax&quot;: 12.0,
+     &quot;tmin&quot;: 6.3,
+     &quot;varbutiba&quot;: 0.0,
+     &quot;ikona&quot;: 1403,
+     &quot;vietas&quot;: 32,
+     &quot;laiks&quot;: &quot;mākoņains, brīžiem skaidrojas, migla&quot;
+    }
+   }
+  },
+  &quot;…&quot;: &quot;+39 lauki&quot;
+ },
+ &quot;bridinajumu_poligoni&quot;: [
+  {
+   &quot;id&quot;: &quot;28227&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;paradiba&quot;: &quot;Vējš&quot;,
+   &quot;poligons&quot;: [
+    [
+     56.8708,
+     24.2751
+    ],
+    [
+     56.8601,
+     24.3071
+    ],
+    &quot;… (+23)&quot;
+   ]
+  },
+  {
+   &quot;id&quot;: &quot;28210&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;paradiba&quot;: &quot;Vējš&quot;,
+   &quot;poligons&quot;: [
+    [
+     56.2791,
+     28.2415
+    ],
+    [
+     56.3579,
+     28.1938
+    ],
+    &quot;… (+323)&quot;
+   ]
+  }
+ ],
+ &quot;sliekshni&quot;: {
+  &quot;brazmas&quot;: [
+   [
+    15,
+    0
+   ],
+   [
+    20,
+    1
+   ],
+   &quot;… (+2)&quot;
+  ],
+  &quot;nokrisni&quot;: [
+   [
+    10,
+    0
+   ],
+   [
+    15,
+    1
+   ],
+   &quot;… (+2)&quot;
+  ],
+  &quot;karstums&quot;: [
+   [
+    27,
+    0
+   ],
+   [
+    30,
+    1
+   ],
+   &quot;… (+1)&quot;
+  ],
+  &quot;sals&quot;: [
+   [
+    0,
+    0
+   ],
+   [
+    -20,
+    1
+   ],
+   &quot;… (+2)&quot;
+  ]
+ },
+ &quot;riski&quot;: {
+  &quot;100016727&quot;: {
+   &quot;sodien&quot;: 1,
+   &quot;rit&quot;: 0,
+   &quot;iemesli&quot;: [
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;LVĢMC dzeltens brīdinājums: vējš&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC hidrometeoroloģiskie brīdinājumi&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi&quot;
+     },
+     &quot;klat&quot;: false
+    },
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;brāzmas līdz 17 m/s (Ščadrinieki)&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC meteoroloģiskās prognozes apdzīvotām vietām&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa&quot;
+     },
+     &quot;klat&quot;: false
+    }
+   ]
+  },
+  &quot;100016630&quot;: {
+   &quot;sodien&quot;: 1,
+   &quot;rit&quot;: 0,
+   &quot;iemesli&quot;: [
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;LVĢMC dzeltens brīdinājums: vējš&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC hidrometeoroloģiskie brīdinājumi&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi&quot;
+     },
+     &quot;klat&quot;: false
+    },
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;brāzmas līdz 16 m/s (Stukmaņi)&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC meteoroloģiskās prognozes apdzīvotām vietām&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa&quot;
+     },
+     &quot;klat&quot;: false
+    }
+   ]
+  },
+  &quot;100016768&quot;: {
+   &quot;sodien&quot;: 1,
+   &quot;rit&quot;: 0,
+   &quot;iemesli&quot;: [
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;LVĢMC dzeltens brīdinājums: vējš&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC hidrometeoroloģiskie brīdinājumi&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi&quot;
+     },
+     &quot;klat&quot;: false
+    },
+    {
+     &quot;diena&quot;: &quot;sodien&quot;,
+     &quot;limenis&quot;: 1,
+     &quot;teksts&quot;: &quot;brāzmas līdz 15 m/s (Kārļzemnieki)&quot;,
+     &quot;avots&quot;: {
+      &quot;nosaukums&quot;: &quot;LVĢMC meteoroloģiskās prognozes apdzīvotām vietām&quot;,
+      &quot;licence&quot;: &quot;CC0 1.0&quot;,
+      &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa&quot;
+     },
+     &quot;klat&quot;: false
+    },
+    &quot;… (+1)&quot;
+   ]
+  },
+  &quot;…&quot;: &quot;+39 lauki&quot;
+ },
+ &quot;riska_dienas&quot;: {
+  &quot;sodien&quot;: &quot;2026-10-10&quot;,
+  &quot;rit&quot;: &quot;2026-10-11&quot;
+ },
+ &quot;riska_limeni&quot;: {
+  &quot;0&quot;: &quot;nav&quot;,
+  &quot;1&quot;: &quot;paaugstināts&quot;,
+  &quot;2&quot;: &quot;augsts&quot;,
+  &quot;3&quot;: &quot;ļoti augsts&quot;
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-prognozes-robezas">
+  <h2><span class="metode">GET</span> <code>/api/prognozes/robezas</code> — Novadu robežas prognozei</h2>
+  <p>Vienkāršotas novadu un valstspilsētu robežas (GeoJSON) kartes iekrāsošanai.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/varis-atvertie-dati">VZD Valsts adrešu reģistra atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 24 h (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/prognozes/robezas"><code>/api/prognozes/robezas</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;type&quot;: &quot;FeatureCollection&quot;,
+ &quot;features&quot;: [
+  {
+   &quot;type&quot;: &quot;Feature&quot;,
+   &quot;id&quot;: &quot;100016727&quot;,
+   &quot;properties&quot;: {
+    &quot;kods&quot;: &quot;100016727&quot;,
+    &quot;nosaukums&quot;: &quot;Preiļu novads&quot;
+   },
+   &quot;geometry&quot;: {
+    &quot;type&quot;: &quot;Polygon&quot;,
+    &quot;coordinates&quot;: [
+     [
+      [
+       27.135,
+       56.095
+      ],
+      [
+       27.095,
+       56.102
+      ],
+      &quot;… (+159)&quot;
+     ]
+    ]
+   }
+  },
+  {
+   &quot;type&quot;: &quot;Feature&quot;,
+   &quot;id&quot;: &quot;100016630&quot;,
+   &quot;properties&quot;: {
+    &quot;kods&quot;: &quot;100016630&quot;,
+    &quot;nosaukums&quot;: &quot;Aizkraukles novads&quot;
+   },
+   &quot;geometry&quot;: {
+    &quot;type&quot;: &quot;Polygon&quot;,
+    &quot;coordinates&quot;: [
+     [
+      [
+       25.018,
+       56.549
+      ],
+      [
+       24.981,
+       56.552
+      ],
+      &quot;… (+177)&quot;
+     ]
+    ]
+   }
+  },
+  &quot;… (+40)&quot;
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-zibens">
+  <h2><span class="metode">GET</span> <code>/api/zibens</code> — Zibens</h2>
+  <p>Zibens izlādes pēdējās 30 min Latvijas apgabalā + LVĢMC 24 h zibens režģis.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://en.ilmatieteenlaitos.fi/open-data">Ilmatieteen laitos (FMI) atvērtie dati</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ; <a href="https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi">LVĢMC telpiskie novērojumi (zibens režģis)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 60 s (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/zibens"><code>/api/zibens</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;minutes&quot;: 30,
+ &quot;zibeni&quot;: [],
+ &quot;skaits&quot;: 0,
+ &quot;no&quot;: &quot;2026-10-10T00:04:20+00:00&quot;,
+ &quot;lidz&quot;: &quot;2026-10-10T00:34:20+00:00&quot;,
+ &quot;avots&quot;: {
+  &quot;nosaukums&quot;: &quot;Ilmatieteen laitos (FMI) atvērtie dati&quot;,
+  &quot;licence&quot;: &quot;CC BY 4.0&quot;,
+  &quot;url&quot;: &quot;https://en.ilmatieteenlaitos.fi/open-data&quot;
+ },
+ &quot;rezgis_24h&quot;: {
+  &quot;lidz_lv&quot;: &quot;2026-10-09 23:00:00&quot;,
+  &quot;sunas&quot;: []
+ },
+ &quot;rezgis_avots&quot;: {
+  &quot;nosaukums&quot;: &quot;LVĢMC telpiskie novērojumi (zibens režģis, 24 h)&quot;,
+  &quot;licence&quot;: &quot;CC0 1.0&quot;,
+  &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi&quot;
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-augsne">
+  <h2><span class="metode">GET</span> <code>/api/augsne</code> — Nokrišņi un augsnes mitrums</h2>
+  <p>Nokrišņi pēdējās 26 dienās un nākamajās 3, augsnes mitrums 3–9 cm (modeļa dati, nav brīdinājums).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://open-meteo.com/">Open-Meteo</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/augsne?lat=56.8166&amp;lon=24.6046"><code>/api/augsne?lat=56.8166&amp;lon=24.6046</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;nokrisni_pagatne_mm&quot;: 56.7,
+ &quot;dienas_pagatne&quot;: 26,
+ &quot;nokrisni_prognoze_mm&quot;: 5.9,
+ &quot;dienas_prognoze&quot;: 3,
+ &quot;augsnes_mitrums&quot;: 0.417,
+ &quot;augsne&quot;: &quot;ļoti mitra&quot;,
+ &quot;avots&quot;: {
+  &quot;nosaukums&quot;: &quot;Open-Meteo&quot;,
+  &quot;licence&quot;: &quot;CC BY 4.0&quot;,
+  &quot;url&quot;: &quot;https://open-meteo.com/&quot;
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-marsruts">
+  <h2><span class="metode">GET</span> <code>/api/marsruts</code> — Maršruts</h2>
+  <p>Kājām vai ar auto, var apiet slēgtas zonas (izvairities).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>no</code> <small>obligāts</small></td><td>string</td><td>sākums lat,lon</td></tr><tr><td><code>uz</code> <small>obligāts</small></td><td>string</td><td>galamērķis lat,lon</td></tr><tr><td><code>veids</code></td><td>string</td><td>kajam (noklusēti) vai auto</td></tr><tr><td><code>izvairities</code></td><td>string</td><td>zonas: c:lat,lon,r_m vai poligons lat,lon;lat,lon;… atdalītas ar |</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://routing.openstreetmap.de/about.html">FOSSGIS OSRM (routing.openstreetmap.de), OpenStreetMap dati</a> · <a href="https://opendatacommons.org/licenses/odbl/1-0/">ODbL 1.0</a><br>
+     <b>Kešs:</b> 10 min (Cache-Control) <br><b>Piezīme:</b> Līdz 60 km. Lūdzu, nelietojiet masveidā — FOSSGIS serveris ir bezmaksas.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/marsruts?no=56.8166,24.6046&amp;uz=56.8139,24.6093&amp;veids=kajam"><code>/api/marsruts?no=56.8166,24.6046&amp;uz=56.8139,24.6093&amp;veids=kajam</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;dross&quot;: true,
+ &quot;apiet_zonu&quot;: false,
+ &quot;veids&quot;: &quot;kajam&quot;,
+ &quot;no_zonas&quot;: false,
+ &quot;attalums_m&quot;: 489,
+ &quot;ilgums_s&quot;: 391,
+ &quot;koord&quot;: [
+  [
+   56.81661,
+   24.60457
+  ],
+  [
+   56.81651,
+   24.60446
+  ],
+  &quot;… (+16)&quot;
+ ],
+ &quot;zonas&quot;: 0,
+ &quot;avots&quot;: {
+  &quot;nosaukums&quot;: &quot;FOSSGIS OSRM (routing.openstreetmap.de), OpenStreetMap dati&quot;,
+  &quot;licence&quot;: &quot;ODbL 1.0&quot;,
+  &quot;url&quot;: &quot;https://routing.openstreetmap.de/about.html&quot;
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-noverojumi">
+  <h2><span class="metode">GET</span> <code>/api/noverojumi</code> — Laikapstākļi tagad</h2>
+  <p>LVĢMC meteostaciju jaunākās brāzmas, vējš, temperatūra, nokrišņi; ar lat/lon — tuvākās.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>limit</code></td><td>integer</td><td>1–100</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi">LVĢMC meteoroloģiskie operatīvie dati</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/noverojumi?lat=56.8166&amp;lon=24.6046&amp;limit=2"><code>/api/noverojumi?lat=56.8166&amp;lon=24.6046&amp;limit=2</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: {
+  &quot;nosaukums&quot;: &quot;LVĢMC hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)&quot;,
+  &quot;licence&quot;: &quot;CC0 1.0&quot;,
+  &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi&quot;
+ },
+ &quot;vecs_h&quot;: 3,
+ &quot;stacijas&quot;: [
+  {
+   &quot;id&quot;: &quot;LIELPECI&quot;,
+   &quot;nosaukums&quot;: &quot;Lielpēči&quot;,
+   &quot;lat&quot;: 56.804167,
+   &quot;lon&quot;: 24.713889,
+   &quot;nokrisni_1h&quot;: 0.5,
+   &quot;laiks&quot;: &quot;2026-10-10T00:00:00Z&quot;,
+   &quot;vecs&quot;: false,
+   &quot;attalums_m&quot;: 6794
+  },
+  {
+   &quot;id&quot;: &quot;RIGASLU&quot;,
+   &quot;nosaukums&quot;: &quot;Rīga Universitāte&quot;,
+   &quot;lat&quot;: 56.954797,
+   &quot;lon&quot;: 24.104686,
+   &quot;brazmas&quot;: 13.3,
+   &quot;vejs&quot;: 7.0,
+   &quot;virziens&quot;: 276.0,
+   &quot;temp&quot;: 9.6,
+   &quot;nokrisni_1h&quot;: 0.0,
+   &quot;laiks&quot;: &quot;2026-10-10T00:00:00Z&quot;,
+   &quot;vecs&quot;: false,
+   &quot;attalums_m&quot;: 34035
+  }
+ ],
+ &quot;maks_brazmas&quot;: {
+  &quot;nosaukums&quot;: &quot;Daugavgrīva&quot;,
+  &quot;brazmas&quot;: 19.3,
+  &quot;laiks&quot;: &quot;2026-10-10T00:00:00Z&quot;,
+  &quot;lat&quot;: 57.06,
+  &quot;lon&quot;: 24.021111
+ }
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-celi">
+  <h2><span class="metode">GET</span> <code>/api/celi</code> — Ceļu slēgumi un negadījumi</h2>
+  <p>Spēkā esošie un plānotie notikumi uz valsts autoceļiem: negadījumi, remontdarbi, slidens ceļš.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>bbox</code></td><td>string</td><td>minLon,minLat,maxLon,maxLat</td></tr><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>r</code></td><td>number</td><td>rādiuss metros (100–100000) ap lat/lon</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://transportdata.gov.lv/">LVC DATEX II caur Nacionālo piekļuves punktu</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 2 min (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/celi?lat=56.8166&amp;lon=24.6046&amp;r=20000"><code>/api/celi?lat=56.8166&amp;lon=24.6046&amp;r=20000</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: &quot;lvc-nap&quot;,
+ &quot;konfigurets&quot;: true,
+ &quot;notikumi&quot;: [
+  {
+   &quot;id&quot;: &quot;6a54b699bf732a1a4c9649e1&quot;,
+   &quot;tips&quot;: &quot;remonts&quot;,
+   &quot;nosaukums&quot;: &quot;Ceļa būvdarbi&quot;,
+   &quot;apraksts&quot;: &quot;Slēgta labās puses brauktuve (Ogres virzienā). Divvirzienu satiksme pārslēgta uz Rīgas virziena  brauktuvi.\nLīdz ar slēgto labo brauktuvi na…&quot;,
+   &quot;cels&quot;: null,
+   &quot;lat&quot;: 56.83479,
+   &quot;lon&quot;: 24.50249,
+   &quot;linija&quot;: [
+    [
+     56.83479,
+     24.50249
+    ],
+    [
+     56.83399,
+     24.50466
+    ],
+    &quot;… (+31)&quot;
+   ],
+   &quot;no&quot;: &quot;2026-07-13T08:00:00+03:00&quot;,
+   &quot;lidz&quot;: &quot;2027-03-10T17:00:00+02:00&quot;,
+   &quot;aktivs&quot;: true,
+   &quot;attalums_m&quot;: 2793
+  },
+  {
+   &quot;id&quot;: &quot;6a4c92c9bf732a1a4c9648cc&quot;,
+   &quot;tips&quot;: &quot;remonts&quot;,
+   &quot;nosaukums&quot;: &quot;Ceļa būvdarbi&quot;,
+   &quot;apraksts&quot;: &quot;Būvdarbi, ātruma ierobežojums 50 km/h&quot;,
+   &quot;cels&quot;: null,
+   &quot;lat&quot;: 56.86408,
+   &quot;lon&quot;: 24.561,
+   &quot;linija&quot;: [
+    [
+     56.86408,
+     24.561
+    ],
+    [
+     56.86402,
+     24.56109
+    ],
+    &quot;… (+11)&quot;
+   ],
+   &quot;no&quot;: &quot;2026-07-07T08:46:04+03:00&quot;,
+   &quot;lidz&quot;: &quot;2026-10-15T16:46:04+03:00&quot;,
+   &quot;aktivs&quot;: true,
+   &quot;attalums_m&quot;: 5366
+  },
+  &quot;… (+2)&quot;
+ ],
+ &quot;nepieejami&quot;: []
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-satiksme">
+  <h2><span class="metode">GET</span> <code>/api/satiksme</code> — Satiksme zonās</h2>
+  <p>Satiksmes līmenis pa pašvaldībām no uzskaites iekārtām (minūšu ātrums), slidenā ceļa vietas, robežu gaidīšana.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://transportdata.gov.lv/">LVC satiksmes intensitāte un ātrums, slidens ceļš (NAP)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 s (Cache-Control) <br><b>Piezīme:</b> Brīvas plūsmas ātrums ir novērtējums; zonu apkopojums — atvasināti dati (CC BY 4.0).</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/satiksme"><code>/api/satiksme</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: &quot;lvc-nap&quot;,
+ &quot;laiks&quot;: &quot;2026-10-10T00:34:21+00:00&quot;,
+ &quot;kopas&quot;: {
+  &quot;vietas&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: true,
+   &quot;kluda&quot;: null,
+   &quot;nosaukums&quot;: &quot;Satiksmes uzskaites iekārtu atrašanās vietas&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/fef717ac-c832-49b2-8589-521084cdb595&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  },
+  &quot;merijumi&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: true,
+   &quot;kluda&quot;: null,
+   &quot;nosaukums&quot;: &quot;Satiksmes intensitāte un ātrums valsts autoceļos (minūtes dati)&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/ed1f0d2c-6ad8-4823-b132-71fc69993d1c&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  },
+  &quot;slidens_meteo&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: true,
+   &quot;kluda&quot;: null,
+   &quot;nosaukums&quot;: &quot;Īslaicīgi slidens ceļš (meteostaciju dati)&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/46cd2e45-33b7-492c-a163-a9dd5508ede4&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  },
+  &quot;slidens_uzturetaji&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: true,
+   &quot;kluda&quot;: null,
+   &quot;nosaukums&quot;: &quot;Īslaicīgi slidens ceļš (ceļu uzturētāju ziņojumi)&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/6749e127-7520-4790-8d6a-ad4a0270d1fe&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  },
+  &quot;slidens_sic&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: true,
+   &quot;kluda&quot;: null,
+   &quot;nosaukums&quot;: &quot;Īslaicīgi slidens ceļš (Satiksmes informācijas centrs)&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/f3204a64-3dc3-4ed6-b6f0-872f58500735&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  },
+  &quot;robezas&quot;: {
+   &quot;konfigurets&quot;: true,
+   &quot;pieejams&quot;: false,
+   &quot;kluda&quot;: &quot;HTTP 403: Access forbidden!&quot;,
+   &quot;nosaukums&quot;: &quot;Robežšķērsošanas gaidīšanas laiks&quot;,
+   &quot;datu_kopa_url&quot;: &quot;https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae&quot;,
+   &quot;licence&quot;: &quot;CC0 1.0&quot;,
+   &quot;licences_url&quot;: &quot;https://creativecommons.org/publicdomain/zero/1.0/&quot;
+  }
+ },
+ &quot;zonas&quot;: [
+  {
+   &quot;kods&quot;: &quot;100016534&quot;,
+   &quot;nosaukums&quot;: &quot;Jelgavas novads&quot;,
+   &quot;bbox&quot;: [
+    23.39246,
+    56.32052,
+    24.12297,
+    56.89573
+   ],
+   &quot;tips&quot;: &quot;regions&quot;,
+   &quot;limenis&quot;: 1,
+   &quot;limenis_teksts&quot;: &quot;lēns&quot;,
+   &quot;atrums_vid&quot;: 45.1,
+   &quot;atrums_brivs&quot;: 80.0,
+   &quot;plusma_h&quot;: 5,
+   &quot;merijumi&quot;: 3,
+   &quot;iekartas&quot;: 3,
+   &quot;laiks&quot;: &quot;2026-10-10T00:30:00.000Z&quot;
+  },
+  {
+   &quot;kods&quot;: &quot;100016630&quot;,
+   &quot;nosaukums&quot;: &quot;Aizkraukles novads&quot;,
+   &quot;bbox&quot;: [
+    24.89175,
+    56.14491,
+    25.94847,
+    56.82936
+   ],
+   &quot;tips&quot;: &quot;regions&quot;,
+   &quot;limenis&quot;: 0,
+   &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
+   &quot;atrums_vid&quot;: 82.5,
+   &quot;atrums_brivs&quot;: 80.0,
+   &quot;plusma_h&quot;: 3,
+   &quot;merijumi&quot;: 2,
+   &quot;iekartas&quot;: 2,
+   &quot;laiks&quot;: &quot;2026-10-10T00:27:00.000Z&quot;
+  },
+  &quot;… (+28)&quot;
+ ],
+ &quot;punkti&quot;: [
+  {
+   &quot;id&quot;: &quot;68c924b023ee40cfa9508f1e&quot;,
+   &quot;lat&quot;: 57.62094,
+   &quot;lon&quot;: 24.38794,
+   &quot;nosaukums&quot;: null,
+   &quot;zona&quot;: &quot;100016606&quot;,
+   &quot;atrums&quot;: 82.1,
+   &quot;atrums_brivs&quot;: 80.0,
+   &quot;plusma_h&quot;: 1,
+   &quot;limenis&quot;: 0,
+   &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
+   &quot;laiks&quot;: &quot;2026-10-10T00:30:00.000Z&quot;
+  },
+  {
+   &quot;id&quot;: &quot;68ca545e23ee40cfa9508f1f&quot;,
+   &quot;lat&quot;: 57.02544,
+   &quot;lon&quot;: 24.31899,
+   &quot;nosaukums&quot;: null,
+   &quot;zona&quot;: &quot;100016784&quot;,
+   &quot;atrums&quot;: 89.1,
+   &quot;atrums_brivs&quot;: 80.0,
+   &quot;plusma_h&quot;: 2,
+   &quot;limenis&quot;: 0,
+   &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
+   &quot;laiks&quot;: &quot;2026-10-10T00:31:00.000Z&quot;
+  },
+  &quot;… (+75)&quot;
+ ],
+ &quot;stacijas&quot;: [
+  {
+   &quot;id&quot;: &quot;662653c6e44f14a1fe01c428&quot;,
+   &quot;lat&quot;: 57.16879,
+   &quot;lon&quot;: 24.96795,
+   &quot;nosaukums&quot;: &quot;Slippery&quot;,
+   &quot;slidens&quot;: true,
+   &quot;cela_temp&quot;: null,
+   &quot;gaisa_temp&quot;: null,
+   &quot;laiks&quot;: &quot;2026-10-10T00:20:00.000Z&quot;,
+   &quot;avots&quot;: &quot;slidens_meteo&quot;
+  }
+ ],
+ &quot;robezas&quot;: [],
+ &quot;piezime&quot;: &quot;Līmenis: vidējais ātrums pret brīvas plūsmas ātrumu iekārtā (≥ 75 % brīvs, ≥ 50 % lēns, citādi sastrēgums). Brīvas plūsmas ātrums ir novērtē…&quot;
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-statuss">
+  <h2><span class="metode">GET</span> <code>/api/statuss</code> — Sistēmas statuss</h2>
+  <p>Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.</p>
+  
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 s (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/statuss"><code>/api/statuss</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;laiks&quot;: &quot;2026-10-10T00:34:02+00:00&quot;,
+ &quot;intervals_min&quot;: 15,
+ &quot;komponenti&quot;: [
+  {
+   &quot;kods&quot;: &quot;vietne&quot;,
+   &quot;nosaukums&quot;: &quot;Karte (map.repo.lv)&quot;,
+   &quot;apraksts&quot;: &quot;Vai lapa atveras&quot;,
+   &quot;avots&quot;: {
+    &quot;nosaukums&quot;: &quot;map.repo.lv pirmkods&quot;,
+    &quot;url&quot;: &quot;https://github.com/noiseparty/hakatons&quot;,
+    &quot;licence&quot;: null,
+    &quot;licences_url&quot;: null
+   },
+   &quot;stavoklis&quot;: &quot;darbojas&quot;,
+   &quot;zinojums&quot;: &quot;Atbild 0,6 s&quot;,
+   &quot;parbaudits&quot;: &quot;2026-10-10T03:30:01+03:00&quot;,
+   &quot;ilgums_ms&quot;: 599,
+   &quot;joslas&quot;: [
+    {
+     &quot;sakums&quot;: &quot;2026-10-09T00:45:00+00:00&quot;,
+     &quot;stavoklis&quot;: null
+    },
+    {
+     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
+     &quot;stavoklis&quot;: null
+    },
+    &quot;… (+94)&quot;
+   ],
+   &quot;pieejamiba_7d&quot;: 100.0
+  },
+  {
+   &quot;kods&quot;: &quot;api&quot;,
+   &quot;nosaukums&quot;: &quot;API un datubāze&quot;,
+   &quot;apraksts&quot;: &quot;Kartes objekti, slāņi un avoti&quot;,
+   &quot;avots&quot;: null,
+   &quot;stavoklis&quot;: &quot;darbojas&quot;,
+   &quot;zinojums&quot;: &quot;19056 objekti kartē&quot;,
+   &quot;parbaudits&quot;: &quot;2026-10-10T03:30:01+03:00&quot;,
+   &quot;ilgums_ms&quot;: 218,
+   &quot;joslas&quot;: [
+    {
+     &quot;sakums&quot;: &quot;2026-10-09T00:45:00+00:00&quot;,
+     &quot;stavoklis&quot;: null
+    },
+    {
+     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
+     &quot;stavoklis&quot;: null
+    },
+    &quot;… (+94)&quot;
+   ],
+   &quot;pieejamiba_7d&quot;: 100.0
+  },
+  &quot;… (+15)&quot;
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-meklejumi-top">
+  <h2><span class="metode">GET</span> <code>/api/meklejumi/top</code> — Biežāk meklētais</h2>
+  <p>Biežāk meklētie atpazītie vaicājumi pēdējās 14 dienās (bez lietotāju datiem).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>n</code></td><td>integer</td><td>1–10, noklusēti 3</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 s (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/meklejumi/top?n=5"><code>/api/meklejumi/top?n=5</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;vaicajumi&quot;: [
+  &quot;nav elektrības&quot;,
+  &quot;plūdi ogrē&quot;,
+  &quot;… (+3)&quot;
+ ]
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-zinojumi">
+  <h2><span class="metode">GET</span> <code>/api/zinojumi</code> — Iedzīvotāju ziņojumi</h2>
+  <p>Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>dienas</code></td><td>integer</td><td>1–7</td></tr><tr><td><code>bbox</code></td><td>string</td><td>minLon,minLat,maxLon,maxLat</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://map.repo.lv/">Iedzīvotāju ziņojumi (map.repo.lv)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 15 s (Cache-Control) <br><b>Piezīme:</b> Ja apdraudēta dzīvība, zvaniet 112.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/zinojumi"><code>/api/zinojumi</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;avots&quot;: {
+  &quot;nosaukums&quot;: &quot;Iedzīvotāju ziņojumi (map.repo.lv)&quot;,
+  &quot;licence&quot;: &quot;CC BY 4.0&quot;,
+  &quot;licences_url&quot;: &quot;https://creativecommons.org/licenses/by/4.0/&quot;
+ },
+ &quot;atruna&quot;: &quot;Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0. Ja apdraudēta dzīvība, zvaniet 112.&quot;,
+ &quot;dienas&quot;: 7,
+ &quot;tipi&quot;: {
+  &quot;koks&quot;: &quot;Nokritis koks&quot;,
+  &quot;cels&quot;: &quot;Neizbraucams ceļš&quot;,
+  &quot;elektriba&quot;: &quot;Bojāta elektrolīnija&quot;,
+  &quot;udens&quot;: &quot;Applūdums&quot;,
+  &quot;cits&quot;: &quot;Cita bīstamība&quot;
+ },
+ &quot;pieejams&quot;: true,
+ &quot;zinojumi&quot;: []
+}</pre></details>
+</section>
+<section class="galapunkts" id="api-veseliba">
+  <h2><span class="metode">GET</span> <code>/api/veseliba</code> — Veselības pārbaude</h2>
+  <p>Vai API un datubāze atbild; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>statistika</code></td><td>integer</td><td>1 — pievienot skaitītājus</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> nekešo (Cache-Control) </p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/veseliba?statistika=1"><code>/api/veseliba?statistika=1</code></a>
+    <span class="statuss">HTTP 200</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
+ &quot;ok&quot;: true,
+ &quot;statistika&quot;: {
+  &quot;db_vaicajumi&quot;: 1384,
+  &quot;db_parslodze&quot;: 0,
+  &quot;kesa&quot;: {
+   &quot;statuss&quot;: {
+    &quot;no_kesas&quot;: 8,
+    &quot;uz_avotu&quot;: 4,
+    &quot;novecojusi&quot;: 2,
+    &quot;gaidija&quot;: 0
+   },
+   &quot;zibens_fmi&quot;: {
+    &quot;no_kesas&quot;: 6,
+    &quot;uz_avotu&quot;: 4,
+    &quot;novecojusi&quot;: 3,
+    &quot;gaidija&quot;: 0
+   },
+   &quot;noverojumi&quot;: {
+    &quot;no_kesas&quot;: 29,
+    &quot;uz_avotu&quot;: 1,
+    &quot;novecojusi&quot;: 0,
+    &quot;gaidija&quot;: 0
+   },
+   &quot;…&quot;: &quot;+18 lauki&quot;
+  },
+  &quot;db_vienlaicigi&quot;: 16,
+  &quot;pavedieni&quot;: 30
+ }
+}</pre></details>
+</section>
+
+  <section class="galapunkts" id="statistika">
+    <h2><code>/api/veseliba?statistika=1</code> — ko nozīmē skaitītāji</h2>
+    <ul>
+      <li><code>ok</code> — datubāze atbild.</li>
+      <li><code>statistika.kesa.&lt;avots&gt;</code>: <code>no_kesas</code> — atbildēts no kešas; <code>uz_avotu</code> — cik reižu
+        tiešām pieprasīts ārējais avots; <code>novecojusi</code> — atdota novecojusi vērtība, kamēr fonā atjauno
+        (lietotājs negaida); <code>gaidija</code> — pieprasījums gaidīja, jo vērtības vēl nebija nemaz.</li>
+      <li><code>db_vaicajumi</code> — datubāzes vaicājumi kopš palaišanas; <code>db_parslodze</code> — cik reižu visi
+        <code>db_vienlaicigi</code> savienojumi bija aizņemti 10 s (atbilde 503); <code>pavedieni</code> — aktīvie pavedieni.</li>
+    </ul>
+  </section>
+
+  <section class="galapunkts">
+    <h2>POST galapunkti (tikai map.repo.lv lapai)</h2>
+    <ul><li><code>POST /api/meklejumi</code> — biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāju datiem)</li><li><code>POST /api/zinojumi</code> — jauns iedzīvotāja ziņojums (moderēts)</li><li><code>POST /api/zinojumi/moderacija, /api/zinojumi/{id}/{darbība}</code> — moderēšana (ar atslēgu)</li></ul>
+  </section>
+
+  <p class="piezime">Pirmkods: <a href="https://github.com/noiseparty/hakatons">github.com/noiseparty/hakatons</a>
+    (<code>src/karte/api/karte_api.py</code>). Šī lapa ģenerēta ar <code>src/api_docs/sagatavot.py</code>; piemēri ir īstas
+    atbildes ģenerēšanas brīdī, saīsinātas. Datu stāvoklis: <a href="statuss.html">statusa lapa</a>.</p>
+</main>
+</body>
+</html>
