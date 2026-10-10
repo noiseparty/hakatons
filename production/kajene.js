@@ -52,7 +52,18 @@
     } else if (location.hash === '#kas-jauns') {
       document.getElementById('izmainas-poga')?.click();
     }
+    // hash notīra, lai atkārtots klikšķis uz tās pašas saites atkal strādātu (replaceState hashchange nesauc)
+    if (location.hash === '#datu-avoti' || location.hash === '#kas-jauns') history.replaceState(null, '', location.pathname + location.search);
   }
+  // Telefonā #izmainas-poga ir paslēpta: pēc loga aizvēršanas fokuss atgriežas pie "#" saites, kas to atvēra
+  let atvereja = null;
+  document.addEventListener('click', e => { const a = e.target.closest && e.target.closest('a[href$="#kas-jauns"]'); if (a) atvereja = a; }, true);
+  const logs = document.getElementById('izmainas');
+  if (logs) logs.addEventListener('close', () => {
+    const p = document.getElementById('izmainas-poga');
+    if (atvereja && atvereja.isConnected && !(p && p.offsetParent)) atvereja.focus();
+    atvereja = null;
+  });
   window.addEventListener('hashchange', hash);
   // tā pati saite vēlreiz (hash nemainās, hashchange nenotiek)
   document.addEventListener('click', e => { if (e.target.closest('.kajene a[href$="#datu-avoti"]')) setTimeout(hash, 0); });
