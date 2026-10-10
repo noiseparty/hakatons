@@ -799,10 +799,18 @@ addEventListener('load', () => setTimeout(slaniSkaits, 300));
 // pēc pārējo change apstrādātājiem (kategoriju stāvoklis atjaunots jau tajos)
 document.addEventListener('change', e => e.target.matches?.('label.parklajums input, #kategorijas input') && setTimeout(() => { slaniURL(); aktivoSlaNuJosla(); slaniSkaits(); }, 0));
 
+// Pirmā atvēršana: grupas ar ieslēgtu slāni ir atvērtas; ja nav neviena slāņa, atver pirmās 2 grupas (rūtiņas uzreiz redzamas). Vēlāk lietotāja izvēli neaiztiek.
+function atvertGrupas() {
+  const g = [...el('kategorijas').querySelectorAll('details.grupa')];
+  g.forEach(d => { if (d.querySelector('input:checked')) d.open = true; });
+  if (!g.some(d => d.open)) g.slice(0, 2).forEach(d => { d.open = true; });
+}
+
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
     aizpilditKategorijas(k); aizpilditRegionus(r);
     const slani = slaniNoUrl();
+    atvertGrupas();
     aktivoSlaNuJosla();
     atjaunot().then(() => { if (slani) pieskaritSlaniem(); });
     arMeklesanu(m => m.sakt(r));

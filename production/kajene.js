@@ -29,12 +29,15 @@
   if (!kartesLapa) return;
   // Saites no citām lapām: ./#datu-avoti, ./#kas-jauns
   function hash() {
-    if (location.hash === '#datu-avoti') {
+    if (location.hash === '#datu-avoti' || location.hash === '#avoti') {
       const p = document.getElementById('panelis-poga');
       const lapa = typeof Apaksa !== 'undefined' && Apaksa.aktiva();
       // telefonā / planšetē panelis ir apakšējās lapas cilnē "Kartes slāņi" (sheet.js): cilne + lapa "Pilns", tad ritina
       if (lapa) { if (typeof Lapa !== 'undefined' && Lapa) Lapa.cilne('slani'); Apaksa.atvert('pilna'); }
       else if (document.body.classList.contains('panelis-slegts') && p) p.click();
+      // darbvirsmā Slāņu vadības atvilktne (darbvirsma.js) ir aizvērta un "Datu avoti" tajā neredzami: atver to
+      const at = document.getElementById('dv-atvilktne');
+      if (!lapa && at && at.hidden) document.querySelector('[data-dv="slani"]')?.click();
       const d = document.getElementById('avoti');
       if (d) {
         d.open = true;
@@ -43,11 +46,15 @@
           const s = document.getElementById('apaksa-saturs');
           if (lapa && s && s.contains(d)) s.scrollTop -= 52;  // zem pielipušās ciļņu rindas
         }, lapa ? 420 : 250);
+        // darbvirsmā atvilktne un avotu saraksts ielādējas/animējas vēlāk: ritina vēlreiz, kad izkārtojums nostabilizējies
+        if (!lapa) setTimeout(() => d.scrollIntoView({ block: 'start' }), 1200);
       }
     } else if (location.hash === '#kas-jauns') {
       document.getElementById('izmainas-poga')?.click();
     }
   }
   window.addEventListener('hashchange', hash);
+  // tā pati saite vēlreiz (hash nemainās, hashchange nenotiek)
+  document.addEventListener('click', e => { if (e.target.closest('.kajene a[href$="#datu-avoti"]')) setTimeout(hash, 0); });
   window.addEventListener('load', () => setTimeout(hash, 300));
 })();
