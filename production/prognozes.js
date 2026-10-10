@@ -70,11 +70,11 @@ const Prognozes = (() => {
   }
 
   function zinasHtml() {
-    const z = dati.zinas.filter(z => z.veids === 'bridinajums' || z.veids === 'riski' || z.datums === diena);
+    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums'].includes(z.veids) || z.datums === diena);
     if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
-      `<span class="prog-veids">${z.veids === 'bridinajums' ? '⚠ LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
+      `<span class="prog-veids">${z.veids === 'bridinajums' ? '⚠ LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? '💨 LVĢMC novērojums tagad' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
       `<b>${esc(z.virsraksts)}</b><span class="prog-teksts">${esc(z.teksts)}</span>${avots(z.avots)}</li>`).join('') + '</ul>';
   }
 

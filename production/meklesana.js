@@ -15,6 +15,8 @@ const krizesMeklesana = (() => {
   const PLUDU_SCENARIJI = new Set(['pludi', 'udens_celas']);
   // Nokrišņu un augsnes konteksta rinda (Open-Meteo caur /api/augsne): plūdiem, lietusgāzēm un vētrām
   const LAIKA_SCENARIJI = new Set(['pludi', 'udens_celas', 'negaiss', 'vetra_jumts', 'viesulvetra']);
+  // Vējš tuvākajā LVĢMC stacijā tagad (/api/noverojumi): vētrām un vējam
+  const VEJA_SCENARIJI = new Set(['vetra_jumts', 'viesulvetra', 'negaiss', 'sniegavetra', 'koks_pari_celam', 'vads_pari_celam']);
   const AVOTI_LVGMC = {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
@@ -158,8 +160,13 @@ const krizesMeklesana = (() => {
     ['vzryv', 'sprādziens'], ['trevog', 'trauksme'], ['sirena', 'trauksme'], ['benzin', 'degviela'], ['bankomat', 'bankomāts'],
   ];
   let indekss = [];  // [{ k: atslēgvārds bez garumzīmēm, orig }] — viena vārda, latīņu burtiem, no 3 burtiem
+  // Ātrumam (telefonā katrs taustiņš): atslēgvārdi bez garumzīmēm pa scenārijiem, sagatavoti vienreiz, un jau
+  // labotie vārdi — labotVardu ir tīra funkcija no vārda un indeksa, tāpēc rezultāts nemainās.
+  const normAtsl = new Map();
+  const laboti = new Map();
 
   function izveidotIndeksu(noteikumi) {
+    for (const sc of noteikumi.scenariji) normAtsl.set(sc.kods, sc.atslegvardi.map(a => vienk(a)));
     const redzets = new Set();
     for (const sc of noteikumi.scenariji) for (const a of sc.atslegvardi) {
       const k = vienk(a.replace(/\$$/, '')).trim();
@@ -173,6 +180,8 @@ const krizesMeklesana = (() => {
   // Optimālā virknes salīdzināšana (Damerau-Levenšteins ar blakus burtu apmaiņu); pārtrauc, ja > 1
   function dl1(a, b) {
     if (Math.abs(a.length - b.length) > 1) return 2;
+    // ar vienu labojumu (aizstāšana, ielikšana, dzēšana, blakus burtu maiņa) vismaz viens no šiem sakrīt — ātra atmešana
+    if (a[0] !== b[0] && a[1] !== b[1] && a[1] !== b[0] && a[0] !== b[1]) return 2;
     const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
     for (let j = 1; j <= b.length; j++) d[0][j] = j;
     for (let i = 1; i <= a.length; i++) {
@@ -189,6 +198,14 @@ const krizesMeklesana = (() => {
   }
 
   function labotVardu(v) {
+    if (!laboti.has(v)) {
+      if (laboti.size > 2000) laboti.clear();
+      laboti.set(v, labotVarduBezKesas(v));
+    }
+    return laboti.get(v);
+  }
+
+  function labotVarduBezKesas(v) {
     if (!/^[a-z]+$/.test(v) || v.length < 4) return v;
     if (indekss.some(x => x.vesels ? v === x.k : v.startsWith(x.k))) return v;  // jau atpazīstams
     // galotne nost: "plūdos" → "plud" → atslēgvārds, kas sākas ar to
@@ -237,7 +254,7 @@ const krizesMeklesana = (() => {
     if (pedejais.length >= 2) {
       const sc = klasifikators.scenariji;
       // atslēgvārds sākas ar rakstāmo vārdu ("plū" → plūdi), tad nosaukumā ir šis vārds
-      const pecAtslegas = sc.filter(s => s.atslegvardi.some(a => vienk(a).startsWith(pedejais)));
+      const pecAtslegas = sc.filter(s => (normAtsl.get(s.kods) || s.atslegvardi.map(vienk)).some(a => a.startsWith(pedejais)));
       const pecNosaukuma = sc.filter(s => vienk(s.nosaukums).split(/[^a-z]+/).some(v => v.startsWith(pedejais)));
       for (const s of [...pecAtslegas, ...pecNosaukuma]) if (!rez.includes(s)) rez.push(s);
     }
@@ -460,7 +477,8 @@ const krizesMeklesana = (() => {
       ]);
       grupas.forEach(g => { g.features = izveleties(g.features); });
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
-      vietas((laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
+      const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
+      vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
         kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
         (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>');
@@ -473,6 +491,7 @@ const krizesMeklesana = (() => {
           { slanis: rezultatuSlanis, signal });
       }
       if (laiks) augsnesDati(ll, signal);
+      if (vejs) vejaDati(ll, signal);
       // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
       if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
       // zonas.js: satiksme apvidū (LVC) un slidens ceļš tuvumā — rinda tikai tad, ja ir dati
@@ -610,6 +629,25 @@ const krizesMeklesana = (() => {
         `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small>${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
+    });
+  }
+
+  // Vējš tagad tuvākajā LVĢMC stacijā (ar brāzmām)
+  function vejaBloks() {
+    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">💨</span><div><b>Vējš tagad</b><span>Ielādē…</span></div></li></ul>`;
+  }
+  function vejaDati(ll, signal) {
+    iegut('/noverojumi?' + new URLSearchParams({ ...ll, limit: 8 }), signal).then(d => {
+      const s = d.stacijas.find(x => x.brazmas != null && !x.vecs);
+      if (!s) throw new Error('nav');
+      const N = typeof Noverojumi !== 'undefined' ? Noverojumi : null;
+      const sk = x => String(Math.abs(x) >= 10 ? Math.round(x) : (+x).toFixed(1)).replace('.', ',');
+      pluduRinda('rez-vejs', `<b>Vējš tagad</b><span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): brāzmas <b>${sk(s.brazmas)} m/s</b>` +
+        `${s.vejs != null ? `, vidēji ${sk(s.vejs)} m/s ${N ? N.virziens(s.virziens) : ''}` : ''}</span>` +
+        `<small>Mērīts ${esc(new Date(s.laiks).toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' }))}. LVĢMC meteoroloģiskā stacija.</small>` +
+        `<small class="avots-rinda"><a href="${esc(d.avots.url)}" target="_blank" rel="noopener">LVĢMC novērojumi</a> · ${esc(d.avots.licence)}</small>`);
+    }).catch(e => {
+      if (e.name !== 'AbortError') pluduRinda('rez-vejs', '<b>Vējš tagad</b><span>Tuvumā nav svaigu stacijas datu.</span>');
     });
   }
 

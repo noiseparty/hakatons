@@ -56,6 +56,7 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 34 | Dūmi kāpņu telpā | Jāizvēlas drošākais evakuācijas ceļš | dūmi, kāpnes, evakuācija, dzīvojamā ēka |
 | 35 | Gāzes smarža dzīvoklī | Jāatver logi, jāneslēdz slēdzi, jāizsauc avārijas dienests | gāze, smarža, noplūde, avārija |
 | 36 | Ēkas daļēja sagrušana pēc sprādziena | Kāpņu telpa bojāta, izeja bloķēta | sagruvusi ēka, sprādziens, bloķēta izeja |
+| 120 | Dūmi no liela ugunsgrēka tuvumā | Deg noliktava, osta vai rūpnīca, dūmi nāk uz māju — jāiet iekšā, jāaizver logi | dūmi, noliktava, osta, metāllūžņi, logi |
 
 ## D. Laikapstākļi un stihijas
 
@@ -168,6 +169,7 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 103 | Pārtikas veikali tukši | Piegāžu pārrāvums, krājumu plānošana | pārtika, veikali, piegādes, krājumi |
 | 104 | Degvielas trūkums | Rindas stacijās, jāplāno braucieni | degviela, trūkums, rinda, stacija |
 | 105 | Aptiekās nav zāļu | Receptes nevar nodrošināt — alternatīvas | zāles, aptieka, recepši, trūkums |
+| 121 | Valsts e-pakalpojumi nedarbojas | Kiberuzbrukums (DDoS) vai traucējums — eParaksts, Latvija.gov.lv, EDS nav pieejami | e-paraksts, e-pakalpojumi, kiberuzbrukums, DDoS |
 
 ## K. Dzīvnieki un īpašas situācijas
 

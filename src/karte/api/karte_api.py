@@ -24,6 +24,7 @@ Galapunkti:
   GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
   GET /api/marsruts?no=lat,lon&uz=lat,lon&veids=kajam|auto&izvairities=c:lat,lon,r|lat,lon;lat,lon;…
                                        maršruts (FOSSGIS OSRM, OSM ODbL), kas apiet zonas un spēkā esošus LVC slēgumus
+  GET /api/noverojumi[?lat=..&lon=..&limit=..]  laikapstākļi tagad: LVĢMC staciju jaunākās brāzmas, vējš, temperatūra, nokrišņi
   GET /api/veseliba                    pārbaude
   GET /api/celi?bbox=..|lat=..&lon=..&r=5000
                                        ceļu slēgumi, negadījumi, remontdarbi, slidens ceļš (LVC DATEX II caur NAP, CC0)
@@ -711,6 +712,8 @@ def _bridinajumu_zinas(regioni_, vietas, tagad):
 RISKA_BRAZMAS = [(15, 1), (20, 2), (25, 3)]   # diennakts maks. brāzmas, m/s
 RISKA_NOKRISNI = [(15, 1), (30, 2)]           # diennakts nokrišņu summa, mm
 RISKA_LIMENI = {0: "nav", 1: "paaugstināts", 2: "augsts", 3: "ļoti augsts"}
+RISKA_NOVEROTAS_BRAZMAS = 20  # m/s stacijā (svaigs mērījums) → +1 šodien
+NOVEROJUMU_ZINAS_BRAZMAS = 15  # m/s: ziņa lentes augšā "Šobrīd brāzmas līdz …"
 ZIBENS_AVOTS_ISS = {"nosaukums": "FMI zibens dati", "licence": "CC BY 4.0", "url": "https://en.ilmatieteenlaitos.fi/open-data"}
 LVC_AVOTS_ISS = {"nosaukums": "LVC satiksmes informācija (NAP)", "licence": "CC0 1.0",
                  "url": "https://www.transportdata.gov.lv/lv/card/f3204a64-3dc3-4ed6-b6f0-872f58500735"}
@@ -804,9 +807,45 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
         for kods, n in skaits.items():
             pievienot(kods, "sodien", 1, f"slidens ceļš: {n} {'vieta' if n % 10 == 1 and n % 100 != 11 else 'vietas'}",
                       LVC_AVOTS_ISS, klat=True)
+        # Novērotās brāzmas (LVĢMC stacijas, ne vecākas par 3 h) — tikai šodien, +1
+        try:
+            for st in _noverojumi_svaigi():
+                if st["vecs"] or (st.get("brazmas") or 0) < RISKA_NOVEROTAS_BRAZMAS:
+                    continue
+                kods = atrast(st["lat"], st["lon"])
+                if kods:
+                    pievienot(kods, "sodien", 1, f"novērotas brāzmas {_skaitlis_lv(st['brazmas'])} m/s ({st['nosaukums']})",
+                              NOVEROJUMU_AVOTS, klat=True)
+        except Kluda:
+            pass
     for r in riski.values():
         r["iemesli"].sort(key=lambda i: (i["diena"] != "sodien", i["klat"], -i["limenis"]))
     return riski
+
+
+def _noverojumu_zinas(regioni_, vietas):
+    """"Šobrīd brāzmas līdz 24 m/s (Kolka, 10:20)", ja kādā stacijā svaigs mērījums ≥ 15 m/s."""
+    stipras = sorted((s_ for s_ in _noverojumi_svaigi() if not s_["vecs"] and (s_.get("brazmas") or 0) >= NOVEROJUMU_ZINAS_BRAZMAS),
+                     key=lambda s_: -s_["brazmas"])
+    if not stipras:
+        return []
+    m = stipras[0]
+    laiks_lv = datetime.fromisoformat(m["laiks"].replace("Z", "+00:00"))
+    try:
+        from zoneinfo import ZoneInfo
+        laiks_lv = laiks_lv.astimezone(ZoneInfo("Europe/Riga"))
+    except Exception:
+        laiks_lv = laiks_lv + timedelta(hours=3 if 3 < laiks_lv.month < 11 else 2)
+    atrast = _tuvaka_vieta_regions(vietas) if vietas else (lambda *_a: None)
+    kodi = sorted({k for k in (atrast(s_["lat"], s_["lon"]) for s_ in stipras) if k})
+    citas = ", ".join(f"{s_['nosaukums']} {_skaitlis_lv(s_['brazmas'])}" for s_ in stipras[1:5])
+    return [{
+        "veids": "noverojums", "paradiba": "Vējš", "limenis": _pec_sliekshna(m["brazmas"], RISKA_BRAZMAS),
+        "datums": laiks_lv.strftime("%Y-%m-%d"), "diena": "Šobrīd",
+        "virsraksts": f"Šobrīd brāzmas līdz {_skaitlis_lv(m['brazmas'])} m/s ({m['nosaukums']}, {laiks_lv.strftime('%H:%M')})",
+        "teksts": f"LVĢMC stacijās ar brāzmām no {NOVEROJUMU_ZINAS_BRAZMAS} m/s: {len(stipras)}" + (f" (arī {citas} m/s)." if citas else "."),
+        "regioni": kodi, "bbox": [m["lon"] - 0.3, m["lat"] - 0.2, m["lon"] + 0.3, m["lat"] + 0.2], "avots": NOVEROJUMU_AVOTS,
+    }]
 
 
 def _risku_zinas(riski, regioni_, dienas, sodien):
@@ -868,7 +907,11 @@ def _prognozes():
     sodien = tagad.date()
     dienas = [d for d in sorted(dati["kopsavilkums"]) if d >= sodien.isoformat()][:3]
     riski = _riski(dati, regioni_, vietas, tagad, dienas)
-    zinas = _risku_zinas(riski, regioni_, dienas, sodien) + bridinajumu_zinas + \
+    try:
+        noverojumu_zinas = _noverojumu_zinas(regioni_, vietas)
+    except Kluda:
+        noverojumu_zinas = []
+    zinas = noverojumu_zinas + _risku_zinas(riski, regioni_, dienas, sodien) + bridinajumu_zinas + \
         _prognozu_zinas(dati, regioni_, sodien, dienas)
     # Ja dienā nekas nepārsniedz sliekšņus — viena mierīga ziņa, lai lente nav tukša
     for datums in dienas:
@@ -888,7 +931,7 @@ def _prognozes():
                       f"brāzmas līdz {_skaitlis_lv(brazmas)} m/s, nokrišņi līdz {_skaitlis_lv(nokrisni)} mm.",
             "regioni": [], "bbox": None, "avots": PROGNOZU_AVOTS,
         })
-    zinas.sort(key=lambda z: (z["veids"] != "riski", z["veids"] != "bridinajums", z["datums"], -z["limenis"],
+    zinas.sort(key=lambda z: (z["veids"] != "noverojums", z["veids"] != "riski", z["veids"] != "bridinajums", z["datums"], -z["limenis"],
                               z["virsraksts"]))
     return {
         "laiks_lv": tagad.isoformat(timespec="minutes"),
@@ -1219,6 +1262,89 @@ def marsruts(q):
 
 
 # ---- /Maršruts ----
+
+
+# ---- Laikapstākļi tagad: GET /api/noverojumi (LVĢMC meteoroloģiskie operatīvie dati, data.gov.lv, CC0) ----
+# 34 stacijas, katru stundu, pēdējās 48 h; laiks UTC (kā hidroloģiskajiem datiem), vērtības jau m/s, °C, mm.
+# Katrai stacijai jaunākais: brāzmas (stundas maks. HWSMX, citādi termiņa WPGST), vidējais vējš (HWNDS / WNS10),
+# virziens (HWDAV / WNDD10), temperatūra (TDRY / HTDRY), nokrišņi stundā (HPRAB). Vecāks par 3 h — "vecs".
+NOVEROJUMI = "https://data.gov.lv/dati/dataset/40d80be5-0c09-47c4-80f3-fad4bec19f33/resource"
+NOVEROJUMI_DATI = NOVEROJUMI + "/17460efb-ae99-4d1d-8144-1068f184b05f/download/meteo_operativie_dati.csv"
+NOVEROJUMI_STACIJAS = NOVEROJUMI + "/c32c7afd-0d05-44fd-8b24-1de85b4bf11d/download/meteo_stacijas.csv"
+NOVEROJUMU_AVOTS = {"nosaukums": "LVĢMC hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)", "licence": "CC0 1.0",
+                    "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi"}
+NOVEROJUMI_VECS_H = 3
+# lauks → (parametri pēc prioritātes, robežas)
+NOVEROJUMU_LAUKI = {
+    "brazmas": (("HWSMX", "WPGST"), (0, 70)), "vejs": (("HWNDS", "WNS10"), (0, 60)),
+    "virziens": (("HWDAV", "WNDD10"), (0, 360)), "temp": (("TDRY", "HTDRY"), (-50, 50)), "nokrisni_1h": (("HPRAB",), (0, 250)),
+}
+
+
+def _noverojumu_dati():
+    stacijas = {}
+    for r in _csv(NOVEROJUMI_STACIJAS):
+        try:
+            stacijas[r["STATION_ID"]] = (r["NAME"].strip(), float(r["GEOGR2"]), float(r["GEOGR1"]))
+        except (KeyError, ValueError):
+            continue
+    parametri = {p: lauks for lauks, (ps, _r) in NOVEROJUMU_LAUKI.items() for p in ps}
+    jaunakie = {}  # (stacija, parametrs) → (laiks, vērtība)
+    for n, r in enumerate(csv.DictReader(io.StringIO(_lejupieladet(NOVEROJUMI_DATI, timeout=30).decode("utf-8-sig")))):
+        if n > 300000:  # ierobežota apstrāde: datne parasti ~35 000 rindu
+            break
+        lauks = parametri.get(r.get("ABBREVIATION"))
+        if not lauks or r.get("STATION_ID") not in stacijas:
+            continue
+        try:
+            laiks = datetime.strptime(r["DATETIME"], "%Y.%m.%d %H:%M:%S").replace(tzinfo=timezone.utc)
+            vertiba = float(r["VALUE"])
+        except (KeyError, ValueError):
+            continue
+        apaksa, augsa = NOVEROJUMU_LAUKI[lauks][1]
+        if not apaksa <= vertiba <= augsa:
+            continue
+        atslega = (r["STATION_ID"], r["ABBREVIATION"])
+        if atslega not in jaunakie or laiks > jaunakie[atslega][0]:
+            jaunakie[atslega] = (laiks, vertiba)
+    rez = []
+    for sid, (nos, lat, lon) in stacijas.items():
+        s_ = {"id": sid, "nosaukums": nos, "lat": lat, "lon": lon}
+        laiki = []
+        for lauks, (ps, _r) in NOVEROJUMU_LAUKI.items():
+            # jaunākais no parametriem; vienādam laikam — pirmais prioritātē
+            kandidati = [(jaunakie[(sid, p)], -i) for i, p in enumerate(ps) if (sid, p) in jaunakie]
+            if kandidati:
+                (laiks, v), _ = max(kandidati, key=lambda k: (k[0][0], k[1]))
+                s_[lauks] = round(v, 1)
+                laiki.append(laiks)
+        if laiki:
+            s_["laiks"] = max(laiki).isoformat().replace("+00:00", "Z")
+            rez.append(s_)
+    return {"stacijas": rez, "ieladets": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+
+
+def _noverojumi_svaigi():
+    tagad = datetime.now(timezone.utc)
+    dati = _kesots("noverojumi", 600, _noverojumu_dati)
+    return [{**s_, "vecs": tagad - datetime.fromisoformat(s_["laiks"].replace("Z", "+00:00")) > timedelta(hours=NOVEROJUMI_VECS_H)}
+            for s_ in dati["stacijas"]]
+
+
+def noverojumi(q):
+    lat, lon = _vieta(q, obligata=False)
+    limit = int(_skaitlis(q, "limit", 1, 100) or 100)
+    stacijas = _noverojumi_svaigi()
+    if lat is not None:
+        stacijas = sorted(({**s_, "attalums_m": _attalums_m(lat, lon, s_["lat"], s_["lon"])} for s_ in stacijas),
+                          key=lambda s_: s_["attalums_m"])
+    svaigas = [s_ for s_ in stacijas if not s_["vecs"] and s_.get("brazmas") is not None]
+    maks = max(svaigas, key=lambda s_: s_["brazmas"], default=None)
+    return {"avots": NOVEROJUMU_AVOTS, "vecs_h": NOVEROJUMI_VECS_H, "stacijas": stacijas[:limit],
+            "maks_brazmas": {k: maks[k] for k in ("nosaukums", "brazmas", "laiks", "lat", "lon")} if maks else None}
+
+
+# ---- /Laikapstākļi tagad ----
 
 
 def veseliba(_q):
@@ -1922,6 +2048,8 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
     ("zibens", "Zibens (pēdējās 30 min)", "FMI zibens novērojumi Latvijas apgabalā",
      ("Ilmatieteen laitos (FMI) atvērtie dati", "https://en.ilmatieteenlaitos.fi/open-data",
       "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
+    ("noverojumi", "Laikapstākļi tagad", "LVĢMC meteoroloģisko staciju jaunākā mērījuma vecums",
+     ("LVĢMC hidrometeoroloģiskie novērojumi", NOVEROJUMU_AVOTS["url"], *_CC0)),
     ("augsne", "Nokrišņi un augsnes mitrums", "Open-Meteo modeļa dati (pārbaude: Ogre)",
      ("Open-Meteo", "https://open-meteo.com/", "CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/")),
     ("celi", "Ceļu slēgumi un negadījumi", "LVC DATEX II caur Nacionālo piekļuves punktu",
@@ -2061,6 +2189,18 @@ def _parb_zibens():
     return "darbojas", (_skaits(n, "zibens", "zibeņi") + " Latvijā" if n else "Pēdējās 30 min zibens nav reģistrēts")
 
 
+def _parb_noverojumi():
+    # caur to pašu kešu kā /api/noverojumi (10 min)
+    stacijas = _noverojumi_svaigi()
+    svaigas = [s_ for s_ in stacijas if not s_["vecs"]]
+    if not stacijas:
+        return "nav_datu", "Nav nevienas stacijas datu"
+    jaunakais = max(datetime.fromisoformat(s_["laiks"].replace("Z", "+00:00")) for s_ in stacijas)
+    vecums = (datetime.now(timezone.utc) - jaunakais).total_seconds()
+    teksts = f"{len(svaigas)}/{len(stacijas)} stacijas ar svaigiem datiem; jaunākais mērījums pirms {_laiks_pirms(vecums)}"
+    return ("darbojas" if vecums < NOVEROJUMI_VECS_H * 3600 else "traucejumi"), teksts
+
+
 _statuss_augsne = [None, 0.0]  # [pēdējā atbilde, kad tā parādījās]: _kesots kļūdas gadījumā atdod veco vērtību
 
 
@@ -2149,7 +2289,7 @@ STATUSS_PARBAUDES = {
     "vietne": (_parb_vietne, 5000), "api": (_parb_api, 3000), "adreses": (_parb_adreses, 2500),
     "bridinajumi": (_parb_bridinajumi, 8000), "pludi": (_parb_pludi, 8000), "udens": (_parb_udens, 3000),
     "ca_plani": (_parb_ca_plani, 3000), "patvertnes": (_parb_patvertnes, 3000), "prognozes": (_parb_prognozes, 1000),
-    "zibens": (_parb_zibens, 8000), "augsne": (_parb_augsne, 8000), "celi": (_parb_celi, 8000),
+    "zibens": (_parb_zibens, 8000), "noverojumi": (_parb_noverojumi, 8000), "augsne": (_parb_augsne, 8000), "celi": (_parb_celi, 8000),
     "satiksme": (_parb_satiksme, 8000), "robezas": (_parb_robezas, 8000),
     "osm": (_parb_osm, 5000), "datu_vecums": (_parb_datu_vecums, 3000),
 }
@@ -2351,6 +2491,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zibens/?$"), zibens, 60),
     (re.compile(r"^/api/augsne/?$"), augsne, 3600),
     (re.compile(r"^/api/marsruts/?$"), marsruts, 600),
+    (re.compile(r"^/api/noverojumi/?$"), noverojumi, 300),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
     (re.compile(r"^/api/celi/?$"), celi, 120),
     (re.compile(r"^/api/satiksme/?$"), satiksme, 60),

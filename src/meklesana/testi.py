@@ -10,6 +10,7 @@ import pathlib
 import re
 import sys
 import urllib.request
+import zlib
 
 import quickjs
 
@@ -109,6 +110,10 @@ def vaicajumu_parbaude(klasificet, viss=False):
 
     kopa = sum(t[0] for t in pa_tipiem.values())
     print(f"\nvaicajumi.json: {kopa}/{len(vaicajumi)} pareizi pirmajā vietā ({kopa / len(vaicajumi):.1%}, mērķis ≥ {MERKIS:.0%})")
+    # Labojot atslēgvārdus, skatieties tikai "dev" kļūdas; "paturētie" (30 % pēc crc32) rāda, vai labojums vispārinās
+    paturets = [v for v in vaicajumi if zlib.crc32(v["q"].encode()) % 10 >= 7]
+    lab_pat = sum(1 for v in paturets if v["q"] not in {k[0]["q"] for k in kludainie})
+    print(f"  paturētie (nelabotie) {lab_pat}/{len(paturets)} = {lab_pat / len(paturets):.1%}")
     for tips, (lab, n) in sorted(pa_tipiem.items()):
         print(f"  {tips:10} {lab:3}/{n:3}  {lab / n:.0%}")
     print(f"  'Vai domājāt' divdomīgajiem: {divd_ar_citiem}/{divd}; lieki skaidrajiem: {lieki}/{skaidri}")
@@ -124,8 +129,10 @@ def vaicajumu_parbaude(klasificet, viss=False):
         f, prec, n = f1(kods)
         print(f"    {kods:26} F1 {f:.2f}  {pareizi_pec.get(kods, 0)}/{gaidits[kods]}  prec {prec:.2f} (izvēlēts {n}×)")
     if viss:
-        print("  Kļūdainie:")
+        print("  Kļūdainie (tikai dev; paturētos neskatieties, lai skaitlis paliek godīgs):")
         for v, kodi in kludainie:
+            if zlib.crc32(v["q"].encode()) % 10 >= 7:
+                continue
             print(f"    {v['q']!r} → {kodi or '-'}  gaidīju {v['pienemami']}")
     return kopa / len(vaicajumi) < MERKIS
 
