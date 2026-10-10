@@ -60,6 +60,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] Morning: gentle live check after the load-hardening merge (`src/testi/slodze.py --klienti 5 --ilgums 30 --rps 2 --tikai-kesa --statistika`) — added 2026-10-10 03:26 +03:00 by noiseparty
 
 - [ ] VPS: set `MAP_MOD_TOKEN=<long random>` in `/etc/hakatons/map.env` and `systemctl restart hakatons-map-api` to enable moderation (without it, hiding is off; reports still work) — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Reports: check after merge that the API created table `zinojumi` (`journalctl -u hakatons-map-api | grep zinojumi:` empty) and one report round-trips on the phone — added 2026-10-10 03:11 +03:00 by noiseparty
@@ -77,6 +78,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] API load hardening for judging day: load-test scripts (live gentle + local with fake upstreams), server queue 128, stale-while-revalidate cache, /api/pludi ≤ 25 s → 202 + card retry, objekti/point LRU, DB concurrency cap, JSON 500, /api/veseliba?statistika=1; results in `notes/slodze.md` — done 2026-10-10 03:26 +03:00 by noiseparty (added 2026-10-10 03:26 +03:00 by noiseparty)
 - [x] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — done 2026-10-10 03:23 +03:00 by noiseparty: OCR'd (Tesseract lav) → `src/karte/dati/ca_plani/ventspils-ocr.md`; the lists are in annexes 4–16, which are only 'ierobežotas pieejamības' cover pages in the public file (lpp. 71–83), so **nothing to extract**; ventspils.json + ca-plani-kvalitate.md now cite this (added 2026-10-10 00:08 +03:00 by noiseparty)
 - [x] Device matrix of the live site (iPhone SE/14, Pixel 7, Galaxy S9+, iPad Mini; location on/off) + fixes: 44 px tap targets on phones, geolocation JS race, Demo tab covering the forecast ✕ (`notes/telefonu-tests.md`, `src/demo/ierices.py`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
 - [x] All map layers off on page load (search result / demo turn on what they need; "Beigt demo" back to all off) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
