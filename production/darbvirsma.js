@@ -52,7 +52,8 @@ const Darbvirsma = (() => {
   const parPoga = elements('button', 'dv-par-poga', 'Par datiem &amp; AI', { type: 'button', 'aria-haspopup': 'dialog' });
 
   const josla112 = elements('div', 'dv-112', `<p class="dv-112-teksts">${IKONAS.info}<span data-t="Ja apdraudēta dzīvība vai veselība, zvaniet 112.">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</span></p>` +
-    '<p class="dv-svaigums" role="status"><span class="dv-punkts"></span><span class="dv-svaigums-teksts">Ielādē datus…</span></p>');
+    '<p class="dv-svaigums" role="status"><span class="dv-punkts"></span><span class="dv-svaigums-teksts">Ielādē datus…</span></p>',
+    { role: 'region', 'aria-label': 'Ārkārtas palīdzība' });
 
   const ievads = elements('section', 'dv-ievads', '<h2>Noskaidrojiet situāciju savā adresē</h2><div class="dv-forma-vieta"></div>' +
     `<button type="button" class="dv-atrast">${IKONAS.vieta}<span data-t="Izmantot manu atrašanās vietu">Izmantot manu atrašanās vietu</span></button>` +
