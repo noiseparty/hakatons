@@ -66,7 +66,9 @@ def main():
         print(f"KĻŪDA SCENARIJI.md #{nr} {n!r} neatrod savu scenāriju")
     print(f"{len(nosaukumi) - len(bez)}/{len(nosaukumi)} scenāriju nosaukumi atrod sevi")
     zems = vaicajumu_parbaude(klasificet, "-v" in sys.argv)
-    sys.exit(1 if kludas or bez or zems else 0)
+    laiks = js.eval("(q => { const s = Date.now(); k.klasificet(q); return Date.now() - s; })")
+    zems_k = kludaino_parbaude(klasificet, laiks, reg is not None, "-v" in sys.argv)
+    sys.exit(1 if kludas or bez or zems or zems_k else 0)
 
 
 MERKIS = 0.90  # top-1 precizitāte uz vaicajumi.json, zem kuras tests krīt
@@ -135,6 +137,45 @@ def vaicajumu_parbaude(klasificet, viss=False):
                 continue
             print(f"    {v['q']!r} → {kodi or '-'}  gaidīju {v['pienemami']}")
     return kopa / len(vaicajumi) < MERKIS
+
+
+MERKIS_KLUDAINI = 0.90  # top-1 precizitāte uz vaicajumi_kludaini.json, zem kuras tests krīt (2026-10-10: 93,5 %)
+LAIKA_ROBEZA_MS = 5  # klasificet() QuickJS, pirmais (nekešotais) izsaukums: mediānai un p95 jābūt zem šī
+
+
+def kludaino_parbaude(klasificet, laiks, ar_vietam, viss=False):
+    """Pavirši rakstīti vaicājumi (vaicajumi_kludaini.json, ģenerē kludaini.py): precizitāte pa kļūdu veidiem un laiks.
+
+    Pareizs = pirmais scenārijs ir starp "pienemami" un, ja ir "vieta" un reģioni pieejami, atrasta tā vieta.
+    Laiku mēra JS iekšienē (Date.now, ms) pirmajam izsaukumam, pirms vārdu labojumi ir kešoti.
+    """
+    cels = pathlib.Path(__file__).parent / "vaicajumi_kludaini.json"
+    if not cels.exists():
+        return False
+    vaicajumi = json.loads(cels.read_text(encoding="utf-8"))
+    pa_veidiem, kludainie, laiki = {}, [], []
+    for v in vaicajumi:
+        laiki.append(laiks(v["q"]))
+        rez = json.loads(klasificet(v["q"]))
+        kodi = [s["kods"] for s in rez["scenariji"]]
+        vieta = (rez["vieta"] or {}).get("nosaukums")
+        labs = (kodi[0] if kodi else None) in v["pienemami"] and (not ar_vietam or "vieta" not in v or vieta == v["vieta"])
+        t = pa_veidiem.setdefault(v["veids"], [0, 0])
+        t[0] += labs
+        t[1] += 1
+        if not labs:
+            kludainie.append((v, kodi, vieta))
+    kopa = sum(t[0] for t in pa_veidiem.values())
+    laiki.sort()
+    print(f"\nvaicajumi_kludaini.json: {kopa}/{len(vaicajumi)} pareizi ({kopa / len(vaicajumi):.1%}, mērķis ≥ {MERKIS_KLUDAINI:.0%})"
+          f"; laiks QuickJS mediāna {laiki[len(laiki) // 2]} ms, p95 {laiki[int(len(laiki) * .95)]} ms, max {laiki[-1]} ms"
+          f" (robeža {LAIKA_ROBEZA_MS} ms)")
+    for veids, (lab, n) in sorted(pa_veidiem.items()):
+        print(f"  {veids:18} {lab:3}/{n:3}  {lab / n:.0%}")
+    if viss:
+        for v, kodi, vieta in kludainie:
+            print(f"    {v['q']!r} → {kodi or '-'}{' @' + vieta if vieta else ''}  gaidīju {v['pienemami']} {v.get('vieta', '')}")
+    return kopa / len(vaicajumi) < MERKIS_KLUDAINI or laiki[int(len(laiki) * .95)] >= LAIKA_ROBEZA_MS
 
 
 if __name__ == "__main__":

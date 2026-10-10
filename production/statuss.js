@@ -56,36 +56,137 @@
     b.textContent = t;
   }
 
-  function zimet(d) {
+  function zimet(d, noKesas) {
     const komp = d.komponenti || [];
     const min = d.intervals_min || 15;
     baneris(komp);
     const p = el('pedeja');
     const pedeja = komp.map(k => k.parbaudits).filter(Boolean).sort().pop() || d.laiks;
     p.hidden = false;
-    p.innerHTML = `${pedeja ? `Pēdējā pārbaude: ${stunda(pedeja)}` : ''}<small>Pārbaudes ik ${min} minūtes; lapa atjaunojas ik minūti.</small>`;
+    if (noKesas) {
+      // Bez tīkla service worker (sw.js) atdod pēdējo saglabāto atbildi: rādām to ar laiku un "bezsaistē", nevis kļūdu
+      const kad = noKesas.getTime() ? `${stunda(noKesas.toISOString())}${noKesas.toDateString() === new Date().toDateString() ? '' : ' ' + noKesas.toLocaleDateString('lv-LV', { day: 'numeric', month: 'numeric' })}` : '';
+      el('baneris').textContent += kad ? ` (saglabāts ${kad})` : ' (saglabāts)';
+      p.innerHTML = `<span class="bezsaiste">bezsaistē</span> Rāda pēdējo saglabāto statusu${kad ? `, ${kad}` : ''}.${pedeja ? ` Pēdējā pārbaude: ${stunda(pedeja)}.` : ''}<small>Kad būs internets, lapa atjaunosies pati.</small>`;
+    } else {
+      p.innerHTML = `${pedeja ? `Pēdējā pārbaude: ${stunda(pedeja)}` : ''}<small>Pārbaudes ik ${min} minūtes; lapa atjaunojas ik minūti.</small>`;
+    }
     el('komponenti').innerHTML = komp.map(k => komponents(k, min)).join('');
     el('komponenti')._dati = Object.fromEntries(komp.map(k => [k.kods, k]));
     el('komponenti')._min = min;
+    try { el('papildu').innerHTML = papildu(d); } catch (e) { el('papildu').innerHTML = ''; }
+  }
+
+  // ---- Papildu sadaļas (/api/statuss: arejie_avoti, flizes, zinojumi, slani); vecs API bez tām — nerāda ----
+  const sk = n => n == null ? '—' : Number(n).toLocaleString('lv-LV');
+  const ilgums = s => s == null ? '—' : s < 90 ? `${Math.round(s)} s` : s < 5400 ? `${Math.round(s / 60)} min`
+    : s < 172800 ? `${dec(s / 3600, s < 36000 ? 1 : 0)} h` : `${Math.round(s / 86400)} d.`;
+  const datums = iso => new Date(iso).toLocaleDateString('lv-LV', { day: 'numeric', month: 'numeric' });
+  function kad(iso, tagad) {
+    if (!iso) return '—';
+    const s = (tagad - new Date(iso)) / 1000;
+    const diena = new Date(iso).toDateString() === new Date(tagad).toDateString();
+    return `pirms ${ilgums(Math.max(s, 0))} <small>(${stunda(iso)}${diena ? '' : ' ' + datums(iso)})</small>`;
+  }
+  const pill = st => {
+    const s = VARDI[st] ? st : 'nav_datu';
+    return `<span class="pill ${s}"><span aria-hidden="true">${IKONAS[s]}</span> ${VARDI[s]}</span>`;
+  };
+  const sadala = (id, virsraksts, apraksts, saturs) => `<section class="sadala" id="${id}" aria-labelledby="${id}-v">
+      <h2 id="${id}-v">${virsraksts}</h2>${apraksts ? `<p class="apraksts">${apraksts}</p>` : ''}${saturs}</section>`;
+  const nav = d => !d || typeof d !== 'object' || d.kluda;
+  const kludaSadala = (id, v) => sadala(id, v, '', '<p class="zinojums">Šie dati pašlaik nav pieejami.</p>');
+  const flize = (v, n, sik) => `<div class="flize"><span>${v}</span><b>${n}</b>${sik ? `<small>${sik}</small>` : ''}</div>`;
+
+  const tk = tukss => tukss ? ' class="tukss"' : ''; // šaurā ekrānā tukšas šūnas nerāda
+  function arejie(rindas, tagad) {
+    const r = rindas.map(a => `<tr>
+        <td data-l="Avots"><b>${esc(a.nosaukums)}</b>${a.zinojums ? `<small>${esc(a.zinojums)}</small>` : ''}</td>
+        <td data-l="Stāvoklis">${pill(a.stavoklis)}</td>
+        <td data-l="Pēdējā veiksmīgā"${tk(!a.pedejais_ok)}>${kad(a.pedejais_ok, tagad)}</td>
+        <td data-l="Pēdējā kļūda"${tk(!a.pedeja_kluda)}>${a.pedeja_kluda ? `${kad(a.pedeja_kluda, tagad)}<small>${esc(a.kluda || '')}</small>` : '—'}</td>
+        <td data-l="Keša vecums"${tk(a.kesa_vecums_s == null)}>${ilgums(a.kesa_vecums_s)}${a.derigs_s ? `<small>derīgs ${ilgums(a.derigs_s)}</small>` : ''}</td>
+        <td data-l="Rezerve"${tk(!a.rezerve && !a.piezime)}>${a.rezerve ? `<span class="birka dzeltena">${esc(a.rezerve)}</span>` : 'nav vajadzīga'}${a.piezime ? `<small>${esc(a.piezime)}</small>` : ''}</td>
+      </tr>`).join('');
+    return `<table class="tabula"><thead><tr><th>Avots</th><th>Stāvoklis</th><th>Pēdējā veiksmīgā</th><th>Pēdējā kļūda</th>
+      <th>Keša vecums</th><th>Rezerve</th></tr></thead><tbody>${r}</tbody></table>`;
+  }
+
+  function flizes(f, tagad) {
+    const p = f.procesa_skaititaji || {};
+    const vardi = { kesa: 'no keša', jauna: 'jaunas', veca: 'vecas no diska', kluda: 'kļūdas', aiznemts: 'aizņemts', tukss: 'ārpus kartes' };
+    const sis = Object.keys(vardi).filter(k => p[k]).map(k => `${vardi[k]} ${sk(p[k])}`).join(', ');
+    return `<div class="flizes">
+        ${flize('Flīzes diskā', f.diska_kess === false ? 'nav diska keša' : sk(f.flizes), f.skenets ? `skaitīts ${kad(f.skenets, tagad)}` : 'vēl nav skaitīts')}
+        ${flize('Aizņemts', f.baiti == null ? '—' : `${dec(f.baiti / 1048576, 1)} MB`, f.max_baiti ? `no ${sk(Math.round(f.max_baiti / 1048576))} MB` : '')}
+        ${flize('Vecākā flīze', f.vecaka ? datums(f.vecaka) : '—', f.vecaka ? kad(f.vecaka, tagad) : '')}
+        ${flize('Trāpījumi kešā', f.trapijumi_proc == null ? '—' : `${dec(f.trapijumi_proc, 1)} %`, f.skaititaji_kops ? `kopš ${datums(f.skaititaji_kops)}` : '')}
+      </div>
+      <p class="zinojums">Šajā API startā: ${sis || 'flīzes vēl nav prasītas'}${f.procesa_trapijumi_proc != null ? ` (trāpījumi ${dec(f.procesa_trapijumi_proc, 1)} %)` : ''}.</p>`;
+  }
+
+  function zinojumi(z, tagad) {
+    const l = z.limiti || {}, rob = z.limiti_robezas || {};
+    const kopa = Object.values(l).reduce((a, b) => a + (b || 0), 0);
+    const vardi = { jauni_minute: 'jauni ziņojumi minūtē', balsis_minute: 'balsis minūtē', zinojums_stunda: 'balsis vienam ziņojumam stundā', ip_stunda: 'balsis no viena tīkla stundā' };
+    const sad = Object.keys(vardi).map(k => `${vardi[k]}${rob[k] ? ` (≤ ${rob[k]})` : ''}: ${sk(l[k] || 0)}`).join('; ');
+    return `<div class="flizes">
+        ${flize('Ziņojumi', z.pieejams === false ? 'nav pieejami' : sk(z.kopa), z.redzami_7d != null ? `${sk(z.redzami_7d)} redzami 7 dienās` : '')}
+        ${flize('Balsis pēdējā stundā', sk(z.balsis_1h), z.balsis_avots ? 'no API atmiņas' : '')}
+        ${flize('Limits sasniegts', sk(kopa), z.limiti_kops ? `kopš API starta ${kad(z.limiti_kops, tagad)}` : '')}
+        ${flize('Pēdējais ziņojums', z.pedejais ? kad(z.pedejais, tagad) : '—', '')}
+      </div><p class="zinojums">Limiti: ${esc(sad)}.</p>`;
+  }
+
+  function slani(rindas) {
+    const r = rindas.map(s => {
+      const b = s.ieladejams ? '<span class="birka dzeltena">ielādējams</span>'
+        : s.karte === s.repo ? '<span class="birka zala">sakrīt</span>'
+        : s.apvienoti_dublikati ? '<span class="birka peleka">dublikāti apvienoti</span>' : '';
+      return `<tr><td data-l="Slānis"><b>${esc(s.nosaukums)}</b><small>${esc(s.fails)}</small></td>
+        <td data-l="Kartē" class="sk">${sk(s.karte)}</td><td data-l="Repozitorijā" class="sk">${sk(s.repo)}</td><td data-l="">${b}</td></tr>`;
+    }).join('');
+    return `<table class="tabula slani"><thead><tr><th>Slānis</th><th class="sk">Kartē</th><th class="sk">Repozitorijā</th><th></th></tr></thead>
+      <tbody>${r}</tbody></table>`;
+  }
+
+  function papildu(d) {
+    const tagad = d.laiks ? new Date(d.laiks).getTime() : Date.now();
+    let h = '';
+    if ('arejie_avoti' in d) h += Array.isArray(d.arejie_avoti)
+      ? sadala('arejie', 'Ārējie avoti', `Katrs ārējais datu avots: kad pēdējo reizi izdevās ielāde, pēdējā kļūda, cik veci ir kešotie dati un vai šobrīd darbojas rezerve. Uzskaite kopš API starta${d.api_starts ? ` (${stunda(d.api_starts)}${new Date(d.api_starts).toDateString() === new Date(tagad).toDateString() ? '' : ' ' + datums(d.api_starts)})` : ''}; lapas atvēršana avotus nesauc.`, arejie(d.arejie_avoti, tagad))
+      : kludaSadala('arejie', 'Ārējie avoti');
+    if ('flizes' in d) h += nav(d.flizes) ? kludaSadala('flizes', 'Plūdu karšu flīžu kešs')
+      : sadala('flizes', 'Plūdu karšu flīžu kešs', 'LVĢMC plūdu zonu flīzes glabājas servera diskā 30 dienas; ja LVĢMC neatbild, rāda vecās.', flizes(d.flizes, tagad));
+    if ('zinojumi' in d) h += nav(d.zinojumi) ? kludaSadala('zinojumi', 'Iedzīvotāju ziņojumi')
+      : sadala('zinojumi', 'Iedzīvotāju ziņojumi', 'Ziņojumu skaits, balsojumi un cik reižu pieprasījumi atteikti limita dēļ (aizsardzība pret ļaunprātīgu lietošanu).', zinojumi(d.zinojumi, tagad));
+    if ('slani' in d) h += Array.isArray(d.slani)
+      ? sadala('slani', 'Slāņu dati: kartē un repozitorijā', 'Objektu skaits kartes datubāzē pret failu repozitorijā. „Ielādējams” nozīmē, ka repozitorijā ir jaunāki dati un serverī jāpalaiž ielāde.', slani(d.slani))
+      : kludaSadala('slani', 'Slāņu dati: kartē un repozitorijā');
+    return h;
   }
 
   function kluda() {
     const b = el('baneris');
     b.className = 'baneris kluda';
-    b.textContent = 'Statusa API nav pieejams — karte, iespējams, darbojas daļēji.';
+    const bezTikla = navigator.onLine === false;
+    b.textContent = bezTikla ? 'Nav interneta — nav arī saglabāta statusa.' : 'Statusa API nav pieejams — karte, iespējams, darbojas daļēji.';
     const p = el('pedeja');
     p.hidden = false;
-    p.innerHTML = '<small>Mēģināsim vēlreiz pēc minūtes.</small>';
+    p.innerHTML = bezTikla ? '<small>Statuss parādīsies, kad būs savienojums.</small>' : '<small>Mēģināsim vēlreiz pēc minūtes.</small>';
   }
 
   async function ieladet() {
     try {
       const r = await fetch(adrese, { cache: 'no-store' });
       if (!r.ok) throw new Error(r.status);
-      zimet(await r.json());
+      // sw.js bez tīkla atbild ar saglabāto kopiju un galvenēm x-sw-no-kesas / x-sw-saglabats
+      const noKesas = r.headers.get('x-sw-no-kesas') ? new Date(r.headers.get('x-sw-saglabats') || NaN) : null;
+      zimet(await r.json(), noKesas);
     } catch (e) {
       // veco datu vietā neko nerādām: kļūda ir svarīgāka par novecojušu statusu
       el('komponenti').innerHTML = '';
+      el('papildu').innerHTML = '';
       kluda();
     }
   }

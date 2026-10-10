@@ -45,9 +45,10 @@ const Avoti = (() => {
       'https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti',
       'Meklēšanas rezultātā: valsts un pašvaldības vienotais klientu centrs, ja pašvaldības kontaktu nav', '2022. gada augusta dati', 86],
     ['lr1-frekvences', 'Latvijas Radio 1 raidītāji un frekvences', 'VSIA „Latvijas Radio” (pārbaudīts ar SIA „Elektroniskie sakari” FM staciju sarakstu)',
-      ['Licence nav norādīta', null], 'https://latvijasradio.lsm.lv/lv/par-mums/frekvences/',
-      'Meklēšanas rezultātā „Radio krīzē”: tuvākā LR1 frekvence; karte lapā „Svarīgi”', 'statiski, nolasīts 10.10.2026.', 87,
-      { atverts: false }],
+      // Frekvenču saraksts ir fakti no sabiedriskā raidītāja un regulatora saraksta (esakari.lv), nevis autortiesību darbs
+      ['Oficiāli fakti (LR / SPRK), nav autortiesību objekts', 'https://likumi.lv/ta/id/5138-autortiesibu-likums'],
+      'https://latvijasradio.lsm.lv/lv/par-mums/frekvences/',
+      'Meklēšanas rezultātā „Radio krīzē”: tuvākā LR1 frekvence; karte lapā „Svarīgi”', 'statiski, nolasīts 10.10.2026.', 87],
     ['osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
       ['ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/'], 'https://www.openstreetmap.org/copyright',
       'Noturības punktu kandidāti (statuss nav apstiprināts)', 'pēc ielādes', 71],
@@ -63,6 +64,7 @@ const Avoti = (() => {
   const BIEZUMS = { 'lvgmc-hidro': 'katru stundu', 'osm-karte': 'tiešsaistē', 'lvc-nap': 'tiešsaistē, kešs 5 min' };
 
   let pecKoda = {};
+  let scenarijuSkaits = null;  // production/scenariji.json — "Kā tas tapa" rindai
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const saite = (url, teksts) => /^https?:\/\//.test(url || '')
     ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(teksts)}</a>` : esc(teksts);
@@ -89,6 +91,25 @@ const Avoti = (() => {
       kops.id = 'avoti-kopsavilkums';
       ul.before(kops);
     }
+    // "Kā tas tapa": MI un datu stāsts lapā (ne tikai slaidos), 5 rindas
+    let tapa = document.getElementById('avoti-ka-tapa');
+    if (!tapa) {
+      tapa = document.createElement('div');
+      tapa.id = 'avoti-ka-tapa';
+      tapa.className = 'ka-tapa';
+      kops.before(tapa);
+      fetch('scenariji.json').then(r => r.json()).then(d => {
+        scenarijuSkaits = d.scenariji?.length || null;
+        const s = tapa.querySelector('.scenariju-skaits');
+        if (s && scenarijuSkaits) s.textContent = scenarijuSkaits + ' situācijas';
+      }).catch(() => {});
+    }
+    tapa.innerHTML = `<b>${typeof Valoda !== 'undefined' ? Valoda.t('Kā tas tapa') : 'Kā tas tapa'}</b><ul>
+      <li>Meklēšana: noteikumi un atslēgvārdi pārlūkā (<span class="scenariju-skaits">${scenarijuSkaits ? scenarijuSkaits + ' situācijas' : 'situācijas'}</span>, LV/RU/EN), bez MI darbības laikā.</li>
+      <li>Pulcēšanās un izmitināšanas vietas izvilka MI no 42 pašvaldību CA plāniem: katrai burtisks citāts un lappuse, ko skripts pārbauda pret plānu.</li>
+      <li>Pārbaudē atradām 41 koordinātu kļūdu oficiālajos plānos; šīs vietas novietotas pēc VZD adrešu reģistra
+        (<a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">kļūdu saraksts</a>).</li>
+      <li>Kopā: ${esc(avotuVards(atverti))} ar licenci (saraksts zemāk); katrai vietai kartītē avots un licence.</li></ul>`;
     kops.innerHTML = `<b>${avotuVards(atverti)}</b>` +
       (sim.length ? ` · ${sim.length} simulēti prototipa dati` : '') +
       (citi ? ` · ${citi} bez atvērtas licences ${Ik('uzmanibu')}` : '');
@@ -146,6 +167,8 @@ const Avoti = (() => {
   }
 
   const atverts = kods => pecKoda[kods]?.atverts !== false;
+  // Avota ieraksts (nosaukums, izdevējs, licence, saites) — saraksts.js īsajai atzīmei un CSV kolonnām
+  const dati = kods => pecKoda[kods] || null;
 
-  return { ieladet, rinda, atverts };
+  return { ieladet, rinda, atverts, dati };
 })();

@@ -87,6 +87,7 @@
   .dv-cips[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
   .dv-valsts { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 16px -24px 0; padding: 12px 24px;
     font-size: 13px; font-weight: 600; background: var(--pelks-2); border-top: 1px solid var(--pelks-3); border-bottom: 1px solid var(--pelks-3); }
+  .dv-pirmais { margin: 16px 0 0; padding: 14px 16px; background: var(--pelks-1); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte); }
   .dv-valsts-pills { display: flex; flex-wrap: wrap; gap: 8px; min-height: 22px; }
   .dv-pill { padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: var(--radiuss-maza); border: 1px solid var(--pelks-3); background: #fff; }
   .dv-pill.dzeltens { background: var(--brid-dzeltens-fons); border-color: var(--brid-dzeltens-mala); color: var(--brid-dzeltens-teksts); }
@@ -214,4 +215,15 @@
 @media (prefers-reduced-motion: reduce) { .dv-skelets span, .dv-pill-skelets { animation: none; } }
 @media (max-width: 800px) {
   .dv-dialogs { max-width: calc(100vw - 2rem); }  /* dialogs var būt atvērts, kad ekrāns sašaurinās */
+}
+/* Šaurs dators / planšete guļus (801–1100 px): galvene vienā rindā, bez apakšvirsraksta un navigācijas ikonām */
+@media (min-width: 801px) and (max-width: 1100px) {
+  body.dv header { gap: 8px; padding: 8px 12px; }
+  body.dv header h1 { white-space: nowrap; }
+  body.dv .dv-apaksvirsraksts { display: none; }
+  body.dv .dv-nav button { padding: 0 8px; font-size: 13px; white-space: nowrap; }
+  body.dv .dv-nav button svg, body.dv .dv-zinot-ikona { display: none; }
+  body.dv #zinot-poga.dv-zinot { padding: 0 10px; font-size: 13px; white-space: nowrap; }
+  body.dv .dv-par-poga { padding: 0 8px; white-space: nowrap; }
+  body.dv header #statuss { white-space: nowrap; }
 }

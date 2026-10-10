@@ -1,4 +1,4 @@
-// Bezsaistes režīms (sw.js): reģistrācija, josla "Nav interneta — rādām pēdējos saglabātos datus", rezultāta kartītē
+// Bezsaistes režīms (sw.js): josla "Nav interneta — rādām pēdējos saglabātos datus", rezultāta kartītē
 // rinda par saglabātajiem datiem, pēdējās 3 kartītes (localStorage) un "Saglabāt manu apkārtni" (flīzes z12–15).
 // Lieto app.js globālos (karte, el, stavoklis, pamatkartes) — tikai tad, kad tie ir.
 const Bezsaiste = (() => {
@@ -7,14 +7,12 @@ const Bezsaiste = (() => {
   const saglabati = {};  // /api/<galapunkts> → saglabāšanas laiks (no sw.js galvenes), šīs meklēšanas laikā
   const NOSAUKUMI = { bridinajumi: 'brīdinājumi', objekti: 'vietas', udens: 'upes līmenis', pludi: 'plūdu zona', celi: 'ceļi',
     satiksme: 'satiksme', pasvaldiba: 'pašvaldība', adreses: 'adrese', kategorijas: 'slāņi', regioni: 'reģioni', avoti: 'avoti',
-    augsne: 'nokrišņi', prognozes: 'prognoze', zibens: 'zibens' };
+    augsne: 'nokrišņi', prognozes: 'prognoze', prognoze: 'prognoze 24 h', zibens: 'zibens', noverojumi: 'laikapstākļi',
+    zinojumi: 'iedzīvotāju ziņojumi' };
   const laiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  // Service worker tikai drošā kontekstā (https; localhost — testiem)
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname))) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-  }
+  // Service worker reģistrē atjaunot.js (visām lapām; paziņojums par jaunu versiju, ?svaigs=1)
 
   // Atbildes no sw.js keša: atzīmējam galapunktu un laiku
   const fetchOrig = window.fetch.bind(window);
@@ -44,6 +42,7 @@ const Bezsaiste = (() => {
     const kartites = lasitKartites();
     const t = vecakais();
     josla.innerHTML = `<b>${navigator.onLine ? 'Serveris neatbild' : 'Nav interneta'}</b> — rādām pēdējos saglabātos datus${t ? ` (saglabāti ${esc(t)})` : ''}.` +
+      (flizuTrukst ? ' Šim kartes skatam fona attēli nav saglabāti.' : '') +
       (kartites.length ? ' Pēdējie rezultāti: ' + kartites.map((k, i) =>
         `<button type="button" data-kartite="${i}">${esc(k.vaicajums)}</button>`).join(' ') : '');
     josla.hidden = false;
@@ -52,7 +51,17 @@ const Bezsaiste = (() => {
     const i = e.target.closest('[data-kartite]')?.dataset.kartite;
     if (i != null) atvertKartiti(lasitKartites()[+i]);
   });
-  window.addEventListener('online', () => { for (const k in saglabati) delete saglabati[k]; atjaunotJoslu(); });
+  window.addEventListener('online', () => { for (const k in saglabati) delete saglabati[k]; flizuTrukst = false; atjaunotJoslu(); });
+  // Kartes fons bez interneta: flīzes, kuru nav sw.js kešā, paliek pelēkas — joslā pasakām, kāpēc
+  let flizuTrukst = false;
+  function flizuKluda() {
+    if (navigator.onLine || flizuTrukst) return;
+    flizuTrukst = true;
+    atjaunotJoslu();
+  }
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof pamatkartes !== 'undefined') for (const s of Object.values(pamatkartes)) s.on('tileerror', flizuKluda);
+  });
   window.addEventListener('offline', atjaunotJoslu);
 
   // Rezultāta kartītē: kuri dati ir no saglabātā (un kad)
@@ -111,8 +120,10 @@ const Bezsaiste = (() => {
   // Ielādējot bez interneta: josla un pēdējā kartīte (ja meklēšana pati neko nerāda)
   window.addEventListener('load', () => setTimeout(() => {
     if (navigator.onLine) return;
+    if (document.querySelector('#karte .leaflet-tile:not(.leaflet-tile-loaded)')) flizuTrukst = true;
     atjaunotJoslu();
-    if (kaste && (kaste.hidden || !kaste.textContent.trim()) && !new URLSearchParams(location.search).get('q')) {
+    if (kaste && (kaste.hidden || !kaste.textContent.trim())
+        && !['q', 'demo'].some(k => new URLSearchParams(location.search).get(k))) {  // ?q= meklē pats; ?demo= rāda simulāciju
       atvertKartiti(lasitKartites()[0]);
     }
   }, 800));

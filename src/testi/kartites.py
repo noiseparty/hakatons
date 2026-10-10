@@ -9,7 +9,7 @@ playwright install chromium`.
 Katram scenārijam (production/scenariji.json) vaicājums = pirmais atslēgvārds + vieta (Rīgā, Ogrē, Rēzeknē, Alūksnes
 novadā — novada centrs ir lauki), 375×740. Kartītei jāatbilst:
   scenārijs   — parādīts tieši šis scenārijs (citādi pirmais atslēgvārds neved uz savu scenāriju);
-  lēmums      — lēmuma rinda (112 teksts vai LVĢMC brīdinājums šai vietai) ir kartītes sākumā;
+  lēmums      — lēmuma bloks (#rez-galvenais: lēmums + nākamā darbība; dzīvības draudos pirms tā 112) ir kartītes sākumā;
   vietas      — vismaz viena vietas rinda vai skaidrs teksts, ka tuvākā nav zināma;
   padoms, tālāk — padoms un "Kas notiks tālāk";
   teksts      — nav "undefined", "null", "NaN", "[object"; nav tukšu virsrakstu;
@@ -56,7 +56,7 @@ PARBAUDE_JS = r"""() => {
     gaida, teksts: k.innerText,
     sapratu: k.querySelector('.sapratu b')?.textContent || '',
     pirmais: pirmais ? (pirmais.id || pirmais.className || pirmais.tagName) : '',
-    lemums: !!k.querySelector('#rez-lemums .lemums'),
+    lemums: !!k.querySelector('#rez-lemums .lemums, #rez-galvenais .lemums-rinda'),
     draudi112: !!k.querySelector('.draudi, .zvanit-teksts'),
     vietuRindas: k.querySelectorAll('#rez-vietas li:not(.tuksa)').length,
     padoms: (k.querySelector('.padoms')?.textContent || '').trim().length,
@@ -127,7 +127,7 @@ async def punkts(parluks, bazes_url, proxy, nos, pec, scenariji, kategorijas, kl
         else:
             if m["sapratu"] != s["nosaukums"]:
                 problemas.append(("scenārijs", f"parādīts '{m['sapratu']}'"))
-            if not (m["lemums"] or m["draudi112"]) or m["pirmais"] not in ("rez-lemums", "draudi", "zvanit-teksts"):
+            if not (m["lemums"] or m["draudi112"]) or m["pirmais"] not in ("rez-galvenais", "rez-lemums", "draudi", "zvanit-teksts"):
                 problemas.append(("lēmums", f"pirmais elements: {m['pirmais']}, LVĢMC rinda: {m['lemums']}"))
             if not m["vietuRindas"] and not any(t in m["teksts"] for t in NAV_ZINAMA):
                 problemas.append(("vietas", "nav ne vietas, ne teksta, ka tuvākā nav zināma"))

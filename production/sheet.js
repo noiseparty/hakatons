@@ -15,17 +15,20 @@ const Lapa = (() => {
   // Ielādes vietturis (pelēkas joslas, nevis "Ielādē…"): saraksta augstums nelec, kad dati atnāk
   const SKELETS = '<li class="skelets-rinda" aria-hidden="true"><span></span><span></span></li>'.repeat(3);
 
-  saturs.insertAdjacentHTML('afterbegin', `
+  // Tukšais stāvoklis (kamēr nav rezultāta): 3 piemēri virs tēmu pogām (meklesana.js pirmaisSkats; stils.css paslēpj)
+  saturs.insertAdjacentHTML('afterbegin', `${krizesMeklesana.pirmaisSkats('Uzrakstiet, kas notiek un kur. Piemēri:')}
     <div class="lapa-temas" role="group" aria-label="Biežākās tēmas">${TEMAS.map(([t, q]) =>
       `<button type="button" data-tema="${esc(q)}" aria-pressed="false"><span>${esc(t)}</span></button>`).join('')}</div>
     <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs">${CILNES.map(([k, t, p], i) =>
       `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}">${esc(t)}${p ? `<small>${esc(p)}</small>` : ''}</button>`).join('')}</div>
     <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
-      <p class="lapa-tukss">Uzrakstiet, kas notiek, vai izvēlieties tēmu augstāk. Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
+      <h2 class="vizuali-slepts">Meklēšanas rezultāts</h2>
+      <p class="lapa-tukss">Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
     </div>
     <div id="lapa-slani" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-slani" hidden></div>
     <div id="lapa-situacija" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-situacija" hidden>
+      <h2 class="vizuali-slepts">Situācija tagad</h2>
       <div class="lapa-prognoze"></div>
       <h3>Upju līmeņi kartes centra tuvumā</h3><ul class="lapa-saraksts" id="lapa-upes">${SKELETS}</ul>
       <h3>Ceļi (LVC)</h3><ul class="lapa-saraksts" id="lapa-celi">${SKELETS}</ul>
@@ -179,18 +182,60 @@ const Lapa = (() => {
   // ---- Kartes poga "Slāņi" (labajā pusē zem + − ◎) → lapa ar cilni "Kartes slāņi" ----
   el('slani-poga')?.addEventListener('click', () => { cilne('slani'); Apaksa.atvert('puse'); });
 
-  // Uznirstošie logi: automātiskā pārbīde atstāj vietu zem joslām augšā un virs lapas apakšā; atverot logu, pilna
-  // lapa saplok līdz pusei (citādi logs būtu zem tās)
+  // Uznirstošie logi telefonā: automātiskā pārbīde lieto tās pašas atstarpes kā fitBounds (Apaksa.atstarpes(): augšā
+  // joslas + "Karte | Reljefs", labajā pusē kartes pogu kolonna, apakšā lapa), un logs nekad nav augstāks par karti starp
+  // tām (--popup-augstums, saturs ritinās). Ja logs neietilpst virs lapas, lapa uz laiku saplok līdz "Mazs" un pēc loga
+  // aizvēršanas atgriežas. Demo cilne, kamēr logs atvērts, paslēpta (stils.css body.popups-atverts).
+  const SMAILE = 24, POPUP_MIN = 160;
+  let ieprieksStavoklis = null, atvertais = null;
+  const popupVieta = (a = Apaksa.atstarpes()) => karte.getSize().y - a.paddingTopLeft[1] - 8 - a.paddingBottomRight[1] - SMAILE;
   function popupAtstarpes() {
     const o = L.Popup.prototype.options;
-    if (!telefons.matches) { delete o.autoPanPaddingTopLeft; delete o.autoPanPaddingBottomRight; o.maxWidth = 300; return; }
-    // platums: saturs + 50 px (malas, vieta ✕) + 10 px katrā pusē nekad nepārsniedz ekrānu (360 px telefons)
-    o.maxWidth = Math.min(300, innerWidth - 76);
-    L.Popup.prototype.options.autoPanPaddingTopLeft = L.point(10, 60 + (el('kartes-joslas').offsetHeight || 0));
-    L.Popup.prototype.options.autoPanPaddingBottomRight = L.point(10, 12 + Apaksa.augstums());
+    if (!telefons.matches) {
+      delete o.autoPanPaddingTopLeft; delete o.autoPanPaddingBottomRight; o.maxWidth = 300;
+      karte.getContainer().style.removeProperty('--popup-augstums');
+      return;
+    }
+    const a = Apaksa.atstarpes();
+    const labi = a.paddingBottomRight[0];
+    // platums: saturs + 50 px (malas, vieta ✕) starp kreiso malu (10 px) un kartes pogām labajā pusē
+    o.maxWidth = Math.min(300, innerWidth - 10 - labi - 50);
+    o.autoPanPaddingTopLeft = L.point(10, a.paddingTopLeft[1] + 8);  // + ēna zem "Karte | Reljefs"
+    o.autoPanPaddingBottomRight = L.point(labi, a.paddingBottomRight[1]);
+    karte.getContainer().style.setProperty('--popup-augstums', Math.max(POPUP_MIN, popupVieta(a)) + 'px');
   }
+  // Pirms Leaflet pirmās pārbīdes (tā notiek pirms 'popupopen'): izlemj par lapas augstumu un atstarpēm
+  const leafletPan = L.Popup.prototype._adjustPan;
+  L.Popup.prototype._adjustPan = function () {
+    if (telefons.matches && Apaksa.aktiva() && !this._lapaSagatavota) {
+      this._lapaSagatavota = true;
+      const w = this.getElement()?.querySelector('.leaflet-popup-content-wrapper');
+      const c = w?.querySelector('.leaflet-popup-content');
+      const st = Apaksa.stavoklis();
+      if (c && st !== 'peek' && w.offsetHeight - c.clientHeight + c.scrollHeight > popupVieta()) {
+        ieprieksStavoklis ??= st;
+        Apaksa.atvert('peek');
+      }
+      popupAtstarpes();
+    }
+    return leafletPan.apply(this, arguments);
+  };
   lapa.addEventListener('apaksa:stavoklis', popupAtstarpes);
-  karte.on('popupopen', () => { if (telefons.matches && Apaksa.stavoklis() === 'pilna') Apaksa.atvert('puse'); popupAtstarpes(); });
+  karte.on('popupopen', e => { atvertais = e.popup; document.body.classList.add('popups-atverts'); });
+  karte.on('popupclose', e => {
+    e.popup._lapaSagatavota = false;
+    setTimeout(() => {  // cits logs var atvērties tajā pašā brīdī (autoClose) — tad lapu neatjauno
+      if (atvertais !== e.popup) return;
+      atvertais = null;
+      document.body.classList.remove('popups-atverts');
+      if (ieprieksStavoklis && Apaksa.stavoklis() === 'peek') Apaksa.atvert(ieprieksStavoklis);
+      ieprieksStavoklis = null;
+    }, 0);
+  });
+  // Logā atver/aizver "Vairāk" (objekta-statuss.js): logs kļūst augstāks — pārbīda vēlreiz, saturu nepārzīmējot
+  document.addEventListener('toggle', e => {
+    if (atvertais && e.target.closest?.('.leaflet-popup') && typeof atvertais._adjustPan === 'function') atvertais._adjustPan();
+  }, true);
 
   telefons.addEventListener('change', () => { novietot(); popupAtstarpes(); });
   addEventListener('resize', popupAtstarpes);
@@ -202,5 +247,5 @@ const Lapa = (() => {
   kopsavilkums();
   setInterval(kopsavilkums, 10 * 60 * 1000);
 
-  return { cilne };
+  return { cilne, novietot };
 })();

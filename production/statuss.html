@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Sistēmu statuss — Krīzes karte">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/statuss.html">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -21,7 +21,7 @@
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sistēmu statuss — Krīzes karte">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
@@ -40,6 +40,7 @@
   <div id="baneris" class="baneris ielade" role="status" aria-live="polite">Ielādē…</div>
   <p id="pedeja" class="pedeja" hidden></p>
   <section id="komponenti" aria-label="Komponenti"></section>
+  <div id="papildu"></div>
   <section class="leģenda" aria-label="Apzīmējumi">
     <h2>Apzīmējumi</h2>
     <ul>
@@ -49,9 +50,11 @@
       <li><i class="kv nav"></i> Nav datu</li>
     </ul>
     <p class="piezime">Šī lapa pārbauda, vai karte un tās atvērto datu avoti atbild. Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
+    <p id="sw-versija" class="piezime" hidden></p>
   </section>
 </main>
 <script src="statuss.js"></script>
 <script src="kajene.js"></script>
+<script src="atjaunot.js"></script>
 </body>
 </html>
