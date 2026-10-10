@@ -503,24 +503,44 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 @media (max-width: 400px) {
   .leaflet-bottom.leaflet-left .zonu-legenda { margin-bottom: 56px; }
 }
-/* ==== Ziņot (zinot.js): iedzīvotāju ziņojumi; dialogs izmanto .saraksts-dialogs ==== */
-.zinot-poga { margin-top: .5rem; }
-.zinot-forma { padding: .6rem .85rem .85rem; }
-.zinot-forma fieldset { border: 0; margin: 0; padding: 0; }
-.zinot-forma legend, .zinot-etikete { display: block; font-weight: 600; margin: .6rem 0 .3rem; }
-.zinot-tipi { display: grid; gap: .35rem; }
-.zinot-tipi label { display: flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); cursor: pointer; }
-.zinot-tipi label:has(input:checked) { border-color: var(--zils); background: var(--zils-gaiss); }
-.zinot-tipi input { width: 1.1rem; height: 1.1rem; margin: 0; }
-.zinot-forma textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
-.zinot-vieta, .zinot-pogas { display: flex; gap: .5rem; flex-wrap: wrap; }
-.zinot-vieta button, .zinot-pogas button { flex: 1 1 10rem; min-height: 44px; width: auto; margin: 0; }
-.zinot-kopsavilkums { margin: .4rem 0; }
-.zinot-kopsavilkums dt { font-weight: 600; color: var(--teksts2); font-size: .85rem; margin-top: .4rem; }
-.zinot-kopsavilkums dd { margin: 0; }
-.zinot-josla { position: absolute; z-index: 1001; top: 8px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 16px); padding: .5rem .75rem; border-radius: var(--radiuss); background: #1f2933; color: #fff; font-size: .9rem; box-shadow: var(--ena); }
-.zinot-josla button { width: auto; margin-left: .5rem; padding: .3rem .6rem; min-height: 36px; }
-.zinot-izvele { cursor: crosshair; }
+/* ==== Ziņot (zinot.js): 5 soļu panelis — telefonā apakšā virs tastatūras, datorā kreisajā malā; karte paliek pieskarama ==== */
+.zinot-panelis { position: fixed; z-index: 1300; left: 0; right: 0; bottom: var(--zinot-kb, 0px); display: flex; flex-direction: column; padding: 0; box-sizing: border-box;
+  max-height: min(70dvh, calc(var(--zinot-vh, 100dvh) - 56px)); background: var(--virsma); color: var(--teksts);
+  border-radius: 14px 14px 0 0; box-shadow: 0 -6px 24px rgba(16, 27, 38, .22); }
+.zinot-panelis[hidden] { display: none; }
+.zinot-panelis[data-solis="2"] { max-height: min(46dvh, calc(var(--zinot-vh, 100dvh) - 56px)); }
+.zinot-galva { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .5rem .5rem .4rem .9rem; border-bottom: 1px solid var(--robeza); }
+.zinot-galva h2 { margin: 0; font-size: 1.05rem; outline: none; }
+.zinot-solis { margin: 0; font-size: .75rem; font-weight: 600; color: var(--teksts2); letter-spacing: .02em; }
+.zinot-aizvert { width: 44px; height: 44px; flex: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.zinot-saturs { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: .5rem .9rem; }
+.zinot-saturs > :first-child { margin-top: 0; }
+.zinot-kaja { display: flex; gap: .5rem; flex-wrap: wrap; padding: .5rem .9rem calc(.6rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--robeza); }
+.zinot-kaja:empty { display: none; }
+.zinot-kaja button { flex: 1 1 8rem; min-height: 44px; width: auto; margin: 0; }
+.zinot-tipi { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .4rem; }
+.zinot-tipi button { display: flex; align-items: center; gap: .5rem; min-height: 48px; text-align: left; font-weight: 600; }
+.zinot-tipi button .ik { width: 22px; height: 22px; }
+.zinot-tipi [data-tips="elektriba"] .ik, .zinot-tipi [data-tips="udens"] .ik { transform: scale(1.8); }  /* Meteocons ikonām viewBox ar lielu atstarpi */
+.zinot-tipi button[aria-pressed="true"] { border-color: var(--zils); background: var(--zils-gaiss); box-shadow: inset 0 0 0 1px var(--zils); }
+.zinot-etikete { display: block; font-weight: 600; margin: .4rem 0 .3rem; }
+.zinot-saturs input[type=text] { width: 100%; box-sizing: border-box; min-height: 44px; font: inherit; font-size: 16px; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
+.zinot-vieta-teksts { margin: 0 0 .3rem; }
+.zinot-vieta-teksts small { color: var(--teksts2); }
+.zinot-kopsavilkums { margin: 0; }
+.zinot-kopsavilkums > div { display: grid; grid-template-columns: 1fr auto; gap: 0 .5rem; align-items: start; padding: .45rem 0; border-bottom: 1px solid var(--robeza); }
+.zinot-kopsavilkums dt { grid-column: 1; font-weight: 600; color: var(--teksts2); font-size: .8rem; }
+.zinot-kopsavilkums dd { grid-column: 1; margin: 0; }
+.zinot-kopsavilkums dd .zinot-vieta-teksts { margin: 0; }
+.zinot-labot { grid-column: 2; grid-row: 1 / span 2; width: auto; min-height: 44px; padding: 0 .7rem; color: var(--zils); border-color: transparent; background: none; font-weight: 600; text-decoration: underline; }
+.zinot-datu-piezime { margin-top: .6rem; padding: .5rem .7rem; font-size: .85rem; background: var(--fons); border-radius: var(--radiuss); }
+.zinot-datu-piezime ul, .zinot-talak { margin: .3rem 0 0; padding-left: 1.1rem; }
+.zinot-rezultats { font-size: 1.05rem; margin: 0 0 .3rem; }
+.zinot-rezultats .ik { color: var(--zals); }
+@media (min-width: 801px) {
+  .zinot-panelis { right: auto; top: 64px; bottom: 0; width: 396px; max-height: none; border-radius: 0; box-shadow: 4px 0 16px rgba(16, 27, 38, .14); border-right: 1px solid var(--robeza); }
+  .zinot-panelis[data-solis="2"] { max-height: none; }
+}
 .zinojums-popup p { margin: .3rem 0; }
 .zinojums-popup small { display: block; }
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
