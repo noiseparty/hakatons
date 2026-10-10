@@ -8,6 +8,7 @@ pārlādē; info.html; statuss.html; `?demo=bez-sakariem`.
 ```bash
 uv run --no-project --python 3.12 src/demo/lokali.py --port 8573        # production/ + /api → map.repo.lv
 uv run --no-project --python 3.12 --with playwright src/testi/bezsaiste.py --url http://localhost:8573 --ekr ekr
+uv run --no-project --python 3.12 --with playwright src/testi/sw_atjaunosana.py --url http://localhost:8573  # jaunas versijas paziņojums, ?svaigs=1
 uv run --no-project --python 3.12 src/testi/sw_faili.py --parbaudit     # exit 1, ja SHELL_FAILI novecojis
 uv run --no-project --python 3.12 src/testi/sw_faili.py --rakstit       # pārraksta sarakstu (tad VERSION++)
 ```

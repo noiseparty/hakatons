@@ -35,6 +35,7 @@ Updated 2026-10-10 02:26. Almost everything is merged (`notes/stavoklis.md` has 
 - **One-command check** (morning and right before going on stage; also warms the caches): `uv run --no-project --python 3.12 --with playwright --with httpx src/testi/parbaude.py [--url https://map.repo.lv] [--screenshots ekr]` — API facts + demo path at 390×844 and 1280×800, red/green table, exit 1 on red.
 
 - No merges after the freeze. Every merge is live within ~1 min.
+- **Stale copy on a phone (panic switch):** open `https://map.repo.lv/?svaigs=1` — it removes the offline copy (service worker + all caches) and reloads the current version. `statuss.html` (bottom) shows which offline-copy VERSION is active; it must match `VERSION` in `production/sw.js` on `main`. An already-open tab shows "Pieejama jauna versija · Atsvaidzināt" after a VERSION bump; it never reloads by itself.
 - Warm the slow upstreams:
   - open map.repo.lv once (forecast cache);
   - search "plūdi Mednieku iela 9 Ogre" and the Jūrmala address (flood WMS, ~10 min cache);
