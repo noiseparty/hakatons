@@ -40,7 +40,7 @@ Updated 2026-10-10 02:26. Almost everything is merged (`notes/stavoklis.md` has 
 | 2 Only once | Address from VZD or the phone; everything else from registers; source + licence on every place; "Datu avoti" lists all 19 + 1 | ✅ live |
 | 3 Flow 3–6 steps, summary, "what next" | Location → need → result; the card is the summary; "Kas notiks tālāk" (#54). Say the sentence from `notes/pitch.md` slide 5 | ✅ live |
 | 4 Works on a phone, no dead ends | Bottom sheet (#60); geolocation denied / API down paths show a next step; statuss.html; info.html prints for offline | ✅ live; real-phone matrix → D |
-| 5 AI + open data | AI extracted 1 309 places from 42 plans with citations and found 41 errors; 19 open sources, each with licence | ✅ pitch slides 6–7 |
+| 5 AI + open data | AI extracted 1 355 places (776 + 579) from 42 plans with citations and found 41 errors; 19 open sources, each with licence | ✅ pitch slides 6–7 |
 
 ## Pitch (`notes/pitch.md`)
 

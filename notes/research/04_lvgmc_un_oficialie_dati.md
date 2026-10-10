@@ -32,7 +32,22 @@ Also found, not yet checked: `evakuacijas-pulcesanas-vietas` (CC BY 4.0) on data
 1. **LVĢMC prognozes apdzīvotām vietām → "Prognoze / ziņas" lente.** CC0, coordinates, 7 days, max gusts / precipitation / temperature per place. On 10.10 it shows gusts up to 22.5 m/s and 21.6 mm of rain, so the demo has real content. Built in PR `noiseparty/lvgmc` (`/api/prognozes`).
 2. **LVĢMC brīdinājumu poligoni on the map.** Already fetched for the banner; this PR draws them and turns each warning into a feed item that zooms to its area.
 3. **LVĢMC hidroloģiskās prognozes next to the gauges** (small CSV, CC0). Needs the LAS-2000.5 ↔ gauge-zero conversion from the station table: a few hours of work.
-4. Meteoalarm as a fallback for the warnings — after reading the T&C.
+4. Meteoalarm as a fallback for the warnings — **T&C read 2026-10-10, verdict: allowed with conditions** (see below).
+
+### Meteoalarm redistribution terms (read 2026-10-10)
+
+Source: https://www.meteoalarm.org/en/live/page/terms-and-conditions ("Last Updated: 15/03/2024"; the page is a JS app, text read from its CMS API `cms-visualization.meteoalarm.org/api/v1/content-pages/terms-and-conditions?locale=en`). The feeds page https://feeds.meteoalarm.org/ links "License (CC BY 4.0)". Latvia Atom feed: https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-latvia (RSS was sunset on 2026-01-14). No registration or key.
+
+Clause 5 "Use and Redistribution of Information": the warning **Information** may be redistributed "under terms equivalent to … CC BY 4.0", plus:
+- if modified, the unmodified original must be redistributed alongside;
+- for single-country data the issuing service must always be named — for Latvia **LVĢMC**;
+- the **time of issue** must be shown;
+- internet applications must **link to www.meteoalarm.org**;
+- operational redistribution must be real-time: **average delay < 5 min, never > 10 min** (so cache ≤ 10 min);
+- this **disclaimer must be published**: "Time delays between this website and the www.meteoalarm.org website are possible. For the most up-to-date awareness information as published by the participating National Meteorological and Hydrological Services, please refer to www.meteoalarm.org."
+- Meteoalarm's own **Content** (icons, maps, design, software) is not covered — don't copy it.
+
+**Verdict for map.repo.lv:** usable as a fallback for `/api/bridinajumi`, if the banner then shows "LVĢMC (caur Meteoalarm)", the issue time, a link to meteoalarm.org and the disclaimer, keeps the text unchanged, and refreshes within 10 min. Not needed while the LVĢMC data.gov.lv CSV (CC0) works, which has none of these conditions.
 5. LVC closures / slippery roads — keys exist, but DATEX II parsing + server-side proxy is a half-day job.
 
 **Blocks the rest:** no open radar; Sadales tīkls and LV-Alert have no feed at all; NAP needs keys and DATEX II parsing; gridded forecasts are 25–180 MB per parameter; NMPD/VUGD data is annual, not live.

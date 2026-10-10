@@ -2547,7 +2547,7 @@ def _pasvaldibas_dati():
 
 
 def pasvaldiba(q):
-    """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne un VPVKAC kontakts
+    """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne, UR kontakti un VPVKAC kontakts
     (src/karte/db/pasvaldibas.py → src/karte/dati/pasvaldibas.json)."""
     lat, lon = _vieta(q)
     kods = _punktu_kesa.iegut(("pasvaldiba", round(lat, 4), round(lon, 4)), lambda: vaicat(
@@ -2561,6 +2561,8 @@ def pasvaldiba(q):
     return {"kods": kods, **dati, "avoti": [
         {"nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)", "licence": "Oficiāls dokuments",
          "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"},
+        {"nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts", "licence": "CC0 1.0",
+         "url": "https://data.gov.lv/dati/dataset/public-persons-institutions"},
         {"nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
 

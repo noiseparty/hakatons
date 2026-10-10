@@ -7,7 +7,13 @@
   "ca_plans_url": "https://www.riga.lv/lv/media/56912/download?attachment",
   "ca_lapa": "https://www.riga.lv/lv/rigas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "riga@riga.lv",
+   "talrunis": "+37180000800",
+   "adrese": "Rātslaukums 1, Rīga, LV-1050",
+   "majas_lapa": "https://www.riga.lv"
+  }
  },
  "100003011": {
   "nosaukums": "Daugavpils",
@@ -17,7 +23,13 @@
   "ca_plans_url": "https://www.daugavpils.lv/assets/upload/dokumenti/normativie/2026/05/317_lem_public-v001.pdf",
   "ca_lapa": "https://www.daugavpils.lv/pasvaldiba/dokumenti/civilas-aizsardzibas-plans",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "info@daugavpils.lv",
+   "talrunis": "+37165404344",
+   "adrese": "Krišjāņa Valdemāra iela 1, Daugavpils, LV-5401",
+   "majas_lapa": "https://www.daugavpils.lv"
+  }
  },
  "100003028": {
   "nosaukums": "Jelgava",
@@ -33,7 +45,13 @@
    "talrunis": "66954888",
    "epasts": "jaunjelgava@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 15
+  "vpvkac_skaits": 15,
+  "kontakti": {
+   "epasts": "pasts@jelgava.lv",
+   "talrunis": "+37163005531",
+   "adrese": "Lielā iela 11, Jelgava, LV-3001",
+   "majas_lapa": "https://www.jelgava.lv"
+  }
  },
  "100003036": {
   "nosaukums": "Jūrmala",
@@ -43,7 +61,13 @@
   "ca_plans_url": "https://dokumenti.jurmala.lv/docs/l22/x/L0004_pielikums.pdf",
   "ca_lapa": "https://www.jurmala.lv/lv/jurmalas-pilsetas-sadarbibas-teritorijas-civilas-aizsardzibas-plans",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "pasts@jurmala.lv",
+   "talrunis": "+37167093816",
+   "adrese": "Jomas iela 1/5, Jūrmala, LV-2015",
+   "majas_lapa": "https://jurmala.lv"
+  }
  },
  "100003044": {
   "nosaukums": "Liepāja",
@@ -53,7 +77,13 @@
   "ca_plans_url": "https://faili.liepaja.lv/CAP/Liepajas-DKN-ST-CAP_2023ATJ.pdf",
   "ca_lapa": "https://www.liepaja.lv/civila-aizsardziba/liepajas-valstspilsetas-un-dienvidkurzemes-novada-civilas-aizsardzibas-plans/",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "pasts@liepaja.lv",
+   "talrunis": "+37163404750",
+   "adrese": "Rožu iela 6, Liepāja, LV-3401",
+   "majas_lapa": "https://www.liepaja.lv"
+  }
  },
  "100003052": {
   "nosaukums": "Rēzekne",
@@ -69,7 +99,13 @@
    "talrunis": "66954859",
    "epasts": "vilani@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 5
+  "vpvkac_skaits": 5,
+  "kontakti": {
+   "epasts": "dome@rezekne.lv",
+   "talrunis": "+37164607605",
+   "adrese": "Atbrīvošanas aleja 93, Rēzekne, LV-4601",
+   "majas_lapa": "https://www.rezekne.lv"
+  }
  },
  "100003060": {
   "nosaukums": "Ventspils",
@@ -79,7 +115,13 @@
   "ca_plans_url": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf",
   "ca_lapa": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "dome@ventspils.lv",
+   "talrunis": "+37163601100",
+   "adrese": "Jūras iela 36, Ventspils, LV-3601",
+   "majas_lapa": "https://www.ventspils.lv"
+  }
  },
  "100016630": {
   "nosaukums": "Aizkraukles novads",
@@ -95,7 +137,13 @@
    "talrunis": "66954880, 65133925",
    "epasts": "aizkraukle@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 14
+  "vpvkac_skaits": 14,
+  "kontakti": {
+   "epasts": "dome@aizkraukle.lv",
+   "talrunis": "+37165133930",
+   "adrese": "Lāčplēša iela 1A, Aizkraukle, Aizkraukles nov., LV-5101",
+   "majas_lapa": "https://www.aizkraukle.lv"
+  }
  },
  "100015694": {
   "nosaukums": "Alūksnes novads",
@@ -111,7 +159,13 @@
    "talrunis": "66954904",
    "epasts": "aluksne@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "dome@aluksne.lv",
+   "talrunis": "+37164381496",
+   "adrese": "Dārza iela 11, Alūksne, Alūksnes nov., LV-4301",
+   "majas_lapa": "https://www.aluksne.lv"
+  }
  },
  "100016462": {
   "nosaukums": "Augšdaugavas novads",
@@ -127,7 +181,13 @@
    "talrunis": "66954819",
    "epasts": "ilukste@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "pasts@augsdaugavasnovads.lv",
+   "talrunis": "+37165422238",
+   "adrese": "Rīgas iela 2, Daugavpils, LV-5401",
+   "majas_lapa": "https://www.augsdaugavasnovads.lv"
+  }
  },
  "100016501": {
   "nosaukums": "Ādažu novads",
@@ -143,7 +203,13 @@
    "talrunis": "66954800",
    "epasts": "adazi@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "dome@adazi.lv",
+   "talrunis": "+37167997350",
+   "adrese": "Gaujas iela 33A, Ādaži, Ādažu nov., LV-2164",
+   "majas_lapa": "https://www.adazi.lv"
+  }
  },
  "100016438": {
   "nosaukums": "Balvu novads",
@@ -159,7 +225,13 @@
    "talrunis": "66954809",
    "epasts": "balvi@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 6
+  "vpvkac_skaits": 6,
+  "kontakti": {
+   "epasts": "dome@balvi.lv",
+   "talrunis": "+37164522453",
+   "adrese": "Bērzpils iela 1A, Balvi, Balvu nov., LV-4501",
+   "majas_lapa": "https://www.balvi.lv"
+  }
  },
  "100016575": {
   "nosaukums": "Bauskas novads",
@@ -175,7 +247,13 @@
    "talrunis": "66954885",
    "epasts": "bauska@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 5
+  "vpvkac_skaits": 5,
+  "kontakti": {
+   "epasts": "pasts@bauskasnovads.lv",
+   "talrunis": "+37163922238",
+   "adrese": "Uzvaras iela 1, Bauska, Bauskas nov., LV-3901",
+   "majas_lapa": "https://www.bauskasnovads.lv"
+  }
  },
  "100016487": {
   "nosaukums": "Cēsu novads",
@@ -191,7 +269,13 @@
    "talrunis": "66954884",
    "epasts": "cesis@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 9
+  "vpvkac_skaits": 9,
+  "kontakti": {
+   "epasts": "dome@cesis.lv",
+   "talrunis": "+37164161800",
+   "adrese": "Raunas iela 4, Cēsis, Cēsu nov., LV-4101",
+   "majas_lapa": "https://www.cesis.lv"
+  }
  },
  "100016495": {
   "nosaukums": "Dienvidkurzemes novads",
@@ -207,7 +291,13 @@
    "talrunis": "66954862",
    "epasts": "aizpute@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 7
+  "vpvkac_skaits": 7,
+  "kontakti": {
+   "epasts": "pasts@dkn.lv",
+   "talrunis": "+37163490458",
+   "adrese": "Lielā iela 54, Grobiņa, Dienvidkurzemes nov., LV-3430",
+   "majas_lapa": "https://www.dkn.lv"
+  }
  },
  "100016622": {
   "nosaukums": "Dobeles novads",
@@ -223,7 +313,13 @@
    "talrunis": "66954922",
    "epasts": "dobele@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 3
+  "vpvkac_skaits": 3,
+  "kontakti": {
+   "epasts": "dome@dobele.lv",
+   "talrunis": "+37163720940",
+   "adrese": "Brīvības iela 17, Dobele, Dobeles nov., LV-3701",
+   "majas_lapa": "https://www.dobele.lv"
+  }
  },
  "100015854": {
   "nosaukums": "Gulbenes novads",
@@ -239,7 +335,13 @@
    "talrunis": "66954879",
    "epasts": "gulbene@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "dome@gulbene.lv",
+   "talrunis": "+37164497710",
+   "adrese": "Ābeļu iela 2, Gulbene, Gulbenes nov., LV-4401",
+   "majas_lapa": "https://www.gulbene.lv"
+  }
  },
  "100016534": {
   "nosaukums": "Jelgavas novads",
@@ -255,7 +357,13 @@
    "talrunis": "66954909",
    "epasts": "jelgava@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 14
+  "vpvkac_skaits": 14,
+  "kontakti": {
+   "epasts": "dome@jelgavasnovads.lv",
+   "talrunis": "+37163022238",
+   "adrese": "Pasta iela 37, Jelgava, LV-3001",
+   "majas_lapa": "https://www.jelgavasnovads.lv"
+  }
  },
  "100016421": {
   "nosaukums": "Jēkabpils novads",
@@ -271,7 +379,13 @@
    "talrunis": "66954802",
    "epasts": "akniste@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 4
+  "vpvkac_skaits": 4,
+  "kontakti": {
+   "epasts": "pasts@jekabpils.lv",
+   "talrunis": "+37165236777",
+   "adrese": "Brīvības iela 120, Jēkabpils, Jēkabpils nov., LV-5201",
+   "majas_lapa": "https://www.jekabpils.lv"
+  }
  },
  "100016743": {
   "nosaukums": "Krāslavas novads",
@@ -287,7 +401,13 @@
    "talrunis": "66954815",
    "epasts": "dagda@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "dome@kraslava.lv",
+   "talrunis": "+37165624383",
+   "adrese": "Rīgas iela 51, Krāslava, Krāslavas nov., LV-5601",
+   "majas_lapa": "https://www.kraslava.lv"
+  }
  },
  "100016696": {
   "nosaukums": "Kuldīgas novads",
@@ -303,7 +423,13 @@
    "talrunis": "66954927",
    "epasts": "kuldīga@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 3
+  "vpvkac_skaits": 3,
+  "kontakti": {
+   "epasts": "dome@kuldiga.lv",
+   "talrunis": "+37163322469",
+   "adrese": "Baznīcas iela 1, Kuldīga, Kuldīgas nov., LV-3301",
+   "majas_lapa": "https://www.kuldiga.lv"
+  }
  },
  "100016470": {
   "nosaukums": "Ķekavas novads",
@@ -319,7 +445,13 @@
    "talrunis": "66954825",
    "epasts": "kekava@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "novads@kekava.lv",
+   "talrunis": "+37167935803",
+   "adrese": "Gaismas iela 19 k-9, Ķekava, Ķekavas nov., LV-2123",
+   "majas_lapa": "http://kekava.lv"
+  }
  },
  "100016606": {
   "nosaukums": "Limbažu novads",
@@ -335,7 +467,13 @@
    "talrunis": "66954803",
    "epasts": "aloja@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "pasts@limbazunovads.lv",
+   "talrunis": "+37164070638",
+   "adrese": "Rīgas iela 16, Limbaži, Limbažu nov., LV-4001",
+   "majas_lapa": "https://www.limbazunovads.lv"
+  }
  },
  "100015243": {
   "nosaukums": "Līvānu novads",
@@ -351,7 +489,13 @@
    "talrunis": "66954906",
    "epasts": "livani@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "pasts@livani.lv",
+   "talrunis": "+37165307250",
+   "adrese": "Rīgas iela 77, Līvāni, Līvānu nov., LV-5316",
+   "majas_lapa": "https://www.livani.lv"
+  }
  },
  "100016751": {
   "nosaukums": "Ludzas novads",
@@ -367,7 +511,13 @@
    "talrunis": "66954912",
    "epasts": "ludza@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 3
+  "vpvkac_skaits": 3,
+  "kontakti": {
+   "epasts": "pasts@ludzasnovads.lv",
+   "talrunis": "+37165707400",
+   "adrese": "Raiņa iela 16, Ludza, Ludzas nov., LV-5701",
+   "majas_lapa": "https://www.ludzasnovads.lv"
+  }
  },
  "100016671": {
   "nosaukums": "Madonas novads",
@@ -383,7 +533,13 @@
    "talrunis": "66954813",
    "epasts": "cesvaine@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 3
+  "vpvkac_skaits": 3,
+  "kontakti": {
+   "epasts": "pasts@madona.lv",
+   "talrunis": "+37164860090",
+   "adrese": "Saieta laukums 1, Madona, Madonas nov., LV-4801",
+   "majas_lapa": "https://www.madona.lv"
+  }
  },
  "100016583": {
   "nosaukums": "Mārupes novads",
@@ -399,7 +555,13 @@
    "talrunis": "66954902",
    "epasts": "marupe@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "marupe@marupe.lv",
+   "talrunis": "+37167934695",
+   "adrese": "Daugavas iela 29, Mārupe, Mārupes nov., LV-2167",
+   "majas_lapa": "https://www.marupe.lv"
+  }
  },
  "100016688": {
   "nosaukums": "Ogres novads",
@@ -415,7 +577,13 @@
    "talrunis": "66954861",
    "epasts": "ikskile@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 6
+  "vpvkac_skaits": 6,
+  "kontakti": {
+   "epasts": "ogredome@ogresnovads.lv",
+   "talrunis": "+37165071160",
+   "adrese": "Brīvības iela 33, Ogre, Ogres nov., LV-5001",
+   "majas_lapa": "https://www.ogresnovads.lv"
+  }
  },
  "100016077": {
   "nosaukums": "Olaines novads",
@@ -431,7 +599,13 @@
    "talrunis": "66954899",
    "epasts": "olaine@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "pasts@olaine.lv",
+   "talrunis": "+37167964333",
+   "adrese": "Zemgales iela 33, Olaine, Olaines nov., LV-2114",
+   "majas_lapa": "https://www.olaine.lv"
+  }
  },
  "100016727": {
   "nosaukums": "Preiļu novads",
@@ -447,7 +621,13 @@
    "talrunis": "66954801",
    "epasts": "aglona@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "dome@preili.lv",
+   "talrunis": "+37165322766",
+   "adrese": "Raiņa bulvāris 19, Preiļi, Preiļu nov., LV-5301",
+   "majas_lapa": "https://www.preili.lv"
+  }
  },
  "100016542": {
   "nosaukums": "Rēzeknes novads",
@@ -463,7 +643,13 @@
    "talrunis": "66954859",
    "epasts": "vilani@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 5
+  "vpvkac_skaits": 5,
+  "kontakti": {
+   "epasts": "info@rezeknesnovads.lv",
+   "talrunis": "+37164622238",
+   "adrese": "Atbrīvošanas aleja 95A, Rēzekne, LV-4601",
+   "majas_lapa": "http://www.rezeknesnovads.lv"
+  }
  },
  "100016784": {
   "nosaukums": "Ropažu novads",
@@ -479,7 +665,13 @@
    "talrunis": "66954875",
    "epasts": "ropazi@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "novada.dome@ropazi.lv",
+   "talrunis": "+37127885518",
+   "adrese": "Institūta iela 1A, Ulbroka, Stopiņu pag., Ropažu nov., LV-2130",
+   "majas_lapa": "https://www.ropazi.lv"
+  }
  },
  "100015485": {
   "nosaukums": "Salaspils novads",
@@ -495,7 +687,13 @@
    "talrunis": "66954846",
    "epasts": "salaspils@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "dome@salaspils.lv",
+   "talrunis": "+37167981010",
+   "adrese": "Līvzemes iela 8, Salaspils, Salaspils nov., LV-2169",
+   "majas_lapa": "https://www.salaspils.lv"
+  }
  },
  "100016663": {
   "nosaukums": "Saldus novads",
@@ -511,7 +709,13 @@
    "talrunis": "66954811",
    "epasts": "broceni@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 1
+  "vpvkac_skaits": 1,
+  "kontakti": {
+   "epasts": "pasts@saldus.lv",
+   "talrunis": "+37163807280",
+   "adrese": "Striķu iela 3, Saldus, Saldus nov., LV-3801",
+   "majas_lapa": "https://www.saldus.lv"
+  }
  },
  "100016550": {
   "nosaukums": "Saulkrastu novads",
@@ -527,7 +731,13 @@
    "talrunis": "66954847",
    "epasts": "saulkrasti@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "pasts@saulkrasti.lv",
+   "talrunis": "+37167951250",
+   "adrese": "Raiņa iela 8, Saulkrasti, Saulkrastu nov., LV-2160",
+   "majas_lapa": "https://www.saulkrasti.lv"
+  }
  },
  "100016768": {
   "nosaukums": "Siguldas novads",
@@ -543,7 +753,13 @@
    "talrunis": "66954916",
    "epasts": "sigulda@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 5
+  "vpvkac_skaits": 5,
+  "kontakti": {
+   "epasts": "pasts@sigulda.lv",
+   "talrunis": "+37167970864",
+   "adrese": "Pils iela 16, Sigulda, Siguldas nov., LV-2150",
+   "majas_lapa": "https://www.sigulda.lv"
+  }
  },
  "100016735": {
   "nosaukums": "Smiltenes novads",
@@ -559,7 +775,13 @@
    "talrunis": "66954850",
    "epasts": "smiltene@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 6
+  "vpvkac_skaits": 6,
+  "kontakti": {
+   "epasts": "pasts@smiltenesnovads.lv",
+   "talrunis": "+37164774844",
+   "adrese": "Dārza iela 3, Smiltene, Smiltenes nov., LV-4729",
+   "majas_lapa": "https://www.smiltenesnovads.lv"
+  }
  },
  "100016390": {
   "nosaukums": "Talsu novads",
@@ -575,7 +797,13 @@
    "talrunis": "66954817",
    "epasts": "dundaga@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 3
+  "vpvkac_skaits": 3,
+  "kontakti": {
+   "epasts": "pasts@talsi.lv",
+   "talrunis": "+37129420976",
+   "adrese": "Kareivju iela 7, Talsi, Talsu nov., LV-3201",
+   "majas_lapa": "http://www.talsunovads.lv"
+  }
  },
  "100016710": {
   "nosaukums": "Tukuma novads",
@@ -591,7 +819,13 @@
    "talrunis": "66954824",
    "epasts": "kandava@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 5
+  "vpvkac_skaits": 5,
+  "kontakti": {
+   "epasts": "pasts@tukums.lv",
+   "talrunis": "+37163122231",
+   "adrese": "Talsu iela 4, Tukums, Tukuma nov., LV-3101",
+   "majas_lapa": "https://www.tukums.lv"
+  }
  },
  "100016286": {
   "nosaukums": "Valkas novads",
@@ -607,7 +841,13 @@
    "talrunis": "66954878",
    "epasts": "valka@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 2
+  "vpvkac_skaits": 2,
+  "kontakti": {
+   "epasts": "novads@valka.lv",
+   "talrunis": "+37164722238",
+   "adrese": "Beverīnas iela 3, Valka, Valkas nov., LV-4701",
+   "majas_lapa": "https://www.valka.lv"
+  }
  },
  "100016647": {
   "nosaukums": "Valmieras novads",
@@ -623,7 +863,13 @@
    "talrunis": "66954867",
    "epasts": "mazsalaca@pakalpojumucentri.lv"
   },
-  "vpvkac_skaits": 7
+  "vpvkac_skaits": 7,
+  "kontakti": {
+   "epasts": "pasts@valmierasnovads.lv",
+   "talrunis": "+37164207120",
+   "adrese": "Lāčplēša iela 2, Valmiera, Valmieras nov., LV-4201",
+   "majas_lapa": "https://www.valmierasnovads.lv"
+  }
  },
  "100016333": {
   "nosaukums": "Ventspils novads",
@@ -633,6 +879,12 @@
   "ca_plans_url": null,
   "ca_lapa": "https://www.ventspils.lv/app/uploads/2023/05/63_par-ventspils-valstspilsetas-pasvaldibas-un-ventspils-novada-pasvaldibas-sadarbibas-teritorijas-civilas-aizsardzibas-plana-apstiprinasanupiel_publiskais__.pdf (VUGD sarakstā kopīgs Ventspils valstspilsētas un Ventspils novada plāns)",
   "vpvkac": null,
-  "vpvkac_skaits": 0
+  "vpvkac_skaits": 0,
+  "kontakti": {
+   "epasts": "info@ventspilsnd.lv",
+   "talrunis": "+37163629450",
+   "adrese": "Skolas iela 4, Ventspils, LV-3601",
+   "majas_lapa": "https://www.ventspilsnovads.lv"
+  }
  }
 }

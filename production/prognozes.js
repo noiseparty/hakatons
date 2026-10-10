@@ -13,7 +13,9 @@ const Prognozes = (() => {
   const kaste = document.getElementById('prognozes');
   let dati = null, diena = null, robezas = null, aktivie = [];
   let riskaKarte = false;  // slēdzis aizvērtai lentei: novadi redzami arī bez paneļa
-  const novaduSlanis = L.geoJSON(null, { style: stils, onEachFeature: (f, l) => l.on('click', e => popups(f, e.latlng)) });
+  // Novadi tikai iekrāso karti: pieskāriens tukšā vietā neko neatver (klikšķis iet cauri uz karti un punktiem).
+  // Novada prognoze un riska iemesli atveras, pieskaroties ziņai lentē (radit()).
+  const novaduSlanis = L.geoJSON(null, { style: stils, interactive: false });
   const bridSlanis = L.layerGroup();
 
   function limenis(r) {
@@ -122,6 +124,9 @@ const Prognozes = (() => {
       paddingTopLeft: [telefons ? 10 : lapa.offsetWidth + 20, 10],
       paddingBottomRight: [50, telefons ? lapa.offsetHeight + 10 : 10], maxZoom: 10,
     });
+    // skartākā novada prognoze un riska iemesli — logā tā centrā (pirmais sarakstā ir visvairāk skartais)
+    const f = z.regioni?.length && robezas?.features.find(x => x.id === z.regioni[0]);
+    if (f) setTimeout(() => popups(f, L.geoJSON(f).getBounds().getCenter()), 350);
   }
 
   async function ieladet() {
