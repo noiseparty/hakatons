@@ -515,17 +515,25 @@ const krizesMeklesana = (() => {
       const [grupas, drosasF, kritiskais] = await Promise.all([
         Promise.all(kodi.map(k => tuvakas(k, UZ_KATEGORIJU * 2))),
         Promise.all(drosas.map(d => kategorijas[d.kods]?.skaits ? tuvakas(d.kods, 5) : { features: [] })),
-        atmI >= 0 ? tuvakas('bankomats', 1, { kritiskais: 1 }) : { features: [] },
+        atmI >= 0 ? tuvakas('bankomats', 3, { kritiskais: 1 }) : { features: [] },
       ]);
-      grupas.forEach(g => { g.features = izveleties(g.features); });
-      const kf = kritiskais.features[0];
-      if (kf) grupas[atmI].features = [kf, ...grupas[atmI].features.filter(f => f.id !== kf.id)].slice(0, UZ_KATEGORIJU);
-      const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
+      // Dzīvais statuss: slēgtu / nedarbojošos / pilnu vietu izlaiž un ņem nākamo (izlaistās — viena rinda virs saraksta)
+      const izlaisti = grupas.map(g => { const a = atlasit(g.features); g.features = izveleties(a.derigi); return a.izlaisti; });
+      const kritiskie = atlasit(kritiskais.features);
+      const kf = kritiskie.derigi[0];
+      if (atmI >= 0) {
+        if (kf) grupas[atmI].features = [kf, ...grupas[atmI].features.filter(f => f.id !== kf.id)].slice(0, UZ_KATEGORIJU);
+        const zinami = new Set(izlaisti[atmI].map(x => x.f.id));
+        izlaisti[atmI].push(...kritiskie.izlaisti.filter(x => !zinami.has(x.f.id) && (!kf || x.f.properties.attalums_m <= kf.properties.attalums_m)));
+      }
+      const drosasAtl = drosasF.map(g => atlasit(g.features));
+      const drosasVietas = drosasAtl.map(a => izveleties(a.derigi)[0] || null);
+      const drosasIzlaisti = drosasAtl.map((a, i) => a.izlaisti.filter(x => !drosasVietas[i] || x.f.properties.attalums_m <= drosasVietas[i].properties.attalums_m));
       const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
       vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
         (neizdevas ? '<p class="piezime kluda">Daļu tuvāko vietu neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža; padoms un 112 ir spēkā.</p>' : '') +
-        kodi.map((k, i) => grupa(k, grupas[i].features, no, neizdevas)).join('') +
-        (drosas.length && !neizdevas ? drosasBloks(drosas, drosasVietas, no) : '') +
+        kodi.map((k, i) => grupa(k, grupas[i].features, no, neizdevas, izlaisti[i])).join('') +
+        (drosas.length && !neizdevas ? drosasBloks(drosas, drosasVietas, no, drosasIzlaisti) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>');
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
       // Maršruts līdz tuvākajai patvertnei (citādi 24/7 slimnīcai), kas apiet spēkā esošus ceļu slēgumus (marsruts.js)
@@ -587,6 +595,26 @@ const krizesMeklesana = (() => {
     .map((f, i) => ({ f, i, spec: f.properties.ipasibas?.specializeta || /^sim-/.test(f.properties.avots || '') ? 1 : 0 }))
     .sort((a, b) => a.spec - b.spec || a.i - b.i).slice(0, UZ_KATEGORIJU).map(x => x.f);
 
+  // Dzīvais statuss (ObjektaStatuss.nepieejams): {derigi, izlaisti: [{f, iemesls}]}. Izlaistas tikai tās, kas ir tuvāk par
+  // pēdējo derīgo, ko rādām (tālākas nevienu neinteresē). "nav zināms" un vecs statuss — derīga vieta.
+  function atlasit(features) {
+    const derigi = [], izlaisti = [];
+    for (const f of features) {
+      const iemesls = ObjektaStatuss.nepieejams(f.properties);
+      if (iemesls) { if (derigi.length < UZ_KATEGORIJU) izlaisti.push({ f, iemesls }); } else derigi.push(f);
+    }
+    return { derigi, izlaisti };
+  }
+  // "Tuvākais (Swedbank, Rīgas iela 1) izlaists: nedarbojas." — viena rinda; vairākām — "Tuvākie (…; …) izlaisti: …"
+  function izlaistiRinda(izlaisti) {
+    if (!izlaisti?.length) return '';
+    const vards = x => esc(nosaukums(x.f.properties) || kategorijas[x.f.properties.kategorija]?.nosaukums || 'vieta') +
+      (x.f.properties.adrese ? ', ' + esc(x.f.properties.adrese) : '');
+    const iemesli = [...new Set(izlaisti.map(x => x.iemesls))].join(' / ');
+    const v = izlaisti.slice(0, 2).map(vards).join('; ') + (izlaisti.length > 2 ? `; +${izlaisti.length - 2}` : '');
+    return `<small class="izlaists">${Ik('uzmanibu')} ${izlaisti.length > 1 ? 'Tuvākie' : 'Tuvākais'} (${v}) ${izlaisti.length > 1 ? 'izlaisti' : 'izlaists'}: ${esc(iemesli)} (dzīvais statuss).</small>`;
+  }
+
   const notiritPoga = () => '<button type="button" class="otra" data-darbiba="notirit"><span aria-hidden="true">✕</span> Notīrīt meklēšanu</button>';
 
   function vienums(f, no, virsraksts) {
@@ -602,19 +630,19 @@ const krizesMeklesana = (() => {
       <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
   }
 
-  function grupa(kods, features, no, neizdevas = false) {
+  function grupa(kods, features, no, neizdevas = false, izlaisti = []) {
     const k = kategorijas[kods];
-    if (!features.length) return neizdevas ? '' : `<p class="piezime">${esc(k.nosaukums)}: tuvākā vieta mūsu datos nav zināma.</p>`;
-    return `<h3>${Ikonas.formaHTML(kods)}${esc(k.nosaukums)}</h3>` +
+    if (!features.length) return neizdevas ? '' : `<p class="piezime">${esc(k.nosaukums)}: tuvākā ${izlaisti.length ? 'strādājošā ' : ''}vieta mūsu datos nav zināma.</p>${izlaistiRinda(izlaisti)}`;
+    return `<h3>${Ikonas.formaHTML(kods)}${esc(k.nosaukums)}</h3>` + izlaistiRinda(izlaisti) +
       `<ol class="rez-saraksts">${features.map(f => vienums(f, no, f.properties.ipasibas?.kritiskais === '1'
         ? '<span class="krit-zime">KRITISKAIS</span> <small>skaidra nauda arī krīzes laikā</small><br>' : '')).join('')}</ol>`;
   }
 
   // Tuvākā katrā drošo vietu kategorijā. Ja pašvaldības CA plānā vietu nav (vai slānis vēl nav ielādēts) — nekad
   // tukša rinda: norāde uz tuvāko patvertni (tā ir tajā pašā sarakstā).
-  function drosasBloks(drosas, vietas, no) {
+  function drosasBloks(drosas, vietas, no, izlaisti = []) {
     const rindas = drosas.map((d, i) => {
-      const virsraksts = `<span class="drosa-nos">${Ik(d.ikona)} ${esc(d.nos)}</span>`;
+      const virsraksts = `<span class="drosa-nos">${Ik(d.ikona)} ${esc(d.nos)}</span>` + izlaistiRinda(izlaisti[i]);
       const f = vietas[i];
       if (f && d.aizstat && f.properties.attalums_m > 10000) {
         return vienums(f, no, virsraksts + '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā. Jautājiet savai pašvaldībai vai izmantojiet tuvāko patvertni.</small>');
