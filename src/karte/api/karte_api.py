@@ -3585,7 +3585,12 @@ def _arejais_avots(kods, nosaukums, atslegas, tagad, konfigurets=True):
     else:
         stavoklis, zinojums = "darbojas", None
     if kods == "lvgmc_bridinajumi" and _rezerves_aktivs():
-        stavoklis = "traucejumi" if stavoklis == "darbojas" else stavoklis
+        # LVĢMC datne atbild (svaigs ok), tikai tukša, kamēr Meteoalarm rāda brīdinājumus: tas nav traucējums
+        tukša_bet_dzīva = stavoklis == "darbojas" and vecums is not None and vecums < 20 * 60
+        if tukša_bet_dzīva:
+            zinojums = "LVĢMC datne atbild, bet tukša; brīdinājumi no Meteoalarm"
+        else:
+            stavoklis = "traucejumi" if stavoklis == "darbojas" else stavoklis
         rezerve = "Meteoalarm" + (" + novecojis kešs" if rezerve else "")
     if kods == "lvgmc_pludu_flizes" and rezerve:
         rezerve = "vecās flīzes no diska keša"
