@@ -18,6 +18,7 @@ const Darbvirsma = (() => {
     vieta: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3 3 10.5l7.5 2.5L13 21l8-18Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
     info: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v5M12 16h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     panelis: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M14.5 4.5v15" stroke="currentColor" stroke-width="2"/></svg>',
+    zinot: '<svg viewBox="0 0 24 24" aria-hidden="true" class="dv-zinot-ikona"><path d="M4 10v4h3l6 4V6L7 10H4Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M17 9a4 4 0 0 1 0 6M19.5 6.5a7.5 7.5 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
     pilns: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   };
   const CIPI = [  // maketa čipi → vaicājums (scenārijs); "Ceļi" ieslēdz arī LVC ceļu slēgumu slāni
@@ -114,7 +115,7 @@ const Darbvirsma = (() => {
     h1.append(apaksvirsraksts);
     galva.insertBefore(centrs, labi);
     zinotPoga = $('zinot-poga');  // "Ziņot par bīstamību" (zinot.js) — galvenē blakus "Slāņu vadība"
-    if (zinotPoga) { zinotVieta = [zinotPoga.parentNode, zinotPoga.nextSibling]; centrs.append(zinotPoga); zinotPoga.classList.add('dv-zinot'); }
+    if (zinotPoga) { zinotVieta = [zinotPoga.parentNode, zinotPoga.nextSibling]; centrs.append(zinotPoga); zinotPoga.classList.add('dv-zinot'); zinotPoga.insertAdjacentHTML('afterbegin', IKONAS.zinot); }
     labi.prepend(parPoga);
     if (izmainas) labi.append(izmainas);
     galva.after(josla112);
@@ -154,7 +155,7 @@ const Darbvirsma = (() => {
     document.body.classList.remove('dv', 'dv-kreisa-slegta', 'dv-situacija-slegta');
     raditAtvilktni(false);
     galva.insertBefore(forma, galva.querySelector('.galva-labi'));
-    if (zinotPoga && zinotVieta) { zinotVieta[0].insertBefore(zinotPoga, zinotVieta[1]); zinotPoga.classList.remove('dv-zinot'); }
+    if (zinotPoga && zinotVieta) { zinotVieta[0].insertBefore(zinotPoga, zinotVieta[1]); zinotPoga.classList.remove('dv-zinot'); zinotPoga.querySelector('.dv-zinot-ikona')?.remove(); }
     if (izmainas) galva.querySelector('.galva-kreisi').prepend(izmainas);
     for (const e of [zime, apaksvirsraksts, centrs, parPoga, josla112, valsts, ievads, atvilktne, legenda, situacijasPoga, pilnaPoga, situacija, brAizvert]) e.remove();
     panelis.append(...sekcijas);
