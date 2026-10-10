@@ -77,7 +77,7 @@ SPEC = [
     ("/api/pludi", "Plūdu riska zona punktā", "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).",
      [(*LAT, True), (*LON, True)], "?lat=56.81096&lon=24.61059",
      [("LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)", "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1", *CC0)],
-     "Avots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h."),
+     "Secība: LVĢMC karšu kopija PostGIS (metode \"PostGIS kopija\", 10 % un 1 %) → LVĢMC WMS (\"LVĢMC WMS\") ar kešu pēc punkta (~10 m) 7 dienas (\"kešs no HH:MM\"; ja LVĢMC neatbild — arī vecāks, ar novecojis: true) → {zinams: false, iemesls}. WMS ne 6 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Lauki: zinams, zona, veidi, metode, varbutibas (pārbaudītās kartes, %), avota_info."),
     ("/api/pludi/flize/{paka}/{z}/{x}/{y}.png", "Plūdu zonu flīze (PNG)",
      "Gatava 512 × 512 px caurspīdīga PNG flīze kartes slānim (XYZ, EPSG:3857, z 5–18): LVĢMC plūdu riska zonas, "
      "kas iet caur mūsu diska kešu, jo ĢeoLatvija WMS atbild 5–30 s un mēdz 504. Der Leaflet/MapLibre L.tileLayer.",
@@ -135,7 +135,7 @@ SPEC = [
     ("/api/satiksme", "Satiksme zonās", "Satiksmes līmenis pa pašvaldībām no uzskaites iekārtām (minūšu ātrums), slidenā ceļa vietas, robežu gaidīšana.",
      [], "", [("LVC satiksmes intensitāte un ātrums, slidens ceļš (NAP)", "https://transportdata.gov.lv/", *CC0), MUSU],
      "Brīvas plūsmas ātrums ir novērtējums; zonu apkopojums — atvasināti dati (CC BY 4.0)."),
-    ("/api/statuss", "Sistēmas statuss", "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.", [], "", [MUSU], None),
+    ("/api/statuss", "Sistēmas statuss", "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).", [], "", [MUSU], None),
     ("/api/meklejumi/top", "Biežāk meklētais", "Biežāk meklētie atpazītie vaicājumi pēdējās 14 dienās (bez lietotāju datiem).",
      [("n", "integer", "1–10, noklusēti 3", "5", False)], "?n=5", [MUSU], None),
     ("/api/zinojumi", "Iedzīvotāju ziņojumi", "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina "
@@ -158,7 +158,7 @@ SPEC = [
      [("regions", "string", "pašvaldības VZD kods vai ATVK; bez tā — visa Latvija", "100016688", False)], "?regions=100016688",
      [("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/")],
      "text/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions)."),
-    ("/api/veseliba", "Veselības pārbaude", "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
+    ("/api/veseliba", "Veselības pārbaude", "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
      [("statistika", "integer", "1 — pievienot skaitītājus", "1", False)], "?statistika=1", [MUSU],
      "Nekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno."),
 ]

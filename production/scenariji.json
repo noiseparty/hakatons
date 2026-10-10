@@ -15,10 +15,10 @@
     "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
     "vietu_sinonimi: citvalodu vietvārdi → nosaukums tabulā regioni. Latviskās formas (Ogrē, Rīgas) atrod pats.",
     "Pārbaude: src/meklesana/testi.json (vaicājums → sagaidāmais scenārijs) un vaicajumi.json (497 reālistiski vaicājumi, mērķis ≥ 90 %; notes/klasifikators.md).",
-    "vai_domajat_slieksnis: citus scenārijus rāda kā 'Vai domājāt', ja tie sasniedz šo daļu no labākā punktiem (0.45; noskaņots ar vaicajumi.json).",
+    "vai_domajat_slieksnis: citus scenārijus rāda kā 'Vai domājāt', ja tie sasniedz šo daļu no labākā punktiem (0.85 = ne vairāk kā 15 % zem labākā; 0.45 rādīja 189 no 548 skaidriem vaicājumiem, 0.85 — 66).",
     "talak: 'Kas notiks tālāk' soļi no talak_gimenes (2–4: ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz); '_' = vispārīgie."
   ],
-  "vai_domajat_slieksnis": 0.45,
+  "vai_domajat_slieksnis": 0.85,
   "dzivibas_draudi_scenarijs": "medicina",
   "dzivibas_draudi": [
     "neelpo", "nevar paelpot", "nevar elpot", "bezsamaņ", "nav pie samaņ", "zaudējis samaņ", "zaudējusi samaņ", "zaudēja samaņ", "nereaģē", "nevar pamodināt", "nekustas", "nevar kustēt", "samaņas zud",

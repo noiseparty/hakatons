@@ -376,7 +376,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
   
   <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1">LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
-     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> Avots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h.</p>
+     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> Secība: LVĢMC karšu kopija PostGIS (metode "PostGIS kopija", 10 % un 1 %) → LVĢMC WMS ("LVĢMC WMS") ar kešu pēc punkta (~10 m) 7 dienas ("kešs no HH:MM"; ja LVĢMC neatbild — arī vecāks, ar novecojis: true) → {zinams: false, iemesls}. WMS ne 6 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Lauki: zinams, zona, veidi, metode, varbutibas (pārbaudītās kartes, %), avota_info.</p>
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/pludi?lat=56.81096&amp;lon=24.61059"><code>/api/pludi?lat=56.81096&amp;lon=24.61059</code></a>
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
@@ -1172,7 +1172,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 </section>
 <section class="galapunkts" id="api-statuss">
   <h2><span class="metode">GET</span> <code>/api/statuss</code> — Sistēmas statuss</h2>
-  <p>Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.</p>
+  <p>Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).</p>
   
   
   <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
@@ -1360,7 +1360,7 @@ END:VCALENDAR
 </section>
 <section class="galapunkts" id="api-veseliba">
   <h2><span class="metode">GET</span> <code>/api/veseliba</code> — Veselības pārbaude</h2>
-  <p>Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
+  <p>Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
   <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>statistika</code></td><td>integer</td><td>1 — pievienot skaitītājus</td></tr></tbody></table>
   <table><thead><tr><th>Atbildes lauks</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>ok</code></td><td>datubāze atbild</td></tr><tr><td><code>bridinajumi.lvgmc / meteoalarm</code></td><td>spēkā esošo brīdinājumu skaits katrā avotā (null, ja kešā vēl nav)</td></tr><tr><td><code>bridinajumi.lvgmc_atbildeja</code></td><td>kad pēdējo reizi atbildēja LVĢMC (ISO, UTC) vai null</td></tr><tr><td><code>bridinajumi.rezerves_aktivs</code></td><td>true, ja /api/bridinajumi pēdējās 20 min atbildēja no Meteoalarm</td></tr></tbody></table>
   <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
@@ -1453,5 +1453,6 @@ END:VCALENDAR
     atbildes ģenerēšanas brīdī, saīsinātas. Datu stāvoklis: <a href="statuss.html">statusa lapa</a>.</p>
 </main>
 <script src="kajene.js"></script>
+<script src="atjaunot.js"></script>
 </body>
 </html>

@@ -753,7 +753,7 @@
   "/api/pludi": {
    "get": {
     "summary": "Plūdu riska zona punktā",
-    "description": "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).\n\nAvots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h.",
+    "description": "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).\n\nSecība: LVĢMC karšu kopija PostGIS (metode \"PostGIS kopija\", 10 % un 1 %) → LVĢMC WMS (\"LVĢMC WMS\") ar kešu pēc punkta (~10 m) 7 dienas (\"kešs no HH:MM\"; ja LVĢMC neatbild — arī vecāks, ar novecojis: true) → {zinams: false, iemesls}. WMS ne 6 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Lauki: zinams, zona, veidi, metode, varbutibas (pārbaudītās kartes, %), avota_info.",
     "parameters": [
      {
       "name": "lat",
@@ -2134,7 +2134,7 @@
   "/api/statuss": {
    "get": {
     "summary": "Sistēmas statuss",
-    "description": "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.",
+    "description": "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).",
     "parameters": [],
     "x-avoti": [
      {
@@ -2445,7 +2445,7 @@
   "/api/veseliba": {
    "get": {
     "summary": "Veselības pārbaude",
-    "description": "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).\n\nNekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno.",
+    "description": "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).\n\nNekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno.",
     "parameters": [
      {
       "name": "statistika",
