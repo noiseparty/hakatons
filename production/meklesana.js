@@ -328,8 +328,15 @@ const krizesMeklesana = (() => {
     if (typeof tuvakaSlanis !== 'undefined' && tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
     stavoklis.kategorijas = new Set();
     document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = false; });
-    if (el('pludu-slanis')?.checked) radtPludus(false);
-    if (el('zibens-slanis')?.checked && typeof Zibens !== 'undefined') { el('zibens-slanis').checked = false; Zibens.radit(false); }
+    // Visi pārklājuma slāņi (plūdi, zonas, zibens, laikapstākļi, ceļi, ziņojumi): izslēdz caur to pašu "change" klausītāju
+    document.querySelectorAll('.kat.parklajums input:checked').forEach(i => {
+      i.checked = false;
+      i.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    // Reģiona filtrs uz "Visa Latvija", bet karti nepārvietojam (radtRegionu() pārvietotu skatu)
+    stavoklis.regions = '';
+    el('regions').value = '';
+    if (typeof robezaSlanis !== 'undefined' && robezaSlanis) { robezaSlanis.remove(); robezaSlanis = null; }
     atjaunot();
     history.replaceState(null, '', location.pathname);
     raditNotiritPogu();
