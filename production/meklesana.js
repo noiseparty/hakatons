@@ -458,7 +458,7 @@ const krizesMeklesana = (() => {
       (no ? '<div id="rez-lemums"></div>' + (pludi ? pluduBloks() : '') : '') +
       (galvenais
         ? `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
-          (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}</p>` : '')
+          (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '')
         : kurTeksts ? `<p class="sapratu">${adrese ? 'Adrese' : 'Vieta'}: <b>${esc(kurTeksts)}</b></p>` +
             '<p class="piezime">Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.</p>' : '') +
       (no ? '<p class="piezime" id="rez-mana-vieta" hidden></p>' : '') +
@@ -543,6 +543,15 @@ const krizesMeklesana = (() => {
     } catch (e) {
       if (e.name !== 'AbortError') vietas('<p class="piezime kluda">Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.</p>');
     }
+  }
+
+  // Padoma oficiālais avots (scenariji.json padomu_avots): maza saite zem padoma teksta
+  const PADOMU_AVOTI = { 'vugd.gov.lv': 'VUGD', 'sargs.lv': 'Aizsardzības ministrija, „Kā rīkoties krīzes gadījumā”', 'lsm.lv': 'LSM (Gaso skaidrojums)' };
+  function padomuAvots(url) {
+    if (!url) return '';
+    let nos = 'oficiālā vietne';
+    try { const h = new URL(url).hostname.replace(/^www\./, ''); nos = PADOMU_AVOTI[h] || h; } catch { return ''; }
+    return `<small class="avots-rinda padoma-avots">Avots: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(nos)}</a></small>`;
   }
 
   // "Kas notiks tālāk": kartītes noslēgums — ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz
@@ -770,8 +779,8 @@ const krizesMeklesana = (() => {
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
       .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
     // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
-    const apaksa = typeof Apaksa !== 'undefined' ? Apaksa.augstums() : 0;
-    karte.fitBounds(L.latLngBounds(punkti), { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40 + apaksa], maxZoom: 15 });
+    const atst = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes() : { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40] };
+    karte.fitBounds(L.latLngBounds(punkti), { ...atst, maxZoom: 15 });
   }
 
   // Enter rezultātu sarakstā = klikšķis
