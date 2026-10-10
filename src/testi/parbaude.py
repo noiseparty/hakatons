@@ -258,8 +258,11 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
 
             for kods in DEMO:
                 def demo(kods=kods):
-                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="networkidle", timeout=60000)
-                    lapa.wait_for_function("document.body.classList.contains('demo-aktivs')", timeout=20000)
+                    # ne "networkidle": LVĢMC plūdu WMS flīzes (pludi-ogre) atbild 5–30 s, bet kartīte gatava ~4 s
+                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="domcontentloaded", timeout=60000)
+                    lapa.wait_for_function("document.body.classList.contains('demo-aktivs') && !!document.querySelector('.demo-kartite')"
+                                           " && !document.querySelector('#demo-saturs').textContent.includes('Ielādē tuvākās')", timeout=30000)
+                    lapa.wait_for_timeout(800)
                 solis(f"?demo={kods}", demo)
 
             def beigt():
