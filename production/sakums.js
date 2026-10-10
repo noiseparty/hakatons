@@ -99,7 +99,7 @@
     $('avoti').removeAttribute('aria-busy');
     $('avoti').innerHTML = visi.map(a => {
       const sk = a.skaits ? `<span class="zime skaits">${t('{n} objekti', { n: nf(a.skaits) })}</span>` : '';
-      const lic = a.atverts ? `<span class="zime ok">${saite(a.licences_url, a.licence)}</span>` : `<span class="zime deg">&#9888; ${esc(a.licence || t('licence nav norādīta'))}</span>`;
+      const lic = a.atverts ? `<span class="zime ok">${saite(a.licences_url, a.licence)}</span>` : `<span class="zime deg">&#9888; ${esc(t(a.licence || 'licence nav norādīta'))}</span>`;
       const kad = a.atjaunots ? dat(a.atjaunots) : a.ieladets ? dat(a.ieladets) + t(' (ielāde)') : t(a.biezums || 'nav norādīts');
       return `<li class="${a.atverts ? '' : 'bez'}"><b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
       <small>${esc(t('Izdevējs'))}: ${esc(a.izdevejs)}</small>
