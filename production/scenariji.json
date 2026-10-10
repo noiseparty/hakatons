@@ -163,7 +163,8 @@
         "pazaudēju dēl", "pazaudēju meit", "не могу найти ребен", "потерялся ребен", "потерял сын", "потеряла доч",
         "пропал мальчик", "пропала девочк", "lost my child", "lost my kid", "missing kid", "can't find my son",
         "can't find my daughter",
-        "meit", "dēls$", "dēlu$", "dēla$", "mazdēl", "mazmeit", "дочь", "дочк", "сын$", "сына$", "daughter", "son$"
+        "meit", "dēls$", "dēlu$", "dēla$", "mazdēl", "mazmeit", "дочь", "дочк", "сын$", "сына$", "daughter", "son$",
+        "ребенок потерял", "потерялась доч", "потерялся сын", "child is lost"
       ]
     },
     {
@@ -417,7 +418,8 @@
         "пожар в лесу", "лес в огне", "торф", "горит поле", "bushfire", "brush fire", "field fire", "peat fire",
         "forest is burning", "woods on fire",
         "mežā$", "meža$", "mežs$",
-        "purvs deg", "deg purv", "purvā deg", "purva ugun", "stiklu purv", "bog fire", "горит болото", "болото горит", "торфяник"
+        "purvs deg", "deg purv", "purvā deg", "purva ugun", "stiklu purv", "bog fire", "горит болото", "болото горит", "торфяник",
+        "болот", "peat$", "bog$"
       ]
     },
     {
@@ -482,7 +484,7 @@
         "дым от пожар", "склад горит", "горит склад", "пожар на склад", "дым над город", "запах гари", "пахнет гарью", "в порту горит",
         "пожар в порту", "металлолом", "черный дым", "чёрный дым", "закрыть окна",
         "smoke from fire", "warehouse fire", "warehouse on fire", "smoke over the city", "smell of smoke", "port fire", "fire at the port",
-        "scrap metal fire", "black smoke", "close windows"
+        "scrap metal fire", "black smoke", "close windows", "liela noliktav", "deg liela"
       ]
     },
     {
@@ -581,7 +583,8 @@
       "padoms": "Turieties tālāk no bojātām konstrukcijām un nokritušiem vadiem. Ja draud sabrukšana vai kāds cietis, zvaniet 112. Bojājumus nofotografējiet apdrošinātājam.",
       "atslegvardi": ["vētr", "norāv", "jumt", "nogāz", "vējš", "буря", "ураган", "сорвал", "storm", "roof",
         "stiprs vējš", "vēja brāzm", "brāzm", "noplēs", "šīfer", "koks uzkrit", "koks uz māj", "zars uzkrit", "ветер",
-        "ветр", "крыш", "windstorm", "blew off", "gale$"
+        "ветр", "крыш", "windstorm", "blew off", "gale$",
+        "roof$", "on our roof", "on the roof"
       ]
     },
     {
@@ -686,7 +689,8 @@
       "atslegvardi": ["tvana gāz", "tvan", "oglekļa monoksīd", "co detektor", "ģenerator telp", "угарн", "угар", "carbon monoxide", "co alarm",
         "aizbīdn", "krāsns$", "krāsni$", "dūmvad", "skursten", "garāžā ģenerator", "visiem sāp galv", "печк",
         "дымоход", "заслонк", "monoxide", "chimney",
-        "ģenerator", "generator", "генератор"
+        "ģenerator", "generator", "генератор",
+        "boiler", "katls", "katla$", "котел", "котёл", "dizzy", "headache"
       ]
     },
     {
@@ -890,7 +894,8 @@
         "lauž durv", "lauza durv", "uzlauza durv", "dzirdu soļus", "svešs mājā", "kāds staigā mājā", "zaglis mājā",
         "ломятся", "ломают двер", "чужой в доме", "burglar", "home invasion", "breaking in",
         "zagl", "broke into", "someone broke",
-        "dzirdu soļ", "dzirdu kādu", "someone in the house"
+        "dzirdu soļ", "dzirdu kādu", "someone in the house",
+        "лезет", "climbing in", "trying to get in"
       ]
     },
     {
@@ -940,7 +945,8 @@
       "atslegvardi": ["nav elektrīb", "nav strāv", "elektrīb", "strāv", "atslēg", "blackout", "sadales tīkl", "8404$", "нет света", "электричеств", "отключ", "power outage", "no power", "no electricity",
         "nav gaismas", "gaisma pazud", "elektroapgād", "elektroenerģij", "korķi izsit", "drošinātāj", "sadalestīkl",
         "света нет", "обесточ", "свет выключ", "power cut", "power failure", "lights went out",
-        "brell", "energosistēm", "энергосистем", "visā latvijā nav elektrīb", "valstī nav elektrīb", "grid failure", "nationwide blackout"
+        "brell", "energosistēm", "энергосистем", "visā latvijā nav elektrīb", "valstī nav elektrīb", "grid failure", "nationwide blackout",
+        "свет пропал", "пропал свет", "brell$", "брелл", "брэлл"
       ]
     },
     {
@@ -950,7 +956,8 @@
       "atslegvardi": ["nav ūden", "ūdensvad", "dzeramais ūden", "dzeramā ūden", "krāns", "нет воды", "водопровод", "питьев", "no water", "drinking water", "water outage",
         "ūdens pazud", "nenāk ūden", "ūdens nenāk", "no krāna nenāk", "ūdensapgād", "atslēdza ūden", "воду отключ",
         "вода не ид", "водоснабжен", "tap water", "water supply", "no running water", "water shut off",
-        "netek", "no krāna", "из крана"
+        "netek", "no krāna", "из крана",
+        "отключили вод", "dzeramo ūden"
       ]
     },
     {
@@ -1064,7 +1071,8 @@
       "padoms": "Peldiet paralēli krastam, nevis pret straumi. Ja paši esat krastā, neejiet ūdenī: metiet kaut ko peldošu un zvaniet 112.",
       "atslegvardi": ["straum", "aiznes", "atstraum", "peldētāj", "течение", "унесло", "rip current", "current$", "swept away",
         "nevar izpeld", "netiek krast", "atplūd", "nes prom", "течени", "уносит", "отнесло", "не может выплыть",
-        "riptide", "undertow", "carried out to sea", "can't swim back"
+        "riptide", "undertow", "carried out to sea", "can't swim back",
+        "out to sea", "pulling out", "уносит в мор", "aiznes jūrā"
       ]
     },
     {
@@ -1093,7 +1101,8 @@
         "pagrabs applūd", "ūdens pagrab", "pagrabs pilns ar ūden", "ūdens dzīvokl", "ūdens uz grīd", "ūdens pa grīd",
         "вода в подвал", "подвал затоп", "залило подвал", "заливает", "вода прибыва", "flooded basement",
         "water in the basement", "water coming in",
-        "ceļas ūdens", "ūdens ceļas", "pagrabā ceļas"
+        "ceļas ūdens", "ūdens ceļas", "pagrabā ceļas",
+        "basement", "filling with water"
       ]
     },
 
@@ -1135,7 +1144,8 @@
         "smart id", "smartid", "bankas kont", "nozaga kont", "cert lv", "divu soļu", "krāpnieciska sait", "фишинг",
         "утечка данн", "украли данн", "аккаунт", "data breach", "leaked", "scam link", "account compromised",
         "stolen identity",
-        "nopludināt", "e-past", "epast", "dati nopl"
+        "nopludināt", "e-past", "epast", "dati nopl",
+        "id card", "id kart", "loans", "took a loan", "kredītu uz man", "paņēma kredīt", "кредит на мен", "взяли кредит"
       ]
     },
     {
