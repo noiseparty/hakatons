@@ -183,7 +183,9 @@
       "padoms": "Zvaniet 112. Patvērieties no vēja, nesēdiet uz sniega, kustieties, lai nesaltu. Palieciet uz vietas, ja nezināt virzienu.",
       "atslegvardi": ["sniegā$", "apmald", "nomald", "putenī", "puteni", "aizput", "pēdas aizput", "метел", "снег", "snow", "blizzard", "lost$",
         "sniegā apmald", "sniegā nomald", "ziemā apmald", "pa sniegu", "sniegs līdz cel", "slēpoj", "slēpotāj",
-        "потерялся в снег", "lost in the snow", "skiing", "ski trail"
+        "потерялся в снег", "lost in the snow", "skiing", "ski trail",
+        "kājām", "ejot$", "eju$", "заблуд", "пешком", "иду$", "on foot", "walking", "nezinu kur esmu",
+        "nezinu kur atrodos"
       ]
     },
     {
@@ -363,10 +365,10 @@
       "kods": "auto_putena", "nr": 24, "grupa": "B", "nosaukums": "Auto iestrēdzis putenī",
       "kategorijas": ["degviela"], "zvanit112": true, "talak": "cels",
       "padoms": "Palieciet auto. Zvaniet 112. Darbiniet dzinēju ~10 minūtes stundā sildīšanai un pārliecinieties, ka izpūtējs nav aizputināts (tvana gāze!). Ieslēdziet avārijas gaismas.",
-      "atslegvardi": ["iestrēg", "iesprūd", "putenī", "puteni", "sniegavētr", "aizputin", "застрял", "метел", "snowed in", "stuck in snow", "blizzard", "auto ieslēgts", "auto iestrēg", "sniegavātr",
-        "iestrēdz", "iestig", "kupen", "auto sniegā", "mašīna sniegā", "sniegā iestr", "buksē$", "buksēj", "сугроб",
+      "atslegvardi": ["iestrēg", "iesprūd", "putenī", "puteni", "aizputin", "застрял", "метел", "snowed in", "stuck in snow", "blizzard", "auto ieslēgts", "auto iestrēg", "iestrēdz", "iestig", "kupen", "auto sniegā", "mašīna sniegā", "sniegā iestr", "buksē$", "buksēj", "сугроб",
         "занесло снег", "буксу", "snowdrift", "car stuck", "stuck in the snow",
-        "iestidzis sniegā", "iestrēdzis sniegā"
+        "iestidzis sniegā", "iestrēdzis sniegā",
+        "riteņi buks", "ritenis buks", "riteņi griež", "колёса буксу", "колеса буксу", "wheels spin"
       ]
     },
     {
@@ -493,7 +495,8 @@
       "padoms": "Neslēdziet elektrību un nelietojiet uguni. Atveriet logus, izejiet ārā un no ārpuses zvaniet Gāzes avārijas dienestam 114 vai 112.",
       "atslegvardi": ["gāzes smak", "gāzes smarž", "smird pēc gāz", "ož pēc gāz", "gāz", "114$", "запах газ", "пахнет газ", "smell gas", "smells like gas", "gas smell",
         "ož gāze", "jūt gāz", "jūtu gāz", "plīts smird", "газом пахнет", "воняет газ", "чувствую газ", "газ$",
-        "smell of gas", "smelling gas", "gas odour", "gas odor", "rotten egg"
+        "smell of gas", "smelling gas", "gas odour", "gas odor", "rotten egg",
+        "virtuv", "plīt", "кухн", "kitchen", "stove", "my flat"
       ]
     },
     {
@@ -514,7 +517,11 @@
       "padoms": "Ja varat, atlieciet braucienu. Ja esat ceļā, brauciet lēni vai apstājieties drošā vietā un palieciet auto. Ja salst un nav palīdzības, zvaniet 112.",
       "atslegvardi": ["putenis", "sniegavētr", "putenī", "puteni", "sniega vētr", "метел", "пург", "снегопад", "blizzard", "snowstorm", "sniegavātr", "sniegavētra ceļ", "sniegavātrs ceļ", "putenis ceļ",
         "sniegputen", "sniega putenis", "snigšan", "sanesum", "sniega sanesum", "vējš un snieg", "вьюг", "буран",
-        "снежная буря", "сильный снег", "замело", "snow storm", "heavy snow", "whiteout", "snowfall"
+        "снежная буря", "сильный снег", "замело", "snow storm", "heavy snow", "whiteout", "snowfall",
+        "brauc", "brauk", "šosej", "трасс", "еду$", "едем",
+        "за рулём", "за рулем", "highway", "driving", "neredzu ceļu", "neredz ceļu",
+        "не видно дорог", "cant see the road", "can't see the road", "ничего не видно", "redzamīb",
+        "visibility"
       ]
     },
     {
@@ -563,7 +570,8 @@
       "atslegvardi": ["slid", "apledoj", "ledus uz ceļ", "melnais ledus", "гололёд", "гололед", "скользк", "icy road", "black ice",
         "atkala$", "atkalas$", "ledus kārt", "ledus garoz", "sasalis ceļ", "aizsalis ceļ", "ceļi sasal", "nekaisīt",
         "nav nokaisīt", "лед на дорог", "ледяная дорог", "обледен", "не посыпан", "ice on the road", "slippery road",
-        "slippery", "freezing rain"
+        "slippery", "freezing rain",
+        "brauc", "brauk"
       ]
     },
     {
@@ -984,7 +992,13 @@
       "padoms": "Neslēdziet elektrību, nezvaniet pie durvīm, nelietojiet uguni. Brīdiniet kaimiņus klauvējot, izejiet ārā un no ārpuses zvaniet 114 vai 112.",
       "atslegvardi": ["gāzes noplūd", "noplūd", "gāz", "114$", "утечка газ", "gas leak",
         "sūcas gāz", "šņāc gāz", "gaso$", "газопровод", "газов плит", "утекает газ", "gas pipe", "gas line",
-        "gas cylinder"
+        "gas cylinder",
+        "gāzes smak", "smird pēc gāz", "ož pēc gāz", "ož gāze", "jūt gāz", "jūtu gāz", "запах газ",
+        "пахнет газ", "газом пахнет", "воняет газ", "smell gas", "gas smell", "smell of gas",
+        "smells like gas", "kāpņu telp", "kāpņutelp", "trepē", "pagrab", "visa māj", "visā māj",
+        "visu māj", "daudzdzīvokļu", "подъезд", "подвал", "весь дом", "по всему дом", "сосед",
+        "многоэтаж", "stairwell", "basement", "neighbour", "neighbor",
+        "kāpnē$", "kāpnēs$", "whole building", "in the building", "gas in the building"
       ]
     },
     {

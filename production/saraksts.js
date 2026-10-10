@@ -71,7 +71,7 @@ const Saraksts = (() => {
         : 'Nav ieslēgts neviens slānis. Ieslēdziet slāni panelī „Slāņi” vai meklējiet augšā.';
     } else {
       const kartiba = stavoklis.vieta ? 'sakārtoti pēc attāluma (taisnā līnijā)' : 'sakārtoti pēc nosaukuma';
-      kopsavilkums.textContent = `${saraksts.length} objekti, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
+      kopsavilkums.textContent = `${daudzskaitlis(saraksts.length, 'objekts', 'objekti')}, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
       paradit(SOLIS);
     }
     dialogs.showModal();
