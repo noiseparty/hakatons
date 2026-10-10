@@ -42,6 +42,8 @@ const krizesMeklesana = (() => {
       return;
     }
     const q = new URLSearchParams(location.search).get('q');
+    const saitesVieta = typeof Dalities !== 'undefined' && Dalities.vietaNoUrl();  // dalities.js: ?q=…&lat=&lon= — atskaites punkts no saites
+    if (q && saitesVieta) stavoklis.vieta = saitesVieta;
     if (q) { el('jautajums').value = q; meklet(q); raditRezultatus(); }
   }
 
@@ -284,6 +286,7 @@ const krizesMeklesana = (() => {
   });
 
   function notirit() {
+    if (typeof Dalities !== 'undefined') Dalities.notiritUrl();
     pedejais = null;
     uzskaite = null;
     if (pieprasijums) pieprasijums.abort();
@@ -310,6 +313,7 @@ const krizesMeklesana = (() => {
   function izcelsme(vieta, adrese) {
     if (adrese) return { lat: adrese.lat, lon: adrese.lon, apraksts: `no adreses ${isaAdrese(adrese.adrese)}`, nosaukums: isaAdrese(adrese.adrese) };
     if (vieta) return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true, nosaukums: vieta.nosaukums };
+    if (stavoklis.vieta?.noSaites) return { ...stavoklis.vieta, apraksts: 'no saitē norādītās vietas', nosaukums: 'Saitē norādītajā vietā' };
     if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: stavoklis.vieta.adrese ? `no adreses ${isaAdrese(stavoklis.vieta.adrese)}` : 'no Jums',
       nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : 'Jūsu vietā' };
     const r = regioni[stavoklis.regions];
@@ -386,6 +390,7 @@ const krizesMeklesana = (() => {
     }
     const vieta = adrese ? null : rez.vieta;
     const no = izcelsme(vieta, adrese);
+    if (typeof Dalities !== 'undefined') Dalities.atjaunotUrl(teksts, no);  // adreses joslā ?q=…[&lat=&lon=], lai rezultātu var nosūtīt
     bridinajumi(no, no?.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
@@ -408,7 +413,8 @@ const krizesMeklesana = (() => {
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
     const beigas = talakBloks(galvenais) + vaiDomaji +
-      '<button type="button" class="otra" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Visi kartes objekti sarakstā</button>' + notiritPoga();
+      '<button type="button" class="otra" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Visi kartes objekti sarakstā</button>' +
+      (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
     if (!galvenais && !kurTeksts) {
