@@ -79,3 +79,19 @@ a.skaitlis:focus-visible, .grupa a:focus-visible { outline: 3px solid var(--zils
 .meklet .poga { border: 0; cursor: pointer; min-height: 48px; font-family: inherit; }
 .saite-hero.sek { border: 2px solid rgba(255,255,255,.7); border-radius: var(--radiuss); padding: 0 20px; text-decoration: none; font-weight: 600; }
 @media (min-width: 720px) { .meklet .rinda { flex-direction: row; } .meklet .poga { flex: none; } }
+
+/* dzīvo slāņu kartītes */
+.slani { display: grid; grid-template-columns: 1fr; gap: 8px; }
+a.slanis { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: 12px; align-items: center; min-height: 64px; padding: 10px 36px 10px 12px;
+  background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); border: 1px solid var(--robeza); color: inherit; text-decoration: none; }
+a.slanis b { grid-row: span 2; font-size: 1.6rem; min-width: 2.2ch; font-variant-numeric: tabular-nums; }
+a.slanis span { font-size: .9rem; overflow-wrap: anywhere; } a.slanis small { color: var(--teksts2); }
+a.slanis .zime { justify-self: start; margin-top: 2px; font-style: normal; }
+a.slanis:hover, a.slanis:focus-visible { background: var(--zils-gaiss); box-shadow: 0 2px 10px rgba(0,119,200,.35); }
+a.slanis:focus-visible { outline: 3px solid var(--zils); outline-offset: 2px; }
+a.slanis:hover .bulta, a.slanis:focus-visible .bulta { transform: translate(3px, -50%); }
+.slanis.sk { min-height: 64px; border-radius: var(--radiuss); }
+.zimes .zime { margin-top: 0; }
+@media (min-width: 720px) { .slani { grid-template-columns: repeat(4, minmax(0, 1fr)); } a.slanis { grid-template-columns: 1fr; } a.slanis b { grid-row: auto; } }
+.avoti .zime { max-width: 100%; white-space: normal; overflow-wrap: anywhere; border-radius: 12px; }
+.avoti .zime a { overflow-wrap: anywhere; word-break: break-all; }
