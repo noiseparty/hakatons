@@ -21,7 +21,7 @@ LUCIDE_IK = {
     'ekrans': 'monitor', 'karte': 'map', 'pulkstenis': 'clock', 'slegts': 'ban', 'lejupielade': 'download',
     'atrast': 'locate', 'atpakal-solis': 'skip-back', 'pauze': 'pause', 'uz-prieksu': 'skip-forward', 'atskanot': 'play',
     'apturet': 'square', 'koks': 'tree-deciduous', 'drons': 'plane', 'info': 'info', 'uzmanibu': 'triangle-alert',
-    'lase': 'droplet', 'dalities': 'share-2', 'izvelne': 'menu', 'saraksts': 'list',
+    'lase': 'droplet', 'dalities': 'share-2', 'izvelne': 'menu', 'saraksts': 'list', 'aizvert': 'x',
 }
 
 

@@ -6,6 +6,23 @@
   --teksts: #333; --teksts2: #666;
   --radiuss: 8px; --ena: 0 2px 8px rgba(0, 0, 0, .1);
 }
+/* Dizaina žetoni no lietotāja Stitch maketa (notes/mockup/desktop.html). Kopīgi datoram (darbvirsma.css) un telefonam;
+   esošie mainīgie augstāk nav pārdefinēti, lai telefona izskats nemainās, kamēr to neizmanto. */
+:root {
+  --tumsi-zils: #172B3F; --tumsi-zils-gaiss: #243E56; --zils-primars: #1E66D5; --karmins: #9E3039;
+  --pelks-1: #F8FAFC; --pelks-2: #EEF2F6; --pelks-3: #D8E1E8; --pelks-robeza-viegla: #E6EDF2;
+  --teksts-galv: #101B26; --teksts-blavs: #506173;
+  --brid-info-fons: #EBF3FA; --brid-info-mala: #8CB3D9; --brid-info-teksts: #134B73;
+  --brid-dzeltens-fons: #FEF9EB; --brid-dzeltens-mala: #D4A12B; --brid-dzeltens-teksts: #7A5300;
+  --brid-oranzs-fons: #FDF3EB; --brid-oranzs-mala: #D66D25; --brid-oranzs-teksts: #8E3E07;
+  --brid-sarkans-fons: #FDF0F0; --brid-sarkans-mala: #BA2525; --brid-sarkans-teksts: #7D1212;
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309; --dzeltens-tumss: #B45309;
+  --gim-transports: #4D7C0F; --gim-udens: #1E66D5;
+  --zals-statuss: #16A34A;
+  --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radiuss-maza: 4px; --radiuss-pogas: 6px; --radiuss-karte: 8px;
+  --ena-maza: 0 1px 2px rgba(16, 27, 38, .05); --ena-vid: 0 4px 12px rgba(16, 27, 38, .08); --ena-liela: 0 8px 24px rgba(16, 27, 38, .12);
+}
 
 html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--teksts); background: var(--fons); }
 body { display: flex; flex-direction: column; }
@@ -118,6 +135,8 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 #meklesana:has(#rezultati[hidden]) { display: none; }  /* bez rezultātiem sadaļa paslēpta */
 .sapratu { margin: .6rem 0 .3rem; font-size: .9rem; }
 .padoms { margin: .3rem 0; padding: .45rem .6rem; font-size: .85rem; background: var(--zils-gaiss); border-left: 3px solid var(--zils); border-radius: 4px; }
+.padoma-avots { display: block; margin-top: .3rem; }
+.padoma-avots a { text-decoration: underline; }
 #rezultati h3 { display: flex; align-items: center; gap: .45rem; font-size: .9rem; margin: .8rem 0 .2rem; }
 .rez-saraksts { list-style: none; margin: 0; padding: 0; }
 .rez-saraksts li { display: flex; gap: .5rem; padding: .45rem .3rem; border-bottom: 1px solid #f0f0f0; cursor: pointer; border-radius: 4px; }
@@ -160,7 +179,7 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .bridinajums.dzeltens { background: #fde047; color: #1c1917; }
 .bridinajums.oranzs { background: #c2410c; color: #fff; }
 .bridinajums.sarkans { background: #b91c1c; color: #fff; }
-.bridinajums details { max-width: 70ch; margin: 0 auto; }
+.bridinajums details, .bridinajums > span { display: block; max-width: 70ch; margin: 0 auto; }
 .bridinajums summary { cursor: pointer; font-weight: 600; }
 .bridinajums p { margin: .4rem 0 0; }
 .bridinajums .riski { font-size: .82rem; }
@@ -339,6 +358,9 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .populari.ieteikumi small { color: var(--teksts2); }
 .meklet-rinda .runat { min-width: 44px; padding: 0 .5rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: 1.15rem; }
 .meklet-rinda .runat[hidden] { display: none; }
+.meklet-rinda .notirit-poga { min-width: 44px; padding: 0 .5rem; display: inline-flex; align-items: center; gap: .25rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: .9rem; }
+.meklet-rinda .notirit-poga[hidden] { display: none; }
+@media (max-width: 480px) { .meklet-rinda .notirit-teksts { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 .meklet-rinda .runat.klausas { background: #fee2e2; border-color: var(--sarkans); animation: runa-pulss 1.2s ease-in-out infinite; }
 @keyframes runa-pulss { 50% { box-shadow: 0 0 0 6px rgba(213, 43, 30, .25); } }
 @media (prefers-reduced-motion: reduce) { .meklet-rinda .runat.klausas { animation: none; } }

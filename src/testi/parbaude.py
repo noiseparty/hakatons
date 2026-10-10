@@ -348,6 +348,8 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
                     lapa.click("#cilne-slani")
                 elif mob and lapa.locator("body.panelis-slegts").count():
                     lapa.click("#panelis-poga")
+                if lapa.locator("#dv-atvilktne[hidden]").count():  # datorā (darbvirsma.js) avoti ir "Slāņu vadība" atvilktnē
+                    lapa.click('.dv-nav [data-dv="slani"]')
                 lapa.click("#avoti > summary")
                 lapa.wait_for_selector("#avoti-saraksts li", timeout=15000)
             solis("Datu avoti", avoti)
