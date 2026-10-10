@@ -646,6 +646,7 @@ const krizesMeklesana = (() => {
       `<div class="rez-skats" data-s="2">${galva}<div id="rez-vietas"><p class="piezime">${t('Meklē tuvākās vietas…')}</p></div>` +
       (centra ? '' : '<div id="rez-pasvaldiba"></div>') + vaiDomaji + uzPlanu + '</div>' +
       `<div class="rez-skats" data-s="3">${planaBloks(galvenais, no)}</div>` + beigas;
+    skats(galvenais ? 3 : 2);  // zināma situācija: rīcības plāns pašā augšā (3. solis), tad atbilde un vietas (CSS order)
     const ll = { lat: no.lat.toFixed(5), lon: no.lon.toFixed(5) };
     if (!centra) {
       lemumaDati(ll, no, signal);
