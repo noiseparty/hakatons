@@ -87,3 +87,7 @@ a { color: var(--zils-tumss); }
 
 /* Ikonas no ikonas/ikonas.svg (info.html, trukstosie.html, statuss.html) */
 .ik { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -.2em; }
+
+/* Bezsaistē rādīts pēdējais saglabātais statuss (statuss.js) */
+.bezsaiste { display: inline-block; padding: 1px 8px; margin-right: 4px; border-radius: 999px; background: #1a2b45; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: .02em; }
