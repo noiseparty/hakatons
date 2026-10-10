@@ -8,7 +8,9 @@
 // - /api/*: vispirms tīkls; katru veiksmīgo atbildi saglabā ar laiku (galvene x-sw-saglabats). Bez tīkla —
 //   saglabātā, ja nav vecāka par 6 h (mainīgie dati: brīdinājumi, ūdens, ceļi, satiksme…) vai 7 dienām (vietas,
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
-const VERSION = '2026-10-10aq-pirmais';
+// - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
+//   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
+const VERSION = '2026-10-10as';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 // Saraksts ģenerēts: uv run --no-project --python 3.12 src/testi/sw_faili.py --rakstit (no index/info/statuss/api/trukstosie
 // .html un to JS/CSS/JSON atsaucēm). Pēc jauna faila pievienošanas palaidiet to un nomainiet VERSION.
@@ -29,6 +31,7 @@ const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
 const FLIZU_MAX = 2500;
 const API_MAX = 300;  // saglabātās /api atbildes (ar kartes skatiem); vecākās izmet
+const PLUDU_FLIZES = 'pludi-flizes-v1', PLUDU_FLIZU_MAX = 800;
 const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes?|augsne|statuss|meklejumi|noverojumi|zinojumi|veseliba)/;
 const H6 = 6 * 3600e3, D7 = 7 * 24 * 3600e3;
 
@@ -126,6 +129,18 @@ async function kesaVispirms(req, nosaukums, max) {
   return r;
 }
 
+async function pluduFlize(req) {
+  const c = await caches.open(PLUDU_FLIZES);
+  const k = await c.match(req);
+  if (k) return k;
+  const r = await fetch(req);
+  if (r.ok && !/no-store/.test(r.headers.get('Cache-Control') || '')) {
+    await c.put(req, r.clone()).catch(() => {});
+    apgriezt(c, PLUDU_FLIZU_MAX);
+  }
+  return r;
+}
+
 let apgriez = false;
 async function apgriezt(c, max) {
   if (apgriez) return;
@@ -141,6 +156,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin === location.origin) {
+    if (url.pathname.startsWith('/api/pludi/flize/')) return e.respondWith(pluduFlize(req));
     if (url.pathname.startsWith('/api/')) return e.respondWith(api(req));
     return e.respondWith(shell(req));
   }
