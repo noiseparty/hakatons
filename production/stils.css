@@ -397,7 +397,6 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 /* ==== Saraksts (saraksts.js): kartes skata objekti kā teksta saraksts; datorā kreisajā kolonnā, telefonā lapā "Pilns" ==== */
 .saraksts-poga { margin: 0 0 .5rem; }
 body.saraksts-atverts #panelis > :not(#saraksts), body.saraksts-atverts .apaksa-saturs > :not(#saraksts),
-body.saraksts-atverts .apaksa-meklet { display: none !important; }
 .saraksts { padding: 0; }
 .saraksts[hidden] { display: none; }
 .saraksts-galva { position: sticky; top: 0; z-index: 2; padding: .6rem .85rem .5rem; background: var(--virsma); border-bottom: 1px solid var(--robeza); }
@@ -793,30 +792,9 @@ body.ir-meklets .dv-pirmais { display: none; }
   .apaksa-stavokli span { display: block; padding: 4px 11px; border: 1px solid var(--pelks-3); border-radius: 999px; background: var(--pelks-1);
     color: var(--teksts-blavs); font-size: .75rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
   .apaksa-stavokli button[aria-pressed="true"] span { background: var(--tumsi-zils); border-color: var(--tumsi-zils); color: #fff; }
-  .apaksa-meklet { flex: none; padding: 2px max(12px, env(safe-area-inset-left)) 0; }
   .apaksa-saturs { padding: 0 max(12px, env(safe-area-inset-left)) 16px; overflow-y: hidden; touch-action: pan-x; overscroll-behavior: contain; }
   .apaksa[data-stavoklis="pilna"] .apaksa-saturs { overflow-y: auto; touch-action: pan-x pan-y; }
   .apaksa[data-stavoklis="peek"] .apaksa-saturs { visibility: visible; }
-
-  /* Meklēšana: lauks ar ikonu, poga "Meklēt" — tumša kvadrātveida ikona lauka labajā malā */
-  .apaksa-meklet .meklet-rinda { position: relative; display: flex; gap: 0; }
-  .apaksa-meklet .meklet-rinda input { flex: 1; min-height: 46px; padding: 0 96px 0 12px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte);
-    background: var(--pelks-2); color: var(--teksts-galv); font-size: 1rem; font-weight: 500; }
-  .apaksa-meklet .meklet-rinda input:focus { background: #fff; border-color: var(--tumsi-zils); box-shadow: 0 0 0 2px rgba(23, 43, 63, .15); }
-  .apaksa-meklet .meklet-rinda button[type="submit"] { position: absolute; right: 1px; top: 1px; width: 44px; min-height: 44px; height: 44px; margin: 0; padding: 0;
-    border: 0; border-radius: 0 var(--radiuss-karte) var(--radiuss-karte) 0; font-size: 0; color: transparent; background: transparent; }
-  .apaksa-meklet .meklet-rinda button[type="submit"]::after { content: ''; position: absolute; inset: 8px; border-radius: var(--radiuss-pogas);
-    background: var(--tumsi-zils) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='10.5' cy='10.5' r='6' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='m15 15 5 5' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 16px; }
-  .apaksa-meklet .runat { position: absolute; right: 46px; top: 1px; width: 44px; min-height: 44px; height: 44px; margin: 0; padding: 0; border: 0; background: none; font-size: 1.1rem; }
-  .apaksa-meklet .runat[hidden] { display: none; }
-  .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))) input { padding-right: 52px; }
-  /* "Notīrīt" (✕) lauka iekšpusē pa kreisi no mikrofona/meklēšanas pogas (citādi meklēšanas poga to aizsedz) */
-  .apaksa-meklet .meklet-rinda .notirit-poga { position: absolute; right: 90px; top: 1px; z-index: 1; width: 44px; min-width: 44px; height: 44px; min-height: 44px;
-    margin: 0; padding: 0; justify-content: center; border: 0; background: none; }
-  .apaksa-meklet .meklet-rinda .notirit-teksts { display: none; }
-  .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))) .notirit-poga { right: 46px; }
-  .apaksa-meklet .meklet-rinda:has(.notirit-poga:not([hidden])) input { padding-right: 140px; }
-  .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))):has(.notirit-poga:not([hidden])) input { padding-right: 96px; }
 
   /* Tēmas: horizontāli ritināma josla; redzamā pilule mazāka, mērķis 44 px */
   .lapa-temas { display: flex; gap: 0; margin: 0 -4px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
@@ -971,19 +949,82 @@ p.lemums-vietas-rinda small { font-size: .75rem; }
   .apaksa[data-stavoklis="puse"] .apaksa-saturs:has(#rezultati:not([hidden])) :is(.lapa-temas, .lapa-kopsavilkums) { display: none; }
   .apaksa #rezultati .draudi { padding: .5rem .65rem; font-size: .95rem; line-height: 1.3; }
 }
-/* Rezultāta valodas slēdzis LV / RU / EN (valoda.js): maza rinda zem meklēšanas lauka */
-.meklet-rinda:has(.valoda-sledzis) { flex-wrap: wrap; row-gap: 4px; }
-.meklet-rinda .valoda-sledzis { flex: 1 0 100%; display: flex; justify-content: flex-end; gap: 4px; margin: 0; }
-.meklet-rinda .valoda-sledzis button { flex: none; width: auto; min-width: 40px; min-height: 28px; height: 28px; padding: 0 .5rem; font-size: .75rem; font-weight: 600;
-  letter-spacing: .04em; color: var(--teksts); background: var(--virsma); border: 1px solid var(--robeza); border-radius: 999px; }
-.meklet-rinda .valoda-sledzis button[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
-/* Telefonā pieskāriena laukums 44 × 44 px; redzamā "tablete" paliek 28 px augsta (::before) */
-@media (max-width: 800px), (pointer: coarse) {
-  .meklet-rinda .valoda-sledzis { gap: 0; margin-top: -4px; }
-  .meklet-rinda .valoda-sledzis button, .meklet-rinda .valoda-sledzis button[aria-pressed="true"] {
-    position: relative; z-index: 0; min-width: 44px; height: 44px; min-height: 44px; background: none; border-color: transparent; }
-  .meklet-rinda .valoda-sledzis button::before { content: ''; position: absolute; z-index: -1; inset: 8px 2px; border: 1px solid var(--robeza); border-radius: 999px; background: var(--virsma); }
-  .meklet-rinda .valoda-sledzis button[aria-pressed="true"]::before { background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
-}
 .valoda-padomi { margin: .5rem 0 .2rem; font-size: .8rem; font-style: italic; color: var(--teksts2); }
 body.dv #panelis > #saraksts { padding: 0; }
+
+
+/* ==== Meklēšana galvenē (visos režīmos, datorā un telefonā) + kompakta galvene ====
+   Viens kompakts lauks augšējā joslā; "Biežāk meklētais" / ieteikumi — nolaižamais saraksts tieši zem lauka
+   (meklesana.js: Esc, klikšķis ārpus vai izvēle aizver; ↓ ↑ Enter izvēlas). Valodas slēdzis LV/RU/EN — galvenē. */
+header { z-index: 1250; }
+header .meklet-rinda { position: relative; display: flex; flex-wrap: nowrap; gap: 0; min-width: 0; margin: 0; }
+header .meklet-rinda input { flex: 1; min-width: 0; height: 42px; min-height: 42px; padding: 0 84px 0 12px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte);
+  background: var(--pelks-2); color: var(--teksts-galv); font-size: 1rem; font-weight: 500; text-overflow: ellipsis; }
+header .meklet-rinda input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+header .meklet-rinda input:focus { outline: none; background: #fff; border-color: var(--tumsi-zils); box-shadow: 0 0 0 2px rgba(23, 43, 63, .15); }
+header .meklet-rinda button[type="submit"] { position: absolute; right: 1px; top: 1px; width: 40px; min-width: 40px; height: 40px; min-height: 40px; margin: 0; padding: 0;
+  border: 0; border-radius: 0 var(--radiuss-karte) var(--radiuss-karte) 0; font-size: 0; color: transparent; background: transparent; }
+header .meklet-rinda button[type="submit"]::after { content: ''; position: absolute; inset: 6px; border-radius: var(--radiuss-pogas);
+  background: var(--tumsi-zils) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='10.5' cy='10.5' r='6' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3Cpath d='m15 15 5 5' stroke='%23fff' stroke-width='2.4' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat center / 16px; }
+header .meklet-rinda .runat { position: absolute; right: 41px; top: 1px; width: 40px; min-width: 40px; height: 40px; min-height: 40px; margin: 0; padding: 0; border: 0; background: none; font-size: 1.1rem; }
+header .meklet-rinda .runat[hidden] { display: none; }
+header .meklet-rinda:not(:has(.runat:not([hidden]))) input { padding-right: 46px; }
+header .meklet-rinda .notirit-poga { position: absolute; right: 81px; top: 1px; z-index: 1; width: 40px; min-width: 40px; height: 40px; min-height: 40px; margin: 0; padding: 0;
+  justify-content: center; border: 0; background: none; }
+header .meklet-rinda .notirit-teksts { display: none; }
+header .meklet-rinda .notirit-poga[hidden] { display: none; }
+header .meklet-rinda:not(:has(.runat:not([hidden]))) .notirit-poga { right: 41px; }
+header .meklet-rinda:has(.notirit-poga:not([hidden])) input { padding-right: 124px; }
+header .meklet-rinda:not(:has(.runat:not([hidden]))):has(.notirit-poga:not([hidden])) input { padding-right: 84px; }
+/* Nolaižamais saraksts: vertikāls, rindas ≥ 44 px, ritinās, ja garš */
+header .populari { max-height: min(60dvh, 420px); overflow-y: auto; overscroll-behavior: contain; color: var(--teksts); }
+header .populari .populari-pogas { flex-direction: column; flex-wrap: nowrap; gap: 2px; }
+header .meklet-rinda .populari-pogas button { width: 100%; min-height: 44px; text-align: left; border-radius: 6px; border-color: transparent; background: none; font-size: .95rem; }
+header .meklet-rinda .populari-pogas button:hover, header .meklet-rinda .populari-pogas button:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); }
+/* Valodas slēdzis LV / RU / EN: kompakts, viena rinda; redzamā tablete 26 px, pieskāriena mērķis 38 × 40 px */
+.valoda-sledzis { display: flex; flex: none; gap: 0; }
+header .valoda-sledzis button { position: relative; z-index: 0; width: auto; min-width: 38px; height: 40px; min-height: 40px; margin: 0; padding: 0 4px; border: 0; background: none;
+  font-size: .75rem; font-weight: 700; letter-spacing: .03em; color: var(--teksts-blavs); }
+header .valoda-sledzis button::before { content: ''; position: absolute; z-index: -1; inset: 7px 2px; border: 1px solid var(--pelks-3); border-radius: 999px; background: #fff; }
+header .valoda-sledzis button[aria-pressed="true"] { color: #fff; }
+header .valoda-sledzis button[aria-pressed="true"]::before { background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+/* Poga "Situācija" ar brīdinājumu skaitu */
+.situacija-poga { position: relative; }
+.situacija-poga .nozime { display: inline-block; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; font-weight: 700;
+  line-height: 18px; text-align: center; color: #fff; background: #6b7280; }
+.situacija-poga .nozime[hidden] { display: none; }
+.situacija-poga .nozime[data-limenis="1"] { background: #D4A12B; color: #101B26; }
+.situacija-poga .nozime[data-limenis="2"] { background: #D66D25; }
+.situacija-poga .nozime[data-limenis="3"] { background: #BA2525; }
+
+@media (max-width: 800px) {
+  /* Kompakta galvene: 1. rinda — nosaukums, LV/RU/EN, Situācija, Ziņot (tikai ikonas); 2. rinda — meklēšana */
+  header { display: flex; flex-wrap: wrap; align-items: center; gap: 0 4px; padding: calc(2px + env(safe-area-inset-top)) max(8px, env(safe-area-inset-right)) 6px max(8px, env(safe-area-inset-left)); }
+  .galva-kreisi { flex: 1 1 0; min-width: 0; }
+  .galva-labi { flex: none; gap: 0; }
+  header .meklet-rinda { order: 3; flex: 1 0 100%; }
+  header #izmainas-poga, header .par-datiem, .apakstitls { display: none; }
+  header #zinot-poga, header #situacija-poga { width: 40px; min-width: 40px; height: 40px; min-height: 40px; padding: 0; justify-content: center; margin-left: 2px; }
+  header #zinot-poga .teksts, header #situacija-poga .teksts { display: none; }
+  header #situacija-poga { display: inline-flex; align-items: center; background: #fff; color: var(--tumsi-zils); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
+  header #situacija-poga .nozime { position: absolute; top: -2px; right: -2px; min-width: 16px; height: 16px; padding: 0 3px; font-size: 10px; line-height: 16px; border-radius: 8px; box-shadow: 0 0 0 2px #fff; }
+  header #situacija-poga[aria-pressed="true"] { background: var(--tumsi-zils); color: #fff; border-color: var(--tumsi-zils); }
+  header h1 { font-size: .95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  /* Apakšējā lapa: mazāki stāvokļu un tēmu burbuļi (redzamā pilule ~28 px, mērķis 40 px), mazāk tukšuma virs satura */
+  .apaksa-augsa { padding: 10px 0 0; }
+  .apaksa-stavokli button { min-height: 40px; }
+  .apaksa-stavokli span { padding: 3px 10px; font-size: .7rem; }
+  .lapa-temas button { min-height: 40px; }
+  .lapa-temas span { padding: 4px 10px; font-size: .78rem; }
+  body.apaksa-aktiva .pamatkarte button { min-height: 40px; padding: 0 .7rem; }
+  body.apaksa-aktiva .kartes-rikis button { width: 40px; height: 40px; }
+  body.apaksa-aktiva #demo-cilne, body.apaksa-aktiva.demo-atverts #demo-cilne { top: calc(58px + var(--joslas-h)); min-height: 40px; }
+}
+
+@media (max-width: 800px) {
+  /* Piemēri vienā ritināmā rindā, kompakti; "Rezultātā: ..." teksts dublē soļu joslu */
+  .apaksa-saturs > .pirmais-skats .ps-cipi { display: flex; flex-wrap: nowrap; gap: 6px; margin: 0 -2px; padding: 0 2px; overflow-x: auto; scrollbar-width: none; }
+  .apaksa-saturs > .pirmais-skats .ps-cipi::-webkit-scrollbar { display: none; }
+  .apaksa-saturs > .pirmais-skats .ps-cips { flex: none; width: auto; min-height: 40px; padding: 0 10px; font-size: .8rem; white-space: nowrap; }
+  .lapa-tukss { display: none; }
+}

@@ -5,7 +5,7 @@
   body.dv :focus-visible { outline: 2px solid var(--zils-primars); outline-offset: 2px; }
 
   /* ---- Galvene: karmīna līnija, zīme, segmentētā izvēle, saites ---- */
-  body.dv header { grid-template-columns: auto 1fr auto; gap: 16px; padding: 8px 24px; min-height: 64px; box-sizing: border-box;
+  body.dv header { grid-template-columns: auto minmax(180px, 1fr) auto auto; gap: 16px; padding: 8px 24px; min-height: 64px; box-sizing: border-box;
     background: #fff; color: var(--teksts-galv); border-top: 3px solid var(--karmins); border-bottom: 1px solid var(--pelks-3); box-shadow: none; }
   body.dv header :focus-visible { outline-color: var(--zils-primars) !important; }
   body.dv .galva-kreisi { display: flex; align-items: center; gap: 8px; }
@@ -20,6 +20,15 @@
   .dv-nav button:hover { color: var(--tumsi-zils); background: rgba(255, 255, 255, .6); }
   .dv-nav button[aria-pressed="true"] { color: var(--tumsi-zils); background: #fff; box-shadow: var(--ena-maza); }
   body.dv .galva-labi { gap: 8px; }
+  .dv-centrs { justify-self: end; }
+  .dv-nav button[data-dv="meklesana"] { display: none; }  /* meklēšana ir galvenē; paliek tikai "Slāņu vadība" */
+  body.dv header .meklet-rinda { max-width: 560px; width: 100%; }
+  body.dv #situacija-poga { display: inline-flex; align-items: center; gap: 8px; width: auto; min-height: 36px; padding: 0 12px; font-size: 14px; font-weight: 600; color: var(--tumsi-zils);
+    background: #fff; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
+  body.dv #situacija-poga:hover { background: var(--pelks-2); }
+  body.dv #situacija-poga[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+  body.dv #situacija-poga svg { width: 18px; height: 18px; flex: none; }
+  .dv-forma-vieta { margin: 0 0 8px; }
   .dv-centrs { justify-self: center; display: flex; align-items: center; gap: 8px; }
   body.dv #zinot-poga.dv-zinot { display: inline-flex; align-items: center; gap: 8px; width: auto; min-height: 44px; padding: 0 16px; font-size: 14px; font-weight: 600;
     color: var(--brid-oranzs-teksts); background: var(--brid-oranzs-fons); border: 1px solid var(--brid-oranzs-mala); border-radius: var(--radiuss-pogas); }
@@ -228,3 +237,6 @@
   body.dv .dv-par-poga { padding: 0 8px; white-space: nowrap; }
   body.dv header #statuss { white-space: nowrap; }
 }
+
+/* Šaurā datora logā galvenē: meklēšanas laukam vieta; statusa tablete (dublē leģendu) paslēpta */
+@media (min-width: 801px) and (max-width: 1499px) { body.dv header #statuss { display: none; } body.dv header { gap: 12px; } }

@@ -18,6 +18,15 @@ const Bridinajumi = (() => {
     return a.length > 3 ? `${a.slice(0, 3).join(', ')} u. c. (${a.length})` : b.regioni;
   };
   let pieprasijums = null;
+  // Poga "Situācija" galvenē: skaits ar aktīvajiem brīdinājumiem Latvijā (krāsa pēc augstākā līmeņa); 0 — nozīme paslēpta
+  function nozime(n, max) {
+    const e = document.getElementById('situacija-nozime'), poga = document.getElementById('situacija-poga');
+    if (!e || !poga) return;
+    e.hidden = !n;
+    e.textContent = n || '';
+    e.dataset.limenis = max || 0;
+    poga.setAttribute('aria-label', 'Situācija tagad — Latvija' + (n ? `: ${n} brīdinājum${n === 1 ? 's' : 'i'}` : ''));
+  }
   // LVĢMC teksta sākumā mēdz būt kampaņas sauklis "ESI INFORMĒTS par …!" (uzruna "tu"): UI to nerāda, paliek pats brīdinājums
   const bezSlogana = s => String(s).replace(/^\s*ESI INFORMĒTS[^!\n]*!\s*/i, '');
 
@@ -33,6 +42,7 @@ const Bridinajumi = (() => {
       // rezerves avotam attiecas var būt null (vietu neizdevās pārbaudīt): tad brīdinājumu rāda, nevis slēpj
       const sheit = vieta ? visi.filter(b => rez ? b.attiecas !== false : b.attiecas) : visi;
       const max = Math.max(0, ...sheit.map(b => b.limenis));
+      if (!vieta) nozime(visi.length, Math.max(0, ...visi.map(b => b.limenis)));  // skaitlis uz pogas "Situācija" galvenē
       const kur = vieta ? (nosaukums ? esc(nosaukums) : 'Šajā vietā') : 'Latvijā';
       const piezime = rez ? ' <small class="rezerves">(rezerves avots: Meteoalarm)</small>' : '';
       josla.className = 'bridinajums ' + (max ? LIMENIS[max][0] : 'zals');

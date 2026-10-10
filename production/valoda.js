@@ -276,9 +276,9 @@ const Valoda = (() => {
     if (typeof krizesMeklesana !== 'undefined' && !document.getElementById('rezultati')?.hidden) krizesMeklesana.atkartot();
   }
 
-  // Slēdzis LV / RU / EN zem meklēšanas lauka (formā, lai sheet.js / darbvirsma.js to pārvieto kopā ar lauku)
-  const forma = document.getElementById('meklet-forma');
-  if (forma) {
+  // Slēdzis LV / RU / EN galvenē (kompakts, vienāds visos režīmos; meklēšanas forma ir galvenē)
+  const vietaGalvene = document.querySelector('header .galva-labi');
+  if (vietaGalvene) {
     const sledzis = document.createElement('div');
     sledzis.className = 'valoda-sledzis';
     sledzis.setAttribute('role', 'group');
@@ -286,7 +286,7 @@ const Valoda = (() => {
     sledzis.innerHTML = [['lv', 'Latviski'], ['ru', 'По-русски'], ['en', 'English']].map(([v, nos]) =>
       `<button type="button" data-valoda="${v}" lang="${v}" aria-label="${nos}" aria-pressed="false">${v.toUpperCase()}</button>`).join('');
     sledzis.addEventListener('click', e => { const b = e.target.closest('button[data-valoda]'); if (b) izveleties(b.dataset.valoda); });
-    forma.insertBefore(sledzis, document.getElementById('populari') || null);
+    vietaGalvene.prepend(sledzis);
   }
   lietot();
   document.addEventListener('DOMContentLoaded', lietot);  // darbvirsma.js elementi rodas pēc šī faila

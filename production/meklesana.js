@@ -39,14 +39,14 @@ const krizesMeklesana = (() => {
   let bezDatiem = false;  // /api/kategorijas, /regioni vai /avoti neielādējās (app.js)
 
   // Soļu josla zem meklēšanas lauka: 1 Jautājums (raksta / tukšs) → 2 Atbilde (kartīte) → 3 Rīcība (maršruts, vieta,
-  // ziņojums). Forma telefonā pārceļas lapā (sheet.js), datorā kreisajā kolonnā (darbvirsma.js) — josla ceļo līdzi.
+  // ziņojums). Josla stāv virs rezultāta: datorā kreisajā kolonnā zem ievada (darbvirsma.js), telefonā cilnē Rezultāts (sheet.js).
   const soluJosla = document.createElement('ol');
   soluJosla.className = 'soli';
   soluJosla.setAttribute('aria-label', t('Soļi'));
   // data-t: valoda.js nomaina uzrakstus, kad mainās kartītes valoda (LV/RU/EN)
   soluJosla.innerHTML = ['Jautājums', 'Atbilde', 'Rīcība'].map((v, i) =>
     `<li data-solis="${i + 1}"><span class="solis-nr">${i + 1}</span> <span data-t="${v}">${t(v)}</span></li>`).join('');
-  el('meklet-forma').append(soluJosla);
+  kaste.before(soluJosla);  // galvenē ir tikai lauks; soļi stāv virs rezultāta (telefonā sheet.js tos pārceļ cilnē)
   function solis(n) {
     for (const li of soluJosla.children) {
       const ir = +li.dataset.solis === n;

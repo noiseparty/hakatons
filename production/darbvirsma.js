@@ -99,7 +99,9 @@ const Darbvirsma = (() => {
   document.body.append(dialogs);
 
   // ---- Pārvietošana: plats ekrāns ↔ telefons ----
-  const forma = $('meklet-forma');
+  const forma = $('meklet-forma');  // galvenē visos režīmos (nav jāpārvieto)
+  const soli = document.querySelector('.soli');
+  const situacijaPoga = $('situacija-poga');
   const izmainas = $('izmainas-poga');
   const panelis = $('panelis');
   const kartesLaukums = $('kartes-laukums');
@@ -123,7 +125,7 @@ const Darbvirsma = (() => {
     if (zinotPoga) { zinotVieta = [zinotPoga.parentNode, zinotPoga.nextSibling]; centrs.append(zinotPoga); zinotPoga.classList.add('dv-zinot'); zinotPoga.insertAdjacentHTML('afterbegin', IKONAS.zinot); }
     labi.prepend(parPoga);
     galva.after(josla112);
-    ievads.querySelector('.dv-forma-vieta').append(forma);
+    if (soli) ievads.querySelector('.dv-forma-vieta').append(soli);  // meklēšanas lauks ir galvenē; soļi zem ievada
     ievads.append(valsts, pirmais);
     panelis.prepend(ievads);
     sekcijas = [...panelis.children].filter(e => e.tagName === 'SECTION' && e.id !== 'meklesana' && e !== ievads);
@@ -131,7 +133,7 @@ const Darbvirsma = (() => {
     kartesLaukums.append(atvilktne, legenda);
     rikis?.append(situacijasPoga, pilnaPoga);
     panelis.parentNode.append(situacija);
-    raditSituaciju(stavs.situacija ?? innerWidth >= 1400);
+    raditSituaciju(stavs.situacija ?? false);  // pēc noklusējuma aizvērts; atver poga galvenē
     raditKreiso(stavs.kreisa ?? true);
     brJosla();
     atjaunotLegendu();
@@ -158,7 +160,7 @@ const Darbvirsma = (() => {
     ieslegts = false;
     document.body.classList.remove('dv', 'dv-kreisa-slegta', 'dv-situacija-slegta');
     raditAtvilktni(false);
-    galva.insertBefore(forma, galva.querySelector('.galva-labi'));
+    if (soli) $('rezultati').before(soli);
     if (zinotPoga && zinotVieta) { zinotVieta[0].insertBefore(zinotPoga, zinotVieta[1]); zinotPoga.classList.remove('dv-zinot'); zinotPoga.querySelector('.dv-zinot-ikona')?.remove(); }
     if (izmainas) galva.querySelector('.galva-kreisi').prepend(izmainas);
     for (const e of [zime, apaksvirsraksts, centrs, parPoga, josla112, valsts, pirmais, ievads, atvilktne, legenda, situacijasPoga, pilnaPoga, situacija, brAizvert]) e.remove();
@@ -186,6 +188,7 @@ const Darbvirsma = (() => {
     situacija.hidden = !rad;
     document.body.classList.toggle('dv-situacija-slegta', !rad);
     situacijasPoga.setAttribute('aria-pressed', rad);
+    if (situacijaPoga && ieslegts) { situacijaPoga.setAttribute('aria-pressed', rad); situacijaPoga.setAttribute('aria-expanded', rad); }
     if (lietotajs) { stavs.situacija = rad; saglabat(); }
     if (rad) ieladetSituaciju();
     atjaunotPilnu();
@@ -213,6 +216,7 @@ const Darbvirsma = (() => {
   atvilktne.querySelector('.dv-aizvert').addEventListener('click', () => { raditAtvilktni(false); nav.querySelector('[data-dv="slani"]').focus(); });
   situacija.querySelector('.dv-aizvert').addEventListener('click', () => { raditSituaciju(false, true); situacijasPoga.focus(); });
   situacijasPoga.addEventListener('click', () => raditSituaciju(situacija.hidden, true));
+  situacijaPoga?.addEventListener('click', () => { if (ieslegts) raditSituaciju(situacija.hidden, true); });
   pilnaPoga.addEventListener('click', () => {
     const pilns = pilnaPoga.getAttribute('aria-pressed') === 'true';
     raditKreiso(pilns, true);

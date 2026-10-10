@@ -40,7 +40,7 @@ const Lapa = (() => {
   const PARCELT = [
     [el('bridinajums'), el('kartes-joslas')],
     [el('demo-josla'), el('kartes-joslas')],
-    [el('meklet-forma'), el('apaksa-meklet')],
+    [document.querySelector('#meklesana > .soli'), el('lapa-rezultats'), 'prepend'],
     [el('panelis'), el('lapa-slani')],
     [el('statuss'), el('lapa-slani'), 'prepend'],
     [el('prognozes'), lapa.querySelector('.lapa-prognoze')],
@@ -80,6 +80,18 @@ const Lapa = (() => {
     cilne(cilnes[j].id.slice(6), true);
   });
   lapa.addEventListener('apaksa:rezultats', () => cilne('rezultats'));
+  // Poga "Situācija" galvenē (telefonā): atver lapu uz cilni "Situācija tagad"; otrreiz — atpakaļ uz rezultātu
+  const situacijaPoga = el('situacija-poga');
+  const situacijaAtverta = () => telefons.matches && el('cilne-situacija').getAttribute('aria-selected') === 'true' && Apaksa.stavoklis() !== 'peek';
+  const situacijaPogaStavoklis = () => { const a = situacijaAtverta(); situacijaPoga?.setAttribute('aria-pressed', a); situacijaPoga?.setAttribute('aria-expanded', a); };
+  situacijaPoga?.addEventListener('click', () => {
+    if (!telefons.matches) return;
+    if (situacijaAtverta()) { cilne('rezultats'); Apaksa.atvert('puse'); }
+    else { cilne('situacija'); Apaksa.atvert(Apaksa.stavoklis() === 'pilna' ? 'pilna' : 'puse'); }
+    situacijaPogaStavoklis();
+  });
+  lapa.addEventListener('click', e => { if (e.target.closest('[role="tab"]')) setTimeout(situacijaPogaStavoklis, 0); });
+  lapa.addEventListener('apaksa:stavoklis', situacijaPogaStavoklis);
 
   // ---- Tēmas: viena poga = viena meklēšana ----
   lapa.querySelector('.lapa-temas').addEventListener('click', e => {

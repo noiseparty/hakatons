@@ -20,7 +20,6 @@ const Apaksa = (() => {
         <div class="apaksa-stavokli" role="group" aria-label="Lapas augstums">${STAVOKLI.map(st =>
           `<button type="button" data-st="${st}" aria-pressed="${st === 'puse'}"><span>${NOS[st]}</span></button>`).join('')}</div>
       </div>
-      <div id="apaksa-meklet" class="apaksa-meklet"></div>
       <div id="apaksa-saturs" class="apaksa-saturs"></div>
     </section>`);
   const lapa = el('apaksa'), rokturis = el('apaksa-rokturis'), saturs = el('apaksa-saturs');
@@ -36,7 +35,7 @@ const Apaksa = (() => {
   // ekrāna apakšmalas (bottom: -REZERVE) un tikpat liela ir tās apakšējā atkāpe (padding), tāpēc "Pilns" stāvoklī lapas
   // saturs beidzas tieši pie ekrāna apakšmalas un ritinās līdz savām beigām; atkāpe kļūst redzama tikai, velkot virs "Pilns".
   // Abas vērtības CSS saņem no šejienes (--apaksa-rezerve).
-  const DALA = { puse: 0.52, pilna: 0.84 }, PEEK_PX = 156, REZERVE = 80;  // 156: "Mazs" rāda rokturi, lauku un visu LV/RU/EN rindu (44 px)
+  const DALA = { puse: 0.52, pilna: 0.84 }, PEEK_PX = 112, REZERVE = 80;  // 112: "Mazs" rāda rokturi, stāvokļu pogas un tēmu rindu (meklēšana ir galvenē)
   lapa.style.setProperty('--apaksa-rezerve', REZERVE + 'px');
   // Ekrāna (dinamiskā skatvietas) augstums: 100dvh, kur pārlūks to atbalsta (mainās līdzi adreses joslai), citādi innerHeight.
   // Ekrāna tastatūru atsevišķi ņem vērā tastatura() ar visualViewport.
