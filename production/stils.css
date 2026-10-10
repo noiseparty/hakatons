@@ -1100,3 +1100,6 @@ body.druka-rezultats #rezultati .rez-skats[data-s="1"], body.druka-rezultats #re
 #lapa-slani #statuss { order: -2; }
 #lapa-slani #panelis > .kajene { order: 9; }
 .dv-atv-saturs { display: flex; flex-direction: column; }
+/* Meklēšanas lauka ieteikums virs "Biežāk meklētais" (tikai tukšam laukam; ieteikumu režīmā paslēpts) */
+header .populari p.populari-ieteikums { margin: 0 0 .5rem; font-size: .85rem; text-transform: none; letter-spacing: 0; color: var(--teksts2); }
+.populari.ieteikumi .populari-ieteikums { display: none; }
