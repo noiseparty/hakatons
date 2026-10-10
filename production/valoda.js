@@ -196,6 +196,19 @@ const Valoda = (() => {
     'ir': { ru: 'да', en: 'yes' },
     'nav': { ru: 'нет', en: 'no' },
     'Datu avoti': { ru: 'Источники данных', en: 'Data sources' },
+    // Dalīties / Drukāt (dalities.js)
+    'Dalīties': { ru: 'Поделиться', en: 'Share' },
+    'Drukāt': { ru: 'Печать', en: 'Print' },
+    'Krīzes karte': { ru: 'Карта кризиса', en: 'Crisis map' },
+    'meklēšanas rezultāts': { ru: 'результат поиска', en: 'search result' },
+    'izdrukāts': { ru: 'напечатано', en: 'printed' },
+    'Atjaunināts rezultāts tiešsaistē:': { ru: 'Обновлённый результат онлайн:', en: 'Updated result online:' },
+    'Dati mainās (brīdinājumi, ūdens līmenis). Pirms došanās pārbaudiet tiešsaistē vai klausieties Latvijas Radio 1. Ja apdraudēta dzīvība, zvaniet 112.': {
+      ru: 'Данные меняются (предупреждения, уровень воды). Перед выходом проверьте онлайн или слушайте Latvijas Radio 1. Если под угрозой жизнь, звоните 112.',
+      en: 'Data changes (warnings, water level). Before you set out, check online or listen to Latvijas Radio 1. If life is in danger, call 112.' },
+    'QR kods uz šo rezultātu': { ru: 'QR-код на этот результат', en: 'QR code for this result' },
+    'Saite nokopēta. Ielīmējiet to ziņā vai e-pastā.': { ru: 'Ссылка скопирована. Вставьте её в сообщение или письмо.', en: 'Link copied. Paste it into a message or email.' },
+    'Nokopējiet saiti no adreses joslas:': { ru: 'Скопируйте ссылку из адресной строки:', en: 'Copy the link from the address bar:' },
     // CSV kolonnas un drukas tabula
     'Nosaukums': { ru: 'Название', en: 'Name' },
     'Slānis': { ru: 'Слой', en: 'Layer' },
@@ -220,6 +233,8 @@ const Valoda = (() => {
   let izveleta = null;   // slēdzī izvēlētā (localStorage) vai null — tad pēc vaicājuma
   let noteikta = 'lv';   // no pēdējā vaicājuma
   try { const v = localStorage.getItem(ATSLEGA); if (VALODAS.includes(v)) izveleta = v; } catch { /* privātais režīms */ }
+  // Saite ?q=…&valoda=ru (dalities.js) atjauno kartītes valodu; neaiztiek localStorage (saites saņēmēja izvēle paliek)
+  { const v = new URLSearchParams(location.search).get('valoda'); if (VALODAS.includes(v)) izveleta = v; }
 
   const aktiva = () => izveleta || noteikta;
 
