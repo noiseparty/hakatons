@@ -9,7 +9,7 @@
     "Neraksti vispārīgus vārdus (palīdzība, ceļš, iela, tālu): tie sasaista nesaistītus vaicājumus.",
     "kategorijas: slāņu kodi no tabulas kategorijas (src/karte/db/shema.sql), secībā, kādā rādīt. Tukšs = tikai padoms.",
     "Kategorijas, kuru vēl nav kartē, tiek izlaistas. noturibas_punkts = OSM kandidāti (statuss nav apstiprināts);",
-    "udens_punkts un uzlades_stacija = SIMULĒTI prototipa dati (atseviski_dati/), kartē marķēti.",
+    "udens_punkts = OSM dzeramā ūdens punkti + SIMULĒTI (atseviski_dati/, kartē marķēti, kartītē aiz reālajiem); uzlades_stacija = SIMULĒTI. wifi_punkts, ev_uzlade, veterinars = OpenStreetMap (osm_poi.py).",
     "zvanit112: rāda pogu 'Zvanīt 112'. dzivibas_draudi: frāzes, kas to rāda vienmēr; ja atrastas tikai tās,",
     "rāda dzivibas_draudi_scenarijs.",
     "atra_poga: rādīt kā ātrās izvēles pogu zem meklētāja.",
@@ -325,7 +325,7 @@
     },
     {
       "kods": "elektromobilis", "nr": 20, "grupa": "B", "nosaukums": "Izlādējies elektromobilis",
-      "kategorijas": [], "zvanit112": false, "talak": "cels",
+      "kategorijas": ["ev_uzlade"], "zvanit112": false, "talak": "cels",
       "padoms": "Ieslēdziet ekonomisko režīmu, izslēdziet apsildi un kondicionieri. Brauciet līdz tuvākajai uzlādes stacijai vai sazinieties ar ceļu palīdzību.",
       "atslegvardi": ["elektromobil", "elektroauto", "uzlādes stacij", "elektroauto izlād", "электромоб", "зарядн", "electric car", "ev$", "charging station",
         "elektriskais auto", "elektriskā auto", "elektro auto", "e auto", "elektromašīn", "tesla$", "uzlādes punkt",
@@ -968,7 +968,7 @@
     },
     {
       "kods": "nav_elektribas", "nr": 82, "grupa": "H", "nosaukums": "Ilgstoši nav elektrības",
-      "kategorijas": ["noturibas_punkts", "uzlades_stacija", "degviela", "bankomats"], "zvanit112": false, "talak": "elektriba",
+      "kategorijas": ["noturibas_punkts", "uzlades_stacija", "degviela", "bankomats", "wifi_punkts"], "zvanit112": false, "talak": "elektriba",
       "padoms": "Pārbaudiet drošinātājus un vai elektrības nav arī kaimiņiem; plašāku bojājumu piesakiet Sadales tīklam 80 200 404. Atvienojiet elektroierīces, ledusskapi veriet retāk, sveces lietojiet uzmanīgi. Taupiet telefona bateriju, 112 zvaniet tikai, ja apdraudēta dzīvība vai veselība. Apjautājieties, kā klājas kaimiņiem, īpaši veciem cilvēkiem.",
       "padomu_avots": "https://www.vugd.gov.lv/lv/elektribas-padeve",
       "atslegvardi": ["nav elektrīb", "nav strāv", "elektrīb", "strāv", "atslēg", "blackout", "sadales tīkl", "8404$", "нет света", "электричеств", "отключ", "power outage", "no power", "no electricity",
@@ -1074,7 +1074,7 @@
     },
     {
       "kods": "nav_sakaru", "nr": 92, "grupa": "H", "nosaukums": "Mobilo sakaru tīkls nedarbojas",
-      "kategorijas": ["noturibas_punkts"], "zvanit112": false, "talak": "elektriba",
+      "kategorijas": ["wifi_punkts", "noturibas_punkts"], "zvanit112": false, "talak": "elektriba",
       "padoms": "112 var iziet caur citu operatoru tīklu. Mēģiniet SMS. Informāciju klausieties LR1 radio. Ja nekas nedarbojas, dodieties uz tuvāko noturības punktu. Ja map.repo.lv jau esat atvēris, karte un pēdējie rezultāti atvērsies arī bez interneta.",
       "atslegvardi": ["nav zonas", "nav signāl", "nav tīkl", "sakari nedarb", "nav sakar", "nav interneta", "нет связи", "нет сети", "no signal", "no network", "no internet", "tīkls nedarb", "sakaru tīkl", "telefons nestrādā",
         "nav uztveršan", "pazudis tīkl", "mobilais tīkl", "nav wifi", "nevaru piezvanīt", "nevar piezvanīt",
@@ -1273,6 +1273,36 @@
       ]
     },
     {
+      "kods": "dzivnieks_ievainots", "nr": 122, "grupa": "K", "nosaukums": "Ievainots vai slims dzīvnieks",
+      "kategorijas": ["veterinars"], "zvanit112": false, "talak": "majdzivnieki",
+      "padoms": "Mājdzīvnieku ietiniet segā vai jakā, turiet siltumā un vediet uz tuvāko veterināro klīniku (pirms braukšanas piezvaniet). Ievainotu savvaļas dzīvnieku neaiztieciet ar kailām rokām: ziņojiet pašvaldības policijai. Ja dzīvnieks uz ceļa apdraud satiksmi, zvaniet 112.",
+      "atslegvardi": ["dzīvnieks ievain", "dzīvnieku ievain", "ievainots dzīvn", "ievainotu dzīvn", "ievainots mājdzīvn", "slims dzīvn", "slimu dzīvn",
+        "dzīvnieks slims", "dzīvniekam", "veterinār", "vetārst", "vetklīnik", "vet$", "vetārsts",
+        "suns ievain", "ievainots sun", "sunim asiņo", "suns slims", "slims suns", "suns saindēj", "sunim slikti",
+        "kaķis ievain", "ievainots kaķ", "kaķis slims", "slims kaķ", "kaķim slikti", "kaķis$", "kaķi$", "kaķim", "kaķēn",
+        "putns ievain", "ievainots putn", "ievainotu putn", "notriekts dzīvn", "notrieca dzīvn", "notrieca kaķ", "notrieca sun",
+        "notriekts kaķ", "notriekts sun", "sabraukts dzīvn", "sabrauca kaķ", "sabrauca sun", "ezis$", "ezīt",
+        "раненое животн", "раненую собак", "раненого кот", "больное животн", "собака заболел", "кот заболел", "кошка заболел",
+        "сбили собак", "сбили кошк", "ветеринар", "ветклиник", "ранена собак", "раненая птиц", "кошк", "кот$", "котен",
+        "injured animal", "injured dog", "injured cat", "injured bird", "sick pet", "sick dog", "sick cat", "hurt dog", "hurt cat",
+        "veterinary", "veterinarian", "vet clinic", "animal hit by", "cat$", "kitten"
+      ]
+    },
+    {
+      "kods": "majdzivnieks_pazudis", "nr": 123, "grupa": "K", "nosaukums": "Pazudis mājdzīvnieks",
+      "kategorijas": ["veterinars"], "zvanit112": false, "talak": "majdzivnieki",
+      "padoms": "Pārmeklējiet tuvāko apkārtni, pagrabus un šķūņus, aiciniet dzīvnieku vārdā un atstājiet pie durvīm tā guļvietu. Pārbaudiet, vai mikročips ir reģistrēts mājas dzīvnieku reģistrā ar Jūsu tālruni. Piezvaniet tuvākajām veterinārajām klīnikām un dzīvnieku patversmēm, ievietojiet sludinājumu vietējās grupās.",
+      "atslegvardi": ["pazudis suns", "pazuda suns", "suns pazud", "pazudis kaķis", "pazuda kaķ", "kaķis pazud", "pazudis mājdzīvn",
+        "mājdzīvnieks pazud", "mājdzīvn", "pazudis dzīvn", "pazuda dzīvn", "aizbēga suns", "suns aizbēg", "kaķis aizbēg", "aizbēga kaķ",
+        "suns nav mājās", "kaķis nav mājās", "nevaram atrast sun", "nevaram atrast kaķ", "meklēju sun", "meklēju kaķ", "mikročip",
+        "dzīvnieku patversm", "atradu sun", "atradu kaķ", "atrasts suns", "klaiņo kaķ",
+        "пропала собак", "пропал кот", "пропала кошк", "потерялась собак", "потерялся кот", "потерялась кошк", "сбежала собак",
+        "сбежал кот", "убежала собак", "ищу собак", "ищу кошк", "домашн животн", "нашел собак", "нашла собак",
+        "lost dog", "lost cat", "lost pet", "missing dog", "missing cat", "missing pet", "dog ran away", "cat ran away",
+        "found a dog", "found a cat", "microchip", "animal shelter"
+      ]
+    },
+    {
       "kods": "iesprudis_saurums", "nr": 110, "grupa": "K", "nosaukums": "Cilvēks iesprūdis (grava, aka, šahta)",
       "kategorijas": ["ugunsdzeseji"], "zvanit112": true, "talak": "dzivnieki",
       "padoms": "Nekāpiet lejā paši: akās var būt bīstama gāze. Zvaniet 112, runājiet ar cietušo un nomieriniet viņu.",
@@ -1302,7 +1332,7 @@
     },
     {
       "kods": "aizsalusas_caurules", "nr": 113, "grupa": "H", "nosaukums": "Aizsalušas caurules",
-      "kategorijas": [], "zvanit112": false, "talak": "elektriba",
+      "kategorijas": ["udens_punkts"], "zvanit112": false, "talak": "elektriba",
       "padoms": "Aizveriet galveno ūdens krānu, ja caurule var būt plīsusi. Atsildiet caurules lēnām ar fēnu vai siltu dvieli, nekad ar atklātu uguni. Sazinieties ar namu pārvaldnieku.",
       "atslegvardi": ["aizsalušas caurul", "sasalušas caurul", "caurules aizsal", "caurules sasal", "aizsal", "caurul", "замерзл труб", "трубы замерзл", "frozen pipe", "pipes froze",
         "plīsusi caurul", "ūdensvads aizsal", "krāns aizsal", "sasalis ūdensvad", "atkaus", "лопнула труб",
@@ -1449,6 +1479,12 @@
       "Tagad: attālinieties lēnām, nebēgiet un neaiztieciet dzīvnieku.",
       "Tālāk: par bīstamiem klaiņojošiem dzīvniekiem ziņojiet pašvaldības policijai; ja dzīvnieks Jūs sakodis, dodieties pie ārsta (trakumsērgas risks).",
       "Meklējiet vēlreiz „ārsts”, lai redzētu tuvāko neatliekamo palīdzību."
+    ],
+    "majdzivnieki": [
+      "Tagad: ievainotu dzīvnieku ietiniet un turiet siltumā; savvaļas dzīvnieku neaiztieciet ar kailām rokām (trakumsērgas risks).",
+      "Tālāk: tuvākās veterinārās klīnikas ir šajā kartītē (OpenStreetMap); pirms braukšanas piezvaniet, vai tā strādā un var pieņemt.",
+      "Pazudušu dzīvnieku meklējiet tuvumā un jautājiet klīnikām un dzīvnieku patversmēm; ja dzīvnieks apdraud satiksmi, zvaniet 112.",
+      "Meklējiet vēlreiz ar savu adresi vai pilsētu, lai redzētu tuvākās klīnikas."
     ],
     "_": [
       "Tagad: ja apdraudēta dzīvība vai veselība, zvaniet 112.",

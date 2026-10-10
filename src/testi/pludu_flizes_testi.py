@@ -87,6 +87,11 @@ parbaude("otrā reize: no diska (kesa), WMS netiek prasīts", veids == "kesa" an
 
 s, dati, veids, kes = k.pludu_flize("ledus", "13", "4655", "2517")  # Ogre ir ārpus ledus sastrēgumu pārklājuma
 parbaude("ārpus paketes pārklājuma: 1×1 bez WMS (tukss)", (veids, dati, kes) == ("tukss", k.TUKSA_FLIZE, 86400) and len(izsaukumi) == n)
+s, dati, veids, kes = k.pludu_flize("pali10", "13", "4655", "2517")
+parbaude("10 % paka pali10: slāņi 2,3 no pavasara palu WMS", veids == "jauna" and "layers=2,3&" in izsaukumi[-1]
+         and "3._cikla_L_557" in izsaukumi[-1], izsaukumi[-1])
+k.pludu_flize("juras10", "13", "4636", "2512")
+parbaude("10 % paka juras10: slānis 2 no jūras vējuzplūdu WMS", "layers=2&" in izsaukumi[-1] and "3._cikla_L_556" in izsaukumi[-1], izsaukumi[-1])
 
 for slikts in [("nav", "13", "1", "1"), ("pali", "3", "1", "1"), ("pali", "13", "8192", "1")]:
     try:

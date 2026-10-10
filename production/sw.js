@@ -10,7 +10,7 @@
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
 // - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
 //   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
-const VERSION = '2026-10-10v-pludu-flizes';
+const VERSION = '2026-10-10ak-pludu-flizes';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
@@ -19,14 +19,14 @@ const SHELL_FAILI = [
   'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'ikonas.js', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
   'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
   'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
-  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json',
+  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json', 'sheet.js',
 ];
 const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
 const FLIZU_MAX = 2500;
 const API_MAX = 300;  // saglabātās /api atbildes (ar kartes skatiem); vecākās izmet
 const PLUDU_FLIZES = 'pludi-flizes-v1', PLUDU_FLIZU_MAX = 800;
-const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes|augsne|statuss|meklejumi)/;
+const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes?|augsne|statuss|meklejumi)/;
 const H6 = 6 * 3600e3, D7 = 7 * 24 * 3600e3;
 
 self.addEventListener('install', e => {

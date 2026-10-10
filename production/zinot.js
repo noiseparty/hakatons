@@ -77,6 +77,12 @@ const Zinot = (() => {
     kaste.querySelectorAll('button').forEach(b => { b.disabled = true; });
     try {
       const r = await fetch(`/api/zinojumi/${encodeURIComponent(id)}/${poga.dataset.balss}`, { method: 'POST' });
+      if (r.status === 429) {  // servera stundas limits (ziņojumam vai tīklam): pogas paliek atslēgtas
+        const d = await r.json().catch(() => ({}));
+        const t = d.kluda || 'pārāk daudz balsojumu, mēģiniet vēlāk';
+        kaste.insertAdjacentHTML('beforeend', `<small class="kluda">${esc(t.charAt(0).toUpperCase() + t.slice(1))}.</small>`);
+        return;
+      }
       if (!r.ok) throw new Error(r.status);
       const b = balsis(); b[id] = poga.dataset.balss; localStorage.setItem(BALSIS, JSON.stringify(b));
       kaste.innerHTML = '<small>Paldies, Jūsu balsojums ir saskaitīts.</small>';  // slānis atjaunosies pēc nākamās kartes kustības

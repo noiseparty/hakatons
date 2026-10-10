@@ -26,11 +26,12 @@ VIETAS = {  # [dienvidi, rietumi, ziemeļi, austrumi]
     "jurmala": (56.93, 23.45, 57.01, 23.97),    # Jūrmala no Ķemeriem līdz Lielupei
     "riga": (56.86, 23.93, 57.09, 24.33),       # Rīga
 }
-PAKAS = {  # tas pats, kas karte_api.py PLUDU_PAKAS / zonas.js wms[].robezas
+_PARKLAJUMI = {  # tas pats, kas karte_api.py PLUDU_PAKAS / zonas.js wms[].robezas
     "pali": (55.76, 20.88, 57.67, 27.92),
     "ledus": (56.38, 23.95, 56.64, 26.01),
     "juras": (56.06, 20.84, 57.88, 24.49),
 }
+PAKAS = {**_PARKLAJUMI, **{p + "10": b for p, b in _PARKLAJUMI.items()}}  # 1 % un 10 % varbūtība (zonas.js prasa abas)
 
 
 def flize_xy(lat, lon, z):

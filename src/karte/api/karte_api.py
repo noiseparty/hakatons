@@ -15,16 +15,22 @@ Galapunkti:
   GET /api/bridinajumi?lat=..&lon=..   LVĢMC hidrometeoroloģiskie brīdinājumi (spēkā esošie); ar lat/lon —
                                        vai brīdinājums attiecas uz šo vietu (attiecas)
                                        ?poligoni=1 — arī brīdinājumu apgabali [[lat, lon], ...] (zonas.js)
+                                       LVĢMC nav pieejams > 15 min vai > 15 min tukšs → rezerves avots Meteoalarm
+                                       (CAP/Atom, kešs 5 min): tā pati forma + "rezerves": true, "atruna", "izdots"
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
   GET /api/pludi/flize/<paka>/<z>/<x>/<y>.png
-                                       plūdu zonu WMS flīze 512 px (paka: pali | ledus | juras; XYZ, EPSG:3857),
+                                       plūdu zonu WMS flīze 512 px (paka: pali | ledus | juras, + "10" = 10 %
+                                       varbūtība; XYZ, EPSG:3857),
                                        diska kešs 30 dienas ($HAKATONS_DATI/flizes); galvene X-Flize
   GET /api/udens?lat=..&lon=..&limit=3tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
                                        + prognoze 7 dienām (LVĢMC hidroloģiskās prognozes, kešs 1 h)
+                                       + slieksnis, kritiskais (m LAS), statuss normāls|paaugstināts|kritisks
+                                       stacijām ar slieksni CA plānā (src/karte/db/udens_slieksni.json), citām null
   GET /api/adreses/tuvaka?lat=..&lon=.. tuvākā VZD adrese (≤ 300 m) atrašanās vietai
   GET /api/pasvaldiba?lat=..&lon=..    pašvaldība punktā: CA plāns, tīmekļvietne, VPVKAC tālrunis (teksts)
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
                                        novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
+                                       + "zibens" ziņa katram novadam ar zibeni pēdējās 30 min (FMI, CC BY 4.0; kešs 60 s)
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
   GET /api/zibens                      zibens pēdējās 30 min (FMI, CC BY 4.0) + LVĢMC 24 h zibens režģis (CC0, kavējas 2–3 h)
   GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
@@ -58,6 +64,7 @@ import sys
 import threading
 import time
 import unicodedata
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -468,6 +475,7 @@ def _bridinajumi_dati():
             "poligoni": [[(lat, lon) for _, lat, lon in sorted(p)]
                          for p in poligoni.get(r["WEATHER_WARNING_EV_ID"], {}).values()],
         })
+    _lvgmc_stavoklis["ok"] = time.time()  # rezerves avotam (Meteoalarm): kad LVĢMC pēdējo reizi atbildēja
     return saraksts
 
 
@@ -487,7 +495,11 @@ def bridinajumi(q):
     ar_poligoniem = q.get("poligoni", [""])[0] == "1"  # zonas.js zīmē brīdinājumu apgabalus kartē
     tagad = _riga_tagad()
     rez = []
-    for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
+    try:
+        lvgmc, lvgmc_kluda = _kesots("bridinajumi", 600, _bridinajumi_dati), None
+    except Kluda as e:  # LVĢMC nav pieejams un kešā nekā nav: mēģina Meteoalarm
+        lvgmc, lvgmc_kluda = [], e
+    for b in lvgmc:
         if b["lidz"] and b["lidz"] < tagad:
             continue
         rez.append({
@@ -497,7 +509,254 @@ def bridinajumi(q):
             "attiecas": any(_punkts_poligona(lat, lon, p) for p in b["poligoni"]) if lat is not None else None,
         })
     rez.sort(key=lambda b: (-b["limenis"], b["no"] or ""))
+    sekundes = time.time()
+    if rez:
+        _lvgmc_stavoklis["ar_bridinajumiem"] = sekundes
+    lvgmc_nav = lvgmc_kluda is not None or sekundes - (_lvgmc_stavoklis["ok"] or 0) > REZERVES_PEC
+    if lvgmc_nav or (not rez and sekundes - _lvgmc_stavoklis["ar_bridinajumiem"] > REZERVES_PEC):
+        rezerves = _meteoalarm_atbilde(lat, lon, ar_poligoniem, tagad, lvgmc_nav)
+        if rezerves is not None:
+            _lvgmc_stavoklis["rezerves"] = sekundes
+            return rezerves
+    if lvgmc_kluda is not None:
+        raise lvgmc_kluda
+    _lvgmc_stavoklis["rezerves"] = None
     return {"avots": "lvgmc-bridinajumi", "laiks_lv": tagad.isoformat(timespec="minutes"), "bridinajumi": rez}
+
+
+# ---- Rezerves avots: Meteoalarm (EUMETNET) Latvijas CAP/Atom plūsma ----
+# Tie paši LVĢMC brīdinājumi (CAP sūtītājs www.lvgmc.lv), bet caur Meteoalarm. /api/bridinajumi to lieto tikai tad, ja
+# LVĢMC data.gov.lv datne > 15 min nav pieejama vai > 15 min nerāda nevienu brīdinājumu (un Meteoalarm rāda).
+# Noteikumi (notes/research/04, "Meteoalarm redistribution terms"): ~CC BY 4.0; jānosauc LVĢMC, jārāda izdošanas laiks,
+# saite uz meteoalarm.org un atruna; teksts nemainīts; kavējums ≤ 10 min (kešs 5 min + HTTP 5 min). Vietu pārbauda pēc CAP
+# <polygon> (Meteoalarm pievieno apgabalu robežas); ja CAP neizdevās ielādēt — pēc pašvaldības (areaDesc ↔ regioni).
+METEOALARM_ATOM = os.environ.get("METEOALARM_ATOM", "https://feeds.meteoalarm.org/feeds/meteoalarm-legacy-atom-latvia")
+METEOALARM_AVOTS = "Meteoalarm (EUMETNET), ar atsauci"
+METEOALARM_URL = "https://www.meteoalarm.org"
+METEOALARM_ATRUNA = ("Time delays between this website and the www.meteoalarm.org website are possible. For the most "
+                     "up-to-date awareness information as published by the participating National Meteorological and "
+                     "Hydrological Services, please refer to www.meteoalarm.org.")
+METEOALARM_TAIMAUTS = 8
+# Meteoalarm: kavējums "never > 10 min". Kešs 5 min + /api/bridinajumi HTTP kešs 5 min (MARSRUTI) = ≤ 10 min
+METEOALARM_KESS = 300
+METEOALARM_MAX_CAP = 20  # CAP ziņojumu vienā atjaunošanā (parasti 5–10)
+REZERVES_PEC = 15 * 60
+_lvgmc_stavoklis = {"ok": None, "ar_bridinajumiem": time.time(), "rezerves": None}
+METEOALARM_LIMENI = {"yellow": 1, "orange": 2, "red": 3}
+METEOALARM_KRASAS = {1: "Dzeltens", 2: "Oranžs", 3: "Sarkans"}
+METEOALARM_VEIDI = {  # CAP awareness_type numurs → parādība latviski
+    "1": "Vējš", "2": "Sniegs, apledojums", "3": "Pērkona negaiss", "4": "Migla", "5": "Karstums", "6": "Sals",
+    "7": "Krasta parādības", "8": "Meža ugunsbīstamība", "9": "Lavīnas", "10": "Lietus", "12": "Plūdi",
+    "13": "Lietus, plūdi",
+}
+METEOALARM_VEIDI_EN = {  # Atom <cap:event> "Yellow Wind Warning" (ja CAP neizdevās ielādēt) → tas pats latviski
+    "wind": "1", "snowice": "2", "thunderstorm": "3", "thunderstorms": "3", "fog": "4", "hightemperature": "5",
+    "lowtemperature": "6", "coastalevent": "7", "forestfire": "8", "avalanches": "9", "avalanche": "9", "rain": "10",
+    "flooding": "12", "flood": "12", "rainflood": "13",
+}
+CAP_NS = "{urn:oasis:names:tc:emergency:cap:1.2}"
+ATOM_NS = "{http://www.w3.org/2005/Atom}"
+
+
+def _xml_teksts(el, vards):
+    x = el.find(vards) if el is not None else None
+    return (x.text or "").strip() if x is not None else ""
+
+
+def _cap_laiks(teksts):
+    """CAP/ISO laiks ar joslu → Latvijas vietējais bez joslas (kā LVĢMC laukos); nederīgs → None."""
+    try:
+        dt = datetime.fromisoformat((teksts or "").strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if dt.tzinfo is None:
+        return dt
+    try:
+        from zoneinfo import ZoneInfo
+        return dt.astimezone(ZoneInfo("Europe/Riga")).replace(tzinfo=None)
+    except Exception:  # noqa: BLE001  bez tzdata (Windows): kā _riga_tagad
+        utc = dt.astimezone(timezone.utc)
+        return (utc + timedelta(hours=3 if 3 < utc.month < 11 else 2)).replace(tzinfo=None)
+
+
+def _cap_zinojums(url):
+    """Viens CAP ziņojums: latviskā <info> (ja ir), līmenis, parādība, apgabali, atsauces uz aizstātajiem ziņojumiem."""
+    import xml.etree.ElementTree as ET
+    c = lambda el, v: _xml_teksts(el, CAP_NS + v)  # noqa: E731
+    alert = ET.fromstring(_lejupieladet(url, timeout=METEOALARM_TAIMAUTS))
+    infos = alert.findall(CAP_NS + "info")
+    info = next((i for i in infos if c(i, "language").lower().startswith("lv")), infos[0] if infos else None)
+    if info is None:
+        return None
+    param = {c(p, "valueName"): c(p, "value") for p in info.findall(CAP_NS + "parameter")}
+    limenis = [x.strip().lower() for x in param.get("awareness_level", "").split(";")]
+    veids = [x.strip() for x in param.get("awareness_type", "").split(";")]
+    apgabali = [(c(a, "areaDesc"), [c(g, "value") for g in a.findall(CAP_NS + "geocode") if c(g, "valueName") == "EMMA_ID"])
+                for a in info.findall(CAP_NS + "area")]
+    poligoni = []  # CAP <polygon>: "lat,lon lat,lon …" (Meteoalarm pievieno pašvaldību robežas)
+    for a in info.findall(CAP_NS + "area"):
+        for p in a.findall(CAP_NS + "polygon"):
+            try:
+                punkti = [(float(x), float(y)) for x, y in (pari.split(",") for pari in (p.text or "").split())]
+            except ValueError:
+                continue
+            if len(punkti) > 2:
+                poligoni.append(punkti)
+    return {
+        "id": c(alert, "identifier"), "msgType": c(alert, "msgType"), "status": c(alert, "status"), "sent": c(alert, "sent"),
+        "aizstaj": [r.split(",")[1] for r in c(alert, "references").split() if r.count(",") >= 2],
+        "limenis": METEOALARM_LIMENI.get(limenis[1] if len(limenis) > 1 else ""),
+        "paradiba": METEOALARM_VEIDI.get(veids[0]) or (veids[1] if len(veids) > 1 else ""),
+        "notikums": c(info, "event"), "teksts": c(info, "description"),
+        "onset": c(info, "onset") or c(info, "effective"), "expires": c(info, "expires"),
+        "apgabali": [a for a, _ in apgabali if a], "emma": sorted({e for _, ee in apgabali for e in ee}), "lv": True,
+        "poligoni": poligoni,
+    }
+
+
+def _meteoalarm_dati():
+    """Atom plūsma → spēkā esošie CAP ziņojumi. Katru CAP lejupielādē vienreiz (latviskais teksts); ja neizdodas —
+    paliek Atom lauki (angliski, bez apraksta). Aizstātos (CAP references) un atsauktos (Cancel) izmet."""
+    import xml.etree.ElementTree as ET
+    c = lambda el, v: _xml_teksts(el, CAP_NS + v)  # noqa: E731
+    feed = ET.fromstring(_lejupieladet(METEOALARM_ATOM, timeout=METEOALARM_TAIMAUTS))
+    tagad_utc = datetime.now(timezone.utc)
+    pec_cap = {}  # CAP saite → Atom dati (viens CAP ziņojums ir vairākos Atom ierakstos — pa apgabalam)
+    for e in feed.findall(ATOM_NS + "entry"):
+        cap_url = next((l.get("href") for l in e.findall(ATOM_NS + "link") if l.get("type") == "application/cap+xml"), None)
+        if not cap_url or c(e, "status") not in ("", "Actual") or c(e, "message_type") == "Cancel":
+            continue
+        beigas = _cap_laiks(c(e, "expires"))
+        if beigas and beigas < _cap_laiks(tagad_utc.isoformat()):
+            continue
+        notikums = c(e, "event")
+        vardi = notikums.split()  # "Orange Wind Warning"
+        a = pec_cap.setdefault(cap_url, {
+            "id": c(e, "identifier") or cap_url, "msgType": c(e, "message_type"), "status": "Actual", "sent": c(e, "sent"),
+            "aizstaj": [], "limenis": METEOALARM_LIMENI.get(vardi[0].lower() if vardi else ""),
+            "paradiba": METEOALARM_VEIDI.get(METEOALARM_VEIDI_EN.get(re.sub(r"[^a-z]", "", "".join(vardi[1:-1]).lower()), ""))
+            or (" ".join(vardi[1:-1]) if len(vardi) > 2 else notikums), "notikums": notikums, "teksts": "",
+            "onset": c(e, "onset") or c(e, "effective"), "expires": c(e, "expires"), "apgabali": [], "emma": [], "lv": False,
+            "poligoni": [],
+        })
+        apgabals = c(e, "areaDesc")
+        if apgabals and apgabals not in a["apgabali"]:
+            a["apgabali"].append(apgabals)
+        geo = e.find(CAP_NS + "geocode")  # tā bērni Atom plūsmā ir Atom vārdtelpā
+        if geo is not None and _xml_teksts(geo, ATOM_NS + "valueName") == "EMMA_ID":
+            emma = _xml_teksts(geo, ATOM_NS + "value")
+            if emma and emma not in a["emma"]:
+                a["emma"].append(emma)
+    urls = sorted(pec_cap, key=lambda u: pec_cap[u]["sent"], reverse=True)[:METEOALARM_MAX_CAP]
+    zinojumi = []
+    if urls:
+        pavedieni = ThreadPoolExecutor(max_workers=6)
+        darbi = {u: pavedieni.submit(_cap_zinojums, u) for u in urls}
+        pavedieni.shutdown(wait=False)
+        termins = time.monotonic() + METEOALARM_TAIMAUTS + 2
+        for u in urls:
+            try:
+                z = darbi[u].result(timeout=max(0.0, termins - time.monotonic()))
+            except Exception:  # noqa: BLE001  CAP nav pieejams vai nav nolasāms: paliek Atom dati
+                z = None
+            zinojumi.append({**(z or pec_cap[u]), "url": u})
+    aizstati = {i for z in zinojumi for i in z["aizstaj"]}
+    saraksts = []
+    for z in zinojumi:
+        if z["id"] in aizstati or z["msgType"] == "Cancel" or z["status"] not in ("", "Actual"):
+            continue
+        limenis = z["limenis"] or 1
+        saraksts.append({
+            "id": z["id"], "nr": "", "krasa": METEOALARM_KRASAS[limenis], "limenis": limenis,
+            "paradiba": z["paradiba"] or z["notikums"], "notikums": z["notikums"], "regioni": ", ".join(z["apgabali"]),
+            "apgabali": z["apgabali"], "emma_id": z["emma"], "no": _cap_laiks(z["onset"]), "lidz": _cap_laiks(z["expires"]),
+            "izdots": _cap_laiks(z["sent"]), "teksts": z["teksts"], "riski": "", "latviski": z["lv"], "cap_url": z["url"],
+            "poligoni": z["poligoni"],
+        })
+    return {"ielasits": time.time(), "bridinajumi": saraksts}
+
+
+def _novada_atslega(nosaukums, novads):
+    """'Ogres novads' / 'Rīga' / 'Rīgas valstspilsēta' → ('ogre', novads?) CAP areaDesc salīdzināšanai ar regioni.
+    Citi apgabali ('Rīgas līča dienvidu daļa', jūras rajoni) → None: tie nav pašvaldības."""
+    vardi = (nosaukums or "").strip().lower().split()
+    if not vardi or len(vardi) > 2 or (len(vardi) == 2 and vardi[1] not in ("novads", "valstspilsēta", "valstspilseta", "municipality")):
+        return None
+    vards = re.sub(r"[^a-z]", "", unicodedata.normalize("NFKD", vardi[0]).encode("ascii", "ignore").decode())
+    return (vards[:-1] if vards.endswith("s") else vards), bool(novads)
+
+
+def _vietas_novads(lat, lon):
+    """Pašvaldība punktā (regioni) kā _novada_atslega; DB nav pieejama → None (attiecas nav zināms)."""
+    try:
+        rinda = _punktu_kesa.iegut(("novads_nosaukums", round(lat, 4), round(lon, 4)), lambda: vaicat(
+            """select json_build_array(nosaukums, tips) from regioni where tips in ('novads', 'valstspilseta')
+               and st_contains(geom, st_setsrid(st_makepoint(%s, %s), 4326)) limit 1""", (lon, lat), timeout="2s"))
+    except Exception:  # noqa: BLE001
+        return None
+    return (_novada_atslega(rinda[0], rinda[1] == "novads") if rinda else None) or ("", False)
+
+
+def _meteoalarm_atbilde(lat, lon, ar_poligoniem, tagad, lvgmc_nav):
+    """/api/bridinajumi atbilde no Meteoalarm (tā pati forma + rezerves: true) vai None: Meteoalarm nav pieejams vai
+    (kamēr LVĢMC atbild) arī tas nerāda nevienu brīdinājumu."""
+    try:
+        dati = _kesots("meteoalarm", METEOALARM_KESS, _meteoalarm_dati)
+    except Exception:  # noqa: BLE001
+        return None
+    vieta = False  # pašvaldība punktā: tikai, ja kādam brīdinājumam nav poligonu (Atom bez CAP)
+    rez = []
+    for b in dati["bridinajumi"]:
+        if b["lidz"] and b["lidz"] < tagad:
+            continue
+        attiecas = None
+        if lat is not None and b["poligoni"]:
+            attiecas = any(_punkts_poligona(lat, lon, p) for p in b["poligoni"])
+        elif lat is not None:
+            if vieta is False:
+                vieta = _vietas_novads(lat, lon)
+            if vieta is not None:
+                attiecas = bool(vieta[0]) and any(_novada_atslega(a, a.lower().endswith(("novads", "municipality"))) == vieta
+                                                   for a in b["apgabali"])
+        rez.append({**{k: v for k, v in b.items() if k != "poligoni" or ar_poligoniem},
+                    "no": b["no"].isoformat() if b["no"] else None, "lidz": b["lidz"].isoformat() if b["lidz"] else None,
+                    "izdots": b["izdots"].isoformat() if b["izdots"] else None, "attiecas": attiecas})
+    if not rez and not lvgmc_nav:
+        return None
+    rez.sort(key=lambda b: (-b["limenis"], b["no"] or ""))
+    return {"avots": METEOALARM_AVOTS, "rezerves": True, "izdevejs": "LVĢMC (caur Meteoalarm)",
+            "licence": "CC BY 4.0 (Meteoalarm noteikumi)", "url": METEOALARM_URL, "atruna": METEOALARM_ATRUNA,
+            "ielasits": datetime.fromtimestamp(dati["ielasits"], timezone.utc).isoformat(timespec="seconds"),
+            "laiks_lv": tagad.isoformat(timespec="minutes"), "bridinajumi": rez}
+
+
+def _rezerves_aktivs():
+    """Vai /api/bridinajumi pēdējās 20 min atbildēja no Meteoalarm (statusa lapai, /api/veseliba)."""
+    t = _lvgmc_stavoklis["rezerves"]
+    return bool(t) and time.time() - t < 20 * 60
+
+
+def _bridinajumu_salidzinajums():
+    """/api/veseliba: spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, tikai no keša (nebloķē).
+    Ja Meteoalarm kešā nav vai tas novecojis — atjauno fonā (_kesots: viens pavediens)."""
+    tagad, sekundes = _riga_tagad(), time.time()
+    with _kesas_slots:
+        lv, ma = _kesa.get("bridinajumi"), _kesa.get("meteoalarm")
+        slots = _atslegu_sloti.get("meteoalarm")
+    if (not ma or sekundes - ma[0] > METEOALARM_KESS) and not (slots and slots.locked()):
+        def atjaunot():
+            try:
+                _kesots("meteoalarm", METEOALARM_KESS, _meteoalarm_dati)
+            except Exception:  # noqa: BLE001  nav pieejams: salīdzinājumā paliek null
+                pass
+        threading.Thread(target=atjaunot, daemon=True).start()
+
+    def speka(saraksts):
+        return sum(1 for b in saraksts if not (b["lidz"] and b["lidz"] < tagad))
+    ok = _lvgmc_stavoklis["ok"]
+    return {"lvgmc": speka(lv[1]) if lv else None, "meteoalarm": speka(ma[1]["bridinajumi"]) if ma else None,
+            "lvgmc_atbildeja": datetime.fromtimestamp(ok, timezone.utc).isoformat(timespec="seconds") if ok else None,
+            "rezerves_aktivs": _rezerves_aktivs()}
 
 
 # Plūdu riska zonas: LVĢMC "3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes" (2026–2031), CC0 1.0,
@@ -575,8 +834,8 @@ _pludu_gaidisana = ThreadPoolExecutor(max_workers=8)
 # ---- Plūdu zonu flīzes: GET /api/pludi/flize/<paka>/<z>/<x>/<y>.png (LVĢMC WMS GetMap caur diska kešu) ----
 # geo-dpps.viss.gov.lv atbild 5–30 s uz flīzi un mēdz 504, tāpēc flīzes glabājam diskā: $HAKATONS_DATI/flizes
 # (noklusēti /var/lib/hakatons/dati/flizes; ja tur nevar rakstīt — pagaidu mape), 30 dienas, kopā ≤ 500 MB (vecākās dzēš).
-# z/x/y — standarta XYZ (EPSG:3857, 2^z flīzes katrā asī); attēls 512 × 512 px = zonas.js flīze (LIELUMS) kartes
-# tālummaiņā z + 1. WMS pieprasām ar EPSG:3857 bbox tieši tāpat kā zonas.js līdz šim (flīzes robežās, bez izkropļojumiem).
+# paka: pali | ledus | juras (1 %) un pali10 | ledus10 | juras10 (10 % varbūtība). z/x/y — standarta XYZ (EPSG:3857,
+# 2^z flīzes katrā asī); attēls 512 × 512 px = zonas.js flīze (LIELUMS) kartes tālummaiņā z + 1. WMS pieprasām ar EPSG:3857 bbox tieši tāpat kā zonas.js līdz šim (flīzes robežās, bez izkropļojumiem).
 # Uz LVĢMC ≤ 4 pieprasījumi reizē; kas 5 s netiek pie kārtas — 1×1 caurspīdīgs PNG ar no-store (X-Flize: aiznemts).
 # Neizdevies pieprasījums: 60 s to flīzi neprasām (502, X-Flize: kluda); ja diskā ir novecojusi flīze, atdodam to.
 # Galvene X-Flize: kesa | jauna | veca | tukss (ārpus paketes pārklājuma) | aiznemts | kluda (zonas.js, pludi_silda.py).
@@ -587,10 +846,15 @@ import tempfile  # noqa: E402
 import urllib.error  # noqa: E402
 import zlib  # noqa: E402
 
-PLUDU_PAKAS = {  # paka → (WMS ceļš, slānis, pārklājums [dienvidi, rietumi, ziemeļi, austrumi]); tas pats zonas.js
-    "pali": (PLUDU_SERVISI[0][1], "1", (55.76, 20.88, 57.67, 27.92)),   # pavasara pali, 1 % (100 gadu) applūšana
-    "ledus": (PLUDU_SERVISI[1][1], "1", (56.38, 23.95, 56.64, 26.01)),  # ledus sastrēgumi
-    "juras": (PLUDU_SERVISI[2][1], "1", (56.06, 20.84, 57.88, 24.49)),  # jūras vējuzplūdi
+_PLUDU_PARKLAJUMI = {  # [dienvidi, rietumi, ziemeļi, austrumi]; tas pats zonas.js wms[].robezas
+    "pali": (PLUDU_SERVISI[0][1], (55.76, 20.88, 57.67, 27.92)),   # pavasara pali
+    "ledus": (PLUDU_SERVISI[1][1], (56.38, 23.95, 56.64, 26.01)),  # ledus sastrēgumi
+    "juras": (PLUDU_SERVISI[2][1], (56.06, 20.84, 57.88, 24.49)),  # jūras vējuzplūdi
+}
+# paka → (WMS ceļš, slāņi, pārklājums): <paka> = 1 % (100 gadu) applūšana, <paka>10 = 10 % (slāņi kā PLUDU_SERVISI)
+PLUDU_PAKAS = {
+    **{p: (c, "1", b) for p, (c, b) in _PLUDU_PARKLAJUMI.items()},
+    **{p + "10": (c, "2,3" if p == "pali" else "2", b) for p, (c, b) in _PLUDU_PARKLAJUMI.items()},
 }
 FLIZE_PX = 512
 FLIZE_Z = (5, 18)
@@ -599,7 +863,7 @@ FLIZU_MAX_BAITI = 500 * 1024 * 1024
 FLIZU_TAIMAUTS = 25
 FLIZU_GAIDIT_RINDA = 5
 FLIZU_NEVEIKSME_S = 60
-FLIZES_CELS = re.compile(r"^/api/pludi/flize/([a-z]{1,12})/(\d{1,2})/(\d{1,7})/(\d{1,7})\.png$")
+FLIZES_CELS = re.compile(r"^/api/pludi/flize/([a-z0-9]{1,12})/(\d{1,2})/(\d{1,7})/(\d{1,7})\.png$")
 _flizu_sloti = threading.BoundedSemaphore(4)
 _flizu_slots = threading.Lock()
 _flizu_procesa = {}     # (paka, z, x, y) → threading.Event: viena un tā pati flīze no LVĢMC tikai vienreiz
@@ -809,7 +1073,8 @@ def udens(q):
         p = f["properties"]
         slon, slat = f["geometry"]["coordinates"]
         laiks = datetime.fromisoformat(p["laiks"].replace("Z", "+00:00"))
-        rez.append({**p, "lat": slat, "lon": slon, "attalums_m": _attalums_m(lat, lon, slat, slon),
+        rez.append({**p, **udens_limenis.ar_slieksni(p), "lat": slat, "lon": slon,
+                    "attalums_m": _attalums_m(lat, lon, slat, slon),
                     "vecs": tagad - laiks > timedelta(hours=udens_limenis.DERIGS_H)})
     rez.sort(key=lambda s: s["attalums_m"])
     rez = rez[:limit]
@@ -864,7 +1129,9 @@ def _hidro_prognoze_stacijai(dienas, st):
     # virziens pēc paša modeļa trajektorijas (mediāna pēc 7 dienām pret šodienu): salīdzinot ar mērījumu, iejauktos
     # modeļa nobīde (prognoze izdota iepriekšējā dienā), un "kāpj" varētu nozīmēt tikai to
     izmaina = round((med - dienas[sakums][2]) * 100)
+    s = udens_limenis.slieksni().get(st.get("stacija"))
     return {
+        "mediana_m": round(med, 2), "statuss": udens_limenis.statuss(med, s),
         "datums": merkis, "dienas": (datetime.fromisoformat(merkis).date() - sodien).days,
         "mediana_cm": cm(med) if cm else None, "josla_50_cm": [cm(v75), cm(v25)] if cm else None,
         "josla_90_cm": [cm(v95), cm(v5)] if cm else None,
@@ -1099,7 +1366,8 @@ def _bridinajumu_zinas(regioni_, vietas, tagad):
 
 # Riska karte: līmenis 0–3 katram novadam šodien un rīt. HEURISTIKA, nevis oficiāls vērtējums:
 # max(LVĢMC brīdinājuma krāsa, brāzmu un nokrišņu prognoze) + 1 par zibeni pēdējās 30 min (tikai šodien)
-# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā); ne vairāk par 3.
+# + 1 par slidenu ceļu (LVC, tikai šodien, ja dati jau ir kešā) + 1 par ledu LVĢMC brīdinājuma tekstā
+# + 1 / + 2 par upes līmeni paaugstināts / kritisks (udens_slieksni.json, sliekšņi no CA plāniem); ne vairāk par 3.
 RISKA_BRAZMAS = [(15, 1), (20, 2), (25, 3)]   # diennakts maks. brāzmas, m/s
 RISKA_NOKRISNI = [(15, 1), (30, 2)]           # diennakts nokrišņu summa, mm
 RISKA_LIMENI = {0: "nav", 1: "paaugstināts", 2: "augsts", 3: "ļoti augsts"}
@@ -1136,6 +1404,62 @@ def _tuvaka_vieta_regions(vietas):
     return atrast
 
 
+LEDUS_VARDI = re.compile(r"\bledus\b|\bledū\b|\bledu\b|vižņ", re.IGNORECASE)
+UDENS_AVOTA_URL = "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi"
+UPJU_STATUSA_LIMENIS = {"paaugstināts": 1, "kritisks": 2}
+
+
+def _min_ledu(b):
+    """Vai brīdinājuma parādībā / tekstā / riskos minēts ledus (ledus iešana, ledus sastrēgumi, vižņi)."""
+    return bool(LEDUS_VARDI.search(" ".join(b.get(k) or "" for k in ("paradiba", "teksts", "riski"))))
+
+
+def _m_lv(x):
+    return f"{x:.2f}".replace(".", ",")
+
+
+def _upju_iemesli(stacijas, hidro, atrast, atslegas):
+    """Riska kartes iemesli no upju līmeņa: [(reģiona kods, diena, +1/+2, teksts, avots)]. Tikai stacijas ar slieksni
+    (udens_slieksni.json) un svaigu mērījumu; "rit" pēc LVĢMC prognozes mediānas rītdienai, ja tā ir, citādi pēc
+    mērījuma (upes līmenis dienas laikā mainās lēni)."""
+    slieksni = udens_limenis.slieksni()
+    rez = []
+    for f in stacijas or []:
+        p = f.get("properties") or {}
+        s = slieksni.get(p.get("stacija"))
+        lim = p.get("limenis_m")
+        if not s or lim is None:
+            continue
+        try:
+            laiks = datetime.fromisoformat(p["laiks"].replace("Z", "+00:00"))
+        except (KeyError, ValueError, AttributeError):
+            continue
+        if datetime.now(timezone.utc) - laiks > timedelta(hours=udens_limenis.DERIGS_H):
+            continue
+        lon, lat = f["geometry"]["coordinates"]
+        kods = atrast(lat, lon)
+        if not kods:
+            continue
+        ko = "Ezera" if "ezer" in (s.get("vieta") or "").lower() else "Upes"
+        avots = {"nosaukums": f"LVĢMC ūdens līmenis; slieksnis: {(s.get('avots') or {}).get('nosaukums', 'CA plāns')}"
+                              + (f", {s['avots']['lpp']} lpp." if (s.get("avots") or {}).get("lpp") else ""),
+                 "licence": "CC0 1.0", "url": UDENS_AVOTA_URL}
+        vieta = s.get("vieta") or p.get("nosaukums")
+        for diena, datums in atslegas:
+            vertiba, prognoze = lim, False
+            if diena != "sodien":
+                med = (hidro.get(p["stacija"]) or {}).get(datums)
+                if med:
+                    vertiba, prognoze = med[2], True
+            st = udens_limenis.statuss(vertiba, s)
+            if st not in UPJU_STATUSA_LIMENIS:
+                continue
+            rez.append((kods, diena, UPJU_STATUSA_LIMENIS[st],
+                        f"{ko} līmenis {'pēc prognozes ' if prognoze else ''}{st}: {vieta} {_m_lv(vertiba)} m "
+                        f"(kritiskais {_m_lv(s['kritiskais_m'])} m)", avots))
+    return rez
+
+
 def _riski(dati, regioni_, vietas, tagad, dienas):
     """{kods: {"sodien": n, "rit": n, "iemesli": [{diena, limenis, teksts, avots, klat}]}} pirmajām divām dienām."""
     atslegas = list(zip(["sodien", "rit"], dienas[:2]))
@@ -1149,11 +1473,13 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
         r["iemesli"].append({"diena": diena, "limenis": limenis, "teksts": teksts, "avots": avots, "klat": klat})
 
     # LVĢMC brīdinājumi: līmenis dienām, kuras pārklāj brīdinājuma laiks
+    ledus = {}  # (kods, diena) → parādība: brīdinājumā minēts ledus (ledus iešana, sastrēgumi, vižņi); +1 pēc prognozes
     try:
         for b in _kesots("bridinajumi", 600, _bridinajumi_dati):
             if b["lidz"] and b["lidz"] < tagad:
                 continue
             _p, skarti = _bridinajumu_skartie(b, vietas)
+            ar_ledu = _min_ledu(b)
             for diena, datums in atslegas:
                 d0 = datetime.strptime(datums, "%Y-%m-%d")
                 if (b["no"] and b["no"] >= d0 + timedelta(days=1)) or (b["lidz"] and b["lidz"] < d0):
@@ -1161,6 +1487,8 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
                 for kods in skarti:
                     pievienot(kods, diena, b["limenis"], f"LVĢMC {b['krasa'].lower()} brīdinājums: {b['paradiba'].lower()}",
                               BRIDINAJUMU_AVOTS)
+                    if ar_ledu:
+                        ledus.setdefault((kods, diena), b["paradiba"])
     except Kluda:
         pass
     # Prognoze: (bez zibens/ceļiem) brāzmas un nokrišņi; prognoze aprēķina "klat" pirms zibens, lai max darbojas pareizi
@@ -1174,8 +1502,23 @@ def _riski(dati, regioni_, vietas, tagad, dienas):
             if lim:
                 pievienot(kods, diena, lim, f"nokrišņi līdz {_skaitlis_lv(r['nokrisni'])} mm" +
                           (f" ({r['nokrisni_vieta']})" if r.get("nokrisni_vieta") else ""), PROGNOZU_AVOTS)
+    # Ledus no jau ielādēto brīdinājumu teksta (bez jauna pieprasījuma): +1 tajās dienās, kuras brīdinājums aptver
+    for (kods, diena), paradiba in ledus.items():
+        pievienot(kods, diena, 1, f"ledus (LVĢMC brīdinājums: {paradiba.lower()})", BRIDINAJUMU_AVOTS, klat=True)
     if vietas:
         atrast = _tuvaka_vieta_regions(vietas)
+        # Upju līmenis pret sliekšņiem (udens_slieksni.json): +1 paaugstināts, +2 kritisks; šodien pēc mērījuma,
+        # rīt pēc LVĢMC hidroloģiskās prognozes mediānas (ja nav — pēc mērījuma)
+        try:
+            stacijas = _kesots("udens", 900, lambda: udens_limenis.stacijas(timeout=20))
+            try:
+                hidro = _kesots("hidro_prognoze", 3600, _hidro_prognozes) if time.time() - _hidro_kluda[0] > 300 else {}
+            except Kluda:
+                _hidro_kluda[0], hidro = time.time(), {}
+            for kods, diena, limenis, teksts, avots in _upju_iemesli(stacijas, hidro, atrast, atslegas):
+                pievienot(kods, diena, limenis, teksts, avots, klat=True)
+        except Kluda:
+            pass
         # Zibens pēdējās 30 min (FMI) — tikai šodien, +1
         try:
             skaits = {}
@@ -1265,14 +1608,88 @@ def _risku_zinas(riski, regioni_, dienas, sodien):
             "veids": "riski", "paradiba": "Risks", "limenis": seciba[0][1][0], "datums": datums, "diena": nos,
             "virsraksts": f"{nos} paaugstināts risks: " + ", ".join(dalas),
             "teksts": f"Novadi ar paaugstinātu risku: {len(kodi)}. Riska karte apvieno LVĢMC brīdinājumus, prognozi, "
-                      "zibeni un slidenus ceļus; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
+                      "zibeni, slidenus ceļus un upju līmeni; tas ir mūsu aprēķins, nevis oficiāls brīdinājums.",
             "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": PROGNOZU_AVOTS,
         })
     return zinas
 
 
+ZIBENS_ZINAS_NOVADI = 6  # vairāk novadu ar zibeni — pārējie vienā ziņā "Zibens vēl N novados"
+
+
+def _izlades(n):
+    return f"{n} izlāde" if n % 10 == 1 and n % 100 != 11 else f"{n} izlādes"
+
+
+def _zibens_zinas():
+    """Ziņa lentē katram novadam, kurā pēdējās 30 min ir ≥ 1 zibens (FMI, CC BY 4.0), oranžā līmenī. Tikai no kešotajiem
+    datiem: tas pats "zibens_fmi" (60 s) kā /api/zibens, prognožu vietas un novadi (24 h) — jaunu pieprasījumu avotiem nav."""
+    try:
+        regioni_ = _kesots("prognozu_regioni", 86400, _prognozu_regioni)
+        vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
+        zibeni = _kesots("zibens_fmi", 60, _fmi_zibens)["zibeni"]
+    except Kluda:
+        return []
+    if not zibeni or not vietas or not regioni_:
+        return []
+    atrast = _tuvaka_vieta_regions(vietas)
+    pa_novadiem = {}
+    for z in zibeni:
+        kods = atrast(z["lat"], z["lon"])
+        if kods in regioni_:
+            pa_novadiem.setdefault(kods, []).append(z)
+    if not pa_novadiem:
+        return []
+    try:
+        from zoneinfo import ZoneInfo
+        riga = ZoneInfo("Europe/Riga")
+    except Exception:  # bez tzdata
+        riga = timezone(timedelta(hours=3 if 3 < datetime.now().month < 11 else 2))
+
+    def pulkstenis(iso):
+        try:
+            return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(riga).strftime("%H:%M")
+        except ValueError:
+            return ""
+    sodien = _riga_tagad().date().isoformat()
+    seciba = sorted(pa_novadiem.items(), key=lambda x: (-len(x[1]), regioni_[x[0]]["nosaukums"]))
+    zinas = []
+    for kods, z in seciba[:ZIBENS_ZINAS_NOVADI if len(seciba) <= ZIBENS_ZINAS_NOVADI else ZIBENS_ZINAS_NOVADI - 1]:
+        pedeja = pulkstenis(max(x["laiks"] for x in z))
+        zinas.append({
+            "veids": "zibens", "paradiba": "Zibens", "limenis": 2, "datums": sodien, "diena": "Šobrīd",
+            "vieta": regioni_[kods]["nosaukums"],
+            "virsraksts": f"Zibens: {_izlades(len(z))} pēdējās {ZIBENS_MIN} min (FMI, CC BY 4.0)",
+            "teksts": (f"Pēdējā izlāde {pedeja}. " if pedeja else "") + "Negaisa laikā palieciet telpās vai automašīnā, turieties prom no kokiem, atklātām vietām un ūdens.",
+            "regioni": [kods], "bbox": _bbox(regioni_, [kods]), "avots": ZIBENS_AVOTS,
+        })
+    if len(seciba) > ZIBENS_ZINAS_NOVADI:
+        citi = seciba[ZIBENS_ZINAS_NOVADI - 1:]
+        kodi = [k for k, _z in citi]
+        nosaukumi = [regioni_[k]["nosaukums"].replace(" novads", " nov.") for k in kodi]
+        zinas.append({
+            "veids": "zibens", "paradiba": "Zibens", "limenis": 2, "datums": sodien, "diena": "Šobrīd",
+            "vieta": f"vēl {len(kodi)} novados",
+            "virsraksts": f"Zibens: {_izlades(sum(len(z) for _k, z in citi))} pēdējās {ZIBENS_MIN} min (FMI, CC BY 4.0)",
+            "teksts": "Skartie: " + ", ".join(nosaukumi[:8]) + (f" un vēl {len(nosaukumi) - 8}." if len(nosaukumi) > 8
+                                                                else "" if nosaukumi[-1].endswith(".") else "."),
+            "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": ZIBENS_AVOTS,
+        })
+    return zinas
+
+
 def prognozes(_q):
-    return _kesots("prognozes_atbilde", 300, _prognozes)
+    atbilde = _kesots("prognozes_atbilde", 300, _prognozes)
+    # Zibens ziņas ar zibens kešas ritmu (60 s), nevis prognozes (5 min); lentē uzreiz aiz "Šobrīd brāzmas"
+    try:
+        zibens_zinas = _kesots("prognozes_zibens", 60, _zibens_zinas)
+    except Exception:  # noqa: BLE001 — zibens nav obligāts: lente strādā bez tā
+        zibens_zinas = []
+    if not zibens_zinas:
+        return atbilde
+    zinas = atbilde["zinas"]
+    i = sum(1 for z in zinas if z["veids"] == "noverojums")
+    return {**atbilde, "zinas": zinas[:i] + zibens_zinas + zinas[i:]}
 
 
 def _prognozes():
@@ -1740,6 +2157,10 @@ def noverojumi(q):
 
 def veseliba(q):
     rez = {"ok": vaicat("select true", timeout="2s")}
+    try:  # LVĢMC pret Meteoalarm (rezerves avots): spēkā esošo brīdinājumu skaits, tikai no keša
+        rez["bridinajumi"] = _bridinajumu_salidzinajums()
+    except Exception as e:  # noqa: BLE001
+        rez["bridinajumi"] = {"kluda": type(e).__name__}
     if q.get("statistika", [""])[0] == "1":
         rez["statistika"] = {**_statistika, "db_vienlaicigi": DB_VIENLAICIGI, "pavedieni": threading.active_count()}
     return rez
@@ -2457,12 +2878,13 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
       "https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae", *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
-    ("datu_vecums", "Datu vecums", "Ikdienas avotu (ZVA, IeM IC, OSM, GTFS) pēdējā ielāde; hakatons-dati.timer 04:30",
+    ("datu_vecums", "Datu vecums", "Ikdienas avotu (ZVA, IeM IC, VKCP, OSM: bankomāti, DUS, noturības punkti, ūdens, Wi-Fi, EV uzlāde, veterināri; GTFS) pēdējā ielāde; hakatons-dati.timer 04:30",
      ("Panelis „Datu avoti” kartē", "https://map.repo.lv/", None, None)),
 ]
 # Ikdienas atjaunošanas avoti (atjaunot_visu.sh); vecāks par 48 h — nedarbojas, par 30 h — traucējumi
 STATUSS_IKDIENAS_AVOTI = ("zva-fdu", "iemic-arstniecibas", "iemic-vp", "iemic-pp", "iemic-vugd", "vkcp-udens",
-                          "osm", "osm-noturiba", "rs-gtfs", "atd-gtfs", "vivi-gtfs")
+                          "osm", "osm-noturiba", "osm-udens", "osm-wifi", "osm-ev", "osm-vet",
+                          "rs-gtfs", "atd-gtfs", "vivi-gtfs")
 STATUSS_SMAGUMS = {"nav_datu": -1, "darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
 STATUSS_PROGNOZE_VECA_H = 24  # LVĢMC prognozi atjauno vairākas reizes dienā
 
@@ -2816,6 +3238,8 @@ def _statuss_dati():
                         "stavoklis": None if sliktakais.get(nr) == "nav_datu" else sliktakais.get(nr)} for nr in range(sis - STATUSS_JOSLAS + 1, sis + 1)],
             "pieejamiba_7d": round(100 * sum(s != "nedarbojas" for s in ar_datiem) / len(ar_datiem), 2)
             if ar_datiem else None,
+            **({"rezerves": {"nosaukums": METEOALARM_AVOTS, "url": METEOALARM_URL}}
+               if kods == "bridinajumi" and _rezerves_aktivs() else {}),
         })
     return {"laiks": tagad.isoformat(timespec="seconds"), "intervals_min": STATUSS_INTERVALS // 60,
             "komponenti": komponenti}
@@ -2870,13 +3294,14 @@ def pasvaldiba(q):
          "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"},
         {"nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/dataset/public-persons-institutions"},
-        {"nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "licence": "CC0 1.0",
+        {"nosaukums": "VPVKAC kontakti (2023-11)", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
 
 
 # ==== Ziņojumi: iedzīvotāju ziņojumi par bīstamību (production/zinot.js, moderacija.html) — sākums ====
 # Pēc lacukarte.lv parauga (notes/research/05 §5): ziņojums = tips + īss teksts + vieta. Glabā vietu ~100 m precizitātē
-# (3 zīmes aiz komata), publiski rāda ~1 km (2 zīmes). IP un citus personas datus neglabā. Rāda pēdējās 7 dienas,
+# (3 zīmes aiz komata), publiski rāda ~1 km (2 zīmes). IP un citus personas datus neglabā (balsu limitam — tikai IP
+# jaucējvērtību ar sāli MAP_SALT, ne ilgāk par 2 h). Rāda pēdējās 7 dienas,
 # statuss jauns/redzams; paslēpj, ja apstrīdējuši vairāk nekā apstiprinājuši + 2. Licence: CC BY 4.0.
 # Tabulu izveido API startā ar MAP_DB_OWNER_DSN (shēma VPS netiek palaista pati); tas pats bloks ir shema.sql.
 # Moderācija: MAP_MOD_TOKEN (vides mainīgais) — POST ķermenī, nevis URL; bez tā moderācija ir izslēgta.
@@ -2886,6 +3311,8 @@ ZINOJUMU_TIPI = {"koks": "Nokritis koks", "cels": "Neizbraucams ceļš", "elektr
 ZINOJUMI_DIENAS = 7
 ZINOJUMI_MINUTE = 10    # jauni ziņojumi minūtē (viss process)
 ZINOJUMU_BALSIS_MINUTE = 60
+ZINOJUMA_BALSIS_STUNDA = 20  # balsis vienam ziņojumam stundā (visi kopā)
+IP_BALSIS_STUNDA = 30        # balsis no vienas IP stundā (visiem ziņojumiem kopā)
 ZINOJUMI_LICENCE = {"nosaukums": "Iedzīvotāju ziņojumi (map.repo.lv)", "licence": "CC BY 4.0",
                     "licences_url": "https://creativecommons.org/licenses/by/4.0/"}
 ZINOJUMI_ATRUNA = "Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0. Ja apdraudēta dzīvība, zvaniet 112."
@@ -2905,6 +3332,16 @@ create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
 grant select, insert on zinojumi to map_api;
 grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
 grant usage on sequence zinojumi_id_seq to map_api;
+-- Balsu limits (apstiprinu / apstrīdu): ziņojums + IP jaucējvērtība ar sāli (ne pati IP), glabā ≤ 2 h
+create table if not exists zinojumu_balsis (
+  zinojums bigint not null,
+  ip_hash  text not null,
+  laiks    timestamptz not null default now()
+);
+create index if not exists zinojumu_balsis_zinojums_idx on zinojumu_balsis (zinojums, laiks);
+create index if not exists zinojumu_balsis_ip_idx on zinojumu_balsis (ip_hash, laiks);
+create index if not exists zinojumu_balsis_laiks_idx on zinojumu_balsis (laiks);
+grant select, insert, delete on zinojumu_balsis to map_api;
 """  # tas pats bloks ir src/karte/db/shema.sql
 # Teksti ar saitēm un rupjībām netiek pieņemti (vienkāršs filtrs; moderators var paslēpt pārējo)
 _ZINOJUMU_AIZLIEGTS = re.compile(
@@ -2936,6 +3373,58 @@ def _zinojumi_atlauts(kas, cik):
             return False
         logs[1] += 1
         return True
+
+
+_pieprasijums = threading.local()  # do_POST ieliek klienta IP (.ip); galapunkti to nesaņem kā argumentu
+_balsis_atmina = {}  # rezerve, ja DB tabulas nav: ("z", id) / ("ip", hash) → [laiki]
+_BALSU_SALS = os.environ.get("MAP_SALT", "") or "map.repo.lv-zinojumu-balsis-2026"
+
+
+def _ip_hash(ip):
+    """IP → HMAC-SHA256 ar sāli (MAP_SALT), 32 heks. zīmes; pati IP netiek glabāta."""
+    import hmac
+    return hmac.new(_BALSU_SALS.encode(), (ip or "?").encode(), "sha256").hexdigest()[:32]
+
+
+def _balsu_limits_atmina(zid, ip_hash):
+    tagad = time.time()
+    with _zinojumi_slots:
+        if len(_balsis_atmina) > 20000:
+            for k in [k for k, v in _balsis_atmina.items() if not v or tagad - v[-1] > 3600]:
+                del _balsis_atmina[k]
+        z = _balsis_atmina.setdefault(("z", zid), [])
+        ip = _balsis_atmina.setdefault(("ip", ip_hash), [])
+        z[:] = [t for t in z if tagad - t < 3600]
+        ip[:] = [t for t in ip if tagad - t < 3600]
+        if len(z) >= ZINOJUMA_BALSIS_STUNDA:
+            return "zinojums"
+        if len(ip) >= IP_BALSIS_STUNDA:
+            return "ip"
+        z.append(tagad)
+        ip.append(tagad)
+    return None
+
+
+def _balsu_limits(zid, ip_hash):
+    """None — balsi drīkst skaitīt (un tā ir pierakstīta); "zinojums" / "ip" — stundas limits sasniegts.
+    Datubāzē (tabula zinojumu_balsis), lai limits paliek pēc API pārstartēšanas; ja tabulas nav — atmiņā."""
+    try:
+        with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '3s'")
+            cur.execute("""select (select count(*) from zinojumu_balsis where zinojums = %s and laiks > now() - interval '1 hour'),
+                                  (select count(*) from zinojumu_balsis where ip_hash = %s and laiks > now() - interval '1 hour')""",
+                        (zid, ip_hash))
+            z, ip = cur.fetchone()
+            if z >= ZINOJUMA_BALSIS_STUNDA:
+                return "zinojums"
+            if ip >= IP_BALSIS_STUNDA:
+                return "ip"
+            cur.execute("delete from zinojumu_balsis where laiks < now() - interval '2 hours'")
+            cur.execute("insert into zinojumu_balsis (zinojums, ip_hash) values (%s, %s)", (zid, ip_hash))
+            return None
+    except psycopg.Error as e:
+        print(f"zinojumi: balsu limits atmiņā ({e.__class__.__name__})", file=sys.stderr)
+        return _balsu_limits_atmina(zid, ip_hash)
 
 
 def _zinojumi_db(sql, params=()):
@@ -3017,6 +3506,11 @@ def zinojumi_darbiba(dati, zid, darbiba):
     else:
         if not _zinojumi_atlauts("balsis", ZINOJUMU_BALSIS_MINUTE):
             raise Kluda(429, "pārāk daudz balsojumu, mēģiniet pēc minūtes")
+        limits = _balsu_limits(int(zid), _ip_hash(getattr(_pieprasijums, "ip", "")))
+        if limits == "zinojums":
+            raise Kluda(429, "par šo ziņojumu stundas laikā jau nobalsots daudz reižu, mēģiniet vēlāk")
+        if limits == "ip":
+            raise Kluda(429, "no Jūsu tīkla stundas laikā jau ir daudz balsu, mēģiniet vēlāk")
         kolonna = "apstiprina" if darbiba == "apstiprinat" else "apstrid"
         rinda = _zinojumi_db(f"update zinojumi set {kolonna} = {kolonna} + 1 where id = %s and statuss <> 'slepts'"
                              " returning apstiprina, apstrid", (int(zid),))
@@ -3260,6 +3754,100 @@ def kalendars(q):
     return {"_saturs": ics, "_tips": "text/calendar; charset=utf-8"}
 
 
+# /api/prognoze?lat=&lon= — nākamās ~24 h tuvākajai LVĢMC prognožu vietai (ikstundas fails, CKAN datastore API;
+# tā pati datu kopa kā PROGNOZU_AVOTS, CC0 1.0). Fails sniedz ~25 h uz priekšu; DATUMS — Latvijas vietējais laiks.
+CKAN_API = "https://data.gov.lv/dati/api/3/action/"
+PROGNOZU_STUNDAS_ID = "4e9b37dc-a486-4af1-8964-b370f659811a"  # "Prognožu dati (ikstundas)"
+PROGNOZU_STUNDU_PARAMETRI = {"2": "temp", "6": "brazmas", "7": "nokrisni", "11": "negaiss"}  # °C, m/s, mm/h, %
+PROGNOZE_MIN_STUNDAS = 6  # mazāk atlikušu stundu (fails sen nav atjaunots) — prognozi nerāda
+
+
+def _prognozu_punkti():
+    """Vietas ar ikstundas prognozi (~1300 no ~6400 cities.csv): (CITY_ID, nosaukums, lat, lon)."""
+    parametri = {"resource_id": PROGNOZU_STUNDAS_ID, "distinct": "true", "fields": "CITY_ID", "limit": 32000,
+                 "filters": json.dumps({"PARA_ID": 2})}
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    ar_stundam = {r["CITY_ID"] for r in dati["result"]["records"]}
+    teksts = _lejupieladet(PROGNOZU_VIETAS, timeout=8).decode("utf-8-sig")
+    punkti = [(r["CITY_ID"], r["NOSAUKUMS"], float(r["LAT"]), float(r["LON"]))
+              for r in csv.DictReader(io.StringIO(teksts)) if r.get("LAT") and r.get("LON") and r["CITY_ID"] in ar_stundam]
+    if not punkti:
+        raise ValueError("nav vietu ar ikstundas prognozi")
+    return punkti
+
+
+def _prognoze_stundas(vietas_id):
+    parametri = {
+        "resource_id": PROGNOZU_STUNDAS_ID, "sort": "DATUMS", "limit": 1000, "fields": "PARA_ID,DATUMS,VERTIBA",
+        "filters": json.dumps({"CITY_ID": vietas_id, "PARA_ID": [int(p) for p in PROGNOZU_STUNDU_PARAMETRI]}),
+    }
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    if not dati.get("success"):
+        raise ValueError("datastore_search neizdevās")
+    return [(str(r["PARA_ID"]), str(r["DATUMS"])[:19], r["VERTIBA"]) for r in dati["result"]["records"]]
+
+
+def _prognoze_izdota():
+    dati = json.loads(_lejupieladet(CKAN_API + "resource_show?id=" + PROGNOZU_STUNDAS_ID, timeout=8))
+    laiks = (dati.get("result") or {}).get("last_modified")
+    return laiks[:19] + "Z" if laiks else None  # CKAN: UTC bez zonas
+
+
+def _prognozes_riski(tmin, tmax, nokrisni, brazmas, negaiss):
+    """Riska vārdi pēc PROGNOZU_SLIEKSNI (diennakts sliekšņi derīgi 24 h logam); pirmais — nozīmīgākais."""
+    riski = []
+    lim = _limenis("brazmas", brazmas)
+    if lim is not None:
+        riski.append((lim, "vētra" if lim >= 2 else "stiprs vējš"))
+    lim = _limenis("nokrisni", nokrisni)
+    if lim is not None:
+        veids = "sniegs" if tmax is not None and tmax <= 1 else "lietus"
+        riski.append((lim, ("stiprs " if lim >= 1 else "") + veids))
+    if negaiss is not None and negaiss >= 50:
+        riski.append((1 if negaiss >= 80 else 0, "pērkona negaiss"))
+    lim = _limenis("sals", tmin)
+    if lim is not None:
+        riski.append((lim, "salna" if tmin > -5 else "sals"))
+    lim = _limenis("karstums", tmax)
+    if lim is not None:
+        riski.append((lim, "karstums"))
+    riski.sort(key=lambda r: -r[0])  # stabila kārtošana: vienādā līmenī vējš → nokrišņi → negaiss → sals → karstums
+    return [{"vards": v, "limenis": lim} for lim, v in riski]
+
+
+def prognoze(q):
+    lat, lon = _vieta(q)
+    punkti = _kesots("prognozu_punkti", 6 * 3600, _prognozu_punkti)
+    kx = math.cos(math.radians(lat))
+    vid, nosaukums, plat, plon = min(punkti, key=lambda p: (p[2] - lat) ** 2 + ((p[3] - lon) * kx) ** 2)
+    rindas = _kesots(("prognoze", vid), 1800, lambda: _prognoze_stundas(vid))
+    try:
+        izdota = _kesots("prognoze_izdota", 1800, _prognoze_izdota)
+    except Kluda:
+        izdota = None
+    no = _riga_tagad().strftime("%Y-%m-%dT%H:00:00")
+    stundas = {}  # DATUMS → lauks → vērtība
+    for para, datums, vertiba in rindas:
+        if datums >= no and vertiba not in (None, ""):
+            stundas.setdefault(datums, {})[PROGNOZU_STUNDU_PARAMETRI[para]] = float(vertiba)
+    laiki = sorted(stundas)[:24]
+    vieta = {"id": vid, "nosaukums": nosaukums, "attalums_m": _attalums_m(lat, lon, plat, plon)}
+    if len(laiki) < PROGNOZE_MIN_STUNDAS:
+        return {"prognoze": None, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+    def vertibas(lauks):
+        return [stundas[t][lauks] for t in laiki if lauks in stundas[t]]
+    temp, brazmas, nokrisni, negaiss = vertibas("temp"), vertibas("brazmas"), vertibas("nokrisni"), vertibas("negaiss")
+    p = {
+        "no": laiki[0], "lidz": laiki[-1], "stundas": len(laiki),
+        "tmin": min(temp, default=None), "tmax": max(temp, default=None),
+        "nokrisni_mm": round(sum(nokrisni), 1) if nokrisni else None,
+        "brazmas_max": max(brazmas, default=None), "negaiss_max": max(negaiss, default=None),
+    }
+    p["riski"] = _prognozes_riski(p["tmin"], p["tmax"], p["nokrisni_mm"], p["brazmas_max"], p["negaiss_max"])
+    return {"prognoze": p, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -3286,6 +3874,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
     (re.compile(r"^/api/plusma\.xml$"), plusma, 300),
     (re.compile(r"^/api/kalendars\.ics$"), kalendars, 300),
+    (re.compile(r"^/api/prognoze/?$"), prognoze, 600),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
@@ -3330,6 +3919,11 @@ class Apstradatajs(BaseHTTPRequestHandler):
         funkcija, m = next(((f, m) for r, f in POST_MARSRUTI if (m := r.match(cels))), (None, None))
         if funkcija is None:
             return self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
+        # Klienta IP (tikai balsu limitam, glabā jaucējvērtību): aiz Caddy — pēdējais X-Forwarded-For (to pieliek Caddy pats)
+        ip = self.client_address[0]
+        if ip in ("127.0.0.1", "::1") and self.headers.get("X-Forwarded-For"):
+            ip = self.headers["X-Forwarded-For"].split(",")[-1].strip() or ip
+        _pieprasijums.ip = ip
         try:
             garums = int(self.headers.get("Content-Length") or 0)
         except ValueError:

@@ -192,6 +192,38 @@ PARBAUDES_JS = r"""() => {
 }"""
 
 
+# Telefonā katrs kartes uznirstošais logs (popup) ir pilnībā ekrānā un ✕ ir sasniedzams: pa 3 nejaušiem marķieriem no
+# katra slāņa (grupē pēc krāsas) + meklēšanas rezultāta marķieri. Logu atver kartes centrā ar to pašu saturu un autoPan.
+POPUP_JS = r"""async () => {
+  const grupas = {};
+  const visi = [...(typeof objektuSlanis !== 'undefined' ? objektuSlanis.getLayers() : [])];
+  karte.eachLayer(l => { if (l.getPopup?.() && !visi.includes(l)) visi.push(l); });
+  for (const l of visi) if (l.getPopup?.()) (grupas[l.options.fillColor || l.options.color || 'cits'] ||= []).push(l);
+  const sliktie = [];
+  let parbauditi = 0;
+  for (const [k, ls] of Object.entries(grupas)) {
+    for (const l of ls.sort(() => Math.random() - .5).slice(0, 3)) {
+      const c = l.getPopup().getContent();
+      const saturs = typeof c === 'function' ? c(l) : c;
+      const ll = l.getLatLng ? l.getLatLng() : karte.getCenter();
+      const p = L.popup(l.getPopup().options).setLatLng(ll).setContent(saturs).openOn(karte);
+      await new Promise(r => setTimeout(r, 450));
+      const w = p.getElement()?.querySelector('.leaflet-popup-content-wrapper');
+      const x = p.getElement()?.querySelector('.leaflet-popup-close-button');
+      parbauditi++;
+      if (w) {
+        const r = w.getBoundingClientRect(), xr = x?.getBoundingClientRect();
+        const ara = r.top < -1 || r.left < -1 || r.bottom > innerHeight + 1 || r.right > innerWidth + 1;
+        const xAra = xr && (xr.top < 0 || xr.bottom > innerHeight || xr.width < 43.5);
+        if (ara || xAra) sliktie.push(`${k}: ${Math.round(r.left)},${Math.round(r.top)} ${Math.round(r.width)}×${Math.round(r.height)}${xAra ? ' (✕ ārpus/mazs)' : ''}`);
+      }
+      karte.closePopup(p);
+    }
+  }
+  return { parbauditi, sliktie };
+}"""
+
+
 def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
     from playwright.sync_api import sync_playwright
     from playwright.sync_api import TimeoutError as PwTimeout
@@ -202,8 +234,9 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
         parluks = p.chromium.launch()
         for skats, vp, mob in skati:
             print(f"\n  — {skats} {vp['width']}×{vp['height']}")
+            # service_workers="block": citādi lokāli (src/demo/lokali.py) sw.js apiet /api starpniekserveri
             ctx = parluks.new_context(viewport=vp, is_mobile=mob, has_touch=mob, device_scale_factor=2 if mob else 1,
-                                      locale="lv-LV")
+                                      locale="lv-LV", service_workers="block")
             # skaitīšanas POST neiet uz serveri (pārbaude nedrīkst mainīt "Biežāk meklēto")
             ctx.route("**/api/meklejumi", lambda r: r.fulfill(status=204, body="") if r.request.method == "POST" else r.continue_())
             lapa = ctx.new_page()
@@ -265,12 +298,20 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
                     lapa.wait_for_selector("#rezultati .talak", timeout=40000)
                     lapa.wait_for_timeout(1500)
                 solis(f"meklēt: {v}", meklet)
+                if mob:
+                    def popupi(v=v):
+                        r = lapa.evaluate(POPUP_JS)
+                        if r["sliktie"]:
+                            raise RuntimeError(f"{len(r['sliktie'])}/{r['parbauditi']} logi neietilpst ekrānā: " + "; ".join(r["sliktie"][:3]))
+                    solis(f"popupi ekrānā: {v[:20]}", popupi)
 
             for kods in DEMO:
                 def demo(kods=kods):
-                    # "load", nevis "networkidle": LVĢMC plūdu WMS flīzes mēdz karāties > 60 s (augšupējs avots, ne mūsu kļūda)
-                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="load", timeout=60000)
-                    lapa.wait_for_function("document.body.classList.contains('demo-aktivs')", timeout=20000)
+                    # ne "networkidle": LVĢMC plūdu WMS flīzes (pludi-ogre) atbild 5–30 s, bet kartīte gatava ~4 s
+                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="domcontentloaded", timeout=60000)
+                    lapa.wait_for_function("document.body.classList.contains('demo-aktivs') && !!document.querySelector('.demo-kartite')"
+                                           " && !document.querySelector('#demo-saturs').textContent.includes('Ielādē tuvākās')", timeout=30000)
+                    lapa.wait_for_timeout(800)
                 solis(f"?demo={kods}", demo)
 
             def beigt():
@@ -283,14 +324,17 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
 
             def prognoze():
                 lapa.goto(bazes_url + "/", wait_until="networkidle", timeout=60000)
-                lapa.wait_for_selector("#prognozes:not([hidden])", timeout=60000)
-                if not lapa.locator("#prognozes.atverts").count():
+                lapa.wait_for_selector("#prognozes:not([hidden])", state="attached", timeout=60000)  # telefonā — slēptā cilnē
+                if lapa.locator("#cilne-situacija").is_visible():  # telefonā prognoze ir lapas cilnē "Situācija tagad"
+                    lapa.click('.apaksa-stavokli [data-st="pilna"]')
+                    lapa.click("#cilne-situacija")
+                elif not lapa.locator("#prognozes.atverts").count():
                     lapa.click(".prog-poga")
                 lapa.wait_for_selector(".prog-zina", timeout=20000)
             solis("Prognoze", prognoze)
 
             def riski():
-                if lapa.locator("#prognozes.atverts").count():
+                if lapa.locator("#prognozes.atverts .prog-aizvert").is_visible():
                     lapa.click(".prog-aizvert")
                 poga = lapa.locator('[data-riski="sodien"]')
                 if not poga.count():
@@ -300,7 +344,10 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
             solis("Riska karte (šodien)", riski)
 
             def avoti():
-                if mob and lapa.locator("body.panelis-slegts").count():
+                if lapa.locator("#cilne-slani").is_visible():  # telefonā slāņi un avoti ir lapas cilnē "Kartes slāņi"
+                    lapa.click('.apaksa-stavokli [data-st="pilna"]')
+                    lapa.click("#cilne-slani")
+                elif mob and lapa.locator("body.panelis-slegts").count():
                     lapa.click("#panelis-poga")
                 if lapa.locator("#dv-atvilktne[hidden]").count():  # datorā (darbvirsma.js) avoti ir "Slāņu vadība" atvilktnē
                     lapa.click('.dv-nav [data-dv="slani"]')

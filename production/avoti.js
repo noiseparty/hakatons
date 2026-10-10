@@ -9,6 +9,12 @@ const Avoti = (() => {
   const TIESSAISTE = [
     ['lvgmc-bridinajumi', 'Hidrometeoroloģiskie brīdinājumi', LVGMC, CC0, 'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi',
       'Brīdinājumu josla lapas augšā; vai brīdinājums attiecas uz izvēlēto vietu', 'tiešsaistē, kešs 10 min', 76, { svaigums: 'bridinajumi' }],
+    // Tikai tad, kad /api/bridinajumi atbild no rezerves avota (rezerves: true); atsauce un atruna — Meteoalarm noteikumi
+    ['meteoalarm', 'Meteoalarm: LVĢMC brīdinājumi (CAP/Atom plūsma) — rezerves avots', 'LVĢMC, caur Meteoalarm (EUMETNET)', CCBY,
+      'https://www.meteoalarm.org', 'Brīdinājumu josla, kamēr LVĢMC datne nav pieejama', 'tiešsaistē, kavējums ≤ 10 min', 76.5,
+      { rezerves: true, piezime: 'Time delays between this website and the www.meteoalarm.org website are possible. For the most ' +
+        'up-to-date awareness information as published by the participating National Meteorological and Hydrological Services, ' +
+        'please refer to www.meteoalarm.org.' }],
     ['lvgmc-pludi', '3. cikla plūdu postījumu vietu un plūdu riska kartes (2026–2031)', LVGMC + ' / ĢeoLatvija.lv', CC0,
       'https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1',
       'Plūdu riska zonu slānis; vai adrese ir applūstošā teritorijā', 'kartes 2026–2031 ciklam; pārbaude tiešsaistē', 77],
@@ -29,6 +35,19 @@ const Avoti = (() => {
       'katru stundu, kavējas ~2–3 h', 82, { ja: 'zibens-slanis' }],
     ['open-meteo', 'Nokrišņi un augsnes mitrums', 'Open-Meteo', CCBY, 'https://open-meteo.com/',
       'Meklēšanas rezultātā (plūdi, lietusgāzes, vētra): nokrišņi pēdējās 26 dienās un augsnes mitrums', 'tiešsaistē', 83, { ja: 'zibens-slanis' }],
+    ['lvgmc-hidro-prognoze', 'Hidroloģiskās prognozes (ūdens līmenis 14 dienām)', LVGMC, CC0,
+      'https://data.gov.lv/dati/dataset/5d9b0379-c0b8-4ce9-9094-7c30b5502433',
+      'Meklēšanas rezultātā: tuvākā upes posteņa ūdens līmeņa prognoze pēc 7 dienām', 'reizi dienā', 84],
+    ['ur-iestades', 'Publisko personu un iestāžu saraksts (kontakti)', 'Uzņēmumu reģistrs', CC0,
+      'https://data.gov.lv/dati/dataset/public-persons-institutions',
+      'Meklēšanas rezultātā: Jūsu pašvaldības tālrunis un e-pasts (visas 42)', 'pēc ielādes (pasvaldibas.py)', 85],
+    ['vpvkac', 'VPVKAC paplašinātā tīkla kontaktpunkti (2022)', 'VPVKAC tīkls (data.gov.lv)', CC0,
+      'https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti',
+      'Meklēšanas rezultātā: valsts un pašvaldības vienotais klientu centrs, ja pašvaldības kontaktu nav', '2022. gada augusta dati', 86],
+    ['lr1-frekvences', 'Latvijas Radio 1 raidītāji un frekvences', 'VSIA „Latvijas Radio” (pārbaudīts ar SIA „Elektroniskie sakari” FM staciju sarakstu)',
+      ['Licence nav norādīta', null], 'https://latvijasradio.lsm.lv/lv/par-mums/frekvences/',
+      'Meklēšanas rezultātā „Radio krīzē”: tuvākā LR1 frekvence; karte lapā „Svarīgi”', 'statiski, nolasīts 10.10.2026.', 87,
+      { atverts: false }],
     ['osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
       ['ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/'], 'https://www.openstreetmap.org/copyright',
       'Noturības punktu kandidāti (statuss nav apstiprināts)', 'pēc ielādes', 71],
@@ -89,11 +108,15 @@ const Avoti = (() => {
   }
 
   async function ieladet() {
+    // vai brīdinājumi tagad nāk no rezerves avota (Meteoalarm); neizdodas — nē
+    const rezerves = fetch('/api/bridinajumi').then(x => x.ok ? x.json() : {}).then(d => !!d.rezerves).catch(() => false);
     const r = await fetch('/api/avoti');
     if (!r.ok) throw new Error(r.status);
     const noDb = await r.json();
     const kodi = new Set(noDb.map(a => a.kods));
-    const saraksts = [...noDb, ...TIESSAISTE.filter(a => !kodi.has(a.kods) && (!a.ja || document.getElementById(a.ja)))]
+    const arRezervi = await rezerves;
+    const saraksts = [...noDb, ...TIESSAISTE.filter(a => !kodi.has(a.kods) && (!a.ja || document.getElementById(a.ja)) &&
+      (!a.rezerves || arRezervi))]
       .map(a => ({ ...TIESSAISTE.find(t => t.kods === a.kods), ...a }))  // DB rindai paliek biežums un svaigums
       .sort((a, b) => (a.kartiba ?? 100) - (b.kartiba ?? 100));
     pecKoda = Object.fromEntries(saraksts.map(a => [a.kods, a]));

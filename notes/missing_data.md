@@ -1,8 +1,8 @@
 # Trūkstošie dati: ko valsts un pašvaldības vēl nepublicē (pitch materiāls)
 
-Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas licences ⚠, kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir **otra puse**: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: `notes/research/02`, `04`, `05`, `notes/demo-scenariji.md`, `notes/ca-plani-kvalitate.md`, nakts atradumi, apkopoti 2026-10-10.
+Stāvoklis 2026-10-10 rītā. Visi 32 atvērto datu avoti (un 3 bez atvērtas licences ⚠: 112.lv patvertnes, banku bankomātu saraksts, LR1 frekvences; kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir **otra puse**: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: `notes/research/02`, `04`, `05`, `notes/demo-scenariji.md`, `notes/ca-plani-kvalitate.md`, nakts atradumi, apkopoti 2026-10-10.
 
-Īsā versija slaidam: **"Mēs izmantojām 25 atvērto datu avotus. Vēl 25 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
+Īsā versija slaidam: **"Mēs izmantojām 32 atvērto datu avotus. Vēl 30 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
 
 ## 1. Dzīvībai svarīgi, bet nepubliski (TOP prasības)
 
@@ -34,7 +34,7 @@ Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas li
 | # | Dati | Kam vajadzētu piederēt | Kāpēc |
 |---|---|---|---|
 | 16 | **Noturības punkti** (siltums, uzlāde, ūdens, wifi, ģenerators) — bibliotēkas, kultūras nami, skolas | Pašvaldības / VARAM | Scenāriji "nav elektrības", "aukstums"; mēs rādām OSM ēkas ar "statuss nav zināms" |
-| 17 | **Dzeramā ūdens ņemšanas punkti un "vāriet ūdeni" paziņojumi** | Pašvaldību ūdenssaimniecības, VI | Ūdensapgādes krīze; šobrīd tikai komandas simulēti dati (100 punkti, marķēti) |
+| 17 | **Dzeramā ūdens ņemšanas punkti un "vāriet ūdeni" paziņojumi** | Pašvaldību ūdenssaimniecības, VI | Ūdensapgādes krīze; kartē 456 OpenStreetMap dzeramā ūdens punkti (ODbL) un 100 komandas simulēti (marķēti); oficiālu izdales vietu nav |
 | 18 | **Degvielas stacijas ar ģeneratoriem; bankomātu un POS termināļu darbības statuss** | EM, bankas, Finance Latvia | 22.–23.08.2026: skaidra nauda nebija pieejama; saraksti nav publiski. Komandai minētais „Kritisko ATM saraksts” (22.09.2026, „hakatonam”) nav repozitorijā, un tā izcelsme un licence nav zināma, tāpēc kartē netiek rādīts (pārbaudīts 2026-10-10) |
 | 19 | **Slēgtās / bīstamās zonas** (droni, sprādzienbīstamība, ķīmiskais piesārņojums) kā poligoni | VUGD, NBS, VP | Scenārijs "drons": rādām tikai simulētu zonu |
 | 20 | **Dūmu / gaisa kvalitātes brīdinājumi reāllaikā** pie ugunsgrēkiem | LVĢMC, VUGD | Pārdaugavas noliktavas ugunsgrēks 30.06.2026, Vecmīlgrāvis 17.07.2026: "aizveriet logus" tikai ziņās |
@@ -43,6 +43,11 @@ Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas li
 | 23 | **Sociālās aprūpes un riska grupu blīvums** | LM, CSP (GEOSTAT 1 km) | Komisijām: kur prioritizēt palīdzību (tikai ierobežotai piekļuvei) |
 | 24 | **Ceļu laikapstākļu kameras un sensori atvērtā formā** | LVC | Ir NAP, bet nav kameru; slidenuma stacijām nav temperatūru atvērtajā kopā |
 | 25 | **Krīzes notikumu arhīvs** (kas, kur, kad, cik skarti) | VUGD, IeM | Mācībām un modeļiem; šodien faktus vācām no LSM/Delfi |
+| 26 | **Rīgas pilsētas bezmaksas Wi-Fi punkti** | Rīgas valstspilsētas pašvaldība | Scenārijs "nav sakaru"; saraksts ir tikai tīmekļvietnē, ne kā atvērtie dati — rādām 155 OSM vietas ar bezmaksas Wi-Fi |
+| 27 | **"Rīgas ūdens" bezmaksas dzeramā ūdens krāni** | SIA "Rīgas ūdens" | Scenārijs "nav ūdens"; krāni ir pilsētā, bet nav publicēti kā datu kopa ar koordinātām un darbības statusu — rādām OSM |
+| 28 | **Telefonu uzlādes punkti** (publiskas uzlādes stacijas, ģeneratori krīzē) | Pašvaldības, VUGD | Scenāriji "izlādējas telefons", "nav elektrības"; avota nav vispār — kartē tikai 100 simulēti punkti (marķēti) |
+| 29 | **"Vāriet ūdeni" paziņojumi** mašīnlasāmā plūsmā | Ūdenssaimniecības, PVD, VI | Paziņojumus publicē tikai kā ziņas pašvaldību vietnēs; nav plūsmas (RSS/CAP), ko pievienot adreses kartītei |
+| 30 | **Bibliotēku, LMT un Tet publiskie Wi-Fi tīklāji** | LNB / pašvaldību bibliotēkas, LMT, Tet | Sakaru krīzē — kur var pieslēgties internetam; operatoru un bibliotēku tīklāju saraksti nav atvērtie dati |
 
 ## 4. Kvalitātes problēmas datos, kas ir
 
@@ -54,6 +59,6 @@ Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas li
 
 ## 5. Ko sakām pitčā (3 teikumi)
 
-1. "Karte strādā uz 25 atvērto datu kopām — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji."
+1. "Karte strādā uz 32 atvērto datu avotiem — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji."
 2. "Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas."
-3. "Šis saraksts ar 25 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā."
+3. "Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā."

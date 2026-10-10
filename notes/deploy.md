@@ -85,7 +85,8 @@ The live Caddy and systemd files are copied in `src/karte/serveris/`; keep them 
 
 The LVĢMC flood WMS (geo-dpps.viss.gov.lv) takes 5–30 s per tile and often 504s, so `zonas.js` loads flood tiles
 through the API, which keeps them on disk for 30 days (≤ 500 MB, oldest deleted first) in `$HAKATONS_DATI/flizes`.
-`paka` = `pali` (spring floods) | `ledus` (ice jams) | `juras` (storm surge); z/x/y is standard XYZ, image 512 px.
+`paka` = `pali` (spring floods) | `ledus` (ice jams) | `juras` (storm surge) for the 1 % zone, plus `pali10` | `ledus10` |
+`juras10` for the darker 10 % zone; z/x/y is standard XYZ, image 512 px.
 At most 4 requests go to LVĢMC at once; a request that waits > 5 s gets a 1×1 transparent PNG with `X-Flize: aiznemts`
 (zonas.js retries), a failed tile is not retried for 60 s (502, `X-Flize: kluda`). Until the VPS steps below are done the
 API uses a private temp dir, which is emptied on every API restart (i.e. every merge that touches `karte_api.py`).
@@ -99,12 +100,12 @@ cp /srv/hakatons/src/karte/serveris/hakatons-map-api.service /etc/systemd/system
 systemctl restart hakatons-map-api
 ```
 
-**Warm-up** (morning before the demo; ~520 tiles for Ogre, Jūrmala and Rīga at map zoom 10–14, 10–30 min the first time,
+**Warm-up** (morning before the demo; ~1000 tiles (1 % + 10 %) for Ogre, Jūrmala and Rīga at map zoom 10–14, 20–60 min the first time,
 seconds afterwards; failed tiles: run it again a minute later):
 
 ```bash
 python3 /srv/hakatons/src/karte/pludi_silda.py                      # --url https://map.repo.lv --zoom 10-14 --vienlaicigi 3
-python3 /srv/hakatons/src/karte/pludi_silda.py --vietas ogre --zoom 15-16   # closer zoom for the Ogre demo
+python3 /srv/hakatons/src/karte/pludi_silda.py --vietas ogre --zoom 15-16   # closer zoom for the Ogre demo (~950 tiles)
 du -sh /var/lib/hakatons/dati/flizes; curl -s https://map.repo.lv/api/veseliba?statistika=1   # "flizes": counts per X-Flize
 ```
 
