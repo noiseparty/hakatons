@@ -69,6 +69,9 @@ Third, 30 s — demo panel (#53), deep links (open them from a QR or bookmarks, 
 | `?demo=vetra-2026` | 2026-08-22/23 vētras atkārtojums (Bauska) | simulēti elektrības atslēgumu apgabali; reālie bankomāti un DUS tajos |
 | `?demo=pludi-ogre` | Ogre, plūdi → augstiene ≥23 m (LĢIA DEM) | kur iet, ja pulcēšanās vieta applūst |
 | `?demo=nakts` | Nakts, sagriezta roka (Saulkrasti, 03:00) → 24/7 neatliekamā | viena atbilde, nevis saraksts |
+| `?demo=drons-2026` | **Reāls:** droni virs Latgales, Rēzeknes naftas bāze (7.05.2026) | LV-ALERT teksts joslā, slēgtā zona, patvertne ārpus tās; 112.lv pārslodze (LSM) |
+| `?demo=bauskas-2026` | **Reāls:** gāzes sprādziens Bauskas ielā 15 (2.01.2026) | lēmums pie adreses „Ēka slēgta”, izmitināšana; 46 evakuēti (LSM) |
+| `?demo=ulmana-2026` | **Reāls:** noliktavas ugunsgrēks Pārdaugavā (30.06.2026) | dūmu konuss, vietas ārpus dūmiem; ~380 evakuēti |
 
 Pick 2 of the 7 for the 30 s; the others for questions: `vejs` (dzeltenais, vējš), `vetra` (sarkanais, vētra), `drons` (Rēzekne, 1 km slēgta zona), `bez-sakariem` (bez elektrības un sakariem; `&regions=100003470` = Ogre). Why 23 m and not 15 m: in Ogre the Daugava is at ~17–18 m, so ≥15 m covers 99.6 % of the area (`notes/demo-scenariji.md` §5). Say "simulācija" every time: the data in these is not live.
 
