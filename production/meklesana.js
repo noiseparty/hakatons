@@ -887,18 +887,18 @@ const krizesMeklesana = (() => {
       const sk = x => String(Math.abs(x) >= 10 || x === Math.round(x) ? Math.round(x) : (+x).toFixed(1)).replace('.', ',');
       const gr = x => (Math.round(x) > 0 ? '+' : Math.round(x) < 0 ? '−' : '') + Math.abs(Math.round(x));  // −3…+5 °C
       const stunda = t => t.slice(11, 16);
-      const virsr = p.stundas >= 23 ? 'Nākamās 24 h' : `Nākamās ${p.stundas} h (līdz ${stunda(p.lidz)})`;
+      const virsr = p.stundas >= 23 ? Valoda.t('Nākamās 24 h') : Valoda.t('Nākamās {n} h (līdz {t})', { n: p.stundas, t: stunda(p.lidz) });
       const r = p.riski?.[0];
       const vieta = d.vieta?.nosaukums ? ` (${esc(d.vieta.nosaukums)}${d.vieta.attalums_m > 1500 ? ', ' + attalums(d.vieta.attalums_m) : ''})` : '';
       const dalas = [Math.round(p.tmin) === Math.round(p.tmax) ? `${gr(p.tmin)} °C` : `${gr(p.tmin)}…${gr(p.tmax)} °C`];
-      if (p.nokrisni_mm != null) dalas.push(p.nokrisni_mm >= 0.1 ? `nokrišņi ${sk(p.nokrisni_mm)} mm` : 'bez nokrišņiem');
-      if (p.brazmas_max != null) dalas.push(`brāzmas līdz ${sk(p.brazmas_max)} m/s`);
+      if (p.nokrisni_mm != null) dalas.push(p.nokrisni_mm >= 0.1 ? Valoda.t('nokrišņi {x} mm', { x: sk(p.nokrisni_mm) }) : Valoda.t('bez nokrišņiem'));
+      if (p.brazmas_max != null) dalas.push(Valoda.t('brāzmas līdz {x} m/s', { x: sk(p.brazmas_max) }));
       const izdota = d.izdota ? new Date(d.izdota).toLocaleString('lv-LV', { timeZone: 'Europe/Riga', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
       const avots = d.avots || {};
       el.innerHTML = `<p class="prognoze-rinda">${Ik('prognoze')} <b>${virsr}</b>${vieta}: ${dalas.join(', ')}` +
-        ` — <b class="risks risks-${r ? r.limenis : 0}">${r ? esc(p.riski.map(x => x.vards).join(', ')) : 'bez būtiskiem riskiem'}</b></p>` +
-        `<small class="avots-rinda"><a href="${esc(avots.url || 'https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa')}" target="_blank" rel="noopener">LVĢMC prognoze</a>` +
-        `${izdota ? ', izdota ' + esc(izdota) : ''} · ${esc(avots.licence || 'CC0 1.0')}. Prognoze, nevis brīdinājums.</small>`;
+        ` — <b class="risks risks-${r ? r.limenis : 0}">${r ? esc(p.riski.map(x => x.vards).join(', ')) : Valoda.t('bez būtiskiem riskiem')}</b></p>` +
+        `<small class="avots-rinda"><a href="${esc(avots.url || 'https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa')}" target="_blank" rel="noopener">${Valoda.t('LVĢMC prognoze')}</a>` +
+        `${izdota ? ', ' + Valoda.t('izdota {x}', { x: esc(izdota) }) : ''} · ${esc(avots.licence || 'CC0 1.0')}. ${Valoda.t('Prognoze, nevis brīdinājums.')}</small>`;
       // "Kas notiks tālāk": ja gaidāms risks, pirmajā vietā atgādinājums par laikapstākļiem
       const ol = kaste.querySelector('.talak ol');
       if (r && r.limenis >= 1 && ol) {
@@ -928,9 +928,9 @@ const krizesMeklesana = (() => {
       const k = p.kontakti, c = p.vpvkac;
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? t('Pašvaldība') : t('Jūsu pašvaldība')}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, t('CA plāns')) + saite(p.majas_lapa, t('tīmekļvietne')) +
-        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
+        (k?.talrunis ? ` · ${t('tālr.')} ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
         (k?.adrese ? `<p class="pasvaldiba-rinda">${t('Pašvaldības adrese:')} ${esc(k.adrese)}</p>` : '') +
-        (c ? `<p class="pasvaldiba-rinda">${t('Klientu apkalpošanas centrs:')} ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
+        (c ? `<p class="pasvaldiba-rinda">${t('Klientu apkalpošanas centrs:')} ${esc(c.adrese)}${c.talrunis ? ` · ${t('tālr.')} ${esc(c.talrunis)}` : ''}</p>` : '') +
         // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
         `<p class="abonet-rinda">${t('Abonēt brīdinājumus:')} <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
         ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">${t('Kalendārs')}</a></p>` +
@@ -982,15 +982,15 @@ const krizesMeklesana = (() => {
   // "Ogre pie Ogres: 21,40 m, 0,75 m zem kritiskā 22,15 m, +0,12 m/24 h" (slieksnis no CA plāna, src/karte/db/udens_slieksni.json)
   function statusaRinda(s) {
     const lidz = s.lidz_kritiskajam_m;
-    const att = lidz == null ? '' : lidz > 0 ? `, ${mLv(lidz)} m zem kritiskā ${mLv(s.kritiskais)} m`
-      : `, ${mLv(-lidz)} m virs kritiskā ${mLv(s.kritiskais)} m`;
+    const att = lidz == null ? '' : lidz > 0 ? Valoda.t(', {m} m zem kritiskā {k} m', { m: mLv(lidz), k: mLv(s.kritiskais) })
+      : Valoda.t(', {m} m virs kritiskā {k} m', { m: mLv(-lidz), k: mLv(s.kritiskais) });
     const izm = s.izmaina_24h_cm;
     const tend = izm == null ? '' : `, ${izm > 0 ? '+' : ''}${mLv(izm / 100)} m/24 h`;
     const a = s.sliekshna_avots;
-    const avots = a ? `Slieksnis: <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nosaukums)}</a>${a.lpp ? ', ' + esc(a.lpp) + ' lpp.' : ''}` +
-      (s.slieksnis_pienemts ? ` „Paaugstināts” sākas ${mLv(s.kritiskais - s.slieksnis)} m zem kritiskā (mūsu pieņēmums, plānā tāda sliekšņa nav).` : '') : '';
-    const pr = s.prognoze?.statuss && s.prognoze.statuss !== 'normāls' ? ` LVĢMC prognoze pēc ${s.prognoze.dienas} dienām: ${esc(s.prognoze.statuss)} (${mLv(s.prognoze.mediana_m)} m).` : '';
-    return `<span class="udens-statuss udens-${STATUSA_KLASE[s.statuss]}"><b>${STATUSA_NOS[s.statuss]}</b> · ${esc(s.vieta || s.nosaukums)}: ` +
+    const avots = a ? `${Valoda.t('Slieksnis:')} <a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nosaukums)}</a>${a.lpp ? ', ' + Valoda.t('{x}. lpp.', { x: esc(a.lpp) }) : ''}` +
+      (s.slieksnis_pienemts ? ' ' + Valoda.t('„Paaugstināts” sākas {m} m zem kritiskā (mūsu pieņēmums, plānā tāda sliekšņa nav).', { m: mLv(s.kritiskais - s.slieksnis) }) : '') : '';
+    const pr = s.prognoze?.statuss && s.prognoze.statuss !== 'normāls' ? ' ' + Valoda.t('LVĢMC prognoze pēc {n} dienām: {s} ({m} m).', { n: s.prognoze.dienas, s: Valoda.t(esc(s.prognoze.statuss)), m: mLv(s.prognoze.mediana_m) }) : '';
+    return `<span class="udens-statuss udens-${STATUSA_KLASE[s.statuss]}"><b>${Valoda.t(STATUSA_NOS[s.statuss])}</b> · ${esc(s.vieta || s.nosaukums)}: ` +
       `${mLv(s.limenis_m)} m${att}${tend}</span>${pr ? `<small>${pr}</small>` : ''}${avots ? `<small>${avots}</small>` : ''}`;
   }
   // /api/pludi: LVĢMC karšu kopija PostGIS (uzreiz) → LVĢMC WMS ar kešu → {zinams: false}. API gaida ≤ 6 s; ja LVĢMC
@@ -998,17 +998,17 @@ const krizesMeklesana = (() => {
   const proc = v => String(v).replace('.', ',') + ' %';
   const METODES = { 'PostGIS kopija': 'LVĢMC karšu kopija mūsu datubāzē', 'LVĢMC WMS': 'LVĢMC karšu serviss, tikko' };
   function pluduTeksts(p) {
-    if (p.zona) return `<strong class="jā">Jā</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${proc(v.varbutiba_proc)} varbūtība gadā)`).join(', ')}`;
-    if (p.nepilnigi) return 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.';
+    if (p.zona) return `<strong class="jā">${Valoda.t('Jā')}</strong>: ${p.veidi.map(v => Valoda.t('{v} ({p} varbūtība gadā)', { v: esc(v.veids), p: proc(v.varbutiba_proc) })).join(', ')}`;
+    if (p.nepilnigi) return Valoda.t('Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.');
     const k = (p.varbutibas?.length ? p.varbutibas : [10, 1, 0.5]).map(proc);
-    return `<strong class="nē">Nē</strong>: nav applūstošā teritorijā (${k.length > 1 ? k.slice(0, -1).join(', ') + ' un ' + k[k.length - 1] : k[0]} kartes).`;
+    return `<strong class="nē">${Valoda.t('Nē')}</strong>: ${Valoda.t('nav applūstošā teritorijā ({k} kartes).', { k: k.length > 1 ? k.slice(0, -1).join(', ') + ' ' + Valoda.t('un') + ' ' + k[k.length - 1] : k[0] })}`;
   }
   function pluduAvots(p) {
     const a = p.avota_info;
     const avots = a && p.avots === 'lvgmc-pludi-faili'
       ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nosaukums)}</a> · ${esc(a.licence)}` : AVOTI_LVGMC.pludi;
-    const m = p.metode ? METODES[p.metode] || (p.metode.startsWith('kešs no ') ? 'saglabātā LVĢMC atbilde no ' + p.metode.slice(8) : p.metode) : '';
-    return `<small class="avots-rinda">${avots}</small>` + (m ? `<small class="avots-rinda pludi-metode">Pārbaudīts: ${esc(m)}</small>` : '');
+    const m = p.metode ? Valoda.t(METODES[p.metode] || (p.metode.startsWith('kešs no ') ? 'saglabātā LVĢMC atbilde no {x}' : p.metode), { x: p.metode.slice(8) }) : '';
+    return `<small class="avots-rinda">${avots}</small>` + (m ? `<small class="avots-rinda pludi-metode">${Valoda.t('Pārbaudīts:')} ${esc(m)}</small>` : '');
   }
   function pluduZona(ll, signal, meginajums) {
     iegut('/pludi?' + new URLSearchParams(ll), signal).then(p => {
@@ -1053,19 +1053,19 @@ const krizesMeklesana = (() => {
       const ps = d.stacijas.find(x => x.prognoze);
       const pr = ps?.prognoze;
       const cm = v => (v < 0 ? '−' : '') + Math.abs(v);
-      const prognoze = pr ? `<small>Prognoze ${pr.dienas} dienām${ps !== s ? ` (${esc(ps.nosaukums)}, ${attalums(ps.attalums_m)})` : ''}: ` +
-        `<b>${esc(pr.virziens)}</b> (${pr.izmaina_cm > 0 ? '+' : ''}${cm(pr.izmaina_cm)} cm pēc modeļa)` +
-        (pr.josla_50_cm ? `, līmenis ~${cm(pr.josla_50_cm[0])}…${cm(pr.josla_50_cm[1])} cm (50 % varbūtība)` : '') +
-        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` :
-        '<small>LVĢMC ūdens līmeņa prognoze tuvākajām stacijām nav (to dod ~35 no 74 stacijām).</small>';
+      const prognoze = pr ? `<small>${Valoda.t('Prognoze {n} dienām', { n: pr.dienas })}${ps !== s ? ` (${esc(ps.nosaukums)}, ${attalums(ps.attalums_m)})` : ''}: ` +
+        `<b>${esc(pr.virziens)}</b> (${pr.izmaina_cm > 0 ? '+' : ''}${cm(pr.izmaina_cm)} cm ${Valoda.t('pēc modeļa')})` +
+        (pr.josla_50_cm ? ', ' + Valoda.t('līmenis ~{a}…{b} cm (50 % varbūtība)', { a: cm(pr.josla_50_cm[0]), b: cm(pr.josla_50_cm[1]) }) : '') +
+        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">${Valoda.t('LVĢMC hidroloģiskās prognozes')}</a> · CC0</small>` :
+        '<small>' + Valoda.t('LVĢMC ūdens līmeņa prognoze tuvākajām stacijām nav (to dod ~35 no 74 stacijām).') + '</small>';
       const izm = s.izmaina_24h_cm;
-      const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: nemainās';
+      const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: ' + Valoda.t('nemainās');
       const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
       // statuss: tuvākā no 3 stacijām ar slieksni (CA plānā) un svaigu mērījumu, ne tālāk par 30 km
       const ss = d.stacijas.find(x => x.statuss && !x.vecs && x.limenis_m != null && x.attalums_m <= 30000);
       pluduStavoklis.stacija = ss || null;
       pluduRinda('rez-udens', `<b>${t('Tuvākā upe vai ezers')}</b>${ss ? statusaRinda(ss) : ''}<span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): ${s.limenis_cm} cm${tend}` +
-        `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}.${ss ? '' : ' Bīstamības līmeņi šai stacijai nav publiski pieejami (LVĢMC sliekšņi nav atvērtie dati).'}</small>` +
+        `${s.vecs ? ' — ' + Valoda.t('dati novecojuši') : ''}</span><small>${Valoda.t('Mērīts {x}.', { x: laiks })}${ss ? '' : ' ' + Valoda.t('Bīstamības līmeņi šai stacijai nav publiski pieejami (LVĢMC sliekšņi nav atvērtie dati).')}</small>` +
         `${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
       pluduSecinajums();
     }).catch(e => {
@@ -1085,7 +1085,7 @@ const krizesMeklesana = (() => {
       const sk = x => String(Math.abs(x) >= 10 ? Math.round(x) : (+x).toFixed(1)).replace('.', ',');
       pluduRinda('rez-vejs', `<b>Vējš tagad</b><span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): brāzmas <b>${sk(s.brazmas)} m/s</b>` +
         `${s.vejs != null ? `, vidēji ${sk(s.vejs)} m/s ${N ? N.virziens(s.virziens) : ''}` : ''}</span>` +
-        `<small>Mērīts ${esc(new Date(s.laiks).toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' }))}. LVĢMC meteoroloģiskā stacija.</small>` +
+        `<small>${Valoda.t('Mērīts {x}.', { x: esc(new Date(s.laiks).toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' })) })} ${Valoda.t('LVĢMC meteoroloģiskā stacija.')}</small>` +
         `<small class="avots-rinda"><a href="${esc(d.avots.url)}" target="_blank" rel="noopener">LVĢMC novērojumi</a> · ${esc(d.avots.licence)}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-vejs', '<b>Vējš tagad</b><span>Tuvumā nav svaigu stacijas datu.</span>');
