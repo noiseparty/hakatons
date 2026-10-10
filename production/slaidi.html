@@ -7,48 +7,47 @@
 <meta name="robots" content="noindex">
 <title>Prezentācija · Krīzes karte · map.repo.lv</title>
 <style>
-  /* Slaidi: viens fails, bez ārējiem resursiem. ← → / atstarpe — pārslēgt, N — piezīmes, T — taimeris, F — pilnekrāns. */
-  :root { --zils: #0077c8; --zils-tumss: #005a99; --sarkans: #d52b1e; --zals: #2e8b4b; --oranzs: #f57e20; --fons: #f2f4f7; --teksts: #1f2933; --teksts2: #5c6670; }
+  /* Slaidi: viens fails, bez ārējiem resursiem. ← → / atstarpe — pārslēgt, Home/End, N — piezīmes, T — taimeris,
+     F — pilnekrāns, P — drukas skats (?print: visi slaidi pēc kārtas; drukājot viens slaids lapā).
+     Izmēri ir no slaida platuma (--w), tāpēc 1920 × 1080 ekrānā pamatteksts ir ~50 px, mazākais teksts ≥ 30 px. */
+  :root { --zils: #0077c8; --zils-tumss: #005a99; --sarkans: #d52b1e; --zals: #1d6b37; --fons: #f2f4f7; --teksts: #1f2933; --teksts2: #4b5563;
+    --w: min(100vw, 177.78vh); }
   * { box-sizing: border-box; }
   html, body { margin: 0; height: 100%; background: #111; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--teksts); }
-  .slaids { display: none; position: absolute; inset: 0; margin: auto; width: min(100vw, 177.78vh); height: min(56.25vw, 100vh);
-    background: #fff; padding: 4.5% 6%; overflow: hidden; font-size: min(2.6vw, 4.6vh); line-height: 1.35; }
-  .slaids.aktivs { display: flex; flex-direction: column; }
-  .slaids h1 { margin: 0 0 .5em; font-size: 2.1em; line-height: 1.15; color: var(--zils-tumss); }
-  .slaids h2 { margin: 0 0 .6em; font-size: 1.6em; line-height: 1.2; color: var(--zils-tumss); }
-  .slaids p, .slaids li { margin: .25em 0; }
-  .slaids ul { margin: .3em 0; padding-left: 1.1em; }
-  .liels { font-size: 1.35em; }
-  .slaids.blivs { font-size: min(2.15vw, 3.8vh); }
-  .slaids.blivs .liels { font-size: 1.2em; }
-  .milzigs { font-size: 3.2em; font-weight: 800; line-height: 1.05; color: var(--sarkans); margin: .1em 0 .2em; }
-  .klusais { color: var(--teksts2); font-size: .8em; }
-  .josla { position: absolute; left: 0; right: 0; bottom: 0; height: 1.6%; background: var(--zils); }
-  .nr { position: absolute; right: 2.5%; top: 2.5%; font-size: .55em; color: var(--teksts2); }
-  .divas { display: grid; grid-template-columns: 1fr 1fr; gap: 4%; align-items: start; flex: 1; min-height: 0; }
-  .divas.plats-kr { grid-template-columns: 1.1fr .9fr; }
-  table { border-collapse: collapse; width: 100%; font-size: .78em; }
-  th, td { text-align: left; padding: .35em .5em; border-bottom: 1px solid #dde2e8; vertical-align: top; }
-  th { color: var(--zils-tumss); font-size: 1.05em; }
-  td.slikti { color: #8a2a1e; } td.labi { color: #1d6b37; font-weight: 600; }
-  .teikums { font-size: 1.15em; border-left: .3em solid var(--zils); padding: .4em .8em; background: #eef5fb; }
-  .soli { display: flex; gap: 2%; margin: .6em 0; }
-  .soli div { flex: 1; text-align: center; padding: .6em .4em; border-radius: .4em; background: var(--zils); color: #fff; font-weight: 700; font-size: 1.1em; }
-  .soli div small { display: block; font-weight: 400; font-size: .65em; opacity: .95; }
-  .karte { list-style: none; padding: 0 !important; font-size: .9em; }
-  .karte li { padding: .25em .5em; margin: .2em 0; border-radius: .3em; background: var(--fons); }
-  .karte li:first-child { background: #fff3c4; } .karte li.d { background: #fde6e4; color: #a81e14; font-weight: 700; }
-  .avoti { columns: 2; column-gap: 4%; font-size: .66em; list-style: none; padding: 0 !important; }
-  .avoti li { break-inside: avoid; padding: .12em 0; }
-  .avoti b { color: var(--zils-tumss); }
-  .bilde { position: relative; display: flex; align-items: center; justify-content: center; min-height: 0; height: 100%; max-height: 100%;
-    border: .12em dashed #9aa5b1; border-radius: .4em; background: var(--fons); color: var(--teksts2); font-size: .6em; text-align: center; padding: .5em; overflow: hidden; }
-  .bilde img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: .3em; }
-  .bilde.ir img + span { display: none; }
-  .bildes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2%; flex: 1; min-height: 0; }
-  .bildes.tris { grid-template-columns: repeat(3, 1fr); }
-  .piezimes { display: none; position: absolute; left: 0; right: 0; bottom: 0; max-height: 38%; overflow: auto; padding: .6em 1.2em;
-    background: rgba(17, 24, 39, .94); color: #f3f4f6; font-size: .62em; line-height: 1.4; }
+  .slaids { display: none; position: absolute; inset: 0; margin: auto; width: var(--w); height: calc(var(--w) * .5625);
+    background: #fff; padding: calc(var(--w) * .04) calc(var(--w) * .05) calc(var(--w) * .035); overflow: hidden;
+    font-size: calc(var(--w) * .026); line-height: 1.3; flex-direction: column; }
+  .slaids.aktivs { display: flex; }
+  .slaids h1 { margin: 0 0 .4em; font-size: 2em; line-height: 1.12; color: var(--zils-tumss); }
+  .slaids h2 { margin: 0 0 .5em; font-size: 1.5em; line-height: 1.15; color: var(--zils-tumss); }
+  .slaids p, .slaids li { margin: .2em 0; }
+  .slaids ul, .slaids ol { margin: .2em 0; padding-left: 1.1em; }
+  .slaids li + li { margin-top: .45em; }
+  .liels { font-size: 1.25em; }
+  .milzigs { font-size: 3.4em; font-weight: 800; line-height: 1; color: var(--sarkans); margin: .1em 0 .15em; }
+  .klusais { color: var(--teksts2); font-size: .66em; }
+  .josla { position: absolute; left: 0; right: 0; bottom: 0; height: calc(var(--w) * .008); background: var(--zils); }
+  .nr { position: absolute; right: calc(var(--w) * .02); top: calc(var(--w) * .012); font-size: .6em; color: var(--teksts2); }
+  .teikums { border-left: .25em solid var(--zils); padding: .35em .7em; background: #eef5fb; }
+  .teikums.sarkans { border-color: var(--sarkans); background: #fdecea; }
+  .saturs { flex: 1; min-height: 0; display: flex; gap: calc(var(--w) * .03); align-items: center; }
+  .teksts { flex: 1 1 0; min-width: 0; }
+  .bildes { flex: 0 0 auto; height: 100%; min-height: 0; display: flex; gap: calc(var(--w) * .015); align-items: center; }
+  .bildes img { height: 100%; width: auto; border-radius: .35em; box-shadow: 0 .1em .6em rgba(0, 0, 0, .25);
+    border: 1px solid #d1d5db; background: #fff; }
+  .bildes.zema { flex: 0 1 auto; max-width: 54%; height: auto; max-height: 100%; }
+  .bildes.zema img { height: auto; width: 100%; max-height: 100%; object-fit: contain; }
+  .soli { display: flex; gap: .4em; margin: .2em 0 .5em; }
+  .soli span { flex: 1; text-align: center; padding: .35em .3em; border-radius: .35em; background: var(--zils); color: #fff; font-weight: 700; }
+  table { border-collapse: collapse; width: 100%; font-size: .68em; }
+  th, td { text-align: left; padding: .38em .5em; border-bottom: 1px solid #d5dbe2; vertical-align: top; }
+  th { color: var(--zils-tumss); }
+  td:first-child { font-weight: 700; white-space: nowrap; }
+  .ok { color: var(--zals); font-weight: 700; }
+  .qr { width: calc(var(--w) * .16); height: calc(var(--w) * .16); image-rendering: pixelated; display: block; }
+  .beigas { display: grid; grid-template-columns: 1fr auto; gap: 4%; align-items: center; flex: 1; min-height: 0; }
+  .piezimes { display: none; position: absolute; left: 0; right: 0; bottom: 0; max-height: 42%; overflow: auto; padding: .6em 1.2em;
+    background: rgba(17, 24, 39, .95); color: #f3f4f6; font-size: .62em; line-height: 1.4; z-index: 2; }
   body.ar-piezimem .slaids.aktivs .piezimes { display: block; }
   .piezimes b { color: #93c5fd; }
   #taimeris { position: fixed; top: 8px; right: 10px; z-index: 5; padding: 4px 10px; border-radius: 6px; background: rgba(0, 0, 0, .65); color: #fff;
@@ -57,11 +56,17 @@
   #palidziba { position: fixed; bottom: 8px; left: 10px; z-index: 5; color: #9ca3af; font: 12px system-ui, sans-serif; }
   .vadiba { position: fixed; bottom: 6px; right: 10px; z-index: 5; display: flex; gap: 6px; }
   .vadiba button { font: 600 16px system-ui, sans-serif; min-width: 44px; min-height: 44px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; cursor: pointer; }
+  /* ?print: visi slaidi viens zem otra (pārskatam un drukai no pārlūka) */
+  body.druka { height: auto; background: #555; --w: min(100vw, 1920px); }
+  body.druka .slaids { display: flex; position: relative; margin: 0 auto 16px; }
+  body.druka #taimeris, body.druka #palidziba, body.druka .vadiba { display: none !important; }
   @media print {
-    @page { size: 297mm 167mm; margin: 0; }
-    html, body { background: #fff; height: auto; }
-    .slaids { display: flex !important; flex-direction: column; position: relative; width: 297mm; height: 167mm; font-size: 15pt; page-break-after: always; break-after: page; }
+    @page { size: 338.67mm 190.5mm; margin: 0; }
+    :root, body.druka { --w: 338.67mm; }
+    html, body { background: #fff !important; height: auto; }
+    .slaids { display: flex !important; position: relative; margin: 0 !important; break-after: page; page-break-after: always; box-shadow: none; }
     .piezimes, #taimeris, #palidziba, .vadiba { display: none !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   }
   .ik { width: 1em; height: 1em; vertical-align: -.15em; }
 </style>
@@ -87,253 +92,246 @@
 <link rel="apple-touch-icon" href="ikonas/ikona-180.png" sizes="180x180">
 </head>
 <body>
+<!-- Stāsts (notes/pitch.md): problēma → demo (Ogre plūdi, adrese, 112) → kā uzbūvēts (MI, meklētājs, dati) → kritēriji →
+     ko valstij publicēt → noturība → lūgums. data-laiks = sākums, data-ilgums = sekundes; kopā 9:30, 30 s rezervei. -->
 
-<!-- 1 · 0:00–0:40 -->
-<section class="slaids" data-laiks="0:00">
+<!-- 1 · problēma -->
+<section class="slaids" data-laiks="0:00" data-ilgums="40">
   <p class="klusais">2026. gada 22.–23. augusts · vētra</p>
   <p class="milzigs">~260 000</p>
-  <p class="liels">elektrības lietotāju skāra atslēgumi.</p>
-  <p class="liels" style="margin-top:1em">Kur man iet? Vai mana māja ir plūdu zonā? Kur ir siltums un ūdens?</p>
-  <p class="klusais" style="margin-top:auto">Avots: LSM 26.08.2026., Sadales tīkls (ap 245 000 vienlaikus 23.08.)</p>
-  <aside class="piezimes"><b>0:00–0:40 · Teikt:</b> Augusta vētrā elektrības atslēgumi skāra ap 260 000 lietotāju. Viņu pašvaldībai ir civilās aizsardzības plāns — tajā ir rakstīts, kur pulcēties, kur izmitina, kas ir bīstams. Bet neviens to neatrada, jo tas ir 200+ lappušu PDF.</aside>
+  <p class="liels">elektrības lietotāju palika bez strāvas.</p>
+  <p class="liels" style="margin-top:.8em"><b>Kur man iet? Vai mana māja ir plūdu zonā?</b></p>
+  <p class="klusais" style="margin-top:auto">Avots: LSM 26.08.2026.; Sadales tīkls (ap 245 000 vienlaikus 23.08.)</p>
+  <aside class="piezimes"><b>0:00–0:40 · Teikt:</b> Augusta vētrā elektrības atslēgumi skāra ap 260 000 lietotāju. Cilvēkam telefonā ir divi jautājumi: kur man iet un vai mana māja ir bīstamā vietā. Atbilde eksistē — pašvaldības civilās aizsardzības plānā. Bet to neviens neatrada.</aside>
 </section>
 
-<!-- 2 · 0:40–1:20 -->
-<section class="slaids blivs" data-laiks="0:40">
-  <h1>Informācija ir. Bet ne tur, kur to meklē.</h1>
+<!-- 2 · problēma: atbilde ir PDF -->
+<section class="slaids" data-laiks="0:40" data-ilgums="35">
+  <h1>Atbilde ir. Tā ir 200 lappušu PDF.</h1>
   <ul class="liels">
-    <li><b>42</b> pašvaldības · <b>42</b> dažādi PDF · <b>200–800</b> lpp. katrs</li>
+    <li><b>42</b> pašvaldību CA plāni, <b>200–800</b> lpp. katrs</li>
     <li><b>1 791</b> karte kā attēls, nevis dati</li>
-    <li><b>12</b> pašvaldības pulcēšanās un izmitināšanas vietas publiski nepublicē</li>
-    <li>Nevienā plānā nav siltuma, ūdens vai pārtikas izdales punktu</li>
+    <li><b>10</b> pašvaldības pulcēšanās vietas publiski nepublicē</li>
   </ul>
-  <aside class="piezimes"><b>0:40–1:20 · Teikt:</b> Informācija eksistē, bet ne tādā formā, kas cilvēkam palīdz krīzes brīdī — telefonā, ar 5 % baterijas.</aside>
+  <p class="teikums liels" style="margin-top:auto">Krīzē cilvēks uzraksta vienu rindu telefonā.</p>
+  <aside class="piezimes"><b>0:40–1:15 · Teikt:</b> Informācija eksistē, bet ne tādā formā, kas palīdz krīzes brīdī — telefonā, ar 5 % baterijas. 42 plāni, katrs savā formātā, kartes kā bildes. 10 pašvaldības sarakstus tur nepublicētos pielikumos. Krīzē neviens nelasa PDF — cilvēks uzraksta vienu rindu.</aside>
 </section>
 
-<!-- 3 · 1:20–2:05 -->
-<section class="slaids blivs" data-laiks="1:20">
-  <h2>geolatvija.lv 1.0 → map.repo.lv 2.0</h2>
-  <table>
-    <tr><th>geolatvija.lv (1.0)</th><th>map.repo.lv (2.0)</th></tr>
-    <tr><td class="slikti">Katalogs: 282 ģeoprodukti</td><td class="labi">Viena rinda: „Kas Jums vajadzīgs?”</td></tr>
-    <tr><td class="slikti">Vispirms sīkdatņu un reklāmas logs</td><td class="labi">Uzreiz meklēšana, bez reģistrācijas</td></tr>
-    <tr><td class="slikti">Noklusējumā teritorijas plānojuma slāņi</td><td class="labi">Noklusējumā: tuvākā droša vieta</td></tr>
-    <tr><td class="slikti">Nav lēmuma, nav tuvākās patvertnes, nav maršruta</td><td class="labi">Lēmums + tuvākās vietas + maršruts</td></tr>
-    <tr><td class="slikti">Plūdi, patvertnes, brīdinājumi — jāatrod pašam</td><td class="labi">LVĢMC brīdinājumi un plūdu zona pie Jūsu adreses</td></tr>
-  </table>
-  <p class="teikums" style="margin-top:.8em">Tie paši oficiālie avoti — data.gov.lv, VZD, LVĢMC, LĢIA, LVC. <b>Katalogs → atbilde.</b></p>
-  <aside class="piezimes"><b>1:20–2:05 · Teikt:</b> Valstij jau ir ģeoportāls. Tas ir labs plānotājam: 282 datu produkti, ko var atrast un ieslēgt. Krīzē cilvēkam nav laika meklēt katalogā. Mēs ņemam tos pašus oficiālos datus un dodam vienu atbildi. <b>Tonis:</b> „tas ir rīks plānotājiem”, nevis „tas ir slikts” — VARAM ir organizators. Ekrānšāviņš no geolatvija.lv pirmā ekrāna — pēc izvēles.</aside>
-</section>
-
-<!-- 4 · 2:05–2:35 -->
-<section class="slaids blivs" data-laiks="2:05">
-  <div class="divas plats-kr">
-    <div>
-      <h2>Uzrakstiet, kas notiek un kur.<br>Saņemiet vienu atbildi.</h2>
-      <ul class="karte">
-        <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#brid"></use></svg> LVĢMC brīdinājumi šai vietai</li>
-        <li><b>Lēmums:</b> plūdu zona — jā / nē pie Jūsu adreses</li>
-        <li>Fakti: upes līmenis un 24 h izmaiņa, nokrišņi un augsne, ceļi</li>
-        <li>Tuvākās vietas ar avotu, licenci un maršrutu</li>
-        <li>Padoms · „Kas notiks tālāk”</li>
-      </ul>
-      <p class="klusais">Neprasām neko, ko valsts jau zina: adrese no VZD vai telefona, pārējais no atvērtajiem datiem.</p>
+<!-- 3 · risinājums -->
+<section class="slaids" data-laiks="1:15" data-ilgums="30">
+  <h2>Viena rinda → viena kartīte ar lēmumu</h2>
+  <div class="saturs">
+    <div class="teksts">
+      <p class="liels">„Ogre, plūdi”</p>
+      <ol>
+        <li>Brīdinājumi šai vietai</li>
+        <li>Lēmums: plūdu zona jā / nē</li>
+        <li>Tuvākās vietas, maršruts</li>
+        <li>Padoms, kas notiks tālāk</li>
+      </ol>
     </div>
-    <div class="bilde" data-bilde="01-sakums.webp"><span>Ekrānšāviņš: 01-sakums.webp</span></div>
+    <div class="bildes zema"><img src="slaidi/01-dators-ogre-pludi.webp" width="1280" height="800" alt="map.repo.lv datorā: vaicājums „Ogre, plūdi”, kreisajā pusē kartīte ar LVĢMC brīdinājumu, prognozi un upes līmeni, labajā karte ar Ogres robežu un tuvākajām vietām"></div>
   </div>
-  <aside class="piezimes"><b>2:05–2:35 · Teikt:</b> Mēs neprasām neko, ko valsts jau zina. Adrese — no VZD adrešu reģistra vai telefona atrašanās vietas. Pārējais — no atvērtajiem datiem un pašvaldību plāniem.</aside>
+  <aside class="piezimes"><b>1:15–1:45 · Teikt:</b> map.repo.lv: Jūs uzrakstāt, kas notiek un kur. Saņemat vienu kartīti: brīdinājumi, lēmums, tuvākās vietas, padoms. Mēs neprasām neko, ko valsts jau zina: adrese — no VZD vai telefona, pārējais — no atvērtajiem datiem. Tagad parādīšu telefonā.</aside>
 </section>
 
-<!-- 5 · 2:35–3:00 · kritērijs 3 -->
-<section class="slaids" data-laiks="2:35">
-  <h2>Trīs soļi. Kartīte ir kopsavilkums.</h2>
-  <div class="soli">
-    <div>1 · Vieta<small><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#vieta"></use></svg> vai adrese (VZD)</small></div>
-    <div>2 · Vajadzība<small>„plūdi Ogrē”</small></div>
-    <div>3 · Rezultāts<small>viena kartīte</small></div>
+<!-- 4 · demo: Ogre, plūdi -->
+<section class="slaids" data-laiks="1:45" data-ilgums="60">
+  <h2>Demo: „Ogre, plūdi”</h2>
+  <div class="saturs">
+    <div class="teksts">
+      <ul>
+        <li>LVĢMC brīdinājums šai vietai</li>
+        <li>Prognoze nākamajām 24 h</li>
+        <li>Upe: <b>1,53 m zem kritiskā</b> (CA plāns, 29. lpp.)</li>
+        <li>Katrai rindai avots un licence</li>
+      </ul>
+    </div>
+    <div class="bildes"><img src="slaidi/02-ogre-pludi.webp" width="780" height="1688" alt="Telefonā: karte ar Ogres robežu, zem tās kartīte ar LVĢMC brīdinājumu un prognozi"><img src="slaidi/03-ogre-upe.webp" width="780" height="1688" alt="Telefonā: kartīte ar upes Ogre līmeni 20,62 m, 1,53 m zem CA plāna kritiskā 22,15 m"></div>
   </div>
-  <p class="teikums">Soļi ir trīs — vieta, vajadzība, rezultāts — un rezultāta kartīte pati ir kopsavilkums: brīdinājumi → lēmums → fakti → tuvākās vietas → padoms → kas notiks tālāk. Krīzē cilvēks neklikšķinās cauri četriem ekrāniem.</p>
-  <p class="klusais">Četru soļu versiju uzbūvējām — un apzināti aizstājām ar vienu kartīti.</p>
-  <aside class="piezimes"><b>2:35–3:00 · Teikt šo teikumu burtiski</b> (vērtēšanas kritērijs 3: 3–6 soļi, kopsavilkums, skaidrs noslēgums). Ja jautā „Kāpēc nav soļu?” — uzbūvējām 4 ekrānu versiju (#36) un aizstājām.</aside>
+  <aside class="piezimes"><b>1:45–2:45 · DZĪVAIS DEMO</b> (telefons, ekrāns spoguļots; rezerve — šie ekrānšāviņi, 10.10. ap 05:00). Ierakstīt „Ogre, plūdi”. Rādīt: brīdinājums šai vietai → nākamās 24 h → plūdu riska zona → upes līmenis pret CA plāna kritisko līmeni ar lappusi → padoms (pārbaudīts pret VUGD) → „Kas notiks tālāk”. Teikt: „Katrai rindai — avots un licence.” Pirms uzstāšanās „uzsildīt” vaicājumu: LVĢMC plūdu WMS ir lēns, ekrānšāviņa brīdī plūdu zonas rinda vēl lādējās.</aside>
 </section>
 
-<!-- 6 · 3:00–5:00 · demo -->
-<section class="slaids" data-laiks="3:00">
-  <h2>Demo telefonā: „plūdi Mednieku iela 9 Ogre”</h2>
-  <div class="bildes">
-    <div class="bilde" data-bilde="02-pludi-karte.webp"><span>02-pludi-karte.webp</span></div>
-    <div class="bilde" data-bilde="03-pludi-lemums.webp"><span>03-pludi-lemums.webp</span></div>
-    <div class="bilde" data-bilde="04-pludi-drosas-vietas.webp"><span>04-pludi-drosas-vietas.webp</span></div>
-    <div class="bilde" data-bilde="05-pludi-padoms-talak.webp"><span>05-pludi-padoms-talak.webp</span></div>
+<!-- 5 · demo: adrese -->
+<section class="slaids" data-laiks="2:45" data-ilgums="50">
+  <h2>Ar adresi: lēmums pie Jūsu durvīm</h2>
+  <div class="saturs">
+    <div class="teksts">
+      <p class="liels">„plūdi Brīvības iela 33 Ogre”</p>
+      <ul>
+        <li>Adresi atrod VZD reģistrs</li>
+        <li>Pulcēšanās vieta: 542 m</li>
+        <li>Saite uz CA plāna 121. lpp.</li>
+        <li>Maršruts vienā pieskārienā</li>
+      </ul>
+    </div>
+    <div class="bildes"><img src="slaidi/04-adrese-karte.webp" width="780" height="1688" alt="Telefonā: karte ar atzīmētu adresi Brīvības iela 33, Ogre, un tuvākajām vietām"><img src="slaidi/05-adrese-pulcesanas.webp" width="780" height="1688" alt="Telefonā: tuvākā pulcēšanās vieta Ogres novada kultūras centrs 542 m, avots Ogres novada CA plāns, 121. lpp., maršruta saites"></div>
   </div>
-  <p class="klusais">Lēmums → plūdu zona laukumā → upes līmenis → pulcēšanās vieta ar CA plāna lappusi → padoms un „Kas notiks tālāk”.</p>
-  <aside class="piezimes"><b>3:00–5:00 · DZĪVAIS DEMO</b> (telefons, ekrāns spoguļots; rezerve — video map-repo-lv-demo-390x844.webm). 1) „Rādīt tuvākos man” vai adrese; 2) ierakstīt „plūdi Mednieku iela 9 Ogre”; 3) kartīte atveras pusē: lēmums, zona kā laukums, upes stacija, „Nokrišņi un augsne”, ceļi 5 km, pulcēšanās vieta ar lappusi, „Kas notiks tālāk”. Pirms uzstāšanās „uzsildīt” šo adresi (plūdu WMS ir lēns).</aside>
+  <aside class="piezimes"><b>2:45–3:35 · Teikt:</b> Ja pievienoju adresi (šeit — pašvaldības ēka), lēmums ir par manu māju: vai tā ir plūdu zonā, kur ir tuvākā pulcēšanās vieta un kā tur nokļūt. Pievērsiet uzmanību: „Atvērt CA plānu, 121. lpp.” — katru vietu var pārbaudīt oriģinālā. Otrajai vietai rakstīts „plāna koordinātas kļūdainas, vieta noteikta pēc adreses (VZD)” — par to pēc minūtes. Ja jautā par soļiem: vieta → vajadzība → rezultāts; kartīte pati ir kopsavilkums.</aside>
 </section>
 
-<!-- 7 · 5:00–5:20 · 112 -->
-<section class="slaids" data-laiks="5:00">
-  <div class="divas">
-    <div>
-      <h2>Dzīvība pirmajā vietā</h2>
+<!-- 6 · demo: 112 -->
+<section class="slaids" data-laiks="3:35" data-ilgums="20">
+  <h2>Dzīvība — pirmajā vietā</h2>
+  <div class="saturs">
+    <div class="teksts">
       <p class="liels">„cilvēks nav pie samaņas”</p>
-      <ul class="karte"><li class="d"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt.</li></ul>
-      <p>Bez pogām un tel: saitēm — pasakām skaidri. Tuvākā 24/7 neatliekamā palīdzība — kartītē.</p>
+      <p class="teikums sarkans"><b>Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt.</b></p>
+      <p>Bez zvana pogām: pasakām skaidri, ko darīt.</p>
     </div>
-    <div class="bilde" data-bilde="06-112-rinda.webp"><span>06-112-rinda.webp</span></div>
+    <div class="bildes"><img src="slaidi/06-112.webp" width="780" height="1688" alt="Telefonā: sarkana rinda „Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt”, padoms un „Kas notiks tālāk”"></div>
   </div>
-  <aside class="piezimes"><b>5:00–5:20 · Teikt:</b> mēs nerādām pogu, mēs pasakām skaidri. Sarkana rinda kartītes augšā.</aside>
+  <aside class="piezimes"><b>3:35–3:55 · Teikt:</b> Ja teksts izklausās pēc dzīvības draudiem, kartītes augšā ir sarkana rinda „Zvaniet 112 tūlīt”. Mēs nerādām pogu — mēs pasakām skaidri. Meklētājs to saprot arī krieviski un angliski.</aside>
 </section>
 
-<!-- 8 · 5:20–6:00 · demo panelis -->
-<section class="slaids" data-laiks="5:20">
-  <h2>Simulācija: kā tas izskatās īstā krīzē</h2>
-  <div class="bildes">
-    <div class="bilde" data-bilde="07-demo-vetra-2026.webp"><span>07-demo-vetra-2026.webp</span></div>
-    <div class="bilde" data-bilde="08-demo-vetra-2026-karte.webp"><span>08-demo-vetra-2026-karte.webp</span></div>
-    <div class="bilde" data-bilde="09-demo-pludi-ogre.webp"><span>09-demo-pludi-ogre.webp</span></div>
-    <div class="bilde" data-bilde="10-demo-pludi-ogre-karte.webp"><span>10-demo-pludi-ogre-karte.webp</span></div>
-  </div>
-  <p class="klusais">map.repo.lv/?demo=vetra-2026 · ?demo=pludi-ogre (augstiene ≥23 m, LĢIA augstuma modelis) · ?demo=nakts — katrā „SIMULĀCIJA”.</p>
-  <aside class="piezimes"><b>5:20–6:00 · 30–40 s:</b> divi scenāriji. Katru reizi teikt „simulācija”. Kāpēc 23 m, nevis 15 m: Ogrē Daugava ir ~17–18 m, ≥15 m aptver 99,6 % teritorijas. Pārējie (vejs, vetra, drons, bez-sakariem) — jautājumiem.</aside>
-</section>
-
-<!-- 9 · 6:00–7:00 · MI -->
-<section class="slaids blivs" data-laiks="6:00">
+<!-- 7 · kā uzbūvēts: MI izvilkšana -->
+<section class="slaids" data-laiks="3:55" data-ilgums="55">
   <h2>MI nav čatbots. MI ir auditors.</h2>
+  <div class="saturs">
+    <div class="teksts">
+      <ul>
+        <li><b>42</b> plāni → <b>776</b> pulcēšanās, <b>579</b> izmitināšanas vietas</li>
+        <li>Katrai: lappuse, citāts, VZD pārbaude</li>
+        <li><b>41</b> koordinātu kļūda oficiālos plānos</li>
+      </ul>
+      <p class="teikums" style="margin-top:.6em">Jūrmalas vieta Nr. 10 plānā ir <b>Lietuvā</b> (85. lpp.)</p>
+    </div>
+    <div class="bildes zema"><img src="slaidi/07-datu-avoti.webp" width="780" height="540" alt="Panelis „Datu avoti”: Pašvaldību civilās aizsardzības plāni, oficiāls dokuments; vietas izvilktas ar AI un regex, katra pārbaudīta pret plāna tekstu"></div>
+  </div>
+  <aside class="piezimes"><b>3:55–4:50 · Teikt:</b> MI šeit nav čatbots — tas ir auditors. MI aģenti izlasīja visus 42 plānus un izvilka 776 pulcēšanās un 579 izmitināšanas vietas. Katrai — lappuse un burtisks citāts, ko skripts pārbauda pret plāna tekstu, un adrese pret VZD reģistru. Tā atradām 41 koordinātu kļūdu oficiāli apstiprinātos plānos. Piemērs: Jūrmalas pulcēšanās vieta Nr. 10 plānā ir Lietuvā — viena cipara kļūda, ~100 km. (Saraksts: notes/ca-plani-kvalitate.md.)</aside>
+</section>
+
+<!-- 8 · kā uzbūvēts: meklētājs -->
+<section class="slaids" data-laiks="4:50" data-ilgums="35">
+  <h2>Meklētājs: noteikumi, nevis ģenerēts teksts</h2>
   <ul class="liels">
-    <li>MI izlasīja <b>42</b> plānus un izvilka <b>776</b> pulcēšanās un <b>579</b> izmitināšanas vietas (104 213 vietu) — katrai lappuse un burtisks citāts</li>
-    <li>Katrs punkts pārbaudīts pret VZD adrešu reģistru un pašvaldības robežu</li>
-    <li><b>41</b> koordinātu kļūda oficiāli apstiprinātos plānos</li>
-    <li>Meklētājs: <b>127</b> scenāriji LV/RU/EN, <b>95 %</b> pareizi uz 563 vaicājumiem (bija 77 %; neredzētajos 89,5 %) — bez MI darbības laikā</li>
+    <li><b>129</b> krīzes scenāriji, LV / RU / EN</li>
+    <li><b>96,1 %</b> pareizi (609 vaicājumi); <b>91,4 %</b> uz nelabotajiem</li>
+    <li>Darbības laikā MI nav: ātri, vienādi visiem, arī bez interneta</li>
   </ul>
-  <p class="teikums">Jūrmalas pulcēšanās vieta Nr. 10 (Melluži) plānā ir <b>Lietuvā</b>: 56,064 vietā 56,964 — ~100 km kļūda (oriģinālais PDF, 85. lpp.).</p>
-  <aside class="piezimes"><b>6:00–7:00 · Teikt:</b> MI šeit nav čatbots — tas ir auditors. Tas pārvērta dokumentus, ko neviens nelasa, datos, kurus var pārbaudīt — un atrada kļūdas, ko neviens nebija pamanījis. Rādīt plāna 85. lpp. un karti blakus (ekrānšāviņš — jāpievieno). Meklētājs: 127 scenāriji LV/RU/EN; 95,0 % uz 563 vaicājumiem (no 77,3 %), godīgi — 89,5 % uz neredzētajiem; MI rakstīja atslēgvārdus un testus, darbības laikā noteikumi, nevis ģenerēts teksts.</aside>
+  <p class="teikums" style="margin-top:auto">MI rakstīja atslēgvārdus un testus. Atbildi dod pārbaudāmi noteikumi.</p>
+  <aside class="piezimes"><b>4:50–5:25 · Teikt:</b> Krīzē atbildei jābūt ātrai, vienādai visiem un pārbaudāmai — LLM var izdomāt adresi vai numuru. Tāpēc MI palīdzēja uzrakstīt atslēgvārdus un 609 testa vaicājumus, bet pats meklētājs ir noteikumi pārlūkā: 129 scenāriji, 96,1 % pareizi uz 609 vaicājumiem, 91,4 % uz vaicājumiem, ko labojot neskatījāmies. Nav API izmaksu, strādā arī bez interneta. (Mērīts 10.10. ar src/meklesana/testi.py.)</aside>
 </section>
 
-<!-- 10 · 7:00–7:40 · avoti -->
-<section class="slaids blivs" data-laiks="7:00">
-  <h2>33 atvērto datu avoti + 2 atklāti atzīmēti <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg></h2>
-  <ul class="avoti" style="font-size:.58em">
-    <li><b>VZD</b> adrešu reģistrs — CC BY 4.0</li>
-    <li><b>42 pašvaldību CA plāni</b> — oficiāls dokuments</li>
-    <li><b>VM</b> 24/7 slimnīcas — oficiāls dokuments</li>
-    <li><b>IeM IC</b> (4): ārstniecības iestādes, VP iecirkņi, pašvaldības policija, VUGD depo — CC0</li>
-    <li><b>ZVA</b> aptiekas — CC0</li>
-    <li><b>LVĢMC</b> (7): ūdens līmenis, hidroloģiskās prognozes, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām, meteoroloģiskie novērojumi, zibens režģis — CC0</li>
-    <li><b>FMI</b> zibens, 30 min — CC BY 4.0</li>
-    <li><b>Open-Meteo</b> nokrišņi un augsne — CC BY 4.0</li>
-    <li><b>LVC / NAP</b> ceļu notikumi un satiksme — CC0</li>
-    <li><b>VKCP IĢIS</b> ūdens ņemšanas vietas — CC0</li>
-    <li><b>GTFS</b> (3): Rīgas satiksme, ATD, VIVI pieturas — CC0</li>
-    <li><b>UR</b> publisko personu saraksts (pašvaldību kontakti) — CC0</li>
-    <li><b>VPVKAC</b> kontaktpunkti — CC0</li>
-    <li><b>OpenStreetMap</b> (6): bankomāti un DUS, noturības punktu kandidāti, dzeramais ūdens, bezmaksas Wi-Fi, EV uzlāde, veterinārās klīnikas — ODbL</li>
-    <li><b>OpenStreetMap</b> karšu fons — ODbL</li>
-    <li><b>OpenTopoMap</b> reljefs — CC BY-SA</li>
-    <li><b>Latvijas Radio</b> LR1 frekvences — oficiāli fakti (LR / SPRK), nav autortiesību objekts</li>
-    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> <b>VUGD / 112.lv</b> patvertnes — licence nav norādīta</li>
-    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> <b>Bankas</b> bankomātu saraksts (845, 111 kritiskie) — licence nav norādīta</li>
+<!-- 9 · kā uzbūvēts: atvērtie dati -->
+<section class="slaids" data-laiks="5:25" data-ilgums="40">
+  <h2>33 atvērto datu avoti — katram licence</h2>
+  <ul style="font-size:.9em">
+    <li><b>LVĢMC</b> (7), <b>FMI</b>, <b>Open-Meteo</b>: brīdinājumi, upes, plūdi, zibens — CC0 / CC BY</li>
+    <li><b>VZD</b> adreses, <b>IeM IC</b> (4), <b>VM</b>, <b>ZVA</b>, <b>UR</b>, <b>VPVKAC</b>, <b>VKCP</b> — CC0 / CC BY</li>
+    <li><b>42 CA plāni</b> — oficiāls dokuments, ar lappusi</li>
+    <li><b>LVC</b> ceļi, <b>GTFS</b> (3) — CC0; <b>LR1</b> frekvences — oficiāli fakti (LR / SPRK), nav autortiesību objekts</li>
+    <li><b>OpenStreetMap</b> (6 slāņi + fons), <b>OpenTopoMap</b> — ODbL / CC BY-SA</li>
+    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> + 2 bez licences, atzīmēti: patvertnes, bankomāti</li>
   </ul>
-  <p class="klusais">Demo scenārijā arī LĢIA 20 m augstuma modelis (CC BY 4.0). Panelī „Datu avoti” — viss saraksts; 2 mūsu simulētie prototipa dati (zīme „SIMULĒTI”) tur ir atsevišķi un nav skaitīti.</p>
-  <aside class="piezimes"><b>7:00–7:40 · Teikt:</b> Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes, banku bankomāti), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. (Vērtēšanas kritērijs 5.) Skaitam: 1 + 1 + 1 + 4 + 1 + 7 + 1 + 1 + 1 + 1 + 3 + 1 + 1 + 6 + 1 + 1 + 1 (LR1) = 33. Jaunākie: 4 OSM slāņi (ūdens, Wi-Fi, EV, veterināri), LR1 frekvences, UR un VPVKAC kontakti.</aside>
+  <aside class="piezimes"><b>5:25–6:05 · Teikt:</b> Katrs punkts kartē rāda savu avotu un licenci — kritērijs „katra atvērto datu kopa ir pluss”. 33 avoti: LVĢMC 7, IeM IC 4, GTFS 3, OSM 6 + fons, pārējie pa vienam (summa: 1+1+1+4+1+7+1+1+1+1+3+1+1+6+1+1+1 = 33; pēdējais ir LR1). Kur licences nav — 112.lv patvertnes (781) un banku bankomāti (845, no tiem 111 kritiskie) — mēs to atklāti norādām ar ⚠ un aicinām publicēt. LR1 frekvences ir oficiāli fakti (LR / SPRK), nav autortiesību objekts, tāpēc ⚠ nav. 2 simulētie prototipa slāņi nav skaitīti un ir marķēti „SIMULĒTI”.</aside>
 </section>
 
-<!-- 11 · 7:40–8:10 · trūkstošie dati (notes/missing_data.md) -->
-<section class="slaids blivs" data-laiks="7:40">
-  <h2>Trūkstošie dati: vēl 30 datu kopas nav publiskas</h2>
-  <table style="font-size:.7em">
-    <tr><th>Dati</th><th>Kam pieder</th><th>Prasām</th></tr>
-    <tr><td><b>Patvertņu saraksts</b> (781)</td><td>VUGD / IeM IC</td><td>data.gov.lv ar CC0: ietilpība, pieejamība, dzīvnieki, <b>dzīvais statuss</b></td></tr>
-    <tr><td><b>Evakuācijas un izmitināšanas vietas</b></td><td>42 pašvaldības</td><td>Vienots GeoJSON/CSV; 10 pašvaldības tur pielikumos; Ventspils — <b>pat ar OCR</b> tikai titullapas „ierobežotas pieejamības”</td></tr>
-    <tr><td><b>Elektrības atslēgumi</b> (dzīvi)</td><td>Sadales tīkls</td><td>Poligoni + atjaunošanas prognoze kā plūsma, CC0</td></tr>
-    <tr><td><b>Mobilo sakaru stāvoklis</b></td><td>LMT, Tele2, Bite; SPRK</td><td>Bāzes staciju darbība pa novadiem krīzes laikā</td></tr>
-    <tr><td><b>LV-ALERT ziņojumi</b></td><td>VUGD</td><td>Izsūtīto ziņu plūsma un arhīvs</td></tr>
+<!-- 10 · vērtēšanas kritēriji -->
+<section class="slaids" data-laiks="6:05" data-ilgums="55">
+  <h2>Vērtēšanas kritēriji → kur tie redzami</h2>
+  <table>
+    <tr><th>Kritērijs</th><th>map.repo.lv</th></tr>
+    <tr><td>1 · Konkrēts rezultāts</td><td>Lēmums: plūdu zona jā / nē, tuvākā vieta ar maršrutu, „zvaniet 112”</td></tr>
+    <tr><td>2 · Tikai vienreiz</td><td>Prasām tikai vietu; adrese no VZD vai GPS, pārējais no 33 avotiem</td></tr>
+    <tr><td>3 · 3–6 soļi, kopsavilkums</td><td>Vieta → vajadzība → rezultāts; kartīte ir kopsavilkums; „Ziņot” ar „Pārbaudiet”</td></tr>
+    <tr><td>4 · Telefonā, bez strupceļiem</td><td>390 px; GPS liegts → adrese; bez interneta → saglabātie dati</td></tr>
+    <tr><td>5 · MI un atvērtie dati</td><td>MI izvilka 42 plānus un atrada 41 kļūdu; avots un licence katram punktam</td></tr>
   </table>
-  <p class="teikums" style="margin-top:.7em">Šis saraksts ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā.</p>
-  <p class="klusais">Pilns saraksts: map.repo.lv/trukstosie.html (panelī „Datu avoti” → „Ko vēl vajadzētu publicēt”).</p>
-  <aside class="piezimes"><b>7:40–8:10 · Teikt (3 teikumi no notes/missing_data.md):</b> 1) Karte strādā uz 33 atvērto datu avotiem — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji. 2) Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas. 3) Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā.</aside>
+  <aside class="piezimes"><b>6:05–7:00 · Teikt</b> (vērtēšanas kritēriji burtiski): 1) Iedzīvotājs saņem lēmumu, nevis „paldies”. 2) Mēs prasām tikai vietu — pārējo zina reģistri un atvērtie dati. 3) Soļi ir trīs — vieta, vajadzība, rezultāts — un rezultāta kartīte pati ir kopsavilkums; četru ekrānu versiju uzbūvējām (#36) un apzināti aizstājām, jo krīzē cilvēks neklikšķinās cauri četriem ekrāniem. Ziņojumam par bīstamību ir 3 ekrāni ar kopsavilkumu pirms nosūtīšanas. 4) Telefonā nav strupceļu: liegta atrašanās vieta → adrese, nav interneta → saglabātie dati, avots nestrādā → kartīte to pasaka. 5) MI un 33 atvērtie avoti — iepriekšējie slaidi.</aside>
 </section>
 
-<!-- 12 · 8:10–8:35 · uzticamība -->
-<section class="slaids blivs" data-laiks="8:10">
-  <div class="divas">
-    <div>
-      <h2>Bez strupceļiem</h2>
-      <ul style="font-size:.82em">
-        <li><b>statuss.html</b> — katram avotam redzams, vai tas šobrīd darbojas un cik veci ir dati (ik 15 min, 24 h josla)</li>
-        <li><b>Bez interneta</b> — pēdējie dati un „Saglabāt manu apkārtni”; pievienojams sākuma ekrānam</li>
-        <li><b>Dalīties / Drukāt</b> — saite atver to pašu rezultātu; izdrukā ar QR kodu</li>
-        <li><b>Ziņot par bīstamību</b> — iedzīvotāju ziņojumi, bez IP, moderēti</li>
-        <li><b>info.html</b> „Svarīgi krīzē” — 112, sirēnas, LV-ALERT, LR1 frekvences, krājumi 72 h; izdrukājams</li>
-        <li>Telefonā: kartīte apakšā, karte ≥65 % ekrāna; axe-core 0 pieejamības kļūdu</li>
-        <li>Atrašanās vieta liegta, API nepieejams → vienmēr nākamais solis</li>
+<!-- 11 · ko valstij publicēt -->
+<section class="slaids" data-laiks="7:00" data-ilgums="45">
+  <h2>Ko valstij publicēt: 5 no 30 trūkstošajām kopām</h2>
+  <table>
+    <tr><th>Dati</th><th>Kam pieder</th><th>Prasām</th></tr>
+    <tr><td>Patvertnes (781)</td><td>VUGD</td><td>data.gov.lv ar CC0, ietilpība, <b>dzīvais statuss</b></td></tr>
+    <tr><td>Evakuācijas vietas</td><td>42 pašvaldības</td><td>Vienots GeoJSON / CSV, publicēti pielikumi</td></tr>
+    <tr><td>Elektrības atslēgumi</td><td>Sadales tīkls</td><td>Poligoni un atjaunošanas laiks kā plūsma</td></tr>
+    <tr><td>Mobilie sakari</td><td>LMT, Tele2, Bite; SPRK</td><td>Bāzes staciju darbība pa novadiem</td></tr>
+    <tr><td>LV-ALERT ziņas</td><td>VUGD</td><td>Izsūtīto ziņu plūsma un arhīvs</td></tr>
+  </table>
+  <p class="klusais" style="margin-top:auto">Visas 30: map.repo.lv/trukstosie.html</p>
+  <aside class="piezimes"><b>7:00–7:45 · Teikt</b> (notes/missing_data.md): Karte strādā uz 33 atvērto datu avotiem. Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas. Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā.</aside>
+</section>
+
+<!-- 12 · noturība -->
+<section class="slaids" data-laiks="7:45" data-ilgums="45">
+  <h2>Strādā, kad kaut kas nestrādā</h2>
+  <div class="saturs">
+    <div class="teksts">
+      <ul>
+        <li><b>Nav interneta:</b> saglabātie dati</li>
+        <li><b>LVĢMC nedarbojas:</b> Meteoalarm</li>
+        <li><b>Nav strāvas:</b> LR1 radio karte</li>
+        <li><b>Avots krīt:</b> statuss.html to rāda</li>
       </ul>
     </div>
-    <div class="bilde" data-bilde="11-statuss.webp"><span>11-statuss.webp</span></div>
+    <div class="bildes"><img src="slaidi/08-lr1-radio.webp" width="780" height="1540" alt="info.html: Latvijas Radio 1 frekvenču tabula un karte ar 16 raidītājiem"></div>
   </div>
-  <aside class="piezimes"><b>8:10–8:35 · 10 s</b> statuss.html telefonā — „godīgi par traucējumiem” (kritērijs 4). Plūdu WMS bieži dzeltens = lēns avots, tas ir normāli. Ja jautā: valsts datus serveris atjauno katru nakti 04:30; slodzes testā 50 klienti, p95 1,1 s.</aside>
+  <aside class="piezimes"><b>7:45–8:30 · Teikt:</b> Krīzē kaut kas vienmēr nestrādā. Bez interneta lapa rāda pēdējos datus un pēdējās kartītes, un var iepriekš saglabāt savu apkārtni; to var pievienot sākuma ekrānam. Ja LVĢMC brīdinājumu datne nav pieejama, brīdinājumi nāk no Meteoalarm (EUMETNET) ar atsauci uz LVĢMC (#125). Ja nav ne strāvas, ne sakaru — info.html ir LR1 radio karte ar 16 raidītājiem, frekvences pārbaudītas ar regulatora sarakstu; to var izdrukāt. Statusa lapa godīgi rāda, kurš avots šobrīd nestrādā.</aside>
 </section>
 
-<!-- 13 · 8:35–9:30 · kas tālāk -->
-<section class="slaids blivs" data-laiks="8:35">
-  <h2>Kas tālāk</h2>
-  <ul class="liels">
-    <li><b>Pašvaldībām:</b> plāna kvalitātes pārskats — kas trūkst, kur kļūdas (41 kļūda, 10 nepublicēti saraksti), katru reizi, kad plāns tiek atjaunots</li>
-    <li><b>Iedzīvotājiem:</b> lietotnē „112 Latvija” un Latvija.gov.lv (VDAA principi: „tikai vienreiz”, 3 soļi, kopsavilkums)</li>
-    <li><b>Datu turētājiem:</b> konkrēti lūgumi sagatavoti — VUGD, Sadales tīkls, LVĢMC, 10 pašvaldības, Rīgas satiksme, LVC, VARAM/VDAA (saraksts: trukstosie.html)</li>
-  </ul>
-  <aside class="piezimes"><b>8:35–9:30 · Teikt:</b> ko pašvaldība saņem pirmdienas rītā (sava plāna kļūdas), ko saņem iedzīvotājs (viena rinda, viena atbilde) un ko lūdzam datu turētājiem (vēstules: notes/vestules.md, saraksts: trukstosie.html).</aside>
-</section>
-
-<!-- 14 · 9:30–10:00 -->
-<section class="slaids" data-laiks="9:30">
-  <h1 style="margin-top:auto">Katalogs un PDF → atbilde,<br>ko katrs saņem 30 sekundēs.</h1>
-  <p class="milzigs" style="color:var(--zils-tumss);font-size:2.4em">map.repo.lv</p>
-  <div class="divas" style="flex:0 0 auto;align-items:end;margin-bottom:auto">
-    <p class="klusais">Komanda · VARAM / LATA „AI atvērto datu” hakatons 2026 · krīžu vadības virziens<br><a href="./#datu-avoti">Par datiem</a> · <a href="statuss.html">Statuss</a> · <a href="info.html">Svarīgi</a> · <a href="./#kas-jauns" aria-label="Kas jauns">#</a><br>Dati: katram avotam sava licence (CC0, CC BY 4.0, ODbL, oficiāls dokuments); <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> patvertnēm licence nav norādīta.</p>
-    <div class="bilde" data-bilde="qr-map-repo-lv.svg" style="height:8em;width:8em;justify-self:end"><span>QR kods → map.repo.lv<br>(qr-map-repo-lv.svg)</span></div>
+<!-- 13 · lūgums un QR -->
+<section class="slaids" data-laiks="8:30" data-ilgums="60">
+  <h1>PDF → atbilde 30 sekundēs</h1>
+  <div class="beigas">
+    <div>
+      <ul>
+        <li><b>Pašvaldībām:</b> plāna kvalitātes pārskats katrā atjaunošanā</li>
+        <li><b>Iedzīvotājiem:</b> lietotnē „112 Latvija” un Latvija.gov.lv</li>
+        <li><b>Datu turētājiem:</b> 7 lūgumi par 30 kopām</li>
+      </ul>
+      <p class="milzigs" style="color:var(--zils-tumss);font-size:2.2em;margin-top:.4em">map.repo.lv</p>
+    </div>
+    <img class="qr" src="slaidi/qr-map-repo-lv.svg" width="33" height="33" alt="QR kods: https://map.repo.lv">
   </div>
-  <aside class="piezimes"><b>9:30–10:00.</b> Pateikties. Atstāt šo slaidu jautājumu laikā.</aside>
+  <p class="klusais">VARAM / LATA „AI atvērto datu” hakatons 2026 · krīžu vadības virziens</p>
+  <aside class="piezimes"><b>8:30–9:30 · Teikt:</b> Ko tas dod pirmdienas rītā. Pašvaldībai — sava plāna kļūdu un trūkumu sarakstu, katru reizi, kad plāns tiek atjaunots. Iedzīvotājam — vienu rindu un vienu atbildi; tā var dzīvot lietotnē „112 Latvija” vai Latvija.gov.lv. Datu turētājiem — 7 sagatavoti lūgumi (notes/vestules.md): publicējiet, un karte to parādīs nākamajā dienā. Nofotografējiet QR kodu un pamēģiniet paši. Paldies. Atstāt šo slaidu jautājumu laikā.</aside>
 </section>
 
 <div id="taimeris" aria-live="off"></div>
-<div id="palidziba">← → slaidi · N piezīmes · T taimeris · F pilnekrāns</div>
+<div id="palidziba">← → slaidi · N piezīmes · T taimeris · F pilnekrāns · P drukas skats</div>
 <div class="vadiba"><button type="button" id="ieprieksejais" aria-label="Iepriekšējais slaids">←</button><button type="button" id="nakamais" aria-label="Nākamais slaids">→</button></div>
 
 <script>
 (() => {
   const slaidi = [...document.querySelectorAll('.slaids')];
+  const params = new URLSearchParams(location.search);
   let i = Math.max(0, Math.min(slaidi.length - 1, (parseInt(location.hash.slice(1), 10) || 1) - 1));
   let sakums = null;
+  const mmss = s => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  const kopa = slaidi.reduce((s, x) => s + (+x.dataset.ilgums || 0), 0);
 
-  // Ekrānšāviņi: ja slaidi/<fails> ir pieejams, to parāda; citādi paliek vietturis ar faila nosaukumu
-  for (const b of document.querySelectorAll('.bilde[data-bilde]')) {
-    const img = new Image();
-    img.alt = b.textContent.trim();
-    img.onload = () => { b.prepend(img); b.classList.add('ir'); };
-    img.src = 'slaidi/' + b.dataset.bilde;
-  }
-  slaidi.forEach((s, n) => s.insertAdjacentHTML('beforeend', `<div class="josla"></div><div class="nr">${n + 1} / ${slaidi.length} · ${s.dataset.laiks}</div>`));
+  slaidi.forEach((s, n) => s.insertAdjacentHTML('beforeend',
+    `<div class="josla" aria-hidden="true"></div><div class="nr" aria-hidden="true">${n + 1} / ${slaidi.length} · ${s.dataset.laiks}</div>`));
 
   function radit(n) {
     i = Math.max(0, Math.min(slaidi.length - 1, n));
     slaidi.forEach((s, k) => s.classList.toggle('aktivs', k === i));
-    history.replaceState(null, '', '#' + (i + 1));
+    history.replaceState(null, '', location.search + '#' + (i + 1));
   }
   function taimeris() {
     if (!sakums) return;
     const s = Math.floor((Date.now() - sakums) / 1000);
     const el = document.getElementById('taimeris');
-    el.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')} / 10:00 · plānots ${slaidi[i].dataset.laiks}`;
-    el.style.background = s > 600 ? '#b91c1c' : s > 540 ? '#b45309' : 'rgba(0,0,0,.65)';
+    el.textContent = `${mmss(s)} / ${mmss(kopa)} · plānots ${slaidi[i].dataset.laiks}`;
+    el.style.background = s > 600 ? '#b91c1c' : s > kopa ? '#b45309' : 'rgba(0,0,0,.65)';
   }
+  const druka = () => document.body.classList.toggle('druka');
+  if (params.has('print')) druka();
+
   document.addEventListener('keydown', e => {
-    if (['ArrowRight', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); radit(i + 1); }
-    else if (['ArrowLeft', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); radit(i - 1); }
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (['ArrowRight', 'ArrowDown', 'PageDown', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); radit(i + 1); }
+    else if (['ArrowLeft', 'ArrowUp', 'PageUp', 'Backspace'].includes(e.key)) { e.preventDefault(); radit(i - 1); }
     else if (e.key === 'Home') radit(0);
     else if (e.key === 'End') radit(slaidi.length - 1);
+    else if (/^[1-9]$/.test(e.key)) radit(+e.key - 1);
     else if (e.key.toLowerCase() === 'n') document.body.classList.toggle('ar-piezimem');
     else if (e.key.toLowerCase() === 't') { document.body.classList.toggle('ar-taimeri'); sakums = sakums || Date.now(); taimeris(); }
+    else if (e.key.toLowerCase() === 'p') druka();
     else if (e.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen?.();
   });
   document.getElementById('nakamais').addEventListener('click', () => radit(i + 1));
