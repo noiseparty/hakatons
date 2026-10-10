@@ -3,7 +3,7 @@
 // kur pārklājas divas vai vairākas riska zonas — "paaugstināts risks" (tumšāks, svītrots laukums ar sarkanu robežu).
 // Plūdu zonas: LVĢMC WMS (geo-dpps.viss.gov.lv, CC0). Ģeometriju serviss nedod (nav WFS, GetFeatureInfo bez
 // ģeometrijas), tāpēc WMS attēlu pārvēršam maskā: necaurspīdīgs pikselis = zonā. Serviss atļauj CORS no map.repo.lv.
-// Brīdinājumi: /api/bridinajumi?poligoni=1 (LVĢMC, data.gov.lv, CC0).
+// Brīdinājumi: vienkāršotie poligoni no /api/prognozes (kešots 5 min), rezerve /api/bridinajumi?poligoni=1 (LVĢMC, data.gov.lv, CC0).
 // Satiksme, ceļu meteostacijas, robežpunkti: /api/satiksme (LVC, transportdata.gov.lv, CC0); satiksmes zonas ir
 // novadi un valstspilsētas (/api/prognozes/robezas, VZD CC BY 4.0).
 // Lieto: app.js (radtPludus), meklesana.js (satiksmeRinda — rinda rezultātu kartītē).
@@ -70,6 +70,12 @@ const Zonas = (() => {
   const PARKLAJUMS = { aizp: [127, 29, 29, 120], svitra: [185, 28, 28, 210], robeza: [220, 38, 38] };
   const ieslegtas = new Set();
   const maskas = new Map();  // `${z}/${x}/${y}` → { kods: Uint8Array } (WMS zonām; klikšķim un pārzīmēšanai)
+  const MASKU_MAX = 64;  // katra maska 512×512 B ≈ 262 KB → ≤ ~17 MB telefonā; LRU: Map secība = pēdējā lietošana
+  const maskaKese = atslega => {
+    const k = maskas.get(atslega);
+    if (k) { maskas.delete(atslega); maskas.set(atslega, k); }
+    return k;
+  };
   const zona = kods => ZONAS.find(z => z.kods === kods);
 
   function attels(url) {
@@ -245,7 +251,7 @@ const Zonas = (() => {
       const aktivas = ZONAS.filter(z => ieslegtas.has(z.kods) && coords.z >= (z.minZoom || 0));
       const poligonu = aktivas.filter(z => !z.wms && z.poligoni.length).map(z => [z, poligonuMaska(z, coords)]).filter(([, m]) => m);
       const wms = aktivas.filter(z => z.wms);
-      const kese = maskas.get(atslega) || {};
+      const kese = maskaKese(atslega) || {};
       const gatavas = () => wms.filter(z => kese[z.kods]).map(z => [z, kese[z.kods]]);
       zimet(kanva, [...gatavas(), ...poligonu].sort((a, b) => ZONAS.indexOf(a[0]) - ZONAS.indexOf(b[0])));
       setTimeout(() => gatavs(null, kanva), 0);
@@ -253,8 +259,9 @@ const Zonas = (() => {
       if (!trukst.length) return kanva;
       gaidaWms++; atjaunotLegendu();
       Promise.all(trukst.map(z => wmsMaska(z, coords).then(m => { kese[z.kods] = m; }, () => { ielade = 'kluda'; }))).then(() => {
+        maskas.delete(atslega);
         maskas.set(atslega, kese);
-        if (maskas.size > 400) maskas.delete(maskas.keys().next().value);
+        while (maskas.size > MASKU_MAX) maskas.delete(maskas.keys().next().value);
         if (kanva.isConnected) zimet(kanva, [...gatavas(), ...poligonu].sort((a, b) => ZONAS.indexOf(a[0]) - ZONAS.indexOf(b[0])));
         gaidaWms--; atjaunotLegendu();
       });
@@ -305,7 +312,7 @@ const Zonas = (() => {
   function zonasVieta(ll) {
     const z = karte.getZoom(), p = karte.project(ll, z).floor();
     const x = Math.floor(p.x / LIELUMS), y = Math.floor(p.y / LIELUMS);
-    const kese = maskas.get(`${z}/${x}/${y}`) || {};
+    const kese = maskaKese(`${z}/${x}/${y}`) || {};
     const i = (p.y - y * LIELUMS) * LIELUMS + (p.x - x * LIELUMS);
     const atrastas = [];
     for (const zn of ZONAS) {
@@ -339,12 +346,28 @@ const Zonas = (() => {
 
   // ---- Brīdinājumu apgabali ----
   const LIMENI = { 1: 'Dzeltenais', 2: 'Oranžais', 3: 'Sarkanais' };
+  const bridForma = (punkti, limenis, paradiba, lidz) => forma([punkti],
+    limenis | (/lietus|plūd|vējuzplūd|pali|sastrēg|ūdens/i.test(paradiba) ? 4 : 0),
+    esc(`${LIMENI[limenis] || 'Dzeltenais'} brīdinājums: ${String(paradiba).toLowerCase()}${lidz ? `, līdz ${lidz}` : ''}`));
+  // Vispirms /api/prognozes: poligoni tur jau vienkāršoti (~1 km pielaide; neapstrādātais "Latvija" ir ~42 000 virsotņu,
+  // ~1 MB) un serverī kešoti 5 min. "Līdz" ņem no tā paša brīdinājuma ziņas virsraksta. Ja prognozes nav pieejamas
+  // vai tajās nav poligonu — neapstrādātie no /api/bridinajumi?poligoni=1 (bez brīdinājumiem tā atbilde ir maza).
   async function ieladetBridinajumus() {
+    try {
+      const r = await fetch('/api/prognozes');
+      if (r.ok) {
+        const d = await r.json();
+        const lidz = Object.fromEntries((d.zinas || []).filter(z => z.veids === 'bridinajums')
+          .map(z => [z.id, (/, līdz ([\d.: ]+)$/.exec(z.virsraksts || '') || [])[1]]));
+        const poligoni = (d.bridinajumu_poligoni || []).filter(p => p.poligons?.length >= 3)
+          .map(p => bridForma(p.poligons, p.limenis, p.paradiba, lidz[p.id]));
+        if (poligoni.length) return (zona('bridinajumi').poligoni = poligoni).length;
+      }
+    } catch { /* rezerve zemāk */ }
     const r = await fetch('/api/bridinajumi?poligoni=1');
     if (!r.ok) throw new Error(r.status);
-    zona('bridinajumi').poligoni = (await r.json()).bridinajumi.flatMap(b => (b.poligoni || []).map(punkti => forma([punkti],
-      b.limenis | (/lietus|plūd|vējuzplūd|pali|sastrēg|ūdens/i.test(b.paradiba) ? 4 : 0),
-      esc(`${LIMENI[b.limenis] || b.krasa} brīdinājums: ${b.paradiba.toLowerCase()}${b.lidz ? `, līdz ${laiks(b.lidz)}` : ''}`))));
+    zona('bridinajumi').poligoni = (await r.json()).bridinajumi.flatMap(b => (b.poligoni || []).map(punkti =>
+      bridForma(punkti, b.limenis, b.paradiba, b.lidz ? laiks(b.lidz) : '')));
     return zona('bridinajumi').poligoni.length;
   }
 
