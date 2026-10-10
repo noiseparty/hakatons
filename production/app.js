@@ -1,6 +1,6 @@
 // map.repo.lv: karte ar filtriem. Dati no /api (src/karte/api/karte_api.py, Postgres `map` uz VPS).
 const API = '/api';
-const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Vide un ūdeņi', transports: 'Transports', incidenti: 'Incidenti' };
+const GRUPAS = { patvertnes: 'Patvertnes', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', noturiba: 'Noturība', vide: 'Vide un ūdeņi', transports: 'Transports', incidenti: 'Incidenti' };
 
 const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
