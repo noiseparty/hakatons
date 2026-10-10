@@ -147,11 +147,6 @@
   .dv-atv-saturs > section { border-radius: var(--radiuss-karte); box-shadow: var(--ena-maza); }
 
   /* ---- Karte: pamatkarte augšā pa kreisi, rīki labajā pusē, leģenda apakšā pa kreisi ---- */
-  body.dv .pamatkarte { top: 16px; left: 16px; bottom: auto; right: auto; gap: 0; padding: 2px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-maza); box-shadow: var(--ena-maza); }
-  body.dv .pamatkarte button { min-height: 28px; padding: 0 12px; font-size: 12px; font-weight: 600; color: var(--teksts-blavs); border-radius: 2px; }
-  body.dv .pamatkarte button.aktiva { color: #fff; background: var(--tumsi-zils); }
-  body.dv .pamatkarte button[data-pamats="reljefs"]::after { content: " (Topo)"; }
-  body.dv.demo-atverts .pamatkarte { top: auto; left: auto; bottom: 24px; right: 16px; }  /* demo zīme ir augšā pa kreisi */
   body.dv .prognozes:not(.atverts) { top: 56px; left: 16px; }
   body.dv .kartes-rikis { top: 16px; right: 16px; gap: 8px; }
   body.dv .kartes-rikis button { width: 36px; height: 36px; color: var(--tumsi-zils); background: #fff; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-maza); box-shadow: var(--ena-maza); }
@@ -241,8 +236,9 @@
 /* Šaurā datora logā galvenē: meklēšanas laukam vieta; statusa tablete (dublē leģendu) paslēpta */
 @media (min-width: 801px) and (max-width: 1499px) { body.dv header #statuss { display: none; } body.dv header { gap: 12px; } }
 
+.dv-legenda ul { grid-template-columns: 1fr; }
 .dv-legenda .dv-leg-nos { flex: 1; min-width: 0; overflow-wrap: anywhere; }
-.dv-legenda .dv-leg-x { flex: none; margin-left: auto; min-width: 40px; min-height: 40px; border: 0; background: transparent; font-size: 1.3rem; line-height: 1; cursor: pointer; color: inherit; }
+.dv-legenda .dv-leg-x { flex: 0 0 40px; width: 40px; margin-left: auto; min-width: 40px; min-height: 40px; padding: 0; border: 0; background: transparent; font-size: 1.3rem; line-height: 1; cursor: pointer; color: inherit; }
 .dv-legenda .dv-leg-visi { grid-column: 1 / -1; }
 /* Leģenda: viena kolonna (divas kolonnas ar × pogām saspieda nosaukumus līdz 0 platumam), rindas līdzinātas, × labajā malā */
 .dv-legenda { overflow-x: hidden; }

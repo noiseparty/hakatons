@@ -94,7 +94,6 @@ body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano hea
   #panelis > #demo-panelis .demo-galva { position: sticky; top: 0; z-index: 2; background: var(--virsma); padding: 12px 16px 12px 24px; }
   #panelis > #demo-panelis .atskanot-rinda { padding: 8px 24px 12px; }
   #demo-karte-zime { left: 50%; transform: translateX(-50%); }  /* augšā pa kreisi ir "Karte | Reljefs" */
-  body.dv.demo-atverts #kartes-laukums .pamatkarte { top: 16px; left: 16px; bottom: auto; right: auto; }
   .atskanot-nos { font-size: 1.05rem; }
   body.dv #demo-josla { min-height: 41px; box-sizing: border-box; }  /* tik augsta kā LVĢMC josla ar "Aizvērt": karte nelec */
 }
@@ -107,7 +106,6 @@ body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano hea
   #demo-galvene .demo-zime, #atskanot-josla .demo-zime, .atskanot-laiks { display: none; }  /* SIMULĀCIJA ir kartē; laiku rāda progresa josla */
   /* zīme kartē: "Karte | Reljefs" vietā (demo laikā paslēpts) zem simulētā brīdinājuma joslas — fitBounds augšējā atstarpē,
      nekad virs kartes centra */
-  body.apaksa-aktiva.demo-aktivs .pamatkarte { display: none; }
   body.apaksa-aktiva #demo-karte-zime { top: calc(8px + var(--joslas-h, 0px)); left: 8px; transform: none; }
   /* atskaņošanā lapā bez valodas slēdža un tēmu pogām — kartītes lēmuma rinda redzama arī 360 × 640 stāvoklī "Puse" */
   body.atskano .apaksa .valoda-sledzis, body.atskano .apaksa .lapa-temas { display: none; }
@@ -127,13 +125,12 @@ body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano hea
   #demo-panelis { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: auto; max-width: none; height: 52vh; max-height: calc(100vh - 200px); border-radius: 14px 14px 0 0;
     transform: translateY(105%); transition: transform .25s; visibility: hidden; box-shadow: 0 -4px 14px rgba(0, 0, 0, .2); z-index: 1200; }
   body.demo-atverts #demo-panelis { transform: none; visibility: visible; }
-  body.demo-atverts .pamatkarte { display: none; }
 }
 
 /* Tikai demo paneļa poga "Drukāt" (demo.js pieliek body.druka-demo): citādi šie stili drukātu demo paneli arī Ctrl+P un
    rezultāta kartītes "Drukāt" (stils.css body.druka-rezultats) vietā — datorā kartīte ir #panelis > #meklesana, un lapa bija tukša */
 @media print {
-  body.druka-demo header, body.druka-demo #panelis > :not(#demo-panelis), body.druka-demo .kartes-rikis, body.druka-demo .pamatkarte,
+  body.druka-demo header, body.druka-demo #panelis > :not(#demo-panelis), body.druka-demo .kartes-rikis,
   body.druka-demo #demo-cilne, body.druka-demo #demo-karte-zime, body.druka-demo .demo-galva .demo-aizvert, body.druka-demo .demo-atpakal,
   body.druka-demo .demo-beigt, body.druka-demo .demo-druka, body.druka-demo .marsruts, body.druka-demo .demo-regions select, body.druka-demo #karte,
   body.druka-demo .bridinajums:not(.demo-josla) { display: none !important; }
