@@ -14,11 +14,17 @@
   async function skaiti() {
     try {
       const k = await json('/api/kategorijas');
-      let html = '', g = '', kops = 0;
-      for (const c of k) {
-        if (c.grupa !== g) { g = c.grupa; html += `<h3 class="grupa">${esc(GRUPAS[g] || g)}</h3>`; }
-        kops += c.skaits || 0;
-        html += `<div class="skaitlis" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(c.nosaukums)}</span></div>`;
+      let html = '', kops = 0;
+      const grupas = [];
+      for (const c of k) { let x = grupas.find(y => y.g === c.grupa); if (!x) grupas.push(x = { g: c.grupa, k: [] }); x.k.push(c); }
+      const saite_karte = ids => '/map?slanis=' + ids.map(encodeURIComponent).join(',');
+      for (const x of grupas) {
+        const nos = GRUPAS[x.g] || x.g;
+        html += `<h3 class="grupa"><a href="${esc(saite_karte(x.k.map(c => c.kods)))}" aria-label="Atvērt kartē grupu: ${esc(nos)}">${esc(nos)} <i aria-hidden="true">›</i></a></h3>`;
+        for (const c of x.k) {
+          kops += c.skaits || 0;
+          html += `<a class="skaitlis" href="${esc(saite_karte([c.kods]))}" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(c.nosaukums)}</span><i class="bulta" aria-hidden="true">›</i></a>`;
+        }
       }
       $('kartes').innerHTML = html; $('kartes').removeAttribute('aria-busy');
       $('kops').textContent = `${nf(kops)} objekti ${k.length} kategorijās`;
