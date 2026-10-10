@@ -169,8 +169,9 @@ Status: `publicets` both lists published; `dalejs` only one list or partial; `na
 - **Valmieras novads** (`nav_publicets`): The public plan version refers assembly points to annex 5 and accommodation to annex 7, both listed as '(elektroniski)'; neither annex is in the folder (the other files are council decisions and the CAK bylaws), so no lists could be extracted.
   - 140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md: „5. pielikums. Evakuācijas pulcēšanās vietas (elektroniski)”
   - 140_lem_Pielikums_Civilas-aizsardzibas-plans-aktializets28.03.2024._publisks.md: „7. pielikums. Izmitināšanas vietas (elektroniski)”
-- **Ventspils** (`nav_publicets`): The only file is a conversion of a scanned 203-page PDF with no text layer (front matter skenets: True); the body is just a warning that text could not be extracted, so no assembly or accommodation lists are available in Markdown. The original PDF would need OCR/visual reading.
-  - plans_publiskais_2023.md: „> **UZMANĪBU:** PDF bez teksta slāņa (skenēts dokuments, 203 lpp.). Automātiska teksta izguve nav iespējama — teksts jāatveido vizuāli (modelim lasot lapas).”
+- **Ventspils** (`nav_publicets`): Scanned 203-page PDF, OCR'd 2026-10-10 (Tesseract lav, src/karte/dati/ca_plani/ventspils-ocr.md). Sections 3.1.4 and 3.1.7 (lpp. 48, 50) say the permanent assembly points and the temporary accommodation are in annexes 4–16 (one per parish + annex 14 for Ventspils city). In the published file those annexes are only cover pages marked 'IEROBEŽOTAS PIEEJAMĪBAS INFORMĀCIJA' (lpp. 71–83), so no list is public. The only public capacity figure: 150–200 people in residential premises in Ventspils, 30–50 in each county parish (lpp. 50).
+  - ventspils-ocr.md: „iedzīvotāju pulcēšanās vietas (skatīt CAP no 4. līdz 16. pielikumam). Pulcēšanās vietas katrā”
+  - ventspils-ocr.md: „izglītības iestādēs (skatīt CAP no 4. līdz 16. pielikumam).”
 
 ## Rows not placed on the map
 
