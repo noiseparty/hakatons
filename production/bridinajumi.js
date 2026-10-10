@@ -62,7 +62,8 @@ const Bridinajumi = (() => {
             (b.riski ? `<p class="riski">${esc(bezSlogana(b.riski)).replace(/\n/g, '<br>')}</p>` : '') +
             (rez && b.izdots ? `<p class="riski">Izdots ${laiks(b.izdots)}</p>` : '')).join('') +
           `<p class="avots-rinda">${rez ? rezervesAvots(d) : 'Avots: ' + AVOTS}</p>` +
-          `<button type="button" class="otra brid-aizvert">${Ik('aizvert')} Aizvērt</button></details>`;  // telefonā: atvērtā josla sedz karti
+          `<button type="button" class="otra brid-aizvert">${Ik('aizvert')} ${Valoda.t('Aizvērt')}</button></details>` +
+          `<button type="button" class="brid-x" aria-label="${Valoda.t('Aizvērt brīdinājumu joslu')}">${Ik('aizvert')}</button>`;  // telefonā: atvērtā josla sedz karti
       josla.hidden = false;
     } catch (e) {
       if (e.name !== 'AbortError') josla.hidden = true;
@@ -70,9 +71,9 @@ const Bridinajumi = (() => {
   }
 
   document.getElementById('bridinajums')?.addEventListener('click', e => {
-    const d = e.target.closest('.brid-aizvert')?.closest('details');
-    if (!d) return;
-    d.open = false;
+    if (!e.target.closest('.brid-aizvert, .brid-x')) return;
+    const d = e.currentTarget.querySelector('details');
+    if (d) d.open = false;
     try { JSON.parse(e.currentTarget.dataset.atslegas || '[]').forEach(k => aizvertie.add(k)); } catch {}
     atjaunot(...pedeja);
   });
