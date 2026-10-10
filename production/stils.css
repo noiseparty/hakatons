@@ -29,6 +29,9 @@ body { display: flex; flex-direction: column; }
 header { padding: .6rem 1rem; background: var(--zils); color: #fff; display: grid; grid-template-columns: 1fr minmax(0, 560px) 1fr; gap: .75rem; align-items: center; box-shadow: var(--ena); position: relative; z-index: 1000; }
 .galva-labi { justify-self: end; display: flex; gap: .75rem; align-items: center; }
 header h1 { font-size: 1.1rem; margin: 0; }
+header h1 .galva-saite { display: flex; flex-direction: column; min-width: 0; color: inherit; text-decoration: none; border-radius: 4px; }
+header h1 .galva-saite:hover { opacity: .85; }
+header h1 .galva-saite:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 header p { margin: 0; font-size: .82rem; padding: .2rem .65rem; border-radius: 999px; background: rgba(0, 0, 0, .2); }
 header p.kluda { background: var(--sarkans); color: #fff; }
 #panelis-poga { display: none; width: auto; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); }
