@@ -21,7 +21,7 @@ const Zibens = (() => {
       const min = (tagad - new Date(z.laiks)) / 60000;
       const krasa = min <= 10 ? '#dc2626' : min <= 20 ? '#f97316' : '#facc15';
       L.circleMarker([z.lat, z.lon], { radius: 6, color: '#1c1917', weight: 1, fillColor: krasa, fillOpacity: Math.max(0.35, 1 - min / 40) })
-        .bindPopup(`<div class="popup"><b>⚡ Zibens ${pulkstenis(z.laiks)}</b>pirms ${Math.max(0, Math.round(min))} min` +
+        .bindPopup(`<div class="popup"><b>${Ik('zibens')} Zibens ${pulkstenis(z.laiks)}</b>pirms ${Math.max(0, Math.round(min))} min` +
           `${z.strava != null ? `, strāva ${Math.round(z.strava)} kA` : ''}<small class="popup-avots">Zibens: ${avots(d.avots)}</small></div>`)
         .addTo(slanis);
     }

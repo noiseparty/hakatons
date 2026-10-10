@@ -11,9 +11,10 @@
       <a href="./#kas-jauns" title="Kas jauns (izmaiņu žurnāls)" aria-label="Kas jauns">#</a>
     </nav>
     <p>Dati: katram avotam sava licence, norādīta pie avota (CC0, CC BY 4.0, ODbL vai oficiāls dokuments);
-      ⚠ patvertņu sarakstam licence nav norādīta. Iedzīvotāju ziņojumi — CC BY 4.0. map.repo.lv · AI atvērto datu hakatons 2026.</p>`;
+      <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> patvertņu sarakstam licence nav norādīta. Iedzīvotāju ziņojumi — CC BY 4.0. map.repo.lv · AI atvērto datu hakatons 2026.</p>`;
   const stils = document.createElement('style');
   stils.textContent = `
+    .kajene .ik { width: 1em; height: 1em; vertical-align: -.15em; }
     .kajene { font-size: 12.5px; line-height: 1.45; color: #5c6670; text-align: center; padding: 14px 12px 18px; }
     .kajene nav { margin-bottom: 4px; font-size: 14px; }
     .kajene a { color: #005a99; }
