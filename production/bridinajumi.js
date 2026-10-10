@@ -36,11 +36,16 @@ const Bridinajumi = (() => {
   async function atjaunot(vieta, nosaukums) {
     const josla = document.getElementById('bridinajums');
     pedeja = [vieta, nosaukums];
+    josla.removeAttribute('data-t');  // citādi Valoda pārtulkojot atjauno "Ielādē…" virs rezultāta
     if (pieprasijums) pieprasijums.abort();
     pieprasijums = new AbortController();
     const q = vieta ? '?' + new URLSearchParams({ lat: (+vieta.lat).toFixed(5), lon: (+vieta.lon).toFixed(5) }) : '';
+    // Bez noildzes pieprasijums uz lēna telefona tīkla karājas mūžīgi un josla paliek ar "Ielādē…": pēc 8 s — kļūda ar "Mēģināt vēlreiz"
+    const mans = pieprasijums;
+    let noildze = false;
+    const taimeris = setTimeout(() => { noildze = true; mans.abort(); }, 8000);
     try {
-      const r = await fetch('/api/bridinajumi' + q, { signal: pieprasijums.signal });
+      const r = await fetch('/api/bridinajumi' + q, { signal: mans.signal });
       if (!r.ok) throw new Error(r.status);
       const d = await r.json(), visi = d.bridinajumi, rez = !!d.rezerves;
       // rezerves avotam attiecas var būt null (vietu neizdevās pārbaudīt): tad brīdinājumu rāda, nevis slēpj
@@ -66,11 +71,21 @@ const Bridinajumi = (() => {
           `<button type="button" class="brid-x" aria-label="${Valoda.t('Aizvērt brīdinājumu joslu')}">${Ik('aizvert')}</button>`;  // telefonā: atvērtā josla sedz karti
       josla.hidden = false;
     } catch (e) {
-      if (e.name !== 'AbortError') josla.hidden = true;
-    }
+      if (e.name === 'AbortError' && !noildze) return;  // aizstāts ar jaunāku pieprasījumu
+      // Telefonā (josla kartes augšmalā) kļūdu rāda ar atkārtošanu; datorā — kā līdz šim, josla nav redzama
+      if (matchMedia('(max-width: 800px)').matches && !aizvertie.size) {
+        josla.className = 'bridinajums gaida klude';
+        josla.dataset.atslegas = '[]';
+        josla.innerHTML = `<span>${Valoda.t('LVĢMC brīdinājumus neizdevās ielādēt')} <button type="button" class="otra brid-meginat">${Valoda.t('Mēģināt vēlreiz')}</button></span>` +
+          `<button type="button" class="brid-x brid-x-klude" aria-label="${Valoda.t('Aizvērt brīdinājumu joslu')}">${Ik('aizvert')}</button>`;
+        josla.hidden = false;
+      } else josla.hidden = true;
+    } finally { clearTimeout(taimeris); }
   }
 
   document.getElementById('bridinajums')?.addEventListener('click', e => {
+    if (e.target.closest('.brid-meginat')) { e.currentTarget.innerHTML = `<span>${Valoda.t('Ielādē LVĢMC brīdinājumus…')}</span>`; e.currentTarget.className = 'bridinajums gaida'; atjaunot(...pedeja); return; }
+    if (e.target.closest('.brid-x-klude')) { e.currentTarget.hidden = true; return; }
     if (!e.target.closest('.brid-aizvert, .brid-x')) return;
     const d = e.currentTarget.querySelector('details');
     if (d) d.open = false;

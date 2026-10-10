@@ -766,6 +766,8 @@ body.ir-meklets .dv-pirmais { display: none; }
   .kartes-joslas .bridinajums:has(details[open]) { overflow: visible; max-height: none; }  /* ritinās saturs, nevis ×  */
   .kartes-joslas .bridinajums details[open] { max-height: 45dvh; overflow-y: auto; overscroll-behavior: contain; }
   .kartes-joslas .bridinajums .brid-x .ik { width: 1.1rem; height: 1.1rem; }
+  .kartes-joslas .bridinajums.klude > span { display: flex; align-items: center; flex-wrap: wrap; gap: .2rem .6rem; padding: .2rem 44px .2rem 0; }
+  .kartes-joslas .bridinajums .brid-meginat { width: auto; min-height: 40px; padding: 0 .9rem; }
   body.apaksa-aktiva { --joslas-h: 0px; }
   body.apaksa-aktiva:has(.kartes-joslas > :not([hidden])) { --joslas-h: 48px; }
   body.apaksa-aktiva main { padding: 0; }

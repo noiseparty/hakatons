@@ -153,7 +153,7 @@
   .dv-atv-saturs > section { border-radius: var(--radiuss-karte); box-shadow: var(--ena-maza); }
 
   /* ---- Karte: pamatkarte augšā pa kreisi, rīki labajā pusē, leģenda apakšā pa kreisi ---- */
-  body.dv .prognozes:not(.atverts) { top: 56px; left: 16px; }
+  body.dv .prognozes:not(.atverts) { top: 16px; left: 16px; }  /* tāda pati mala kā labajiem rīkiem (.kartes-rikis) */
   /* viena rinda: Prognoze | Riski: Šodien Rīt | krāsu atslēga — visi 36px augsti, 8px atstarpes, tā pati apmale/ēna/rādiuss kā labajiem rīkiem */
   body.dv .prognozes:not(.atverts) { gap: 8px; flex-wrap: wrap; align-items: center; max-width: calc(100% - 80px); }
   body.dv .prognozes:not(.atverts) .prog-poga, body.dv .prognozes:not(.atverts) .riski-sledzis, body.dv .prognozes:not(.atverts) .riski-legenda {
