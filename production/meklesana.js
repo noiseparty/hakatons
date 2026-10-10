@@ -314,6 +314,35 @@ const krizesMeklesana = (() => {
     bridinajumi(null);
   }
 
+  // Poga "Notīrīt" meklēšanas joslā: viss uz sākumu — lauks, rezultāts un apakšas lapa, piespiedu scenārijs,
+  // atskaites punkts, visi URL parametri (?q, lat, lon, regions, demo), demo, scenārija ieslēgtie slāņi (sākumā slāņi izslēgti).
+  const notiritPoga2 = el('notirit-meklesanu');
+  const raditNotiritPogu = () => { notiritPoga2.hidden = !(el('jautajums').value || !kaste.hidden); };
+  function notiritVisu() {
+    if (typeof Demo !== 'undefined' && document.body.classList.contains('demo-aktivs')) Demo.beigt();
+    notirit();
+    aizvertPopularos();
+    if (typeof Apaksa !== 'undefined' && Apaksa.aizvert) Apaksa.aizvert();
+    stavoklis.vieta = null;
+    if (vietasSlanis) { vietasSlanis.remove(); vietasSlanis = null; }
+    if (typeof tuvakaSlanis !== 'undefined' && tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
+    stavoklis.kategorijas = new Set();
+    document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = false; });
+    if (el('pludu-slanis')?.checked) radtPludus(false);
+    if (el('zibens-slanis')?.checked && typeof Zibens !== 'undefined') { el('zibens-slanis').checked = false; Zibens.radit(false); }
+    atjaunot();
+    history.replaceState(null, '', location.pathname);
+    raditNotiritPogu();
+    el('jautajums').focus();
+  }
+  notiritPoga2.addEventListener('click', notiritVisu);
+  el('jautajums').addEventListener('input', raditNotiritPogu);
+  new MutationObserver(raditNotiritPogu).observe(kaste, { attributes: true, attributeFilter: ['hidden'] });
+  // Escape tukšā laukā = Notīrīt (ja atvērts "Biežāk meklētais", Escape vispirms aizver tikai to — formas klausītājs)
+  el('jautajums').addEventListener('keydown', e => {
+    if (e.key === 'Escape' && populari.hidden && !el('jautajums').value) { e.preventDefault(); notiritVisu(); }
+  });
+
   function atkartot() {
     if (pedejais) meklet(pedejais.teksts, pedejais.scenarijs);
   }
@@ -530,7 +559,7 @@ const krizesMeklesana = (() => {
       i.marsruti ? `<small>${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>` : '') +
       (/^https?:\/\//.test(i.plans_url || '') ? `<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>` : '');
     return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
-      <span class="teksts">${virsraksts || ''}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${ObjektaStatuss.statuss(p, true)}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
+      <span class="teksts">${virsraksts || ''}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${ObjektaStatuss.statusaBloks(p, true)}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
       <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
   }
 

@@ -299,14 +299,13 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
-  if (p.kategorija === 'patvertne') rindas.push('<small>Ietilpība, piekļūstamība ar ratiņkrēslu, mājdzīvnieki: nav norādīts (112.lv datos šo ziņu nav)</small>');
   if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
   if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no Jums') + '</small>');
   return `<div class="popup">${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
-    rindas.join('<br>') + ObjektaStatuss.statuss(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
+    rindas.join('<br>') + ObjektaStatuss.statusaBloks(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
 
 async function atjaunot() {
