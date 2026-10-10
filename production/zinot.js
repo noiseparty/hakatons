@@ -14,7 +14,8 @@ const Zinot = (() => {
   ];
   const TIPS = Object.fromEntries(TIPI.map(([k, i, n]) => [k, { ikona: i, nos: n }]));
   const LICENCE = 'CC BY 4.0';  // = karte_api.py ZINOJUMI_LICENCE
-  const ATRUNA = `Iedzīvotāju ziņojumi, nav oficiāla informācija, ${LICENCE}.`;
+  const tv = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;  // tulkojums aktīvajā valodā (valoda.js)
+  const atruna = () => tv('Iedzīvotāju ziņojumi, nav oficiāla informācija, {x}.', { x: LICENCE });
   // Meklētais scenārijs (scenariji.json) → ziņojuma tips; pārējiem tipu neaizpilda
   const NO_SCENARIJA = {
     koks_pari_celam: 'koks', vads_pari_celam: 'elektriba', nav_elektribas: 'elektriba', pludi: 'udens', udens_celas: 'udens',
@@ -36,23 +37,23 @@ const Zinot = (() => {
   function popups(z) {
     const t = TIPS[z.tips] || TIPS.cits;
     const nobalsots = balsis()[z.id];
-    const apst = z.apstiprina ? `Apstiprinājuši: ${z.apstiprina}` : 'Nav apstiprināts';
-    return `<div class="popup zinojums-popup"><b>${Ik(t.ikona)} ${esc(t.nos)}</b>
+    const apst = z.apstiprina ? tv('Apstiprinājuši: {x}', { x: z.apstiprina }) : tv('Nav apstiprināts');
+    return `<div class="popup zinojums-popup"><b>${Ik(t.ikona)} ${esc(tv(t.nos))}</b>
       ${z.apraksts ? `<p>${esc(z.apraksts)}</p>` : ''}
-      <small>${pirms(z.laiks)} · ${apst}${z.apstrid ? ` · apstrīdējuši: ${z.apstrid}` : ''}</small>
-      <small>Vieta rādīta ~1 km precizitātē.</small>
+      <small>${pirms(z.laiks)} · ${apst}${z.apstrid ? ` · ${tv('apstrīdējuši: {x}', { x: z.apstrid })}` : ''}</small>
+      <small>${tv('Vieta rādīta ~1 km precizitātē.')}</small>
       <div class="zinojums-balsis" data-id="${z.id}">
-        ${nobalsots ? '<small>Paldies, Jūsu balsojums ir saskaitīts.</small>'
-          : `<button type="button" class="otra" data-balss="apstiprinat">${Ik('ok')} Apstiprinu</button>
-             <button type="button" class="otra" data-balss="apstridet">${Ik('aizvert')} Nav taisnība</button>`}
+        ${nobalsots ? `<small>${tv('Paldies, Jūsu balsojums ir saskaitīts.')}</small>`
+          : `<button type="button" class="otra" data-balss="apstiprinat">${Ik('ok')} ${tv('Apstiprinu')}</button>
+             <button type="button" class="otra" data-balss="apstridet">${Ik('aizvert')} ${tv('Nav taisnība')}</button>`}
       </div>
-      <small class="popup-avots">${ATRUNA}</small></div>`;
+      <small class="popup-avots">${atruna()}</small></div>`;
   }
 
   function markieris(z) {
     return L.circleMarker([z.lat, z.lon], {
       zinojums: z.id, radius: 8, color: '#fff', weight: 2, fillColor: z.apstiprina ? '#57534e' : '#a8a29e', fillOpacity: .95, dashArray: z.apstiprina ? null : '3 2',
-    }).bindPopup(() => popups(z)).bindTooltip(`${(TIPS[z.tips] || TIPS.cits).nos} (nav apstiprināts)`, { direction: 'top' });
+    }).bindPopup(() => popups(z)).bindTooltip(tv('{x} (nav apstiprināts)', { x: tv((TIPS[z.tips] || TIPS.cits).nos) }), { direction: 'top' });
   }
 
   async function ieladet(atvertId = null) {
@@ -68,11 +69,11 @@ const Zinot = (() => {
       slanis.clearLayers();
       d.zinojumi.forEach(z => slanis.addLayer(markieris(z)));
       if (atvertId) slanis.getLayers().find(l => String(l.options.zinojums) === String(atvertId))?.openPopup();
-      piezime.textContent = !d.pieejams ? 'Ziņojumi šobrīd nav pieejami.'
-        : d.zinojumi.length ? `${skaits(d.zinojumi.length)} šajā kartes skatā (pēdējās ${d.dienas} dienas). ${ATRUNA}`
-        : `Šajā kartes skatā pēdējās ${d.dienas} dienās ziņojumu nav. ${ATRUNA}`;
+      piezime.textContent = !d.pieejams ? tv('Ziņojumi šobrīd nav pieejami.')
+        : d.zinojumi.length ? `${skaits(d.zinojumi.length)} ${tv('šajā kartes skatā (pēdējās {d} dienas).', { d: d.dienas })} ${atruna()}`
+        : `${tv('Šajā kartes skatā pēdējās {d} dienās ziņojumu nav.', { d: d.dienas })} ${atruna()}`;
     } catch {
-      piezime.textContent = 'Ziņojumus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.';
+      piezime.textContent = tv('Ziņojumus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.');
     }
   }
 
@@ -97,9 +98,9 @@ const Zinot = (() => {
       }
       if (!r.ok) throw new Error(r.status);
       const b = balsis(); b[id] = poga.dataset.balss; localStorage.setItem(BALSIS, JSON.stringify(b));
-      kaste.innerHTML = '<small>Paldies, Jūsu balsojums ir saskaitīts.</small>';  // slānis atjaunosies pēc nākamās kartes kustības
+      kaste.innerHTML = `<small>${tv('Paldies, Jūsu balsojums ir saskaitīts.')}</small>`;  // slānis atjaunosies pēc nākamās kartes kustības
     } catch {
-      kaste.insertAdjacentHTML('beforeend', '<small class="kluda">Neizdevās. Mēģiniet vēlreiz.</small>');
+      kaste.insertAdjacentHTML('beforeend', `<small class="kluda">${tv('Neizdevās. Mēģiniet vēlreiz.')}</small>`);
       kaste.querySelectorAll('button').forEach(b => { b.disabled = false; });
     }
   }
@@ -108,6 +109,12 @@ const Zinot = (() => {
   let panelis, saturs, solis = 1, labo = false, sutits = null, vesture = false, vietasPieprasijums = null, apaksaBija = null;
   let dati = { tips: '', apraksts: '', vieta: null };
   let noMeklejuma = '';  // scenārija nosaukums, ja tips aizpildīts no meklējuma
+  // Valodas maiņa: atvērtais panelis tiek pārzīmēts ar tiem pašiem datiem (solis, tips, vieta, apraksts)
+  document.addEventListener('valoda-maina', () => {
+    if (!panelis) return;
+    panelis.querySelector('.zinot-aizvert').setAttribute('aria-label', tv('Aizvērt'));
+    if (!panelis.hidden) zimet();
+  });
   const vietasZime = L.circleMarker([0, 0], { radius: 10, color: '#fff', weight: 3, fillColor: '#d52b1e', fillOpacity: 1, interactive: false });
   const telefons = matchMedia('(max-width: 800px)');
   const AVOTU_TEKSTI = { adrese: 'meklētā adrese (VZD adrešu reģistrs)', gps: 'Jūsu atrašanās vieta', karte: 'pieskāriens kartei', saite: 'saitē norādītā vieta' };
@@ -121,7 +128,7 @@ const Zinot = (() => {
     panelis.setAttribute('aria-labelledby', 'zinot-virsraksts');
     panelis.hidden = true;
     panelis.innerHTML = `<div class="zinot-galva"><div><p class="zinot-solis" id="zinot-solis"></p><h2 id="zinot-virsraksts" tabindex="-1"></h2></div>
-      <button type="button" class="zinot-aizvert" data-zinot="aizvert" aria-label="Aizvērt">${Ik('aizvert')}</button></div>
+      <button type="button" class="zinot-aizvert" data-zinot="aizvert" aria-label="${tv('Aizvērt')}">${Ik('aizvert')}</button></div>
       <div class="zinot-saturs" aria-live="polite"></div><div class="zinot-kaja"></div>`;
     document.body.appendChild(panelis);
     saturs = panelis.querySelector('.zinot-saturs');
@@ -178,72 +185,72 @@ const Zinot = (() => {
     panelis.querySelector('#zinot-virsraksts').focus({ preventScroll: true });
   }
 
-  const pogaAtpakal = '<button type="button" class="otra" data-zinot="atpakal">Atpakaļ</button>';
-  const pogaTalak = (t = 'Tālāk') => `<button type="button" class="galvena" data-zinot="talak">${labo ? 'Uz kopsavilkumu' : t}</button>`;
+  const pogaAtpakal = () => `<button type="button" class="otra" data-zinot="atpakal">${tv('Atpakaļ')}</button>`;
+  const pogaTalak = (t = 'Tālāk') => `<button type="button" class="galvena" data-zinot="talak">${tv(labo ? 'Uz kopsavilkumu' : t)}</button>`;
 
   function vietasHtml(v) {
-    if (!v) return '<p class="zinot-vieta-teksts">Vieta vēl nav norādīta.</p>';
-    const nos = v.adrese ? (v.avots === 'adrese' ? '' : '~') + esc(v.adrese) : v.ielade ? 'Nosaka adresi…' : `${v.lat.toFixed(3)}, ${v.lon.toFixed(3)}`;
-    const avoti = [AVOTU_TEKSTI[v.avots] || 'karte'];
-    if (v.adrese && v.avots !== 'adrese') avoti.push('tuvākā adrese — VZD adrešu reģistrs');
-    if (v.pasvaldiba) avoti.push('pašvaldība — VZD adrešu reģistra robežas');
-    return `<p class="zinot-vieta-teksts"><b>${nos}</b>${v.pasvaldiba ? `<br>${esc(v.pasvaldiba)}` : ''}<br><small>Avots: ${avoti.join('; ')}</small></p>`;
+    if (!v) return `<p class="zinot-vieta-teksts">${tv('Vieta vēl nav norādīta.')}</p>`;
+    const nos = v.adrese ? (v.avots === 'adrese' ? '' : '~') + esc(v.adrese) : v.ielade ? tv('Nosaka adresi…') : `${v.lat.toFixed(3)}, ${v.lon.toFixed(3)}`;
+    const avoti = [tv(AVOTU_TEKSTI[v.avots] || 'karte')];
+    if (v.adrese && v.avots !== 'adrese') avoti.push(tv('tuvākā adrese — VZD adrešu reģistrs'));
+    if (v.pasvaldiba) avoti.push(tv('pašvaldība — VZD adrešu reģistra robežas'));
+    return `<p class="zinot-vieta-teksts"><b>${nos}</b>${v.pasvaldiba ? `<br>${esc(v.pasvaldiba)}` : ''}<br><small>${tv('Avots:')} ${avoti.join('; ')}</small></p>`;
   }
 
   function zimet(kluda = '') {
     panelis.querySelector('#zinot-solis').textContent = `${solis}/5`;
-    panelis.querySelector('#zinot-virsraksts').textContent = SOLI[solis - 1];
+    panelis.querySelector('#zinot-virsraksts').textContent = tv(SOLI[solis - 1]);
     panelis.dataset.solis = solis;
     const kaja = panelis.querySelector('.zinot-kaja');
     const k = kluda ? `<p class="kluda" role="alert">${esc(kluda)}</p>` : '';
     if (solis === 1) {
-      saturs.innerHTML = (noMeklejuma && dati.tips ? `<p class="piezime">Atzīmēts pēc Jūsu meklējuma „${esc(noMeklejuma)}”. Ja vajag, izvēlieties citu.</p>` : '') +
-        `<div class="zinot-tipi" role="group" aria-label="Bīstamības veids">${TIPI.map(([kods, ik, nos]) =>
-          `<button type="button" data-zinot="tips" data-tips="${kods}" aria-pressed="${dati.tips === kods}">${Ik(ik)}<span>${esc(nos)}</span></button>`).join('')}</div>` + k +
-        '<p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>';
+      saturs.innerHTML = (noMeklejuma && dati.tips ? `<p class="piezime">${esc(tv('Atzīmēts pēc Jūsu meklējuma „{x}”. Ja vajag, izvēlieties citu.', { x: noMeklejuma }))}</p>` : '') +
+        `<div class="zinot-tipi" role="group" aria-label="${tv('Bīstamības veids')}">${TIPI.map(([kods, ik, nos]) =>
+          `<button type="button" data-zinot="tips" data-tips="${kods}" aria-pressed="${dati.tips === kods}">${Ik(ik)}<span>${esc(tv(nos))}</span></button>`).join('')}</div>` + k +
+        `<p class="zvanit-teksts">${tv('Ja apdraudēta dzīvība vai veselība, zvaniet 112.')}</p>`;
       kaja.innerHTML = dati.tips ? pogaTalak() : '';
     } else if (solis === 2) {
       saturs.innerHTML = vietasHtml(dati.vieta) +
-        `<p class="piezime">${dati.vieta ? 'Lai mainītu vietu, pieskarieties kartei.' : 'Pieskarieties kartei vietā, kur ir bīstamība, vai izmantojiet savu atrašanās vietu.'}</p>` +
-        `<button type="button" class="otra" data-zinot="mana-vieta">${Ik('vieta')}<span> ${dati.vieta?.avots === 'gps' ? 'Atjaunot manu atrašanās vietu' : 'Izmantot manu atrašanās vietu'}</span></button>` + k;
-      kaja.innerHTML = pogaAtpakal + (dati.vieta ? pogaTalak() : '');
+        `<p class="piezime">${dati.vieta ? tv('Lai mainītu vietu, pieskarieties kartei.') : tv('Pieskarieties kartei vietā, kur ir bīstamība, vai izmantojiet savu atrašanās vietu.')}</p>` +
+        `<button type="button" class="otra" data-zinot="mana-vieta">${Ik('vieta')}<span> ${dati.vieta?.avots === 'gps' ? tv('Atjaunot manu atrašanās vietu') : tv('Izmantot manu atrašanās vietu')}</span></button>` + k;
+      kaja.innerHTML = pogaAtpakal() + (dati.vieta ? pogaTalak() : '');
     } else if (solis === 3) {
-      saturs.innerHTML = `<label for="zinot-apraksts" class="zinot-etikete">Īsi aprakstiet, kas redzams</label>
+      saturs.innerHTML = `<label for="zinot-apraksts" class="zinot-etikete">${tv('Īsi aprakstiet, kas redzams')}</label>
         <input id="zinot-apraksts" type="text" maxlength="200" autocomplete="off" enterkeyhint="next" value="${esc(dati.apraksts)}"
-          placeholder="Piem.: koks pāri ceļam pie tilta">
+          placeholder="${tv('Piem.: koks pāri ceļam pie tilta')}">
         <small id="zinot-zimes" class="piezime">${dati.apraksts.length} / 200</small>
-        <p class="piezime">Neierakstiet vārdus, tālruņus un citus personas datus. Saites netiek pieņemtas.</p>` + k;
-      kaja.innerHTML = pogaAtpakal + pogaTalak('Tālāk: pārbaudīt');
+        <p class="piezime">${tv('Neierakstiet vārdus, tālruņus un citus personas datus. Saites netiek pieņemtas.')}</p>` + k;
+      kaja.innerHTML = pogaAtpakal() + pogaTalak(tv('Tālāk: pārbaudīt'));
     } else if (solis === 4) {
       const t = TIPS[dati.tips];
-      const labot = (n, ko) => `<button type="button" class="zinot-labot" data-zinot="labot" data-solis="${n}" aria-label="Labot: ${ko}">Labot</button>`;
+      const labot = (n, ko) => `<button type="button" class="zinot-labot" data-zinot="labot" data-solis="${n}" aria-label="${tv('Labot')}: ${tv(ko)}">${tv('Labot')}</button>`;
       saturs.innerHTML = `<dl class="zinot-kopsavilkums">
-          <div><dt>Kas</dt><dd>${Ik(t.ikona)} ${esc(t.nos)}</dd>${labot(1, 'kas')}</div>
-          <div><dt>Kur</dt><dd>${vietasHtml(dati.vieta)}</dd>${labot(2, 'kur')}</div>
-          <div><dt>Apraksts</dt><dd>${dati.apraksts ? esc(dati.apraksts) : '<span class="piezime">nav</span>'}</dd>${labot(3, 'apraksts')}</div>
+          <div><dt>${tv('Kas')}</dt><dd>${Ik(t.ikona)} ${esc(tv(t.nos))}</dd>${labot(1, 'Kas')}</div>
+          <div><dt>${tv('Kur')}</dt><dd>${vietasHtml(dati.vieta)}</dd>${labot(2, 'Kur')}</div>
+          <div><dt>${tv('Apraksts')}</dt><dd>${dati.apraksts ? esc(dati.apraksts) : `<span class="piezime">${tv('nav')}</span>`}</dd>${labot(3, 'Apraksts')}</div>
         </dl>
-        <div class="zinot-datu-piezime"><b>Kā izmantosim šos datus</b><ul>
-          <li>Ziņojums būs publisks kartē (slānis „Iedzīvotāju ziņojumi”) 7 dienas kā iedzīvotāju ziņojums, nevis oficiāla informācija.</li>
-          <li>Vietu glabājam ~100 m precizitātē, kartē rādām noapaļotu līdz ~1 km.</li>
-          <li>Jūsu IP adresi un citus personas datus neglabājam.</li>
-          <li>Licence: ${LICENCE}, ziņojumu drīkst izmantot citi.</li></ul></div>` + k;
-      kaja.innerHTML = pogaAtpakal + '<button type="button" class="galvena" data-zinot="sutit">Nosūtīt</button>';
+        <div class="zinot-datu-piezime"><b>${tv('Kā izmantosim šos datus')}</b><ul>
+          <li>${tv('Ziņojums būs publisks kartē (slānis „Iedzīvotāju ziņojumi”) 7 dienas kā iedzīvotāju ziņojums, nevis oficiāla informācija.')}</li>
+          <li>${tv('Vietu glabājam ~100 m precizitātē, kartē rādām noapaļotu līdz ~1 km.')}</li>
+          <li>${tv('Jūsu IP adresi un citus personas datus neglabājam.')}</li>
+          <li>${tv('Licence: {x}, ziņojumu drīkst izmantot citi.', { x: LICENCE })}</li></ul></div>` + k;
+      kaja.innerHTML = pogaAtpakal() + `<button type="button" class="galvena" data-zinot="sutit">${tv('Nosūtīt')}</button>`;
     } else if (!sutits) {
-      saturs.innerHTML = '<p>Sūta…</p>';
+      saturs.innerHTML = `<p>${tv('Sūta…')}</p>`;
       kaja.innerHTML = '';
     } else {
       const v = dati.vieta;
-      saturs.innerHTML = `<p class="zinot-rezultats">${Ik('karogs')} Ziņojums Nr. <b>${esc(sutits.id)}</b> ir kartē.</p>
-        <p><b>${esc(TIPS[sutits.tips]?.nos || '')}</b> · ${v?.adrese ? esc(v.adrese) : `${(+sutits.lat).toFixed(2)}, ${(+sutits.lon).toFixed(2)}`}</p>
-        <p class="zinot-etikete">Kas notiks tālāk</p><ul class="zinot-talak">
-          <li>Redzams kartē tūlīt (slānis „Iedzīvotāju ziņojumi”, ~1 km precizitātē) 7 dienas.</li>
-          <li>Citi iedzīvotāji to var apstiprināt vai apstrīdēt; apstrīdētu ziņojumu karte paslēpj.</li>
-          <li>Pašvaldība un VUGD to automātiski neredz.</li></ul>
-        <p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
+      saturs.innerHTML = `<p class="zinot-rezultats">${Ik('karogs')} ${tv('Ziņojums Nr.')} <b>${esc(sutits.id)}</b> ${tv('ir kartē.')}</p>
+        <p><b>${esc(tv(TIPS[sutits.tips]?.nos || ''))}</b> · ${v?.adrese ? esc(v.adrese) : `${(+sutits.lat).toFixed(2)}, ${(+sutits.lon).toFixed(2)}`}</p>
+        <p class="zinot-etikete">${tv('Kas notiks tālāk')}</p><ul class="zinot-talak">
+          <li>${tv('Redzams kartē tūlīt (slānis „Iedzīvotāju ziņojumi”, ~1 km precizitātē) 7 dienas.')}</li>
+          <li>${tv('Citi iedzīvotāji to var apstiprināt vai apstrīdēt; apstrīdētu ziņojumu karte paslēpj.')}</li>
+          <li>${tv('Pašvaldība un VUGD to automātiski neredz.')}</li></ul>
+        <p class="zvanit-teksts">${tv('Ja apdraudēta dzīvība vai veselība, zvaniet 112.')}</p>
         <p class="piezime zinot-dalities-zina" role="status" hidden></p>`;
-      kaja.innerHTML = `<button type="button" class="otra" data-zinot="dalities">${Ik('dalities')} Dalīties</button>
-        <button type="button" class="otra" data-zinot="vel">Ziņot vēl</button>
-        <button type="button" class="galvena" data-zinot="aizvert">Uz karti</button>`;
+      kaja.innerHTML = `<button type="button" class="otra" data-zinot="dalities">${Ik('dalities')} ${tv('Dalīties')}</button>
+        <button type="button" class="otra" data-zinot="vel">${tv('Ziņot vēl')}</button>
+        <button type="button" class="galvena" data-zinot="aizvert">${tv('Uz karti')}</button>`;
     }
   }
 
@@ -290,16 +297,16 @@ const Zinot = (() => {
   }
 
   function manaVieta() {
-    if (!navigator.geolocation) return zimet('Šis pārlūks nevar noteikt atrašanās vietu. Pieskarieties kartei.');
+    if (!navigator.geolocation) return zimet(tv('Šis pārlūks nevar noteikt atrašanās vietu. Pieskarieties kartei.'));
     const poga = panelis.querySelector('[data-zinot="mana-vieta"]');
-    if (poga) { poga.disabled = true; poga.lastChild.textContent = ' Nosaka atrašanās vietu…'; }
+    if (poga) { poga.disabled = true; poga.lastChild.textContent = ' ' + tv('Nosaka atrašanās vietu…'); }
     navigator.geolocation.getCurrentPosition(p => {
       const { latitude: lat, longitude: lon } = p.coords;
-      if (!(lat > 55 && lat < 59 && lon > 20 && lon < 29)) return zimet('Jūsu atrašanās vieta nav Latvijā. Pieskarieties kartei.');
+      if (!(lat > 55 && lat < 59 && lon > 20 && lon < 29)) return zimet(tv('Jūsu atrašanās vieta nav Latvijā. Pieskarieties kartei.'));
       iestatitVietu(lat, lon, 'gps');
       zimet();
       radtVietu();
-    }, () => zimet('Atrašanās vietu neizdevās noteikt. Pieskarieties kartei.'), { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
+    }, () => zimet(tv('Atrašanās vietu neizdevās noteikt. Pieskarieties kartei.')), { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 });
   }
 
   // Sākuma dati no tā, ko lapa jau zina: meklētais scenārijs un adrese vai atrašanās vieta (neprasām vēlreiz)
@@ -342,12 +349,12 @@ const Zinot = (() => {
   const saite = z => `${location.origin}${location.pathname}?${new URLSearchParams({ zinojums: z.id, lat: (+z.lat).toFixed(2), lon: (+z.lon).toFixed(2) })}`;
 
   async function dalities() {
-    const url = saite(sutits), nos = `Iedzīvotāja ziņojums: ${TIPS[sutits.tips]?.nos || 'bīstamība'}`;
+    const url = saite(sutits), nos = tv('Iedzīvotāja ziņojums: {x}', { x: tv(TIPS[sutits.tips]?.nos || 'bīstamība') });
     const zina = t => { const z = panelis.querySelector('.zinot-dalities-zina'); if (z) { z.textContent = t; z.hidden = false; } };
     if (navigator.share) {
       try { await navigator.share({ title: nos, text: nos, url }); return; } catch (e) { if (e.name === 'AbortError') return; }
     }
-    try { await navigator.clipboard.writeText(url); zina('Saite nokopēta: ' + url); } catch { zina('Saite: ' + url); }
+    try { await navigator.clipboard.writeText(url); zina(tv('Saite nokopēta:') + ' ' + url); } catch { zina(tv('Saite:') + ' ' + url); }
   }
 
   function atvert() {

@@ -10,12 +10,15 @@ const Runa = (() => {
   const izvelne = document.getElementById('runa-valodas');
   if (!SR || !atlauts || !poga) return { pieejama: false };
 
-  const VALODAS = { 'lv-LV': 'Latviski', 'ru-RU': 'По-русски', 'en-US': 'English' };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const VALODAS = { 'lv-LV': 'Latviski', 'ru-RU': 'По-русски', 'en-US': 'English' };  // valodu nosaukumi paliek savā valodā
   let valoda = localStorage.getItem('runa-valoda') || 'lv-LV';
   if (!VALODAS[valoda]) valoda = 'lv-LV';
   let atpazinejs = null, ilgiTur = null, izvelneAtverta = false;
   const lauks = document.getElementById('jautajums');
-  const vietturis = lauks.placeholder;
+  const vietturis = lauks.placeholder;  // latviskais vietturis (atslēga Valoda.t)
+  const t = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;
+  const nosaukums = () => t('Runāt') + ' (' + VALODAS[valoda] + '; ' + t('ilgi turiet, lai mainītu valodu') + ')';
 
   function zinot(teksts) {
     const s = document.getElementById('statuss');
@@ -25,7 +28,7 @@ const Runa = (() => {
   function beigt() {
     poga.classList.remove('klausas');
     poga.setAttribute('aria-pressed', 'false');
-    lauks.placeholder = vietturis;
+    lauks.placeholder = t(vietturis);
     atpazinejs = null;
   }
 
@@ -45,9 +48,9 @@ const Runa = (() => {
     };
     atpazinejs.onerror = e => {
       zinot(e.error === 'not-allowed' || e.error === 'service-not-allowed'
-        ? 'Mikrofons nav atļauts. Ierakstiet tekstu meklētājā.'
-        : e.error === 'no-speech' ? 'Nedzirdējām runu. Mēģiniet vēlreiz vai ierakstiet tekstu.'
-        : 'Runas atpazīšana pašlaik nav pieejama. Ierakstiet tekstu meklētājā.');
+        ? t('Mikrofons nav atļauts. Ierakstiet tekstu meklētājā.')
+        : e.error === 'no-speech' ? t('Nedzirdējām runu. Mēģiniet vēlreiz vai ierakstiet tekstu.')
+        : t('Runas atpazīšana pašlaik nav pieejama. Ierakstiet tekstu meklētājā.'));
     };
     atpazinejs.onend = beigt;
     try {
@@ -55,7 +58,7 @@ const Runa = (() => {
       poga.classList.add('klausas');
       poga.setAttribute('aria-pressed', 'true');
       lauks.value = '';
-      lauks.placeholder = 'Klausos… (' + VALODAS[valoda] + ')';
+      lauks.placeholder = t('Klausos… ({x})', { x: VALODAS[valoda] });
     } catch {
       beigt();
     }
@@ -68,7 +71,7 @@ const Runa = (() => {
     if (atvert) {
       izvelne.innerHTML = Object.entries(VALODAS).map(([k, v]) =>
         `<button type="button" role="menuitemradio" aria-checked="${k === valoda}" data-valoda="${k}">${v}</button>`).join('') +
-        '<p>Runu atpazīst pārlūka pakalpojums (piem., Google); ieraksts tiek nosūtīts tam.</p>';
+        `<p>${esc(t('Runu atpazīst pārlūka pakalpojums (piem., Google); ieraksts tiek nosūtīts tam.'))}</p>`;
       izvelne.querySelector('[aria-checked="true"]')?.focus();
     }
   }
@@ -90,13 +93,17 @@ const Runa = (() => {
     valoda = b.dataset.valoda;
     localStorage.setItem('runa-valoda', valoda);
     raditIzvelni(false);
-    poga.title = 'Runāt (' + VALODAS[valoda] + '; ilgi turiet, lai mainītu valodu)';
+    poga.title = nosaukums();
     sakt();
   });
   izvelne.addEventListener('keydown', e => { if (e.key === 'Escape') { raditIzvelni(false); poga.focus(); } });
   document.addEventListener('pointerdown', e => { if (izvelneAtverta && !izvelne.contains(e.target) && e.target !== poga) raditIzvelni(false); });
 
-  poga.title = 'Runāt (' + VALODAS[valoda] + '; ilgi turiet, lai mainītu valodu)';
+  poga.title = nosaukums();
+  document.addEventListener('valoda-maina', () => {
+    poga.title = nosaukums();
+    if (izvelneAtverta) raditIzvelni(true);  // izvēlne paliek atvērta jaunajā valodā
+  });
   poga.hidden = false;
   document.getElementById('meklet-forma').classList.add('ar-runu');
   return { pieejama: true, sakt };

@@ -78,7 +78,7 @@ const krizesMeklesana = (() => {
       talakGimenes = noteikumi.talak_gimenes || {};
     } catch {
       el('jautajums').disabled = true;
-      el('jautajums').placeholder = 'Meklēšana nav pieejama';
+      el('jautajums').placeholder = t('Meklēšana nav pieejama');
       return;
     }
     const q = new URLSearchParams(location.search).get('q');
@@ -113,10 +113,9 @@ const krizesMeklesana = (() => {
     try { localStorage.setItem(PIRMA_MEKLESANA, '1'); } catch { /* privātais režīms */ }
   }
   const pirmaisSkats = (ievads = 'Uzrakstiet vienā rindā, kas notiek un kur: pilsēta, adrese ar mājas numuru vai „Rādīt tuvākos man”.') =>
-    `<div class="pirmais-skats" role="group" aria-label="Piemēri, kā meklēt"><p class="ps-ievads">${ievads}</p>` +
+    `<div class="pirmais-skats" role="group" aria-label="${t('Piemēri, kā meklēt')}"><p class="ps-ievads">${t(ievads)}</p>` +
     `<div class="ps-cipi">${PIEMERI.map(([q, ik]) => `<button type="button" class="ps-cips" data-piemers="${esc(q)}">${Ik(ik)}<span>${esc(q)}</span></button>`).join('')}</div>` +
-    `<p class="ps-dati">${Ik('info')}<span>Atbildi saliekam no atvērtajiem datiem: LVĢMC brīdinājumi un plūdu kartes, VZD adreses, ` +
-    'pašvaldību civilās aizsardzības plāni, slimnīcas un patvertnes. Katrai rindai ir avots un licence.</span></p></div>';
+    `<p class="ps-dati">${Ik('info')}<span>${t('Atbildi saliekam no atvērtajiem datiem: LVĢMC brīdinājumi un plūdu kartes, VZD adreses, pašvaldību civilās aizsardzības plāni, slimnīcas un patvertnes. Katrai rindai ir avots un licence.')}</span></p></div>`;
   document.addEventListener('click', e => {
     const q = e.target.closest('[data-piemers]')?.dataset.piemers;
     if (!q || el('jautajums').disabled) return;
@@ -154,7 +153,7 @@ const krizesMeklesana = (() => {
       if (lauks.value.trim() || !populari.contains(document.activeElement) && document.activeElement !== lauks) return;
     }
     populari.classList.remove('ieteikumi');
-    el('populari-virsraksts').textContent = 'Biežāk meklētais';
+    el('populari-virsraksts').textContent = t('Biežāk meklētais');
     popPogas.innerHTML = popularie.map(p =>
       `<button type="button" data-teksts="${esc(p.teksts)}" data-kods="${esc(p.kods)}">${esc(p.nos)}</button>`).join('');
     populari.hidden = false;
@@ -442,9 +441,9 @@ const krizesMeklesana = (() => {
   function izcelsme(vieta, adrese) {
     if (adrese) return { lat: adrese.lat, lon: adrese.lon, apraksts: `no adreses ${isaAdrese(adrese.adrese)}`, nosaukums: isaAdrese(adrese.adrese) };
     if (vieta) return { ...centrs(vieta), apraksts: `no centra (${vieta.nosaukums})`, regions: true, nosaukums: vieta.nosaukums };
-    if (stavoklis.vieta?.noSaites) return { ...stavoklis.vieta, apraksts: 'no saitē norādītās vietas', nosaukums: 'Saitē norādītajā vietā' };
+    if (stavoklis.vieta?.noSaites) return { ...stavoklis.vieta, apraksts: 'no saitē norādītās vietas', nosaukums: t('Saitē norādītajā vietā') };
     if (stavoklis.vieta) return { ...stavoklis.vieta, apraksts: stavoklis.vieta.adrese ? `no adreses ${isaAdrese(stavoklis.vieta.adrese)}` : 'no Jums',
-      nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : 'Jūsu vietā' };
+      nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : t('Jūsu vietā') };
     const r = regioni[stavoklis.regions];
     if (r) return { ...centrs(r), apraksts: `no centra (${r.nosaukums})`, regions: true, nosaukums: r.nosaukums };
     // Nav ne adreses, ne vietas, ne atrašanās vietas ("cilvēks nav pie samaņas", "redzu dronu"): tuvākās vietas no kartes
@@ -454,7 +453,7 @@ const krizesMeklesana = (() => {
     const zem = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes().paddingBottomRight[1] : 0;
     let c = karte.containerPointToLatLng([izm.x / 2, Math.max(0, izm.y - zem) / 2]);
     if (!latvija.contains(c)) c = latvija.getCenter();
-    return { lat: c.lat, lon: c.lng, apraksts: 'no kartes centra', regions: true, kartesCentrs: true, nosaukums: 'Kartes centrā' };
+    return { lat: c.lat, lon: c.lng, apraksts: 'no kartes centra', regions: true, kartesCentrs: true, nosaukums: t('Kartes centrā') };
   }
   // bridinajumi.js (josla augšā); ja tas neielādējās — bez joslas
   const bridinajumi = (v, n) => { if (typeof Bridinajumi !== 'undefined') Bridinajumi.atjaunot(v, n); };
@@ -926,15 +925,15 @@ const krizesMeklesana = (() => {
       if (!el) return;
       const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
       const k = p.kontakti, c = p.vpvkac;
-      el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
-        saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
+      el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? t('Pašvaldība') : t('Jūsu pašvaldība')}: <b>${esc(p.nosaukums)}</b>` +
+        saite(p.ca_plans_url || p.ca_lapa, t('CA plāns')) + saite(p.majas_lapa, t('tīmekļvietne')) +
         (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
-        (k?.adrese ? `<p class="pasvaldiba-rinda">Pašvaldības adrese: ${esc(k.adrese)}</p>` : '') +
-        (c ? `<p class="pasvaldiba-rinda">Klientu apkalpošanas centrs: ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
+        (k?.adrese ? `<p class="pasvaldiba-rinda">${t('Pašvaldības adrese:')} ${esc(k.adrese)}</p>` : '') +
+        (c ? `<p class="pasvaldiba-rinda">${t('Klientu apkalpošanas centrs:')} ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
         // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
-        `<p class="abonet-rinda">Abonēt brīdinājumus: <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
-        ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">Kalendārs</a></p>` +
-        `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)` +
+        `<p class="abonet-rinda">${t('Abonēt brīdinājumus:')} <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
+        ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">${t('Kalendārs')}</a></p>` +
+        `<small class="avots-rinda">${t('Pašvaldību CA plāni (oficiāli dokumenti)')}` +
         (k ? ' · <a href="https://data.gov.lv/dati/dataset/public-persons-institutions" target="_blank" rel="noopener">Uzņēmumu reģistrs, publisko personu saraksts</a> · CC0' : '') +
         (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontakti</a>, 2023-11 · CC0' : '') + '</small>';
     }).catch(() => {});
@@ -1075,7 +1074,7 @@ const krizesMeklesana = (() => {
 
   // Vējš tagad tuvākajā LVĢMC stacijā (ar brāzmām)
   function vejaBloks() {
-    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">${Ik('vejs')}</span><div><b>Vējš tagad</b><span>Ielādē…</span></div></li></ul>`;
+    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">${Ik('vejs')}</span><div><b>${t('Vējš tagad')}</b><span>${t('Ielādē…')}</span></div></li></ul>`;
   }
   function vejaDati(ll, signal) {
     iegut('/noverojumi?' + new URLSearchParams({ ...ll, limit: 8 }), signal).then(d => {
@@ -1122,7 +1121,7 @@ const krizesMeklesana = (() => {
         .addTo(rezultatuSlanis);
     }
     if (no.regions) L.circleMarker([no.lat, no.lon], { radius: 5, color: '#1c1917', weight: 2, fillOpacity: 0 })
-      .bindTooltip('Attālumi no šejienes').addTo(rezultatuSlanis);
+      .bindTooltip(t('Attālumi no šejienes')).addTo(rezultatuSlanis);
     // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
     const atst = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes() : { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40] };
     karte.fitBounds(L.latLngBounds(punkti), { ...atst, maxZoom: 15 });
