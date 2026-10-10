@@ -426,6 +426,7 @@ async function atjaunot(spiest = true) {
       f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k, nos)
         : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: nos }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
+      tuvakaisNoKlikska(f._slanis);
       jaunie.push(f);
       pievienot.push(f._slanis);
     }
@@ -451,31 +452,86 @@ karte.on('moveend', () => {
   skataTaimeris = setTimeout(() => atjaunot(false), 400);
 });
 
-// ---- Pieskāriens blakus punktam (ikonas.js marķieriem ir 44 px laukums; šis — vēl 14 px apkārt) ----
-// Tikai tiešs klikšķis kartē (ne no poligona vai cita slāņa, kas to "nodod" kartei). Grupas aplis uzvedas kā līdz šim.
-const PIESKARIENA_PIELAIDE = 22 + 14;
-karte.on('click', e => {
-  // klikšķis no poligona (piem., prognožu novads) — tuvumā esošs punkts svarīgāks; no cita marķiera — nē
-  if ((e.propagatedFrom && !(e.propagatedFrom instanceof L.Path)) || !karte.hasLayer(objektuSlanis)) return;
+// ---- Pieskāriens pie punkta: atver tuvāko, nevis virspusē esošo ----
+// Katram punktam ir 44 px apaļš pieskāriena laukums (ikonas.js; forma pati 26 px). Gan pieskāriens punktam, gan kartei
+// blakus tam atver punktu, kura centrs ir tuvāk par PIESKARIENA_RADIUSS px (ekrānā) — ja punkti pārklājas, tuvāko, nevis
+// to, kas zīmēts virspusē. Vienā vietā (≤ 4 px) sakrītoši punkti → izvēle. Grupas aplis (clusterclick) uzvedas kā līdz šim;
+// tukša kartes vieta un zonas (#109, zonas.js) — arī. Lapa, vadīklas un logs pieskārienu neuztver: punkts, kura centru
+// tie sedz, nav "redzams".
+const PIESKARIENA_RADIUSS = 22;
+const MAZAK_KUSTIBU = matchMedia('(prefers-reduced-motion: reduce)');
+
+function redzamsPunkts(p) {
+  const kaste = karte.getContainer().getBoundingClientRect();
+  const v = document.elementFromPoint(kaste.left + p.x, kaste.top + p.y);
+  return !!v && karte.getContainer().contains(v) && !v.closest('.leaflet-control, .leaflet-popup');
+}
+
+function tuvakiePunkti(pt) {
   const tuvuma = [];
   objektuSlanis.eachLayer(m => {
     if (!m.getLatLng || objektuSlanis.getVisibleParent(m) !== m) return;
-    const d = karte.latLngToContainerPoint(m.getLatLng()).distanceTo(e.containerPoint);
-    if (d <= PIESKARIENA_PIELAIDE) tuvuma.push([d, m]);
+    const p = karte.latLngToContainerPoint(m.getLatLng());
+    const d = p.distanceTo(pt);
+    if (d <= PIESKARIENA_RADIUSS && redzamsPunkts(p)) tuvuma.push({ d, m, p });
   });
-  if (!tuvuma.length) return;
-  tuvuma.sort((a, b) => a[0] - b[0]);
-  if (tuvuma.length === 1) { tuvuma[0][1].openPopup(); return; }
-  const izvele = tuvuma.slice(0, 8);
+  return tuvuma.sort((a, b) => a.d - b.d);
+}
+
+// Īss aplis ap atvērto punktu, ja pieskāriens nebija tieši uz formas (lai redz, kurš atvērās); bez kustības, ja tā lūgts
+function pieskarienaAplis(p) {
+  if (MAZAK_KUSTIBU.matches) return;
+  const a = L.DomUtil.create('div', 'pieskariena-aplis', karte.getPanes().popupPane);
+  L.DomUtil.setPosition(a, karte.containerPointToLayerPoint(p));
+  setTimeout(() => a.remove(), 450);
+}
+
+// pt — pieskāriena vieta (konteinera px); trapitais — marķieris, kura laukumam pieskārās (vai nekas). true, ja ko atvēra.
+function atvertTuvako(pt, trapitais) {
+  const tuvuma = tuvakiePunkti(pt);
+  if (!tuvuma.length) {
+    if (!trapitais) return false;
+    tuvuma.push({ d: 0, m: trapitais, p: karte.latLngToContainerPoint(trapitais.getLatLng()) });
+  }
+  const pirmais = tuvuma[0];
+  const kopa = tuvuma.filter(t => t.p.distanceTo(pirmais.p) <= 4).slice(0, 8);
+  if (kopa.length === 1) {
+    const m = pirmais.m;
+    if (m.isPopupOpen()) { m.closePopup(); return true; }  // kā Leaflet: atkārtots pieskāriens aizver
+    m.openPopup();
+    if (pirmais.d > 13 || m !== trapitais) pieskarienaAplis(pirmais.p);
+    return true;
+  }
   const saturs = document.createElement('div');
   saturs.className = 'popup tuvuma-izvele';
-  saturs.innerHTML = '<b>Šeit ir vairākas vietas</b>' + izvele.map(([, m], i) =>
+  saturs.innerHTML = '<b>Šeit ir vairākas vietas</b>' + kopa.map(({ m }, i) =>
     `<button type="button" class="otra" data-i="${i}">${m.options.icon?.options.html || ''}<span>${esc(m.options.title || 'Objekts')}</span></button>`).join('');
   saturs.addEventListener('click', ev => {
     const b = ev.target.closest('[data-i]');
-    if (b) izvele[+b.dataset.i][1].openPopup();
+    if (b) kopa[+b.dataset.i].m.openPopup();
   });
-  L.popup().setLatLng(e.latlng).setContent(saturs).openOn(karte);
+  L.popup().setLatLng(karte.containerPointToLatLng(pirmais.p)).setContent(saturs).openOn(karte);
+  return true;
+}
+
+// Punkta paša klikšķis: Leaflet bindPopup atvērtu virspusē zīmēto; to noņem, lēmumu pieņem atvertTuvako.
+// Tastatūra (Enter uz punkta) — kā līdz šim.
+function tuvakaisNoKlikska(m) {
+  m.off('click', m._openPopup, m);
+  return m;
+}
+objektuSlanis.on('click', e => {
+  const m = e.layer;
+  if (!m?.getLatLng || !e.originalEvent) return;
+  L.DomEvent.stop(e);  // karte šo klikšķi vairs nesaņem (tāpat kā Leaflet _openPopup)
+  atvertTuvako(karte.mouseEventToContainerPoint(e.originalEvent), m);
+});
+// Klikšķis kartē blakus punktam. Tikai tiešs (ne no cita slāņa, kas to "nodod" kartei); no poligona (piem., prognožu
+// novads) — jā: tuvumā esošs punkts svarīgāks. Lapa un vadīklas ir ārpus kartes vai aptur klikšķi; drošības pēc arī šeit.
+karte.on('click', e => {
+  if ((e.propagatedFrom && !(e.propagatedFrom instanceof L.Path)) || !karte.hasLayer(objektuSlanis)) return;
+  if (e.originalEvent?.target?.closest?.('.leaflet-control, .leaflet-popup, button, a, input, select')) return;
+  atvertTuvako(e.containerPoint, null);
 });
 
 // ---- Meklēšana pa kartē ielādētajiem objektiem (bez garumzīmēm, pēc nosaukuma, adreses, slāņa) ----
