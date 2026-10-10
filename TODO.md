@@ -75,6 +75,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Pitch: prezentacija.md ar Gamma saiti + 5 min pitch.html (notes/pitch/) — done 2026-10-10 13:28 +03:00 by iesalnieksjanLatvia
 - [x] Telefona apakšlapa: noņemti piemēri un tēmu pogas, augšā 3 cilnes (Rezultāts · Kartes slāņi · Situācija tagad) un augstuma pogas 30% / 50% / 100% — done 2026-10-10 by noiseparty
 - [x] Layers `bistams_objekts` (Seveso 29 + E-PRTR 95, CC0) and `soc_pakalpojumi` (LM provider register, 1007 active, CC0): loader/geocoder `src/karte/db/bistami_soc.py`, snapshots `src/karte/dati/{bistami_seveso,bistami_eprtr,soc_pakalpojumi}.geojson`, categories + avoti `eva-seveso`/`lvgmc-eprtr`/`lm-soc` at the end of `shema.sql`, load lines in `atjaunot_visu.sh`; backend only (VPS steps in the PR; front-end icons/legend still to do) — done 2026-10-10 11:40 +03:00 by noiseparty (added 2026-10-10 11:40 +03:00 by noiseparty)
 - [x] TODO: tulkot visu lapu, pārslēdzot valodu — done 2026-10-10 10:52 +03:00 by krissjanis
