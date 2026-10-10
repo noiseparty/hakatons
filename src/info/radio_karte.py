@@ -2,8 +2,9 @@
 un production/lr1.json (rezultāta kartītei: tuvākais raidītājs). Ievade: src/info/lr1_frekvences.json (frekvences no
 latvijasradio.lsm.lv, raidītāju vietas ar avotu) un src/info/latvija_robeza.json (VZD robežas, vienkāršotas).
 
-Etiķetes nepārklājas, jo katrai vietai JSON ir nobīde "etikete": [dx, dy] (SVG vienībās); ja nobīde ir liela, zīmē
-vadlīniju. Melnbalts, drukājams. Palaišana no repozitorija saknes:
+Etiķete ir divās rindās (vieta, zem tās frekvences). Etiķetes nepārklājas, jo katrai vietai JSON ir nobīde
+"etikete": [dx, dy] (SVG vienībās, pirmās rindas bāzes līnija; dx = 0 → centrēta, dx < 0 → pa kreisi).
+Pilns aplis: tornis; tukšs aplis ("vietas_veids": "aptuvena"): apdzīvotās vietas centrs. Melnbalts, drukājams. Palaišana no repozitorija saknes:
     python src/info/radio_karte.py
 """
 import html
@@ -58,14 +59,16 @@ def svg(dati, robeza):
     v.append(f'<path class="rk-robeza" d="{cels(robeza["latvija"])}" fill="none" stroke="#1f2933" stroke-width="2.2" stroke-linejoin="round"/>')
     for s in dati["raiditaji"]:
         x, y = xy(s["lon"], s["lat"])
-        dx, dy = s.get("etikete", [10, -8])
-        lx, ly = x + dx, y + dy
-        anchor = "end" if dx < 0 else "start"
-        if math.hypot(dx, dy) > 22:
-            v.append(f'<line x1="{x}" y1="{y}" x2="{lx - (4 if dx < 0 else -4) if abs(dx) > 6 else lx}" y2="{ly - 7}" stroke="#1f2933" stroke-width="1"/>')
-        v.append(f'<circle cx="{x}" cy="{y}" r="6" fill="#1f2933" stroke="#fff" stroke-width="2"/>')
+        dx, dy = s.get("etikete", [12, -4])
+        lx, ly = round(x + dx, 1), round(y + dy, 1)
+        anchor = "middle" if dx == 0 else "end" if dx < 0 else "start"
+        if s.get("vietas_veids") == "aptuvena":  # apdzīvotās vietas centrs, ne tornis: tukšs aplis
+            v.append(f'<circle cx="{x}" cy="{y}" r="7" fill="#fff" stroke="#1f2933" stroke-width="3"/>')
+        else:
+            v.append(f'<circle cx="{x}" cy="{y}" r="8" fill="#1f2933" stroke="#fff" stroke-width="2"/>')
         v.append(f'<text x="{lx}" y="{ly}" text-anchor="{anchor}" class="rk-et">'
-                 f'<tspan class="rk-v">{html.escape(s["vieta"])}</tspan> <tspan class="rk-f">{frekv_teksts(s["lr1"])}</tspan></text>')
+                 f'<tspan class="rk-v">{html.escape(s["vieta"])}</tspan>'
+                 f'<tspan class="rk-f" x="{lx}" dy="28">{frekv_teksts(s["lr1"])}</tspan></text>')
     v.append('</svg>')
     return "\n".join(v)
 
@@ -76,9 +79,11 @@ def main():
     bloks = (
         "<!-- radio-karte:sākums (ģenerēts ar src/info/radio_karte.py; nelabot ar roku) -->\n"
         '<figure class="radio-karte-fig">\n' + svg(dati, robeza) + "\n"
-        f'<figcaption>LR1 frekvences (MHz) pie raidītājiem. Vietas aptuvenas; uztveršana atkarīga no reljefa un uztvērēja. '
-        f'Avots: <a href="{html.escape(dati["avots_url"])}" target="_blank" rel="noopener">Latvijas Radio, „Frekvences”</a> '
-        f'({html.escape(dati["nolasits"])}); robežas: VZD adrešu reģistrs (CC BY 4.0).</figcaption>\n'
+        f'<figcaption>LR1 frekvences (MHz) pie raidītājiem. Pilns aplis: raidītāja tornis (OpenStreetMap, ODbL); '
+        f'tukšs aplis: tikai apdzīvotās vietas centrs, torņa vieta aptuvena. Uztveršana atkarīga no reljefa un uztvērēja. '
+        f'Frekvences: <a href="{html.escape(dati["avots_url"])}" target="_blank" rel="noopener">Latvijas Radio, „Frekvences”</a> '
+        f'({html.escape(dati["nolasits"])}), pārbaudītas ar <a href="{html.escape(dati["frekv_parbaude"]["avots_url"])}" '
+        f'target="_blank" rel="noopener">„Elektronisko sakaru” FM staciju sarakstu</a>; robežas: VZD (CC BY 4.0).</figcaption>\n'
         "</figure>\n<!-- radio-karte:beigas -->"
     )
     t = INFO.read_text(encoding="utf-8")
