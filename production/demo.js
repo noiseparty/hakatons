@@ -109,7 +109,7 @@ const Demo = (() => {
   function atstarpes() {
     if (!document.body.classList.contains('demo-atverts')) return { padding: [40, 40] };
     return telefons()
-      ? { paddingTopLeft: [20, 20], paddingBottomRight: [20, panelis.offsetHeight + 20] }
+      ? (typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes(panelis.offsetHeight) : { paddingTopLeft: [20, 20], paddingBottomRight: [20, panelis.offsetHeight + 20] })
       : { paddingTopLeft: [30, 30], paddingBottomRight: [panelis.offsetWidth + 30, 30] };
   }
 
@@ -164,11 +164,17 @@ const Demo = (() => {
 
     // Brīdinājuma reģioni (VZD robežas) vai izvēlētais reģions bez sakariem
     const regionuKodi = regions ? [regions] : sc.bridinajums?.regioni || [];
-    const [regionuGj, bloki] = await Promise.all([
+    const [regionuGj, bloki, celi] = await Promise.all([
       Promise.all(regionuKodi.map(k => iegut('/regioni/' + k).catch(() => null))),
       tuvakieBloki(sc, vieta, regions),
+      celuNotikumi(sc, vieta),
     ]);
     if (mana !== paaudze) return;
+    // Ceļi: īstie LVC notikumi tagad; ja to nav vai avots neatbild — scenārija simulētais slēgums (celu_rezerve)
+    if (sc.celi_lvc) {
+      if (celi?.length) zimetCelus(celi, robezas); else zimetRezervi(sc, robezas);
+      bloki.html = celuBloks(sc, celi) + bloki.html;
+    }
     const krasa = regions ? '#57534e' : LIMENI[sc.bridinajums?.limenis]?.[2] || '#b91c1c';
     const regRobezas = L.latLngBounds([]);
     for (const gj of regionuGj.filter(Boolean)) {
@@ -259,15 +265,62 @@ const Demo = (() => {
         });
       }
     }
-    for (const l of sc.linijas || []) {
+    // celu_rezerve: simulētais ceļu slēgums tikai tad, ja īsto LVC notikumu nav (zimetRezervi pēc /api/celi atbildes)
+    zimetLinijas(sc, robezas, x => !(sc.celi_lvc && x.celu_rezerve));
+  }
+
+  function zimetLinijas(sc, robezas, der) {
+    for (const l of (sc.linijas || []).filter(der)) {
       L.polyline(l.koord, { color: '#b91c1c', weight: 7, opacity: .85, dashArray: '2 10', lineCap: 'round' })
         .bindTooltip('SIMULĀCIJA · ' + esc(l.nosaukums), { sticky: true }).addTo(slanis);
       robezas.extend(l.koord);
     }
-    for (const m of sc.markieri || []) {
+    for (const m of (sc.markieri || []).filter(der)) {
       L.marker([m.lat, m.lon], { icon: ikona(m.ikona, 'demo-notikums') })
         .bindTooltip('SIMULĀCIJA · ' + esc(m.nosaukums)).addTo(slanis);
     }
+  }
+  const zimetRezervi = (sc, robezas) => zimetLinijas(sc, robezas, x => x.celu_rezerve);
+
+  // ---- Ceļi tagad: īstie LVC notikumi (/api/celi, CC0) ap scenārija vietu ----
+  // [] — spēkā esošu notikumu nav; null — avots neatbild 4 s laikā vai nav konfigurēts (atskaņošanas solis negaida ilgāk)
+  async function celuNotikumi(sc, vieta) {
+    const c = sc.celi_lvc;
+    if (!c || !vieta) return null;
+    const ctrl = new AbortController();
+    const taimeris = setTimeout(() => ctrl.abort(), 4000);
+    try {
+      const d = await iegut('/celi?' + new URLSearchParams({ lat: vieta.lat, lon: vieta.lon, r: c.r_m || 30000 }), ctrl.signal);
+      if (!d.konfigurets) return null;
+      return (d.notikumi || []).filter(n => n.aktivs && (!c.tipi || c.tipi.includes(n.tips))).slice(0, c.max || 6);
+    } catch { return null; } finally { clearTimeout(taimeris); }
+  }
+  const celuTips = n => (typeof Celi !== 'undefined' && Celi.TIPI?.[n.tips]) || { ikona: 'uzmanibu', krasa: '#b91c1c' };
+  const celuPopups = n => typeof Celi !== 'undefined' && Celi.popups ? Celi.popups(n)
+    : `<div class="popup"><b>${esc(n.nosaukums)}</b>${n.apraksts ? `<p>${esc(n.apraksts)}</p>` : ''}</div>`;
+
+  function zimetCelus(notikumi, robezas) {
+    for (const n of notikumi) {
+      const t = celuTips(n);
+      if (n.linija) L.polyline(n.linija, { color: t.krasa, weight: 6, opacity: .9 }).bindPopup(() => celuPopups(n)).addTo(slanis);
+      L.marker([n.lat, n.lon], { icon: L.divIcon({ className: 'celu-ikona', html: `<span style="background:${t.krasa}">${Ik(t.ikona)}</span>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
+        title: n.nosaukums, zIndexOffset: 400 }).bindPopup(() => celuPopups(n)).addTo(slanis);
+      if (n.attalums_m < 10000) robezas.extend([n.lat, n.lon]);
+    }
+  }
+
+  function celuBloks(sc, notikumi) {
+    const c = sc.celi_lvc, km = Math.round((c.r_m || 30000) / 1000) + ' km';
+    if (notikumi?.length) {
+      return `<h3>${Ik('slegts')} Ceļi tagad: īstie LVC dati</h3>` +
+        `<p class="piezime">Šobrīd spēkā esoši notikumi ${km} rādiusā (nevis vētras dienā). Kartē — krāsainās līnijas.</p>` +
+        '<ol class="rez-saraksts demo-celi">' + notikumi.map(n => `<li tabindex="0" data-lat="${n.lat}" data-lon="${n.lon}" data-teksts="${esc(celuPopups(n))}">
+          <span class="teksts"><b>${Ik(celuTips(n).ikona)} ${esc(n.nosaukums)}${n.cels ? ' · ' + esc(n.cels) : ''}</b>
+          ${n.apraksts ? `<small>${esc(n.apraksts)}</small>` : ''}</span><span class="attalums">${attalums(n.attalums_m)}</span></li>`).join('') +
+        `</ol><p class="avots-rinda">Avots: ${avotaSaite(dati.avoti.celi || { nos: 'LVC, transportdata.gov.lv', licence: 'CC0' })}</p>`;
+    }
+    return `<p class="piezime demo-celi-rezerve">${Ik('uzmanibu')} Ceļi: ${notikumi ? `LVC datos ${km} rādiusā šobrīd nav slēgumu vai negadījumu`
+      : 'LVC ceļu dati pašlaik nav pieejami'}, tāpēc kartē rādām ${esc(c.rezerve || 'ceļu slēgumu')}: <b>simulēts</b>.</p>`;
   }
 
   const avotaSaite = a => (a.url ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nos)}</a>` : esc(a.nos)) +

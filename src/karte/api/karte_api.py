@@ -24,6 +24,7 @@ Galapunkti:
   GET /api/pasvaldiba?lat=..&lon=..    pašvaldība punktā: CA plāns, tīmekļvietne, VPVKAC tālrunis (teksts)
   GET /api/prognozes                   "Prognoze / ziņas": LVĢMC prognozes apdzīvotām vietām (3 dienas) apkopotas pa
                                        novadiem + spēkā esošie brīdinājumi ar poligoniem; ziņu lente pa plānošanas reģioniem
+                                       + "zibens" ziņa katram novadam ar zibeni pēdējās 30 min (FMI, CC BY 4.0; kešs 60 s)
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
   GET /api/zibens                      zibens pēdējās 30 min (FMI, CC BY 4.0) + LVĢMC 24 h zibens režģis (CC0, kavējas 2–3 h)
   GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
@@ -57,6 +58,7 @@ import sys
 import threading
 import time
 import unicodedata
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -1122,8 +1124,82 @@ def _risku_zinas(riski, regioni_, dienas, sodien):
     return zinas
 
 
+ZIBENS_ZINAS_NOVADI = 6  # vairāk novadu ar zibeni — pārējie vienā ziņā "Zibens vēl N novados"
+
+
+def _izlades(n):
+    return f"{n} izlāde" if n % 10 == 1 and n % 100 != 11 else f"{n} izlādes"
+
+
+def _zibens_zinas():
+    """Ziņa lentē katram novadam, kurā pēdējās 30 min ir ≥ 1 zibens (FMI, CC BY 4.0), oranžā līmenī. Tikai no kešotajiem
+    datiem: tas pats "zibens_fmi" (60 s) kā /api/zibens, prognožu vietas un novadi (24 h) — jaunu pieprasījumu avotiem nav."""
+    try:
+        regioni_ = _kesots("prognozu_regioni", 86400, _prognozu_regioni)
+        vietas = _kesots("prognozu_vietas", 86400, _prognozu_vietas)
+        zibeni = _kesots("zibens_fmi", 60, _fmi_zibens)["zibeni"]
+    except Kluda:
+        return []
+    if not zibeni or not vietas or not regioni_:
+        return []
+    atrast = _tuvaka_vieta_regions(vietas)
+    pa_novadiem = {}
+    for z in zibeni:
+        kods = atrast(z["lat"], z["lon"])
+        if kods in regioni_:
+            pa_novadiem.setdefault(kods, []).append(z)
+    if not pa_novadiem:
+        return []
+    try:
+        from zoneinfo import ZoneInfo
+        riga = ZoneInfo("Europe/Riga")
+    except Exception:  # bez tzdata
+        riga = timezone(timedelta(hours=3 if 3 < datetime.now().month < 11 else 2))
+
+    def pulkstenis(iso):
+        try:
+            return datetime.fromisoformat(iso.replace("Z", "+00:00")).astimezone(riga).strftime("%H:%M")
+        except ValueError:
+            return ""
+    sodien = _riga_tagad().date().isoformat()
+    seciba = sorted(pa_novadiem.items(), key=lambda x: (-len(x[1]), regioni_[x[0]]["nosaukums"]))
+    zinas = []
+    for kods, z in seciba[:ZIBENS_ZINAS_NOVADI if len(seciba) <= ZIBENS_ZINAS_NOVADI else ZIBENS_ZINAS_NOVADI - 1]:
+        pedeja = pulkstenis(max(x["laiks"] for x in z))
+        zinas.append({
+            "veids": "zibens", "paradiba": "Zibens", "limenis": 2, "datums": sodien, "diena": "Šobrīd",
+            "vieta": regioni_[kods]["nosaukums"],
+            "virsraksts": f"Zibens: {_izlades(len(z))} pēdējās {ZIBENS_MIN} min (FMI, CC BY 4.0)",
+            "teksts": (f"Pēdējā izlāde {pedeja}. " if pedeja else "") + "Negaisa laikā palieciet telpās vai automašīnā, turieties prom no kokiem, atklātām vietām un ūdens.",
+            "regioni": [kods], "bbox": _bbox(regioni_, [kods]), "avots": ZIBENS_AVOTS,
+        })
+    if len(seciba) > ZIBENS_ZINAS_NOVADI:
+        citi = seciba[ZIBENS_ZINAS_NOVADI - 1:]
+        kodi = [k for k, _z in citi]
+        nosaukumi = [regioni_[k]["nosaukums"].replace(" novads", " nov.") for k in kodi]
+        zinas.append({
+            "veids": "zibens", "paradiba": "Zibens", "limenis": 2, "datums": sodien, "diena": "Šobrīd",
+            "vieta": f"vēl {len(kodi)} novados",
+            "virsraksts": f"Zibens: {_izlades(sum(len(z) for _k, z in citi))} pēdējās {ZIBENS_MIN} min (FMI, CC BY 4.0)",
+            "teksts": "Skartie: " + ", ".join(nosaukumi[:8]) + (f" un vēl {len(nosaukumi) - 8}." if len(nosaukumi) > 8
+                                                                else "" if nosaukumi[-1].endswith(".") else "."),
+            "regioni": kodi, "bbox": _bbox(regioni_, kodi), "avots": ZIBENS_AVOTS,
+        })
+    return zinas
+
+
 def prognozes(_q):
-    return _kesots("prognozes_atbilde", 300, _prognozes)
+    atbilde = _kesots("prognozes_atbilde", 300, _prognozes)
+    # Zibens ziņas ar zibens kešas ritmu (60 s), nevis prognozes (5 min); lentē uzreiz aiz "Šobrīd brāzmas"
+    try:
+        zibens_zinas = _kesots("prognozes_zibens", 60, _zibens_zinas)
+    except Exception:  # noqa: BLE001 — zibens nav obligāts: lente strādā bez tā
+        zibens_zinas = []
+    if not zibens_zinas:
+        return atbilde
+    zinas = atbilde["zinas"]
+    i = sum(1 for z in zinas if z["veids"] == "noverojums")
+    return {**atbilde, "zinas": zinas[:i] + zibens_zinas + zinas[i:]}
 
 
 def _prognozes():
@@ -2727,7 +2803,8 @@ def pasvaldiba(q):
 
 # ==== Ziņojumi: iedzīvotāju ziņojumi par bīstamību (production/zinot.js, moderacija.html) — sākums ====
 # Pēc lacukarte.lv parauga (notes/research/05 §5): ziņojums = tips + īss teksts + vieta. Glabā vietu ~100 m precizitātē
-# (3 zīmes aiz komata), publiski rāda ~1 km (2 zīmes). IP un citus personas datus neglabā. Rāda pēdējās 7 dienas,
+# (3 zīmes aiz komata), publiski rāda ~1 km (2 zīmes). IP un citus personas datus neglabā (balsu limitam — tikai IP
+# jaucējvērtību ar sāli MAP_SALT, ne ilgāk par 2 h). Rāda pēdējās 7 dienas,
 # statuss jauns/redzams; paslēpj, ja apstrīdējuši vairāk nekā apstiprinājuši + 2. Licence: CC BY 4.0.
 # Tabulu izveido API startā ar MAP_DB_OWNER_DSN (shēma VPS netiek palaista pati); tas pats bloks ir shema.sql.
 # Moderācija: MAP_MOD_TOKEN (vides mainīgais) — POST ķermenī, nevis URL; bez tā moderācija ir izslēgta.
@@ -2737,6 +2814,8 @@ ZINOJUMU_TIPI = {"koks": "Nokritis koks", "cels": "Neizbraucams ceļš", "elektr
 ZINOJUMI_DIENAS = 7
 ZINOJUMI_MINUTE = 10    # jauni ziņojumi minūtē (viss process)
 ZINOJUMU_BALSIS_MINUTE = 60
+ZINOJUMA_BALSIS_STUNDA = 20  # balsis vienam ziņojumam stundā (visi kopā)
+IP_BALSIS_STUNDA = 30        # balsis no vienas IP stundā (visiem ziņojumiem kopā)
 ZINOJUMI_LICENCE = {"nosaukums": "Iedzīvotāju ziņojumi (map.repo.lv)", "licence": "CC BY 4.0",
                     "licences_url": "https://creativecommons.org/licenses/by/4.0/"}
 ZINOJUMI_ATRUNA = "Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0. Ja apdraudēta dzīvība, zvaniet 112."
@@ -2756,6 +2835,16 @@ create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
 grant select, insert on zinojumi to map_api;
 grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
 grant usage on sequence zinojumi_id_seq to map_api;
+-- Balsu limits (apstiprinu / apstrīdu): ziņojums + IP jaucējvērtība ar sāli (ne pati IP), glabā ≤ 2 h
+create table if not exists zinojumu_balsis (
+  zinojums bigint not null,
+  ip_hash  text not null,
+  laiks    timestamptz not null default now()
+);
+create index if not exists zinojumu_balsis_zinojums_idx on zinojumu_balsis (zinojums, laiks);
+create index if not exists zinojumu_balsis_ip_idx on zinojumu_balsis (ip_hash, laiks);
+create index if not exists zinojumu_balsis_laiks_idx on zinojumu_balsis (laiks);
+grant select, insert, delete on zinojumu_balsis to map_api;
 """  # tas pats bloks ir src/karte/db/shema.sql
 # Teksti ar saitēm un rupjībām netiek pieņemti (vienkāršs filtrs; moderators var paslēpt pārējo)
 _ZINOJUMU_AIZLIEGTS = re.compile(
@@ -2787,6 +2876,58 @@ def _zinojumi_atlauts(kas, cik):
             return False
         logs[1] += 1
         return True
+
+
+_pieprasijums = threading.local()  # do_POST ieliek klienta IP (.ip); galapunkti to nesaņem kā argumentu
+_balsis_atmina = {}  # rezerve, ja DB tabulas nav: ("z", id) / ("ip", hash) → [laiki]
+_BALSU_SALS = os.environ.get("MAP_SALT", "") or "map.repo.lv-zinojumu-balsis-2026"
+
+
+def _ip_hash(ip):
+    """IP → HMAC-SHA256 ar sāli (MAP_SALT), 32 heks. zīmes; pati IP netiek glabāta."""
+    import hmac
+    return hmac.new(_BALSU_SALS.encode(), (ip or "?").encode(), "sha256").hexdigest()[:32]
+
+
+def _balsu_limits_atmina(zid, ip_hash):
+    tagad = time.time()
+    with _zinojumi_slots:
+        if len(_balsis_atmina) > 20000:
+            for k in [k for k, v in _balsis_atmina.items() if not v or tagad - v[-1] > 3600]:
+                del _balsis_atmina[k]
+        z = _balsis_atmina.setdefault(("z", zid), [])
+        ip = _balsis_atmina.setdefault(("ip", ip_hash), [])
+        z[:] = [t for t in z if tagad - t < 3600]
+        ip[:] = [t for t in ip if tagad - t < 3600]
+        if len(z) >= ZINOJUMA_BALSIS_STUNDA:
+            return "zinojums"
+        if len(ip) >= IP_BALSIS_STUNDA:
+            return "ip"
+        z.append(tagad)
+        ip.append(tagad)
+    return None
+
+
+def _balsu_limits(zid, ip_hash):
+    """None — balsi drīkst skaitīt (un tā ir pierakstīta); "zinojums" / "ip" — stundas limits sasniegts.
+    Datubāzē (tabula zinojumu_balsis), lai limits paliek pēc API pārstartēšanas; ja tabulas nav — atmiņā."""
+    try:
+        with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '3s'")
+            cur.execute("""select (select count(*) from zinojumu_balsis where zinojums = %s and laiks > now() - interval '1 hour'),
+                                  (select count(*) from zinojumu_balsis where ip_hash = %s and laiks > now() - interval '1 hour')""",
+                        (zid, ip_hash))
+            z, ip = cur.fetchone()
+            if z >= ZINOJUMA_BALSIS_STUNDA:
+                return "zinojums"
+            if ip >= IP_BALSIS_STUNDA:
+                return "ip"
+            cur.execute("delete from zinojumu_balsis where laiks < now() - interval '2 hours'")
+            cur.execute("insert into zinojumu_balsis (zinojums, ip_hash) values (%s, %s)", (zid, ip_hash))
+            return None
+    except psycopg.Error as e:
+        print(f"zinojumi: balsu limits atmiņā ({e.__class__.__name__})", file=sys.stderr)
+        return _balsu_limits_atmina(zid, ip_hash)
 
 
 def _zinojumi_db(sql, params=()):
@@ -2868,6 +3009,11 @@ def zinojumi_darbiba(dati, zid, darbiba):
     else:
         if not _zinojumi_atlauts("balsis", ZINOJUMU_BALSIS_MINUTE):
             raise Kluda(429, "pārāk daudz balsojumu, mēģiniet pēc minūtes")
+        limits = _balsu_limits(int(zid), _ip_hash(getattr(_pieprasijums, "ip", "")))
+        if limits == "zinojums":
+            raise Kluda(429, "par šo ziņojumu stundas laikā jau nobalsots daudz reižu, mēģiniet vēlāk")
+        if limits == "ip":
+            raise Kluda(429, "no Jūsu tīkla stundas laikā jau ir daudz balsu, mēģiniet vēlāk")
         kolonna = "apstiprina" if darbiba == "apstiprinat" else "apstrid"
         rinda = _zinojumi_db(f"update zinojumi set {kolonna} = {kolonna} + 1 where id = %s and statuss <> 'slepts'"
                              " returning apstiprina, apstrid", (int(zid),))
@@ -3111,6 +3257,100 @@ def kalendars(q):
     return {"_saturs": ics, "_tips": "text/calendar; charset=utf-8"}
 
 
+# /api/prognoze?lat=&lon= — nākamās ~24 h tuvākajai LVĢMC prognožu vietai (ikstundas fails, CKAN datastore API;
+# tā pati datu kopa kā PROGNOZU_AVOTS, CC0 1.0). Fails sniedz ~25 h uz priekšu; DATUMS — Latvijas vietējais laiks.
+CKAN_API = "https://data.gov.lv/dati/api/3/action/"
+PROGNOZU_STUNDAS_ID = "4e9b37dc-a486-4af1-8964-b370f659811a"  # "Prognožu dati (ikstundas)"
+PROGNOZU_STUNDU_PARAMETRI = {"2": "temp", "6": "brazmas", "7": "nokrisni", "11": "negaiss"}  # °C, m/s, mm/h, %
+PROGNOZE_MIN_STUNDAS = 6  # mazāk atlikušu stundu (fails sen nav atjaunots) — prognozi nerāda
+
+
+def _prognozu_punkti():
+    """Vietas ar ikstundas prognozi (~1300 no ~6400 cities.csv): (CITY_ID, nosaukums, lat, lon)."""
+    parametri = {"resource_id": PROGNOZU_STUNDAS_ID, "distinct": "true", "fields": "CITY_ID", "limit": 32000,
+                 "filters": json.dumps({"PARA_ID": 2})}
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    ar_stundam = {r["CITY_ID"] for r in dati["result"]["records"]}
+    teksts = _lejupieladet(PROGNOZU_VIETAS, timeout=8).decode("utf-8-sig")
+    punkti = [(r["CITY_ID"], r["NOSAUKUMS"], float(r["LAT"]), float(r["LON"]))
+              for r in csv.DictReader(io.StringIO(teksts)) if r.get("LAT") and r.get("LON") and r["CITY_ID"] in ar_stundam]
+    if not punkti:
+        raise ValueError("nav vietu ar ikstundas prognozi")
+    return punkti
+
+
+def _prognoze_stundas(vietas_id):
+    parametri = {
+        "resource_id": PROGNOZU_STUNDAS_ID, "sort": "DATUMS", "limit": 1000, "fields": "PARA_ID,DATUMS,VERTIBA",
+        "filters": json.dumps({"CITY_ID": vietas_id, "PARA_ID": [int(p) for p in PROGNOZU_STUNDU_PARAMETRI]}),
+    }
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    if not dati.get("success"):
+        raise ValueError("datastore_search neizdevās")
+    return [(str(r["PARA_ID"]), str(r["DATUMS"])[:19], r["VERTIBA"]) for r in dati["result"]["records"]]
+
+
+def _prognoze_izdota():
+    dati = json.loads(_lejupieladet(CKAN_API + "resource_show?id=" + PROGNOZU_STUNDAS_ID, timeout=8))
+    laiks = (dati.get("result") or {}).get("last_modified")
+    return laiks[:19] + "Z" if laiks else None  # CKAN: UTC bez zonas
+
+
+def _prognozes_riski(tmin, tmax, nokrisni, brazmas, negaiss):
+    """Riska vārdi pēc PROGNOZU_SLIEKSNI (diennakts sliekšņi derīgi 24 h logam); pirmais — nozīmīgākais."""
+    riski = []
+    lim = _limenis("brazmas", brazmas)
+    if lim is not None:
+        riski.append((lim, "vētra" if lim >= 2 else "stiprs vējš"))
+    lim = _limenis("nokrisni", nokrisni)
+    if lim is not None:
+        veids = "sniegs" if tmax is not None and tmax <= 1 else "lietus"
+        riski.append((lim, ("stiprs " if lim >= 1 else "") + veids))
+    if negaiss is not None and negaiss >= 50:
+        riski.append((1 if negaiss >= 80 else 0, "pērkona negaiss"))
+    lim = _limenis("sals", tmin)
+    if lim is not None:
+        riski.append((lim, "salna" if tmin > -5 else "sals"))
+    lim = _limenis("karstums", tmax)
+    if lim is not None:
+        riski.append((lim, "karstums"))
+    riski.sort(key=lambda r: -r[0])  # stabila kārtošana: vienādā līmenī vējš → nokrišņi → negaiss → sals → karstums
+    return [{"vards": v, "limenis": lim} for lim, v in riski]
+
+
+def prognoze(q):
+    lat, lon = _vieta(q)
+    punkti = _kesots("prognozu_punkti", 6 * 3600, _prognozu_punkti)
+    kx = math.cos(math.radians(lat))
+    vid, nosaukums, plat, plon = min(punkti, key=lambda p: (p[2] - lat) ** 2 + ((p[3] - lon) * kx) ** 2)
+    rindas = _kesots(("prognoze", vid), 1800, lambda: _prognoze_stundas(vid))
+    try:
+        izdota = _kesots("prognoze_izdota", 1800, _prognoze_izdota)
+    except Kluda:
+        izdota = None
+    no = _riga_tagad().strftime("%Y-%m-%dT%H:00:00")
+    stundas = {}  # DATUMS → lauks → vērtība
+    for para, datums, vertiba in rindas:
+        if datums >= no and vertiba not in (None, ""):
+            stundas.setdefault(datums, {})[PROGNOZU_STUNDU_PARAMETRI[para]] = float(vertiba)
+    laiki = sorted(stundas)[:24]
+    vieta = {"id": vid, "nosaukums": nosaukums, "attalums_m": _attalums_m(lat, lon, plat, plon)}
+    if len(laiki) < PROGNOZE_MIN_STUNDAS:
+        return {"prognoze": None, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+    def vertibas(lauks):
+        return [stundas[t][lauks] for t in laiki if lauks in stundas[t]]
+    temp, brazmas, nokrisni, negaiss = vertibas("temp"), vertibas("brazmas"), vertibas("nokrisni"), vertibas("negaiss")
+    p = {
+        "no": laiki[0], "lidz": laiki[-1], "stundas": len(laiki),
+        "tmin": min(temp, default=None), "tmax": max(temp, default=None),
+        "nokrisni_mm": round(sum(nokrisni), 1) if nokrisni else None,
+        "brazmas_max": max(brazmas, default=None), "negaiss_max": max(negaiss, default=None),
+    }
+    p["riski"] = _prognozes_riski(p["tmin"], p["tmax"], p["nokrisni_mm"], p["brazmas_max"], p["negaiss_max"])
+    return {"prognoze": p, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -3137,6 +3377,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
     (re.compile(r"^/api/plusma\.xml$"), plusma, 300),
     (re.compile(r"^/api/kalendars\.ics$"), kalendars, 300),
+    (re.compile(r"^/api/prognoze/?$"), prognoze, 600),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
@@ -3179,6 +3420,11 @@ class Apstradatajs(BaseHTTPRequestHandler):
         funkcija, m = next(((f, m) for r, f in POST_MARSRUTI if (m := r.match(cels))), (None, None))
         if funkcija is None:
             return self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
+        # Klienta IP (tikai balsu limitam, glabā jaucējvērtību): aiz Caddy — pēdējais X-Forwarded-For (to pieliek Caddy pats)
+        ip = self.client_address[0]
+        if ip in ("127.0.0.1", "::1") and self.headers.get("X-Forwarded-For"):
+            ip = self.headers["X-Forwarded-For"].split(",")[-1].strip() or ip
+        _pieprasijums.ip = ip
         try:
             garums = int(self.headers.get("Content-Length") or 0)
         except ValueError:

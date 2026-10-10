@@ -67,5 +67,5 @@ const Celi = (() => {
       ` <small class="avots-rinda">${AVOTS}</small></p>`;
   }
 
-  return { radit, rinda };
+  return { radit, rinda, TIPI, popups };  // TIPI un popups lieto arī demo.js (vētras atkārtojums ar īstiem LVC notikumiem)
 })();
