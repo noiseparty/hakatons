@@ -145,7 +145,7 @@ function atrastMani(pecTam) {
     if (vietasSlanis) vietasSlanis.remove();
     vietasSlanis = L.layerGroup([
       L.circle([lat, lon], { radius: accuracy, color: '#1d4ed8', weight: 1, fillOpacity: .08, interactive: false }),
-      L.circleMarker([lat, lon], { radius: 8, color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }).bindTooltip('Tu esi šeit')
+      L.circleMarker([lat, lon], { radius: 8, color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }).bindTooltip('Jūs esat šeit')
     ]).addTo(karte);
     el('atrast').innerHTML = Ik('vieta') + ' Atjaunot manu atrašanās vietu';
     teksts.textContent = 'Meklēšanas rezultāti sakārtoti pēc attāluma no Jums (taisnā līnijā).';
