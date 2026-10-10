@@ -4,6 +4,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 `main` is protected — change this file via a branch + PR, never by pushing to `main`.
 
 ## Pending
+- [ ] UI icons: marker SHAPES per group — medical = cross, infrastructure = triangle, water = drop (SVG set to be given by the user later), transport = square, shelters and critical services = circle; replace every emoji in the UI with icons from https://github.com/basmilius/meteocons (MIT; weather/warning/lightning/wind/rain/temperature) as an inline SVG sprite, no CDN — added 2026-10-10 03:22 +03:00 by noiseparty
 - [ ] Link previews: Open Graph + Twitter card meta tags (og:title, og:description, og:image 1200×630 with the map + verdict, og:url canonical, twitter:card summary_large_image), `<meta name=description>`, favicon set and theme-color, on index.html, info.html, statuss.html, slaidi.html, trukstosie.html; test with a WhatsApp/Telegram/Slack paste and opengraph.xyz — added 2026-10-10 03:16 +03:00 by noiseparty
 - [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
