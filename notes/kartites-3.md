@@ -42,7 +42,7 @@ route exists in `karte_api.py`) **or http(s)** — no `tel:`, `mailto:`, `javasc
 | Run | Cards | Without errors | Failures found | Fixed |
 |---|---|---|---|---|
 | before (main 09c685b + new checks) | 387 | 124 | `avots` 258 (every card with places), `slāņi` 15 | — |
-| after fix, merged with main 76c09bf (incl. #139 card reorder, #151) | 387 | **372** | `slāņi` 15 | `avots` 258 → 0 |
+| after fix, merged with main cda6c18 (incl. #139 card reorder, up to #153) | 387 | **372** | `slāņi` 15 | `avots` 258 → 0 |
 | `--vietas` (7 variants, before #139) | 903 | 868 | `slāņi` 35 | — |
 | edge cases | 5 | 5 | — | — |
 
