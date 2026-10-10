@@ -142,5 +142,18 @@
   {"q": "labdien", "scenarijs": null},
   {"q": "man garšo bumbieri", "scenarijs": null},
   {"q": "šodien karsts laiks", "scenarijs": null},
-  {"q": "pludmalē ir jauki", "scenarijs": null}
+  {"q": "pludmalē ir jauki", "scenarijs": null},
+  {"q": "Rīgas iela, Kuldiga", "scenarijs": null, "vieta": "Kuldīga"},
+  {"q": "Kuldīga", "scenarijs": null, "vieta": "Kuldīga"},
+  {"q": "Kuldigas iela 5", "scenarijs": null, "vieta": "Kuldīga"},
+  {"q": "Brīvības iela 1 Rīga", "scenarijs": null, "vieta": "Rīga"},
+  {"q": "Kūla deg Kuldīgā", "scenarijs": "kula", "vieta": "Kuldīga"},
+  {"q": "Aizkraukle", "scenarijs": null, "vieta": "Aizkraukle"},
+  {"q": "Madonas novads", "scenarijs": null, "vieta": "Madonas novads"},
+  {"q": "Aknīste", "scenarijs": null, "vieta": "Aknīste"},
+  {"q": "Grobiņa", "scenarijs": null, "vieta": "Grobiņa"},
+  {"q": "Zilupe", "scenarijs": null, "vieta": "Zilupe"},
+  {"q": "Līvānu novads", "scenarijs": null, "vieta": "Līvānu novads"},
+  {"q": "Pļaviņas", "scenarijs": null, "vieta": "Pļaviņas"},
+  {"q": "Mednieku iela 9 Ogre", "scenarijs": null, "vieta": "Ogre"}
 ]
