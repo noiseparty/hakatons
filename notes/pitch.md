@@ -11,7 +11,7 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | 282 ģeoprodukti geolatvija.lv | 3 | `notes/research/05` §1 |
 | 3 soļi (vieta → vajadzība → rezultāts) | 5 | criterion 3 sentence |
 | 776 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
-| Meklētājs: **127 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
+| Meklētājs: **129 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
 | **32 atvērto datu avoti + 3 ⚠** (112.lv patvertnes, banku bankomāti, LR1 frekvences); panelī vēl 2 mūsu simulētie prototipa dati ar zīmi „SIMULĒTI” (neskaitām) | 10 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 |
 | 30 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
 | Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
@@ -74,7 +74,7 @@ Main path (~2 min), scenario **Ogre, plūdi** (Ogres plāns ir pilnīgākais):
    - lēmums: adrese ir / nav plūdu riska zonā (LVĢMC kartes); zona kartē kā laukums ar robežu, pārklāšanās ar brīdinājuma apgabalu iesvītrota;
    - tuvākā upes stacija ar līmeni un 24 h izmaiņu; "Nokrišņi un augsne" rinda (Open-Meteo); ceļu notikumi 5 km rādiusā un satiksmes zona (LVC, reāllaikā);
    - tuvākā pulcēšanās vieta un pagaidu izmitināšana ar vietu skaitu un saiti uz CA plāna lappusi; patvertne; 24/7 slimnīca; maršruta saites;
-   - padoms scenārijam, pārbaudīts pret VUGD un Aizsardzības ministrijas bukletu „Kā rīkoties krīzes gadījumā” (24 no 127 padomiem pārrakstīti), ar saiti „Avots: VUGD” zem padoma (#117); rinda „Radio krīzē” ar tuvākā LR1 raidītāja frekvenci (#116); "Kas notiks tālāk" (#54); pogas "Dalīties" (saite atver to pašu rezultātu) un "Drukāt" (kartīte ar QR kodu).
+   - padoms scenārijam, pārbaudīts pret VUGD un Aizsardzības ministrijas bukletu „Kā rīkoties krīzes gadījumā” (24 padomi pārrakstīti), ar saiti „Avots: VUGD” zem padoma (#117); rinda „Radio krīzē” ar tuvākā LR1 raidītāja frekvenci (#116); "Kas notiks tālāk" (#54); pogas "Dalīties" (saite atver to pašu rezultātu) un "Drukāt" (kartīte ar QR kodu).
 
 Second, 20 s: free text "cilvēks nav pie samaņas" → kartītes augšā sarkana rinda "zvaniet 112". **No buttons, no tel: links** (team decision) — say: "mēs nerādām pogu, mēs pasakām skaidri".
 
@@ -111,7 +111,7 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 - MI aģenti (Claude Code) pārveidoja plānu tabulas un tekstu strukturētos datos; katram ierakstam burtisks citāts no plāna, ko skripts pārbauda.
 - Katrs punkts pārbaudīts pret VZD adrešu reģistru un pašvaldības robežu.
 - **Atradām kļūdas oficiāli apstiprinātos plānos:** Jūrmalas pulcēšanās vieta Nr. 10 (Melluži) plānā ir Lietuvā — 56,064 vietā 56,964 (~100 km kļūda; pārbaudīts oriģinālajā PDF, lpp. 85, un VZD adrešu reģistrā — sk. `notes/presentation_ideas.md`). Kopā 41 koordinātu kļūda.
-- Krīzes meklētājs saprot brīvu tekstu LV/RU/EN: **127 scenāriji**, **95 % pareizi uz 563 vaicājumiem** (bija 77 %; uz neredzētajiem 89,5 %). MI palīdzēja uzrakstīt atslēgvārdus un testus; darbības laikā MI nav — noteikumi, nevis ģenerēts teksts.
+- Krīzes meklētājs saprot brīvu tekstu LV/RU/EN: **129 scenāriji**, **95 % pareizi uz 563 vaicājumiem** (bija 77 %; uz neredzētajiem 89,5 %). MI palīdzēja uzrakstīt atslēgvārdus un testus; darbības laikā MI nav — noteikumi, nevis ģenerēts teksts.
 
 **Say:** MI šeit nav čatbots — tas ir auditors. Tas pārvērta dokumentus, ko neviens nelasa, datos, kurus var pārbaudīt — un tas atrada kļūdas, ko neviens nebija pamanījis.
 

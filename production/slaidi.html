@@ -204,10 +204,10 @@
     <li>MI izlasīja <b>42</b> plānus un izvilka <b>776</b> pulcēšanās un <b>579</b> izmitināšanas vietas (104 213 vietu) — katrai lappuse un burtisks citāts</li>
     <li>Katrs punkts pārbaudīts pret VZD adrešu reģistru un pašvaldības robežu</li>
     <li><b>41</b> koordinātu kļūda oficiāli apstiprinātos plānos</li>
-    <li>Meklētājs: <b>127</b> scenāriji LV/RU/EN, <b>95 %</b> pareizi uz 563 vaicājumiem (bija 77 %; neredzētajos 89,5 %) — bez MI darbības laikā</li>
+    <li>Meklētājs: <b data-scenariji>129</b> scenāriji LV/RU/EN, <b>95 %</b> pareizi uz 563 vaicājumiem (bija 77 %; neredzētajos 89,5 %) — bez MI darbības laikā</li>
   </ul>
   <p class="teikums">Jūrmalas pulcēšanās vieta Nr. 10 (Melluži) plānā ir <b>Lietuvā</b>: 56,064 vietā 56,964 — ~100 km kļūda (oriģinālais PDF, 85. lpp.).</p>
-  <aside class="piezimes"><b>6:00–7:00 · Teikt:</b> MI šeit nav čatbots — tas ir auditors. Tas pārvērta dokumentus, ko neviens nelasa, datos, kurus var pārbaudīt — un atrada kļūdas, ko neviens nebija pamanījis. Rādīt plāna 85. lpp. un karti blakus (ekrānšāviņš — jāpievieno). Meklētājs: 127 scenāriji LV/RU/EN; 95,0 % uz 563 vaicājumiem (no 77,3 %), godīgi — 89,5 % uz neredzētajiem; MI rakstīja atslēgvārdus un testus, darbības laikā noteikumi, nevis ģenerēts teksts.</aside>
+  <aside class="piezimes"><b>6:00–7:00 · Teikt:</b> MI šeit nav čatbots — tas ir auditors. Tas pārvērta dokumentus, ko neviens nelasa, datos, kurus var pārbaudīt — un atrada kļūdas, ko neviens nebija pamanījis. Rādīt plāna 85. lpp. un karti blakus (ekrānšāviņš — jāpievieno). Meklētājs: <span data-scenariji>129</span> scenāriji LV/RU/EN; 95,0 % uz 563 vaicājumiem (no 77,3 %), godīgi — 89,5 % uz neredzētajiem; MI rakstīja atslēgvārdus un testus, darbības laikā noteikumi, nevis ģenerēts teksts.</aside>
 </section>
 
 <!-- 10 · 7:00–7:40 · avoti -->
@@ -340,6 +340,10 @@
   document.getElementById('ieprieksejais').addEventListener('click', () => radit(i - 1));
   setInterval(taimeris, 1000);
   setTimeout(() => { document.getElementById('palidziba').hidden = true; }, 6000);
+  // Scenāriju skaits no production/scenariji.json (tas pats, ko lieto meklēšana), lai slaidi neatpaliek
+  fetch('scenariji.json').then(r => r.json()).then(d => {
+    if (d.scenariji?.length) document.querySelectorAll('[data-scenariji]').forEach(e => { e.textContent = d.scenariji.length; });
+  }).catch(() => {});
   radit(i);
 })();
 </script>
