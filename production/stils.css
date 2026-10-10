@@ -500,3 +500,9 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
 .galvene-poga:hover { background: rgba(0, 0, 0, .32); }
 @media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
+
+/* Bankomāti (app.js Trijsturis): leģenda un zīme "KRITISKAIS" uznirstošajā logā */
+.slana-legenda { margin: .1rem 0 .4rem 1.6rem; font-size: .78rem; color: var(--teksts2); display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .4rem; }
+.slana-legenda .tri { position: relative; display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid; }
+.slana-legenda .tri i { position: absolute; left: -3px; top: 4px; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid #fff; }
+.krit-zime { display: inline-block; padding: 0 .35rem; font-size: .7rem; font-weight: 700; letter-spacing: .03em; color: #fff; background: #1d4ed8; border-radius: 3px; }

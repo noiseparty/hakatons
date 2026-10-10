@@ -88,7 +88,10 @@ async function iegut(cels, signal, prioritate) {
 
 function grupasIkona(grupa) {
   const skaiti = {};
-  for (const m of grupa.getAllChildMarkers()) skaiti[m.options.fillColor] = (skaiti[m.options.fillColor] || 0) + 1;
+  for (const m of grupa.getAllChildMarkers()) {
+    const kr = m.options.grupasKrasa || m.options.fillColor;
+    skaiti[kr] = (skaiti[kr] || 0) + 1;
+  }
   const n = grupa.getChildCount();
   let lidz = 0;
   const dalas = Object.entries(skaiti).sort((a, b) => b[1] - a[1])
@@ -245,7 +248,9 @@ function aizpilditKategorijas(saraksts) {
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
       <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? '' : 'disabled'}>
         <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
-        <span class="skaits">${k.skaits}</span></label>`).join('');
+        <span class="skaits">${k.skaits}</span></label>` + (k.kods === 'bankomats' ? `<p class="slana-legenda">
+        <span class="tri pilns" style="border-bottom-color:${esc(k.krasa)}"></span> kritiskais (strādā arī krīzē, banku saraksts)
+        <span class="tri" style="border-bottom-color:${esc(k.krasa)}"><i></i></span> cits bankomāts</p>` : '')).join('');
     kaste.append(div);
   }
   kaste.querySelectorAll('input').forEach(i => { if (i.checked) stavoklis.kategorijas.add(i.value); });
@@ -287,6 +292,31 @@ function udensLimenis(i) {
   return r.join('<br>');
 }
 
+// Trīsstūra marķieris (kanvā un SVG): bankomāti. Kritiskais (banku saraksts) — pilns trīsstūris, citi — balts ar
+// krāsainu kontūru. fillColor paliek slāņa krāsa, lai grupu aplis (grupasIkona) skaita pareizi.
+const Trijsturis = L.CircleMarker.extend({
+  _updatePath() {
+    const p = this._point, r = this._radius, ctx = this._renderer._ctx;
+    const virsotnes = [[p.x, p.y - r * 1.2], [p.x + r * 1.1, p.y + r * .8], [p.x - r * 1.1, p.y + r * .8]];
+    if (ctx) {  // L.Canvas
+      if (!this._renderer._drawing || this._empty()) return;
+      ctx.beginPath();
+      virsotnes.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
+      ctx.closePath();
+      this._renderer._fillStroke(ctx, this);
+    } else {  // L.SVG
+      this._renderer._setPath(this, 'M' + virsotnes.map(v => v.join(' ')).join('L') + 'Z');
+    }
+  },
+});
+function bankomataMarkieris(ll, p, k) {
+  const krit = (p.ipasibas || {}).kritiskais === '1';
+  const krasa = k.krasa || '#1d4ed8';
+  return new Trijsturis(ll, krit
+    ? { radius: 8, color: '#fff', weight: 1.5, fillColor: krasa, fillOpacity: 1, kritiskais: true }
+    : { radius: 6, color: krasa, weight: 2, fillColor: '#fff', fillOpacity: 1, grupasKrasa: krasa });
+}
+
 function popupSaturs(p, ll) {
   const k = kategorijas[p.kategorija] || {};
   const i = p.ipasibas || {};
@@ -299,6 +329,11 @@ function popupSaturs(p, ll) {
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>Tālr.: ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');
+  if (p.kategorija === 'bankomats' && i.bankas) {
+    rindas.push(`<small>${esc(i.bankas)}${+i.skaits > 1 ? ` · ${esc(i.skaits)} bankomāti` : ''} · ${i.iemaksas === '1' ? 'iemaksas un izmaksas' : 'tikai izmaksas'}` +
+      ` · ${i.pieejamiba_24h === '1' ? '24/7' : 'ierobežots darba laiks'}</small>`);
+    if (i.kritiskais === '1') rindas.push('<span class="krit-zime">KRITISKAIS</span> <small>Kritiskais bankomāts: skaidra nauda arī krīzes laikā (banku saraksts, 22.09.2026)</small>');
+  }
   if (p.kategorija === 'patvertne') rindas.push('<small>Ietilpība, piekļūstamība ar ratiņkrēslu, mājdzīvnieki: nav norādīts (112.lv datos šo ziņu nav)</small>');
   if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
   if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
@@ -324,7 +359,8 @@ async function atjaunot() {
     for (const f of gj.features) {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
-      f._slanis = L.circleMarker([lat, lon], { radius: 6, color: '#fff', weight: 1.5, fillColor: k.krasa || '#57534e', fillOpacity: .9 })
+      f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k)
+        : L.circleMarker([lat, lon], { radius: 6, color: '#fff', weight: 1.5, fillColor: k.krasa || '#57534e', fillOpacity: .9 }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
     }
     objektuSlanis.addLayers(gj.features.map(f => f._slanis));

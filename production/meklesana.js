@@ -470,14 +470,19 @@ const krizesMeklesana = (() => {
     pasvaldibaDati(ll, no, signal);
     const vietas = h => { const d = kaste.querySelector('#rez-vietas'); if (d) d.innerHTML = h; };
     let neizdevas = false;  // /api/objekti neatbildēja — tad nesakām "datos nav", bet "neizdevās ielādēt"
-    const tuvakas = (k, n) => iegut('/objekti?' + new URLSearchParams({ kategorijas: k, ...ll, limit: n }), signal)
+    const tuvakas = (k, n, papildus = {}) => iegut('/objekti?' + new URLSearchParams({ kategorijas: k, ...ll, limit: n, ...papildus }), signal)
       .catch(e => { if (e.name === 'AbortError') throw e; neizdevas = true; return { features: [] }; });
     try {
-      const [grupas, drosasF] = await Promise.all([
+      // Bankomāti (nav elektrības, skaidra nauda…): vispirms tuvākais kritiskais (banku saraksts — strādā arī krīzē)
+      const atmI = kodi.indexOf('bankomats');
+      const [grupas, drosasF, kritiskais] = await Promise.all([
         Promise.all(kodi.map(k => tuvakas(k, UZ_KATEGORIJU * 2))),
         Promise.all(drosas.map(d => kategorijas[d.kods]?.skaits ? tuvakas(d.kods, 5) : { features: [] })),
+        atmI >= 0 ? tuvakas('bankomats', 1, { kritiskais: 1 }) : { features: [] },
       ]);
       grupas.forEach(g => { g.features = izveleties(g.features); });
+      const kf = kritiskais.features[0];
+      if (kf) grupas[atmI].features = [kf, ...grupas[atmI].features.filter(f => f.id !== kf.id)].slice(0, UZ_KATEGORIJU);
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
       const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
       vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
@@ -538,7 +543,8 @@ const krizesMeklesana = (() => {
     const k = kategorijas[kods];
     if (!features.length) return neizdevas ? '' : `<p class="piezime">${esc(k.nosaukums)}: tuvākā vieta mūsu datos nav zināma.</p>`;
     return `<h3><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</h3>` +
-      `<ol class="rez-saraksts">${features.map(f => vienums(f, no)).join('')}</ol>`;
+      `<ol class="rez-saraksts">${features.map(f => vienums(f, no, f.properties.ipasibas?.kritiskais === '1'
+        ? '<span class="krit-zime">KRITISKAIS</span> <small>skaidra nauda arī krīzes laikā</small><br>' : '')).join('')}</ol>`;
   }
 
   // Tuvākā katrā drošo vietu kategorijā. Ja pašvaldības CA plānā vietu nav (vai slānis vēl nav ielādēts) — nekad
