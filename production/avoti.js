@@ -45,9 +45,10 @@ const Avoti = (() => {
       'https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti',
       'Meklēšanas rezultātā: valsts un pašvaldības vienotais klientu centrs, ja pašvaldības kontaktu nav', '2022. gada augusta dati', 86],
     ['lr1-frekvences', 'Latvijas Radio 1 raidītāji un frekvences', 'VSIA „Latvijas Radio” (pārbaudīts ar SIA „Elektroniskie sakari” FM staciju sarakstu)',
-      ['Licence nav norādīta', null], 'https://latvijasradio.lsm.lv/lv/par-mums/frekvences/',
-      'Meklēšanas rezultātā „Radio krīzē”: tuvākā LR1 frekvence; karte lapā „Svarīgi”', 'statiski, nolasīts 10.10.2026.', 87,
-      { atverts: false }],
+      // Frekvenču saraksts ir fakti no sabiedriskā raidītāja un regulatora saraksta (esakari.lv), nevis autortiesību darbs
+      ['Oficiāli fakti (LR / SPRK), nav autortiesību objekts', 'https://likumi.lv/ta/id/5138-autortiesibu-likums'],
+      'https://latvijasradio.lsm.lv/lv/par-mums/frekvences/',
+      'Meklēšanas rezultātā „Radio krīzē”: tuvākā LR1 frekvence; karte lapā „Svarīgi”', 'statiski, nolasīts 10.10.2026.', 87],
     ['osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
       ['ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/'], 'https://www.openstreetmap.org/copyright',
       'Noturības punktu kandidāti (statuss nav apstiprināts)', 'pēc ielādes', 71],

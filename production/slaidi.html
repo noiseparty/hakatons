@@ -75,7 +75,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Prezentācija — Krīzes karte">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/slaidi.html">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -84,7 +84,7 @@
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Prezentācija — Krīzes karte">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
@@ -206,25 +206,25 @@
   <h2>Meklētājs: noteikumi, nevis ģenerēts teksts</h2>
   <ul class="liels">
     <li><b>129</b> krīzes scenāriji, LV / RU / EN</li>
-    <li><b>96 %</b> pareizi; <b>91 %</b> uz nelabotajiem testiem</li>
+    <li><b>96,1 %</b> pareizi (609 vaicājumi); <b>91,4 %</b> uz nelabotajiem</li>
     <li>Darbības laikā MI nav: ātri, vienādi visiem, arī bez interneta</li>
   </ul>
   <p class="teikums" style="margin-top:auto">MI rakstīja atslēgvārdus un testus. Atbildi dod pārbaudāmi noteikumi.</p>
-  <aside class="piezimes"><b>4:50–5:25 · Teikt:</b> Krīzē atbildei jābūt ātrai, vienādai visiem un pārbaudāmai — LLM var izdomāt adresi vai numuru. Tāpēc MI palīdzēja uzrakstīt atslēgvārdus un 609 testa vaicājumus, bet pats meklētājs ir noteikumi pārlūkā: 129 scenāriji, 96 % pareizi, 91 % uz vaicājumiem, ko labojot neskatījāmies. Nav API izmaksu, strādā arī bez interneta. (Mērīts 10.10. ar src/meklesana/testi.py.)</aside>
+  <aside class="piezimes"><b>4:50–5:25 · Teikt:</b> Krīzē atbildei jābūt ātrai, vienādai visiem un pārbaudāmai — LLM var izdomāt adresi vai numuru. Tāpēc MI palīdzēja uzrakstīt atslēgvārdus un 609 testa vaicājumus, bet pats meklētājs ir noteikumi pārlūkā: 129 scenāriji, 96,1 % pareizi uz 609 vaicājumiem, 91,4 % uz vaicājumiem, ko labojot neskatījāmies. Nav API izmaksu, strādā arī bez interneta. (Mērīts 10.10. ar src/meklesana/testi.py.)</aside>
 </section>
 
 <!-- 9 · kā uzbūvēts: atvērtie dati -->
 <section class="slaids" data-laiks="5:25" data-ilgums="40">
-  <h2>32 atvērto datu avoti — katram licence</h2>
+  <h2>33 atvērto datu avoti — katram licence</h2>
   <ul style="font-size:.9em">
     <li><b>LVĢMC</b> (7), <b>FMI</b>, <b>Open-Meteo</b>: brīdinājumi, upes, plūdi, zibens — CC0 / CC BY</li>
     <li><b>VZD</b> adreses, <b>IeM IC</b> (4), <b>VM</b>, <b>ZVA</b>, <b>UR</b>, <b>VPVKAC</b>, <b>VKCP</b> — CC0 / CC BY</li>
     <li><b>42 CA plāni</b> — oficiāls dokuments, ar lappusi</li>
-    <li><b>LVC</b> ceļi, <b>GTFS</b> (3) — CC0</li>
+    <li><b>LVC</b> ceļi, <b>GTFS</b> (3) — CC0; <b>LR1</b> frekvences — oficiāli fakti (LR / SPRK), nav autortiesību objekts</li>
     <li><b>OpenStreetMap</b> (6 slāņi + fons), <b>OpenTopoMap</b> — ODbL / CC BY-SA</li>
-    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> + 3 bez licences, atzīmēti: patvertnes, bankomāti, LR1</li>
+    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> + 2 bez licences, atzīmēti: patvertnes, bankomāti</li>
   </ul>
-  <aside class="piezimes"><b>5:25–6:05 · Teikt:</b> Katrs punkts kartē rāda savu avotu un licenci — kritērijs „katra atvērto datu kopa ir pluss”. 32 avoti: LVĢMC 7, IeM IC 4, GTFS 3, OSM 6 + fons, pārējie pa vienam (summa: 1+1+1+4+1+7+1+1+1+1+3+1+1+6+1+1 = 32). Kur licences nav — 112.lv patvertnes (781), banku bankomāti (845, no tiem 111 kritiskie), LR1 frekvences (16 raidītāji) — mēs to atklāti norādām ar ⚠. 2 simulētie prototipa slāņi nav skaitīti un ir marķēti „SIMULĒTI”. Ja jautā par dzīvo paneli: tajā redzams 29 + 1, kamēr serverī nav uzlikta jaunākā shēma (#110, #118).</aside>
+  <aside class="piezimes"><b>5:25–6:05 · Teikt:</b> Katrs punkts kartē rāda savu avotu un licenci — kritērijs „katra atvērto datu kopa ir pluss”. 33 avoti: LVĢMC 7, IeM IC 4, GTFS 3, OSM 6 + fons, pārējie pa vienam (summa: 1+1+1+4+1+7+1+1+1+1+3+1+1+6+1+1+1 = 33; pēdējais ir LR1). Kur licences nav — 112.lv patvertnes (781) un banku bankomāti (845, no tiem 111 kritiskie) — mēs to atklāti norādām ar ⚠ un aicinām publicēt. LR1 frekvences ir oficiāli fakti (LR / SPRK), nav autortiesību objekts, tāpēc ⚠ nav. 2 simulētie prototipa slāņi nav skaitīti un ir marķēti „SIMULĒTI”.</aside>
 </section>
 
 <!-- 10 · vērtēšanas kritēriji -->
@@ -233,12 +233,12 @@
   <table>
     <tr><th>Kritērijs</th><th>map.repo.lv</th></tr>
     <tr><td>1 · Konkrēts rezultāts</td><td>Lēmums: plūdu zona jā / nē, tuvākā vieta ar maršrutu, „zvaniet 112”</td></tr>
-    <tr><td>2 · Tikai vienreiz</td><td>Prasām tikai vietu; adrese no VZD vai GPS, pārējais no 32 avotiem</td></tr>
+    <tr><td>2 · Tikai vienreiz</td><td>Prasām tikai vietu; adrese no VZD vai GPS, pārējais no 33 avotiem</td></tr>
     <tr><td>3 · 3–6 soļi, kopsavilkums</td><td>Vieta → vajadzība → rezultāts; kartīte ir kopsavilkums; „Ziņot” ar „Pārbaudiet”</td></tr>
     <tr><td>4 · Telefonā, bez strupceļiem</td><td>390 px; GPS liegts → adrese; bez interneta → saglabātie dati</td></tr>
     <tr><td>5 · MI un atvērtie dati</td><td>MI izvilka 42 plānus un atrada 41 kļūdu; avots un licence katram punktam</td></tr>
   </table>
-  <aside class="piezimes"><b>6:05–7:00 · Teikt</b> (vērtēšanas kritēriji burtiski): 1) Iedzīvotājs saņem lēmumu, nevis „paldies”. 2) Mēs prasām tikai vietu — pārējo zina reģistri un atvērtie dati. 3) Soļi ir trīs — vieta, vajadzība, rezultāts — un rezultāta kartīte pati ir kopsavilkums; četru ekrānu versiju uzbūvējām (#36) un apzināti aizstājām, jo krīzē cilvēks neklikšķinās cauri četriem ekrāniem. Ziņojumam par bīstamību ir 3 ekrāni ar kopsavilkumu pirms nosūtīšanas. 4) Telefonā nav strupceļu: liegta atrašanās vieta → adrese, nav interneta → saglabātie dati, avots nestrādā → kartīte to pasaka. 5) MI un 32 atvērtie avoti — iepriekšējie slaidi.</aside>
+  <aside class="piezimes"><b>6:05–7:00 · Teikt</b> (vērtēšanas kritēriji burtiski): 1) Iedzīvotājs saņem lēmumu, nevis „paldies”. 2) Mēs prasām tikai vietu — pārējo zina reģistri un atvērtie dati. 3) Soļi ir trīs — vieta, vajadzība, rezultāts — un rezultāta kartīte pati ir kopsavilkums; četru ekrānu versiju uzbūvējām (#36) un apzināti aizstājām, jo krīzē cilvēks neklikšķinās cauri četriem ekrāniem. Ziņojumam par bīstamību ir 3 ekrāni ar kopsavilkumu pirms nosūtīšanas. 4) Telefonā nav strupceļu: liegta atrašanās vieta → adrese, nav interneta → saglabātie dati, avots nestrādā → kartīte to pasaka. 5) MI un 33 atvērtie avoti — iepriekšējie slaidi.</aside>
 </section>
 
 <!-- 11 · ko valstij publicēt -->
@@ -253,7 +253,7 @@
     <tr><td>LV-ALERT ziņas</td><td>VUGD</td><td>Izsūtīto ziņu plūsma un arhīvs</td></tr>
   </table>
   <p class="klusais" style="margin-top:auto">Visas 30: map.repo.lv/trukstosie.html</p>
-  <aside class="piezimes"><b>7:00–7:45 · Teikt</b> (notes/missing_data.md): Karte strādā uz 32 atvērto datu avotiem. Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas. Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā.</aside>
+  <aside class="piezimes"><b>7:00–7:45 · Teikt</b> (notes/missing_data.md): Karte strādā uz 33 atvērto datu avotiem. Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas. Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā.</aside>
 </section>
 
 <!-- 12 · noturība -->
