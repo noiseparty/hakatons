@@ -345,7 +345,8 @@ function popupSaturs(p, ll) {
   if (i.apzimejums) rindas.push('<small>' + Valoda.t('Apzīmējums') + ': ' + esc(i.apzimejums) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (${Valoda.t('{x}. lpp.', { x: esc(i.lpp) })})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? Valoda.t('no adreses') : Valoda.t('no Jums')) + '</small>');
-  return `<div class="popup">${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || (k.nosaukums ? Valoda.t(k.nosaukums) : '') || Valoda.t('Objekts'))}</b>` +
+  const simZime = /^sim-/.test(p.avots || '') ? `<span class="sim-zime">${Valoda.t('SIMULĒTI DATI — prototips')}</span><br>` : '';
+  return `<div class="popup">${simZime}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || (k.nosaukums ? Valoda.t(k.nosaukums) : '') || Valoda.t('Objekts'))}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(Valoda.t(k.nosaukums))}</small><br>` : '') +
     rindas.join('<br>') + ObjektaStatuss.statusaBloks(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
@@ -354,6 +355,7 @@ function popupSaturs(p, ll) {
 // un apgriezts: true). Tālu (zoom < 8) — viena izlase visai Latvijai. Pēc pārvietošanas (400 ms pauze) pārlādē tikai,
 // ja skats iziet ārpus ielādētā vai ja izlase bija apgriezta un karte pietuvināta. Punktus salīdzina pēc id: esošie
 // paliek (atvērts logs neaizveras, karte nemirgo), jaunos pievieno, aizgājušos noņem.
+const Tulk = k => typeof Valoda !== 'undefined' ? Valoda.t(k) : k;
 const SKATA_ZOOM = 8, SKATA_LIMITS = 5000, VALSTS_LIMITS = 3000, VALSTS_BBOX = '20.5,55.5,28.5,58.2';
 let ieladets = null;  // { atslega, filtri, robezas, zoom, apgriezts }
 let gaida = null;     // pieprasījuma atslēga, kas vēl ielādējas
@@ -384,7 +386,7 @@ function skaitit() {
   if (!stavoklis.kategorijas.size || !ieladets || gaida) return;
   const n = skataObjekti().length, r = regioni[stavoklis.regions];
   // apgriezts: tikai izlase (telefonā rinda ir šaura; Saraksts paskaidro "pietuviniet")
-  statuss(`${daudzskaitlis(n, Valoda.t('objekts'), Valoda.t('objekti'))} ${ieladets.apgriezts ? '· ' + Valoda.t('izlase') : Valoda.t('skatā')}${r ? ' · ' + r.nosaukums : ''}`);
+  statuss(`${daudzskaitlis(n, Valoda.t('objekts'), Valoda.t('objekti'))} ${ieladets.apgriezts ? '· ' + Valoda.t('izlase') + ' · ' + Valoda.t('pietuviniet, lai redzētu visas') : Valoda.t('skatā')}${r ? ' · ' + r.nosaukums : ''}`);
 }
 
 // spiest = false: kartes pārvietošana — pārlādē tikai, ja ielādētais vairs neder
@@ -428,7 +430,7 @@ async function atjaunot(spiest = true) {
       // forma pēc slāņu grupas (ikonas.js), 44 px pieskāriena laukums; fillColor — grupu apļa krāsām (grupasIkona)
       const nos = nosaukums(f.properties) || k.nosaukums || '';
       f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k, nos)
-        : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: nos }))
+        : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: (/^sim-/.test(f.properties.avots || '') ? 'SIMULĒTI · ' : '') + nos }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
       tuvakaisNoKlikska(f._slanis);
       jaunie.push(f);
@@ -672,13 +674,17 @@ el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked))
 // Ja ir arī ?q= / ?lat=, skatu nosaka meklēšana, nevis slāņu robežas.
 function slaniNoUrl() {
   const kodi = (new URLSearchParams(location.search).get('slanis') || '').split(',').map(x => x.trim())
-    .filter(x => kategorijas[x] && kategorijas[x].skaits);
-  for (const kods of new Set(kodi)) {
+    .filter(x => (kategorijas[x] && kategorijas[x].skaits) || PARKLAJUMU_ATSLEGAS[x]);
+  for (const kods of new Set(kodi.filter(x => kategorijas[x]))) {
     const i = el('kategorijas').querySelector(`input[value="${CSS.escape(kods)}"]`);
     if (!i) continue;
     i.checked = true;
     stavoklis.kategorijas.add(kods);
     i.closest('details.grupa').open = true;
+  }
+  for (const k of new Set(kodi)) {  // pārklājumi: ieslēdz slēdzi un izsauc tā change (zonas.js, zibens.js… klausās to)
+    const i = PARKLAJUMU_ATSLEGAS[k] && el(PARKLAJUMU_ATSLEGAS[k]);
+    if (i && !i.checked && !i.disabled) { i.checked = true; i.dispatchEvent(new Event('change', { bubbles: true })); }
   }
   if (stavoklis.kategorijas.size) kopsavilkumi();
   return stavoklis.kategorijas.size > 0;
@@ -689,10 +695,90 @@ function pieskaritSlaniem() {
   karte.fitBounds(L.latLngBounds(redzamie.map(f => f._slanis.getLatLng())), { padding: [30, 30], maxZoom: 15 });
 }
 
+// ---- LR1 raidītāji (lr1.json, 16 vietas): pārklājums ar frekvenci punkta logā; ?slanis=lr1 ----
+{
+  const sl = L.layerGroup();
+  const nosl = document.createElement('label');
+  nosl.className = 'kat parklajums';
+  nosl.innerHTML = `<input type="checkbox" id="lr1-slanis"><span class="forma-vieta" data-forma="aplis" data-krasa="#7c3aed"></span>${esc(Tulk('Latvijas Radio 1 raidītāji (frekvences)'))}`;
+  (el('zinojumu-slanis')?.closest('label') || el('kategorijas')).after(nosl);
+  let ielasits = false;
+  async function ieladetLR1() {
+    if (ielasits) return;
+    const d = await (await fetch('lr1.json')).json();
+    for (const r of d.raiditaji) {
+      const fr = r.lr1.map(f => f.replace('.', ',') + ' MHz').join(' · ');
+      L.marker([r.lat, r.lon], { icon: Ikonas.markeris('lr1', '#7c3aed'), title: `LR1 ${r.vieta} ${fr}` })
+        .bindPopup(`<div class="popup"><b>${esc(r.vieta)}</b><small>${esc(Tulk('LR1 raidītājs'))}</small><br>${esc(Tulk('Frekvence'))}: <b>${esc(fr)}</b><br>` +
+          `<small>${esc(Tulk('koordinātas var būt aptuvenas'))}</small>` +
+          `<small class="popup-avots">${esc(Tulk('Avots'))}: <a href="${esc(d.avots)}" target="_blank" rel="noopener">Latvijas Radio</a></small></div>`).addTo(sl);
+    }
+    ielasits = true;
+  }
+  nosl.querySelector('input').addEventListener('change', async e => {
+    if (!e.target.checked) return sl.remove();
+    try { await ieladetLR1(); if (e.target.checked) sl.addTo(karte); } catch { e.target.checked = false; statuss(Tulk('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.'), true); }
+  });
+  Ikonas.aizpilditVietas?.(nosl);
+}
+
+// ---- Ieslēgtie slāņi: "×" katram un "Notīrīt visus"; ?slanis=<kodi> seko ieslēgtajām kategorijām ----
+// pārklājumu atslēgas ?slanis= (sākumlapas saites) → slēdža id; udens_limenis ir parasta kategorija
+const PARKLAJUMU_ATSLEGAS = { celu: 'celu-slanis', zibens: 'zibens-slanis', zinojumu: 'zinojumu-slanis', bridinajumi: 'bridinajumu-slanis',
+  pludi: 'pludu-slanis', noverojumi: 'noverojumi-slanis', lr1: 'lr1-slanis' };
+const slaniURL = () => {
+  const u = new URL(location.href), kodi = [...stavoklis.kategorijas,
+    ...Object.entries(PARKLAJUMU_ATSLEGAS).filter(([, id]) => el(id)?.checked).map(([k]) => k)].sort().join(',');
+  if (kodi) u.searchParams.set('slanis', kodi); else u.searchParams.delete('slanis');
+  history.replaceState(history.state, '', u);
+};
+const parklajumuIeejas = () => [...document.querySelectorAll('label.parklajums input[type=checkbox]:checked')];
+function aktivoSlaNuJosla() {
+  let kaste = el('aktivie-slani');
+  if (!kaste) {
+    const h = el('kategorijas').closest('section')?.querySelector('h2');
+    if (!h) return;
+    kaste = document.createElement('div');
+    kaste.id = 'aktivie-slani';
+    kaste.className = 'aktivie-slani';
+    kaste.setAttribute('role', 'group');
+    kaste.setAttribute('aria-label', Tulk('Ieslēgtie slāņi'));
+    h.after(kaste);
+  }
+  const rindas = [
+    ...[...stavoklis.kategorijas].map(k => `<button type="button" class="slana-zimite" data-kods="${esc(k)}" aria-label="${esc(Tulk('Noņemt slāni'))}: ${esc(kategorijas[k]?.nosaukums || k)}"><span>${esc(kategorijas[k]?.nosaukums || k)}</span><b aria-hidden="true">×</b></button>`),
+    ...parklajumuIeejas().map(i => { const n = i.closest('label').textContent.replace(/\s+/g, ' ').trim();
+      return `<button type="button" class="slana-zimite" data-id="${esc(i.id)}" aria-label="${esc(Tulk('Noņemt slāni'))}: ${esc(n)}"><span>${esc(n)}</span><b aria-hidden="true">×</b></button>`; }),
+  ];
+  kaste.hidden = !rindas.length;
+  kaste.innerHTML = rindas.join('') + (rindas.length ? `<button type="button" class="notirit-visus" data-visi="1">${esc(Tulk('Notīrīt visus'))}</button>` : '');
+}
+// × (data-kods = kategorija, data-id = pārklājuma slēdzis) un "Notīrīt visus" (data-visi): panelī un darbvirsmas leģendā
+document.addEventListener('click', e => {
+  const b = e.target.closest('button[data-kods], button[data-id], button[data-visi]');
+  if (!b || !b.closest('.aktivie-slani, .dv-legenda')) return;
+  if (b.dataset.visi) return notiritVisus();
+  const i = b.dataset.kods ? el('kategorijas').querySelector(`input[value="${CSS.escape(b.dataset.kods)}"]`) : el(b.dataset.id);
+  if (i) { i.checked = false; i.dispatchEvent(new Event('change', { bubbles: true })); }
+});
+function notiritVisus() {
+  for (const i of el('kategorijas').querySelectorAll('input:checked')) i.checked = false;
+  stavoklis.kategorijas.clear();
+  for (const i of parklajumuIeejas()) { i.checked = false; i.dispatchEvent(new Event('change', { bubbles: true })); }
+  if (stavoklis.regions) { el('regions').value = ''; el('regions').dispatchEvent(new Event('change')); }
+  kopsavilkumi();
+  atjaunot();
+  slaniURL();
+  aktivoSlaNuJosla();
+}
+// pēc pārējo change apstrādātājiem (kategoriju stāvoklis atjaunots jau tajos)
+document.addEventListener('change', e => e.target.matches?.('label.parklajums input, #kategorijas input') && setTimeout(() => { slaniURL(); aktivoSlaNuJosla(); }, 0));
+
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
     aizpilditKategorijas(k); aizpilditRegionus(r);
     const slani = slaniNoUrl();
+    aktivoSlaNuJosla();
     atjaunot().then(() => { if (slani) pieskaritSlaniem(); });
     arMeklesanu(m => m.sakt(r));
   })

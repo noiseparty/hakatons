@@ -240,3 +240,7 @@
 
 /* Šaurā datora logā galvenē: meklēšanas laukam vieta; statusa tablete (dublē leģendu) paslēpta */
 @media (min-width: 801px) and (max-width: 1499px) { body.dv header #statuss { display: none; } body.dv header { gap: 12px; } }
+
+.dv-legenda .dv-leg-nos { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.dv-legenda .dv-leg-x { flex: none; margin-left: auto; min-width: 40px; min-height: 40px; border: 0; background: transparent; font-size: 1.3rem; line-height: 1; cursor: pointer; color: inherit; }
+.dv-legenda .dv-leg-visi { grid-column: 1 / -1; }

@@ -1037,3 +1037,11 @@ header .valoda-sledzis button[aria-pressed="true"]::before { background: var(--t
   .apaksa-saturs > .pirmais-skats .ps-cips { flex: none; width: auto; min-height: 40px; padding: 0 10px; font-size: .8rem; white-space: nowrap; }
   .lapa-tukss { display: none; }
 }
+
+/* Ieslēgto slāņu josla: × katram un "Notīrīt visus" (pieskāriena laukums ≥ 40 px) */
+.aktivie-slani { display: flex; flex-wrap: wrap; gap: .4rem; margin: .4rem 0; }
+.aktivie-slani[hidden] { display: none; }
+.slana-zimite, .notirit-visus { min-height: 40px; display: inline-flex; align-items: center; gap: .4rem; padding: 0 .3rem 0 .7rem; border: 1px solid #cbd5e1; border-radius: 999px; background: #fff; font: inherit; font-size: .85rem; cursor: pointer; max-width: 100%; }
+.slana-zimite span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.slana-zimite b { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; margin: -1px 0; font-size: 1.3rem; line-height: 1; }
+.notirit-visus { padding: 0 .9rem; font-weight: 600; border-color: #b91c1c; color: #b91c1c; }
