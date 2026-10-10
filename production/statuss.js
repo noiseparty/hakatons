@@ -56,14 +56,21 @@
     b.textContent = t;
   }
 
-  function zimet(d) {
+  function zimet(d, noKesas) {
     const komp = d.komponenti || [];
     const min = d.intervals_min || 15;
     baneris(komp);
     const p = el('pedeja');
     const pedeja = komp.map(k => k.parbaudits).filter(Boolean).sort().pop() || d.laiks;
     p.hidden = false;
-    p.innerHTML = `${pedeja ? `Pēdējā pārbaude: ${stunda(pedeja)}` : ''}<small>Pārbaudes ik ${min} minūtes; lapa atjaunojas ik minūti.</small>`;
+    if (noKesas) {
+      // Bez tīkla service worker (sw.js) atdod pēdējo saglabāto atbildi: rādām to ar laiku un "bezsaistē", nevis kļūdu
+      const kad = noKesas.getTime() ? `${stunda(noKesas.toISOString())}${noKesas.toDateString() === new Date().toDateString() ? '' : ' ' + noKesas.toLocaleDateString('lv-LV', { day: 'numeric', month: 'numeric' })}` : '';
+      el('baneris').textContent += kad ? ` (saglabāts ${kad})` : ' (saglabāts)';
+      p.innerHTML = `<span class="bezsaiste">bezsaistē</span> Rāda pēdējo saglabāto statusu${kad ? `, ${kad}` : ''}.${pedeja ? ` Pēdējā pārbaude: ${stunda(pedeja)}.` : ''}<small>Kad būs internets, lapa atjaunosies pati.</small>`;
+    } else {
+      p.innerHTML = `${pedeja ? `Pēdējā pārbaude: ${stunda(pedeja)}` : ''}<small>Pārbaudes ik ${min} minūtes; lapa atjaunojas ik minūti.</small>`;
+    }
     el('komponenti').innerHTML = komp.map(k => komponents(k, min)).join('');
     el('komponenti')._dati = Object.fromEntries(komp.map(k => [k.kods, k]));
     el('komponenti')._min = min;
@@ -72,17 +79,20 @@
   function kluda() {
     const b = el('baneris');
     b.className = 'baneris kluda';
-    b.textContent = 'Statusa API nav pieejams — karte, iespējams, darbojas daļēji.';
+    const bezTikla = navigator.onLine === false;
+    b.textContent = bezTikla ? 'Nav interneta — nav arī saglabāta statusa.' : 'Statusa API nav pieejams — karte, iespējams, darbojas daļēji.';
     const p = el('pedeja');
     p.hidden = false;
-    p.innerHTML = '<small>Mēģināsim vēlreiz pēc minūtes.</small>';
+    p.innerHTML = bezTikla ? '<small>Statuss parādīsies, kad būs savienojums.</small>' : '<small>Mēģināsim vēlreiz pēc minūtes.</small>';
   }
 
   async function ieladet() {
     try {
       const r = await fetch(adrese, { cache: 'no-store' });
       if (!r.ok) throw new Error(r.status);
-      zimet(await r.json());
+      // sw.js bez tīkla atbild ar saglabāto kopiju un galvenēm x-sw-no-kesas / x-sw-saglabats
+      const noKesas = r.headers.get('x-sw-no-kesas') ? new Date(r.headers.get('x-sw-saglabats') || NaN) : null;
+      zimet(await r.json(), noKesas);
     } catch (e) {
       // veco datu vietā neko nerādām: kļūda ir svarīgāka par novecojušu statusu
       el('komponenti').innerHTML = '';
