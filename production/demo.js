@@ -161,6 +161,10 @@ const Demo = (() => {
       regRobezas.extend(g.getBounds());
     }
     saturs.innerHTML = karte_(sc, r, bloki.html);
+    if (typeof Marsruts !== 'undefined') for (const m of bloki.marsruti || []) {
+      Marsruts.rindai(saturs.querySelector(`li[data-lat="${m.uz[0]}"][data-lon="${m.uz[1]}"]`), [vieta.lat, vieta.lon], m.uz,
+        { zonas: sc.zonas, slanis, aizstat: m.linija });
+    }
     for (const p of bloki.punkti) robezas.extend(p);
     skats = sc.skats === 'regioni' || regions || !robezas.isValid() ? regRobezas : robezas;
     radit();
@@ -276,7 +280,7 @@ const Demo = (() => {
   }
 
   async function tuvakieBloki(sc, vieta, regions) {
-    const punkti = [], dalas = [];
+    const punkti = [], dalas = [], marsruti = [];
     const zonas = sc.zonas || [];
     // Pelēkotie: punkti elektrības zonās nestrādā; sarakstā — tuvākais strādājošais ārpus zonām
     const pelekot = await Promise.all((sc.pelekot || []).map(async p => {
@@ -300,10 +304,11 @@ const Demo = (() => {
       if (!f) return tuksa(virsraksts, 'Datos nav atrasta. Jautājiet pašvaldībai.');
       atzimet(f);
       if (f.properties.attalums_m < 30000 || t.linija) punkti.push(ll(f));
-      if (t.linija) L.polyline([[vieta.lat, vieta.lon], ll(f)], { color: '#0077c8', weight: 4, dashArray: '8 8' }).addTo(slanis);
+      // taisnā līnija — līdz ielādējas maršruts, kas apiet zonu (marsruts.js); ja maršrutētājs neatbild, tā paliek
+      if (t.linija) marsruti.push({ uz: ll(f), linija: L.polyline([[vieta.lat, vieta.lon], ll(f)], { color: '#0077c8', weight: 4, dashArray: '8 8' }).addTo(slanis) });
       const tala = f.properties.attalums_m > 10000 && ['evakuacijas_punkts', 'izmitinasana'].includes(t.kategorija)
         ? '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā.</small>' : '';
-      return vienums(f, vieta, virsraksts, (t.linija ? '<small>Zilā raustītā līnija: virziens taisnā līnijā; ejiet pa ielām.</small>' : '') + tala);
+      return vienums(f, vieta, virsraksts, (t.linija ? '<small class="marsruta-piezime">Zilā raustītā līnija: virziens taisnā līnijā; ejiet pa ielām.</small>' : '') + tala);
     }));
     if (pelekot.length + saraksts.length) {
       dalas.push(`<h3>${sc.pelekot ? 'Kas strādā tuvumā' : 'Tuvākās vietas'}</h3><ol class="rez-saraksts drosas">${[...pelekot, ...saraksts].join('')}</ol>`);
@@ -339,7 +344,7 @@ const Demo = (() => {
       dalas.push(`<h3>Kur doties bez telefona</h3><ol class="rez-saraksts drosas">${doties.join('')}</ol>` +
         `<p class="piezime">Attālums taisnā līnijā no ${esc(regioni[regions]?.nosaukums || '')} centra.</p>`);
     }
-    return { html: dalas.join(''), punkti };
+    return { html: dalas.join(''), punkti, marsruti };
   }
 
   // ---- Kartīte "Kas notiek / Ko darīt" (meklēšanas rezultāta klases no stils.css) ----

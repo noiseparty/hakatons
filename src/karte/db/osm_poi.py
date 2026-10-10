@@ -12,6 +12,7 @@ Jaunu kategoriju pievieno KATEGORIJAS un shema.sql (tabula kategorijas).
 """
 
 import json
+import os
 import pathlib
 import sys
 import time
@@ -25,7 +26,8 @@ KATEGORIJAS = {
 }
 SERVERI = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]
 LAUKI = ["name", "operator", "brand", "opening_hours", "phone", "website", "atm", "dispensing", "emergency"]
-IZEJA = pathlib.Path(__file__).resolve().parents[1] / "dati" / "osm_poi.geojson"
+# HAKATONS_DATI: cita mape (VPS ikdienas atjaunošana raksta /var/lib/hakatons/dati, nevis git kopijā)
+IZEJA = pathlib.Path(os.environ.get("HAKATONS_DATI") or pathlib.Path(__file__).resolve().parents[1] / "dati") / "osm_poi.geojson"
 
 
 def vaicajums():

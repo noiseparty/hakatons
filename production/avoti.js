@@ -20,11 +20,22 @@ const Avoti = (() => {
       '„Prognoze / ziņas”: laikapstākļi pa novadiem 3 dienām', 'vairākas reizes dienā, kešs 5 min', 79, { svaigums: 'prognozes' }],
     ['fmi-zibens', 'Zibens izlādes (pēdējās 30 min)', 'Ilmatieteen laitos (Somijas Meteoroloģijas institūts)', CCBY,
       'https://en.ilmatieteenlaitos.fi/open-data', 'Zibens slānis', 'tiešsaistē, ik minūti', 81, { ja: 'zibens-slanis' }],
+    ['lvgmc-meteo', 'Hidrometeoroloģiskie novērojumi (meteoroloģiskie operatīvie dati)', LVGMC, CC0,
+      'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi',
+      'Slānis „Laikapstākļi tagad”; vējš tagad meklēšanā; ziņa un riska karte prognožu lentē', 'katru stundu, kešs 10 min', 80,
+      { ja: 'noverojumi-slanis' }],
     ['lvgmc-zibens', 'Telpiskie hidrometeoroloģiskie novērojumi (zibens režģis, 24 h)', LVGMC, CC0,
       'https://data.gov.lv/dati/lv/dataset/telpiskie-hidrometeorologiskie-noverojumi', 'Zibens slānis (pelēkie apļi)',
       'katru stundu, kavējas ~2–3 h', 82, { ja: 'zibens-slanis' }],
     ['open-meteo', 'Nokrišņi un augsnes mitrums', 'Open-Meteo', CCBY, 'https://open-meteo.com/',
       'Meklēšanas rezultātā (plūdi, lietusgāzes, vētra): nokrišņi pēdējās 26 dienās un augsnes mitrums', 'tiešsaistē', 83, { ja: 'zibens-slanis' }],
+    ['osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
+      ['ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/'], 'https://www.openstreetmap.org/copyright',
+      'Noturības punktu kandidāti (statuss nav apstiprināts)', 'pēc ielādes', 71],
+    ['sim-udens', 'Simulēti prototipa dati (komanda): dzeramā ūdens punkti', 'Hakatona komanda', ['Simulēti dati, CC0 1.0', CC0[1]],
+      'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'SIMULĒTI: dzeramā ūdens punkti (prototips, nav reāli)', 'statiski', 95],
+    ['sim-energija', 'Simulēti prototipa dati (komanda): ierīču uzlādes punkti', 'Hakatona komanda', ['Simulēti dati, CC0 1.0', CC0[1]],
+      'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'SIMULĒTI: ierīču uzlādes punkti (prototips, nav reāli)', 'statiski', 96],
     ['opentopomap', 'OpenTopoMap reljefa karte', 'OpenTopoMap (dati: OpenStreetMap līdzstrādnieki, SRTM)',
       ['CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/'], 'https://opentopomap.org/about', 'Fona karte „Reljefs”', 'tiešsaistē', 91],
   ].map(([kods, nosaukums, izdevejs, [licence, licences_url], datu_kopa_url, lietojums, biezums, kartiba, x = {}]) =>
@@ -37,6 +48,8 @@ const Avoti = (() => {
   const saite = (url, teksts) => /^https?:\/\//.test(url || '')
     ? `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(teksts)}</a>` : esc(teksts);
   const datums = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
+  // avoti.atjaunots (pēdējā veiksmīgā ielāde, ielade.py): "10.10. 04:31"
+  const ielLaiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   const bridinajums = '⚠ Atvērta licence nav norādīta';
 
   const avotuVards = n => `${n} atvērto datu ${n % 10 === 1 && n % 100 !== 11 ? 'avots' : 'avoti'}`;
@@ -59,7 +72,8 @@ const Avoti = (() => {
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
         <small>${esc(a.izdevejs)}</small>
         <span class="licence">${a.atverts ? '' : bridinajums + ' · '}${saite(a.licences_url, a.licence)}</span>
-        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${a.skaits} objekti, ielādēts ${datums(a.ieladets)}` : ''}</small>
+        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${a.skaits} objekti${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
+        ${a.atjaunots ? `<small class="atjaunots">Atjaunots ${ielLaiks(a.atjaunots)}</small>` : ''}
         ${a.biezums || BIEZUMS[a.kods] ? `<small>Atjaunošana: ${esc(a.biezums || BIEZUMS[a.kods])}${a.svaigums ? `<span data-svaigums="${esc(a.svaigums)}"></span>` : ''}</small>` : ''}
         ${a.piezime ? `<small class="avota-piezime">${esc(a.piezime)}</small>` : ''}
         ${a.lejupielade && a.lejupielade !== a.datu_kopa_url ? `<small class="ieguve">Ieguve: ${/^https?:/.test(a.lejupielade) ? saite(a.lejupielade, a.lejupielade) : esc(a.lejupielade)}</small>` : ''}

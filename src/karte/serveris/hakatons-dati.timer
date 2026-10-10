@@ -1,0 +1,12 @@
+# /etc/systemd/system/hakatons-dati.timer — palaiž hakatons-dati.service katru dienu 04:30 pēc Rīgas laika.
+# Persistent=true: ja serveris tobrīd bija izslēgts, palaiž pēc ieslēgšanas.
+[Unit]
+Description=Daily refresh of map.repo.lv open-data snapshots
+
+[Timer]
+OnCalendar=*-*-* 04:30:00 Europe/Riga
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target
