@@ -104,6 +104,51 @@ const Valoda = (() => {
     'Visi kartes objekti sarakstā': { ru: 'Все объекты карты списком', en: 'All map objects as a list' },
     'Ziņot par bīstamību šeit': { ru: 'Сообщить об опасности здесь', en: 'Report a hazard here' },
     'Notīrīt meklēšanu': { ru: 'Очистить поиск', en: 'Clear search' },
+    // Soļu josla zem meklēšanas lauka
+    'Soļi': { ru: 'Шаги', en: 'Steps' },
+    'Jautājums': { ru: 'Вопрос', en: 'Question' },
+    'Atbilde': { ru: 'Ответ', en: 'Answer' },
+    'Rīcība': { ru: 'Действие', en: 'Action' },
+    // Lēmuma rinda kartītes augšā
+    'Tuvākā vieta': { ru: 'Ближайшее место', en: 'Nearest place' },
+    'Tuvākā pulcēšanās vieta': { ru: 'Ближайший пункт сбора', en: 'Nearest assembly point' },
+    'Tuvākā izmitināšanas vieta': { ru: 'Ближайшее место размещения', en: 'Nearest temporary accommodation' },
+    'Tuvākā 24/7 neatliekamā palīdzība': { ru: 'Ближайшая неотложная помощь 24/7', en: 'Nearest 24/7 emergency care' },
+    'Tuvākā ārstniecības iestāde': { ru: 'Ближайшее медицинское учреждение', en: 'Nearest medical institution' },
+    'Tuvākā aptieka': { ru: 'Ближайшая аптека', en: 'Nearest pharmacy' },
+    'Tuvākais bankomāts': { ru: 'Ближайший банкомат', en: 'Nearest ATM' },
+    'Tuvākā policija': { ru: 'Ближайшая полиция', en: 'Nearest police station' },
+    'Tuvākais ugunsdzēsēju depo': { ru: 'Ближайшее пожарное депо', en: 'Nearest fire station' },
+    'Tuvākā degvielas uzpilde': { ru: 'Ближайшая заправка', en: 'Nearest fuel station' },
+    'Tuvākais noturības punkta kandidāts': { ru: 'Ближайший кандидат в пункт устойчивости', en: 'Nearest resilience point candidate' },
+    'Tuvākā pietura': { ru: 'Ближайшая остановка', en: 'Nearest stop' },
+    'no kartes centra': { ru: 'от центра карты', en: 'from the map centre' },
+    'no centra ({x})': { ru: 'от центра ({x})', en: 'from the centre ({x})' },
+    '{x}, centrs': { ru: '{x}, центр', en: '{x}, centre' },
+    'pārbauda…': { ru: 'проверяем…', en: 'checking…' },
+    'meklē…': { ru: 'ищем…', en: 'searching…' },
+    'upe virs kritiskā līmeņa': { ru: 'река выше критического уровня', en: 'river above the critical level' },
+    'kartes vēl ielādējas…': { ru: 'карты ещё загружаются…', en: 'maps are still loading…' },
+    'pašlaik nevar pārbaudīt; zonas redzamas kartē': {
+      ru: 'сейчас проверить нельзя; зоны видны на карте', en: 'cannot be checked right now; zones are shown on the map' },
+    'neizdevās pārbaudīt; zonas redzamas kartē': {
+      ru: 'проверить не удалось; зоны видны на карте', en: 'could not be checked; zones are shown on the map' },
+    '{x} % varbūtība gadā': { ru: 'вероятность {x} % в год', en: '{x} % chance per year' },
+    'pēc pieejamajām kartēm nē (daļa karšu neatbildēja)': {
+      ru: 'по доступным картам нет (часть карт не ответила)', en: 'no, according to the available maps (some maps did not respond)' },
+    'nav applūstošā teritorijā': { ru: 'не в зоне затопления', en: 'not in a flood-prone area' },
+    'Atrašanās vieta nav atļauta.': { ru: 'Доступ к местоположению не разрешён.', en: 'Location access is not allowed.' },
+    'Atrašanās vietu neizdevās noteikt.': { ru: 'Местоположение определить не удалось.', en: 'Your location could not be determined.' },
+    vieta_nav: {
+      lv: 'Pievienojiet vaicājumam adresi vai pilsētu, piem., „{x} Ogrē” vai „… Brīvības 15 Ogre”.',
+      ru: 'Добавьте к запросу адрес или город, например, «{x} Ogre» или «… Brīvības 15 Ogre».',
+      en: 'Add an address or town to the query, e.g. “{x} Ogre” or “… Brīvības 15 Ogre”.' },
+    // MI zīme pie CA plāna vietām; "Kā tas tapa" (Datu avoti)
+    'izvilkts ar MI no CA plāna': { ru: 'извлечено ИИ из плана гражданской защиты', en: 'extracted by AI from the civil protection plan' },
+    '{x}. lpp.': { ru: 'стр. {x}', en: 'p. {x}' },
+    'atvērt plānu': { ru: 'открыть план', en: 'open the plan' },
+    'Atvērt CA plānu': { ru: 'Открыть план гражданской защиты', en: 'Open the civil protection plan' },
+    'Kā tas tapa': { ru: 'Как это сделано', en: 'How it was made' },
   };
 
   let izveleta = null;   // slēdzī izvēlētā (localStorage) vai null — tad pēc vaicājuma

@@ -115,7 +115,8 @@ button.otra:hover { background: var(--zils-gaiss); }
 .popup .marsruts + .popup-avots { margin-top: .5rem; }
 
 /* Punktu grupas (leaflet.markercluster): aplis ar slāņu krāsu proporcijām un skaitu vidū */
-.grupa-ikona span { display: grid; place-items: center; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #fff; box-sizing: border-box; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.grupa-ikona { display: grid; place-items: center; }
+.grupa-ikona span { display: grid; place-items: center; flex: none; border-radius: 50%; border: 2px solid #fff; box-sizing: border-box; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
 .grupa-ikona b { display: grid; place-items: center; min-width: 62%; height: 62%; border-radius: 50%; background: #fff; color: var(--teksts); font-size: .72rem; font-variant-numeric: tabular-nums; }
 
 /* Krīzes meklēšana "Ko tev vajag?" (meklesana.js) */
@@ -466,6 +467,12 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
 .obj-statuss { display: block; margin-top: .25rem; font-size: .78rem; color: var(--teksts2); }
 .obj-statuss b { color: #92400e; font-weight: 700; }
 .obj-statuss ul { margin: .15rem 0 0; padding-left: 1rem; }
+/* "Vairāk" logā (objekta-statuss.js): pilnais pazīmju saraksts saplocīts; telefonā pieskāriena laukums 44 px */
+.statuss-vairak summary { display: inline-flex; align-items: center; cursor: pointer; color: var(--zils, #0077c8); font-weight: 600; padding: .15rem 0; }
+.statuss-vairak summary::after { content: ''; width: .4em; height: .4em; margin: -.25em 0 0 .5em; border: solid currentColor; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.statuss-vairak[open] summary { color: var(--teksts2); }
+.statuss-vairak[open] summary::after { margin-top: .2em; transform: rotate(-135deg); }
+@media (pointer: coarse), (max-width: 800px) { .statuss-vairak summary { min-height: 44px; padding: 0 .5rem 0 0; } }
 
 /* Rezultāta kartīte: lēmuma rinda (LVĢMC brīdinājums šai vietai) un pašvaldība (meklesana.js) */
 .lemums { margin: .3rem 0 .1rem; padding: .45rem .6rem; font-size: .88rem; border-radius: 4px; border-left: 4px solid #a8a29e; background: var(--fons); }
@@ -802,7 +809,7 @@ body.ir-meklets .dv-pirmais { display: none; }
   #lapa-rezultats:has(#rezultati:not([hidden])) .lapa-tukss { display: none; }
   .apaksa-saturs > .pirmais-skats { margin: 6px 0 2px; gap: 6px; }
   .apaksa-saturs > .pirmais-skats .ps-ievads { font-size: .82rem; font-weight: 500; color: var(--teksts-blavs); }
-  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 40px; font-size: .85rem; }
+  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 44px; font-size: .85rem; }  /* pieskāriena laukums 44 px */
   .apaksa-saturs > .pirmais-skats .ps-dati { display: none; }  /* telefonā vieta lēmumam; avoti ir katrā rezultāta rindā */
   .apaksa-saturs:has(#rezultati:not([hidden])) > .pirmais-skats { display: none; }
   #lapa-slani #panelis { display: flex !important; flex-direction: column; width: auto; padding: 0; gap: 8px; overflow: visible; }
@@ -840,7 +847,8 @@ body.ir-meklets .dv-pirmais { display: none; }
   .atskanot-sakt { min-height: 44px; }
 
   /* Kartes uznirstošie logi nekad nav augstāki par redzamo karti: saturs ritinās, ✕ paliek augšā (44 px) */
-  body.apaksa-aktiva .leaflet-popup-content-wrapper { display: flex; flex-direction: column; max-height: min(60vh, calc(100dvh - 200px - env(safe-area-inset-top))); overflow: hidden; }
+  body.apaksa-aktiva .leaflet-popup-content-wrapper { display: flex; flex-direction: column; max-height: min(60vh, calc(100dvh - 200px - env(safe-area-inset-top)), var(--popup-augstums, 100dvh)); overflow: hidden; }
+  body.apaksa-aktiva.popups-atverts #demo-cilne { display: none; }  /* sheet.js: kamēr logs atvērts, demo cilne to neaizsedz */
   body.apaksa-aktiva .leaflet-popup-content { overflow-y: auto; overscroll-behavior: contain; margin: 12px 14px; padding-right: 22px; min-height: 0; }
   body.apaksa-aktiva .leaflet-container a.leaflet-popup-close-button { z-index: 2; width: 44px; height: 44px; font: 24px/44px system-ui, sans-serif; top: 0; right: 0; }
 
@@ -867,11 +875,69 @@ body.ir-meklets .dv-pirmais { display: none; }
 .slana-legenda { margin: .1rem 0 .4rem 1.6rem; font-size: .78rem; color: var(--teksts2); display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .4rem; }
 .forma-markeris.kritiskais svg { filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 1px 3px rgba(0, 0, 0, .5)); }
 .krit-zime { display: inline-block; padding: 0 .35rem; font-size: .7rem; font-weight: 700; letter-spacing: .03em; color: #fff; background: #1d4ed8; border-radius: 3px; }
+
+/* Soļu josla zem meklēšanas lauka (meklesana.js): "1 Jautājums · 2 Atbilde · 3 Rīcība"; viena rinda, augstums nemainās */
+.meklet-rinda { flex-wrap: wrap; }
+.soli { display: flex; flex-basis: 100%; align-items: center; min-width: 0; margin: .3rem 0 0; padding: 0; list-style: none; overflow: hidden;
+  font-size: .72rem; font-weight: 600; line-height: 1.25; color: var(--teksts-blavs); white-space: nowrap; }
+.soli li { display: inline-flex; align-items: center; gap: .3rem; }
+.soli li + li::before { content: ''; width: 14px; height: 1px; margin: 0 .4rem; background: var(--pelks-3); }
+.solis-nr { display: inline-grid; place-items: center; width: 16px; height: 16px; border: 1px solid var(--pelks-3); border-radius: 50%; font-size: .66rem; }
+.soli li.aktivs { color: var(--tumsi-zils); }
+.soli li.aktivs .solis-nr { background: var(--tumsi-zils); border-color: var(--tumsi-zils); color: #fff; }
+header .soli { color: rgba(255, 255, 255, .85); }
+.apaksa[data-stavoklis="peek"] .soli { visibility: hidden; }
+
+/* Lēmuma bloks kartītes augšā (meklesana.js lemumaBloks): lēmums ar ikonu un krāsu + viena nākamā darbība */
+.lemums-bloks { margin: 0 0 .45rem; padding: .5rem .6rem; border: 1px solid var(--pelks-3); border-left-width: 4px; border-radius: var(--radiuss-karte); background: #fff; }
+.lemums-rinda { display: flex; align-items: center; gap: .5rem; margin: 0; font-size: .98rem; line-height: 1.3; color: var(--teksts-galv); }
+.lemums-ikona { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--pelks-2); color: var(--tumsi-zils); }
+.lemums-ikona .ik { width: 18px; height: 18px; vertical-align: 0; }
+.lemums-teksts { min-width: 0; }
+.lemums-teksts small { font-size: .74rem; font-weight: 400; color: var(--teksts-blavs); }
+.lemums-bloks:has(.lemums-ja) { border-color: var(--brid-sarkans-mala); background: var(--brid-sarkans-fons); }
+.lemums-ja .lemums-ikona { background: var(--brid-sarkans-mala); color: #fff; }
+.lemums-ja strong { color: var(--brid-sarkans-teksts); }
+.lemums-bloks:has(.lemums-ne) { border-color: #287a41; background: #ecfdf3; }
+.lemums-ne .lemums-ikona { background: #287a41; color: #fff; }
+.lemums-bloks:has(.lemums-vieta) { border-left-color: var(--gim-drosas); }
+.lemums-vieta .lemums-ikona { background: var(--gim-drosas); color: #fff; }
+.lemums-bloks:has(.lemums-nezinams) { border-left-color: var(--brid-dzeltens-mala); }
+.lemums-bloks:has(.lemums-info) { border-left-color: var(--brid-info-mala); }
+.lemums-gaida .lemums-teksts { color: var(--teksts-blavs); }
+.lemums-darbiba { margin-top: .4rem; }
+.lemums-darbiba:empty { display: none; }
+.lemums-darbiba .marsruts { margin-top: 0; }
+#rezultati .lemums-darbiba .marsruts a { min-height: 44px; display: inline-flex; align-items: center; }
+p.lemums-vietas-rinda { margin: 0 0 .3rem; font-size: .85rem; color: var(--teksts-galv); }
+.lemums-bloks button.vietas-poga { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; margin: 0; }
+.lemums-bloks .vieta-zina { margin-top: .35rem; }
+/* "Kā tas tapa" panelī "Datu avoti" (avoti.js) */
+.ka-tapa { margin: .5rem 0; padding: .5rem .6rem; border-left: 3px solid #5b21b6; border-radius: 4px; background: #f5f3ff; font-size: .8rem; color: var(--teksts-galv); }
+.ka-tapa ul { margin: .25rem 0 0; padding-left: 1.1rem; }
+.ka-tapa li { margin: .15rem 0; }
+/* MI zīme pie CA plāna vietām: "izvilkts ar MI no CA plāna, N. lpp." */
+.mi-zime { display: block; color: #5b21b6; }
+.mi-zime a { color: inherit; font-weight: 600; }
+/* Telefonā pusatvērtā lapā ar rezultātu tēmu pogas un LVĢMC kopsavilkums paslēpti (brīdinājums šai vietai ir kartītē),
+   lai lēmums ir redzams bez ritināšanas arī 360 × 640; lapā "Pilns" tie atkal redzami */
+@media (max-width: 800px) {
+  .apaksa[data-stavoklis="puse"] .apaksa-saturs:has(#rezultati:not([hidden])) :is(.lapa-temas, .lapa-kopsavilkums) { display: none; }
+  .apaksa #rezultati .draudi { padding: .5rem .65rem; font-size: .95rem; line-height: 1.3; }
+}
 /* Rezultāta valodas slēdzis LV / RU / EN (valoda.js): maza rinda zem meklēšanas lauka */
 .meklet-rinda:has(.valoda-sledzis) { flex-wrap: wrap; row-gap: 4px; }
 .meklet-rinda .valoda-sledzis { flex: 1 0 100%; display: flex; justify-content: flex-end; gap: 4px; margin: 0; }
 .meklet-rinda .valoda-sledzis button { flex: none; width: auto; min-width: 40px; min-height: 28px; height: 28px; padding: 0 .5rem; font-size: .75rem; font-weight: 600;
   letter-spacing: .04em; color: var(--teksts); background: var(--virsma); border: 1px solid var(--robeza); border-radius: 999px; }
 .meklet-rinda .valoda-sledzis button[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+/* Telefonā pieskāriena laukums 44 × 44 px; redzamā "tablete" paliek 28 px augsta (::before) */
+@media (max-width: 800px), (pointer: coarse) {
+  .meklet-rinda .valoda-sledzis { gap: 0; margin-top: -4px; }
+  .meklet-rinda .valoda-sledzis button, .meklet-rinda .valoda-sledzis button[aria-pressed="true"] {
+    position: relative; z-index: 0; min-width: 44px; height: 44px; min-height: 44px; background: none; border-color: transparent; }
+  .meklet-rinda .valoda-sledzis button::before { content: ''; position: absolute; z-index: -1; inset: 8px 2px; border: 1px solid var(--robeza); border-radius: 999px; background: var(--virsma); }
+  .meklet-rinda .valoda-sledzis button[aria-pressed="true"]::before { background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+}
 .valoda-padomi { margin: .5rem 0 .2rem; font-size: .8rem; font-style: italic; color: var(--teksts2); }
 body.dv #panelis > #saraksts { padding: 0; }

@@ -30,9 +30,16 @@ const ObjektaStatuss = (() => {
       return `<small class="obj-statuss">${ir ? 'Statuss: ' + vertibas.map(([n, v]) => `${n} — ${esc(v)}`).join(', ')
         : '<b>Statuss nav apstiprināts</b>: nav zināms, vai šeit ir siltums, uzlāde, ūdens un wifi. Pirms došanās pārliecinieties pašvaldībā.'}</small>`;
     }
-    return `<span class="obj-statuss">${ir ? `Statuss (atjaunots ${esc(new Date(i.last_updated).toLocaleString('lv-LV'))}):`
-      : '<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās ' + SVAIGS_H + ' h):'}<ul>` +
-      vertibas.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`).join('') + '</ul></span>';
+    return vairak('obj-statuss', ir ? `Statuss (atjaunots ${esc(new Date(i.last_updated).toLocaleString('lv-LV'))})`
+      : `<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās ${SVAIGS_H} h)`,
+      ir ? vertibas.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : 'siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms',
+      vertibas.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`));
+  }
+
+  // Logā: virsraksts + viena īsa rinda; pilnais pazīmju saraksts zem "Vairāk" (telefonā garš saraksts aizņēma visu logu)
+  function vairak(klase, virsraksts, isaRinda, rindas) {
+    return `<span class="${klase}">${virsraksts}: ${isaRinda}.` +
+      `<details class="statuss-vairak"><summary>Vairāk</summary><ul>${rindas.join('')}</ul></details></span>`;
   }
 
   // Viens kopīgs statusa bloks patvertnēm, evakuācijas un izmitināšanas vietām un noturības punktiem — visur vienāds.
@@ -63,16 +70,16 @@ const ObjektaStatuss = (() => {
     const vietas = AR_VIETU_ZINAM.has(p.kategorija) ? vietasZinas(i) : [];
     const virsraksts = ir ? `Statuss (atjaunots ${esc(new Date(i.last_updated).toLocaleString('lv-LV'))})`
       : `<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās ${SVAIGS_H} h)`;
+    const dalas = [ir ? pazimes.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : 'siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms'];
+    const zinamas = vietas.filter(([, v]) => v), nezinamas = vietas.filter(([, v]) => !v);
+    if (zinamas.length) dalas.push(zinamas.map(([n, v]) => n === 'ietilpība' ? esc(v) : `${n} — ${esc(v)}`).join(', '));
     if (isi) {
-      const dalas = [ir ? pazimes.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : 'siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms'];
-      const zinamas = vietas.filter(([, v]) => v), nezinamas = vietas.filter(([, v]) => !v);
-      if (zinamas.length) dalas.push(zinamas.map(([n, v]) => n === 'ietilpība' ? esc(v) : `${n} — ${esc(v)}`).join(', '));
       if (nezinamas.length) dalas.push(nezinamas.map(([n]) => n).join(', ') + ' — nav norādīts');
       return `<small class="obj-statuss statusa-bloks">${virsraksts}: ${dalas.join('; ')}.</small>`;
     }
-    return `<span class="obj-statuss statusa-bloks">${virsraksts}:<ul>` +
-      pazimes.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`).join('') +
-      vietas.map(([n, v]) => `<li>${n}: ${v ? esc(v) : 'nav norādīts'}</li>`).join('') + '</ul></span>';
+    // Logā īsā rinda bez "nav norādīts" daļas (tā ir sarakstā zem "Vairāk")
+    return vairak('obj-statuss statusa-bloks', virsraksts, dalas.join('; '),
+      [...pazimes.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`), ...vietas.map(([n, v]) => `<li>${n}: ${v ? esc(v) : 'nav norādīts'}</li>`)]);
   }
 
   // Dzīvais statuss "nevar izmantot" (meklēšanas rezultātā šādu vietu izlaiž un ņem nākamo): 'slēgts', 'nedarbojas'

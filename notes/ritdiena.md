@@ -1,5 +1,24 @@
 # Plan for the final day (Saturday 2026-10-10)
 
+## Viena komanda no rīta
+
+```powershell
+cd C:\Users\ZX202\kodi\hakatons
+uv run --no-project --python 3.12 src/rits.py            # soļi 1-4, 6, 7
+uv run --no-project --python 3.12 src/rits.py --video    # + rezerves video (~2 min)
+uv run --no-project --python 3.12 src/rits.py --soli 1,2 [--url https://map.repo.lv]
+```
+
+Soļi pa vienam, viens pārlūks, bez paralēlas slodzes; skripts neko nemaina. Beigās tabula (solis, rezultāts, sekundes, ko darīt, ja nav zaļš); exit 1 tikai pie KLUDA.
+
+1. `git fetch` un vai checkout sakrīt ar origin/main (citā zarā: brīdinājums, nevis kļūda).
+2. API: veseliba, bridinajumi, pludi (Ogre), udens, prognozes, celi un viena plūdu flīze; pludi `nepilnigi` vai 504 = dzeltens (LVĢMC lēns).
+3. `src/testi/parbaude.py` (API fakti + demo ceļš 390×844 un 1280×800), ~2 min.
+4. `src/demo/ekrani.py` slaidu kadri, tikai ja 2. solis redzēja īstu plūdu atbildi, citādi izlaists.
+5. `src/demo/video.py` (tikai ar `--video`).
+6. Klasifikatora testi (`src/meklesana/testi.py`).
+7. VPS soļu saraksts no `TODO.md` (neatzīmētās "VPS…" rindas) un `notes/stavoklis.md`, kopējams blokos; nekas netiek palaists.
+
 Goal: win. That means four things in this order: **the pitch lands**, **the phone demo cannot fail**, **every judging criterion is visibly ticked**, **the map looks calm and professional**. Everything else is optional.
 
 Updated 2026-10-10 02:26. Almost everything is merged (`notes/stavoklis.md` has the list). Open: A traffic zones layer, B border feed + status rows, D real-phone matrix + backup video, E risk map.
