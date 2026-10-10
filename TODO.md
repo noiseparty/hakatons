@@ -20,7 +20,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Flood zones: server-side cached tile proxy for the LVĢMC WMS (upstream answers in 5–7 s per tile, first view takes 5–20 s) and warm Ogre/Jūrmala before the pitch — added 2026-10-10 01:50 +03:00 by noiseparty
-- [ ] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — added 2026-10-10 01:50 +03:00 by noiseparty
 - [ ] Result card: "next 24 h at your place" from the LVĢMC hourly place forecast (nearest of 6 427 places; via CKAN datastore_search_sql, not the 70 MB CSV) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
@@ -35,6 +34,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+- [ ] Zones: power-outage zones in `production/zonas.js` (needs an open outage data source first) — added 2026-10-10 04:39 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -64,6 +64,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — done 2026-10-10 04:39 +03:00 by noiseparty: road closures/restrictions as 500 m zones from `/api/celi` (closed = red hatch, restricted = orange, popup with road, reason, since/until, NAP card source); 10 % flood probability (WMS layers 2/3) as a darker blue shade inside the 1 % zone with its own legend row; power outages split off below (added 2026-10-10 01:50 +03:00 by noiseparty)
 - [x] Desktop: merge main into noiseparty/ui-desktop (sw.js VERSION 2026-10-10h-dv), layer legend shows marker shapes via `Ikonas.formaHTML()` (overlays keep colour dots), parbaude.py green locally (dators 17/17 OK) — done 2026-10-10 04:26 +03:00 by noiseparty (added 2026-10-10 04:26 +03:00 by noiseparty)
 - [x] Desktop UI (> 800 px) from the user's Stitch mock-up: light header + 112 bar with data freshness + closable warning strip, three columns (search/chips/national summary/result card · map with legend · "Situācija tagad" with LVĢMC warnings, rising gauges with sparkline, LVC restrictions, click → zoom), "Slāņu vadība" drawer, "Par datiem & AI", collapsible panels / full-width map, shared design tokens in stils.css — `production/darbvirsma.js/.css` — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — done 2026-10-10 04:24 +03:00 by noiseparty: LRU mask cache capped at 64 tiles (~17 MB); warning zones read the already simplified `bridinajumu_poligoni` from `/api/prognozes` (Latvia-wide polygon 42 573 → 325 vertices), fallback to `?poligoni=1`; green banner line centred like the details (added 2026-10-10 02:11 +03:00 by noiseparty)
