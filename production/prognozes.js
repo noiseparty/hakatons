@@ -2,7 +2,8 @@
 // Novadi kartē iekrāsoti pēc izvēlētās dienas prognozes (mūsu sliekšņi, NAV oficiāls brīdinājums); brīdinājumu
 // poligoni — raustīta līnija. Pieskaroties ziņai, karte pietuvina skartos novadus. Izmanto `karte` no app.js.
 // Riska karte (šodien / rīt): novadi pēc servera riska līmeņa 0–3 (/api/prognozes "riski": LVĢMC brīdinājumi,
-// brāzmas, nokrišņi, zibens, slideni ceļi) — slēdzis redzams arī aizvērtai lentei.
+// brāzmas, nokrišņi, zibens, slideni ceļi) — slēdzis redzams arī aizvērtai lentei. Ziņa "zibens" (oranža) — katram novadam
+// ar zibeni pēdējās 30 min (FMI, CC BY 4.0); serveris to atjauno ik minūti.
 const Prognozes = (() => {
   const KRASAS = { 0: '#bae6fd', 1: '#facc15', 2: '#f97316', 3: '#dc2626' };
   const LIMENI = { 0: 'ievērībai', 1: 'dzeltenais līmenis', 2: 'oranžais līmenis', 3: 'sarkanais līmenis' };
@@ -58,7 +59,7 @@ const Prognozes = (() => {
     const rd = riskaDiena(diena), risks = rd && dati.riski?.[f.id];
     const iemesli = risks ? risks.iemesli.filter(i => i.diena === rd) : [];
     const riskaHtml = risks ? `<span class="riska-limenis riska-${risks[rd]}">Risks ${esc(dn.toLowerCase())}: ${RISKA_NOS[risks[rd]]}</span>` +
-      (iemesli.length ? '<ul class="riska-iemesli">' + iemesli.map(i => `<li>${esc(i.teksts)}${i.klat ? ' (+1)' : ''} — ` +
+      (iemesli.length ? '<ul class="riska-iemesli">' + iemesli.map(i => `<li>${esc(i.teksts)}${i.klat ? ` (+${i.limenis})` : ''} — ` +
         `<a href="${esc(i.avots.url)}" target="_blank" rel="noopener">${esc(i.avots.nosaukums)}</a>, ${esc(i.avots.licence)}</li>`).join('') + '</ul>'
         : '<small>Brīdinājumu un sliekšņu pārsniegumu nav.</small><br>') : '';
     // logs nedrīkst palikt zem pogas / slēdža / leģendas kartes augšā
@@ -72,11 +73,11 @@ const Prognozes = (() => {
   }
 
   function zinasHtml() {
-    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums'].includes(z.veids) || z.datums === diena);
+    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums', 'zibens'].includes(z.veids) || z.datums === diena);
     if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
-      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
+      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'zibens' ? Ik('zibens') + ' Zibens tagad' + (z.vieta ? ' · ' + esc(z.vieta) : '') : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
       `<b>${esc(z.virsraksts)}</b><span class="prog-teksts">${esc(z.teksts)}</span>${avots(z.avots)}</li>`).join('') + '</ul>';
   }
 
@@ -96,7 +97,8 @@ const Prognozes = (() => {
     kaste.querySelector('.prog-saturs').innerHTML = zinasHtml() +
       (riskaDiena(diena)
         ? `<p class="piezime">Riska karte (šodien un rīt): augstākais no LVĢMC brīdinājuma krāsas, brāzmām (no 15 / 20 / 25 m/s) ` +
-          `un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC). ` +
+          `un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC); +1 par ledu LVĢMC brīdinājumā; ` +
+          `+1 / +2, ja upes līmenis paaugstināts / kritisks pret CA plāna slieksni (Ogre, Pļaviņas, Liepājas ezers). ` +
           `Sliekšņi ir mūsu heuristika, tas <b>nav oficiāls brīdinājums</b>. Pieskarieties novadam, lai redzētu iemeslus. `
         : `<p class="piezime">Krāsas kartē: dienas lielākās brāzmas, nokrišņi un temperatūra novadā pēc LVĢMC prognozes 6 427 vietām; ` +
           `sliekšņi ir mūsu (dzeltens ≈ brāzmas no 20 m/s vai nokrišņi no 15 mm), tas <b>nav oficiāls brīdinājums</b>. `) +

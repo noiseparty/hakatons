@@ -1,0 +1,46 @@
+{
+  "apraksts": "Ūdens līmeņa sliekšņi LVĢMC hidroloģiskajām stacijām, m LAS-2000,5 (tāpat kā limenis_m = posteņa nulle + LIMEN/100). LVĢMC bīstamības līmeņi (PRIS) nav atvērtie dati, tāpēc te ir tikai stacijas, kurām sliekšņus publiski min pašvaldības civilās aizsardzības plāns (oficiāls dokuments). slieksnis_m: sākas palienes applūšana (statuss 'paaugstināts'); kritiskais_m: applūst apdzīvota teritorija (statuss 'kritisks'). Ja slieksnis_m ir null, 'paaugstināts' sākas rezerve_m zem kritiskā: tas ir mūsu pieņēmums, nevis oficiāls slieksnis. Citām stacijām sliekšņa nav (statuss null).",
+  "rezerve_m": 0.5,
+  "stacijas": {
+    "HD073401": {
+      "nosaukums": "Ogre",
+      "vieta": "Ogre pie Ogres",
+      "slieksnis_m": null,
+      "kritiskais_m": 22.15,
+      "avots": {
+        "nosaukums": "Ogres novada sadarbības teritoriju civilās aizsardzības plāns (2023)",
+        "lpp": "29., 31.",
+        "url": "https://www.ogresnovads.lv/lv/media/127114/download?attachment",
+        "licence": "oficiāls dokuments",
+        "citats": "Ogres upes palienes applūšana sākas pie ūdens līmeņa atzīmes 22.15 m LAS (22.00 m BS), kas izraisa pilsētas applūšanu Norupītes apvidū."
+      }
+    },
+    "HD073904": {
+      "nosaukums": "Pļaviņas",
+      "vieta": "Daugava pie Pļaviņām",
+      "slieksnis_m": 73.04,
+      "kritiskais_m": 73.34,
+      "avots": {
+        "nosaukums": "Aizkraukles novada civilās aizsardzības plāns (2026)",
+        "lpp": "21.",
+        "url": "https://www.aizkraukle.lv/lv/media/69197/download?attachment",
+        "licence": "oficiāls dokuments",
+        "citats": "Daugavas palienes applūšana sākas pie ūdens līmeņa 73.04 m LAS (72.90 m BS) atzīmes, bet 73.34 m LAS (73.20 m BS) ir kritiskais ūdens līmenis, kas izraisa pilsētas applūšanu LVĢMC novērojumu stacijas apvidū."
+      }
+    },
+    "HD073991": {
+      "nosaukums": "Liepājas ezers",
+      "vieta": "Liepājas ezers",
+      "slieksnis_m": 0.67,
+      "kritiskais_m": 1.17,
+      "avots": {
+        "nosaukums": "Liepājas valstspilsētas un Dienvidkurzemes novada sadarbības teritorijas civilās aizsardzības plāns (2023)",
+        "lpp": "26.",
+        "url": "https://faili.liepaja.lv/CAP/Liepajas-DKN-ST-CAP_2023ATJ.pdf",
+        "licence": "oficiāls dokuments",
+        "citats": "Liepājas ezera palienes applūšana sākas pie ūdens līmeņa 0,67 m LAS (0,50 m BS), bet pie ūdens līmeņa atzīmes 1,17 m LAS sākas pilsētas applūšana.",
+        "piezime": "Tā paša plāna 90. lpp. ezera apkārtnei minēts 7.67 m LAS (7.50 m BS): acīmredzami cita atskaites sistēma vai pārrakstīšanās kļūda; lietojam 26. lpp. vērtības."
+      }
+    }
+  }
+}

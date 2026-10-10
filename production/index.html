@@ -21,7 +21,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Krīzes karte — map.repo.lv">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -30,7 +30,7 @@
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Krīzes karte — map.repo.lv">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
@@ -102,7 +102,7 @@
       <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#saraksts"></use></svg> Saraksts: ieslēgto slāņu objekti</button>
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
-        <span class="forma-vieta" data-forma="lase" data-krasa="#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 gados)</label>
+        <span class="forma-vieta" data-forma="lase" data-krasa="#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 un 10 gados)</label>
       <label class="kat parklajums"><input type="checkbox" id="zibens-slanis">
         <span class="forma-vieta" data-ikona="zibens"></span>Zibens (pēdējās 30 min)</label>
       <p id="zibens-teksts" class="piezime zibens-teksts" aria-live="polite" hidden></p>
@@ -118,13 +118,12 @@
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a> · <a href="api.html">Atvērtais API</a></p>
-        <p class="piezime trukst"><b>Ko vēl vajadzētu publicēt:</b> 25 datu kopas, kas krīzē vajadzīgas, bet nav atvērtas (patvertņu statuss, elektrības atslēgumi, evakuācijas vietas mašīnlasāmā formā…). <a href="trukstosie.html">Saraksts</a></p>
+        <p class="piezime trukst"><b>Ko vēl vajadzētu publicēt:</b> 30 datu kopas, kas krīzē vajadzīgas, bet nav atvērtas (patvertņu statuss, elektrības atslēgumi, evakuācijas vietas mašīnlasāmā formā…). <a href="trukstosie.html">Saraksts</a></p>
         <ul id="avoti-saraksts"></ul>
       </details>
     </section>
   </aside>
   <div id="kartes-laukums">
-    <div id="zinot-josla" class="zinot-josla" role="status" hidden>Pieskarieties kartei vietā, kur ir bīstamība. <button type="button" data-zinot="atcelt-izveli">Atcelt</button></div>
     <div id="karte" role="application" aria-label="Karte"></div>
     <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
       <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>

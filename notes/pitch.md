@@ -1,6 +1,6 @@
 # Pitch: "Ko Jums vajag?" — map.repo.lv (10 min)
 
-Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots: D's phone shots as WebP in `production/slaidi/` (40–78 KB each, from `C:\Users\ZX202\kodi\demo-video`); slide 11 "Trūkstošie dati" from `notes/missing_data.md`, full list at https://map.repo.lv/trukstosie.html). Updated 2026-10-10 night for everything merged up to #93; all of it is live. NAP keys are set (road events and traffic zones are real). Spoken in Latvian; slide text below is what goes on screen.
+Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots: D's phone shots as WebP in `production/slaidi/` (40–78 KB each, from `C:\Users\ZX202\kodi\demo-video`); slide 11 "Trūkstošie dati" from `notes/missing_data.md`, full list at https://map.repo.lv/trukstosie.html). Updated 2026-10-10 night for everything merged up to #120 (source and gap counts re-checked in `noiseparty/konsekvence`); all of it is live. NAP keys are set (road events and traffic zones are real). Spoken in Latvian; slide text below is what goes on screen.
 
 ## Numbers and which slide they belong to (`production/slaidi.html`)
 
@@ -12,8 +12,8 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | 3 soļi (vieta → vajadzība → rezultāts) | 5 | criterion 3 sentence |
 | 776 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
 | Meklētājs: **127 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
-| **25 atvērto datu avoti + 1 ⚠** (panelī 27 + 1, jo 2 ir mūsu simulētie prototipa dati, CC0, ar zīmi „SIMULĒTI”) | 10 | live "Datu avoti" panel, 2026-10-10 |
-| 25 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
+| **33 atvērto datu avoti + 2 ⚠** (112.lv patvertnes, banku bankomāti; LR1 frekvences skaitām kā oficiālus faktus); panelī vēl 2 mūsu simulētie prototipa dati ar zīmi „SIMULĒTI” (neskaitām) | 10 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 |
+| 30 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
 | Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
 | 7 vēstuļu melnraksti datu turētājiem (nesūtīti) | 13 | `notes/vestules.md` |
 
@@ -70,10 +70,11 @@ Main path (~2 min), scenario **Ogre, plūdi** (Ogres plāns ir pilnīgākais):
 2. **Vajadzība:** ierakstu "plūdi Mednieku iela 9 Ogre" (vai pieskaros "Biežāk meklētais" ieteikumam).
 3. **Rezultāts — viena kartīte:**
    - LVĢMC brīdinājums šai vietai (ja ir);
+   - rinda „Nākamās 24 h”: LVĢMC ikstundas prognoze tuvākajai vietai (temperatūra, nokrišņi, brāzmas) ar riska vārdu, piemēram, „vētra”, un norādi „Prognoze, nevis brīdinājums” (#120);
    - lēmums: adrese ir / nav plūdu riska zonā (LVĢMC kartes); zona kartē kā laukums ar robežu, pārklāšanās ar brīdinājuma apgabalu iesvītrota;
    - tuvākā upes stacija ar līmeni un 24 h izmaiņu; "Nokrišņi un augsne" rinda (Open-Meteo); ceļu notikumi 5 km rādiusā un satiksmes zona (LVC, reāllaikā);
    - tuvākā pulcēšanās vieta un pagaidu izmitināšana ar vietu skaitu un saiti uz CA plāna lappusi; patvertne; 24/7 slimnīca; maršruta saites;
-   - padoms scenārijam; "Kas notiks tālāk" (#54); pogas "Dalīties" (saite atver to pašu rezultātu) un "Drukāt" (kartīte ar QR kodu).
+   - padoms scenārijam, pārbaudīts pret VUGD un Aizsardzības ministrijas bukletu „Kā rīkoties krīzes gadījumā” (24 no 127 padomiem pārrakstīti), ar saiti „Avots: VUGD” zem padoma (#117); rinda „Radio krīzē” ar tuvākā LR1 raidītāja frekvenci (#116); "Kas notiks tālāk" (#54); pogas "Dalīties" (saite atver to pašu rezultātu) un "Drukāt" (kartīte ar QR kodu).
 
 Second, 20 s: free text "cilvēks nav pie samaņas" → kartītes augšā sarkana rinda "zvaniet 112". **No buttons, no tel: links** (team decision) — say: "mēs nerādām pogu, mēs pasakām skaidri".
 
@@ -92,7 +93,15 @@ Pick 2 of the 7 for the 30 s; the others for questions: `vejs` (dzeltenais, vēj
 
 Fourth, 10 s: map.repo.lv/statuss.html — "katram avotam redzams, vai tas šobrīd darbojas un cik veci ir dati" (criterion 4: no dead ends, honest about outages; row "Datu vecums").
 
-Only if asked, the other things that are live: slāņi **satiksmes zonas** (LVC minūtes ātrumi pa novadiem), **zibens** (FMI, 30 min), **laikapstākļi tagad** (LVĢMC stacijas), **riska karte šodien/rīt** (prognoze + brīdinājumi), **ceļu notikumi**, **noturības punktu kandidāti** (OSM, statuss „nav zināms”); **"Ziņot par bīstamību"** (iedzīvotāju ziņojumi, moderēti); **bezsaistes režīms** un „pievienot sākuma ekrānam”; **balss ievade**; **maršruts, kas apiet slēgtu zonu**; **info.html** (112, sirēnas, LV-ALERT, LR1 frekvences, 72 h); "▶ Atskaņot" (`?demo=atskanot`) as the hands-free backup. API documentation is being written by terminal B.
+Only if asked, the other things that are live: slāņi **satiksmes zonas** (LVC minūtes ātrumi pa novadiem), **zibens** (FMI, 30 min), **laikapstākļi tagad** (LVĢMC stacijas), **riska karte šodien/rīt** (prognoze + brīdinājumi), **ceļu notikumi**, **noturības punktu kandidāti** (OSM, statuss „nav zināms”); **"Ziņot par bīstamību"** (iedzīvotāju ziņojumi, moderēti); **bezsaistes režīms** un „pievienot sākuma ekrānam”; **balss ievade**; **maršruts, kas apiet slēgtu zonu**; **info.html** (112, sirēnas, LV-ALERT, 72 h; LR1 radio karte ar 16 oficiālajiem raidītājiem, frekvences pārbaudītas ar „Elektronisko sakaru” sarakstu); "▶ Atskaņot" (`?demo=atskanot`) as the hands-free backup; API documentation: map.repo.lv/api.html.
+
+New tonight (#108–#120), one sentence each if asked:
+- **Četri jauni OSM slāņi:** īsti dzeramā ūdens punkti (456), bezmaksas Wi-Fi (155), elektroauto uzlāde (392) un veterinārās klīnikas (113), katrs ar avotu un ODbL licenci (#118).
+- **Patvertņu statuss:** patvertnēm, pulcēšanās un izmitināšanas vietām viens statusa bloks — siltums, uzlāde, ūdens, Wi-Fi, ģenerators rāda „nav zināms”, ja nav svaigu datu (≤ 6 h), un ietilpība, ratiņkrēsls, dzīvnieki — „nav norādīts”; mēs neizdomājam, ka vieta ir atvērta (#115).
+- **Poga „Notīrīt”:** viens pieskāriens notīra meklēšanu, kartīti, saiti un visus filtrus, karte paliek savā vietā (#115).
+- **Karte ielādē tikai redzamo:** objekti pēc kartes skata, nevis visa Latvija uzreiz — pirmā ielāde 958 KB → 104 KB (#114).
+- **Datora skats:** no 800 px platuma trīs kolonnas — „Situācija tagad”, karte un slāņu atvilktne ar leģendu (#113); telefonā apakšējā lapa ar vilkšanu un cilnēm (#119).
+- **Banku bankomāti:** 845 bankomāti, 111 kritiskie (skaidra nauda arī krīzē), ar ⚠, jo saraksta licence nav norādīta (#110).
 
 Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the slides.
 
@@ -108,21 +117,22 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 
 ## 7:15–8:30 · 7. Atvērtie dati
 
-**Slide (criterion 5, one line on top):** "25 atvērto datu avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Viens izņēmums atklāti atzīmēts ⚠."
+**Slide (criterion 5, one line on top):** "33 atvērto datu avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL, oficiāls dokuments vai oficiāli fakti (Autortiesību likuma 6. p.). Divi izņēmumi atklāti atzīmēti ⚠."
 
 Grid, each with licence:
 - **VZD** adrešu reģistrs (CC BY 4.0) · **42 pašvaldību CA plāni** (oficiāls dokuments) · **VM** 24/7 slimnīcas (oficiāls dokuments)
 - **IeM IC** ārstniecības iestādes, VP iecirkņi, pašvaldības policija, VUGD depo (CC0) · **ZVA** aptiekas (CC0)
-- **LVĢMC** ūdens līmenis, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām, meteoroloģiskie novērojumi (CC0) · zibens režģis (CC0)
+- **LVĢMC** ūdens līmenis, hidroloģiskās prognozes, brīdinājumi, plūdu riska kartes, prognozes apdzīvotām vietām (dienas un ikstundas — viena datu kopa), meteoroloģiskie novērojumi, zibens režģis (CC0) — 7
 - **FMI** zibens, pēdējās 30 min (CC BY 4.0) · **Open-Meteo** nokrišņi un augsne (CC BY 4.0) · **LVC** ceļu notikumi un satiksme caur NAP (CC0)
-- **VKCP IĢIS** ūdens ņemšanas vietas (CC0) · **GTFS** Rīgas satiksme, ATD autobusi, VIVI vilcieni (CC0)
-- **OpenStreetMap** bankomāti un DUS (ODbL) · **OpenStreetMap** noturības punktu kandidāti (ODbL) · **OpenStreetMap** karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA)
-- ⚠ VUGD/112.lv patvertnes (781) — licence nav norādīta
+- **VKCP IĢIS** ūdens ņemšanas vietas (CC0) · **GTFS** Rīgas satiksme, ATD autobusi, VIVI vilcieni (CC0) — 3
+- **UR** publisko personu un iestāžu saraksts — pašvaldību kontakti (CC0) · **VPVKAC** kontaktpunkti (CC0)
+- **OpenStreetMap** (ODbL), 6 slāņi: bankomāti un DUS, noturības punktu kandidāti, dzeramais ūdens, bezmaksas Wi-Fi, elektroauto uzlāde, veterinārās klīnikas · **OpenStreetMap** karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA) · **Latvijas Radio** LR1 frekvences, 16 raidītāji (oficiāli fakti (LR / SPRK), nav autortiesību objekts: sabiedriskā raidītāja un regulatora (esakari.lv) saraksta fakti, ne darbs)
+- ⚠ VUGD/112.lv patvertnes (781) · ⚠ banku bankomātu saraksts (845, Finance Latvia) — licence nav norādīta
 - (extra, demo only, not in the count) **LĢIA** 20 m augstuma modelis (CC BY 4.0), demo scenārijā "Plūdi Ogrē"
 
-Count: **25 open + 1 ⚠**. The live "Datu avoti" panel says "27 atvērto datu avoti un 1 bez atvērtas licences": the extra 2 rows are our **simulated** prototype sets (water and charging points, CC0, marked "SIMULĒTI DATI — prototips"). Say 25 and, if a judge opens the panel, explain the 2 simulated rows. LĢIA DEM is demo-only and not counted. Slide version: `production/slaidi.html` slide 10.
+Count (authoritative, 2026-10-10, LR1 reclassified as official facts): **33 open + 2 ⚠**. Sum of the grid: VZD 1 + CA plāni 1 + VM 1 + IeM IC 4 + ZVA 1 + LVĢMC 7 + FMI 1 + Open-Meteo 1 + LVC/NAP 1 (one publisher feed: events, traffic, border wait, slippery roads) + VKCP 1 + GTFS 3 + UR 1 + VPVKAC 1 + OSM 6 + OSM karšu fons 1 + OpenTopoMap 1 + LR1 frekvences 1 = 33. One count = one row in the "Datu avoti" panel (`shema.sql` avoti + `avoti.js` TIESSAISTE); the panel counts the same way and lists the 2 **simulated** prototype sets (water and charging points, marked "SIMULĒTI DATI — prototips") separately, not in the 33. Not counted: LĢIA DEM (demo only), the OSRM route service (OSM data), our own residents' reports (CC BY 4.0). Until the VPS applies `shema.sql` from #110/#118 the live panel shows fewer rows (osm-udens, osm-wifi, osm-ev, osm-vet, bankas-atm missing). Slide version: `production/slaidi.html` slide 10.
 
-**Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
+**Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes, banku bankomāti), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
 
 ## 8:30–9:30 · 8. Kas tālāk / ietekme
 
@@ -164,6 +174,6 @@ Count: **25 open + 1 ⚠**. The live "Datu avoti" panel says "27 atvērto datu a
 - **"Kas notiek, ja LVĢMC (vai cits avots) nedarbojas?"** API rāda pēdējo zināmo vērtību un atjauno fonā (stale-while-revalidate); ja avots nedarbojas, kartīte to pasaka, nevis klusē. map.repo.lv/statuss.html rāda katra avota stāvokli ik 15 min un datu vecumu.
 - **"Ziņojumu un meklējumu privātums?"** Ziņojumiem neglabājam IP; vieta glabāta ~100 m, publiski ~1 km; teksti ar saitēm un rupjībām netiek pieņemti; moderators var paslēpt. Meklējumus skaitām tikai bez cipariem un adresēm, bez IP.
 - **"Patvertņu licence?"** 112.lv sarakstam licence nav norādīta — kartē tas ir atzīmēts ⚠, un VUGD vēstulē lūdzam to publicēt data.gov.lv ar CC0 un ietilpību, pieejamību, dzīvniekiem un statusu.
-- **"Vai izturēs slodzi?"** Savienojumu rinda 5 → 128, kešs bez gaidīšanas: lokālā slodzes testā ar 50 klientiem p95 1,1 s (bija 12,4 s) un 0 savienojuma kļūdu (`notes/slodze.md`). Statiskā lapa ir bez būves soļa.
+- **"Vai izturēs slodzi?"** Savienojumu rinda 5 → 128, kešs bez gaidīšanas: lokālā slodzes testā ar 50 klientiem p95 1,1 s (bija 12,4 s) un 0 savienojuma kļūdu (`notes/slodze.md`). Statiskā lapa ir bez būves soļa. Karte ielādē tikai redzamo apgabalu: 958 KB → 104 KB, tas ir svarīgi lēnā mobilajā tīklā (#114).
 - **"Kas ir simulēts?"** Tikai demo scenāriji (zīme „SIMULĀCIJA”) un divi CSV slāņi — dzeramā ūdens un uzlādes punkti (zīme „SIMULĒTI DATI — prototips”). Viss pārējais ir dzīvi atvērtie dati.
 - **"Rīgas sabiedriskais transports?"** Atvērts ir tikai statiskais GTFS (CC0) — to rādām kā pieturas. Reāllaika atvērtu datu nav; lūgums Rīgas satiksmei par GTFS-Realtime ar CC0 ir sagatavots (`notes/vestules.md`).

@@ -4,7 +4,8 @@ Avots: LVĢMC "Hidrometeoroloģiskie novērojumi", data.gov.lv, CC0 1.0:
   hidro_stacijas.csv          stacijas (GEOGR1 = lon, GEOGR2 = lat, ELEVATION = posteņa "0", m LAS-2000,5)
   hidro_operativie_dati.csv   pēdējās 48 h, katru stundu; LIMEN = ūdens līmenis cm virs posteņa "0",
                               WTEMD = ūdens temperatūra °C. Laiks UTC, vērtība par stundu pirms tā.
-Bīstamības līmeņi (PRIS) nav atvērtie dati, tāpēc te netiek lietoti.
+Bīstamības līmeņi (PRIS) nav atvērtie dati; to vietā udens_slieksni.json — sliekšņi no pašvaldību CA plāniem
+(ar lappusi), ko /api/udens un riska karte (/api/prognozes) pārvērš statusā normāls / paaugstināts / kritisks.
 
 Palaišana (VPS, katru stundu — udens_limenis.sh, hakatons-udens.timer):
   python3 src/karte/db/udens_limenis.py /tmp/udens_limenis.geojson
@@ -13,6 +14,7 @@ Palaišana (VPS, katru stundu — udens_limenis.sh, hakatons-udens.timer):
 import csv
 import io
 import json
+import os
 import sys
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -69,6 +71,60 @@ def stacijas(timeout=60):
             },
         })
     return features
+
+
+# ---- Sliekšņi (udens_slieksni.json): stacija → paaugstināts / kritisks līmenis, m LAS, ar avotu (CA plāns, lpp.) ----
+SLIEKSNI_FAILS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "udens_slieksni.json")
+STATUSI = ("normāls", "paaugstināts", "kritisks")
+_slieksni = {"mtime": None, "dati": {}, "rezerve_m": 0.5}
+
+
+def slieksni():
+    """stacija → {slieksnis_m, kritiskais_m, vieta, avots, slieksnis_pienemts}. Fails nolasīts no jauna, ja mainīts;
+    bojāts vai trūkstošs fails → pēdējie labie dati (sākumā tukši), nevis kļūda."""
+    try:
+        mtime = os.stat(SLIEKSNI_FAILS).st_mtime
+        if mtime != _slieksni["mtime"]:
+            with open(SLIEKSNI_FAILS, encoding="utf-8") as f:
+                faila = json.load(f)
+            rezerve = float(faila.get("rezerve_m") or 0.5)
+            dati = {}
+            for sid, s in (faila.get("stacijas") or {}).items():
+                kritiskais = s.get("kritiskais_m")
+                if not isinstance(kritiskais, (int, float)):
+                    continue
+                slieksnis = s.get("slieksnis_m")
+                pienemts = not isinstance(slieksnis, (int, float))
+                dati[sid] = {**s, "kritiskais_m": float(kritiskais),
+                             "slieksnis_m": round(kritiskais - rezerve, 2) if pienemts else float(slieksnis),
+                             "slieksnis_pienemts": pienemts}
+            _slieksni.update(mtime=mtime, dati=dati, rezerve_m=rezerve)
+    except (OSError, ValueError, TypeError, AttributeError):
+        pass
+    return _slieksni["dati"]
+
+
+def statuss(limenis_m, s):
+    """'normāls' / 'paaugstināts' / 'kritisks' vai None (nav sliekšņa vai līmeņa m)."""
+    if limenis_m is None or not s:
+        return None
+    if limenis_m >= s["kritiskais_m"]:
+        return "kritisks"
+    return "paaugstināts" if limenis_m >= s["slieksnis_m"] else "normāls"
+
+
+def ar_slieksni(p):
+    """Lauki, ko pievieno stacijas īpašībām p (stacija, limenis_m): slieksnis, kritiskais, statuss, avots."""
+    s = slieksni().get(p.get("stacija"))
+    if not s:
+        return {"slieksnis": None, "kritiskais": None, "statuss": None}
+    lim = p.get("limenis_m")
+    return {
+        "slieksnis": s["slieksnis_m"], "kritiskais": s["kritiskais_m"], "statuss": statuss(lim, s),
+        "lidz_kritiskajam_m": round(s["kritiskais_m"] - lim, 2) if lim is not None else None,
+        "slieksnis_pienemts": s["slieksnis_pienemts"], "vieta": s.get("vieta") or p.get("nosaukums"),
+        "sliekshna_avots": s.get("avots"),
+    }
 
 
 def main(izeja):

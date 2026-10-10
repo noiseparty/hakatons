@@ -38,7 +38,7 @@
         <span class="pill ${st}"><span aria-hidden="true">${IKONAS[st]}</span> ${VARDI[st]}</span>
       </div>
       ${k.zinojums ? `<p class="zinojums">${esc(k.zinojums)}</p>` : ''}
-      ${avotaRinda}${laiks}
+      ${avotaRinda}${k.rezerves ? `<p class="avots">Rezerves avots: ${saite(k.rezerves.url, 'Meteoalarm')} (EUMETNET) — brīdinājumu joslā tagad rāda LVĢMC brīdinājumus caur Meteoalarm</p>` : ''}${laiks}
       <div class="josla" role="img" aria-label="Pēdējās 24 stundas: ${ok} no ${joslas.length} intervāliem darbojās">${segm}</div>
       <div class="josla-uzraksti"><span>pirms 24 h</span><b>7 dienās: ${proc(k.pieejamiba_7d)}</b><span>tagad</span></div>
       <p class="detala" aria-live="polite"></p>

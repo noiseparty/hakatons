@@ -196,6 +196,8 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .rez-saraksts .ca-avots { color: #57534e; }
 .rez-saraksts li.tuksa { cursor: default; }
 .rez-saraksts .tala { color: #92400e; }
+.izlaists { display: block; margin: .1rem 0 .3rem; color: #92400e; font-size: .8rem; }
+.rez-saraksts small.izlaists { color: #92400e; }
 .fakti { list-style: none; margin: .5rem 0; padding: 0; }
 .fakti li { display: flex; gap: .6rem; padding: .45rem 0; border-bottom: 1px solid #f0f0f0; font-size: .88rem; }
 .fakti .ikona { font-size: 1.2rem; width: 1.6rem; flex: none; text-align: center; }
@@ -205,6 +207,15 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .avots-rinda a { color: inherit; }
 strong.jā { color: var(--sarkans); }
 strong.nē { color: #287a41; }
+/* Upes līmenis pret CA plāna slieksni (meklesana.js statusaRinda / pluduSecinajums) */
+.udens-statuss { border-left: 4px solid; padding: .15rem .45rem; margin: .1rem 0 .2rem; border-radius: 0 var(--radiuss-maza) var(--radiuss-maza) 0; }
+.udens-statuss.udens-normals { border-color: #287a41; background: #edf7f0; color: #1d5c30; }
+.udens-statuss.udens-paaugstinats { border-color: var(--brid-oranzs-mala); background: var(--brid-oranzs-fons); color: var(--brid-oranzs-teksts); }
+.udens-statuss.udens-kritisks { border-color: var(--brid-sarkans-mala); background: var(--brid-sarkans-fons); color: var(--brid-sarkans-teksts); }
+.fakti li.udens-secinajums { border-radius: var(--radiuss-maza); padding: .45rem; border-bottom: 0; margin-bottom: .2rem; }
+.fakti li.udens-secinajums.udens-paaugstinats { background: var(--brid-oranzs-fons); color: var(--brid-oranzs-teksts); }
+.fakti li.udens-secinajums.udens-kritisks { background: var(--brid-sarkans-fons); color: var(--brid-sarkans-teksts); }
+.udens-zonas-poga { align-self: flex-start; min-height: 44px; }
 
 @media (max-width: 800px) {
   /* Telefonā statuss netiek saīsināts */
@@ -499,24 +510,44 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 @media (max-width: 400px) {
   .leaflet-bottom.leaflet-left .zonu-legenda { margin-bottom: 56px; }
 }
-/* ==== Ziņot (zinot.js): iedzīvotāju ziņojumi; dialogs izmanto .saraksts-dialogs ==== */
-.zinot-poga { margin-top: .5rem; }
-.zinot-forma { padding: .6rem .85rem .85rem; }
-.zinot-forma fieldset { border: 0; margin: 0; padding: 0; }
-.zinot-forma legend, .zinot-etikete { display: block; font-weight: 600; margin: .6rem 0 .3rem; }
-.zinot-tipi { display: grid; gap: .35rem; }
-.zinot-tipi label { display: flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); cursor: pointer; }
-.zinot-tipi label:has(input:checked) { border-color: var(--zils); background: var(--zils-gaiss); }
-.zinot-tipi input { width: 1.1rem; height: 1.1rem; margin: 0; }
-.zinot-forma textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
-.zinot-vieta, .zinot-pogas { display: flex; gap: .5rem; flex-wrap: wrap; }
-.zinot-vieta button, .zinot-pogas button { flex: 1 1 10rem; min-height: 44px; width: auto; margin: 0; }
-.zinot-kopsavilkums { margin: .4rem 0; }
-.zinot-kopsavilkums dt { font-weight: 600; color: var(--teksts2); font-size: .85rem; margin-top: .4rem; }
-.zinot-kopsavilkums dd { margin: 0; }
-.zinot-josla { position: absolute; z-index: 1001; top: 8px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 16px); padding: .5rem .75rem; border-radius: var(--radiuss); background: #1f2933; color: #fff; font-size: .9rem; box-shadow: var(--ena); }
-.zinot-josla button { width: auto; margin-left: .5rem; padding: .3rem .6rem; min-height: 36px; }
-.zinot-izvele { cursor: crosshair; }
+/* ==== Ziņot (zinot.js): 5 soļu panelis — telefonā apakšā virs tastatūras, datorā kreisajā malā; karte paliek pieskarama ==== */
+.zinot-panelis { position: fixed; z-index: 1300; left: 0; right: 0; bottom: var(--zinot-kb, 0px); display: flex; flex-direction: column; padding: 0; box-sizing: border-box;
+  max-height: min(70dvh, calc(var(--zinot-vh, 100dvh) - 56px)); background: var(--virsma); color: var(--teksts);
+  border-radius: 14px 14px 0 0; box-shadow: 0 -6px 24px rgba(16, 27, 38, .22); }
+.zinot-panelis[hidden] { display: none; }
+.zinot-panelis[data-solis="2"] { max-height: min(46dvh, calc(var(--zinot-vh, 100dvh) - 56px)); }
+.zinot-galva { display: flex; align-items: center; justify-content: space-between; gap: .5rem; padding: .5rem .5rem .4rem .9rem; border-bottom: 1px solid var(--robeza); }
+.zinot-galva h2 { margin: 0; font-size: 1.05rem; outline: none; }
+.zinot-solis { margin: 0; font-size: .75rem; font-weight: 600; color: var(--teksts2); letter-spacing: .02em; }
+.zinot-aizvert { width: 44px; height: 44px; flex: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
+.zinot-saturs { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: .5rem .9rem; }
+.zinot-saturs > :first-child { margin-top: 0; }
+.zinot-kaja { display: flex; gap: .5rem; flex-wrap: wrap; padding: .5rem .9rem calc(.6rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--robeza); }
+.zinot-kaja:empty { display: none; }
+.zinot-kaja button { flex: 1 1 8rem; min-height: 44px; width: auto; margin: 0; }
+.zinot-tipi { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: .4rem; }
+.zinot-tipi button { display: flex; align-items: center; gap: .5rem; min-height: 48px; text-align: left; font-weight: 600; }
+.zinot-tipi button .ik { width: 22px; height: 22px; }
+.zinot-tipi [data-tips="elektriba"] .ik, .zinot-tipi [data-tips="udens"] .ik { transform: scale(1.8); }  /* Meteocons ikonām viewBox ar lielu atstarpi */
+.zinot-tipi button[aria-pressed="true"] { border-color: var(--zils); background: var(--zils-gaiss); box-shadow: inset 0 0 0 1px var(--zils); }
+.zinot-etikete { display: block; font-weight: 600; margin: .4rem 0 .3rem; }
+.zinot-saturs input[type=text] { width: 100%; box-sizing: border-box; min-height: 44px; font: inherit; font-size: 16px; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
+.zinot-vieta-teksts { margin: 0 0 .3rem; }
+.zinot-vieta-teksts small { color: var(--teksts2); }
+.zinot-kopsavilkums { margin: 0; }
+.zinot-kopsavilkums > div { display: grid; grid-template-columns: 1fr auto; gap: 0 .5rem; align-items: start; padding: .45rem 0; border-bottom: 1px solid var(--robeza); }
+.zinot-kopsavilkums dt { grid-column: 1; font-weight: 600; color: var(--teksts2); font-size: .8rem; }
+.zinot-kopsavilkums dd { grid-column: 1; margin: 0; }
+.zinot-kopsavilkums dd .zinot-vieta-teksts { margin: 0; }
+.zinot-labot { grid-column: 2; grid-row: 1 / span 2; width: auto; min-height: 44px; padding: 0 .7rem; color: var(--zils); border-color: transparent; background: none; font-weight: 600; text-decoration: underline; }
+.zinot-datu-piezime { margin-top: .6rem; padding: .5rem .7rem; font-size: .85rem; background: var(--fons); border-radius: var(--radiuss); }
+.zinot-datu-piezime ul, .zinot-talak { margin: .3rem 0 0; padding-left: 1.1rem; }
+.zinot-rezultats { font-size: 1.05rem; margin: 0 0 .3rem; }
+.zinot-rezultats .ik { color: var(--zals); }
+@media (min-width: 801px) {
+  .zinot-panelis { right: auto; top: 64px; bottom: 0; width: 396px; max-height: none; border-radius: 0; box-shadow: 4px 0 16px rgba(16, 27, 38, .14); border-right: 1px solid var(--robeza); }
+  .zinot-panelis[data-solis="2"] { max-height: none; }
+}
 .zinojums-popup p { margin: .3rem 0; }
 .zinojums-popup small { display: block; }
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
@@ -540,6 +571,20 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
 .demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
 .demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
+
+/* Pirmais skats (meklesana.js pirmaisSkats): ko rakstīt, 3 piemēri, kas uzreiz meklē, un rinda par datiem.
+   Datorā kreisajā kolonnā līdz pirmajai meklēšanai; telefonā lapas tukšais stāvoklis, kamēr nav rezultāta. */
+.pirmais-skats { display: flex; flex-direction: column; gap: 8px; }
+.pirmais-skats p { margin: 0; }
+.ps-ievads { font-size: .9rem; font-weight: 600; color: var(--teksts-galv); }
+.ps-cipi { display: flex; flex-wrap: wrap; gap: 6px; }
+.ps-cips { display: inline-flex; align-items: center; gap: 6px; width: auto; min-height: 44px; padding: 0 12px; font-size: .9rem; font-weight: 500;
+  color: var(--teksts-galv); background: #fff; border: 1px solid var(--pelks-3); border-radius: 999px; text-align: left; }
+.ps-cips:hover, .ps-cips:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); }
+.ps-cips .ik { width: 18px; height: 18px; color: var(--tumsi-zils); }
+.ps-dati { display: flex; gap: 6px; font-size: .8rem; line-height: 1.4; color: var(--teksts-blavs); }
+.ps-dati .ik { margin-top: .1em; }
+body.ir-meklets .dv-pirmais { display: none; }
 .tuvuma-izvele { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
 .tuvuma-izvele button { display: flex; align-items: center; gap: .45rem; min-height: 44px; text-align: left; }
 .tuvuma-izvele button svg.forma { width: 20px; height: 20px; flex: none; }
@@ -660,6 +705,13 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   .apaksa-meklet .runat { position: absolute; right: 46px; top: 1px; width: 44px; min-height: 44px; height: 44px; margin: 0; padding: 0; border: 0; background: none; font-size: 1.1rem; }
   .apaksa-meklet .runat[hidden] { display: none; }
   .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))) input { padding-right: 52px; }
+  /* "Notīrīt" (✕) lauka iekšpusē pa kreisi no mikrofona/meklēšanas pogas (citādi meklēšanas poga to aizsedz) */
+  .apaksa-meklet .meklet-rinda .notirit-poga { position: absolute; right: 90px; top: 1px; z-index: 1; width: 44px; min-width: 44px; height: 44px; min-height: 44px;
+    margin: 0; padding: 0; justify-content: center; border: 0; background: none; }
+  .apaksa-meklet .meklet-rinda .notirit-teksts { display: none; }
+  .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))) .notirit-poga { right: 46px; }
+  .apaksa-meklet .meklet-rinda:has(.notirit-poga:not([hidden])) input { padding-right: 140px; }
+  .apaksa-meklet .meklet-rinda:not(:has(.runat:not([hidden]))):has(.notirit-poga:not([hidden])) input { padding-right: 96px; }
 
   /* Tēmas: horizontāli ritināma josla; redzamā pilule mazāka, mērķis 44 px */
   .lapa-temas { display: flex; gap: 0; margin: 0 -4px; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
@@ -693,6 +745,11 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   .lapa-cilne { padding-top: .1rem; }
   .lapa-tukss { margin: .5rem 0; font-size: .88rem; color: var(--teksts-blavs); }
   #lapa-rezultats:has(#rezultati:not([hidden])) .lapa-tukss { display: none; }
+  .apaksa-saturs > .pirmais-skats { margin: 6px 0 2px; gap: 6px; }
+  .apaksa-saturs > .pirmais-skats .ps-ievads { font-size: .82rem; font-weight: 500; color: var(--teksts-blavs); }
+  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 40px; font-size: .85rem; }
+  .apaksa-saturs > .pirmais-skats .ps-dati { display: none; }  /* telefonā vieta lēmumam; avoti ir katrā rezultāta rindā */
+  .apaksa-saturs:has(#rezultati:not([hidden])) > .pirmais-skats { display: none; }
   #lapa-slani #panelis { display: flex !important; flex-direction: column; width: auto; padding: 0; gap: 8px; overflow: visible; }
   #lapa-slani #panelis > section { box-shadow: none; border: 1px solid var(--pelks-3); }
   #lapa-slani #statuss { display: inline-block; margin: 0 0 .5rem; padding: .2rem .65rem; border-radius: 999px; background: var(--pelks-2); color: var(--teksts-blavs); font-size: .8rem; }

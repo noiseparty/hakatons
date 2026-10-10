@@ -8,6 +8,9 @@ StartLimitIntervalSec=0
 [Service]
 User=deploy
 EnvironmentFile=/etc/hakatons/map.env
+# plūdu WMS flīžu diska kešs (/api/pludi/flize); "-" — ja mapes nav, API strādā ar pagaidu mapi (PrivateTmp)
+Environment=HAKATONS_DATI=/var/lib/hakatons/dati
+ReadWritePaths=-/var/lib/hakatons/dati/flizes
 ExecStart=/usr/bin/python3 /srv/hakatons/src/karte/api/karte_api.py 8920
 Restart=always
 RestartSec=3

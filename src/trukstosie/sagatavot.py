@@ -16,9 +16,13 @@ IZLAIST_SADALAS = ("Ko sakām pitčā",)
 IZLAIST_RINDKOPAS = ("Īsā versija slaidam",)
 
 
+# ⚠ → ikonu sprainta brīdinājuma zīme (kā visā lapā, #108): emocijzīmes telefonos izskatās dažādi
+UZMANIBU = '<svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg>'
+
+
 def iekļauts(teksts):
-    """Markdown rindiņa → HTML: **treknraksts**, `kods`; viss pārējais aizsargāts."""
-    t = html.escape(teksts, quote=False)
+    """Markdown rindiņa → HTML: **treknraksts**, `kods`, ⚠ → ikona; viss pārējais aizsargāts."""
+    t = html.escape(teksts, quote=False).replace("⚠️", "⚠").replace("⚠", UZMANIBU)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     return re.sub(r"`(.+?)`", r"<code>\1</code>", t)
 
@@ -92,14 +96,14 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
 <title>Ko vēl vajadzētu publicēt · Krīzes karte</title>
-<meta name="description" content="25 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
+<meta name="description" content="30 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
 <link rel="stylesheet" href="statuss.css">
 <link rel="stylesheet" href="info.css">
 <link rel="canonical" href="https://map.repo.lv/trukstosie.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/trukstosie.html">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -108,7 +112,7 @@ def main():
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 25 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
