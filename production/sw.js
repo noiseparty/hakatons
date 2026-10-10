@@ -14,15 +14,12 @@ const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
   'avoti.js', 'klasifikators.js', 'app.js', 'zonas.js', 'meklesana.js', 'runa.js', 'apaksa.js', 'saraksts.js',
   'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json',
-  'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js',
+  'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
+  'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
   'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
   'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json',
 ];
-const CDN_FAILI = [
-  'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css', 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css',
-  'https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js',
-];
+const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
 const FLIZU_MAX = 2500;
 const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes|augsne|statuss|meklejumi)/;

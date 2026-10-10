@@ -147,7 +147,7 @@
       "kods": "pazudis_lauku", "nr": 3, "grupa": "A", "nosaukums": "Apmaldījies ārpus apdzīvotām vietām",
       "kategorijas": [], "zvanit112": true, "talak": "pazudis",
       "padoms": "Palieciet uz vietas un zvaniet 112. Ja nav zonas, mēģiniet uzkāpt augstāk. Taupiet bateriju, turieties siltumā.",
-      "atslegvardi": ["apmald", "nomald", "laukos", "purv", "vientul", "заблуд", "болот", "swamp", "lost$", "pazudis ārpus", "ārpus apdzīvot", "tālu no cilvēk",
+      "atslegvardi": ["nomald", "apmald", "laukos", "purv", "vientul", "заблуд", "болот", "swamp", "lost$", "pazudis ārpus", "ārpus apdzīvot", "tālu no cilvēk",
         "tīrum", "pļav", "laukā apmald", "neviena cilvēk", "nekur nav māj", "nomaļ", "viensēt", "потерялся в пол",
         "глуш", "никого вокруг", "middle of nowhere", "countryside", "marsh", "bog$",
         "nezinu kur esmu", "nezinu kur atrodos"
@@ -171,7 +171,7 @@
       "kods": "pazudis_vecs", "nr": 5, "grupa": "A", "nosaukums": "Pazudis gados vecs cilvēks",
       "kategorijas": ["policija"], "zvanit112": true, "talak": "pazudis",
       "padoms": "Zvaniet 112 uzreiz. Sagatavojiet fotogrāfiju, apģērba aprakstu un vietas, kur viņš varētu doties. Pārbaudiet tuvākās pieturas un ierastās vietas.",
-      "atslegvardi": ["pazud", "nav atgriez", "neatgriež", "demenc", "vecs cilvēk", "vecmāmiņa pazud", "vectēvs pazud", "pazudusi vecmām", "pazudis vectēv",
+      "atslegvardi": ["nav atgriez", "pazud", "neatgriež", "demenc", "vecs cilvēk", "vecmāmiņa pazud", "vectēvs pazud", "pazudusi vecmām", "pazudis vectēv",
         "пропал", "бабушк", "дедушк", "деменц", "grandma", "grandpa", "dementia", "elderly",
         "vecāka gadagājuma", "pensionār", "omīt", "opīt", "alcheimer", "aizmāršīg", "klīst", "пожил", "пенсионер",
         "альцгейм", "старик", "старушк", "alzheimer", "senior", "wandered off", "old man", "old woman"
@@ -181,7 +181,7 @@
       "kods": "apmaldijies_sniega", "nr": 6, "grupa": "A", "nosaukums": "Apmaldījies sniegā",
       "kategorijas": [], "zvanit112": true, "talak": "pazudis",
       "padoms": "Zvaniet 112. Patvērieties no vēja, nesēdiet uz sniega, kustieties, lai nesaltu. Palieciet uz vietas, ja nezināt virzienu.",
-      "atslegvardi": ["apmald", "nomald", "sniegā$", "putenī", "puteni", "aizput", "pēdas aizput", "метел", "снег", "snow", "blizzard", "lost$",
+      "atslegvardi": ["sniegā$", "apmald", "nomald", "putenī", "puteni", "aizput", "pēdas aizput", "метел", "снег", "snow", "blizzard", "lost$",
         "sniegā apmald", "sniegā nomald", "ziemā apmald", "pa sniegu", "sniegs līdz cel", "slēpoj", "slēpotāj",
         "потерялся в снег", "lost in the snow", "skiing", "ski trail"
       ]
@@ -512,7 +512,7 @@
       "kods": "sniegavetra", "nr": 37, "grupa": "D", "nosaukums": "Sniegavētra ceļā",
       "kategorijas": ["degviela"], "zvanit112": false, "talak": "vetra",
       "padoms": "Ja varat, atlieciet braucienu. Ja esat ceļā, brauciet lēni vai apstājieties drošā vietā un palieciet auto. Ja salst un nav palīdzības, zvaniet 112.",
-      "atslegvardi": ["sniegavētr", "putenis", "putenī", "puteni", "sniega vētr", "метел", "пург", "снегопад", "blizzard", "snowstorm", "sniegavātr", "sniegavētra ceļ", "sniegavātrs ceļ", "putenis ceļ",
+      "atslegvardi": ["putenis", "sniegavētr", "putenī", "puteni", "sniega vētr", "метел", "пург", "снегопад", "blizzard", "snowstorm", "sniegavātr", "sniegavētra ceļ", "sniegavātrs ceļ", "putenis ceļ",
         "sniegputen", "sniega putenis", "snigšan", "sanesum", "sniega sanesum", "vējš un snieg", "вьюг", "буран",
         "снежная буря", "сильный снег", "замело", "snow storm", "heavy snow", "whiteout", "snowfall"
       ]
@@ -932,7 +932,7 @@
       "kods": "telefona_baterija", "nr": 81, "grupa": "H", "nosaukums": "Izlādējas telefons",
       "kategorijas": ["noturibas_punkts", "uzlades_stacija"], "zvanit112": false, "talak": "elektriba",
       "padoms": "Ieslēdziet enerģijas taupīšanas režīmu, samaziniet ekrāna spilgtumu, izslēdziet nevajadzīgas lietotnes. Ārkārtas zvanam 112 baterija jātaupa.",
-      "atslegvardi": ["baterij", "izlād", "uzlād", "lādētāj", "telefons mirst", "батаре", "заряд", "разряд", "battery", "charge my phone", "charger",
+      "atslegvardi": ["izlād", "baterij", "uzlād", "lādētāj", "telefons mirst", "батаре", "заряд", "разряд", "battery", "charge my phone", "charger",
         "powerbank", "pauerbank", "power bank", "lādēt", "lādiņ", "telefons nosēd", "telefons izslēdz", "betarij",
         "телефон сел", "сел телефон", "павербанк", "phone dying", "phone died", "phone is dead",
         "telefonam", "telefons izlād"
@@ -991,7 +991,7 @@
       "kods": "kimiska_avarija", "nr": 87, "grupa": "H", "nosaukums": "Ķīmiska avārija rūpnīcā",
       "kategorijas": [], "zvanit112": true, "talak": "kimiska",
       "padoms": "Ejiet iekšā un palieciet tur: aizveriet logus, durvis un ventilāciju, aizbāziet spraugas. Ieslēdziet LR1. Ja esat ārā, ejiet prom perpendikulāri vējam.",
-      "atslegvardi": ["ķīmisk", "rūpnīc", "toksisk", "mākon", "indīg", "amonjak", "hlor", "химич", "завод", "токсичн", "chemical", "toxic cloud", "factory",
+      "atslegvardi": ["rūpnīc", "ķīmisk", "toksisk", "mākon", "indīg", "amonjak", "hlor", "химич", "завод", "токсичн", "chemical", "toxic cloud", "factory",
         "ķimikāl", "bīstamas viel", "cistern", "skābes noplūd", "dzeltens dūm", "химзавод", "аммиак", "выброс",
         "ammonia", "chlorine", "hazmat", "toxic fumes"
       ]
@@ -1165,7 +1165,7 @@
       "kods": "partika_beigusies", "nr": 103, "grupa": "J", "nosaukums": "Veikalos nav pārtikas",
       "kategorijas": ["noturibas_punkts"], "zvanit112": false, "talak": "_",
       "padoms": "Neiepērcieties panikā. Turiet mājās 72 stundu krājumu: ūdeni, ilgi glabājamu pārtiku. Palīdzību sniedz pašvaldības sociālais dienests.",
-      "atslegvardi": ["pārtik", "veikali tukš", "nav ko ēst", "krājum", "еда", "продукт", "пустые полки", "food$", "empty shelves",
+      "atslegvardi": ["veikali tukš", "pārtik", "nav ko ēst", "krājum", "еда", "продукт", "пустые полки", "food$", "empty shelves",
         "plaukti tukš", "tukši plaukt", "nav maizes", "nav ēdien", "ēdiens beidz", "veikalā nav", "izsalk", "нет еды",
         "магазин пуст", "голод", "no food", "grocery", "hungry", "stockpil",
         "nav pārtik", "veikalos nav", "plaukti tukši"
@@ -1233,7 +1233,7 @@
       "kods": "iesprudis_saurums", "nr": 110, "grupa": "K", "nosaukums": "Cilvēks iesprūdis (grava, aka, šahta)",
       "kategorijas": ["ugunsdzeseji"], "zvanit112": true, "talak": "dzivnieki",
       "padoms": "Nekāpiet lejā paši: akās var būt bīstama gāze. Zvaniet 112, runājiet ar cietušo un nomieriniet viņu.",
-      "atslegvardi": ["iesprūd", "iestrēg", "aka$", "akā", "šaht", "grav", "застрял", "колодец", "шахт", "stuck in", "well$", "shaft",
+      "atslegvardi": ["aka$", "iesprūd", "iestrēg", "akā", "šaht", "grav", "застрял", "колодец", "шахт", "stuck in", "well$", "shaft",
         "būvbedr", "iekrita bedr", "iekrita akā$", "iekrita lūk", "nevar izkāpt", "plaisā", "провалился в ям",
         "упал в колодец", "яма$", "fell into a well", "fell in a hole", "trapped in a pit", "manhole"
       ]

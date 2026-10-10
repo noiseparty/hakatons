@@ -58,7 +58,8 @@ def main():
     with sync_playwright() as p:
         b = p.chromium.launch()
         for nos, izm, mob in [("telefons", (375, 740), True), ("dators", (1280, 800), False)]:
-            ctx = b.new_context(viewport={"width": izm[0], "height": izm[1]}, is_mobile=mob, has_touch=mob, device_scale_factor=2 if mob else 1)
+            ctx = b.new_context(viewport={"width": izm[0], "height": izm[1]}, is_mobile=mob, has_touch=mob, device_scale_factor=2 if mob else 1,
+                                service_workers="block")  # sw.js (offline.js) citādi apiet /api pārsūtīšanu
             lapa = ctx.new_page()
             kludas = []
             lapa.on("pageerror", lambda e: kludas.append(str(e)))
