@@ -1,23 +1,23 @@
 # Pitch: "Ko Jums vajag?" — map.repo.lv (10 min)
 
-Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots: D's phone shots as WebP in `production/slaidi/` (40–78 KB each, from `C:\Users\ZX202\kodi\demo-video`); slide 11 "Trūkstošie dati" from `notes/missing_data.md`, full list at https://map.repo.lv/trukstosie.html). Updated 2026-10-10 night for everything merged up to #120 (source and gap counts re-checked in `noiseparty/konsekvence`); all of it is live. NAP keys are set (road events and traffic zones are real). Spoken in Latvian; slide text below is what goes on screen.
+Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer, P or `?print` print view; 13 slides with speaker notes in `<aside class="piezimes">`, planned 9:30). Updated 2026-10-10 05:14 (`noiseparty/slaidi-2`): story order problem → demo (Ogre plūdi, address, 112) → AI extraction / rule-based search / 32 sources → judging criteria → top 5 of 30 gaps → resilience → ask + QR. Screenshots in `production/slaidi/` taken from map.repo.lv on 2026-10-10 ~05:00 (390×844 @2x and 1280×800; the LVĢMC flood WMS was not answering, so the "Plūdu riska zona" row shows the loading bar). The sections below are the long version; where they differ from the slides, the slides win.
 
 ## Numbers and which slide they belong to (`production/slaidi.html`)
 
 | Number | Slide | Source |
 |---|---|---|
 | ~260 000 lietotāju skāra atslēgumi (22.–23.08.2026) | 1 | LSM 26.08.2026, Sadales tīkls (`notes/demo-scenariji.md` §6) |
-| 42 plāni · 200–800 lpp. · 10 pašvaldības nepublicē sarakstus | 2 | `notes/ca-plani-kvalitate.md` |
-| 282 ģeoprodukti geolatvija.lv | 3 | `notes/research/05` §1 |
-| 3 soļi (vieta → vajadzība → rezultāts) | 5 | criterion 3 sentence |
-| 776 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
-| Meklētājs: **127 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
-| **32 atvērto datu avoti + 3 ⚠** (112.lv patvertnes, banku bankomāti, LR1 frekvences); panelī vēl 2 mūsu simulētie prototipa dati ar zīmi „SIMULĒTI” (neskaitām) | 10 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 |
-| 30 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
-| Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
+| 42 plāni · 200–800 lpp. · 1 791 karte kā attēls · 10 pašvaldības nepublicē sarakstus | 2 | `notes/ca-plani-kvalitate.md` |
+| Upe Ogre 1,53 m zem CA plāna kritiskā 22,15 m (29. lpp.) · pulcēšanās vieta 542 m (121. lpp.) | 4–5 | screenshots 10.10. ~05:00 (live values change) |
+| 776 pulcēšanās + 579 izmitināšanas vietas · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 7 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
+| Meklētājs: **129 scenāriji** (`production/scenariji.json`), LV/RU/EN, **96,1 % pareizi uz 609 vaicājumiem**, **91,4 % uz 186 paturētajiem** | 8 | `src/meklesana/testi.py`, run 2026-10-10 05:10 (earlier figures 127 / 95,0 % / 563 / 89,5 % in `notes/klasifikators.md`) |
+| **32 atvērto datu avoti + 3 ⚠** (112.lv patvertnes 781, banku bankomāti 845 / 111 kritiskie, LR1 frekvences 16 raidītāji); 2 simulētie neskaitīti | 9 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE; live panel shows 29 + 1 until the VPS applies shema.sql (#110/#118) |
+| 5 no 30 trūkstošajām datu kopām | 11 | `notes/missing_data.md` §1 rows 1–5 |
+| LR1 radio karte 16 raidītāji · Meteoalarm rezerve | 12 | #116, #125, #129 |
 | 7 vēstuļu melnraksti datu turētājiem (nesūtīti) | 13 | `notes/vestules.md` |
+| Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
 
-Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 only once (3, 6), 3 the 3–6 step flow + summary + ending (slide 5, the sentence in bold), 4 works on a phone (live demo + statuss.html), 5 AI + open data (6–7).
+Judging criteria → where we answer them: one slide maps all five (slide 10); evidence on slides 4–6 (outcome, phone), 5 (only once), 7–9 (AI + open data), 12 (no dead ends).
 
 ---
 
