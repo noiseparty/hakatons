@@ -255,7 +255,12 @@ function radtRegionu(kods) {
 // Sākumā visi slāņi izslēgti (lietotāja lēmums 2026-10-10): karte = pamatkarte, brīdinājumi un meklēšana. Slāņus ieslēdz
 // meklēšanas rezultāts (meklesana.js), demo scenārijs (demo.js) vai lietotājs filtros; tā arī netiek ielādēti ~4 000 objektu.
 
+// Slāņu izskats, ko nosaka lapa (krāsa atšķirīga no pārējiem slāņiem; grupa), neatkarīgi no datubāzes vērtībām:
+// bistams_objekts — dzeltens trīsstūris grupā "Incidenti"; soc_pakalpojumi — pelēkzila krusta forma grupā "Veselība".
+const SLANU_IZSKATS = { bistams_objekts: { krasa: '#facc15', grupa: 'incidenti' }, soc_pakalpojumi: { krasa: '#475569' } };
+
 function aizpilditKategorijas(saraksts) {
+  saraksts = saraksts.map(k => ({ ...k, ...SLANU_IZSKATS[k.kods] }));
   kategorijas = Object.fromEntries(saraksts.map(k => [k.kods, k]));
   const kaste = el('kategorijas');
   // zināmās grupas GRUPAS secībā, jaunas (no datubāzes) beigās ar savu kodu
@@ -332,7 +337,7 @@ function popupSaturs(p, ll) {
   if (i.limenis_cm != null) rindas.push(udensLimenis(i));
   if (i.piezime) rindas.push('<small>' + esc(i.piezime) + '</small>');
   if (i.opening_hours || i.darba_laiks) rindas.push('<small>' + Valoda.t('Darba laiks') + ': ' + esc(i.opening_hours || i.darba_laiks) + '</small>');
-  if (i.veids && ObjektaStatuss.raditVeidu(p)) rindas.push('<small>' + esc(i.veids) + (i.ligzdas ? ` · ${esc(i.ligzdas)} ${Valoda.t('ligzdas')}` : '') + '</small>');
+  if (i.veids && (ObjektaStatuss.raditVeidu(p) || p.kategorija === 'bistams_objekts')) rindas.push('<small>' + esc(i.veids) + (i.ligzdas ? ` · ${esc(i.ligzdas)} ${Valoda.t('ligzdas')}` : '') + '</small>');
   if (i.operator && i.operator !== p.nosaukums) rindas.push('<small>' + esc(i.operator) + '</small>');
   if (i.phone) rindas.push('<small>' + Valoda.t('Tālr.') + ': ' + esc(i.phone) + '</small>');  // bez tālruņa saitēm (komandas lēmums)
   if (i.komentars) rindas.push('<small>' + esc(i.komentars) + '</small>');

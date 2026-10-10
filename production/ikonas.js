@@ -9,8 +9,8 @@ const Ikonas = (() => {
   const ik = (nos, klase = '') => nos ? `<svg class="ik${klase ? ' ' + klase : ''}" aria-hidden="true" focusable="false"><use href="${SPRAITS}#${nos}"></use></svg>` : '';
 
   const GRUPAS = {
-    krusts: ['slimnica', 'neatliekama_24h', 'aptieka', 'veterinars'],
-    trijsturis: ['degviela', 'bankomats', 'uzlades_stacija', 'noturibas_punkts', 'udens_nemsana', 'wifi_punkts'],
+    krusts: ['slimnica', 'neatliekama_24h', 'aptieka', 'veterinars', 'soc_pakalpojumi'],
+    trijsturis: ['degviela', 'bankomats', 'uzlades_stacija', 'noturibas_punkts', 'udens_nemsana', 'wifi_punkts', 'bistams_objekts'],
     lase: ['udens_limenis', 'udens_punkts'],
     kvadrats: ['pietura', 'ev_uzlade', 'celi', 'robezas'],
     aplis: ['patvertne', 'evakuacijas_punkts', 'izmitinasana', 'policija', 'ugunsdzeseji'],
