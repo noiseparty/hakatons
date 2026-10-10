@@ -55,6 +55,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 
 - [ ] Shelters: the 112.lv data has **no** capacity, wheelchair/step-free, pets or operator fields (only building type, address, entrance coordinates, an empty comment). Ask VUGD to add them when publishing on data.gov.lv; until then the popup says "nav norādīts" and there is no wheelchair filter — added 2026-10-10 02:42 +03:00 by noiseparty
+- [ ] Offline mode: test on a real phone (airplane mode after one visit; "Pievienot sākuma ekrānam" on Android Chrome and iOS Safari) — added 2026-10-10 03:00 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -63,6 +64,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Offline mode: service worker (shell network-first, tiles cache-first, /api network-first with saved time), manifest + icons (add to home screen), offline banner + "saglabātie dati" line in the card, last 3 cards reopen offline, "Saglabāt manu apkārtni" (tiles z12–15) — done 2026-10-10 03:00 +03:00 by noiseparty (added 2026-10-10 03:00 +03:00 by noiseparty)
 - [x] Result card completeness: verdict first (112 → LVĢMC warning for this place → flood yes/no), municipality line (`/api/pasvaldiba`: CA plan, website, VPVKAC phone as text; `src/karte/db/pasvaldibas.py` → `dati/pasvaldibas.json`), GPS address (`/api/adreses/tuvaka`), 7-day river forecast from LVĢMC hydrological forecasts in `/api/udens` — done 2026-10-10 02:47 +03:00 by noiseparty (added 2026-10-10 02:47 +03:00 by noiseparty)
 - [x] Search bar: suggestions while typing (up to 6 situations + place), typo / word-form / Latin-typed Russian tolerance before the classifier, voice input "Runāt" (lv/ru/en) — done 2026-10-10 02:43 +03:00 by noiseparty (added 2026-10-10 02:43 +03:00 by noiseparty)
 - [x] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — done 2026-10-10 02:42 +03:00 by noiseparty: `saraksts.js` dialog from the "Slāņi" panel and the result card; name, layer, distance, address, source, route links, "Rādīt kartē" (added 2026-10-10 02:09 +03:00 by noiseparty)

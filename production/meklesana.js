@@ -588,7 +588,8 @@ const krizesMeklesana = (() => {
       const prognoze = pr ? `<small>Prognoze ${pr.dienas} dienām${ps !== s ? ` (${esc(ps.nosaukums)}, ${attalums(ps.attalums_m)})` : ''}: ` +
         `<b>${esc(pr.virziens)}</b> (${pr.izmaina_cm > 0 ? '+' : ''}${cm(pr.izmaina_cm)} cm pēc modeļa)` +
         (pr.josla_50_cm ? `, līmenis ~${cm(pr.josla_50_cm[0])}…${cm(pr.josla_50_cm[1])} cm (50 % varbūtība)` : '') +
-        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` : '';
+        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` :
+        '<small>LVĢMC ūdens līmeņa prognoze tuvākajām stacijām nav (to dod ~35 no 74 stacijām).</small>';
       const izm = s.izmaina_24h_cm;
       const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: nemainās';
       const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });

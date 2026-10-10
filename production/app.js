@@ -6,12 +6,12 @@ const latvija = L.latLngBounds([55.6, 20.8], [58.15, 28.3]);
 const karte = L.map('karte', { maxBounds: latvija.pad(0.3), minZoom: 6, preferCanvas: true, zoomControl: false }).fitBounds(latvija);
 const pamatkartes = {
   karte: L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
+    maxZoom: 19, crossOrigin: true,  // CORS: sw.js flīzes saglabā bezsaistei
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki'
   }),
   // reljefs (augstumi, upju ielejas): OSM dati + SRTM, atvērta licence (Esri satelītattēli nav atvērtie dati)
   reljefs: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    maxZoom: 17,
+    maxZoom: 17, crossOrigin: true,
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> līdzstrādnieki, SRTM · stils &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (CC BY-SA)'
   })
 };
