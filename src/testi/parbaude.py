@@ -36,6 +36,8 @@ JURMALA = (56.964556, 23.735869)     # Melluži, Dubultu prospekts 105 (CA plān
 LENS_S = 5.0
 # Zināmi, nekaitīgi pieprasījumi: LVĢMC plūdu WMS flīzes ārpus zonām mēdz atbildēt 404; POST skaitīšana
 IGNORET = [re.compile(r"geo-dpps\.viss\.gov\.lv"), re.compile(r"/api/meklejumi$")]
+# Emocijzīmes UI vairs nelieto (ikonas/ikonas.svg): katra redzamā teksta emocijzīme ir kļūda
+EMOCIJZIMES = re.compile("[🀀-🫿☀-⛿✀-✒✔✖-➿⏩-⏺⬇▶■◎️]")
 TU_FORMAS = re.compile(r"(?<![\wĀ-ſ])(tu|tev|tevi|tavs|tava|tavu|tavā|tavi|tavas|tavam|tavai|tavus|tavās|tavos)"
                        r"(?![\wĀ-ſ])", re.IGNORECASE)
 
@@ -67,6 +69,10 @@ def api_parbaude(bazes_url):
             dati = r.json()
         except ValueError:
             dati = None
+        if r.status_code == 202:  # avots vēl rēķina (piem., plūdu WMS lēns) — atbilde būs nākamajā pieprasījumā
+            if not kluda_kluss:
+                pieraksts("API", nos, "BRĪDIN.", f"{info} · avots vēl pārbauda (202), mēģiniet pēc brīža")
+            return None, None
         if r.status_code != 200:
             kluda = dati.get("kluda") if isinstance(dati, dict) else r.text[:80]
             if not kluda_kluss:
@@ -239,6 +245,9 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
                 if tu:
                     konteksts = [m["teksts"][max(0, x.start() - 25):x.end() + 25].replace("\n", " ") for x in TU_FORMAS.finditer(m["teksts"])][:2]
                     sarkani.append(f"'tu' forma tekstā: {tu} — {konteksts}")
+                emo = sorted(set(EMOCIJZIMES.findall(m["teksts"])))
+                if emo:
+                    sarkani.append(f"emocijzīmes tekstā: {emo[:8]}")
                 dzelteni = [f"< 44 px: {len(m['mazi'])} — " + "; ".join(m["mazi"][:4])] if mob and m["mazi"] else []
                 ilgums = time.monotonic() - t0
                 statuss = "KĻŪDA" if sarkani else "BRĪDIN." if dzelteni else "OK"
@@ -258,7 +267,8 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
 
             for kods in DEMO:
                 def demo(kods=kods):
-                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="networkidle", timeout=60000)
+                    # "load", nevis "networkidle": LVĢMC plūdu WMS flīzes mēdz karāties > 60 s (augšupējs avots, ne mūsu kļūda)
+                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="load", timeout=60000)
                     lapa.wait_for_function("document.body.classList.contains('demo-aktivs')", timeout=20000)
                 solis(f"?demo={kods}", demo)
 
@@ -291,6 +301,8 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
             def avoti():
                 if mob and lapa.locator("body.panelis-slegts").count():
                     lapa.click("#panelis-poga")
+                if lapa.locator("#dv-atvilktne[hidden]").count():  # datorā (darbvirsma.js) avoti ir "Slāņu vadība" atvilktnē
+                    lapa.click('.dv-nav [data-dv="slani"]')
                 lapa.click("#avoti > summary")
                 lapa.wait_for_selector("#avoti-saraksts li", timeout=15000)
             solis("Datu avoti", avoti)

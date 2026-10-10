@@ -6,6 +6,23 @@
   --teksts: #333; --teksts2: #666;
   --radiuss: 8px; --ena: 0 2px 8px rgba(0, 0, 0, .1);
 }
+/* Dizaina žetoni no lietotāja Stitch maketa (notes/mockup/desktop.html). Kopīgi datoram (darbvirsma.css) un telefonam;
+   esošie mainīgie augstāk nav pārdefinēti, lai telefona izskats nemainās, kamēr to neizmanto. */
+:root {
+  --tumsi-zils: #172B3F; --tumsi-zils-gaiss: #243E56; --zils-primars: #1E66D5; --karmins: #9E3039;
+  --pelks-1: #F8FAFC; --pelks-2: #EEF2F6; --pelks-3: #D8E1E8; --pelks-robeza-viegla: #E6EDF2;
+  --teksts-galv: #101B26; --teksts-blavs: #506173;
+  --brid-info-fons: #EBF3FA; --brid-info-mala: #8CB3D9; --brid-info-teksts: #134B73;
+  --brid-dzeltens-fons: #FEF9EB; --brid-dzeltens-mala: #D4A12B; --brid-dzeltens-teksts: #7A5300;
+  --brid-oranzs-fons: #FDF3EB; --brid-oranzs-mala: #D66D25; --brid-oranzs-teksts: #8E3E07;
+  --brid-sarkans-fons: #FDF0F0; --brid-sarkans-mala: #BA2525; --brid-sarkans-teksts: #7D1212;
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309; --dzeltens-tumss: #B45309;
+  --gim-transports: #4D7C0F; --gim-udens: #1E66D5;
+  --zals-statuss: #16A34A;
+  --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radiuss-maza: 4px; --radiuss-pogas: 6px; --radiuss-karte: 8px;
+  --ena-maza: 0 1px 2px rgba(16, 27, 38, .05); --ena-vid: 0 4px 12px rgba(16, 27, 38, .08); --ena-liela: 0 8px 24px rgba(16, 27, 38, .12);
+}
 
 html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--teksts); background: var(--fons); }
 body { display: flex; flex-direction: column; }
@@ -160,7 +177,7 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .bridinajums.dzeltens { background: #fde047; color: #1c1917; }
 .bridinajums.oranzs { background: #c2410c; color: #fff; }
 .bridinajums.sarkans { background: #b91c1c; color: #fff; }
-.bridinajums details { max-width: 70ch; margin: 0 auto; }
+.bridinajums details, .bridinajums > span { display: block; max-width: 70ch; margin: 0 auto; }
 .bridinajums summary { cursor: pointer; font-weight: 600; }
 .bridinajums p { margin: .4rem 0 0; }
 .bridinajums .riski { font-size: .82rem; }
@@ -339,6 +356,9 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .populari.ieteikumi small { color: var(--teksts2); }
 .meklet-rinda .runat { min-width: 44px; padding: 0 .5rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: 1.15rem; }
 .meklet-rinda .runat[hidden] { display: none; }
+.meklet-rinda .notirit-poga { min-width: 44px; padding: 0 .5rem; display: inline-flex; align-items: center; gap: .25rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: .9rem; }
+.meklet-rinda .notirit-poga[hidden] { display: none; }
+@media (max-width: 480px) { .meklet-rinda .notirit-teksts { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 .meklet-rinda .runat.klausas { background: #fee2e2; border-color: var(--sarkans); animation: runa-pulss 1.2s ease-in-out infinite; }
 @keyframes runa-pulss { 50% { box-shadow: 0 0 0 6px rgba(213, 43, 30, .25); } }
 @media (prefers-reduced-motion: reduce) { .meklet-rinda .runat.klausas { animation: none; } }
@@ -488,6 +508,27 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
 .zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
 
+/* ==== Ikonas un marķieru formas (ikonas.js, ikonas/ikonas.svg: Meteocons MIT + Lucide ISC) ==== */
+/* Kopīgie tokeni (A pievieno tos pašus stils.css sākumā; sapludinot paliek viens): grupu kontūru krāsas */
+:root {
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309;
+  --zils-primars: #1E66D5; --gim-udens: #1E66D5; --gim-transports: #4D7C0F;
+  --radiuss-pogas: 6px; --ena-maza: 0 1px 3px rgba(0, 0, 0, .2);
+}
+.ik { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -.22em; flex: none; }
+.ik-rinda, .forma-rinda { flex: none; margin-right: .1rem; vertical-align: -.2em; }
+.kat .forma-rinda, .kat .ik-rinda { width: 18px; height: 18px; }
+.forma-markeris { display: grid; place-items: center; background: none; border: 0; }
+.forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
+.celu-ikona span { color: #fff; }
+.celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
+.kartes-rikis .ik, #mana-vieta .ik { width: 22px; height: 22px; vertical-align: -.25em; }
+.fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
+.demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
+.demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
+.tuvuma-izvele { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
+.tuvuma-izvele button { display: flex; align-items: center; gap: .45rem; min-height: 44px; text-align: left; }
+.tuvuma-izvele button svg.forma { width: 20px; height: 20px; flex: none; }
 /* ==== Datu avoti: simulētie prototipa dati atsevišķā grupā (avoti.js) ==== */
 #avoti-saraksts .avoti-grupa { list-style: none; margin: .8rem 0 .2rem; padding-top: .5rem; border-top: 1px solid var(--robeza); font-size: .8rem; font-weight: 600; color: var(--teksts2); }
 #avoti-saraksts .simulets { opacity: .9; }
@@ -500,3 +541,8 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
 .galvene-poga:hover { background: rgba(0, 0, 0, .32); }
 @media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
+
+/* Bankomāti (app.js bankomataMarkieris, forma no ikonas.js): leģenda un zīme "KRITISKAIS" uznirstošajā logā */
+.slana-legenda { margin: .1rem 0 .4rem 1.6rem; font-size: .78rem; color: var(--teksts2); display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .4rem; }
+.forma-markeris.kritiskais svg { filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 1px 3px rgba(0, 0, 0, .5)); }
+.krit-zime { display: inline-block; padding: 0 .35rem; font-size: .7rem; font-weight: 700; letter-spacing: .03em; color: #fff; background: #1d4ed8; border-radius: 3px; }
