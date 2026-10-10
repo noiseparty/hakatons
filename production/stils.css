@@ -177,7 +177,7 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .bridinajums.dzeltens { background: #fde047; color: #1c1917; }
 .bridinajums.oranzs { background: #c2410c; color: #fff; }
 .bridinajums.sarkans { background: #b91c1c; color: #fff; }
-.bridinajums details { max-width: 70ch; margin: 0 auto; }
+.bridinajums details, .bridinajums > span { display: block; max-width: 70ch; margin: 0 auto; }
 .bridinajums summary { cursor: pointer; font-weight: 600; }
 .bridinajums p { margin: .4rem 0 0; }
 .bridinajums .riski { font-size: .82rem; }
