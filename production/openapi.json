@@ -308,14 +308,33 @@
       "example": "24.6046"
      },
      {
+      "name": "bbox",
+      "in": "query",
+      "required": false,
+      "description": "kartes skats minLon,minLat,maxLon,maxLat: tikai punkti taisnstūrī, īsās īpašības (ko rāda punkta logs), ≤ 5000; ja vairāk — izlase pa slāņiem un \"apgriezts\": true",
+      "schema": {
+       "type": "string"
+      },
+      "example": "24.55,56.80,24.66,56.84"
+     },
+     {
       "name": "limit",
       "in": "query",
       "required": false,
-      "description": "cik punktu (1–20000, noklusēti 5000)",
+      "description": "cik punktu (1–20000, ar bbox ≤ 5000; noklusēti 5000)",
       "schema": {
        "type": "integer"
       },
       "example": "3"
+     },
+     {
+      "name": "kritiskais",
+      "in": "query",
+      "required": false,
+      "description": "1 — tikai kritiskie (banku bankomāti, kas strādā arī krīzē)",
+      "schema": {
+       "type": "integer"
+      }
      }
     ],
     "x-avoti": [
@@ -635,6 +654,15 @@
        "type": "number"
       },
       "example": "24.6046"
+     },
+     {
+      "name": "poligoni",
+      "in": "query",
+      "required": false,
+      "description": "1 — pievienot brīdinājumu apgabalus poligoni: [[[lat, lon], …], …] (pilnā izšķirtspējā)",
+      "schema": {
+       "type": "integer"
+      }
      }
     ],
     "x-avoti": [
@@ -875,7 +903,7 @@
   "/api/prognozes": {
    "get": {
     "summary": "Laika prognoze pa novadiem",
-    "description": "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni.\n\nSliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.",
+    "description": "LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni: bridinajumu_poligoni = [{id, limenis, paradiba, poligons: [[lat, lon], …]}] (vienkāršoti, 4 zīmes aiz komata; tos zīmē kartes zonas).\n\nSliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.",
     "parameters": [],
     "x-avoti": [
      {
@@ -2109,7 +2137,7 @@
   "/api/zinojumi": {
    "get": {
     "summary": "Iedzīvotāju ziņojumi",
-    "description": "Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.\n\nJa apdraudēta dzīvība, zvaniet 112.",
+    "description": "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina un apstrid (citi iedzīvotāji, POST …/apstiprinat|apstridet); ziņojumu ar apstrid > apstiprina + 2 vairs nerāda.\n\nJa apdraudēta dzīvība, zvaniet 112.",
     "parameters": [
      {
       "name": "dienas",

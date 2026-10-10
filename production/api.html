@@ -194,7 +194,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 <section class="galapunkts" id="api-objekti">
   <h2><span class="metode">GET</span> <code>/api/objekti</code> — Punkti kartē</h2>
   <p>Kartes objekti (GeoJSON FeatureCollection). Ar lat/lon — sakārtoti pēc attāluma, ar attalums_m.</p>
-  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>kategorijas</code></td><td>string</td><td>slāņu kodi ar komatu (no /api/kategorijas)</td></tr><tr><td><code>regions</code></td><td>string</td><td>tikai šajā reģionā (kods)</td></tr><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>limit</code></td><td>integer</td><td>cik punktu (1–20000, noklusēti 5000)</td></tr></tbody></table>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>kategorijas</code></td><td>string</td><td>slāņu kodi ar komatu (no /api/kategorijas)</td></tr><tr><td><code>regions</code></td><td>string</td><td>tikai šajā reģionā (kods)</td></tr><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>bbox</code></td><td>string</td><td>kartes skats minLon,minLat,maxLon,maxLat: tikai punkti taisnstūrī, īsās īpašības (ko rāda punkta logs), ≤ 5000; ja vairāk — izlase pa slāņiem un &quot;apgriezts&quot;: true</td></tr><tr><td><code>limit</code></td><td>integer</td><td>cik punktu (1–20000, ar bbox ≤ 5000; noklusēti 5000)</td></tr><tr><td><code>kritiskais</code></td><td>integer</td><td>1 — tikai kritiskie (banku bankomāti, kas strādā arī krīzē)</td></tr></tbody></table>
   <p class="meta"><b>Avots un licence:</b> <a href="/api/avoti">Katram punktam savs avots (properties.avots)</a> · skat. /api/avoti<br>
      <b>Kešs:</b> 60 s (Cache-Control) <br><b>Piezīme:</b> Licence katram punktam pēc avota: CC0 (IeM IC, ZVA, LVĢMC), CC BY 4.0 (VZD), ODbL (OSM), oficiāli dokumenti (CA plāni); 112.lv patvertnēm licence nav norādīta.</p>
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/objekti?kategorijas=evakuacijas_punkts&amp;lat=56.8166&amp;lon=24.6046&amp;limit=2"><code>/api/objekti?kategorijas=evakuacijas_punkts&amp;lat=56.8166&amp;lon=24.6046&amp;limit=2</code></a>
@@ -335,7 +335,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 <section class="galapunkts" id="api-bridinajumi">
   <h2><span class="metode">GET</span> <code>/api/bridinajumi</code> — LVĢMC brīdinājumi</h2>
   <p>Spēkā esošie hidrometeoroloģiskie brīdinājumi; ar lat/lon — attiecas: vai punkts ir brīdinājuma poligonā.</p>
-  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr><tr><td><code>poligoni</code></td><td>integer</td><td>1 — pievienot brīdinājumu apgabalus poligoni: [[[lat, lon], …], …] (pilnā izšķirtspējā)</td></tr></tbody></table>
   <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
      <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Laiki — Latvijas vietējie.</p>
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/bridinajumi?lat=56.8166&amp;lon=24.6046"><code>/api/bridinajumi?lat=56.8166&amp;lon=24.6046</code></a>
@@ -451,7 +451,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 </section>
 <section class="galapunkts" id="api-prognozes">
   <h2><span class="metode">GET</span> <code>/api/prognozes</code> — Laika prognoze pa novadiem</h2>
-  <p>LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni.</p>
+  <p>LVĢMC prognozes apdzīvotām vietām, apkopotas pa novadiem 3 dienām, + ziņas un brīdinājumu poligoni: bridinajumu_poligoni = [{id, limenis, paradiba, poligons: [[lat, lon], …]}] (vienkāršoti, 4 zīmes aiz komata; tos zīmē kartes zonas).</p>
   
   <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa">LVĢMC meteoroloģiskās prognozes apdzīvotām vietām</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
      <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> Sliekšņi ziņām ir tuvināti LVĢMC kritērijiem, tie nav oficiāli brīdinājumi.</p>
@@ -1322,7 +1322,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 </section>
 <section class="galapunkts" id="api-zinojumi">
   <h2><span class="metode">GET</span> <code>/api/zinojumi</code> — Iedzīvotāju ziņojumi</h2>
-  <p>Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.</p>
+  <p>Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina un apstrid (citi iedzīvotāji, POST …/apstiprinat|apstridet); ziņojumu ar apstrid &gt; apstiprina + 2 vairs nerāda.</p>
   <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>dienas</code></td><td>integer</td><td>1–7</td></tr><tr><td><code>bbox</code></td><td>string</td><td>minLon,minLat,maxLon,maxLat</td></tr></tbody></table>
   <p class="meta"><b>Avots un licence:</b> <a href="https://map.repo.lv/">Iedzīvotāju ziņojumi (map.repo.lv)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
      <b>Kešs:</b> 15 s (Cache-Control) <br><b>Piezīme:</b> Ja apdraudēta dzīvība, zvaniet 112.</p>
@@ -1393,7 +1393,7 @@ Avots: LVĢMC hidroloģiskie novērojumi (https://data.gov.lv/dati/lv/dataset/hi
   <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
      <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> text/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions).</p>
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/kalendars.ics?regions=100016688"><code>/api/kalendars.ics?regions=100016688</code></a>
-    <span class="statuss">paraugs (izdomāti dati; dzīvajā vietnē vēl nav)</span></p>
+    <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>BEGIN:VCALENDAR
 VERSION:2.0
 PRODID:-//map.repo.lv//Krizes karte//LV
@@ -1404,19 +1404,23 @@ X-PUBLISHED-TTL:PT30M
 REFRESH-INTERVAL;VALUE=DURATION:PT30M
 BEGIN:VEVENT
 UID:28210-100016688@map.repo.lv
-DTSTAMP:20261010T004430Z
+DTSTAMP:20261010T013847Z
 DTSTART:20261009T110000Z
-DTEND:20261010T030000Z
-SUMMARY:Dzeltens brīdinājums: vējš (Latvija)\, līdz 10.10. 06:00
-DESCRIPTION:Brāzmās līdz 20–24 m/s\; koki\, vadi\; uzmanieties.\n\nESI
-  INFORMĒTS par stipru vēju!\n\nAvots: LVĢMC hidrometeoroloģiskie brīd
- inājumi · CC0 1.0. Ja apdraudēta dzīvība\, zvaniet 112.
+DTEND:20261010T040000Z
+SUMMARY:Dzeltens brīdinājums: vējš (Latvija)\, līdz 10.10. 07:00
+DESCRIPTION:09.-10.10.2026. nakts pirmajā pusē rietumu\, ziemeļrietumu v
+ ējš saglabāsies brāzmās līdz 20-24 m/s. Vējš pakāpeniski pierims 
+ 09.-10.10. nakts otrajā pusē.\n\nESI INFORMĒTS par stipru vēju!\nNolau
+ zti koku zari\, nefiksēti priekšmeti vai atlūzas var tikt nestas pa gai
+ su.\nAtsevišķos rajonos var tikt traucētas āra aktivitātes. \nIespēj
+ ami lokāli elektroapgādes traucējumi\, kā arī var būt apgrūtināti 
+ braukšanas apstākļi.\n\nAvots: LVĢMC hidrometeoroloģiskie brīdināju
+ mi · CC0 1.0. Ja apdraudēta dzīvība\, zvaniet 112.
 URL:https://map.repo.lv/?regions=100016688
 TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
-…
-</pre></details>
+…</pre></details>
 </section>
 <section class="galapunkts" id="api-veseliba">
   <h2><span class="metode">GET</span> <code>/api/veseliba</code> — Veselības pārbaude</h2>
@@ -1472,7 +1476,7 @@ END:VCALENDAR
 
   <section class="galapunkts">
     <h2>POST galapunkti (tikai map.repo.lv lapai)</h2>
-    <ul><li><code>POST /api/meklejumi</code> — biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāju datiem)</li><li><code>POST /api/zinojumi</code> — jauns iedzīvotāja ziņojums (moderēts)</li><li><code>POST /api/zinojumi/moderacija, /api/zinojumi/{id}/{darbība}</code> — moderēšana (ar atslēgu)</li></ul>
+    <ul><li><code>POST /api/meklejumi</code> — biežāk meklētā skaitītājs (tikai atpazīti vaicājumi, bez lietotāju datiem)</li><li><code>POST /api/zinojumi</code> — jauns iedzīvotāja ziņojums (moderēts)</li><li><code>POST /api/zinojumi/{id}/apstiprinat, /api/zinojumi/{id}/apstridet</code> — balss par ziņojumu (bez datiem; ≤ 60 minūtē visiem kopā) → {id, apstiprina, apstrid}</li><li><code>POST /api/zinojumi/moderacija, /api/zinojumi/{id}/slept|radit</code> — moderēšana (ar atslēgu)</li></ul>
   </section>
 
   <p class="piezime">Pirmkods: <a href="https://github.com/noiseparty/hakatons">github.com/noiseparty/hakatons</a>
