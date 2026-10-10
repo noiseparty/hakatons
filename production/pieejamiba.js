@@ -30,8 +30,8 @@
     const $ = id => document.getElementById(id);
 
     // ---- Izlaišanas saites (redzamas tikai ar tastatūras fokusu) ----
-    document.body.insertAdjacentHTML('afterbegin', `<nav class="izlaist" aria-label="Pāriet uz">
-      <a href="#jautajums" data-uz="jautajums">Uz meklēšanu</a><a href="#karte" data-uz="karte">Uz karti</a></nav>`);
+    document.body.insertAdjacentHTML('afterbegin', `<nav class="izlaist" aria-label="Pāriet uz" data-t-aria="Pāriet uz">
+      <a href="#jautajums" data-uz="jautajums" data-t="Uz meklēšanu">Uz meklēšanu</a><a href="#karte" data-uz="karte" data-t="Uz karti">Uz karti</a></nav>`);
     document.querySelector('.izlaist').addEventListener('click', e => {
       const a = e.target.closest('[data-uz]');
       if (!a) return;
@@ -79,7 +79,7 @@
     karte.on('popupopen', e => {
       const bija = document.activeElement;
       const aizvert = e.popup.getElement()?.querySelector('.leaflet-popup-close-button');
-      if (aizvert) aizvert.setAttribute('aria-label', 'Aizvērt logu');
+      if (aizvert) aizvert.setAttribute('aria-label', typeof Valoda !== 'undefined' ? Valoda.t('Aizvērt logu') : 'Aizvērt logu');
       if (!bija || bija === document.body || bija.closest('.leaflet-container')) { atpakal = null; return; }
       if (!bija.matches(':focus-visible')) { atpakal = null; return; }
       atpakal = bija;

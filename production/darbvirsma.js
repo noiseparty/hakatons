@@ -10,6 +10,7 @@ const Darbvirsma = (() => {
   const laiks = iso => iso ? new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
   const stunda = d => d.toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' });
   const LIMENI = { 1: ['dzeltens', 'Dzeltens'], 2: ['oranzs', 'Oranžs'], 3: ['sarkans', 'Sarkans'] };
+  const PILLS = { 3: ['{n} sarkans brīdinājums', '{n} sarkani brīdinājumi'], 2: ['{n} oranžs brīdinājums', '{n} oranži brīdinājumi'], 1: ['{n} dzeltens brīdinājums', '{n} dzelteni brīdinājumi'] };
   const ATSLEGA = 'darbvirsma';  // { situacija: true|false, kreisa: true|false } pārlūkā
   const IKONAS = {
     vairogs: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 8v6M9 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
@@ -44,58 +45,54 @@ const Darbvirsma = (() => {
   // ---- Jaunie elementi (izveido vienreiz) ----
   const galva = document.querySelector('header');
   const zime = elements('span', 'dv-zime-logo', IKONAS.vairogs);
-  const apaksvirsraksts = elements('span', 'dv-apaksvirsraksts', 'Latvija · map.repo.lv');
-  const nav = elements('nav', 'dv-nav', `<button type="button" data-dv="meklesana" aria-pressed="true">${IKONAS.meklet}Meklēšana &amp; Lēmums</button>` +
-    `<button type="button" data-dv="slani" aria-pressed="false" aria-expanded="false" aria-controls="dv-atvilktne">${IKONAS.slani}Slāņu vadība</button>`, { 'aria-label': 'Skats' });
+  const apaksvirsraksts = elements('span', 'dv-apaksvirsraksts', '<span data-t="Latvija · map.repo.lv">Latvija · map.repo.lv</span>');
+  const nav = elements('nav', 'dv-nav', `<button type="button" data-dv="meklesana" aria-pressed="true">${IKONAS.meklet}<span data-t="Meklēšana &amp; Lēmums">Meklēšana &amp; Lēmums</span></button>` +
+    `<button type="button" data-dv="slani" aria-pressed="false" aria-expanded="false" aria-controls="dv-atvilktne">${IKONAS.slani}<span data-t="Slāņu vadība">Slāņu vadība</span></button>`, { 'aria-label': 'Skats', 'data-t-aria': 'Skats' });
   const centrs = elements('div', 'dv-centrs');
   centrs.append(nav);
-  const parPoga = elements('button', 'dv-par-poga', 'Par datiem &amp; AI', { type: 'button', 'aria-haspopup': 'dialog' });
+  const parPoga = elements('button', 'dv-par-poga', '<span data-t="Par datiem &amp; AI">Par datiem &amp; AI</span>', { type: 'button', 'aria-haspopup': 'dialog' });
 
   const josla112 = elements('div', 'dv-112', `<p class="dv-112-teksts">${IKONAS.info}<span data-t="Ja apdraudēta dzīvība vai veselība, zvaniet 112.">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</span></p>` +
-    '<p class="dv-svaigums" role="status"><span class="dv-punkts"></span><span class="dv-svaigums-teksts">Ielādē datus…</span></p>',
+    `<p class="dv-svaigums" role="status"><span class="dv-punkts"></span><span class="dv-svaigums-teksts">${Valoda.t('Ielādē datus…')}</span></p>`,
     { role: 'region', 'aria-label': 'Ārkārtas palīdzība' });
 
-  const ievads = elements('section', 'dv-ievads', '<h2>Noskaidrojiet situāciju savā adresē</h2><div class="dv-forma-vieta"></div>' +
+  const ievads = elements('section', 'dv-ievads', '<h2 data-t="Noskaidrojiet situāciju savā adresē">Noskaidrojiet situāciju savā adresē</h2><div class="dv-forma-vieta"></div>' +
     `<button type="button" class="dv-atrast">${IKONAS.vieta}<span data-t="Izmantot manu atrašanās vietu">Izmantot manu atrašanās vietu</span></button>` +
-    '<div class="dv-cipi" role="group" aria-label="Biežākās situācijas">' +
-    CIPI.map(([t, q, sl]) => `<button type="button" class="dv-cips" data-q="${q}"${sl ? ` data-slanis="${sl}"` : ''} aria-pressed="false">${t}</button>`).join('') + '</div>');
+    '<div class="dv-cipi" role="group" aria-label="Biežākās situācijas" data-t-aria="Biežākās situācijas">' +
+    CIPI.map(([t, q, sl]) => `<button type="button" class="dv-cips" data-q="${q}"${sl ? ` data-slanis="${sl}"` : ''} aria-pressed="false"><span data-t="${t}">${t}</span></button>`).join('') + '</div>');
   // Pirmais skats (meklesana.js): ko rakstīt + 3 piemēri; CSS to paslēpj pēc pirmās meklēšanas (body.ir-meklets)
   const pirmais = elements('div', 'dv-pirmais', krizesMeklesana.pirmaisSkats());
-  const valsts = elements('div', 'dv-valsts', '<span class="dv-valsts-nos">Kopējā situācija valstī:</span>' +
+  const valsts = elements('div', 'dv-valsts', '<span class="dv-valsts-nos" data-t="Kopējā situācija valstī:">Kopējā situācija valstī:</span>' +
     '<span class="dv-valsts-pills" aria-live="polite"><span class="dv-pill dv-pill-skelets" aria-hidden="true"></span></span>');
 
-  const atvilktne = elements('div', 'dv-atvilktne', '<div class="dv-atv-galva"><h2>Slāņu vadība</h2>' +
-    '<button type="button" class="dv-aizvert" aria-label="Aizvērt slāņu vadību">✕</button></div><div class="dv-atv-saturs"></div>',
-    { id: 'dv-atvilktne', role: 'region', 'aria-label': 'Slāņu vadība' });
+  const atvilktne = elements('div', 'dv-atvilktne', '<div class="dv-atv-galva"><h2 data-t="Slāņu vadība">Slāņu vadība</h2>' +
+    '<button type="button" class="dv-aizvert" aria-label="Aizvērt slāņu vadību" data-t-aria="Aizvērt slāņu vadību">✕</button></div><div class="dv-atv-saturs"></div>',
+    { id: 'dv-atvilktne', role: 'region', 'aria-label': 'Slāņu vadība', 'data-t-aria': 'Slāņu vadība' });
   atvilktne.hidden = true;
 
-  const bloks = (id, virsraksts, labaPuse, avots) => `<section class="dv-bloks" id="${id}" aria-labelledby="${id}-v"><h3 id="${id}-v"><span>${virsraksts}</span>` +
-    `<span class="dv-avots">${labaPuse}</span></h3><ul>${skelets(2)}</ul><small class="dv-bloka-avots">Avots: ${avots} · CC0</small></section>`;
-  const situacija = elements('aside', 'dv-situacija', '<div class="dv-sit-galva"><h2><span class="dv-punkts"></span>Situācija tagad (Latvija)</h2>' +
-    '<button type="button" class="dv-aizvert" aria-label="Aizvērt situācijas paneli">✕</button></div>' +
+  const bloks = (id, virsraksts, labaPuse, avots) => `<section class="dv-bloks" id="${id}" aria-labelledby="${id}-v"><h3 id="${id}-v"><span data-t="${virsraksts}">${virsraksts}</span>` +
+    `<span class="dv-avots">${labaPuse}</span></h3><ul>${skelets(2)}</ul><small class="dv-bloka-avots"><span data-t="Avots:">Avots:</span> ${avots} · CC0</small></section>`;
+  const situacija = elements('aside', 'dv-situacija', '<div class="dv-sit-galva"><h2><span class="dv-punkts"></span><span data-t="Situācija tagad (Latvija)">Situācija tagad (Latvija)</span></h2>' +
+    '<button type="button" class="dv-aizvert" aria-label="Aizvērt situācijas paneli" data-t-aria="Aizvērt situācijas paneli">✕</button></div>' +
     bloks('dv-bridinajumi', 'Hidrometeo brīdinājumi', 'LVĢMC', AVOTI.bridinajumi) +
     bloks('dv-udens', 'Upju ūdens līmenis (pieaugums)', '', AVOTI.udens) +
-    bloks('dv-celi', 'Satiksmes ierobežojumi', 'LVC DATEX II', AVOTI.celi), { id: 'dv-situacija', 'aria-label': 'Situācija tagad (Latvija)' });
+    bloks('dv-celi', 'Satiksmes ierobežojumi', 'LVC DATEX II', AVOTI.celi), { id: 'dv-situacija', 'aria-label': 'Situācija tagad (Latvija)', 'data-t-aria': 'Situācija tagad (Latvija)' });
 
-  const legenda = elements('details', 'dv-legenda', '<summary>Kartes leģenda &amp; simboli</summary><ul></ul>');
+  const legenda = elements('details', 'dv-legenda', '<summary data-t="Kartes leģenda &amp; simboli">Kartes leģenda &amp; simboli</summary><ul></ul>');
   legenda.open = true;
   const situacijasPoga = elements('button', 'dv-rikis-poga', IKONAS.panelis,
-    { type: 'button', title: 'Situācija tagad', 'aria-label': 'Situācija tagad (labais panelis)', 'aria-controls': 'dv-situacija', 'aria-pressed': 'true' });
+    { type: 'button', title: 'Situācija tagad', 'aria-label': 'Situācija tagad (labais panelis)', 'data-t-title': 'Situācija tagad', 'data-t-aria': 'Situācija tagad (labais panelis)', 'aria-controls': 'dv-situacija', 'aria-pressed': 'true' });
   const pilnaPoga = elements('button', 'dv-rikis-poga', IKONAS.pilns,
-    { type: 'button', title: 'Karte pa visu platumu', 'aria-label': 'Karte pa visu platumu', 'aria-pressed': 'false' });
-  const brAizvert = elements('button', 'dv-br-aizvert', 'Aizvērt', { type: 'button', 'aria-label': 'Aizvērt brīdinājumu joslu' });
+    { type: 'button', title: 'Karte pa visu platumu', 'aria-label': 'Karte pa visu platumu', 'data-t-title': 'Karte pa visu platumu', 'data-t-aria': 'Karte pa visu platumu', 'aria-pressed': 'false' });
+  const brAizvert = elements('button', 'dv-br-aizvert', '<span data-t="Aizvērt">Aizvērt</span>', { type: 'button', 'aria-label': 'Aizvērt brīdinājumu joslu', 'data-t-aria': 'Aizvērt brīdinājumu joslu' });
 
-  const dialogs = elements('dialog', 'dv-dialogs', `<h2 id="dv-par-v">Par datiem &amp; AI</h2>
-    <p><b>Dati.</b> Kartē ir tikai atvērtie dati ar licenci: LVĢMC brīdinājumi, plūdu kartes un upju līmeņi, VZD adreses,
-      IeM IC, ZVA, VM, LVC satiksme un ceļi, OpenStreetMap, pašvaldību civilās aizsardzības plāni. Katrā punktā un
-      kartītes rindā ir avots un licence.</p>
-    <p><b>AI.</b> Lietotnē AI nedarbojas, un Jūsu teksts netiek sūtīts uz AI. AI izmantojām iepriekš, bezsaistē: no
-      42 pašvaldību CA plāniem izvilkām evakuācijas un izmitināšanas vietas ar lappušu atsaucēm (un atradām 41
-      koordinātu kļūdu oficiālajos plānos), kā arī sagatavojām meklēšanas atslēgvārdus un pārbaudes vaicājumus.</p>
-    <p class="dv-dialogs-pogas"><button type="button" class="dv-sek-poga" data-dv-par="avoti">Datu avoti un licences</button>
-      <a class="dv-sek-poga" href="statuss.html">Vai avoti darbojas?</a>
-      <a class="dv-sek-poga" href="trukstosie.html">Ko vēl vajadzētu publicēt</a></p>
-    <form method="dialog"><button type="submit" class="dv-galv-poga">Aizvērt</button></form>`, { 'aria-labelledby': 'dv-par-v' });
+  const dialogs = elements('dialog', 'dv-dialogs', `<h2 id="dv-par-v" data-t="Par datiem &amp; AI">Par datiem &amp; AI</h2>
+    <p><b data-t="Dati.">Dati.</b> <span data-t="Kartē ir tikai atvērtie dati ar licenci: LVĢMC brīdinājumi, plūdu kartes un upju līmeņi, VZD adreses, IeM IC, ZVA, VM, LVC satiksme un ceļi, OpenStreetMap, pašvaldību civilās aizsardzības plāni. Katrā punktā un kartītes rindā ir avots un licence.">Kartē ir tikai atvērtie dati ar licenci: LVĢMC brīdinājumi, plūdu kartes un upju līmeņi, VZD adreses, IeM IC, ZVA, VM, LVC satiksme un ceļi, OpenStreetMap, pašvaldību civilās aizsardzības plāni. Katrā punktā un kartītes rindā ir avots un licence.</span></p>
+    <p><b data-t="AI.">AI.</b> <span data-t="Lietotnē AI nedarbojas, un Jūsu teksts netiek sūtīts uz AI. AI izmantojām iepriekš, bezsaistē: no 42 pašvaldību CA plāniem izvilkām evakuācijas un izmitināšanas vietas ar lappušu atsaucēm (un atradām 41 koordinātu kļūdu oficiālajos plānos), kā arī sagatavojām meklēšanas atslēgvārdus un pārbaudes vaicājumus.">Lietotnē AI nedarbojas, un Jūsu teksts netiek sūtīts uz AI. AI izmantojām iepriekš, bezsaistē: no 42 pašvaldību CA plāniem izvilkām evakuācijas un izmitināšanas vietas ar lappušu atsaucēm (un atradām 41 koordinātu kļūdu oficiālajos plānos), kā arī sagatavojām meklēšanas atslēgvārdus un pārbaudes vaicājumus.</span></p>
+    <p class="dv-dialogs-pogas"><button type="button" class="dv-sek-poga" data-dv-par="avoti" data-t="Datu avoti un licences">Datu avoti un licences</button>
+      <a class="dv-sek-poga" href="statuss.html" data-t="Vai avoti darbojas?">Vai avoti darbojas?</a>
+      <a class="dv-sek-poga" href="trukstosie.html" data-t="Ko vēl vajadzētu publicēt">Ko vēl vajadzētu publicēt</a></p>
+    <form method="dialog"><button type="submit" class="dv-galv-poga" data-t="Aizvērt">Aizvērt</button></form>`, { 'aria-labelledby': 'dv-par-v' });
   document.body.append(dialogs);
 
   // ---- Pārvietošana: plats ekrāns ↔ telefons ----
@@ -138,6 +135,7 @@ const Darbvirsma = (() => {
     brJosla();
     atjaunotLegendu();
     aizvertPrognozi();
+    Valoda.lietot();  // jaunie elementi (data-t) → aktīvā valoda
     setTimeout(() => karte.invalidateSize(), 0);
   }
 
@@ -273,15 +271,15 @@ const Darbvirsma = (() => {
     const parklajumi = [...document.querySelectorAll('.parklajums input:checked')].map(i => i.closest('label'))
       .map(l => [l.querySelector('.punkts')?.style.background || '#999', l.textContent.trim()]);
     if (!kodi.length && !parklajumi.length) {
-      ul.innerHTML = '<li class="dv-leg-tukss">Neviens slānis nav ieslēgts. Atveriet „Slāņu vadība”.</li>';
+      ul.innerHTML = `<li class="dv-leg-tukss">${Valoda.t('Neviens slānis nav ieslēgts. Atveriet „Slāņu vadība”.')}</li>`;
       return;
     }
     const pecGrupas = {};
     for (const k of kodi) (pecGrupas[kategorijas[k].grupa] ||= []).push(k);
     // tā pati marķiera forma kā kartē (ikonas.js), nevis tikai krāsa
-    ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(GRUPAS[g] || g)}</li>` +
-      kk.map(k => `<li>${Ikonas.formaHTML(k)}${esc(kategorijas[k].nosaukums)}</li>`).join('')).join('') +
-      (parklajumi.length ? '<li class="dv-leg-grupa">Pārklājumi</li>' + parklajumi.map(([k, t]) => `<li><span class="punkts" style="background:${esc(k)}"></span>${esc(t)}</li>`).join('') : '');
+    ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(Valoda.t(GRUPAS[g] || g))}</li>` +
+      kk.map(k => `<li>${Ikonas.formaHTML(k)}${esc(Valoda.t(kategorijas[k].nosaukums))}</li>`).join('')).join('') +
+      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t]) => `<li><span class="punkts" style="background:${esc(k)}"></span>${esc(t)}</li>`).join('') : '');
   }
   document.addEventListener('change', e => { if (ieslegts && e.target.matches('input[type="checkbox"]')) setTimeout(atjaunotLegendu, 0); });
   let legendasTaimeris = null;  // slāņus maina arī meklēšana (meklesana.js) — leģendu atjauno pēc kartes izmaiņām
@@ -289,15 +287,17 @@ const Darbvirsma = (() => {
 
   // ---- Dati: kopējā situācija valstī + labā kolonna ----
   let ieladets = 0, bridinajumi = [], izcelums = null;
-  const lidz = iso => iso ? `līdz ${laiks(iso)}` : '';
+  const lidz = iso => iso ? Valoda.t('līdz {x}', { x: laiks(iso) }) : '';
   const isi = t => { t = String(t || '').replace(/\s+/g, ' ').trim(); return t.length > 80 ? t.slice(0, 78).replace(/\s\S*$/, '') + '…' : t; };
   const iegutJson = c => fetch(c).then(r => r.ok ? r.json() : Promise.reject(r.status));
 
+  let svaigumsOk = false;  // pēdējais svaiguma stāvoklis (valodas maiņai)
   function svaigums(ok) {
+    svaigumsOk = ok;
     const t = josla112.querySelector('.dv-svaigums-teksts'), p = josla112.querySelector('.dv-punkts');
     const tiessaiste = ok && navigator.onLine;
     p.classList.toggle('novecojis', !tiessaiste);
-    t.textContent = tiessaiste ? `Tiešsaistes dati · atjaunots šodien ${stunda(new Date())}` : 'Bezsaistē vai dati nav pieejami · rāda saglabātos';
+    t.textContent = tiessaiste ? Valoda.t('Tiešsaistes dati · atjaunots šodien {x}', { x: stunda(new Date()) }) : Valoda.t('Bezsaistē vai dati nav pieejami · rāda saglabātos');
   }
 
   function izcelt(slanis) {
@@ -318,19 +318,19 @@ const Darbvirsma = (() => {
     try {
       bridinajumi = ((await iegutJson('/api/bridinajumi?poligoni=1')).bridinajumi || []).slice().sort((x, y) => y.limenis - x.limenis);
     } catch (e) {
-      valsts.querySelector('.dv-valsts-pills').innerHTML = '<span class="dv-pill">neizdevās ielādēt</span>';
-      ul.innerHTML = '<li class="dv-tukss">Neizdevās ielādēt. Skatiet meteo.lv.</li>';
+      valsts.querySelector('.dv-valsts-pills').innerHTML = '<span class="dv-pill">' + Valoda.t('neizdevās ielādēt') + '</span>';
+      ul.innerHTML = '<li class="dv-tukss">' + Valoda.t('Neizdevās ielādēt. Skatiet meteo.lv.') + '</li>';
       throw e;
     }
     const skaits = l => bridinajumi.filter(x => x.limenis === l).length;
     const pills = [[3, 'sarkan'], [2, 'oranž'], [1, 'dzelten']].filter(([l]) => skaits(l))
-      .map(([l, v]) => `<span class="dv-pill ${LIMENI[l][0]}">${skaits(l)} ${v}${skaits(l) === 1 ? 's' : 'i'} brīdinājum${skaits(l) === 1 ? 's' : 'i'}</span>`);
-    valsts.querySelector('.dv-valsts-pills').innerHTML = pills.length ? pills.join('') : '<span class="dv-pill zals">brīdinājumu nav</span>';
+      .map(([l]) => `<span class="dv-pill ${LIMENI[l][0]}">${Valoda.t(PILLS[l][skaits(l) === 1 ? 0 : 1], { n: skaits(l) })}</span>`);
+    valsts.querySelector('.dv-valsts-pills').innerHTML = pills.length ? pills.join('') : '<span class="dv-pill zals">' + Valoda.t('brīdinājumu nav') + '</span>';
     ul.innerHTML = bridinajumi.length ? bridinajumi.map((x, i) =>
       `<li class="dv-karte-rinda ${LIMENI[x.limenis]?.[0] || ''}" tabindex="0" data-bridinajums="${i}">` +
       `<span class="dv-rinda-teksts"><b>${esc(x.paradiba)}</b><small>${esc(x.regioni)} · ${esc(lidz(x.lidz))}</small></span>` +
-      `<span class="dv-limenis">${esc(LIMENI[x.limenis]?.[1] || x.krasa)}</span></li>`).join('')
-      : '<li class="dv-tukss">Spēkā esošu brīdinājumu nav.</li>';
+      `<span class="dv-limenis">${esc(Valoda.t(LIMENI[x.limenis]?.[1] || x.krasa))}</span></li>`).join('')
+      : '<li class="dv-tukss">' + Valoda.t('Spēkā esošu brīdinājumu nav.') + '</li>';
   }
 
   async function ieladetUdeni() {
@@ -341,10 +341,10 @@ const Darbvirsma = (() => {
         .map(f => ({ ...f.properties.ipasibas, nosaukums: f.properties.nosaukums, lon: f.geometry.coordinates[0], lat: f.geometry.coordinates[1] }))
         .filter(s => s.limenis_cm != null);
     } catch (e) {
-      ul.innerHTML = '<li class="dv-tukss">Neizdevās ielādēt.</li>';
+      ul.innerHTML = '<li class="dv-tukss">' + Valoda.t('Neizdevās ielādēt.') + '</li>';
       throw e;
     }
-    situacija.querySelector('#dv-udens .dv-avots').textContent = `${st.length} stacijas`;
+    situacija.querySelector('#dv-udens .dv-avots').textContent = Valoda.t('{n} stacijas', { n: st.length });
     const augosas = st.filter(s => s.izmaina_24h_cm > 0).sort((a, b) => b.izmaina_24h_cm - a.izmaina_24h_cm).slice(0, 3);
     const prognozes = await Promise.all(augosas.map(s => iegutJson(`/api/udens?lat=${s.lat}&lon=${s.lon}&limit=1`)
       .then(u => u.stacijas?.[0]?.stacija === s.stacija ? u.stacijas[0].prognoze : null).catch(() => null)));
@@ -352,7 +352,7 @@ const Darbvirsma = (() => {
       `<li class="dv-karte-rinda" tabindex="0" data-lat="${s.lat}" data-lon="${s.lon}">` +
       `<span class="dv-rinda-teksts"><b>${esc(s.nosaukums)}</b><small>${s.limenis_cm} cm · ${laiks(s.laiks)} ` +
       `<span class="dv-pieaug">▲ +${s.izmaina_24h_cm} cm</span></small></span>${sikgrafiks(s, prognozes[i])}</li>`).join('')
-      : '<li class="dv-tukss">Pēdējās 24 h neviena stacija nerāda pieaugumu.</li>';
+      : '<li class="dv-tukss">' + Valoda.t('Pēdējās 24 h neviena stacija nerāda pieaugumu.') + '</li>';
   }
 
   async function ieladetCelus() {
@@ -362,7 +362,7 @@ const Darbvirsma = (() => {
       n = ((await iegutJson('/api/celi')).notikumi || []).filter(x => x.aktivs !== false)
         .sort((a, b) => String(b.no || '').localeCompare(String(a.no || ''))).slice(0, 3);
     } catch (e) {
-      ul.innerHTML = '<li class="dv-tukss">Neizdevās ielādēt.</li>';
+      ul.innerHTML = '<li class="dv-tukss">' + Valoda.t('Neizdevās ielādēt.') + '</li>';
       throw e;
     }
     ul.innerHTML = n.length ? n.map(x => {
@@ -370,7 +370,7 @@ const Darbvirsma = (() => {
       return `<li class="dv-karte-rinda" tabindex="0" data-lat="${x.lat}" data-lon="${x.lon}" data-linija="${esc(JSON.stringify(x.linija || []))}">` +
         `<span class="dv-rinda-teksts"><b>${x.cels ? `<span class="dv-cels">${esc(x.cels)}</span>` : ''}${esc(x.nosaukums)}</b>` +
         `<small class="${slegts ? 'dv-slegts' : ''}">${esc(isi(x.apraksts))}</small><small>${esc(lidz(x.lidz))}</small></span></li>`;
-    }).join('') : '<li class="dv-tukss">Spēkā esošu ierobežojumu nav.</li>';
+    }).join('') : '<li class="dv-tukss">' + Valoda.t('Spēkā esošu ierobežojumu nav.') + '</li>';
   }
 
   // 3 punkti: līmenis pirms 24 h, tagad, 7 dienu prognozes mediāna (raustīta), ja ir
@@ -381,7 +381,7 @@ const Darbvirsma = (() => {
     const x = i => 4 + i * (w - 8) / 2;
     const nak = v.length > 2 ? `<path d="M${x(1)},${y(v[1])} L${x(2)},${y(v[2])}" stroke-dasharray="3 2"/>` : '';
     return `<svg class="dv-sikgrafiks" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" ` +
-      `aria-label="Pirms 24 h ${v[0]} cm, tagad ${v[1]} cm${v.length > 2 ? `, prognoze pēc 7 dienām ${v[2]} cm` : ''}">` +
+      `aria-label="${Valoda.t('Pirms 24 h {a} cm, tagad {b} cm', { a: v[0], b: v[1] })}${v.length > 2 ? ', ' + Valoda.t('prognoze pēc 7 dienām {c} cm', { c: v[2] }) : ''}">` +
       `<path d="M${x(0)},${y(v[0])} L${x(1)},${y(v[1])}"/>${nak}<circle cx="${x(1)}" cy="${y(v[1])}" r="2.4"/></svg>`;
   }
 
@@ -416,6 +416,15 @@ const Darbvirsma = (() => {
   plats.addEventListener('change', () => { if (plats.matches) sakt(); else izslegt(); });
   sakt();
   setInterval(() => { if (ieslegts) ieladetSituaciju(true); }, 10 * 60000);
+
+  // valodas maiņa: rāmis (data-t), leģenda, situācijas saraksti un svaiguma teksts jaunajā valodā
+  document.addEventListener('valoda-maina', () => {
+    if (!ieslegts) return;
+    Valoda.lietot();
+    atjaunotLegendu();
+    svaigums(svaigumsOk);
+    ieladetSituaciju(true);
+  });
 
   return { ieslegt, izslegt, raditAtvilktni };
 })();
