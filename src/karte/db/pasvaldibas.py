@@ -4,8 +4,11 @@ Avoti:
   ai-open-data-2026-hakatons/ca-plani-hakatons/pasvaldibas.csv + darba_saraksts.json — nosaukums, tīmekļvietne, CA plāna
     publikācijas lapa (organizatoru komplekts);
   markdown/<slug>/*.md priekšvārds avota_url — CA plāna dokuments (lielākais fails mapē, ne lēmumi);
+  Uzņēmumu reģistrs, "Publisko personu un iestāžu saraksts" (data.gov.lv public-persons-institutions, CC0, atjauno katru
+    dienu) — pašvaldības oficiālais e-pasts, tālrunis, adrese, tīmekļvietne (visas 42 pašvaldības, arī valstspilsētas);
   VPVKAC paplašinātā tīkla kontaktpunkti (data.gov.lv vpvkac-kontakti, CC0, 2022. gada augusts) — klientu apkalpošanas
-    centra tālrunis un e-pasts; katrai pašvaldībai viens centrs (pilsētas centrs, ja ir).
+    centra tālrunis un e-pasts; katrai pašvaldībai viens centrs (pilsētas centrs, ja ir). Valstspilsētām un Ventspils
+    novadam centra nav, tāpēc kartīte izmanto UR kontaktus.
 Palaišana (lokāli; vajag openpyxl): uv run --no-project --with openpyxl src/karte/db/pasvaldibas.py
 """
 
@@ -22,6 +25,8 @@ DATI = SAKNE / "src" / "karte" / "dati"
 VPVKAC = ("https://data.gov.lv/dati/dataset/efe66739-3a88-47bf-b63c-cd01493ab475/resource/"
           "4b72d47d-bd80-47cb-8309-ca5f2e761339/download/vpvkac_kontakti_2022_08.xlsx")
 UA = {"User-Agent": "map.repo.lv (AI Open Data 2026 hakatons)"}
+UR = ("https://data.gov.lv/dati/dataset/2e4926ea-8648-44e6-9227-3cb20604ec31/resource/"
+      "190ba502-08d1-4c4c-b1b9-b58299bf9a9f/download/ppi_public_persons_institutions.csv")
 
 
 def gen(nosaukums):
@@ -56,9 +61,32 @@ def vpvkac_centri():
     return centri
 
 
+def ur_kontakti():
+    """{"Ogres novada pašvaldība": {...}} — reģistrētās pašvaldības no UR publisko personu saraksta (CC0)."""
+    with urllib.request.urlopen(urllib.request.Request(UR, headers=UA), timeout=120) as r:
+        teksts = r.read().decode("utf-8-sig")
+    rez = {}
+    for x in csv.DictReader(io.StringIO(teksts), delimiter=";"):
+        if x.get("authorityType") == "DERIVED_PUBLIC_PERSON_PARISH" and x.get("Status") == "REGISTERED" \
+                and x.get("name", "").endswith(" pašvaldība"):
+            lapa = (x.get("website") or "").strip()
+            if lapa and not lapa.startswith("http"):
+                lapa = "https://" + lapa
+            rez[x["name"].strip()] = {"epasts": (x.get("email") or "").strip().lower() or None,
+                                      "talrunis": (x.get("phone") or "").strip() or None,
+                                      "adrese": " ".join((x.get("address") or "").split()) or None,
+                                      "majas_lapa": lapa or None}
+    return rez
+
+
+def ur_nosaukums(pasvaldiba, tips):
+    return gen(pasvaldiba) + (" valstspilsētas pašvaldība" if tips == "valstspilsēta" else " pašvaldība")
+
+
 def main():
     slugi = {d["pasvaldiba"]: d for d in json.loads((KIT / "darba_saraksts.json").read_text(encoding="utf-8"))}
     centri = vpvkac_centri()
+    ur = ur_kontakti()
     rez = {}
     for r in csv.DictReader((KIT / "pasvaldibas.csv").open(encoding="utf-8")):
         d = slugi.get(r["pasvaldiba"], {})
@@ -73,11 +101,12 @@ def main():
             "ca_plans_url": plana_url(d["slug"]) if d.get("slug") else None,
             "ca_lapa": d.get("vugd_norade") or None,
             "vpvkac": centrs, "vpvkac_skaits": len(savi),
+            "kontakti": ur.get(ur_nosaukums(r["pasvaldiba"], r["tips"])),
         }
     DATI.mkdir(parents=True, exist_ok=True)
     (DATI / "pasvaldibas.json").write_text(json.dumps(rez, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
     print(f"pasvaldibas.json: {len(rez)} pašvaldības, ar CA plānu {sum(1 for v in rez.values() if v['ca_plans_url'])}, "
-          f"ar VPVKAC {sum(1 for v in rez.values() if v['vpvkac'])}")
+          f"ar VPVKAC {sum(1 for v in rez.values() if v['vpvkac'])}, ar UR kontaktiem {sum(1 for v in rez.values() if v['kontakti'])}")
 
 
 if __name__ == "__main__":

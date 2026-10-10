@@ -588,17 +588,21 @@ const krizesMeklesana = (() => {
     }).catch(() => {});
   }
 
-  // Pašvaldība: CA plāns, tīmekļvietne, VPVKAC tālrunis kā teksts (bez tel: saitēm)
+  // Pašvaldība: CA plāns, tīmekļvietne, pašvaldības tālrunis un e-pasts (UR, CC0) kā teksts — bez tel: saitēm;
+  // VPVKAC centrs (2022) tikai tad, ja UR kontaktu nav
   function pasvaldibaDati(ll, no, signal) {
     iegut('/pasvaldiba?' + new URLSearchParams(ll), signal).then(p => {
       const el = kaste.querySelector('#rez-pasvaldiba');
       if (!el) return;
       const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
-      const c = p.vpvkac;
+      const k = p.kontakti, c = k ? null : p.vpvkac;
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
+        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') +
         (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
-        `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)${c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : ''}</small>`;
+        `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)` +
+        (k ? ' · <a href="https://data.gov.lv/dati/dataset/public-persons-institutions" target="_blank" rel="noopener">Uzņēmumu reģistrs, publisko personu saraksts</a> · CC0' : '') +
+        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : '') + '</small>';
     }).catch(() => {});
   }
 
