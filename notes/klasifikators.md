@@ -125,3 +125,61 @@ Jaunos rakstījām paši, redzot atslēgvārdus, tāpēc tie nav neatkarīgs nov
 
 Salaboti 14 vaicājumi, salauzts neviens. Vecie testi joprojām zaļi: 125/125 un 121/121. Lieka "Vai domājāt" poga
 skaidrajiem vaicājumiem parādās biežāk: 182 → 189 no 548.
+
+## 4. kārta (2026-10-10 rīts): pavirši rakstīts teksts telefonā
+
+**Kopa.** `src/meklesana/kludaini.py` no `vaicajumi.json` pāriem mehāniski (fiksēta sēkla, kļūdas nav pielāgotas
+klasifikatoram) uzģenerē `vaicajumi_kludaini.json`, 200 vaicājumus:
+- 30 bez garumzīmēm ("majas ir zagli dzirdu leja solus");
+- pa 30 ar dubultu burtu ("ezzera"), iztrūkstošu burtu ("heart atack") un samainītiem blakus burtiem ("musci");
+  60 % no tiem arī bez garumzīmēm;
+- 30 krieviski latīņu burtiem, divas shēmas jauktā veidā ("net sveta uzhe sutki", "v podezde pahnet gazom");
+- 15 angliski + latviska vieta ("car won't start Tukumā"), 15 lielie burti / pieturzīmes ("…NEVERAS??");
+- 20 ar vietu, kas pielipusi vārdam ("nav elektribasrezekne", "ogrepludi"); te pārbauda arī vietu.
+
+**Kas mainīts `production/klasifikators.js`** (atslēgvārdi nav mainīti):
+- Normalizēšana: garumzīmes nost jau bija; tagad arī apostrofs vārda vidū pazūd ("rel'sov"), izņemot angļu
+  saīsinājumus ("can't" paliek kā atslēgvārdos), un cipari atdalīti no burtiem ("ogre15" → "ogre 15").
+- Pielipusi vieta: ja vietvārds nav atrasts, meklē vietas formu (≥ 4 burti) vārda sākumā vai beigās, atlikums
+  ≥ 3 burti. Ģenitīvu ("…alojas") beigās neņem, un ja atslēgvārds sniedzas vietas daļā, tā nav vieta.
+- Vārdi, kuros nesākas neviens atslēgvārds, tiek laboti un vaicājums vērtēts vēlreiz; labots vārds sver 0,85.
+  1. Krievu valoda latīņu burtiem: kirilicas atslēgvārdus pārvērš latīņu burtos, abas puses vienotā formā
+     (kh→h, ts→c, shch→sch, ya→ja, y→i), un vārdu aizstāj ar kirilicas atslēgvārdu ("net sveta" → "нет света").
+  2. Dubults burts ("pluudi" → "pludi").
+  3. Damerau-Levenšteins ≤ 1 pret atslēgvārdu vārdiem no ≥ 5 burtiem (arī latīniskajiem krievu vārdiem), garākais
+     uzvar. Atslēgvārdiem ar 5–6 burtiem pirmajam burtam jāsakrīt un aiz tā drīkst būt tikai galotne
+     ("pludmale" ≠ "pludi", "jauki" ≠ "lauki"). Kandidātus atrod ar "simetrisko dzēšanu" (atslēgvārds un visi tā
+     varianti bez viena burta), tāpēc pārbauda dažus desmitus, ne tūkstošus.
+- 1. un 3. solis darbojas tikai tad, ja precīzi nav atrasts neviens scenārijs. Citādi pareizi, bet atslēgvārdos
+  neesoši vārdi "labojās" par līdzīgiem ("augsta" → "auksta", "daudzi" → "drudzi", "aizskrēja" → "aizsērēja"),
+  un normālajā kopā krita trāpījumi. Dubulto burtu labošana darbojas vienmēr.
+- `aptuveni: true` tikai, ja scenārijs atrasts pēc kļūdas labošanas (translits nav "aptuveni"). Dzīvības draudi
+  (112 rinda) tiek meklēti arī labotajā tekstā ("neepo" → "neelpo", "pozhar" → "пожар").
+- "Vai domājāt" veidojas no tiem pašiem punktiem, tātad izmanto to pašu labošanu.
+- Atslēgvārdus meklē tikai tos, kuru pirmie 1–3 burti ir kāda vaicājuma vārda sākumā (indekss), tāpēc
+  `klasificet` kļuva ātrāks, lai gan labošanas ir vairāk.
+
+**Skaitļi.**
+
+| | `main` | pēc |
+|---|---:|---:|
+| `testi.json` | 133/133 | 133/133 |
+| `vaicajumi.json` (609) | 585 (96,1 %) | 586 (96,2 %) |
+| — paturētie (186) | 170 (91,4 %) | 170 (91,4 %) |
+| `vaicajumi_kludaini.json` (200) | 132 (66,0 %) | **187 (93,5 %)** |
+| — krieviski latīņu burtiem | 4/30 | 28/30 |
+| — pielipusi vieta | 0/20 | 19/20 |
+| — iztrūkst / dubults / samainīts | 21 / 24 / 25 no 30 | 26 / 28 / 28 no 30 |
+| `klasificet` QuickJS, pirmais izsaukums | mediāna 2 ms, max 74 ms | mediāna 1 ms, max 3 ms |
+
+Normālajā kopā mainījās divi rezultāti: "apmaldijos snniega" tagad pareizs, un "nav mobilo zonu, tīkls nestrādā"
+vairs neatrod nepareizo `izsists_logs` (tagad neko). "Vai domājāt" lieki skaidrajiem: 189 → 188 no 548.
+`izveidot` QuickJS 50 → 90 ms, pārlūkā (Chromium) 13 ms. Dzēšanu indekss tiek veidots pirmajā reizē, kad tas
+vajadzīgs (pārlūkā ~5 ms vienreiz). `testi.py` krīt, ja kopa ir zem 90 % vai p95 laiks ≥ 5 ms.
+
+**Kas paliek.** Kļūdas īsos atslēgvārdos (< 5 burti, "pldi"), kļūda vaicājumā, kurā cits vārds jau atrasts
+("tuelī deg mašīna": "deg" atrasts, tāpēc "tuelī" netiek labots), un tuvie pāri no 3. kārtas. Pārlūkā
+`meklesana.js` joprojām pirms klasifikatora `aptuveni` rezultāta mēģina savu `labot()`. Lai visur būtu tieši šī
+labošana, `meklesana.js` `klasificetLabots` rindā `if (rez.scenariji.length && !rez.aptuveni) return rez;` jāizņem
+`&& !rez.aptuveni` (to failu šobrīd labo cita sesija). Tad `labot()` paliek tikai rezerves variants, ja nekas nav
+atrasts.

@@ -17,10 +17,11 @@ cilvēkus pēc izcelsmes vai izskata. Bīstamu rīcību sedz #71 (nekārtības),
 | Fails | Kas tajā |
 |---|---|
 | `production/scenariji.json` | **Noteikumi**: scenāriji → atslēgvārdi → kartes kategorijas → padoms; dzīvības draudu frāzes; citvalodu vietvārdi. Formāts aprakstīts faila `_apraksts`. |
-| `production/klasifikators.js` | Teksts → `{scenariji, zvanit112, vieta}`. Vārdu sākumi, viena burta kļūdas, latviskās vietvārdu formas (Ogrē, Cēsīs, Talsos, Ventspilī). |
+| `production/klasifikators.js` | Teksts → `{scenariji, zvanit112, vieta}`. Vārdu sākumi, latviskās vietvārdu formas (Ogrē, Cēsīs, Talsos, Ventspilī), pielipusi vieta ("pludiogre"), krievu valoda latīņu burtiem, dubults burts, viena burta kļūda (Damerau-Levenšteins ≤ 1). |
 | `production/meklesana.js` | Meklēšanas lauks, ātrās pogas, rezultāti un to rādīšana kartē. Lieto `app.js` globālos. |
 | `src/meklesana/testi.json` | Vaicājums → sagaidāmais scenārijs / 112 / vieta. |
 | `src/meklesana/vaicajumi.json` | 497 reālistiski vaicājumi (LV, RU/EN, kļūdas, vietas, divdomīgi) → pieņemamie scenāriji; `testi.py` mēra precizitāti (mērķis ≥ 90 %). Metode: `notes/klasifikators.md`. |
+| `src/meklesana/vaicajumi_kludaini.json` | 200 pavirši rakstīti vaicājumi (bez garumzīmēm, burtu kļūdas, translits, pielipusi vieta), ģenerē `kludaini.py`; `testi.py` mērķis ≥ 90 % un laiks < 5 ms. |
 | `src/meklesana/papildinat.py` | Filtrē un pievieno ģenerētos atslēgvārdus / apvieno ģenerēto vaicājumu kopu. |
 
 Vieta: vietvārds vaicājumā → tava atrašanās vieta → izvēlētais reģions (no tā centra). Bez vietas lūdz to noteikt.
