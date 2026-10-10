@@ -28,6 +28,7 @@ const krizesMeklesana = (() => {
   let klasifikators = null;
   let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
   let pedejais = null;          // { teksts, scenarijs } — atkārto, kad mainās atrašanās vieta vai reģions
+  let konteksts = null;         // { kods, nosaukums, vieta, adrese } pēdējam rezultātam — zinot.js aizpilda ziņojumu ("tikai vienreiz")
   let pieprasijums = null;
   const rezultatuSlanis = L.layerGroup().addTo(karte);
   const kaste = el('rezultati');
@@ -336,6 +337,7 @@ const krizesMeklesana = (() => {
   function notirit() {
     if (typeof Dalities !== 'undefined') Dalities.notiritUrl();
     pedejais = null;
+    konteksts = null;
     uzskaite = null;
     if (pieprasijums) pieprasijums.abort();
     rezultatuSlanis.clearLayers();
@@ -479,6 +481,7 @@ const krizesMeklesana = (() => {
     bridinajumi(no, no?.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
+    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: no, adrese: adrese?.adrese || null };
     if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
       uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
       if (uzskaite) zinot(uzskaite.vaicajums);
@@ -931,5 +934,9 @@ const krizesMeklesana = (() => {
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
+<<<<<<< HEAD
+  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, konteksts: () => konteksts };
+=======
   return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats };
+>>>>>>> origin/main
 })();
