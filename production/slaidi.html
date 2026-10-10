@@ -63,6 +63,7 @@
     .slaids { display: flex !important; flex-direction: column; position: relative; width: 297mm; height: 167mm; font-size: 15pt; page-break-after: always; break-after: page; }
     .piezimes, #taimeris, #palidziba, .vadiba { display: none !important; }
   }
+  .ik { width: 1em; height: 1em; vertical-align: -.15em; }
 </style>
 <meta name="description" content="Krīzes karte (map.repo.lv) hakatona prezentācija: viena meklēšana — viens lēmums no atvērtajiem datiem.">
 <link rel="canonical" href="https://map.repo.lv/slaidi.html">
@@ -130,7 +131,7 @@
     <div>
       <h2>Uzrakstiet, kas notiek un kur.<br>Saņemiet vienu atbildi.</h2>
       <ul class="karte">
-        <li>⚠ LVĢMC brīdinājumi šai vietai</li>
+        <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#brid"></use></svg> LVĢMC brīdinājumi šai vietai</li>
         <li><b>Lēmums:</b> plūdu zona — jā / nē pie Jūsu adreses</li>
         <li>Fakti: upes līmenis un 24 h izmaiņa, nokrišņi un augsne, ceļi</li>
         <li>Tuvākās vietas ar avotu, licenci un maršrutu</li>
@@ -147,7 +148,7 @@
 <section class="slaids" data-laiks="2:35">
   <h2>Trīs soļi. Kartīte ir kopsavilkums.</h2>
   <div class="soli">
-    <div>1 · Vieta<small>📍 vai adrese (VZD)</small></div>
+    <div>1 · Vieta<small><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#vieta"></use></svg> vai adrese (VZD)</small></div>
     <div>2 · Vajadzība<small>„plūdi Ogrē”</small></div>
     <div>3 · Rezultāts<small>viena kartīte</small></div>
   </div>
@@ -166,7 +167,7 @@
     <div class="bilde" data-bilde="05-pludi-padoms-talak.webp"><span>05-pludi-padoms-talak.webp</span></div>
   </div>
   <p class="klusais">Lēmums → plūdu zona laukumā → upes līmenis → pulcēšanās vieta ar CA plāna lappusi → padoms un „Kas notiks tālāk”.</p>
-  <aside class="piezimes"><b>3:00–5:00 · DZĪVAIS DEMO</b> (telefons, ekrāns spoguļots; rezerve — video map-repo-lv-demo-390x844.webm). 1) „📍 Rādīt tuvākos man” vai adrese; 2) ierakstīt „plūdi Mednieku iela 9 Ogre”; 3) kartīte atveras pusē: lēmums, zona kā laukums, upes stacija, „Nokrišņi un augsne”, ceļi 5 km, pulcēšanās vieta ar lappusi, „Kas notiks tālāk”. Pirms uzstāšanās „uzsildīt” šo adresi (plūdu WMS ir lēns).</aside>
+  <aside class="piezimes"><b>3:00–5:00 · DZĪVAIS DEMO</b> (telefons, ekrāns spoguļots; rezerve — video map-repo-lv-demo-390x844.webm). 1) „Rādīt tuvākos man” vai adrese; 2) ierakstīt „plūdi Mednieku iela 9 Ogre”; 3) kartīte atveras pusē: lēmums, zona kā laukums, upes stacija, „Nokrišņi un augsne”, ceļi 5 km, pulcēšanās vieta ar lappusi, „Kas notiks tālāk”. Pirms uzstāšanās „uzsildīt” šo adresi (plūdu WMS ir lēns).</aside>
 </section>
 
 <!-- 7 · 5:00–5:20 · 112 -->
@@ -175,7 +176,7 @@
     <div>
       <h2>Dzīvība pirmajā vietā</h2>
       <p class="liels">„cilvēks nav pie samaņas”</p>
-      <ul class="karte"><li class="d">⚠ Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt.</li></ul>
+      <ul class="karte"><li class="d"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt.</li></ul>
       <p>Bez pogām un tel: saitēm — pasakām skaidri. Tuvākā 24/7 neatliekamā palīdzība — kartītē.</p>
     </div>
     <div class="bilde" data-bilde="06-112-rinda.webp"><span>06-112-rinda.webp</span></div>
@@ -211,7 +212,7 @@
 
 <!-- 10 · 7:00–7:40 · avoti -->
 <section class="slaids blivs" data-laiks="7:00">
-  <h2>25 atvērto datu avoti + 1 atklāti atzīmēts ⚠</h2>
+  <h2>25 atvērto datu avoti + 1 atklāti atzīmēts <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg></h2>
   <ul class="avoti" style="font-size:.6em">
     <li><b>VZD</b> adrešu reģistrs — CC BY 4.0</li>
     <li><b>42 pašvaldību CA plāni</b> — oficiāls dokuments</li>
@@ -236,7 +237,7 @@
     <li><b>OpenStreetMap</b> noturības punktu kandidāti — ODbL</li>
     <li><b>OpenStreetMap</b> karšu fons — ODbL</li>
     <li><b>OpenTopoMap</b> reljefs — CC BY-SA</li>
-    <li>⚠ <b>VUGD / 112.lv</b> patvertnes — licence nav norādīta</li>
+    <li><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> <b>VUGD / 112.lv</b> patvertnes — licence nav norādīta</li>
   </ul>
   <p class="klusais">Demo scenārijā arī LĢIA 20 m augstuma modelis (CC BY 4.0). Panelī „Datu avoti” — viss saraksts (tur 27 + 1: divi ir mūsu simulētie prototipa dati ar zīmi „SIMULĒTI”).</p>
   <aside class="piezimes"><b>7:00–7:40 · Teikt:</b> Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. (Vērtēšanas kritērijs 5.) GTFS rindā 3 kopas (RS, ATD, VIVI). Ja kāds atver paneli: 27 = 25 + 2 simulētie prototipa slāņi.</aside>
@@ -294,7 +295,7 @@
   <h1 style="margin-top:auto">Katalogs un PDF → atbilde,<br>ko katrs saņem 30 sekundēs.</h1>
   <p class="milzigs" style="color:var(--zils-tumss);font-size:2.4em">map.repo.lv</p>
   <div class="divas" style="flex:0 0 auto;align-items:end;margin-bottom:auto">
-    <p class="klusais">Komanda · VARAM / LATA „AI atvērto datu” hakatons 2026 · krīžu vadības virziens<br><a href="./#datu-avoti">Par datiem</a> · <a href="statuss.html">Statuss</a> · <a href="info.html">Svarīgi</a> · <a href="./#kas-jauns" aria-label="Kas jauns">#</a><br>Dati: katram avotam sava licence (CC0, CC BY 4.0, ODbL, oficiāls dokuments); ⚠ patvertnēm licence nav norādīta.</p>
+    <p class="klusais">Komanda · VARAM / LATA „AI atvērto datu” hakatons 2026 · krīžu vadības virziens<br><a href="./#datu-avoti">Par datiem</a> · <a href="statuss.html">Statuss</a> · <a href="info.html">Svarīgi</a> · <a href="./#kas-jauns" aria-label="Kas jauns">#</a><br>Dati: katram avotam sava licence (CC0, CC BY 4.0, ODbL, oficiāls dokuments); <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> patvertnēm licence nav norādīta.</p>
     <div class="bilde" data-bilde="qr-map-repo-lv.svg" style="height:8em;width:8em;justify-self:end"><span>QR kods → map.repo.lv<br>(qr-map-repo-lv.svg)</span></div>
   </div>
   <aside class="piezimes"><b>9:30–10:00.</b> Pateikties. Atstāt šo slaidu jautājumu laikā.</aside>

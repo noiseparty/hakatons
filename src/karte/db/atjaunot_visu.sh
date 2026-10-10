@@ -115,6 +115,13 @@ ikdienas vivi-gtfs gtfs_vivi.csv --kategorija pietura --nosaukums "{nosaukums}" 
 # 3. Statiskie avoti no repozitorija (mainās tikai ar PR): ielādē, ja fails mainījies
 statisks vugd-112 $REPO/patvertnes.geojson --kategorija patvertne --id "{_nr}" --nosaukums "{veids}" --adrese "{iela} {nr}, {vieta}" --apvienot 35
 statisks vm-24h $REPO/slimnicas_24h.geojson --kategorija neatliekama_24h --id "{nr}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+# Banku bankomāti (bankomati.py; licence nav norādīta → ⚠). Pēc tam OSM bankomāti ≤ 40 m no tiem (tās pašas bankas vai bez
+# operatora) tiek izdzēsti — katru reizi, jo OSM ielādējas katru dienu no jauna.
+statisks bankas-atm $REPO/bankomati_vietas.csv --kategorija bankomats --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+OSM_ATM_DUBLIKATI="delete from objekti o where o.avots = 'osm' and o.kategorija = 'bankomats'
+  and exists (select 1 from objekti b where b.avots = 'bankas-atm' and st_dwithin(b.geom::geography, o.geom::geography, 40))
+  and lower(concat_ws(' ', o.ipasibas->>'operator', o.ipasibas->>'brand', o.ipasibas->>'name')) ~ '^[[:space:]]*\$|swed|seb|luminor|citadel'"
+darit psql "$MAP_DB_OWNER_DSN" -q -c "$OSM_ATM_DUBLIKATI" || KLUDAS+=(osm-atm-dublikati)
 # Simulēti prototipa dati (atseviski_dati/README.md): kartē marķēti "SIMULĒTI DATI — prototips"
 statisks sim-udens atseviski_dati/udens.csv --kategorija udens_punkts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 statisks sim-energija atseviski_dati/energija.csv --kategorija uzlades_stacija --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"

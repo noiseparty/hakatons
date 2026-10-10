@@ -32,7 +32,7 @@
   ],
   "scenariji": [
     {
-      "kods": "patvertne", "nosaukums": "Patvertne", "atra_poga": "🛡️ Patvertne",
+      "kods": "patvertne", "nosaukums": "Patvertne", "atra_poga": "Patvertne",
       "kategorijas": ["patvertne"], "zvanit112": false, "talak": "kars",
       "padoms": "Ja skan trauksmes sirēnas, ieslēdziet LR1 vai LTV1 un sekojiet norādēm. Dodieties uz tuvāko patvertni vai palieciet iekštelpās tālāk no logiem.",
       "atslegvardi": [
@@ -43,7 +43,7 @@
       ]
     },
     {
-      "kods": "medicina", "nosaukums": "Medicīniskā palīdzība", "atra_poga": "🏥 Ārsts",
+      "kods": "medicina", "nosaukums": "Medicīniskā palīdzība", "atra_poga": "Ārsts",
       "kategorijas": ["neatliekama_24h", "slimnica", "aptieka"], "zvanit112": false, "talak": "medicina",
       "padoms": "Ja apdraudēta dzīvība, zvaniet 112. Ja nav steidzami, ģimenes ārsta konsultatīvais tālrunis 66016001 strādā visu diennakti.",
       "atslegvardi": [
@@ -59,7 +59,7 @@
       ]
     },
     {
-      "kods": "zales", "nosaukums": "Zāles", "atra_poga": "💊 Aptieka",
+      "kods": "zales", "nosaukums": "Zāles", "atra_poga": "Aptieka",
       "kategorijas": ["aptieka", "neatliekama_24h"], "zvanit112": false, "talak": "_",
       "padoms": "Pirms ejat, pārbaudiet aptiekas darba laiku. Zāles ar e-recepti var saņemt jebkurā aptiekā.",
       "atslegvardi": [
@@ -72,7 +72,7 @@
       ]
     },
     {
-      "kods": "ugunsgreks", "nosaukums": "Ugunsgrēks", "atra_poga": "🔥 Ugunsgrēks",
+      "kods": "ugunsgreks", "nosaukums": "Ugunsgrēks", "atra_poga": "Ugunsgrēks",
       "kategorijas": ["ugunsdzeseji", "udens_nemsana"], "zvanit112": true, "talak": "uguns",
       "padoms": "Zvaniet 112. Pametiet telpas, aizveriet aiz sevis durvis un neizmantojiet liftu. Dūmos pārvietojieties pieliekušies pie grīdas.",
       "atslegvardi": [
@@ -84,7 +84,7 @@
       ]
     },
     {
-      "kods": "policija", "nosaukums": "Policija un drošība", "atra_poga": "🚓 Policija",
+      "kods": "policija", "nosaukums": "Policija un drošība", "atra_poga": "Policija",
       "kategorijas": ["policija"], "zvanit112": false, "talak": "kartiba",
       "padoms": "Ja briesmas draud tagad, zvaniet 112 vai 110. Neiesaistieties konfliktā, dodieties uz drošu vietu.",
       "atslegvardi": [
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "kods": "degviela", "nosaukums": "Degviela", "atra_poga": "⛽ Degviela",
+      "kods": "degviela", "nosaukums": "Degviela", "atra_poga": "Degviela",
       "kategorijas": ["degviela"], "zvanit112": false, "talak": "_",
       "padoms": "Pirms braucat prom, pārbaudiet, vai ceļš nav slēgts. Evakuācijas laikā sekojiet pašvaldības un 112.lv norādēm.",
       "atslegvardi": [
@@ -111,7 +111,7 @@
       ]
     },
     {
-      "kods": "nauda", "nosaukums": "Skaidra nauda", "atra_poga": "💶 Bankomāts",
+      "kods": "nauda", "nosaukums": "Skaidra nauda", "atra_poga": "Bankomāts",
       "kategorijas": ["bankomats"], "zvanit112": false, "talak": "_",
       "padoms": "Ja nav elektrības vai sakaru, kartes var nedarboties. Turiet mazliet skaidras naudas.",
       "atslegvardi": [
