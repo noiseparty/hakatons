@@ -145,9 +145,14 @@ class Plans:
         self.dir = KIT / "markdown" / slug
         self.kese = {}
 
+    def cels(self, nosaukums):
+        """Komplekta Markdown vai mūsu OCR pārveidojums skenētam plānam (src/karte/dati/ca_plani/<slug>-ocr.md)."""
+        p = self.dir / nosaukums
+        return p if p.exists() else IZVILKUMS / nosaukums
+
     def fails(self, nosaukums):
         if nosaukums not in self.kese:
-            teksts = (self.dir / nosaukums).read_text(encoding="utf-8")
+            teksts = self.cels(nosaukums).read_text(encoding="utf-8")
             fm = {}
             m = re.match(r"---\n(.*?)\n---\n", teksts, re.S)
             if m:
@@ -161,7 +166,7 @@ class Plans:
 
     def atrast(self, nosaukums, citats):
         """(lpp, avota_url) vai None, ja citāta failā nav."""
-        if not citats or not (self.dir / nosaukums).exists():
+        if not citats or not nosaukums or not self.cels(nosaukums).exists():
             return None
         teksts, fm, lpp = self.fails(nosaukums)
         poz = teksts.find(citats)

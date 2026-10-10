@@ -411,3 +411,73 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .marsruta-rinda b { color: #0059a6; }
 .marsruta-rinda .marsruts-bistams { color: var(--sarkans); }
 .marsruta-rinda .avots-rinda { display: block; font-size: .72rem; }
+
+/* Demo atskaņošana prezentācijai (atskanot.js): josla kartes augšā */
+.atskanot-rinda { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; padding: .5rem .8rem; border-bottom: 1px solid var(--robeza); }
+.atskanot-rinda small { color: var(--teksts2); font-size: .75rem; }
+.atskanot-sakt { width: auto; padding: .35rem .7rem; font-size: .88rem; font-weight: 600; color: #fff; background: #7c2d12; border-color: #7c2d12; }
+/* kartes apakšā (augšā ir SIMULĀCIJA zīme un tuvināšanas pogas); atvērts demo panelis labajā malā netiek aizsegts */
+.atskanot-josla { position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%); z-index: 1200; width: min(640px, calc(100% - 40px));
+  padding: .5rem .7rem .6rem; background: rgba(28, 25, 23, .92); color: #fff; border-radius: var(--radiuss); box-shadow: var(--ena); }
+.atskanot-teksts { display: flex; gap: .5rem; align-items: baseline; font-size: 1.05rem; }
+.atskanot-teksts b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.atskanot-solis, .atskanot-laiks { font-variant-numeric: tabular-nums; color: #d6d3d1; font-size: .9rem; }
+.atskanot-progress { height: 5px; margin: .4rem 0; background: rgba(255, 255, 255, .25); border-radius: 3px; overflow: hidden; }
+.atskanot-progress span { display: block; height: 100%; width: 0; background: #f97316; transition: width .25s linear; }
+.atskanot-josla.pauze .atskanot-progress span { background: #a8a29e; }
+.atskanot-pogas { display: flex; gap: .4rem; }
+.atskanot-pogas button { width: auto; min-width: 44px; min-height: 36px; padding: .2rem .6rem; color: #fff; background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .35); }
+.atskanot-pogas button[data-a="beigt"] { margin-left: auto; }
+body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-width: 640px; transform: none; margin: 0 auto; }
+@media (max-width: 800px) {
+  .atskanot-josla, body.demo-atverts .atskanot-josla { top: 6px; bottom: auto; left: 8px; right: 8px; width: auto; transform: none; padding: .4rem .5rem .5rem; }
+  .atskanot-rinda small { display: none; }  /* telefonā taustiņu nav */
+  .atskanot-teksts { font-size: .9rem; }
+}
+/* Laikapstākļi tagad (noverojumi.js): stacijas ar brāzmu skaitli */
+.noverojums-ikona span { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%;
+  border: 2px solid #1c1917; font-size: 11px; font-weight: 800; letter-spacing: -.02em; color: #1c1917; box-shadow: 0 1px 4px rgba(0, 0, 0, .35); }
+.noverojums-ikona span.vecs { border-style: dashed; color: #57534e; }
+
+/* Telefoni: pieskāriena mērķi ≥ 44 px un teksts ≥ 12 px (ierīču tests: notes/telefonu-tests.md) */
+@media (max-width: 800px) {
+  .meklet-rinda input, .meklet-rinda button, #panelis-poga { min-height: 44px; }
+  .kartes-rikis button { width: 44px; height: 44px; }
+  .pamatkarte button { min-height: 44px; }
+  .grupa > summary, .kat { min-height: 44px; box-sizing: border-box; }  /* slāņu grupas un rūtiņu rindas (visa rinda ir mērķis) */
+  .prog-poga, .prog-dienas button { min-height: 44px; }
+  .prog-aizvert { width: 44px; height: 44px; }
+  .bridinajums summary { padding: .65rem 0; min-height: 44px; box-sizing: border-box; }
+  #panelis button, #panelis select, .demo-regions select { min-height: 44px; }
+  .riski-sledzis button { min-width: 44px; }
+  .marsruts a, .rez-saraksts .marsruts a, .apaksa #rezultati .marsruts a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 .7rem; font-size: .85rem; }
+  .marsruts { gap: 6px; }
+  .grupa-ikona b { font-size: .8rem; }
+  .zonu-legenda small { font-size: .78rem; }
+}
+/* Šauri telefoni (iPhone SE, 320–400 px): zonu leģenda virs pamatkartes slēdža, nevis tam pāri */
+@media (max-width: 400px) {
+  .leaflet-bottom.leaflet-left .zonu-legenda { margin-bottom: 56px; }
+}
+/* ==== Ziņot (zinot.js): iedzīvotāju ziņojumi; dialogs izmanto .saraksts-dialogs ==== */
+.zinot-poga { margin-top: .5rem; }
+.zinot-forma { padding: .6rem .85rem .85rem; }
+.zinot-forma fieldset { border: 0; margin: 0; padding: 0; }
+.zinot-forma legend, .zinot-etikete { display: block; font-weight: 600; margin: .6rem 0 .3rem; }
+.zinot-tipi { display: grid; gap: .35rem; }
+.zinot-tipi label { display: flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); cursor: pointer; }
+.zinot-tipi label:has(input:checked) { border-color: var(--zils); background: var(--zils-gaiss); }
+.zinot-tipi input { width: 1.1rem; height: 1.1rem; margin: 0; }
+.zinot-forma textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
+.zinot-vieta, .zinot-pogas { display: flex; gap: .5rem; flex-wrap: wrap; }
+.zinot-vieta button, .zinot-pogas button { flex: 1 1 10rem; min-height: 44px; width: auto; margin: 0; }
+.zinot-kopsavilkums { margin: .4rem 0; }
+.zinot-kopsavilkums dt { font-weight: 600; color: var(--teksts2); font-size: .85rem; margin-top: .4rem; }
+.zinot-kopsavilkums dd { margin: 0; }
+.zinot-josla { position: absolute; z-index: 1001; top: 8px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 16px); padding: .5rem .75rem; border-radius: var(--radiuss); background: #1f2933; color: #fff; font-size: .9rem; box-shadow: var(--ena); }
+.zinot-josla button { width: auto; margin-left: .5rem; padding: .3rem .6rem; min-height: 36px; }
+.zinot-izvele { cursor: crosshair; }
+.zinojums-popup p { margin: .3rem 0; }
+.zinojums-popup small { display: block; }
+.zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
+.zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }

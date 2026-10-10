@@ -15,6 +15,8 @@ const krizesMeklesana = (() => {
   const PLUDU_SCENARIJI = new Set(['pludi', 'udens_celas']);
   // Nokrišņu un augsnes konteksta rinda (Open-Meteo caur /api/augsne): plūdiem, lietusgāzēm un vētrām
   const LAIKA_SCENARIJI = new Set(['pludi', 'udens_celas', 'negaiss', 'vetra_jumts', 'viesulvetra']);
+  // Vējš tuvākajā LVĢMC stacijā tagad (/api/noverojumi): vētrām un vējam
+  const VEJA_SCENARIJI = new Set(['vetra_jumts', 'viesulvetra', 'negaiss', 'sniegavetra', 'koks_pari_celam', 'vads_pari_celam']);
   const AVOTI_LVGMC = {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
@@ -429,6 +431,7 @@ const krizesMeklesana = (() => {
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
     const beigas = talakBloks(galvenais) + vaiDomaji +
       '<button type="button" class="otra" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Visi kartes objekti sarakstā</button>' +
+      '<button type="button" class="otra" data-darbiba="zinot"><span aria-hidden="true">📣</span> Ziņot par bīstamību šeit</button>' +
       (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
@@ -476,7 +479,8 @@ const krizesMeklesana = (() => {
       ]);
       grupas.forEach(g => { g.features = izveleties(g.features); });
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
-      vietas((laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
+      const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
+      vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
         (neizdevas ? '<p class="piezime kluda">Daļu tuvāko vietu neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža; padoms un 112 ir spēkā.</p>' : '') +
         kodi.map((k, i) => grupa(k, grupas[i].features, no, neizdevas)).join('') +
         (drosas.length && !neizdevas ? drosasBloks(drosas, drosasVietas, no) : '') +
@@ -490,6 +494,7 @@ const krizesMeklesana = (() => {
           { slanis: rezultatuSlanis, signal });
       }
       if (laiks) augsnesDati(ll, signal);
+      if (vejs) vejaDati(ll, signal);
       // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
       if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
       // zonas.js: satiksme apvidū (LVC) un slidens ceļš tuvumā — rinda tikai tad, ja ir dati
@@ -605,7 +610,18 @@ const krizesMeklesana = (() => {
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
   function pluduDati(ll, signal) {
+    pluduZona(ll, signal, 0);
+    pluduUdens(ll, signal);
+  }
+  // /api/pludi atbild ne ilgāk par 25 s; ja LVĢMC karšu serviss vēl rēķina — 202 {ielade}: vēlreiz pēc 10 s (≤ 2 reizes)
+  function pluduZona(ll, signal, meginajums) {
     iegut('/pludi?' + new URLSearchParams(ll), signal).then(p => {
+      if (p.ielade) {
+        pluduRinda('rez-pludi', `<b>Plūdu riska zona</b><span>${meginajums < 2 ? 'Plūdu kartes vēl ielādējas, mēģinām vēlreiz pēc 10 s…'
+          : 'Plūdu kartes pašlaik atbild lēni. Plūdu zonas redzamas kartē (slānis ieslēgts).'}</span>`);
+        if (meginajums < 2) setTimeout(() => { if (!signal.aborted) pluduZona(ll, signal, meginajums + 1); }, 10000);
+        return;
+      }
       const t = p.zona
         ? `<strong class="jā">Jā</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${String(v.varbutiba_proc).replace('.', ',')} % varbūtība gadā)`).join(', ')}`
         : p.nepilnigi ? 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.' : '<strong class="nē">Nē</strong>: nav applūstošā teritorijā (10 %, 1 % un 0,5 % kartes).';
@@ -613,6 +629,8 @@ const krizesMeklesana = (() => {
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-pludi', '<b>Plūdu riska zona</b><span>Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).</span>');
     });
+  }
+  function pluduUdens(ll, signal) {
     iegut('/udens?' + new URLSearchParams({ ...ll, limit: 3 }), signal).then(d => {
       const s = d.stacijas[0];
       if (!s) throw new Error('nav');
@@ -632,6 +650,25 @@ const krizesMeklesana = (() => {
         `${s.vecs ? ' — dati novecojuši' : ''}</span><small>Mērīts ${laiks}. Bīstamības līmeņi nav atvērtie dati.</small>${prognoze}<small class="avots-rinda">${AVOTI_LVGMC.udens}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-udens', '<b>Tuvākā upe vai ezers</b><span>Ūdens līmeņa datus neizdevās ielādēt.</span>');
+    });
+  }
+
+  // Vējš tagad tuvākajā LVĢMC stacijā (ar brāzmām)
+  function vejaBloks() {
+    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">💨</span><div><b>Vējš tagad</b><span>Ielādē…</span></div></li></ul>`;
+  }
+  function vejaDati(ll, signal) {
+    iegut('/noverojumi?' + new URLSearchParams({ ...ll, limit: 8 }), signal).then(d => {
+      const s = d.stacijas.find(x => x.brazmas != null && !x.vecs);
+      if (!s) throw new Error('nav');
+      const N = typeof Noverojumi !== 'undefined' ? Noverojumi : null;
+      const sk = x => String(Math.abs(x) >= 10 ? Math.round(x) : (+x).toFixed(1)).replace('.', ',');
+      pluduRinda('rez-vejs', `<b>Vējš tagad</b><span>${esc(s.nosaukums)} (${attalums(s.attalums_m)}): brāzmas <b>${sk(s.brazmas)} m/s</b>` +
+        `${s.vejs != null ? `, vidēji ${sk(s.vejs)} m/s ${N ? N.virziens(s.virziens) : ''}` : ''}</span>` +
+        `<small>Mērīts ${esc(new Date(s.laiks).toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' }))}. LVĢMC meteoroloģiskā stacija.</small>` +
+        `<small class="avots-rinda"><a href="${esc(d.avots.url)}" target="_blank" rel="noopener">LVĢMC novērojumi</a> · ${esc(d.avots.licence)}</small>`);
+    }).catch(e => {
+      if (e.name !== 'AbortError') pluduRinda('rez-vejs', '<b>Vējš tagad</b><span>Tuvumā nav svaigu stacijas datu.</span>');
     });
   }
 
