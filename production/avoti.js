@@ -104,7 +104,7 @@ const Avoti = (() => {
         if (s && scenarijuSkaits) s.textContent = scenarijuSkaits + ' situācijas';
       }).catch(() => {});
     }
-    tapa.innerHTML = `<b>Kā tas tapa</b><ul>
+    tapa.innerHTML = `<b>${typeof Valoda !== 'undefined' ? Valoda.t('Kā tas tapa') : 'Kā tas tapa'}</b><ul>
       <li>Meklēšana: noteikumi un atslēgvārdi pārlūkā (<span class="scenariju-skaits">${scenarijuSkaits ? scenarijuSkaits + ' situācijas' : 'situācijas'}</span>, LV/RU/EN), bez MI darbības laikā.</li>
       <li>Pulcēšanās un izmitināšanas vietas izvilka MI no 42 pašvaldību CA plāniem: katrai burtisks citāts un lappuse, ko skripts pārbauda pret plānu.</li>
       <li>Pārbaudē atradām 41 koordinātu kļūdu oficiālajos plānos; šīs vietas novietotas pēc VZD adrešu reģistra

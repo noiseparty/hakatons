@@ -202,7 +202,7 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .fakti .ikona { font-size: 1.2rem; width: 1.6rem; flex: none; text-align: center; }
 .fakti li > div { display: flex; flex-direction: column; gap: .1rem; min-width: 0; }
 .fakti small { color: var(--teksts2); font-size: .78rem; }
-.avots-rinda { font-size: .75rem !important; color: #78716c !important; }
+.avots-rinda { font-size: .75rem !important; color: #6d6762 !important; }  /* #78716c → tumšāks: 4,5:1 arī uz #eef2f6 */
 .avots-rinda a { color: inherit; }
 strong.jā { color: var(--sarkans); }
 strong.nē { color: #287a41; }
@@ -273,7 +273,7 @@ strong.nē { color: #287a41; }
 @media (max-width: 800px) {
   html, body { height: 100dvh; }
   body.apaksa-aktiva #meklesana { display: none; }
-  .apaksa { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000;
+  .apaksa { display: flex; flex-direction: column; position: fixed; left: 0; right: 0; bottom: 0; z-index: 1001;  /* 1001: lapa DOM ir pirms kartes (pieejamiba.js, Tab secība), bet jābūt virs Leaflet vadīklām (1000) */
     height: 50dvh; box-sizing: border-box; margin: 0; padding: 0 0 env(safe-area-inset-bottom); background: var(--virsma);
     border-radius: 14px 14px 0 0; box-shadow: 0 -4px 16px rgba(0, 0, 0, .22); transition: height .25s ease; }
   .apaksa[hidden] { display: none; }
@@ -310,6 +310,10 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }
+/* Izlaišanas saites (pieejamiba.js): redzamas tikai ar tastatūras fokusu */
+.izlaist a { position: fixed; top: 6px; left: 6px; z-index: 3000; padding: .6rem .9rem; background: #fff; color: #005a99; font-weight: 700;
+  border: 2px solid #005a99; border-radius: 8px; transform: translateY(-200%); }
+.izlaist a:focus { transform: none; }
 
 /* Datu avoti (avoti.js): skaits augšā; telefonā saraksts ritinās savā logā */
 #avoti-kopsavilkums { margin: .5rem 0 .2rem; font-size: .9rem; }
@@ -855,3 +859,10 @@ p.lemums-vietas-rinda { margin: 0 0 .3rem; font-size: .85rem; color: var(--tekst
   .apaksa[data-stavoklis="puse"] .apaksa-saturs:has(#rezultati:not([hidden])) :is(.lapa-temas, .lapa-kopsavilkums) { display: none; }
   .apaksa #rezultati .draudi { padding: .5rem .65rem; font-size: .95rem; line-height: 1.3; }
 }
+/* Rezultāta valodas slēdzis LV / RU / EN (valoda.js): maza rinda zem meklēšanas lauka */
+.meklet-rinda:has(.valoda-sledzis) { flex-wrap: wrap; row-gap: 4px; }
+.meklet-rinda .valoda-sledzis { flex: 1 0 100%; display: flex; justify-content: flex-end; gap: 4px; margin: 0; }
+.meklet-rinda .valoda-sledzis button { flex: none; width: auto; min-width: 40px; min-height: 28px; height: 28px; padding: 0 .5rem; font-size: .75rem; font-weight: 600;
+  letter-spacing: .04em; color: var(--teksts); background: var(--virsma); border: 1px solid var(--robeza); border-radius: 999px; }
+.meklet-rinda .valoda-sledzis button[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
+.valoda-padomi { margin: .5rem 0 .2rem; font-size: .8rem; font-style: italic; color: var(--teksts2); }

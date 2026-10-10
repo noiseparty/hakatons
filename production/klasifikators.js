@@ -146,4 +146,38 @@ const Klasifikators = (() => {
   return { izveidot, normalizet, vietvarduFormas };
 })();
 
+// Vaicājuma valoda ('lv' | 'ru' | 'en') rezultāta kartītes "rāmim" (valoda.js); padomi paliek latviski.
+// Kirilica → krievu; latīņu burtiem — angļu vārdi pret latviešu vārdiem (garumzīmes, palīgvārdi). Vietvārdi ar lielo
+// burtu (Rēzekne, Ogre) neskaitās, tāpēc "flood Rēzekne" ir angliski, "нет света Rēzekne" — krieviski.
+// Krievu translits ("net sveta") — pēc dažiem biežiem vārdiem. Nezināms → 'lv'.
+Klasifikators.valoda = (() => {
+  const EN = new Set(('flood flooding flooded floods fire fires smoke burning burns power outage electricity blackout water ' +
+    'need help shelter shelters bunker hospital doctor pharmacy police ambulance storm wind tree fallen road closed blocked ' +
+    'evacuation evacuate where nearest near me my house home is there the an we in at of and with without heat heating cold ' +
+    'gas leak injured hurt bleeding unconscious breathing explosion siren alarm missing child food money cash atm fuel petrol ' +
+    'station ice snow lightning thunder drone war attack bomb what how can sick ill hungry safe danger dangerous out ' +
+    'flat apartment building collapsed river rising level warning lost help').split(' '));
+  const LV = new Set('nav ir un kur man mums vajag ar bez pie uz kas ka es mes mana mans musu ja ta tur ko kad lidz'.split(' '));
+  const RU_LAT = new Set('net sveta svet vody pozhar pomogite gde ukrytie bolnica bolnitsa navodnenie pomoshch skoraya skoraja'.split(' '));
+  return function valoda(vaicajums) {
+    const vardi = String(vaicajums ?? '').split(/[^\p{L}]+/u).filter(Boolean);
+    let kir = 0, lat = 0, en = 0, lv = 0, ru = 0;
+    for (const v of vardi) {
+      if (/\p{Script=Cyrillic}/u.test(v)) { kir++; continue; }
+      const m = v.toLowerCase();
+      const bez = m.normalize('NFD').replace(/[̀-ͯ]/g, '');
+      if (EN.has(m)) en++;
+      else if (LV.has(bez)) lv++;
+      else if (RU_LAT.has(m)) ru++;
+      else if (/^\p{Lu}/u.test(v)) continue;  // nezināms vārds ar lielo burtu — vietvārds (Rēzekne, Ogre)
+      else if (m !== bez) lv++;
+      lat++;
+    }
+    if (kir && kir >= lat) return 'ru';
+    if (en > lv && en >= ru) return 'en';
+    if (ru > lv && ru > en) return 'ru';
+    return 'lv';
+  };
+})();
+
 if (typeof module !== 'undefined') module.exports = Klasifikators;
