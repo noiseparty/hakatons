@@ -80,6 +80,7 @@ parbaude("kļūda bez kešas: pierakstīta, Kluda 503 kā līdz šim", z.get("kl
 k._kesots("udens", 900, lambda: [1])
 with k._kesas_slots:
     k._kesa["udens"] = (time.time() - 2000, [1])
+time.sleep(0.05)  # Windows pulksteņa izšķirtspēja: kļūdas laikam jābūt vēlākam par veiksmes laiku
 
 
 def kluda_taimauts():
