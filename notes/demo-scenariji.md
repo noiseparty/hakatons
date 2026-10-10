@@ -74,6 +74,34 @@ Written 2026-10-10. Licences: as stated by the publisher. "Not open" means no li
 | **Border waiting times** | NAP card exists (`ROBEZAS_LAIKS`, key on the VPS), but the feed doesn't answer yet. | B (`noiseparty/satiksme-2`) keeps checking; the status page shows it. |
 | **Traffic: speed limits** for a real free-flow speed | Not subscribed on NAP; `/api/satiksme` estimates free flow from the highest speed seen. | Subscribe the speed-limit dataset if it exists on NAP. |
 
+## Real events (group "Reāli notikumi", added 2026-10-10 night)
+
+The panel now has two groups. **Reāli notikumi**: what happened in Latvia, with 1–3 figures and sources in the card plus "Ko Jūs redzētu šajā lietotnē". **Simulācijas**: the original 7.
+
+On the map, zones, smoke cones and markers are still simulated and labelled SIMULĀCIJA; the event coordinates are approximate. Nearest places are live data. The 2026-08 storm replay (`vetra-2026`) moved into the real group.
+
+Each scenario has `vaicajums`, the query the replay mode (`atskanot.js`, #83) runs first. Checked against the live classifier; gaps are listed under the table.
+
+Facts were researched by subagents on 2026-10-10 and checked against the opened sources. Anything only seen in search snippets was left out.
+
+| Code | Event | Figures in the card (source) | Map state | Open data that would make it real | Missing |
+|---|---|---|---|---|---|
+| `brell-2025` | Baltic grid leaves BRELL, 8–9 Feb 2025 | ~1 day isolated operation; sync with Continental Europe 9 Feb; no change for consumers (ERR, AST) | Pick a city; live-status layers grey "status nezināms"; where to go without a phone; printable | Sadales tīkls outage JSON (public, **no licence**); AST system state (no open feed) | No outage happened. The card says so and shows the "what if" |
+| `drons-2024` | Shahed-type drone crash, Gaigalava, 7 Sep 2024 | No casualties or third-party damage (MoD); carried explosives, destroyed on site (LSM) | 1.5 km closed zone (approximate site), nearest shelter outside and away from it, VUGD depot, 24/7 hospital | A machine-readable cell-broadcast / CAP feed with polygons | Exact site not public. MoD/LSM don't mention a public alert; we say exactly that, not "there was no alert" |
+| `drons-2026` | Drones over Latgale, Rēzekne oil depot, 7 May 2026 | 2 crashed, a 3rd crossed; 4 empty tanks damaged (MoD 8.05); 112.lv overload (LSM 23.05) | LV-ALERT text as the banner, 800 m zone around the depot (approximate), shelter outside | CAP / LV-ALERT feed | Cell broadcast content isn't published as data |
+| `jekabpils-2023` | Daugava ice-jam flood, Jēkabpils, Jan 2023 (again Feb 2024) | Above the orange mark; Sakas sala partly flooded, locals only; power cut to flooded houses; dam seeping, sandbagged (LSM 11.01.2023, 27.02.2024) | Flood zones on, Jēkabpils gauge, assembly points and accommodation (CA plan) | LVĢMC gauge history (CC0, loaded hourly); PRIS danger levels (need permission) | Peak level in metres: only an unverified 8.91 m (thesis snippet), not shown |
+| `stikli-2018` | Stiklu purvs peat fire, 17 Jul 2018 | 70 of ~120 Stikli residents evacuated incl. 21 children; NAF helicopter; >100 ha (LSM) | Smoke cone toward Stikli (direction from reports, not wind data) + approximate fire area; accommodation outside the smoke | LVĢMC observations (wind) for a real smoke direction; VMD fire data | **Fire-water intake points** (`udens_nemsana`) aren't in the live DB yet (planned layer), so not switched on |
+| `ulmana-2026` | Warehouse fire, K. Ulmaņa gatve 2, Rīga, 30 Jun 2026 | 3 500 m² in a 40 000 m² complex; ~200 + ~180 evacuated (jauns.lv); close windows, ventilation off (LV portāls) | Smoke cone NNE (assumed SSW wind), accommodation and pharmacy outside the smoke, 24/7 hospital | LVĢMC observations (wind) | LSM English gives "about 450 evacuated" (another figure); we use the jauns.lv split |
+| `bauskas-2026` | Gas explosion, Bauskas iela 15, Rīga, 2 Jan 2026 | 46 evacuated (35 + 11), 2 dead, 2 injured; Gaso call 14:58; heated bus, hotel for 15 days for 16 people (LSM) | Address-level decision "Ēka slēgta", accommodation, 24/7 hospital | Building-closure status from the municipality (none) | A third death and the >€60k aid were seen only in snippets; left out |
+| `meldru-2026` | Scrap-metal fire, Meldru iela 3, port of Rīga, 17–18 Jul 2026 | Call 19:10, out 07:08 (~12 h); 300 m², ~30 000 t; no injuries; windows closed in Vecmīlgrāvis/Vecāķi (LSM) | Smoke cone NE, pharmacy outside the smoke, 24/7 hospital | Wind observations; fire-water points | Same as above |
+| `ddos-2025` | DDoS on gov.lv and eParaksts, 2 Oct 2025 | ~1 h, some resources 1 h 20 min (LSM/LVRTC) | Map unchanged; links to statuss.html and info.html | — | The classifier doesn't know "kiberuzbrukums" / "nestrādā e-pakalpojumi"; `vaicajums` is "nav interneta" |
+
+**Classifier gaps (`production/scenariji.json`, other owner):**
+- "dūmi no noliktavas" → `ieslegts_telpa`; we use "dūmi aizvērt logus Rīga" → `ugunsgreks`.
+- "kiberuzbrukums" and "nestrādā eParaksts" match nothing.
+
+**Smoke cones:** zone type `sektors` in `demo.js`: source, `virziens` (where the smoke goes, degrees from north), `platums`, `garums_m`. Nearest places can be filtered to outside the cone (`arpus`).
+
 ---
 
 ## Rules kept

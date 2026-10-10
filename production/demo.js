@@ -50,11 +50,16 @@ const Demo = (() => {
 
   function zimetSarakstu() {
     if (!dati) return;
-    saturs.innerHTML = `<p class="piezime">Izdomāti krīzes gadījumi prezentācijai. Brīdinājumi, zonas un notikumi ir simulēti;
-      tuvākās vietas, maršruti un avoti ir īstie kartes dati.</p>
-      <ul class="demo-saraksts">${dati.scenariji.map(s => `<li><button type="button" data-demo="${esc(s.kods)}"
+    const poga = s => `<li><button type="button" data-demo="${esc(s.kods)}"
         ${aktivs?.sc.kods === s.kods ? 'aria-current="true"' : ''}><span class="demo-ikona-l">${s.ikona}</span>
-        <span><b>${esc(s.nosaukums)}</b><small>${esc(s.isi)}</small></span></button></li>`).join('')}</ul>` +
+        <span><b>${esc(s.nosaukums)}</b><small>${esc(s.isi)}</small></span></button></li>`;
+    const grupa = (virsraksts, apraksts, saraksts) => saraksts.length
+      ? `<h3 class="demo-grupa">${virsraksts}</h3><p class="piezime">${apraksts}</p><ul class="demo-saraksts">${saraksts.map(poga).join('')}</ul>` : '';
+    saturs.innerHTML =
+      grupa('Reāli notikumi', 'Kas notika Latvijā (skaitļi ar avotiem) un ko Jūs redzētu šajā lietotnē. Karte rāda simulāciju; tuvākās vietas ir īstie dati.',
+        dati.scenariji.filter(s => s.grupa === 'reals')) +
+      grupa('Simulācijas', 'Izdomāti krīzes gadījumi. Brīdinājumi, zonas un notikumi ir simulēti; tuvākās vietas, maršruti un avoti ir īstie kartes dati.',
+        dati.scenariji.filter(s => s.grupa !== 'reals')) +
       (aktivs ? beigtPoga() : '');
   }
   const beigtPoga = () => '<button type="button" class="galvena demo-beigt" data-darbiba="beigt">■ Beigt demo, rādīt īsto karti</button>';
@@ -64,7 +69,7 @@ const Demo = (() => {
     const kods = b?.dataset.demo;
     if (kods) sakt(kods);
     if (b?.dataset.darbiba === 'beigt') beigt();
-    if (b?.dataset.darbiba === 'saraksts') zimetSarakstu();
+    if (b?.dataset.darbiba === 'demo-saraksts') zimetSarakstu();  // ne "saraksts": to tver saraksts.js
     if (b?.dataset.darbiba === 'drukat') print();
     const li = e.target.closest('li[data-lat]');
     if (li && !e.target.closest('a')) {
@@ -83,7 +88,20 @@ const Demo = (() => {
     const h = Math.sin(dLat / 2) ** 2 + Math.cos(a[0] * r) * Math.cos(b[0] * r) * Math.sin(dLon / 2) ** 2;
     return Math.round(2 * 6371000 * Math.asin(Math.sqrt(h)));
   }
-  const zonā = (zona, ll) => zona.tips === 'aplis' && metri(zona.centrs, ll) <= zona.radiuss_m;
+  const virziens = (a, b) => {  // azimuts no a uz b, grādi no ziemeļiem
+    const r = Math.PI / 180, y = Math.sin((b[1] - a[1]) * r) * Math.cos(b[0] * r);
+    const x = Math.cos(a[0] * r) * Math.sin(b[0] * r) - Math.sin(a[0] * r) * Math.cos(b[0] * r) * Math.cos((b[1] - a[1]) * r);
+    return (Math.atan2(y, x) / r + 360) % 360;
+  };
+  const punktsNo = (c, gr, m) => {  // punkts m metrus no c azimutā gr (pietiek mazos attālumos)
+    const r = Math.PI / 180;
+    return [c[0] + m * Math.cos(gr * r) / 111320, c[1] + m * Math.sin(gr * r) / (111320 * Math.cos(c[0] * r))];
+  };
+  // Sektors: dūmu konuss no avota vēja virzienā (virziens = kurp iet dūmi), platums grādos
+  const sektors = z => [z.centrs, ...Array.from({ length: 13 }, (_, i) => punktsNo(z.centrs, z.virziens - z.platums / 2 + i * z.platums / 12, z.garums_m))];
+  const zonā = (zona, ll) => zona.tips === 'aplis' ? metri(zona.centrs, ll) <= zona.radiuss_m
+    : zona.tips === 'sektors' ? metri(zona.centrs, ll) <= zona.garums_m && Math.abs(((virziens(zona.centrs, ll) - zona.virziens + 540) % 360) - 180) <= zona.platums / 2
+    : false;
   const ll = f => [f.geometry.coordinates[1], f.geometry.coordinates[0]];
   const ikona = (teksts, klase = '') => L.divIcon({ html: `<span>${teksts}</span>`, className: 'demo-ikona ' + klase, iconSize: [30, 30] });
 
@@ -123,7 +141,11 @@ const Demo = (() => {
       atjaunot();
       if (!stavoklis.kategorijas.size) statuss('Demo · simulācija');  // nevis "Izvēlies vismaz vienu slāni"
     }
-    radtPludus(!!sc.pludi || saglabats.pludi);
+    // Plūdu zonas (LVĢMC WMS, atbild 5–30 s) tikai pēc lapas "load": citādi saite ?demo=pludi-… gaida flīzes, pirms lapa ielādēta;
+    // kartīte un reljefa slānis parādās uzreiz, zonu leģenda (zonas.js) rāda "Ielādē zonas…"
+    const pludi = !!sc.pludi || saglabats.pludi;
+    if (!pludi || document.readyState === 'complete') radtPludus(pludi);
+    else addEventListener('load', () => setTimeout(() => { if (aktivs?.sc === sc) radtPludus(true); }, 0), { once: true });
 
     const r = regions ? regioni[regions] : null;
     const vieta = sc.vieta || (r && { lat: (r.bbox[1] + r.bbox[3]) / 2, lon: (r.bbox[0] + r.bbox[2]) / 2, nosaukums: r.nosaukums + ', centrs' });
@@ -216,6 +238,10 @@ const Demo = (() => {
         const c = L.circle(z.centrs, { ...stils, radius: z.radiuss_m }).bindPopup(teksts)
           .bindTooltip(`SIMULĀCIJA · ${esc(z.nosaukums)}`, { sticky: true }).addTo(slanis);
         if (!z.arpus_skata) robezas.extend(c.getBounds());
+      } else if (z.tips === 'sektors') {
+        const p = L.polygon(sektors(z), { ...stils, fillOpacity: .3 }).bindPopup(teksts)
+          .bindTooltip(`SIMULĀCIJA · ${esc(z.nosaukums)}`, { sticky: true }).addTo(slanis);
+        if (!z.arpus_skata) robezas.extend(p.getBounds());
       } else if (z.tips === 'geojson') {
         fetch(z.url).then(r => r.ok ? r.json() : Promise.reject()).then(gj => {
           if (!aktivs || aktivs.sc !== sc) return;
@@ -343,18 +369,22 @@ const Demo = (() => {
     const avoti = (sc.avoti || []).map(k => dati.avoti[k]).filter(Boolean);
     const regionuIzvele = sc.regionu_izvele ? `<label class="demo-regions">Teritorija bez elektrības un sakariem
       <select id="demo-regions">${sc.regionu_izvele.map(k => `<option value="${k}" ${r?.kods === k ? 'selected' : ''}>${esc(regioni[k]?.nosaukums || k)}</option>`).join('')}</select></label>` : '';
-    return `<button type="button" class="otra demo-atpakal" data-darbiba="saraksts">← Visi scenāriji</button>
+    return `<button type="button" class="otra demo-atpakal" data-darbiba="demo-saraksts">← Visi scenāriji</button>
       <article class="demo-kartite">
         <p class="demo-virsraksts">${ZIME}${sc.laiks ? `<span class="demo-laiks">🕒 ${esc(sc.laiks)}</span>` : ''}</p>
         <h2>${sc.ikona} ${esc(sc.nosaukums)}</h2>
         ${regionuIzvele}
         ${sc.draudi ? `<p class="draudi">⚠ ${esc(sc.draudi)}</p>` : ''}
-        <h3>Kas notiek</h3><ul class="demo-notiek">${sc.notiek.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${sc.lemums ? `<p class="demo-lemums">${esc(sc.lemums)}</p>` : ''}
+        ${sc.grupa === 'reals' ? `<p class="demo-reals">Reāls notikums: ${esc(sc.datums)}. Skaitļi — no avotiem zemāk; kartes zonas un notikumi — simulācija.</p>` : ''}
+        <h3>${sc.grupa === 'reals' ? 'Kas notika' : 'Kas notiek'}</h3><ul class="demo-notiek">${sc.notiek.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+        ${sc.redzetu ? `<h3>Ko Jūs redzētu šajā lietotnē</h3><ul class="demo-notiek demo-redzetu">${sc.redzetu.map(t => `<li>${esc(t)}</li>`).join('')}</ul>` : ''}
         <h3>Ko darīt</h3><ol class="padoms demo-darit">${sc.darit.map(t => `<li>${esc(t)}</li>`).join('')}</ol>
+        ${sc.saites ? `<p class="demo-saites">${sc.saites.map(a => `<a class="otra-saite" href="${esc(a.url)}">${esc(a.nos)}</a>`).join('')}</p>` : ''}
         ${sc.zvanit112 && !sc.draudi ? '<p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>' : ''}
         ${(sc.zonas || []).some(z => z.tips === 'geojson') ? '<p class="piezime kluda demo-zonu-kluda" hidden>Reljefa slāni neizdevās ielādēt.</p>' : ''}
         ${tuvakas}
-        ${sc.fakti ? `<h3>Reālie skaitļi</h3><ul class="fakti">${sc.fakti.map(f => `<li><span class="ikona">${f.ikona}</span><div><b>${esc(f.virsraksts)}</b>
+        ${sc.fakti ? `<h3>${sc.grupa === 'reals' ? 'Skaitļi un avoti' : 'Reālie skaitļi'}</h3><ul class="fakti">${sc.fakti.map(f => `<li><span class="ikona">${f.ikona}</span><div><b>${esc(f.virsraksts)}</b>
           <span>${esc(f.teksts)}</span><small class="avots-rinda">Avots: ${avotaSaite(f.avots)}</small></div></li>`).join('')}</ul>` : ''}
         ${sc.druka ? '<button type="button" class="otra demo-druka" data-darbiba="drukat">🖨 Drukāt vai saglabāt PDF (bezsaistei)</button>' : ''}
         <p class="avots-rinda demo-avoti">Simulēts: ${sc.bridinajums ? 'brīdinājums, ' : ''}notikumi${sc.zonas || sc.linijas ? ', zonas kartē' : ''}.
