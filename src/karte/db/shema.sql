@@ -334,6 +334,16 @@ create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
 grant select, insert on zinojumi to map_api;
 grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
 grant usage on sequence zinojumi_id_seq to map_api;
+-- Balsu limits (apstiprinu / apstrīdu): ziņojums + IP jaucējvērtība ar sāli (ne pati IP), glabā ≤ 2 h
+create table if not exists zinojumu_balsis (
+  zinojums bigint not null,
+  ip_hash  text not null,
+  laiks    timestamptz not null default now()
+);
+create index if not exists zinojumu_balsis_zinojums_idx on zinojumu_balsis (zinojums, laiks);
+create index if not exists zinojumu_balsis_ip_idx on zinojumu_balsis (ip_hash, laiks);
+create index if not exists zinojumu_balsis_laiks_idx on zinojumu_balsis (laiks);
+grant select, insert, delete on zinojumu_balsis to map_api;
 
 -- ---- Banku bankomāti (src/karte/db/bankomati.py; bankomats kategorija) ----
 insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
