@@ -11,12 +11,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Check the license of `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` before putting it on the map — added 2026-10-09 20:48 +03:00 by noiseparty
 - [ ] Load the team's interest-point datasets into the map DB (how-to: `src/karte/README.md`) — added 2026-10-09 18:11 +03:00 by noiseparty
 - [ ] Ogre river gauge (LVĢMC live level) vs 22.15 m threshold + flood zones → highlight affected addresses — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Commission-only layers: social-care providers (LM register), vulnerable-population density (GEOSTAT 1 km), Seveso/hazard sites, HES dams — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
-- [ ] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Missing persons: let users report a missing person (route to VP / 112) and show active official searches — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Areas already covered by state services (VP, VUGD, NMPD, NBS): show where search / rescue / patrol is active so people know which areas are handled — added 2026-10-09 23:25 +03:00 by noiseparty
 - [ ] Flood zones: server-side cached tile proxy for the LVĢMC WMS (upstream answers in 5–7 s per tile, first view takes 5–20 s) and warm Ogre/Jūrmala before the pitch — added 2026-10-10 01:50 +03:00 by noiseparty
@@ -35,9 +33,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — added 2026-10-10 03:30 +03:00 by noiseparty
 - [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
-- [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+- [ ] After the VPS loads osm-udens / osm-wifi / osm-ev / osm-vet: add them to `STATUSS_IKDIENAS_AVOTI` in karte_api.py (status page "Datu vecums") and update the source count in pitch/slides (25 → 29 open sources; missing_data now 30 rows) — added 2026-10-10 04:35 +03:00 by noiseparty
+- [ ] After #108 (ikonas.js) merges: put `veterinars` in `krusts`, `udens_punkts` stays `lase`, `ev_uzlade` in `kvadrats`, `wifi_punkts` in `trijsturis` (GRUPAS in ikonas.js) — added 2026-10-10 04:35 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -56,6 +55,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — done 2026-10-10 04:35 +03:00 by noiseparty: branch noiseparty/osm-slani: points from OSM (456); boil-water notices have no feed anywhere (missing_data #29) (added 2026-10-09 18:36 +03:00 by noiseparty)
+- [x] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — done 2026-10-10 04:35 +03:00 by noiseparty: branch noiseparty/osm-slani: `veterinars` layer = 113 OSM `amenity=veterinary` (avots osm-vet, group Veselība); new scenarios 122 „Ievainots vai slims dzīvnieks” and 123 „Pazudis mājdzīvnieks” show the nearest clinics (added 2026-10-09 23:20 +03:00 by noiseparty)
+- [x] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — done 2026-10-10 04:35 +03:00 by noiseparty: branch noiseparty/osm-slani: 456 OSM drinking-water points (osm-udens) in `udens_punkts`, simulated ones stay marked and sort after real ones in the card; +155 free Wi-Fi (`wifi_punkts`, group Noturība), +392 EV chargers (`ev_uzlade`); phone-charging has no source (missing_data #28) (added 2026-10-10 02:54 +03:00 by noiseparty)
 - [x] Liepāja + Dienvidkurzeme assembly points: the kit's annex 12 files were pointer stubs; extracted the official 2026 annex 12 PDF (faili.liepaja.lv, sha256 = kit) → `src/karte/dati/ca_plani/liepaja-12-pielikums-2026.md`; 53 rows, 46 placed via VZD (7 street-only addresses not found); assembly points 730 → 776, unpublished municipalities 12 → 10 — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — done 2026-10-10 04:00 +03:00 by noiseparty: Uzņēmumu reģistrs "Publisko personu un iestāžu saraksts" (data.gov.lv, CC0, daily): all 42 municipalities incl. state cities and Ventspils novads → `kontakti` in pasvaldibas.json, shown in the result card (added 2026-10-10 02:47 +03:00 by noiseparty)
 - [x] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — done 2026-10-10 04:00 +03:00 by noiseparty: CER 11 sectors ✓, likumi.lv 282333 ✓ / 324689 ✓ (MK 508 → MK Nr. 10/2026) / 294938 MK 658 ✓, state-of-exception law ID corrected 255948 → 255713, NATO BRs revised 15.09.2026 (official text URL), resilience points: no draft yet, KVC concept due 15.12.2026 (added 2026-10-09 18:36 +03:00 by noiseparty)

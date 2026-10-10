@@ -287,7 +287,7 @@ on conflict (kods) do update set
 -- Ūdens un uzlādes punkti ir IZDOMĀTI prototipa dati: karte katru punktu marķē "SIMULĒTI DATI — prototips".
 insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
   ('noturibas_punkts', 'Noturības punktu kandidāti (bibliotēkas, kultūras nami, skolas)', 'patvertnes', '#9333ea', 13),
-  ('udens_punkts', 'Dzeramā ūdens punkti (SIMULĒTI)', 'vide', '#0284c7', 84),
+  ('udens_punkts', 'Dzeramā ūdens punkti (OSM; simulētie marķēti)', 'vide', '#0284c7', 84),
   ('uzlades_stacija', 'Ierīču uzlādes punkti (SIMULĒTI)', 'infrastruktura', '#65a30d', 25)
 on conflict (kods) do update set
   nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
@@ -301,13 +301,49 @@ insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, da
   ('sim-udens', 'Simulēti prototipa dati (komanda): dzeramā ūdens punkti', 'Hakatona komanda',
    'Simulēti dati, CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
    'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'atseviski_dati/udens.csv (100 izdomāti punkti)',
-   'Slānis „Dzeramā ūdens punkti (SIMULĒTI)”; meklēšana „nav ūdens”',
-   'IZDOMĀTI dati prototipam: adreses, nosaukumi un darba laiki nav reāli. Aizstāt ar reāliem datiem (piem., OSM amenity=drinking_water, pašvaldības).', 95),
+   'Slānis „Dzeramā ūdens punkti” (kopā ar OSM, katrs punkts marķēts); meklēšanā „nav ūdens” — aiz reālajiem OSM punktiem',
+   'IZDOMĀTI dati prototipam: adreses, nosaukumi un darba laiki nav reāli. Reālie punkti: avots osm-udens (OpenStreetMap).', 95),
   ('sim-energija', 'Simulēti prototipa dati (komanda): ierīču uzlādes punkti', 'Hakatona komanda',
    'Simulēti dati, CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
    'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'atseviski_dati/energija.csv (100 izdomāti punkti)',
    'Slānis „Ierīču uzlādes punkti (SIMULĒTI)”; meklēšana „telefona baterija”, „nav elektrības”',
    'IZDOMĀTI dati prototipam: adreses, nosaukumi, darba laiki un ligzdu skaits nav reāli.', 96)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ---- OSM slāņi (osm_poi.py; katram savs avots un fails): dzeramais ūdens, bezmaksas Wi-Fi, elektroauto uzlāde,
+-- veterinārās klīnikas. Dzeramā ūdens reālie punkti (osm-udens) ir tajā pašā kategorijā kā simulētie (sim-udens).
+insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
+  ('veterinars', 'Veterinārās klīnikas (OSM)', 'veseliba', '#a21caf', 18),
+  ('wifi_punkts', 'Bezmaksas Wi-Fi (OSM)', 'noturiba', '#0d9488', 26),
+  ('ev_uzlade', 'Elektroauto uzlādes stacijas (OSM)', 'transports', '#059669', 91)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('osm-udens', 'OpenStreetMap: dzeramā ūdens krāni, strūklakas un avoti', 'OpenStreetMap līdzstrādnieki',
+   'ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/', true,
+   'https://www.openstreetmap.org/copyright',
+   'Overpass API (amenity=drinking_water, man_made=water_tap, natural=spring + drinking_water=yes, amenity=water_point), src/karte/db/osm_poi.py',
+   'Slānis „Dzeramā ūdens punkti”; meklēšana „nav ūdens”',
+   'Bez punktiem ar drinking_water=no un access=private. Vai krāns krīzē darbojas, OSM nezina; ūdens izdales vietas un „vāriet ūdeni” paziņojumus atvērtos datos nepublicē neviens.', 72),
+  ('osm-wifi', 'OpenStreetMap: bezmaksas Wi-Fi vietas', 'OpenStreetMap līdzstrādnieki',
+   'ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/', true,
+   'https://www.openstreetmap.org/copyright', 'Overpass API (internet_access=wlan un internet_access:fee=no), src/karte/db/osm_poi.py',
+   'Slānis „Bezmaksas Wi-Fi”; meklēšana „nav sakaru”, „nav elektrības”',
+   'Kafejnīcas, bibliotēkas, viesnīcas u. c., kas OSM atzīmējušas bezmaksas Wi-Fi; strādā tikai, ja vietai ir elektrība un internets. Rīgas pilsētas bezmaksas Wi-Fi punktu saraksts nav atvērtie dati.', 73),
+  ('osm-ev', 'OpenStreetMap: elektroauto uzlādes stacijas', 'OpenStreetMap līdzstrādnieki',
+   'ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/', true,
+   'https://www.openstreetmap.org/copyright', 'Overpass API (amenity=charging_station), src/karte/db/osm_poi.py',
+   'Slānis „Elektroauto uzlādes stacijas”; meklēšana „izlādējies elektromobilis”',
+   'Bez privātām stacijām (access=private). Operatoru reāllaika pieejamība (brīvs/aizņemts) nav atvērtie dati.', 74),
+  ('osm-vet', 'OpenStreetMap: veterinārās klīnikas', 'OpenStreetMap līdzstrādnieki',
+   'ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/', true,
+   'https://www.openstreetmap.org/copyright', 'Overpass API (amenity=veterinary), src/karte/db/osm_poi.py',
+   'Slānis „Veterinārās klīnikas”; meklēšana „ievainots dzīvnieks”, „pazudis mājdzīvnieks”',
+   'Tikai OSM atzīmētās klīnikas; darba laiku un diennakts dežūras pārbaudiet klīnikas tīmekļvietnē.', 74)
 on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,

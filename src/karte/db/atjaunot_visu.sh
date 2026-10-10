@@ -94,7 +94,7 @@ fi
 # 1. Lejupielāde (tikai ikdienas režīmā)
 if [ "$VISI" = 0 ]; then
   lejupieladet valsts_dati python3 src/karte/db/valsts_dati.py   # ZVA, IeM IC (4), VKCP ūdens ņemšanas vietas
-  lejupieladet osm_poi python3 src/karte/db/osm_poi.py           # OSM bankomāti, DUS
+  lejupieladet osm_poi python3 src/karte/db/osm_poi.py           # OSM bankomāti, DUS; ūdens, Wi-Fi, EV uzlāde, veterināri
   lejupieladet noturiba python3 src/karte/db/noturibas_punkti.py # OSM noturības punktu kandidāti
   lejupieladet gtfs python3 src/karte/db/gtfs.py                 # pieturas: Rīgas satiksme, ATD, VIVI
 fi
@@ -107,6 +107,10 @@ ikdienas iemic-pp iemic_pasvaldibu_policija.csv --kategorija policija --nosaukum
 ikdienas iemic-vugd iemic_vugd_depo.csv --kategorija ugunsdzeseji --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
 ikdienas vkcp-udens vkcp_udens_nemsanas_vietas.csv --kategorija udens_nemsana --nosaukums "{nosaukums}" --lon x --lat y --srid 3059
 ikdienas osm osm_poi.geojson --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
+ikdienas osm-udens osm_udens.geojson --nosaukums "{nosaukums}" --adrese "{adrese}" --apvienot 35
+ikdienas osm-wifi osm_wifi.geojson --nosaukums "{nosaukums}" --adrese "{adrese}" --apvienot 35
+ikdienas osm-ev osm_ev.geojson --nosaukums "{nosaukums}" --adrese "{adrese}" --apvienot 35
+ikdienas osm-vet osm_vet.geojson --nosaukums "{nosaukums}" --adrese "{adrese}" --apvienot 35
 ikdienas osm-noturiba noturibas_punkti.geojson --kategorija noturibas_punkts --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
 ikdienas rs-gtfs gtfs_rigas_satiksme.csv --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 ikdienas atd-gtfs gtfs_atd.csv --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
