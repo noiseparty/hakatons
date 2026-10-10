@@ -1,4 +1,5 @@
-/* Demo panelis (demo.js): cilne kartes labajā malā, panelis no labās (telefonā — no apakšas), SIMULĀCIJA zīmes */
+/* Demo panelis (demo.js): cilne kartes labajā malā; panelis datorā kreisajā kolonnā, telefonā — no apakšas; SIMULĀCIJA zīmes;
+   demo un atskaņošanas (atskanot.js) josla galvenes rindā */
 .demo-zime { display: inline-block; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff; font-size: .7rem; font-weight: 800;
   letter-spacing: .08em; text-transform: uppercase; vertical-align: middle; margin-right: .4rem; }
 .bridinajums .demo-zime { background: #1c1917; }
@@ -11,18 +12,15 @@ body.demo-aktivs #demo-cilne::before { content: '● '; color: #fca5a5; }
 #demo-karte-zime { position: absolute; z-index: 600; top: 10px; left: 10px; pointer-events: none; }  /* prognožu poga (tajā pašā stūrī) demo laikā paslēpta */
 #demo-karte-zime .demo-zime { font-size: .8rem; padding: .25rem .6rem; box-shadow: var(--ena); }
 
-#demo-panelis { position: absolute; z-index: 700; top: 0; right: 0; bottom: 0; width: 360px; max-width: 92%; box-sizing: border-box;
-  display: flex; flex-direction: column; background: var(--virsma); box-shadow: -4px 0 12px rgba(0, 0, 0, .15);
-  transform: translateX(105%); transition: transform .25s; visibility: hidden; }
-body.demo-atverts #demo-panelis { transform: none; visibility: visible; }
-body.demo-atverts #demo-cilne { right: 360px; }
-body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
+#demo-panelis { box-sizing: border-box; display: flex; flex-direction: column; background: var(--virsma); }
 .demo-galva { display: flex; align-items: center; gap: .5rem; padding: .6rem .8rem; border-bottom: 3px solid #7c2d12; }
 .demo-galva b { flex: 1; color: #7c2d12; }
 .demo-galva .demo-aizvert { width: 2.2rem; height: 2.2rem; padding: 0; border: 0; font-size: 1.1rem; }
 #demo-saturs { flex: 1; overflow-y: auto; padding: .6rem .8rem 1rem; }
 
 .demo-grupa { margin: .9rem 0 0; font-size: .8rem; text-transform: uppercase; letter-spacing: .05em; color: #7c2d12; }
+.demo-tips { margin: .7rem 0 .3rem; font-size: .78rem; font-weight: 700; color: var(--teksts2); }
+.demo-tips + .demo-saraksts { margin-top: 0; }
 .demo-reals { margin: .3rem 0; padding: .4rem .6rem; font-size: .82rem; background: #fff7ed; border-left: 3px solid #c2410c; border-radius: 4px; }
 .demo-lemums { margin: .4rem 0; padding: .6rem .7rem; font-weight: 700; background: #fef2f2; border-left: 4px solid #b91c1c; border-radius: 4px; }
 .demo-saites { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -31,8 +29,11 @@ body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
 .demo-saraksts { list-style: none; margin: .6rem 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
 .demo-saraksts button { display: flex; gap: .6rem; align-items: center; text-align: left; padding: .55rem .6rem; }
 .demo-saraksts button:hover, .demo-saraksts button[aria-current] { background: #fff7ed; border-color: #c2410c; }
+.demo-rinda { flex: 1; min-width: 0; }
 .demo-saraksts b { display: block; font-size: .9rem; }
-.demo-saraksts small { color: var(--teksts2); font-size: .78rem; }
+.demo-saraksts small { display: block; color: var(--teksts2); font-size: .78rem; font-variant-numeric: tabular-nums; }
+.demo-sim { flex: none; align-self: flex-start; padding: .1rem .4rem; border: 1px solid #c2410c; border-radius: 4px; color: #9a3412; background: #fff7ed;
+  font-size: .68rem; font-weight: 700; letter-spacing: .03em; }
 .demo-ikona-l { font-size: 1.5rem; width: 2rem; flex: none; text-align: center; }
 .demo-beigt { background: #1c1917 !important; border-color: #1c1917 !important; margin-top: .8rem; }
 
@@ -61,8 +62,61 @@ body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
 /* Demo laikā īstā LVĢMC josla un prognožu lente paslēptas (atgriežas pēc "Beigt demo") */
 body.demo-aktivs #bridinajums, body.demo-aktivs #prognozes { display: none; }
 
+/* ---- Galvenes josla: demo (#demo-galvene) un atskaņošana (#atskanot-josla) pārklāj galvenes saturu tās rindā,
+   tāpēc karte, uznirstošie logi un lapas lēmuma rinda paliek brīvi un nekas nelec ---- */
+body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano header > :not(#demo-galvene, #atskanot-josla) { visibility: hidden; }
+#demo-galvene, #atskanot-josla { position: absolute; inset: 0; z-index: 2; display: flex; align-items: center; gap: .5rem; box-sizing: border-box;
+  padding: env(safe-area-inset-top) max(.6rem, env(safe-area-inset-right)) 0 max(.6rem, env(safe-area-inset-left)); background: #1c1917; color: #fff; }
+#demo-galvene[hidden], #atskanot-josla[hidden], body.atskano #demo-galvene { display: none; }
+#demo-galvene .demo-zime, #atskanot-josla .demo-zime { flex: none; margin: 0; background: #c2410c; }
+.demo-galvene-nos, .atskanot-nos { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .95rem; }
+.demo-galvene-nos .ik, .atskanot-nos .ik { width: 1.15em; height: 1.15em; vertical-align: -.2em; }
+.demo-galvene-poga, .atskanot-pogas button { display: inline-flex; align-items: center; justify-content: center; gap: .35rem; flex: none; box-sizing: border-box;
+  width: auto; min-width: 44px; min-height: 44px; margin: 0; padding: 0 .7rem; color: #fff; background: rgba(255, 255, 255, .12);
+  border: 1px solid rgba(255, 255, 255, .35); border-radius: var(--radiuss); font-size: .85rem; font-weight: 700; white-space: nowrap; box-shadow: none; }
+.demo-galvene-poga:hover, .atskanot-pogas button:hover { background: rgba(255, 255, 255, .24); }
+.demo-galvene-beigt, .atskanot-pogas [data-a="beigt"] { background: #b91c1c; border-color: #ef4444; }
+.demo-galvene-beigt:hover, .atskanot-pogas [data-a="beigt"]:hover { background: #991b1b; }
+.demo-galvene-poga .ik, .atskanot-pogas .ik { width: 18px; height: 18px; }
+.atskanot-teksts { flex: 1; min-width: 0; display: flex; align-items: baseline; gap: .5rem; }
+.atskanot-solis, .atskanot-laiks { flex: none; font-variant-numeric: tabular-nums; color: #e7e5e4; font-size: .9rem; font-weight: 700; }
+.atskanot-pogas { display: flex; gap: .3rem; flex: none; }
+.atskanot-progress { position: absolute; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(255, 255, 255, .2); }
+.atskanot-progress span { display: block; height: 100%; width: 0; background: #f97316; transition: width .25s linear; }
+.atskanot-josla.pauze .atskanot-progress span { background: #a8a29e; }
+
+/* ---- Dators: panelis kreisajā kolonnā (#panelis, darbvirsma.js) kā tās vienīgais saturs; ritina tikai kolonna ---- */
+@media (min-width: 801px) {
+  #panelis > #demo-panelis { display: none; flex: none; width: auto; border-bottom: 1px solid var(--pelks-3, #e5e7eb); }
+  body.demo-atverts #panelis > #demo-panelis { display: flex; }
+  body.demo-atverts #panelis > :not(#demo-panelis) { display: none !important; }
+  #panelis > #demo-panelis #demo-saturs { flex: none; overflow: visible; padding: 8px 24px 24px; }
+  #panelis > #demo-panelis .demo-galva { position: sticky; top: 0; z-index: 2; background: var(--virsma); padding: 12px 16px 12px 24px; }
+  #panelis > #demo-panelis .atskanot-rinda { padding: 8px 24px 12px; }
+  #demo-karte-zime { left: 50%; transform: translateX(-50%); }  /* augšā pa kreisi ir "Karte | Reljefs" */
+  body.dv.demo-atverts #kartes-laukums .pamatkarte { top: 16px; left: 16px; bottom: auto; right: auto; }
+  .atskanot-nos { font-size: 1.05rem; }
+  body.dv #demo-josla { min-height: 41px; box-sizing: border-box; }  /* tik augsta kā LVĢMC josla ar "Aizvērt": karte nelec */
+}
+
 @media (max-width: 800px) {
   #demo-cilne { top: 176px; padding: .6rem .6rem; min-width: 44px; }  /* zem 3 × 44 px kartes pogām */
+  /* demo laikā cilnes vietā ir galvenes poga "Scenāriji"; atvērts uznirstošais logs — cilne un zīme kartē paslēpjas */
+  body.demo-aktivs #demo-cilne, body.popups-atverts #demo-cilne, body.popups-atverts #demo-karte-zime { display: none; }  /* sheet.js */
+  #demo-galvene, #atskanot-josla { gap: .3rem; }
+  #demo-galvene .demo-zime, #atskanot-josla .demo-zime, .atskanot-laiks { display: none; }  /* SIMULĀCIJA ir kartē; laiku rāda progresa josla */
+  /* zīme kartē: "Karte | Reljefs" vietā (demo laikā paslēpts) zem simulētā brīdinājuma joslas — fitBounds augšējā atstarpē,
+     nekad virs kartes centra */
+  body.apaksa-aktiva.demo-aktivs .pamatkarte { display: none; }
+  body.apaksa-aktiva #demo-karte-zime { top: calc(8px + var(--joslas-h, 0px)); left: 8px; transform: none; }
+  /* atskaņošanā lapā bez valodas slēdža un tēmu pogām — kartītes lēmuma rinda redzama arī 360 × 640 stāvoklī "Puse" */
+  body.atskano .apaksa .valoda-sledzis, body.atskano .apaksa .lapa-temas { display: none; }
+  .demo-galvene-nos, .atskanot-nos { font-size: .85rem; }
+  .atskanot-pogas { gap: 2px; }
+  .atskanot-pogas button { padding: 0 .5rem; }
+  /* tikai ikona (nosaukums ekrāna lasītājam paliek) */
+  .demo-galvene-poga[data-darbiba="demo-panelis"] span, .atskanot-pogas [data-a="beigt"] span {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   /* atvērta prognožu lente (prognozes.js) — cilne neaizsedz tās aizvēršanas pogu */
   body:has(.prognozes.atverts) #demo-cilne { display: none; }
   .demo-galva .demo-aizvert { width: 44px; height: 44px; }
@@ -70,15 +124,14 @@ body.demo-aktivs #bridinajums, body.demo-aktivs #prognozes { display: none; }
   .demo-zime { font-size: .75rem; }
   /* simulētā brīdinājuma josla vienā rindā (pieskaroties atveras) — vairāk vietas kartei */
   .demo-josla summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  #demo-panelis { position: fixed; top: auto; left: 0; right: 0; width: auto; max-width: none; height: 52vh; max-height: calc(100vh - 200px); border-radius: 14px 14px 0 0;
-    transform: translateY(105%); box-shadow: 0 -4px 14px rgba(0, 0, 0, .2); z-index: 1200; }
-  body.demo-atverts #demo-cilne { right: 0; }
-  body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 10px; }
+  #demo-panelis { position: fixed; top: auto; bottom: 0; left: 0; right: 0; width: auto; max-width: none; height: 52vh; max-height: calc(100vh - 200px); border-radius: 14px 14px 0 0;
+    transform: translateY(105%); transition: transform .25s; visibility: hidden; box-shadow: 0 -4px 14px rgba(0, 0, 0, .2); z-index: 1200; }
+  body.demo-atverts #demo-panelis { transform: none; visibility: visible; }
   body.demo-atverts .pamatkarte { display: none; }
 }
 
 @media print {
-  header, #panelis, .kartes-rikis, .pamatkarte, #demo-cilne, #demo-karte-zime, .demo-galva .demo-aizvert,
+  header, #panelis > :not(#demo-panelis), .kartes-rikis, .pamatkarte, #demo-cilne, #demo-karte-zime, .demo-galva .demo-aizvert,
   .demo-atpakal, .demo-beigt, .demo-druka, .marsruts, .demo-regions select, #karte, .bridinajums:not(.demo-josla) { display: none !important; }
   html, body, main, #kartes-laukums { height: auto !important; display: block; overflow: visible; box-shadow: none; padding: 0; }
   #demo-panelis { position: static; transform: none; visibility: visible; width: auto; max-width: none; height: auto; box-shadow: none; }

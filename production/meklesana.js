@@ -791,7 +791,9 @@ const krizesMeklesana = (() => {
       i.marsruti ? `<small>${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>` : '') +
       (plans && p.avots === 'ca-plani'
         ? `<small class="mi-zime">${Ik('dokuments')} ${t('izvilkts ar MI no CA plāna')}, <a href="${plans}" target="_blank" rel="noopener">${i.lpp ? t('{x}. lpp.', { x: esc(i.lpp) }) : t('atvērt plānu')}</a></small>`
-        : plans ? `<small><a href="${plans}" target="_blank" rel="noopener">${t('Atvērt CA plānu')}${i.lpp ? ` (${t('{x}. lpp.', { x: esc(i.lpp) })})` : ''}</a></small>` : '');
+        : plans ? `<small><a href="${plans}" target="_blank" rel="noopener">${t('Atvērt CA plānu')}${i.lpp ? ` (${t('{x}. lpp.', { x: esc(i.lpp) })})` : ''}</a></small>` : '') +
+      // avots un licence katrai vietai (CA plāna vietām avots jau ir komentārā ar lappusi)
+      (p.avots === 'ca-plani' && i.komentars ? '' : Avoti.rinda(p.avots));
     return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
       <span class="teksts">${virsraksts || ''}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${ObjektaStatuss.statusaBloks(p, true)}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
       <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
