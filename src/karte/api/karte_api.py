@@ -7,6 +7,9 @@ Galapunkti:
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
   GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
+  GET /api/objekti?bbox=minLon,minLat,maxLon,maxLat&kategorijas=..[&regions=..&lat=..&lon=..&limit=..]
+                                       kartes skats: tikai punkti taisnstūrī, īsās īpašības (tikai tās, ko rāda logā),
+                                       ≤ 5000; ja vairāk — vienmērīga izlase pa slāņiem un "apgriezts": true
   GET /api/adreses?q=brivibas 15 ogre&limit=8
                                        adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
   GET /api/bridinajumi?lat=..&lon=..   LVĢMC hidrometeoroloģiskie brīdinājumi (spēkā esošie); ar lat/lon —
@@ -189,12 +192,80 @@ def objekti(q):
     if (lat is None) != (lon is None):
         raise Kluda(400, "vajag gan lat, gan lon")
     limit = int(_skaitlis(q, "limit", 1, MAX_LIMIT) or 5000)
+    bbox = _skata_bbox(q)
+    if bbox:
+        limit = min(limit, BBOX_MAX)
     atslega = (tuple(sorted(kategorijas_)), regions_, None if lat is None else round(lat, 5),
-               None if lon is None else round(lon, 5), limit)
+               None if lon is None else round(lon, 5), limit, bbox)
+    if bbox:
+        return _objektu_kesa.iegut(atslega, lambda: _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox))
     return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit))
 
 
 _objektu_kesa = _LRU(64, 30)
+
+# Kartes skats (?bbox=): augšējā robeža un ipasibas atslēgas, ko rāda punkta logs un saraksts (production/app.js
+# popupSaturs, objekta-statuss.js, saraksts.js). Pārējās (citāti, plāna faila ceļi, VZD kodi…) kartei nav vajadzīgas;
+# rezultāta kartīte un ārējie lietotāji bez bbox saņem pilnās īpašības kā līdz šim.
+BBOX_MAX = 5000
+BBOX_SOLIS = 100  # taisnstūri paplašina līdz 0,01° režģim: tuvi skati dala vienu keša ierakstu
+SKATA_IPASIBAS = [
+    "limenis_cm", "limenis_m", "izmaina_24h_cm", "udens_temp", "laiks", "piezime", "opening_hours", "darba_laiks",
+    "veids", "ligzdas", "operator", "brand", "phone", "komentars", "marsruti", "veidi", "marsrutu_saraksts",
+    "apzimejums", "plans_url", "lpp", "statuss", "last_updated",
+]
+
+
+def _skata_bbox(q):
+    if "bbox" not in q:
+        return None
+    try:
+        w, s, e, n = (float(x) for x in q["bbox"][0].split(","))
+    except ValueError:
+        raise Kluda(400, "bbox: vajag minLon,minLat,maxLon,maxLat") from None
+    if not (-180 <= w < e <= 180 and -90 <= s < n <= 90):
+        raise Kluda(400, "bbox: ārpus robežām")
+    return (math.floor(w * BBOX_SOLIS) / BBOX_SOLIS, math.floor(s * BBOX_SOLIS) / BBOX_SOLIS,
+            math.ceil(e * BBOX_SOLIS) / BBOX_SOLIS, math.ceil(n * BBOX_SOLIS) / BBOX_SOLIS)
+
+
+def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox):
+    """Punkti taisnstūrī. Ja to ir vairāk par limit — pa slāņiem pārmaiņus (rn), lai retie slāņi (24/7 slimnīcas)
+    netiek izspiesti ar pieturām: katrā slānī tuvākie (ar lat/lon) vai pseidonejauša, bet stabila izlase.
+    Atgriež gatavu JSON tekstu: kešā aizņem mazāk atmiņas nekā Python objekti."""
+    lieto_vietu = lat is not None
+    w, s, e, n = bbox
+    return vaicat(
+        """with x as (
+             select o.id, o.kategorija, o.nosaukums, o.adrese, o.avots, o.ipasibas, o.derigs_no, o.derigs_lidz, o.geom,
+                    case when %(vieta)s then round(st_distance(o.geom::geography,
+                         st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326)::geography))::int end as attalums_m,
+                    row_number() over (partition by o.kategorija order by
+                         case when %(vieta)s then o.geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) end,
+                         (o.id * 2654435761) %% 4294967296, o.id) as rn
+             from objekti o
+             where st_intersects(o.geom, st_makeenvelope(%(w)s, %(s)s, %(e)s, %(n)s, 4326))
+               and (o.derigs_lidz is null or o.derigs_lidz > now())
+               and (cardinality(%(kat)s::text[]) = 0 or o.kategorija = any(%(kat)s::text[]))
+               and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)),
+           y as (select * from x order by rn, kategorija, id limit %(limit)s + 1),
+           z as (select * from y order by rn, kategorija, id limit %(limit)s)
+           select json_build_object('type', 'FeatureCollection',
+                    'apgriezts', (select count(*) from y) > %(limit)s,
+                    'features', coalesce((select json_agg(
+                      json_build_object('type', 'Feature', 'id', id,
+                        'geometry', json_build_object('type', 'Point', 'coordinates',
+                          json_build_array(round(st_x(geom)::numeric, 5), round(st_y(geom)::numeric, 5))),
+                        'properties', json_strip_nulls(json_build_object('kategorija', kategorija,
+                          'nosaukums', nosaukums, 'adrese', adrese, 'avots', avots, 'attalums_m', attalums_m,
+                          'derigs_no', derigs_no, 'derigs_lidz', derigs_lidz,
+                          'ipasibas', (select coalesce(jsonb_object_agg(key, value), '{}') from jsonb_each(ipasibas)
+                                       where key = any(%(ipas)s::text[])))))
+                      order by attalums_m nulls last, id) from z), '[]'))::text""",
+        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_,
+         "limit": limit, "w": w, "s": s, "e": e, "n": n, "ipas": SKATA_IPASIBAS},
+        timeout="8s",
+    )
 
 
 def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):

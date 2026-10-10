@@ -44,7 +44,9 @@ SPEC = [
     ("/api/objekti", "Punkti kartē", "Kartes objekti (GeoJSON FeatureCollection). Ar lat/lon — sakārtoti pēc attāluma, ar attalums_m.",
      [("kategorijas", "string", "slāņu kodi ar komatu (no /api/kategorijas)", "patvertne,evakuacijas_punkts", False),
       ("regions", "string", "tikai šajā reģionā (kods)", "", False), (*LAT, False), (*LON, False),
-      ("limit", "integer", "cik punktu (1–20000, noklusēti 5000)", "3", False)],
+      ("bbox", "string", "kartes skats minLon,minLat,maxLon,maxLat: tikai punkti taisnstūrī, īsās īpašības (ko rāda "
+       "punkta logs), ≤ 5000; ja vairāk — izlase pa slāņiem un \"apgriezts\": true", "24.55,56.80,24.66,56.84", False),
+      ("limit", "integer", "cik punktu (1–20000, ar bbox ≤ 5000; noklusēti 5000)", "3", False)],
      "?kategorijas=evakuacijas_punkts&lat=56.8166&lon=24.6046&limit=2",
      [("Katram punktam savs avots (properties.avots)", "/api/avoti", "skat. /api/avoti", None)],
      "Licence katram punktam pēc avota: CC0 (IeM IC, ZVA, LVĢMC), CC BY 4.0 (VZD), ODbL (OSM), oficiāli dokumenti "

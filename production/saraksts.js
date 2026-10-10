@@ -1,4 +1,4 @@
-// "Saraksts": kartē ieslēgto slāņu objekti (app.js `redzamie`) kā teksta saraksts dialoglodziņā — karte bez redzes,
+// "Saraksts": kartes skatā ieslēgto slāņu objekti (app.js `skataObjekti`) kā teksta saraksts dialoglodziņā — karte bez redzes,
 // ar tastatūru vai mazā ekrānā. Atver poga slāņu panelī un rezultāta kartītē (data-darbiba="saraksts").
 // Katram objektam: nosaukums, slānis, attālums, adrese, avots un licence, maršruta saites, "Rādīt kartē".
 const Saraksts = (() => {
@@ -61,17 +61,18 @@ const Saraksts = (() => {
 
   function atvert() {
     if (!dialogs) izveidot();
-    saraksts = [...redzamie];
+    saraksts = skataObjekti();  // app.js: ielādētie punkti, kas ir kartes skatā
     paradits = 0;
     ul.innerHTML = '';
     const slani = [...stavoklis.kategorijas].map(k => kategorijas[k]?.nosaukums).filter(Boolean);
     if (!saraksts.length) {
       kopsavilkums.textContent = slani.length
-        ? 'Ieslēgtajos slāņos šajā apgabalā objektu nav.'
+        ? 'Ieslēgtajos slāņos kartes skatā objektu nav. Attāliniet vai pārvietojiet karti.'
         : 'Nav ieslēgts neviens slānis. Ieslēdziet slāni panelī „Slāņi” vai meklējiet augšā.';
     } else {
       const kartiba = stavoklis.vieta ? 'sakārtoti pēc attāluma (taisnā līnijā)' : 'sakārtoti pēc nosaukuma';
-      kopsavilkums.textContent = `${saraksts.length} objekti, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
+      const izlase = ieladets?.apgriezts ? ' (izlase: pietuviniet karti, lai redzētu visus)' : '';
+      kopsavilkums.textContent = `${saraksts.length} objekti kartes skatā${izlase}, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
       paradit(SOLIS);
     }
     dialogs.showModal();

@@ -31,13 +31,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Classifier: look at the remaining close pairs (sniegavētra / auto putenī / apmaldījies sniegā; gāzes smaka / noplūde ēkā) and add real user queries from the demo to `src/meklesana/vaicajumi.json` — added 2026-10-10 02:55 +03:00 by noiseparty
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 - [ ] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — added 2026-10-10 02:47 +03:00 by noiseparty
-- [ ] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — added 2026-10-10 03:28 +03:00 by noiseparty
-- [ ] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — added 2026-10-10 03:30 +03:00 by noiseparty
 - [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+- [ ] After the viewport PR is live: regenerate `production/api.html` + `openapi.json` (`src/api_docs/sagatavot.py`) so the new `bbox` parameter shows up in the API docs — added 2026-10-10 04:25 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -56,6 +55,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — done 2026-10-10 04:25 +03:00 by noiseparty: `/api/objekti?bbox=` (ST_Intersects + GiST, ≤ 5000, round-robin sample per layer, `apgriezts`, slim properties, LRU keyed by 0.01° bbox); map refetches on moveend (400 ms) at zoom ≥ 8, country sample (3000) below; all 16 layers 958 KB gz → 104 KB country / 6–60 KB city (added 2026-10-10 03:28 +03:00 by noiseparty)
+- [x] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — done 2026-10-10 04:25 +03:00 by noiseparty, in the viewport PR (added 2026-10-10 03:30 +03:00 by noiseparty)
 - [x] Liepāja + Dienvidkurzeme assembly points: the kit's annex 12 files were pointer stubs; extracted the official 2026 annex 12 PDF (faili.liepaja.lv, sha256 = kit) → `src/karte/dati/ca_plani/liepaja-12-pielikums-2026.md`; 53 rows, 46 placed via VZD (7 street-only addresses not found); assembly points 730 → 776, unpublished municipalities 12 → 10 — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — done 2026-10-10 04:00 +03:00 by noiseparty: Uzņēmumu reģistrs "Publisko personu un iestāžu saraksts" (data.gov.lv, CC0, daily): all 42 municipalities incl. state cities and Ventspils novads → `kontakti` in pasvaldibas.json, shown in the result card (added 2026-10-10 02:47 +03:00 by noiseparty)
 - [x] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — done 2026-10-10 04:00 +03:00 by noiseparty: CER 11 sectors ✓, likumi.lv 282333 ✓ / 324689 ✓ (MK 508 → MK Nr. 10/2026) / 294938 MK 658 ✓, state-of-exception law ID corrected 255948 → 255713, NATO BRs revised 15.09.2026 (official text URL), resilience points: no draft yet, KVC concept due 15.12.2026 (added 2026-10-09 18:36 +03:00 by noiseparty)
