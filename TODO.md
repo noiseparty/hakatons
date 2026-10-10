@@ -14,11 +14,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Refresh ZVA + IeM IC + GTFS data daily (`valsts_dati.py`, `gtfs.py` + `ielade_visu.sh`, e.g. a systemd timer) — added 2026-10-09 20:48 +03:00 by noiseparty (split from the CC0 layers item 2026-10-10 02:32 +03:00)
 - [ ] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Commission-only layers: social-care providers (LM register), vulnerable-population density (GEOSTAT 1 km), Seveso/hazard sites, HES dams — added 2026-10-09 18:36 +03:00 by noiseparty
-- [ ] Status freshness rule: any status older than 6 h (operational) / 24 h (static) shows "unknown" — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] "Wartime mode": public and restricted data as separate files; drop critical infra/generators, blur outages to ~1 km² — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Verify unconfirmed sources in `notes/research/01`: NATO 2026 requirements, CER sector list, likumi.lv links, resilience-point draft rules — added 2026-10-09 18:36 +03:00 by noiseparty
 - [ ] Crisis search: use live status once layers have it (skip out-of-service ATMs, closed roads, full shelters) — added 2026-10-09 19:11 +03:00 by noiseparty
-- [ ] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Have someone with first-aid / civil-protection background review the advice texts (7 needs + 119 scenarios) in `production/scenariji.json` — added 2026-10-09 20:20 +03:00 by noiseparty
 - [ ] Shelters: show wheelchair access (ramp / step-free entrance) in popups and as a filter — added 2026-10-09 23:20 +03:00 by noiseparty
 - [ ] Shelters: show whether animals/pets are accepted — added 2026-10-09 23:20 +03:00 by noiseparty
@@ -51,11 +49,13 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] Email info@rigassatiksme.lv asking for a GTFS-RT (live vehicle positions / delays) feed under an open licence; today only static GTFS (CC0) is open — added 2026-10-10 02:27 +03:00 by noiseparty
 - [ ] Storm replay (`vetra-2026`): use real LVC road events from `/api/celi` instead of the simulated A7/P103 closure — added 2026-10-10 02:27 +03:00 by noiseparty
+- [ ] Classifier: look at the remaining close pairs (sniegavētra / auto putenī / apmaldījies sniegā; gāzes smaka / noplūde ēkā) and add real user queries from the demo to `src/meklesana/vaicajumi.json` — added 2026-10-10 02:55 +03:00 by noiseparty
 - [ ] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — added 2026-10-10 02:47 +03:00 by noiseparty
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 
 - [ ] Shelters: the 112.lv data has **no** capacity, wheelchair/step-free, pets or operator fields (only building type, address, entrance coordinates, an empty comment). Ask VUGD to add them when publishing on data.gov.lv; until then the popup says "nav norādīts" and there is no wheelchair filter — added 2026-10-10 02:42 +03:00 by noiseparty
 - [ ] Offline mode: test on a real phone (airplane mode after one visit; "Pievienot sākuma ekrānam" on Android Chrome and iOS Safari) — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) and ask municipalities to confirm resilience-point statuses — added 2026-10-10 02:54 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -65,6 +65,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 ## Done
 - [x] Offline mode: service worker (shell network-first, tiles cache-first, /api network-first with saved time), manifest + icons (add to home screen), offline banner + "saglabātie dati" line in the card, last 3 cards reopen offline, "Saglabāt manu apkārtni" (tiles z12–15) — done 2026-10-10 03:00 +03:00 by noiseparty (added 2026-10-10 03:00 +03:00 by noiseparty)
+- [x] Classifier: 1 779 generated keywords (LV colloquial/typos, RU, EN), 497-query test set written blind to the keywords, scoring fixes (each word counts once, longer prefix wins ties), 'Vai domājāt' threshold 0.45; top-1 77,3 % → 93,8 % (held-out 82,2 → 89,5 %) — `notes/klasifikators.md` — done 2026-10-10 02:55 +03:00 by noiseparty (added 2026-10-10 02:55 +03:00 by noiseparty)
+- [x] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — done 2026-10-10 02:54 +03:00 by noiseparty: `noturibas_punkts` = 1 172 OSM candidates (libraries, culture houses, town halls, general schools; status unknown), `udens_punkts` / `uzlades_stacija` = SIMULATED team data with a "SIMULĒTI DATI — prototips" badge; needs the VPS loader run (added 2026-10-09 20:20 +03:00 by noiseparty)
+- [x] Status freshness rule: any status older than 6 h (operational) / 24 h (static) shows "unknown" — done 2026-10-10 02:54 +03:00 by noiseparty: `production/objekta-statuss.js`: object statuses (ipasibas.statuss + last_updated) older than 6 h or unknown → "nav zināms", "statuss nav apstiprināts"; static 24 h rule not needed yet (no static statuses) (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Result card completeness: verdict first (112 → LVĢMC warning for this place → flood yes/no), municipality line (`/api/pasvaldiba`: CA plan, website, VPVKAC phone as text; `src/karte/db/pasvaldibas.py` → `dati/pasvaldibas.json`), GPS address (`/api/adreses/tuvaka`), 7-day river forecast from LVĢMC hydrological forecasts in `/api/udens` — done 2026-10-10 02:47 +03:00 by noiseparty (added 2026-10-10 02:47 +03:00 by noiseparty)
 - [x] Search bar: suggestions while typing (up to 6 situations + place), typo / word-form / Latin-typed Russian tolerance before the classifier, voice input "Runāt" (lv/ru/en) — done 2026-10-10 02:43 +03:00 by noiseparty (added 2026-10-10 02:43 +03:00 by noiseparty)
 - [x] Map without sight: a "Saraksts" list view of the visible layer objects (the result card already lists the nearest places as text) — done 2026-10-10 02:42 +03:00 by noiseparty: `saraksts.js` dialog from the "Slāņi" panel and the result card; name, layer, distance, address, source, route links, "Rādīt kartē" (added 2026-10-10 02:09 +03:00 by noiseparty)

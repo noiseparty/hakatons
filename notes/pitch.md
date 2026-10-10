@@ -1,6 +1,6 @@
 # Pitch: "Ko Jums vajag?" — map.repo.lv (10 min)
 
-Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots load from `production/slaidi/<name>.png` if copied there, otherwise a named placeholder). Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#54); everything below is merged and live. **[NAP]** = shown only once the NAP keys are set on the VPS. Spoken in Latvian; slide text below is what goes on screen.
+Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys, N notes, T timer; screenshots: D's phone shots as WebP in `production/slaidi/` (40–78 KB each, from `C:\Users\ZX202\kodi\demo-video`); slide 11 "Trūkstošie dati" from `notes/missing_data.md`, full list at https://map.repo.lv/trukstosie.html). Updated 2026-10-10 for the search-first product (#38) and batch 2 (#44–#54); everything below is merged and live. **[NAP]** = shown only once the NAP keys are set on the VPS. Spoken in Latvian; slide text below is what goes on screen.
 
 Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 only once (3, 6), 3 the 3–6 step flow + summary + ending (slide 5, the sentence in bold), 4 works on a phone (live demo + statuss.html), 5 AI + open data (6–7).
 
