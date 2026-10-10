@@ -43,6 +43,7 @@ const krizesMeklesana = (() => {
   const soluJosla = document.createElement('ol');
   soluJosla.className = 'soli';
   soluJosla.setAttribute('aria-label', t('Soļi'));
+  document.addEventListener('valoda-maina', () => soluJosla.setAttribute('aria-label', t('Soļi')));
   // data-t: valoda.js nomaina uzrakstus, kad mainās kartītes valoda (LV/RU/EN)
   soluJosla.innerHTML = ['Jautājums', 'Atbilde', 'Rīcība'].map((v, i) =>
     `<li data-solis="${i + 1}"><span class="solis-nr">${i + 1}</span> <span data-t="${v}">${t(v)}</span></li>`).join('');
@@ -862,7 +863,7 @@ const krizesMeklesana = (() => {
       const sie = (d.bridinajumi || []).filter(b => rez ? b.attiecas !== false : b.attiecas).sort((a, b) => b.limenis - a.limenis);
       const fmt = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
       const lidz = b => (b.lidz ? ', līdz ' + fmt(b.lidz) : '') + (rez && b.izdots ? ` (izdots ${fmt(b.izdots)})` : '');
-      const piezime = rez ? ' <small class="rezerves">rezerves avots: Meteoalarm</small>' : '';
+      const piezime = rez ? ' <small class="rezerves">' + t('rezerves avots: Meteoalarm') + '</small>' : '';
       el.innerHTML = (sie.length
         ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}">${Ik('brid')} <b>${t('LVĢMC brīdinājums {kur}:', { kur })}</b> ` +
           sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + piezime + '</p>'
@@ -1093,15 +1094,15 @@ const krizesMeklesana = (() => {
 
   // Nokrišņi pēdējās 26 dienās + augsnes mitrums: konteksts (cik ūdens zeme vēl var uzņemt), nevis brīdinājums
   function augsnesBloks() {
-    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">${Ik('lietus')}</span><div><b>Nokrišņi un augsne</b><span>Ielādē…</span></div></li></ul>`;
+    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">${Ik('lietus')}</span><div><b>${t('Nokrišņi un augsne')}</b><span>${t('Ielādē…')}</span></div></li></ul>`;
   }
   function augsnesDati(ll, signal) {
     const avots = '<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · CC BY 4.0';
     iegut('/augsne?' + new URLSearchParams(ll), signal).then(a => {
       const mm = x => String(Math.round(x)).replace('.', ',');
-      pluduRinda('rez-augsne', `<b>Nokrišņi un augsne</b><span>Pēdējās ${a.dienas_pagatne} dienās: ${mm(a.nokrisni_pagatne_mm)} mm nokrišņu` +
-        `${a.augsne ? `; augsne ${esc(a.augsne)}` : ''}</span><small>Nākamajās ${a.dienas_prognoze} dienās: ${mm(a.nokrisni_prognoze_mm)} mm. ` +
-        `Modeļa aprēķins šai vietai, nav brīdinājums.</small><small class="avots-rinda">${avots}</small>`);
+      pluduRinda('rez-augsne', `<b>${t('Nokrišņi un augsne')}</b><span>${t('Pēdējās {n} dienās: {mm} mm nokrišņu', { n: a.dienas_pagatne, mm: mm(a.nokrisni_pagatne_mm) })}` +
+        `${a.augsne ? t('; augsne {x}', { x: esc(a.augsne) }) : ''}</span><small>${t('Nākamajās {n} dienās: {mm} mm.', { n: a.dienas_prognoze, mm: mm(a.nokrisni_prognoze_mm) })} ` +
+        `${t('Modeļa aprēķins šai vietai, nav brīdinājums.')}</small><small class="avots-rinda">${avots}</small>`);
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-augsne', '<b>Nokrišņi un augsne</b><span>Datus neizdevās ielādēt.</span>');
     });
