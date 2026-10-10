@@ -64,7 +64,70 @@ def main():
     for nr, n in bez:
         print(f"KĻŪDA SCENARIJI.md #{nr} {n!r} neatrod savu scenāriju")
     print(f"{len(nosaukumi) - len(bez)}/{len(nosaukumi)} scenāriju nosaukumi atrod sevi")
-    sys.exit(1 if kludas or bez else 0)
+    zems = vaicajumu_parbaude(klasificet, "-v" in sys.argv)
+    sys.exit(1 if kludas or bez or zems else 0)
+
+
+MERKIS = 0.90  # top-1 precizitāte uz vaicajumi.json, zem kuras tests krīt
+
+
+def vaicajumu_parbaude(klasificet, viss=False):
+    """Reālistisks vaicājumu kopums (vaicajumi.json; kā veidots — notes/klasifikators.md).
+
+    Pareizs = pirmais scenārijs ir starp "pienemami". Divdomīgajiem skaita, vai "Vai domājāt" rāda vēl kādu pieņemamo,
+    skaidrajiem — cik bieži "Vai domājāt" parādās lieki. Rāda precizitāti pa tipiem un 20 sliktākos scenārijus.
+    Ar -v izdrukā arī visus kļūdainos vaicājumus.
+    """
+    cels = pathlib.Path(__file__).parent / "vaicajumi.json"
+    if not cels.exists():
+        return False
+    vaicajumi = json.loads(cels.read_text(encoding="utf-8"))
+    pa_tipiem, gaidits, prognozets, pareizi_pec = {}, {}, {}, {}
+    divd_ar_citiem = divd = lieki = skaidri = 0
+    kludainie = []
+    for v in vaicajumi:
+        kodi = [s["kods"] for s in json.loads(klasificet(v["q"]))["scenariji"]]
+        pirmais = kodi[0] if kodi else None
+        labs = pirmais in v["pienemami"]
+        t = pa_tipiem.setdefault(v["tips"], [0, 0])
+        t[0] += labs
+        t[1] += 1
+        gaidits[v["scenarijs"]] = gaidits.get(v["scenarijs"], 0) + 1
+        pareizi_pec[v["scenarijs"]] = pareizi_pec.get(v["scenarijs"], 0) + labs
+        if pirmais:
+            prognozets.setdefault(pirmais, [0, 0])
+            prognozets[pirmais][0] += labs
+            prognozets[pirmais][1] += 1
+        if v["tips"] == "divdomigs":
+            divd += 1
+            divd_ar_citiem += len(set(kodi) & set(v["pienemami"])) >= 2  # vismaz divi pieņemamie redzami
+        else:
+            skaidri += 1
+            lieki += len(kodi) >= 2
+        if not labs:
+            kludainie.append((v, kodi))
+
+    kopa = sum(t[0] for t in pa_tipiem.values())
+    print(f"\nvaicajumi.json: {kopa}/{len(vaicajumi)} pareizi pirmajā vietā ({kopa / len(vaicajumi):.1%}, mērķis ≥ {MERKIS:.0%})")
+    for tips, (lab, n) in sorted(pa_tipiem.items()):
+        print(f"  {tips:10} {lab:3}/{n:3}  {lab / n:.0%}")
+    print(f"  'Vai domājāt' divdomīgajiem: {divd_ar_citiem}/{divd}; lieki skaidrajiem: {lieki}/{skaidri}")
+
+    # Sliktākie: zemākā F1 (atrasts no sagaidāmajiem × precizitāte, kad izvēlēts) pa scenārijiem
+    def f1(kods):
+        parkl = pareizi_pec.get(kods, 0) / gaidits[kods]
+        lab, n = prognozets.get(kods, (0, 0))
+        prec = lab / n if n else parkl  # nekad nav izvēlēts pats (pareizi caur citu pieņemamo) — skaitām pēc pārklājuma
+        return (0.0 if not parkl + prec else 2 * parkl * prec / (parkl + prec)), prec, n
+    print("  20 sliktākie scenāriji (F1 · atrasti no sagaidāmajiem · precizitāte, kad izvēlēts):")
+    for kods in sorted(gaidits, key=lambda k: f1(k)[0])[:20]:
+        f, prec, n = f1(kods)
+        print(f"    {kods:26} F1 {f:.2f}  {pareizi_pec.get(kods, 0)}/{gaidits[kods]}  prec {prec:.2f} (izvēlēts {n}×)")
+    if viss:
+        print("  Kļūdainie:")
+        for v, kodi in kludainie:
+            print(f"    {v['q']!r} → {kodi or '-'}  gaidīju {v['pienemami']}")
+    return kopa / len(vaicajumi) < MERKIS
 
 
 if __name__ == "__main__":
