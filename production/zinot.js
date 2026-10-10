@@ -5,8 +5,8 @@
 // API: GET/POST /api/zinojumi, POST /api/zinojumi/<id>/apstiprinat|apstridet (karte_api.py "Ziņojumi").
 const Zinot = (() => {
   const TIPI = [
-    ['koks', '🌳', 'Nokritis koks'], ['cels', '🚧', 'Neizbraucams ceļš'], ['elektriba', '⚡', 'Bojāta elektrolīnija'],
-    ['udens', '🌊', 'Applūdums'], ['cits', '⚠️', 'Cita bīstamība'],
+    ['koks', 'koks', 'Nokritis koks'], ['cels', 'remonts', 'Neizbraucams ceļš'], ['elektriba', 'zibens', 'Bojāta elektrolīnija'],
+    ['udens', 'pludi', 'Applūdums'], ['cits', 'uzmanibu', 'Cita bīstamība'],
   ];
   const TIPS = Object.fromEntries(TIPI.map(([k, i, n]) => [k, { ikona: i, nos: n }]));
   const ATRUNA = 'Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0.';
@@ -26,7 +26,7 @@ const Zinot = (() => {
     const t = TIPS[z.tips] || TIPS.cits;
     const nobalsots = balsis()[z.id];
     const apst = z.apstiprina ? `Apstiprinājuši: ${z.apstiprina}` : 'Nav apstiprināts';
-    return `<div class="popup zinojums-popup"><b><span aria-hidden="true">${t.ikona}</span> ${esc(t.nos)}</b>
+    return `<div class="popup zinojums-popup"><b>${Ik(t.ikona)} ${esc(t.nos)}</b>
       ${z.apraksts ? `<p>${esc(z.apraksts)}</p>` : ''}
       <small>${pirms(z.laiks)} · ${apst}${z.apstrid ? ` · apstrīdējuši: ${z.apstrid}` : ''}</small>
       <small>Vieta rādīta ~1 km precizitātē.</small>
@@ -124,8 +124,8 @@ const Zinot = (() => {
       <textarea id="zinot-apraksts" maxlength="200" rows="3" placeholder="Piem.: koks pāri ceļam pie tilta, var apbraukt pa kreiso joslu">${esc(melnraksts.apraksts)}</textarea>
       <small id="zinot-zimes" class="piezime">${melnraksts.apraksts.length} / 200</small>
       <p class="zinot-etikete">3. Kur?</p>
-      <div class="zinot-vieta"><button type="button" class="otra" data-zinot="mana-vieta">📍 Izmantot manu atrašanās vietu</button>
-        <button type="button" class="otra" data-zinot="karte">🗺 Norādīt kartē</button></div>
+      <div class="zinot-vieta"><button type="button" class="otra" data-zinot="mana-vieta">${Ik('vieta')} Izmantot manu atrašanās vietu</button>
+        <button type="button" class="otra" data-zinot="karte">${Ik('karte')} Norādīt kartē</button></div>
       <p class="piezime" aria-live="polite">${vietasTeksts}</p>
       ${kluda ? `<p class="kluda" role="alert">${esc(kluda)}</p>` : ''}
       <p class="piezime">Ziņojums būs redzams visiem kā iedzīvotāju ziņojums (CC BY 4.0), nevis oficiāla informācija. Neierakstiet vārdus, tālruņus un citus personas datus. Ja apdraudēta dzīvība, zvaniet 112.</p>
@@ -170,7 +170,7 @@ const Zinot = (() => {
     if (/https?:|www\./i.test(melnraksts.apraksts)) return forma('Aprakstā nedrīkst būt saites.');
     const t = TIPS[melnraksts.tips];
     dialogs.innerHTML = galva('Pārbaudiet ziņojumu') + `<div class="zinot-forma">
-      <dl class="zinot-kopsavilkums"><dt>Kas</dt><dd><span aria-hidden="true">${t.ikona}</span> ${esc(t.nos)}</dd>
+      <dl class="zinot-kopsavilkums"><dt>Kas</dt><dd>${Ik(t.ikona)} ${esc(t.nos)}</dd>
         <dt>Apraksts</dt><dd>${melnraksts.apraksts ? esc(melnraksts.apraksts) : '—'}</dd>
         <dt>Vieta</dt><dd>${vieta.lat.toFixed(3)}, ${vieta.lon.toFixed(3)} (kartē ~1 km)</dd></dl>
       <p class="piezime">Pēc nosūtīšanas ziņojums parādīsies kartē kā pelēks punkts „nav apstiprināts”. Citi to var apstiprināt vai apstrīdēt; pēc 7 dienām tas pazūd.</p>

@@ -50,7 +50,7 @@ const Avoti = (() => {
   const datums = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
   // avoti.atjaunots (pēdējā veiksmīgā ielāde, ielade.py): "10.10. 04:31"
   const ielLaiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-  const bridinajums = '⚠ Atvērta licence nav norādīta';
+  const bridinajums = Ik('uzmanibu') + ' Atvērta licence nav norādīta';
 
   const avotuVards = n => `${n} atvērto datu ${n % 10 === 1 && n % 100 !== 11 ? 'avots' : 'avoti'}`;
 
@@ -59,14 +59,14 @@ const Avoti = (() => {
     if (!ul) return;
     const atverti = saraksts.filter(a => a.atverts).length, citi = saraksts.length - atverti;
     const sk = document.getElementById('avoti-skaits');
-    if (sk) sk.textContent = atverti + (citi ? ' · ⚠' : '');
+    if (sk) sk.innerHTML = atverti + (citi ? ' · ' + Ik('uzmanibu') : '');
     let kops = document.getElementById('avoti-kopsavilkums');
     if (!kops) {
       kops = document.createElement('p');
       kops.id = 'avoti-kopsavilkums';
       ul.before(kops);
     }
-    kops.innerHTML = `<b>${avotuVards(atverti)}</b>${citi ? ` un ${citi} bez atvērtas licences (⚠)` : ''}`;
+    kops.innerHTML = `<b>${avotuVards(atverti)}</b>${citi ? ` un ${citi} bez atvērtas licences (${Ik('uzmanibu')})` : ''}`;
     ul.innerHTML = saraksts.map(a => `
       <li class="avots${a.atverts ? '' : ' bez-licences'}" id="avots-${esc(a.kods)}">
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>

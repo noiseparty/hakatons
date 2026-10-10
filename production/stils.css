@@ -484,3 +484,25 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinojums-popup small { display: block; }
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
 .zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
+
+/* ==== Ikonas un marķieru formas (ikonas.js, ikonas/ikonas.svg: Meteocons MIT + Lucide ISC) ==== */
+/* Kopīgie tokeni (A pievieno tos pašus stils.css sākumā; sapludinot paliek viens): grupu kontūru krāsas */
+:root {
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309;
+  --zils-primars: #1E66D5; --gim-udens: #1E66D5; --gim-transports: #4D7C0F;
+  --radiuss-pogas: 6px; --ena-maza: 0 1px 3px rgba(0, 0, 0, .2);
+}
+.ik { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -.22em; flex: none; }
+.ik-rinda, .forma-rinda { flex: none; margin-right: .1rem; vertical-align: -.2em; }
+.kat .forma-rinda, .kat .ik-rinda { width: 18px; height: 18px; }
+.forma-markeris { display: grid; place-items: center; background: none; border: 0; }
+.forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
+.celu-ikona span { color: #fff; }
+.celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
+.kartes-rikis .ik, #mana-vieta .ik { width: 22px; height: 22px; vertical-align: -.25em; }
+.fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
+.demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
+.demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
+.tuvuma-izvele { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
+.tuvuma-izvele button { display: flex; align-items: center; gap: .45rem; min-height: 44px; text-align: left; }
+.tuvuma-izvele button svg.forma { width: 20px; height: 20px; flex: none; }

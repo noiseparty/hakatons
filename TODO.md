@@ -74,6 +74,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] Send the data-request letters on Monday (`notes/vestules.md`): VUGD pasts@vugd.gov.lv, Sadales tīkls st@sadalestikls.lv (verify), LVĢMC lvgmc@lvgmc.lv (verify), Rīgas satiksme info@rigassatiksme.lv, LVC lvceli@lvceli.lv, VARAM pasts@varam.gov.lv, VDAA pasts@vdaa.gov.lv, and the 12 municipalities (addresses in the letters file); fill in the team contact first — added 2026-10-10 03:29 +03:00 by noiseparty
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
+- [ ] Water-drop marker: swap Lucide droplet for the user's SVG set (svgrepo 53159 licence could not be verified: HTTP 429) — added 2026-10-10 04:03 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -82,6 +83,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Icons and marker shapes: all emoji replaced by an SVG sprite (Meteocons MIT + Lucide ISC, `production/ikonas/`), marker shapes per layer group (cross / triangle / drop / square / circle) on the map, layer list, result card and lists, 44 px hit areas + near-miss tap chooser; parbaude.py flags emoji — done 2026-10-10 04:03 +03:00 by noiseparty (added 2026-10-10 04:03 +03:00 by noiseparty)
 - [x] Phone performance pass (notes/atrums.md): search usable 3.9 → 1.7 s on Slow 4G, preloads, vendored Leaflet, lazy QR; link previews (Open Graph / Twitter, og.png, canonical, favicons) on all public pages — done 2026-10-10 03:28 +03:00 by noiseparty (added 2026-10-10 03:28 +03:00 by noiseparty)
 - [x] "No dead ends" card audit `src/testi/kartites.py` (127 scenarios × 4 places at 375 px + 5 edge cases); fixed: 8 scenarios whose first keyword led elsewhere, silent verdict line when LVĢMC fails, API failure shown as "no data", empty layers now say so — 476/508 → 508/508, edge cases 3/5 → 5/5 — done 2026-10-10 03:30 +03:00 by noiseparty (added 2026-10-10 03:30 +03:00 by noiseparty)
 - [x] Demo panel: 9 real Latvian events with sourced figures (BRELL 2025, drones Gaigalava 2024 / Rēzekne 2026, Jēkabpils ice-jam flood 2023, Stiklu purvs fire 2018, Ulmaņa gatve warehouse fire 2026, Bauskas iela gas explosion 2026, port scrap-metal fire 2026, DDoS 2025), panel grouped "Reāli notikumi" / "Simulācijas", smoke-cone zones, `vaicajums` for replay (`notes/demo-scenariji.md`) — done 2026-10-10 03:18 +03:00 by noiseparty (added 2026-10-10 03:18 +03:00 by noiseparty)
