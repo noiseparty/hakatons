@@ -15,7 +15,7 @@ const Saraksts = (() => {
   const vienk = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   // Saraksta rāmis LV / RU / EN (valoda.js); dati (nosaukumi, adreses, slāņi, avoti) netiek tulkoti
   const t = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : (m ? Object.entries(m).reduce((s, [a, b]) => s.split('{' + a + '}').join(b), k) : k);
-  const isaisSlanis = kods => (kategorijas[kods]?.nosaukums || kods || '').replace(/\s*\([^)]*\)\s*$/, '');
+  const isaisSlanis = kods => t((kategorijas[kods]?.nosaukums || kods || '').replace(/\s*\([^)]*\)\s*$/, ''));
 
   let sakne, ul, skaitaRinda, atskaitesRinda, velPoga, filtrs, kartot, cipi, atjaunotPoga, atvere = null;
   let visi = [], redzami = [], paradits = 0, atverts = false, piesprausts = false, aktivais = null, ritums = 0, taimeris = null;
@@ -148,7 +148,7 @@ const Saraksts = (() => {
     const p = f.properties;
     const ll = f._slanis.getLatLng();
     const k = kategorijas[p.kategorija] || {};
-    const nos = nosaukums(p) || k.nosaukums || 'Objekts';
+    const nos = nosaukums(p) || (k.nosaukums && t(k.nosaukums)) || t('Objekts');
     return { f, ll, nos, kat: p.kategorija, m: Math.round(no.distanceTo(ll)), kartot: kartosanai(p) || nos,
       meklet: vienk([nos, p.adrese, k.nosaukums, p.ipasibas?.veids].join(' ')), statuss: statusaZime(p), vieta: vietasZinas(p) };
   }
@@ -375,8 +375,11 @@ const Saraksts = (() => {
     const b = e.target.closest('[data-darbiba="saraksts"]');
     if (b) atvert(b);
     // valodas slēdzis (valoda.js) → atvērtā saraksta rāmis, rindas un skaits jaunajā valodā
-    else if (atverts && e.target.closest('.valoda-sledzis [data-valoda]')) setTimeout(() => { tulkot(); atlasit(); }, 0);
+    else if (atverts && e.target.closest('.valoda-sledzis [data-valoda]')) setTimeout(() => { tulkot(); parladet(); }, 0);
   });
+
+  // valodas maiņa: rāmis, rindas (statuss, attālumi, teksti) un skaits jaunajā valodā
+  document.addEventListener('valoda-maina', () => { if (atverts) { tulkot(); parladet(); } });
 
   return { atvert, aizvert, atverts: () => atverts };
 })();

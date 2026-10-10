@@ -7,18 +7,19 @@
 // Datorā nekas nemainās: #rezultati paliek sānu panelī. Lieto app.js globālos (karte, el).
 const Apaksa = (() => {
   const telefons = matchMedia('(max-width: 800px)');
+  const T = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;
   const STAVOKLI = ['peek', 'puse', 'pilna'];
   const NOS = { peek: 'Mazs', puse: 'Puse', pilna: 'Pilns' };
   const kaste = el('rezultati');
   const majas = kaste.parentElement;  // #meklesana sānu panelī
   document.body.insertAdjacentHTML('beforeend', `
-    <section id="apaksa" class="apaksa" role="region" aria-label="Meklēšana un rezultāts" data-stavoklis="puse" hidden>
+    <section id="apaksa" class="apaksa" role="region" aria-label="Meklēšana un rezultāts" data-t-aria="Meklēšana un rezultāts" data-stavoklis="puse" hidden>
       <div class="apaksa-augsa">
         <button id="apaksa-rokturis" class="apaksa-rokturis" type="button" aria-expanded="true" aria-controls="apaksa-saturs">
           <span class="apaksa-svitra" aria-hidden="true"></span><span class="apaksa-spriedums"></span>
         </button>
-        <div class="apaksa-stavokli" role="group" aria-label="Lapas augstums">${STAVOKLI.map(st =>
-          `<button type="button" data-st="${st}" aria-pressed="${st === 'puse'}"><span>${NOS[st]}</span></button>`).join('')}</div>
+        <div class="apaksa-stavokli" role="group" aria-label="Lapas augstums" data-t-aria="Lapas augstums">${STAVOKLI.map(st =>
+          `<button type="button" data-st="${st}" aria-pressed="${st === 'puse'}"><span data-t="${NOS[st]}">${NOS[st]}</span></button>`).join('')}</div>
       </div>
       <div id="apaksa-saturs" class="apaksa-saturs"></div>
     </section>`);
@@ -106,12 +107,12 @@ const Apaksa = (() => {
     const josla = el('bridinajums');
     let t = '';
     if (draudi) t = teksts(draudi);
-    else if (pludi && !/Pārbauda/.test(pludi.textContent)) t = 'Plūdu riska zona: ' + teksts(pludi);
+    else if (pludi && !/Pārbauda/.test(pludi.textContent)) t = T('Plūdu riska zona') + ': ' + teksts(pludi);
     else if (josla && !josla.hidden && !josla.classList.contains('zals') && !josla.classList.contains('gaida')) t = teksts(josla.querySelector('summary') || josla);
     else if (kaste.hidden) t = lapa.dataset.kopsavilkums || '';
     else t = teksts(kaste.querySelector('.zvanit-teksts')) || teksts(kaste.querySelector('.sapratu'));
     spriedums.textContent = t;
-    rokturis.setAttribute('aria-label', (stavoklis === 'pilna' ? 'Sakļaut lapu' : 'Atvērt lapu') + (t ? ': ' + t : ''));
+    rokturis.setAttribute('aria-label', (stavoklis === 'pilna' ? T('Sakļaut lapu') : T('Atvērt lapu')) + (t ? ': ' + t : ''));
   }
 
   function novietot() {
@@ -234,6 +235,8 @@ const Apaksa = (() => {
   lapa.addEventListener('focusin', tastatura);
   lapa.addEventListener('focusout', () => setTimeout(tastatura, 0));
   novietot();
+
+  document.addEventListener('valoda-maina', atjaunotSpriedumu);
 
   return {
     aktiva,

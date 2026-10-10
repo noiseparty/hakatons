@@ -64,6 +64,7 @@ const Avoti = (() => {
   const BIEZUMS = { 'lvgmc-hidro': 'katru stundu', 'osm-karte': 'tiešsaistē', 'lvc-nap': 'tiešsaistē, kešs 5 min' };
 
   let pecKoda = {};
+  let posljais = null;  // pēdējais saraksts: valodas maiņai pārzīmē
   let scenarijuSkaits = null;  // production/scenariji.json — "Kā tas tapa" rindai
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const saite = (url, teksts) => /^https?:\/\//.test(url || '')
@@ -71,11 +72,13 @@ const Avoti = (() => {
   const datums = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
   // avoti.atjaunots (pēdējā veiksmīgā ielāde, ielade.py): "10.10. 04:31"
   const ielLaiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-  const bridinajums = Ik('uzmanibu') + ' Atvērta licence nav norādīta';
+  const T = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;  // valoda.js ielādējas pēc šī faila: tikai izpildes laikā
+  const bridinajums = () => Ik('uzmanibu') + ' ' + T('Atvērta licence nav norādīta');
 
-  const avotuVards = n => `${n} atvērto datu ${n % 10 === 1 && n % 100 !== 11 ? 'avots' : 'avoti'}`;
+  const avotuVards = n => n % 10 === 1 && n % 100 !== 11 ? T('{n} atvērto datu avots', { n }) : T('{n} atvērto datu avoti', { n });
 
   function zimet(saraksts) {
+    posljais = saraksts;
     const ul = document.getElementById('avoti-saraksts');
     if (!ul) return;
     // Simulētie prototipa dati (avots "sim-…", komandas izdomāti) nav atvērto datu avoti: tos skaita atsevišķi un rāda
@@ -101,30 +104,29 @@ const Avoti = (() => {
       fetch('scenariji.json').then(r => r.json()).then(d => {
         scenarijuSkaits = d.scenariji?.length || null;
         const s = tapa.querySelector('.scenariju-skaits');
-        if (s && scenarijuSkaits) s.textContent = scenarijuSkaits + ' situācijas';
+        if (s && scenarijuSkaits) s.textContent = T('{n} situācijas', { n: scenarijuSkaits });
       }).catch(() => {});
     }
-    tapa.innerHTML = `<b>${typeof Valoda !== 'undefined' ? Valoda.t('Kā tas tapa') : 'Kā tas tapa'}</b><ul>
-      <li>Meklēšana: noteikumi un atslēgvārdi pārlūkā (<span class="scenariju-skaits">${scenarijuSkaits ? scenarijuSkaits + ' situācijas' : 'situācijas'}</span>, LV/RU/EN), bez MI darbības laikā.</li>
-      <li>Pulcēšanās un izmitināšanas vietas izvilka MI no 42 pašvaldību CA plāniem: katrai burtisks citāts un lappuse, ko skripts pārbauda pret plānu.</li>
-      <li>Pārbaudē atradām 41 koordinātu kļūdu oficiālajos plānos; šīs vietas novietotas pēc VZD adrešu reģistra
-        (<a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">kļūdu saraksts</a>).</li>
-      <li>Kopā: ${esc(avotuVards(atverti))} ar licenci (saraksts zemāk); katrai vietai kartītē avots un licence.</li></ul>`;
+    tapa.innerHTML = `<b>${T('Kā tas tapa')}</b><ul>
+      <li>${T('Meklēšana: noteikumi un atslēgvārdi pārlūkā ({s}, LV/RU/EN), bez MI darbības laikā.', { s: `<span class="scenariju-skaits">${scenarijuSkaits ? T('{n} situācijas', { n: scenarijuSkaits }) : T('situācijas')}</span>` })}</li>
+      <li>${T('Pulcēšanās un izmitināšanas vietas izvilka MI no 42 pašvaldību CA plāniem: katrai burtisks citāts un lappuse, ko skripts pārbauda pret plānu.')}</li>
+      <li>${T('Pārbaudē atradām 41 koordinātu kļūdu oficiālajos plānos; šīs vietas novietotas pēc VZD adrešu reģistra ({a}).', { a: `<a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">${T('kļūdu saraksts')}</a>` })}</li>
+      <li>${T('Kopā: {x} ar licenci (saraksts zemāk); katrai vietai kartītē avots un licence.', { x: esc(avotuVards(atverti)) })}</li></ul>`;
     kops.innerHTML = `<b>${avotuVards(atverti)}</b>` +
-      (sim.length ? ` · ${sim.length} simulēti prototipa dati` : '') +
-      (citi ? ` · ${citi} bez atvērtas licences ${Ik('uzmanibu')}` : '');
+      (sim.length ? ` · ${T('{n} simulēti prototipa dati', { n: sim.length })}` : '') +
+      (citi ? ` · ${T('{n} bez atvērtas licences', { n: citi })} ${Ik('uzmanibu')}` : '');
     ul.innerHTML = [...isti, ...sim].map((a, i, visi) => `
-      ${simulets(a) && !simulets(visi[i - 1] || { kods: '' }) ? '<li class="avoti-grupa">Simulēti prototipa dati (nav atvērtie dati; kartē zīme „SIMULĒTI DATI — prototips”)</li>' : ''}
+      ${simulets(a) && !simulets(visi[i - 1] || { kods: '' }) ? `<li class="avoti-grupa">${T('Simulēti prototipa dati (nav atvērtie dati; kartē zīme „SIMULĒTI DATI — prototips”)')}</li>` : ''}
       <li class="avots${a.atverts ? '' : ' bez-licences'}${simulets(a) ? ' simulets' : ''}" id="avots-${esc(a.kods)}">
-        ${simulets(a) ? '<span class="sim-zime">SIMULĒTI</span>' : ''}
+        ${simulets(a) ? `<span class="sim-zime">${T('SIMULĒTI')}</span>` : ''}
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
         <small>${esc(a.izdevejs)}</small>
-        <span class="licence">${a.atverts ? '' : bridinajums + ' · '}${saite(a.licences_url, a.licence)}</span>
-        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${daudzskaitlis(a.skaits, 'objekts', 'objekti')}${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
-        ${a.atjaunots ? `<small class="atjaunots">Atjaunots ${ielLaiks(a.atjaunots)}</small>` : ''}
-        ${a.biezums || BIEZUMS[a.kods] ? `<small>Atjaunošana: ${esc(a.biezums || BIEZUMS[a.kods])}${a.svaigums ? `<span data-svaigums="${esc(a.svaigums)}"></span>` : ''}</small>` : ''}
+        <span class="licence">${a.atverts ? '' : bridinajums() + ' · '}${saite(a.licences_url, a.licence)}</span>
+        <small>${T('Kartē:')} ${esc(T(a.lietojums))}${a.skaits ? ` · ${daudzskaitlis(a.skaits, 'objekts', 'objekti')}${a.atjaunots ? '' : `, ${T('ielādēts {x}', { x: datums(a.ieladets) })}`}` : ''}</small>
+        ${a.atjaunots ? `<small class="atjaunots">${T('Atjaunots {x}', { x: ielLaiks(a.atjaunots) })}</small>` : ''}
+        ${a.biezums || BIEZUMS[a.kods] ? `<small>${T('Atjaunošana:')} ${esc(T(a.biezums || BIEZUMS[a.kods]))}${a.svaigums ? `<span data-svaigums="${esc(a.svaigums)}"></span>` : ''}</small>` : ''}
         ${a.piezime ? `<small class="avota-piezime">${esc(a.piezime)}</small>` : ''}
-        ${a.lejupielade && a.lejupielade !== a.datu_kopa_url ? `<small class="ieguve">Ieguve: ${/^https?:/.test(a.lejupielade) ? saite(a.lejupielade, a.lejupielade) : esc(a.lejupielade)}</small>` : ''}
+        ${a.lejupielade && a.lejupielade !== a.datu_kopa_url ? `<small class="ieguve">${T('Ieguve:')} ${/^https?:/.test(a.lejupielade) ? saite(a.lejupielade, a.lejupielade) : esc(a.lejupielade)}</small>` : ''}
       </li>`).join('');
   }
 
@@ -148,8 +150,8 @@ const Avoti = (() => {
   // Svaigums tiešsaistes avotiem: tikai tad, kad sadaļu atver (neliels pieprasījums, API to kešo)
   const laiks = d => d.toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   const SVAIGUMS = {
-    bridinajumi: () => fetch('/api/bridinajumi').then(r => r.json()).then(d => d.laiks_lv && `pārbaudīts ${laiks(new Date(d.laiks_lv))}`),
-    prognozes: () => fetch('/api/prognozes').then(r => r.json()).then(d => d.prognoze_mainita && `prognoze izdota ${laiks(new Date(d.prognoze_mainita))}`),
+    bridinajumi: () => fetch('/api/bridinajumi').then(r => r.json()).then(d => d.laiks_lv && T('pārbaudīts {x}', { x: laiks(new Date(d.laiks_lv)) })),
+    prognozes: () => fetch('/api/prognozes').then(r => r.json()).then(d => d.prognoze_mainita && T('prognoze izdota {x}', { x: laiks(new Date(d.prognoze_mainita)) })),
   };
   document.getElementById('avoti')?.addEventListener('toggle', e => {
     if (!e.target.open) return;
@@ -162,8 +164,8 @@ const Avoti = (() => {
   function rinda(kods) {
     const a = pecKoda[kods];
     if (!a) return '';
-    return `<small class="popup-avots">Avots: ${saite(a.datu_kopa_url, a.nosaukums)} (${esc(a.izdevejs)}) · ` +
-      `${saite(a.licences_url, a.licence)}${a.atverts ? '' : `<br><span class="bez-licences">${bridinajums}</span>`}</small>`;
+    return `<small class="popup-avots">${T('Avots:')} ${saite(a.datu_kopa_url, a.nosaukums)} (${esc(a.izdevejs)}) · ` +
+      `${saite(a.licences_url, a.licence)}${a.atverts ? '' : `<br><span class="bez-licences">${bridinajums()}</span>`}</small>`;
   }
 
   const atverts = kods => pecKoda[kods]?.atverts !== false;
