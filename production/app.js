@@ -325,14 +325,13 @@ function popupSaturs(p, ll) {
       ` · ${i.pieejamiba_24h === '1' ? '24/7' : 'ierobežots darba laiks'}</small>`);
     if (i.kritiskais === '1') rindas.push('<span class="krit-zime">KRITISKAIS</span> <small>Kritiskais bankomāts: skaidra nauda arī krīzes laikā (banku saraksts, 22.09.2026)</small>');
   }
-  if (p.kategorija === 'patvertne') rindas.push('<small>Ietilpība, piekļūstamība ar ratiņkrēslu, mājdzīvnieki: nav norādīts (112.lv datos šo ziņu nav)</small>');
   if (i.marsruti) rindas.push(`<small>${esc(i.veidi)} · ${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>`);
   if (i.apzimejums) rindas.push('<small>Apzīmējums: ' + esc(i.apzimejums) + '</small>');
   if (/^https?:\/\//.test(i.plans_url || '')) rindas.push(`<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>`);
   if (p.attalums_m != null) rindas.push('<small>' + attalums(p.attalums_m) + ' ' + (stavoklis.vieta?.adrese ? 'no adreses' : 'no Jums') + '</small>');
   return `<div class="popup">${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || k.nosaukums || 'Objekts')}</b>` +
     (nosaukums(p) && k.nosaukums ? `<small>${esc(k.nosaukums)}</small><br>` : '') +
-    rindas.join('<br>') + ObjektaStatuss.statuss(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
+    rindas.join('<br>') + ObjektaStatuss.statusaBloks(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
 
 // Ielādējam tikai kartes skata (ar 25 % rezervi) punktus: /api/objekti?bbox=… (≤ 5000; ja vairāk — izlase pa slāņiem

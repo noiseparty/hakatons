@@ -319,6 +319,42 @@ const krizesMeklesana = (() => {
     bridinajumi(null);
   }
 
+  // Poga "Notīrīt" meklēšanas joslā: viss uz sākumu — lauks, rezultāts un apakšas lapa, piespiedu scenārijs,
+  // atskaites punkts, visi URL parametri (?q, lat, lon, regions, demo), demo, scenārija ieslēgtie slāņi (sākumā slāņi izslēgti).
+  const notiritPoga2 = el('notirit-meklesanu');
+  const raditNotiritPogu = () => { notiritPoga2.hidden = !(el('jautajums').value || !kaste.hidden); };
+  function notiritVisu() {
+    if (typeof Demo !== 'undefined' && document.body.classList.contains('demo-aktivs')) Demo.beigt();
+    notirit();
+    aizvertPopularos();
+    if (typeof Apaksa !== 'undefined' && Apaksa.aizvert) Apaksa.aizvert();
+    stavoklis.vieta = null;
+    if (vietasSlanis) { vietasSlanis.remove(); vietasSlanis = null; }
+    if (typeof tuvakaSlanis !== 'undefined' && tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
+    stavoklis.kategorijas = new Set();
+    document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = false; });
+    // Visi pārklājuma slāņi (plūdi, zonas, zibens, laikapstākļi, ceļi, ziņojumi): izslēdz caur to pašu "change" klausītāju
+    document.querySelectorAll('.kat.parklajums input:checked').forEach(i => {
+      i.checked = false;
+      i.dispatchEvent(new Event('change', { bubbles: true }));
+    });
+    // Reģiona filtrs uz "Visa Latvija", bet karti nepārvietojam (radtRegionu() pārvietotu skatu)
+    stavoklis.regions = '';
+    el('regions').value = '';
+    if (typeof robezaSlanis !== 'undefined' && robezaSlanis) { robezaSlanis.remove(); robezaSlanis = null; }
+    atjaunot();
+    history.replaceState(null, '', location.pathname);
+    raditNotiritPogu();
+    el('jautajums').focus();
+  }
+  notiritPoga2.addEventListener('click', notiritVisu);
+  el('jautajums').addEventListener('input', raditNotiritPogu);
+  new MutationObserver(raditNotiritPogu).observe(kaste, { attributes: true, attributeFilter: ['hidden'] });
+  // Escape tukšā laukā = Notīrīt (ja atvērts "Biežāk meklētais", Escape vispirms aizver tikai to — formas klausītājs)
+  el('jautajums').addEventListener('keydown', e => {
+    if (e.key === 'Escape' && populari.hidden && !el('jautajums').value) { e.preventDefault(); notiritVisu(); }
+  });
+
   function atkartot() {
     if (pedejais) meklet(pedejais.teksts, pedejais.scenarijs);
   }
@@ -427,14 +463,14 @@ const krizesMeklesana = (() => {
       (no ? '<div id="rez-lemums"></div>' + (pludi ? pluduBloks() : '') : '') +
       (galvenais
         ? `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
-          (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}</p>` : '')
+          (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '')
         : kurTeksts ? `<p class="sapratu">${adrese ? 'Adrese' : 'Vieta'}: <b>${esc(kurTeksts)}</b></p>` +
             '<p class="piezime">Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.</p>' : '') +
       (no ? '<p class="piezime" id="rez-mana-vieta" hidden></p>' : '') +
       (bezDatiem ? '<p class="piezime kluda">Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.</p>' : '');
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
-    const beigas = talakBloks(galvenais) + vaiDomaji +
+    const beigas = talakBloks(galvenais, no) + vaiDomaji +
       '<button type="button" class="otra" data-darbiba="saraksts">' + Ik('saraksts') + ' Visi kartes objekti sarakstā</button>' +
       '<button type="button" class="otra" data-darbiba="zinot">' + Ik('zinot') + ' Ziņot par bīstamību šeit</button>' +
       (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
@@ -514,14 +550,39 @@ const krizesMeklesana = (() => {
     }
   }
 
+  // Padoma oficiālais avots (scenariji.json padomu_avots): maza saite zem padoma teksta
+  const PADOMU_AVOTI = { 'vugd.gov.lv': 'VUGD', 'sargs.lv': 'Aizsardzības ministrija, „Kā rīkoties krīzes gadījumā”', 'lsm.lv': 'LSM (Gaso skaidrojums)' };
+  function padomuAvots(url) {
+    if (!url) return '';
+    let nos = 'oficiālā vietne';
+    try { const h = new URL(url).hostname.replace(/^www\./, ''); nos = PADOMU_AVOTI[h] || h; } catch { return ''; }
+    return `<small class="avots-rinda padoma-avots">Avots: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(nos)}</a></small>`;
+  }
+
   // "Kas notiks tālāk": kartītes noslēgums — ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz
-  function talakBloks(scenarijs) {
+  // LR1 raidītāji (production/lr1.json, src/info/radio_karte.py): "Radio krīzē" rinda ar tuvākā raidītāja frekvenci
+  let lr1 = null;
+  fetch('lr1.json').then(r => r.ok ? r.json() : null).then(d => { lr1 = d; }).catch(() => {});
+  function radioRinda(no) {
+    const saite = '<a href="info.html#b-radio">visas frekvences</a>';
+    if (!lr1?.raiditaji?.length || no?.lat == null) return `<li><b>Radio krīzē:</b> Latvijas Radio 1 · ${saite}</li>`;
+    const km = s => {
+      const f1 = no.lat * Math.PI / 180, f2 = s.lat * Math.PI / 180;
+      const a = Math.sin((f2 - f1) / 2) ** 2 + Math.cos(f1) * Math.cos(f2) * Math.sin((s.lon - no.lon) * Math.PI / 360) ** 2;
+      return 12742 * Math.asin(Math.sqrt(a));
+    };
+    const t = lr1.raiditaji.map(s => ({ s, d: km(s) })).sort((a, b) => a.d - b.d)[0];
+    const fr = t.s.lr1.map(f => f.replace('.', ',')).join(' vai ');
+    return `<li><b>Radio krīzē:</b> LR1 ${esc(fr)} FM (tuvākais raidītājs: ${esc(t.s.vieta)}, ~${Math.round(t.d)} km) · ${saite}</li>`;
+  }
+
+  function talakBloks(scenarijs, no) {
     const soli = Array.isArray(scenarijs?.talak) ? scenarijs.talak : talakGimenes[scenarijs?.talak] || talakGimenes._;
     if (!soli?.length) return '';
     return '<div class="talak"><h3>Kas notiks tālāk</h3><ol>' + soli.map(t => {
       const m = /^(Tagad|Tālāk):\s*/.exec(t);
       return '<li>' + (m ? `<b>${m[1]}:</b> ${esc(t.slice(m[0].length))}` : esc(t)) + '</li>';
-    }).join('') + '</ol></div>';
+    }).join('') + radioRinda(no) + '</ol></div>';
   }
 
   // Specializētās slimnīcas (dzemdību nams, psihiatrija; ipasibas.specializeta) pēc vispārējām, citādi pēc attāluma.
@@ -540,7 +601,7 @@ const krizesMeklesana = (() => {
       i.marsruti ? `<small>${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>` : '') +
       (/^https?:\/\//.test(i.plans_url || '') ? `<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>` : '');
     return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
-      <span class="teksts">${virsraksts || ''}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${ObjektaStatuss.statuss(p, true)}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
+      <span class="teksts">${virsraksts || ''}${ObjektaStatuss.zime(p)}<b>${esc(nosaukums(p) || kategorijas[p.kategorija]?.nosaukums || '')}</b><small>${esc(p.adrese || '')}</small>${ca}${ObjektaStatuss.statusaBloks(p, true)}${marsrutaSaites(lat, lon, no.regions ? null : no)}</span>
       <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
   }
 
