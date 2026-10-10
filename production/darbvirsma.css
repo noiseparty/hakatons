@@ -154,6 +154,19 @@
 
   /* ---- Karte: pamatkarte augšā pa kreisi, rīki labajā pusē, leģenda apakšā pa kreisi ---- */
   body.dv .prognozes:not(.atverts) { top: 56px; left: 16px; }
+  /* viena rinda: Prognoze | Riski: Šodien Rīt | krāsu atslēga — visi 36px augsti, 8px atstarpes, tā pati apmale/ēna/rādiuss kā labajiem rīkiem */
+  body.dv .prognozes:not(.atverts) { gap: 8px; flex-wrap: wrap; align-items: center; max-width: calc(100% - 80px); }
+  body.dv .prognozes:not(.atverts) .prog-poga, body.dv .prognozes:not(.atverts) .riski-sledzis, body.dv .prognozes:not(.atverts) .riski-legenda {
+    box-sizing: border-box; height: 36px; margin: 0; background: #fff; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-maza); box-shadow: var(--ena-maza); }
+  body.dv .prognozes:not(.atverts) .prog-poga { display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; font-size: 14px; line-height: 1; white-space: nowrap; }
+  body.dv .prognozes:not(.atverts) .prog-poga.ir-bridinajumi { background: #fde047; border-color: #eab308; }
+  body.dv .prognozes:not(.atverts) .riski-sledzis { gap: 2px; padding: 0 3px 0 10px; }
+  body.dv .prognozes:not(.atverts) .riski-sledzis button { min-height: 28px; height: 28px; padding: 0 10px; line-height: 1; border-radius: var(--radiuss-maza); }
+  body.dv .prognozes:not(.atverts) .riski-nos { padding: 0 4px 0 0; line-height: 1; }
+  body.dv .prognozes:not(.atverts) .riski-legenda { display: flex; flex-wrap: nowrap; align-items: center; gap: 12px; padding: 0 12px; line-height: 1; }
+  body.dv .prognozes:not(.atverts) .riski-legenda[hidden] { display: none; }
+  body.dv .prognozes:not(.atverts) .riski-legenda > span { display: inline-flex; align-items: center; }
+  body.dv .prognozes:not(.atverts) .riski-legenda i { margin: 0 6px 0 0; vertical-align: 0; flex: none; }
   body.dv .kartes-rikis { top: 16px; right: 16px; gap: 8px; }
   body.dv .kartes-rikis button { width: 36px; height: 36px; color: var(--tumsi-zils); background: #fff; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-maza); box-shadow: var(--ena-maza); }
   body.dv .kartes-rikis button:hover { background: var(--pelks-1); }
