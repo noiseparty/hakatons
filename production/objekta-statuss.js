@@ -30,7 +30,7 @@ const ObjektaStatuss = (() => {
       return `<small class="obj-statuss">${ir ? Valoda.t('Statuss') + ': ' + vertibas.map(([n, v]) => `${n} — ${esc(v)}`).join(', ')
         : Valoda.t('<b>Statuss nav apstiprināts</b>: nav zināms, vai šeit ir siltums, uzlāde, ūdens un wifi. Pirms došanās pārliecinieties pašvaldībā.')}</small>`;
     }
-    return vairak('obj-statuss', ir ? Valoda.t('Statuss (atjaunots {t})', { t: esc(new Date(i.last_updated).toLocaleString('lv-LV')) })
+    return vairak('obj-statuss', ir ? Valoda.t('Statuss (atjaunots {t})', { t: esc(Valoda.fmtDatums(i.last_updated, true)) })
       : Valoda.t('<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās {h} h)', { h: SVAIGS_H }),
       ir ? vertibas.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : Valoda.t('siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms'),
       vertibas.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`));
@@ -68,7 +68,7 @@ const ObjektaStatuss = (() => {
     const ir = svaigs(i.last_updated) && i.statuss && typeof i.statuss === 'object';
     const pazimes = Object.entries(PAZIMES).map(([k, nos]) => [Valoda.t(nos), ir ? (i.statuss[k] ?? Valoda.t('nav zināms')) : Valoda.t('nav zināms')]);
     const vietas = AR_VIETU_ZINAM.has(p.kategorija) ? vietasZinas(i) : [];
-    const virsraksts = ir ? Valoda.t('Statuss (atjaunots {t})', { t: esc(new Date(i.last_updated).toLocaleString('lv-LV')) })
+    const virsraksts = ir ? Valoda.t('Statuss (atjaunots {t})', { t: esc(Valoda.fmtDatums(i.last_updated, true)) })
       : Valoda.t('<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās {h} h)', { h: SVAIGS_H });
     const dalas = [ir ? pazimes.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : Valoda.t('siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms')];
     const zinamas = vietas.filter(([, v]) => v), nezinamas = vietas.filter(([, v]) => !v);
