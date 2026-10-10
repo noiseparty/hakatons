@@ -608,7 +608,13 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
 .ik { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -.22em; flex: none; }
 .ik-rinda, .forma-rinda { flex: none; margin-right: .1rem; vertical-align: -.2em; }
 .kat .forma-rinda, .kat .ik-rinda { width: 18px; height: 18px; }
-.forma-markeris { display: grid; place-items: center; background: none; border: 0; }
+/* 44 px apaļš pieskāriena laukums ap 26 px formu (caurspīdīgs); tuvāko punktu izvēlas app.js atvertTuvako */
+.forma-markeris { display: grid; place-items: center; background: none; border: 0; border-radius: 50%; }
+.pieskariena-aplis { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+  border: 3px solid var(--zils-primars, #1E66D5); box-sizing: border-box; pointer-events: none;
+  animation: pieskariena-aplis .45s ease-out forwards; }
+@keyframes pieskariena-aplis { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pieskariena-aplis { display: none; } }
 .forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
 .celu-ikona span { color: #fff; }
 .celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
