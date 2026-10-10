@@ -2228,12 +2228,13 @@ STATUSS_KOMPONENTI = [  # kods, nosaukums, apraksts, avots (nosaukums, datu kopa
       "https://transportdata.gov.lv/card/cb730ba2-6466-45b5-99e4-66b9bde30dae", *_CC0)),
     ("osm", "Karšu fons (OpenStreetMap)", "Vai kartes attēli ielādējas",
      ("OpenStreetMap", "https://www.openstreetmap.org/copyright", "ODbL 1.0", "https://opendatacommons.org/licenses/odbl/1-0/")),
-    ("datu_vecums", "Datu vecums", "Ikdienas avotu (ZVA, IeM IC, OSM, GTFS) pēdējā ielāde; hakatons-dati.timer 04:30",
+    ("datu_vecums", "Datu vecums", "Ikdienas avotu (ZVA, IeM IC, VKCP, OSM: bankomāti, DUS, noturības punkti, ūdens, Wi-Fi, EV uzlāde, veterināri; GTFS) pēdējā ielāde; hakatons-dati.timer 04:30",
      ("Panelis „Datu avoti” kartē", "https://map.repo.lv/", None, None)),
 ]
 # Ikdienas atjaunošanas avoti (atjaunot_visu.sh); vecāks par 48 h — nedarbojas, par 30 h — traucējumi
 STATUSS_IKDIENAS_AVOTI = ("zva-fdu", "iemic-arstniecibas", "iemic-vp", "iemic-pp", "iemic-vugd", "vkcp-udens",
-                          "osm", "osm-noturiba", "rs-gtfs", "atd-gtfs", "vivi-gtfs")
+                          "osm", "osm-noturiba", "osm-udens", "osm-wifi", "osm-ev", "osm-vet",
+                          "rs-gtfs", "atd-gtfs", "vivi-gtfs")
 STATUSS_SMAGUMS = {"nav_datu": -1, "darbojas": 0, "traucejumi": 1, "nedarbojas": 2}
 STATUSS_PROGNOZE_VECA_H = 24  # LVĢMC prognozi atjauno vairākas reizes dienā
 
