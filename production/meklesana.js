@@ -518,6 +518,7 @@ const krizesMeklesana = (() => {
       if (stavoklis.regions) { radtRegionu(''); jaunsRegions = true; }
       izveletiesAdresi(adrese, false);  // app.js: sākumpunkts, marķieris, atjauno karti
     } else if (rez.vieta) {
+      if (typeof atmestAdresi === 'function') atmestAdresi();  // app.js: iepriekšējās adreses marķieris prom
       jaunsRegions = stavoklis.regions !== rez.vieta.kods;
       radtRegionu(rez.vieta.kods);
     }
