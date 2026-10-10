@@ -553,27 +553,12 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
 .marsruta-rinda .marsruts-bistams { color: var(--sarkans); }
 .marsruta-rinda .avots-rinda { display: block; font-size: .72rem; }
 
-/* Demo atskaņošana prezentācijai (atskanot.js): josla kartes augšā */
+/* Demo atskaņošana prezentācijai (atskanot.js): poga demo panelī; josla galvenes rindā — demo.css */
 .atskanot-rinda { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .6rem; padding: .5rem .8rem; border-bottom: 1px solid var(--robeza); }
 .atskanot-rinda small { color: var(--teksts2); font-size: .75rem; }
 .atskanot-sakt { width: auto; padding: .35rem .7rem; font-size: .88rem; font-weight: 600; color: #fff; background: #7c2d12; border-color: #7c2d12; }
-/* kartes apakšā (augšā ir SIMULĀCIJA zīme un tuvināšanas pogas); atvērts demo panelis labajā malā netiek aizsegts */
-.atskanot-josla { position: absolute; bottom: 52px; left: 50%; transform: translateX(-50%); z-index: 1200; width: min(640px, calc(100% - 40px));
-  padding: .5rem .7rem .6rem; background: rgba(28, 25, 23, .92); color: #fff; border-radius: var(--radiuss); box-shadow: var(--ena); }
-.atskanot-teksts { display: flex; gap: .5rem; align-items: baseline; font-size: 1.05rem; }
-.atskanot-teksts b { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.atskanot-solis, .atskanot-laiks { font-variant-numeric: tabular-nums; color: #d6d3d1; font-size: .9rem; }
-.atskanot-progress { height: 5px; margin: .4rem 0; background: rgba(255, 255, 255, .25); border-radius: 3px; overflow: hidden; }
-.atskanot-progress span { display: block; height: 100%; width: 0; background: #f97316; transition: width .25s linear; }
-.atskanot-josla.pauze .atskanot-progress span { background: #a8a29e; }
-.atskanot-pogas { display: flex; gap: .4rem; }
-.atskanot-pogas button { width: auto; min-width: 44px; min-height: 36px; padding: .2rem .6rem; color: #fff; background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .35); }
-.atskanot-pogas button[data-a="beigt"] { margin-left: auto; }
-body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-width: 640px; transform: none; margin: 0 auto; }
 @media (max-width: 800px) {
-  .atskanot-josla, body.demo-atverts .atskanot-josla { top: 6px; bottom: auto; left: 8px; right: 8px; width: auto; transform: none; padding: .4rem .5rem .5rem; }
   .atskanot-rinda small { display: none; }  /* telefonā taustiņu nav */
-  .atskanot-teksts { font-size: .9rem; }
 }
 /* Laikapstākļi tagad (noverojumi.js): stacijas ar brāzmu skaitli */
 .noverojums-ikona span { display: grid; place-items: center; width: 100%; height: 100%; box-sizing: border-box; border-radius: 50%;
@@ -656,7 +641,13 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .ik { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -.22em; flex: none; }
 .ik-rinda, .forma-rinda { flex: none; margin-right: .1rem; vertical-align: -.2em; }
 .kat .forma-rinda, .kat .ik-rinda { width: 18px; height: 18px; }
-.forma-markeris { display: grid; place-items: center; background: none; border: 0; }
+/* 44 px apaļš pieskāriena laukums ap 26 px formu (caurspīdīgs); tuvāko punktu izvēlas app.js atvertTuvako */
+.forma-markeris { display: grid; place-items: center; background: none; border: 0; border-radius: 50%; }
+.pieskariena-aplis { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 50%;
+  border: 3px solid var(--zils-primars, #1E66D5); box-sizing: border-box; pointer-events: none;
+  animation: pieskariena-aplis .45s ease-out forwards; }
+@keyframes pieskariena-aplis { from { transform: scale(.6); opacity: .9; } to { transform: scale(1.25); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pieskariena-aplis { display: none; } }
 .forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
 .celu-ikona span { color: #fff; }
 .celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
