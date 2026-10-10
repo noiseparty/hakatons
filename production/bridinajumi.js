@@ -7,7 +7,7 @@ const Bridinajumi = (() => {
   const LIMENIS = { 1: ['dzeltens', 'Dzeltenais'], 2: ['oranzs', 'Oranžais'], 3: ['sarkans', 'Sarkanais'] };
   const AVOTS = '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi" target="_blank" rel="noopener">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · CC0';
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  const laiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+  const laiks = iso => Valoda.fmtDatums(iso, true);  // DD/MM/YYYY HH:MM visās valodās
   // Meteoalarm (rezerves avots): izdevējs, saite un atruna, kā prasa Meteoalarm noteikumi
   const MA = '<a href="https://www.meteoalarm.org" target="_blank" rel="noopener">www.meteoalarm.org</a>';
   const rezervesAvots = d => Valoda.t('Avots: LVĢMC, caur Meteoalarm (EUMETNET), {m} · CC BY 4.0. Rezerves avots: LVĢMC datne šobrīd nav pieejama. Iespējama kavēšanās; jaunākā informācija — {m}.', { m: MA }) +
@@ -52,7 +52,7 @@ const Bridinajumi = (() => {
       const attiecas = vieta ? visi.filter(b => rez ? b.attiecas !== false : b.attiecas) : visi;
       const sheit = attiecas.filter(b => !aizvertie.has(atslega(b)));
       const max = Math.max(0, ...sheit.map(b => b.limenis));
-      if (!vieta) nozime(visi.length, Math.max(0, ...visi.map(b => b.limenis)));  // skaitlis uz pogas "Situācija" galvenē
+      if (!vieta || d.simulacija) nozime(visi.length, Math.max(0, ...visi.map(b => b.limenis)));  // skaitlis uz pogas "Situācija" galvenē
       const kur = vieta ? (nosaukums ? esc(nosaukums) : Valoda.t('Šajā vietā')) : Valoda.t('Latvijā');
       const piezime = rez ? ` <small class="rezerves">(${Valoda.t('rezerves avots: Meteoalarm')})</small>` : '';
       if (aizvertie.size && !sheit.length) { josla.hidden = true; josla.innerHTML = ''; return; }  // lietotājs aizvēra joslu: arī „brīdinājumu nav” (zaļā) josla vairs neatgriežas, kamēr nav jauna/augstāka līmeņa brīdinājuma
@@ -60,13 +60,13 @@ const Bridinajumi = (() => {
       josla.className = 'bridinajums ' + (max ? LIMENIS[max][0] : 'zals');
       josla.innerHTML = !sheit.length
         ? `<span>${Ik('ok')} ${kur}: ${Valoda.t('LVĢMC brīdinājumu šobrīd nav')}${vieta && visi.length ? ` <small>(${Valoda.t('citur Latvijā: {n}', { n: visi.length })})</small>` : ''}${piezime}</span>`
-        : `<details><summary>${Ik('brid')} ${vieta ? kur + ': ' : ''}${sheit.map(b => Valoda.t('{l} brīdinājums: {p}', { l: LIMENIS[b.limenis] ? Valoda.t(LIMENIS[b.limenis][1]) : esc(b.krasa), p: esc(b.paradiba.toLowerCase()) }) +
+        : `<details><summary>${d.simulacija ? `<span class="demo-zime">${Valoda.t('SIMULĒTI DATI')}</span> ` : ''}${Ik('brid')} ${vieta ? kur + ': ' : ''}${sheit.map(b => Valoda.t('{l} brīdinājums: {p}', { l: LIMENIS[b.limenis] ? Valoda.t(LIMENIS[b.limenis][1]) : esc(b.krasa), p: esc(b.paradiba.toLowerCase()) }) +
             `${b.regioni && !vieta ? ` (${esc(apgabali(b))})` : ''}${b.lidz ? Valoda.t(', līdz {t}', { t: laiks(b.lidz) }) : ''}`).join(' · ')}${piezime}</summary>` +
           sheit.map(b => (rez && b.notikums ? `<p><b>${esc(b.notikums)}</b>${b.regioni ? ` — ${esc(b.regioni)}` : ''}</p>` : '') +
             (b.teksts ? `<p>${esc(bezSlogana(b.teksts))}</p>` : '') +
             (b.riski ? `<p class="riski">${esc(bezSlogana(b.riski)).replace(/\n/g, '<br>')}</p>` : '') +
             (rez && b.izdots ? `<p class="riski">${Valoda.t('Izdots {t}', { t: laiks(b.izdots) })}</p>` : '')).join('') +
-          `<p class="avots-rinda">${rez ? rezervesAvots(d) : Valoda.t('Avots') + ': ' + AVOTS}</p>` +
+          `<p class="avots-rinda">${d.simulacija ? `<b>${Valoda.t('SIMULĒTI DATI')}</b>: ${Valoda.t('Šis brīdinājums ir izdomāts demo vajadzībām; īstie LVĢMC brīdinājumi parādās šeit, kad demo beidzas.')}` : rez ? rezervesAvots(d) : Valoda.t('Avots') + ': ' + AVOTS}</p>` +
           `<button type="button" class="otra brid-aizvert">${Ik('aizvert')} ${Valoda.t('Aizvērt')}</button></details>` +
           `<button type="button" class="brid-x" aria-label="${Valoda.t('Aizvērt brīdinājumu joslu')}">${Ik('aizvert')}</button>`;  // telefonā: atvērtā josla sedz karti
       josla.hidden = false;
@@ -94,6 +94,7 @@ const Bridinajumi = (() => {
   });
   setInterval(() => atjaunot(...pedeja), 5 * 60e3);
   document.addEventListener('valoda-maina', () => atjaunot(...pedeja));
+  document.addEventListener('sim-maina', () => atjaunot(...pedeja));  // demo.js: simulētais stāvoklis ieslēgts/izslēgts
   atjaunot(null);
   return { atjaunot, aizvertie };
 })();

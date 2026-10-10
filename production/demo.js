@@ -175,11 +175,13 @@ const Demo = (() => {
     const mana = ++paaudze;
     regions = sc.regionu_izvele ? (regions || sc.regionu_izvele[0]) : null;
     aktivs = { sc, regions };
+    if (iestatijumi.panelis !== false) rezultats(kods, regions);  // atskaņošana to jau izsaukusi (atskanot.js) pirms scenārija
+    else simIestatit(sc, regions);
     document.body.classList.add('demo-aktivs');
     el('demo-karte-zime').hidden = false;
     galvene.querySelector('.demo-galvene-nos').innerHTML = `${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}`;
     galvene.hidden = false;
-    if (iestatijumi.panelis !== false) atvert(true);
+    if (iestatijumi.panelis !== false) atvert(!SC_ID[kods]);  // scenārijam ar rezultātu — Rezultāts (kreisā kolonna / lapa) (rīcības plāns); "Scenāriji" galvenē atver sarakstu
     if (telefons() && !document.body.classList.contains('panelis-slegts')) el('panelis-poga').click();
     history.replaceState(null, '', '?' + new URLSearchParams(regions ? { demo: kods, regions } : { demo: kods }));
     slanis.clearLayers();
@@ -264,6 +266,8 @@ const Demo = (() => {
   function beigt() {
     paaudze++;
     aktivs = null;
+    simIzslegt();
+    if (rezultatsDemo) { rezultatsDemo = false; krizesMeklesana.notirit(); }
     skats = null;
     slanis.clearLayers();
     slanis.remove();
@@ -284,8 +288,105 @@ const Demo = (() => {
     zimetSarakstu();
   }
 
-  // ---- Simulētā brīdinājuma josla (īstā LVĢMC josla demo laikā paslēpta, demo.css) ----
+  // ---- Simulētais stāvoklis: VIENS objekts baro "Situācija tagad" (dators + telefons), LVĢMC joslu, "Situācija" nozīmi un Rezultātu ----
+  // Esošie renderētāji (bridinajumi.js, darbvirsma.js, sheet.js, meklesana.js) nemainās: demo laikā to /api pieprasījumi
+  // (bridinajumi, udens, celi) saņem atbildi no šī objekta (fetch aizvietotājs zemāk); beidzot demo atbildes atkal ir īstās.
+  // Elektrības atslēgumiem atsevišķa saraksta nav: tie ir brīdinājums "Elektroapgādes pārtraukums" ar klientu skaitu.
+  const SC_ID = {  // demo scenārijs -> scenariji.json (meklēšanas rezultāta rīcības plāns)
+    'pludi-ogre': 'pludi', 'jekabpils-2023': 'pludi', 'latgale-2017': 'pludi', 'vetra-2005': 'vetra_jumts', vetra: 'vetra_jumts', vejs: 'vetra_jumts',
+    'vetra-2026': 'nav_elektribas', 'brell-2025': 'nav_elektribas', 'bez-sakariem': 'nav_sakaru', 'karstums-2021': 'karstums',
+    'stikli-2018': 'meza_ugunsgreks', 'ulmana-2026': 'dumi_ara', 'meldru-2026': 'dumi_ara', 'bauskas-2026': 'gazes_smarza',
+    'drons-2024': 'droni', 'drons-2026': 'droni', drons: 'droni', nakts: 'asinosana', 'ddos-2025': 'e_pakalpojumi' };
+  const SIM_PAPILDU = {  // papildu simulētais stāvoklis pa scenārijiem: upju posteņi, ceļu slēgumi, atslēgumi
+    'pludi-ogre': { udens: [{ stacija: 'SIM-OGRE', nosaukums: 'Ogre', lat: 56.8128, lon: 24.6417, limenis_cm: 214, izm: 62 }],
+      celi: [{ nosaukums: 'Applūdusi iela', apraksts: 'Slēgta Brīvības iela pie Ogres upes: applūdusi brauktuve.', lat: 56.8139, lon: 24.6093 }], atslegumi: { n: '1 800', kur: 'Ogres novads' } },
+    'jekabpils-2023': { udens: [{ stacija: 'SIM-JEKABPILS', nosaukums: 'Daugava, Jēkabpils', lat: 56.4936, lon: 25.8587, limenis_cm: 468, izm: 85 }],
+      celi: [{ nosaukums: 'Applūdis ceļš', apraksts: 'Slēgts ceļš uz Sakas salu: applūdis.', lat: 56.5, lon: 25.87 }] },
+    'latgale-2017': { udens: [{ stacija: 'SIM-REZEKNE', nosaukums: 'Rēzekne, Rēzeknes upe', lat: 56.5099, lon: 27.3331, limenis_cm: 301, izm: 74 }],
+      celi: [{ nosaukums: 'Applūdusi ceļa daļa', apraksts: 'Slēgts ceļš: applūdis pie Rēzeknes.', lat: 56.52, lon: 27.31 }], atslegumi: { n: '3 000', kur: 'Latgale' } },
+    'vetra-2005': { celi: [{ nosaukums: 'Koki uz ceļa', apraksts: 'Slēgts ceļš: koki pāri brauktuvei.', lat: 57.39, lon: 21.56 }], atslegumi: { n: '40 000', kur: 'Kurzemes piekraste' } },
+    vetra: { celi: [{ nosaukums: 'Koks uz ceļa', apraksts: 'Slēgta josla: koks pāri brauktuvei.', lat: 56.949, lon: 24.105 }], atslegumi: { n: '8 000', kur: 'Rīga' } },
+    'vetra-2026': { atslegumi: { n: '12 000', kur: 'Bauskas novads' } },
+    'brell-2025': { atslegumi: { n: '100 000', kur: 'Rīga' } },
+    'bez-sakariem': { atslegumi: { n: 'visi', kur: null } } };
+  const tt = (k, p) => Valoda.t(k, p);
+  let sim = null;  // { sc, bridinajumi, udens, celi }
+  function simIzveidot(sc, kodsRegiona) {
+    const r = kodsRegiona ? regioni[kodsRegiona] : null, p = SIM_PAPILDU[sc.kods] || {}, b = sc.bridinajums;
+    const no = new Date(), lidz = h => new Date(no.getTime() + h * 3600e3).toISOString();
+    const regNos = k => (k || []).map(x => regioni[x]?.nosaukums).filter(Boolean).join(', ');
+    const brid = [];
+    if (b) brid.push({ id: 'sim-' + sc.kods, krasa: LIMENI[b.limenis][1], limenis: b.limenis, paradiba: b.paradiba, notikums: b.vards || b.paradiba,
+      regioni: r ? r.nosaukums : regNos(b.regioni), apgabali: [], no: no.toISOString(), lidz: lidz(b.lidz_h || 6), teksts: b.teksts, riski: b.riski, attiecas: true, poligoni: [] });
+    if (p.atslegumi && !(b && /elektro/i.test(b.paradiba))) {
+      const kur = p.atslegumi.kur || (r && r.nosaukums) || '';
+      brid.push({ id: 'sim-atsl-' + sc.kods, krasa: LIMENI[2][1], limenis: 2, paradiba: tt('Elektroapgādes pārtraukums'), regioni: kur, apgabali: [], no: no.toISOString(), lidz: lidz(12),
+        teksts: tt('Bez elektrības: {n} klientu · {kur}', { n: p.atslegumi.n, kur }), riski: '', attiecas: true, poligoni: [] });
+    }
+    const udens = (p.udens || []).map(s => ({ ...s, limenis_m: null, izmaina_24h_cm: s.izm, laiks: no.toISOString(), vecs: false, prognoze: null }));
+    const celi = (p.celi || []).concat((sc.linijas || []).map(l => ({ nosaukums: l.nosaukums.replace(/\s*\(simulācija\)/, ''), apraksts: l.nosaukums, lat: l.koord[0][0], lon: l.koord[0][1], linija: l.koord })))
+      .map((c, i) => ({ id: 'sim-celi-' + i, tips: 'slegums', cels: null, linija: [], aktivs: true, no: no.toISOString(), lidz: lidz(12), ...c }));
+    return { sc, bridinajumi: brid, udens, celi };
+  }
+  const JSONATB = o => new Response(JSON.stringify(o), { status: 200, headers: { 'Content-Type': 'application/json' } });
+  function simAtbilde(url) {
+    if (!sim || !/\/api\/(bridinajumi|udens|celi|objekti)\b/.test(url)) return null;
+    const u = new URL(url, location.href), cels = u.pathname;
+    if (cels === '/api/bridinajumi') return { avots: 'SIMULĀCIJA', simulacija: true, laiks_lv: new Date().toISOString(), bridinajumi: sim.bridinajumi };
+    if (cels === '/api/celi') {
+      if (!sim.celi.length) return null;
+      const c = u.searchParams.get('lat') ? L.latLng(+u.searchParams.get('lat'), +u.searchParams.get('lon')) : null, r = +u.searchParams.get('r');
+      const n = sim.celi.map(x => c ? { ...x, attalums_m: Math.round(c.distanceTo([x.lat, x.lon])) } : x).filter(x => !c || !r || x.attalums_m <= r);
+      return { avots: 'SIMULĀCIJA', simulacija: true, konfigurets: true, notikumi: n };
+    }
+    if (!sim.udens.length) return null;
+    if (cels === '/api/udens') {
+      const c = L.latLng(+u.searchParams.get('lat'), +u.searchParams.get('lon'));
+      return { avots: 'SIMULĀCIJA', simulacija: true, stacijas: sim.udens.map(s => ({ ...s, attalums_m: Math.round(c.distanceTo([s.lat, s.lon])) }))
+        .sort((a, b) => a.attalums_m - b.attalums_m).slice(0, +u.searchParams.get('limit') || 5) };
+    }
+    if (cels === '/api/objekti' && u.searchParams.get('kategorijas') === 'udens_limenis' && !u.searchParams.get('bbox') && !u.searchParams.get('lat'))
+      return { features: sim.udens.map(s => ({ geometry: { coordinates: [s.lon, s.lat] }, properties: { nosaukums: s.nosaukums, ipasibas: s } })) };
+    return null;
+  }
+  const _fetch = window.fetch.bind(window);
+  window.fetch = (a, o) => { const x = sim && simAtbilde(String(a?.url || a)); return x ? Promise.resolve(JSONATB(x)) : _fetch(a, o); };
+  // zīme "SIMULĒTI DATI" uz Rezultāta un Situācijas konteineriem (CSS ::before ar data-sim; tulkojas līdz ar valodu)
+  const ZIMES = '#rezultati, #dv-situacija, #lapa-situacija';
+  function simZimes() { document.querySelectorAll(ZIMES).forEach(e => { if (sim) e.dataset.sim = tt('SIMULĒTI DATI'); else delete e.dataset.sim; }); }
+  document.addEventListener('valoda-maina', simZimes);
+  function simIestatit(sc, kodsRegiona) {
+    sim = simIzveidot(sc, kodsRegiona);
+    simZimes();
+    document.dispatchEvent(new Event('sim-maina'));
+  }
+  function simIzslegt() {
+    if (!sim) return;
+    sim = null;
+    simZimes();
+    document.dispatchEvent(new Event('sim-maina'));  // renderētāji atkal ielādē īstos datus
+  }
+  // Rezultāts (kā īstā meklēšana): rīcības plāns, 112, lēmums, tuvākās vietas — meklesana.js ar scenārija id un scenārija vietu
+  let rezultatsDemo = false;
+  async function rezultats(kods, regions) {
+    if (!dati && !(await ieladet())) return;
+    const sc = dati.scenariji.find(s => s.kods === kods), km = typeof krizesMeklesana !== 'undefined' ? krizesMeklesana : null;
+    if (!sc) return;
+    simIestatit(sc, sc.regionu_izvele ? (regions || sc.regionu_izvele[0]) : null);
+    const s = SC_ID[kods] && km?.scenarijsPec(SC_ID[kods]);
+    if (!km || !s || !sc.vaicajums) return;
+    if (typeof atmestAdresi === 'function') atmestAdresi();
+    if (typeof radtRegionu === 'function' && stavoklis.regions) radtRegionu('');
+    if (sc.vieta) karte.setView([sc.vieta.lat, sc.vieta.lon], 11, { animate: false });
+    el('jautajums').value = sc.vaicajums;
+    rezultatsDemo = true;
+    return km.meklet(sc.vaicajums, s);
+  }
+
+  // Simulētais brīdinājums tagad nāk no stāvokļa objekta (bridinajumi.js); šī josla paliek paslēpta
   function zimetJoslu(sc, r) {
+    josla.hidden = true;
+    return;
     const b = sc.bridinajums;
     if (!b) { josla.hidden = true; return; }
     const [klase, vards] = LIMENI[b.limenis];
@@ -522,5 +623,5 @@ const Demo = (() => {
   // Paneļa secība (atskanot.js atskaņo tieši tādā): reālie notikumi pēc veida, tad simulācijas
   const kartiba = async () => (dati || await ieladet()) ? [...reali(), ...simulacijas()] : [];
 
-  return { sakt, beigt, atvert, kartiba, atstarpes };
+  return { sakt, beigt, rezultats, atvert, kartiba, atstarpes };
 })();

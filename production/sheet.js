@@ -102,9 +102,11 @@ const Lapa = (() => {
   const LIM = { 3: ['sarkans', 'sarkani'], 2: ['oranžs', 'oranži'], 1: ['dzeltens', 'dzelteni'] };
   // Brīdinājumi — /api/bridinajumi; ja to nav, prognozes (/api/prognozes) šodienas augstākais risks. Laiks — jaunākais no abiem.
   const RISKS = { 1: 'paaugstināts', 2: 'augsts', 3: 'ļoti augsts' };
+  let kopsNr = 0, sitNr = 0;  // novecojusi atbilde (piem., pirms demo simulētā stāvokļa) nepārraksta jaunāko
   async function kopsavilkums() {
-    const p = el('lapa-kopsavilkums');
+    const p = el('lapa-kopsavilkums'), nr = ++kopsNr;
     const [b, pr] = await Promise.allSettled([iegut('/bridinajumi'), iegut('/prognozes')]);
+    if (nr !== kopsNr) return;
     if (b.status !== 'fulfilled') {
       p.textContent = T('LVĢMC brīdinājumus neizdevās ielādēt.');
       p.removeAttribute('aria-busy');
@@ -143,8 +145,9 @@ const Lapa = (() => {
   async function situacija() {
     const c = redzamaisCentrs();
     const ll = { lat: c.lat.toFixed(4), lon: c.lng.toFixed(4) };
-    const upes = el('lapa-upes'), celi = el('lapa-celi');
+    const upes = el('lapa-upes'), celi = el('lapa-celi'), nr = ++sitNr;
     iegut('/udens?' + new URLSearchParams({ ...ll, limit: 5 })).then(d => {
+      if (nr !== sitNr) return;
       upes.innerHTML = d.stacijas.map(s => {
         const izm = s.izmaina_24h_cm;
         const tend = izm == null ? '' : izm > 0 ? `↑ +${izm} cm` : izm < 0 ? `↓ −${Math.abs(izm)} cm` : '→ 0 cm';
@@ -153,6 +156,7 @@ const Lapa = (() => {
       }).join('') + '<li class="avots-rinda">LVĢMC hidroloģiskie novērojumi · CC0</li>';
     }).catch(() => { upes.innerHTML = '<li class="piezime">' + T('Upju līmeņus neizdevās ielādēt.') + '</li>'; });
     iegut('/celi').then(d => {
+      if (nr !== sitNr) return;
       const n = (d.notikumi || []).map(x => ({ ...x, m: L.latLng(x.lat, x.lon).distanceTo(c) })).sort((a, b) => a.m - b.m);
       const veidi = {};
       for (const x of n) veidi[x.nosaukums] = (veidi[x.nosaukums] || 0) + 1;
@@ -271,6 +275,7 @@ const Lapa = (() => {
 
   // valodas maiņa: kopsavilkums (LVĢMC) un, ja redzama, situācijas cilne jaunajā valodā
   document.addEventListener('valoda-maina', () => { kopsavilkums(); if (!el('lapa-situacija').hidden) situacija(); });
+  document.addEventListener('sim-maina', () => { kopsavilkums(); situacija(); });  // demo.js: simulētais stāvoklis
 
   return { cilne, novietot };
 })();

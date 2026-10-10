@@ -60,7 +60,9 @@ body.demo-aktivs #demo-cilne::before { content: '● '; color: #fca5a5; }
 .demo-ikona.demo-pelekots span { width: 22px; height: 22px; margin: 4px; background: #a8a29e; color: #fff; font-size: 12px; font-weight: 800; border: 2px solid #fff; }
 
 /* Demo laikā īstā LVĢMC josla un prognožu lente paslēptas (atgriežas pēc "Beigt demo") */
-body.demo-aktivs #bridinajums, body.demo-aktivs #prognozes { display: none; }
+body.demo-aktivs #demo-josla, body.demo-aktivs #prognozes { display: none; }
+/* "SIMULĒTI DATI" uz Rezultāta un Situācijas konteineriem (demo.js liek data-sim) */
+[data-sim]::before { content: attr(data-sim); display: block; width: max-content; margin: 0 0 .5rem; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff; font-size: .75rem; font-weight: 800; letter-spacing: .04em; }
 
 /* ---- Galvenes josla: demo (#demo-galvene) un atskaņošana (#atskanot-josla) pārklāj galvenes saturu tās rindā,
    tāpēc karte, uznirstošie logi un lapas lēmuma rinda paliek brīvi un nekas nelec ---- */

@@ -95,7 +95,7 @@ const Atskanot = (() => {
     if (vaicajums && typeof krizesMeklesana !== 'undefined') {
       el('jautajums').value = vaicajums;
       // lēns API nedrīkst aizturēt soli: gaidām līdz 6 s, kartīte ielādējas tālāk pati
-      try { await Promise.race([krizesMeklesana.meklet(vaicajums), new Promise(r => setTimeout(r, 6000))]); } catch { /* kartīte nav obligāta */ }
+      try { await Promise.race([Demo.rezultats(sc.kods), new Promise(r => setTimeout(r, 6000))]); } catch { /* kartīte nav obligāta */ }
     }
     if (mana !== paaudze || !aktivs) return;
     lapaRedzama();  // pirms Demo.sakt: skats pielāgojas lapas augstumam (Apaksa.atstarpes)

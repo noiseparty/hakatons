@@ -16,7 +16,7 @@ const Celi = (() => {
   const piezime = document.getElementById('celu-piezime');
   let taimeris = null;
 
-  const laiks = iso => iso ? new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+  const laiks = iso => iso ? Valoda.fmtDatums(iso, true) : '';  // DD/MM/YYYY HH:MM visās valodās
   function speka(n) {
     if (!n.aktivs) return Valoda.t('Sāksies {t}', { t: laiks(n.no) }) + (n.lidz ? Valoda.t(', līdz {t}', { t: laiks(n.lidz) }) : '');
     return n.lidz ? Valoda.t('Spēkā līdz {t}', { t: laiks(n.lidz) }) : Valoda.t('Spēkā, beigu laiks nav zināms');

@@ -931,7 +931,7 @@ const krizesMeklesana = (() => {
       // rezerves avots (Meteoalarm, d.rezerves): vieta pārbaudīta pēc pašvaldības; attiecas null — nav zināms, rāda
       const rez = !!d.rezerves;
       const sie = (d.bridinajumi || []).filter(b => rez ? b.attiecas !== false : b.attiecas).sort((a, b) => b.limenis - a.limenis);
-      const fmt = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const fmt = iso => Valoda.fmtDatums(iso, true);  // DD/MM/YYYY HH:MM visās valodās
       const lidz = b => (b.lidz ? ', līdz ' + fmt(b.lidz) : '') + (rez && b.izdots ? ` (izdots ${fmt(b.izdots)})` : '');
       const piezime = rez ? ' <small class="rezerves">' + t('rezerves avots: Meteoalarm') + '</small>' : '';
       el.innerHTML = (sie.length
@@ -963,7 +963,7 @@ const krizesMeklesana = (() => {
       const dalas = [Math.round(p.tmin) === Math.round(p.tmax) ? `${gr(p.tmin)} °C` : `${gr(p.tmin)}…${gr(p.tmax)} °C`];
       if (p.nokrisni_mm != null) dalas.push(p.nokrisni_mm >= 0.1 ? Valoda.t('nokrišņi {x} mm', { x: sk(p.nokrisni_mm) }) : Valoda.t('bez nokrišņiem'));
       if (p.brazmas_max != null) dalas.push(Valoda.t('brāzmas līdz {x} m/s', { x: sk(p.brazmas_max) }));
-      const izdota = d.izdota ? new Date(d.izdota).toLocaleString('lv-LV', { timeZone: 'Europe/Riga', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      const izdota = d.izdota ? Valoda.fmtDatums(d.izdota, true) : '';
       const avots = d.avots || {};
       el.innerHTML = `<p class="prognoze-rinda">${Ik('prognoze')} <b>${virsr}</b>${vieta}: ${dalas.join(', ')}` +
         ` — <b class="risks risks-${r ? r.limenis : 0}">${r ? esc(p.riski.map(x => x.vards).join(', ')) : Valoda.t('bez būtiskiem riskiem')}</b></p>` +
@@ -1130,7 +1130,7 @@ const krizesMeklesana = (() => {
         '<small>' + Valoda.t('LVĢMC ūdens līmeņa prognoze tuvākajām stacijām nav (to dod ~35 no 74 stacijām).') + '</small>';
       const izm = s.izmaina_24h_cm;
       const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: ' + Valoda.t('nemainās');
-      const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const laiks = Valoda.fmtDatums(s.laiks, true);
       // statuss: tuvākā no 3 stacijām ar slieksni (CA plānā) un svaigu mērījumu, ne tālāk par 30 km
       const ss = d.stacijas.find(x => x.statuss && !x.vecs && x.limenis_m != null && x.attalums_m <= 30000);
       pluduStavoklis.stacija = ss || null;
@@ -1195,11 +1195,12 @@ const krizesMeklesana = (() => {
       .bindTooltip(t('Attālumi no šejienes')).addTo(rezultatuSlanis);
     // telefonā apakšā ir rezultātu lapa (apaksa.js): sākumpunkts un tuvākā vieta paliek redzami virs tās
     const atst = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes() : { paddingTopLeft: [40, 40], paddingBottomRight: [40, 40] };
+    if (document.body.classList.contains('demo-aktivs')) return;  // demo: kartes skatu nosaka scenārijs (demo.js)
     karte.fitBounds(L.latLngBounds(punkti), { ...atst, maxZoom: 15 });
   }
 
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
-  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats, konteksts: () => konteksts };
+  return { sakt, atkartot, meklet, notirit, scenarijsPec: kods => klasifikators?.scenariji.find(s => s.kods === kods), vietaNav, labot, ieteikumi, pirmaisSkats, konteksts: () => konteksts };
 })();

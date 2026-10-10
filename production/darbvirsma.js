@@ -7,7 +7,7 @@
 const Darbvirsma = (() => {
   const plats = matchMedia('(min-width: 801px)');
   const $ = id => document.getElementById(id);
-  const laiks = iso => iso ? new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+  const laiks = iso => iso ? Valoda.fmtDatums(iso, true) : '';  // DD/MM/YYYY HH:MM visās valodās
   const stunda = d => d.toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' });
   const LIMENI = { 1: ['dzeltens', 'Dzeltens'], 2: ['oranzs', 'Oranžs'], 3: ['sarkans', 'Sarkans'] };
   const PILLS = { 3: ['{n} sarkans brīdinājums', '{n} sarkani brīdinājumi'], 2: ['{n} oranžs brīdinājums', '{n} oranži brīdinājumi'], 1: ['{n} dzeltens brīdinājums', '{n} dzelteni brīdinājumi'] };
@@ -310,10 +310,12 @@ const Darbvirsma = (() => {
     setTimeout(() => { if (izcelums === slanis) { slanis.remove(); izcelums = null; } }, 8000);
   }
 
+  let notiek = Promise.resolve();  // pēdējā ielāde: simulētā stāvokļa maiņa gaida to, lai novecojusi atbilde nepārraksta jauno
   async function ieladetSituaciju(spiest = false) {
     if (!spiest && Date.now() - ieladets < 5 * 60000) return;
     ieladets = Date.now();
-    const rezultati = await Promise.allSettled([ieladetBridinajumus(), ieladetUdeni(), ieladetCelus()]);
+    notiek = Promise.allSettled([ieladetBridinajumus(), ieladetUdeni(), ieladetCelus()]);
+    const rezultati = await notiek;
     svaigums(rezultati.some(r => r.status === 'fulfilled'));
   }
 
@@ -413,6 +415,7 @@ const Darbvirsma = (() => {
   situacija.addEventListener('keydown', e => {
     if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('li[tabindex]')) { e.preventDefault(); e.target.click(); }
   });
+  document.addEventListener('sim-maina', () => { if (ieslegts) notiek.then(() => ieladetSituaciju(true)); });  // demo.js: simulētais stāvoklis
   addEventListener('online', () => ieslegts && ieladetSituaciju(true));
   addEventListener('offline', () => ieslegts && svaigums(false));
 
