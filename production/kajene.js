@@ -18,6 +18,7 @@
     .kajene { font-size: 12.5px; line-height: 1.45; color: #5c6670; text-align: center; padding: 14px 12px 18px; }
     .kajene nav { margin-bottom: 4px; font-size: 14px; }
     .kajene a { color: #005a99; }
+    .kajene nav a { display: inline-block; padding: 12px 8px; margin: -6px 0; }  /* pieskāriena mērķis ≥ 44 px, arī "#" */
     .kajene p { margin: 0 auto; max-width: 60ch; }
     #panelis .kajene { padding: 10px 4px 4px; text-align: left; }
     @media print { .kajene nav { display: none; } }`;
@@ -29,9 +30,19 @@
   function hash() {
     if (location.hash === '#datu-avoti') {
       const p = document.getElementById('panelis-poga');
-      if (document.body.classList.contains('panelis-slegts') && p) p.click();
+      const lapa = typeof Apaksa !== 'undefined' && Apaksa.aktiva();
+      // telefonā / planšetē panelis ir apakšējās lapas cilnē "Kartes slāņi" (sheet.js): cilne + lapa "Pilns", tad ritina
+      if (lapa) { if (typeof Lapa !== 'undefined' && Lapa) Lapa.cilne('slani'); Apaksa.atvert('pilna'); }
+      else if (document.body.classList.contains('panelis-slegts') && p) p.click();
       const d = document.getElementById('avoti');
-      if (d) { d.open = true; setTimeout(() => d.scrollIntoView({ block: 'start' }), 250); }
+      if (d) {
+        d.open = true;
+        setTimeout(() => {
+          d.scrollIntoView({ block: 'start' });
+          const s = document.getElementById('apaksa-saturs');
+          if (lapa && s && s.contains(d)) s.scrollTop -= 52;  // zem pielipušās ciļņu rindas
+        }, lapa ? 420 : 250);
+      }
     } else if (location.hash === '#kas-jauns') {
       document.getElementById('izmainas-poga')?.click();
     }

@@ -190,7 +190,9 @@ async function tuvakaPatvertne() {
       L.polyline([[lat, lon], [plat, plon]], { color: '#0077c8', weight: 3, dashArray: '6 6', interactive: false }),
       marker
     ]).addTo(karte);
-    karte.fitBounds(L.latLngBounds([[lat, lon], [plat, plon]]), { padding: [60, 60], maxZoom: 16 });
+    // telefonā — virs apakšējās lapas; bez animācijas, lai loga automātiskā pārbīde rēķina pēc gala skata
+    const atst = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes() : { padding: [60, 60] };
+    karte.fitBounds(L.latLngBounds([[lat, lon], [plat, plon]]), { ...atst, maxZoom: 16, animate: false });
     marker.openPopup();
     teksts.textContent = `Tuvākā patvertne: ${f.properties.adrese || nosaukums(f.properties)} · ${attalums(f.properties.attalums_m)} taisnā līnijā.`;
   } catch {

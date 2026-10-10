@@ -19,7 +19,7 @@ a { color: var(--zils-tumss); }
 }
 .augsa h1 { margin: 0; font-size: 18px; font-weight: 700; }
 .augsa h1 span { font-weight: 400; }
-.atpakal { color: #fff; font-size: 14px; white-space: nowrap; }
+.atpakal { display: inline-flex; align-items: center; min-height: 44px; margin: -12px 0; padding: 0 6px; color: #fff; font-size: 14px; white-space: nowrap; }  /* pieskāriena mērķis 44 px */
 
 .saturs { max-width: 760px; margin: 0 auto; padding: 14px 12px 32px; }
 
@@ -33,7 +33,7 @@ a { color: var(--zils-tumss); }
 .baneris.nav { background: #6b7480; }
 .baneris.ielade { background: #6b7480; }
 .pedeja { margin: 8px 2px 14px; color: var(--teksts2); font-size: 13px; }
-.pedeja small { display: block; }
+.pedeja small { display: block; font-size: 12px; }
 
 .komp {
   background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena);

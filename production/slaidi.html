@@ -56,6 +56,7 @@
   #palidziba { position: fixed; bottom: 8px; left: 10px; z-index: 5; color: #9ca3af; font: 12px system-ui, sans-serif; }
   .vadiba { position: fixed; bottom: 6px; right: 10px; z-index: 5; display: flex; gap: 6px; }
   .vadiba button { font: 600 16px system-ui, sans-serif; min-width: 44px; min-height: 44px; border-radius: 8px; border: 1px solid #555; background: #222; color: #fff; cursor: pointer; }
+  @media (max-width: 640px) { #palidziba { display: none; } }  /* telefonā taustiņu padoms lientu zem ← → pogām */
   /* ?print: visi slaidi viens zem otra (pārskatam un drukai no pārlūka) */
   body.druka { height: auto; background: #555; --w: min(100vw, 1920px); }
   body.druka .slaids { display: flex; position: relative; margin: 0 auto 16px; }

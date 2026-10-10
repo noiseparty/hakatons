@@ -1,6 +1,6 @@
 /* Demo panelis (demo.js): cilne kartes labajā malā; panelis datorā kreisajā kolonnā, telefonā — no apakšas; SIMULĀCIJA zīmes;
    demo un atskaņošanas (atskanot.js) josla galvenes rindā */
-.demo-zime { display: inline-block; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff; font-size: .7rem; font-weight: 800;
+.demo-zime { display: inline-block; padding: .1rem .45rem; border-radius: 4px; background: #7c2d12; color: #fff; font-size: .75rem; font-weight: 800;
   letter-spacing: .08em; text-transform: uppercase; vertical-align: middle; margin-right: .4rem; }
 .bridinajums .demo-zime { background: #1c1917; }
 
@@ -33,7 +33,7 @@ body.demo-aktivs #demo-cilne::before { content: '● '; color: #fca5a5; }
 .demo-saraksts b { display: block; font-size: .9rem; }
 .demo-saraksts small { display: block; color: var(--teksts2); font-size: .78rem; font-variant-numeric: tabular-nums; }
 .demo-sim { flex: none; align-self: flex-start; padding: .1rem .4rem; border: 1px solid #c2410c; border-radius: 4px; color: #9a3412; background: #fff7ed;
-  font-size: .68rem; font-weight: 700; letter-spacing: .03em; }
+  font-size: .75rem; font-weight: 700; letter-spacing: .03em; }
 .demo-ikona-l { font-size: 1.5rem; width: 2rem; flex: none; text-align: center; }
 .demo-beigt { background: #1c1917 !important; border-color: #1c1917 !important; margin-top: .8rem; }
 
@@ -130,11 +130,15 @@ body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano hea
   body.demo-atverts .pamatkarte { display: none; }
 }
 
+/* Tikai demo paneļa poga "Drukāt" (demo.js pieliek body.druka-demo): citādi šie stili drukātu demo paneli arī Ctrl+P un
+   rezultāta kartītes "Drukāt" (stils.css body.druka-rezultats) vietā — datorā kartīte ir #panelis > #meklesana, un lapa bija tukša */
 @media print {
-  header, #panelis > :not(#demo-panelis), .kartes-rikis, .pamatkarte, #demo-cilne, #demo-karte-zime, .demo-galva .demo-aizvert,
-  .demo-atpakal, .demo-beigt, .demo-druka, .marsruts, .demo-regions select, #karte, .bridinajums:not(.demo-josla) { display: none !important; }
-  html, body, main, #kartes-laukums { height: auto !important; display: block; overflow: visible; box-shadow: none; padding: 0; }
-  #demo-panelis { position: static; transform: none; visibility: visible; width: auto; max-width: none; height: auto; box-shadow: none; }
-  #demo-saturs { overflow: visible; }
-  .demo-josla details > p { display: block; }
+  body.druka-demo header, body.druka-demo #panelis > :not(#demo-panelis), body.druka-demo .kartes-rikis, body.druka-demo .pamatkarte,
+  body.druka-demo #demo-cilne, body.druka-demo #demo-karte-zime, body.druka-demo .demo-galva .demo-aizvert, body.druka-demo .demo-atpakal,
+  body.druka-demo .demo-beigt, body.druka-demo .demo-druka, body.druka-demo .marsruts, body.druka-demo .demo-regions select, body.druka-demo #karte,
+  body.druka-demo .bridinajums:not(.demo-josla) { display: none !important; }
+  html:has(body.druka-demo), body.druka-demo, body.druka-demo main, body.druka-demo #kartes-laukums { height: auto !important; display: block; overflow: visible; box-shadow: none; padding: 0; }
+  body.druka-demo #demo-panelis { position: static; transform: none; visibility: visible; width: auto; max-width: none; height: auto; box-shadow: none; }
+  body.druka-demo #demo-saturs { overflow: visible; }
+  body.druka-demo .demo-josla details > p { display: block; }
 }

@@ -385,6 +385,7 @@ const Darbvirsma = (() => {
     const li = e.target.closest('li[tabindex]');
     if (!li || e.target.closest('a')) return;
     raditAtvilktni(false);
+    karte.closePopup();  // atvērts punkta logs citādi paliek piesiets punktam ārpus jaunā skata, kartes malā zem rīkiem
     if (li.dataset.bridinajums != null) {
       const p = (bridinajumi[+li.dataset.bridinajums]?.poligoni || []).filter(x => x.length > 2);
       if (!p.length) return karte.fitBounds(latvija);

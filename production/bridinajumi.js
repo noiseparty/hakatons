@@ -18,6 +18,8 @@ const Bridinajumi = (() => {
     return a.length > 3 ? `${a.slice(0, 3).join(', ')} u. c. (${a.length})` : b.regioni;
   };
   let pieprasijums = null;
+  // LVĢMC teksta sākumā mēdz būt kampaņas sauklis "ESI INFORMĒTS par …!" (uzruna "tu"): UI to nerāda, paliek pats brīdinājums
+  const bezSlogana = s => String(s).replace(/^\s*ESI INFORMĒTS[^!\n]*!\s*/i, '');
 
   async function atjaunot(vieta, nosaukums) {
     const josla = document.getElementById('bridinajums');
@@ -35,20 +37,25 @@ const Bridinajumi = (() => {
       const piezime = rez ? ' <small class="rezerves">(rezerves avots: Meteoalarm)</small>' : '';
       josla.className = 'bridinajums ' + (max ? LIMENIS[max][0] : 'zals');
       josla.innerHTML = !sheit.length
-        ? `<span>✓ ${kur}: LVĢMC brīdinājumu šobrīd nav${vieta && visi.length ? ` <small>(citur Latvijā: ${visi.length})</small>` : ''}${piezime}</span>`
+        ? `<span>${Ik('ok')} ${kur}: LVĢMC brīdinājumu šobrīd nav${vieta && visi.length ? ` <small>(citur Latvijā: ${visi.length})</small>` : ''}${piezime}</span>`
         : `<details><summary>${Ik('brid')} ${vieta ? kur + ': ' : ''}${sheit.map(b => `${LIMENIS[b.limenis]?.[1] || esc(b.krasa)} brīdinājums: ` +
             `${esc(b.paradiba.toLowerCase())}${b.regioni && !vieta ? ` (${esc(apgabali(b))})` : ''}${b.lidz ? `, līdz ${laiks(b.lidz)}` : ''}`).join(' · ')}${piezime}</summary>` +
           sheit.map(b => (rez && b.notikums ? `<p><b>${esc(b.notikums)}</b>${b.regioni ? ` — ${esc(b.regioni)}` : ''}</p>` : '') +
-            (b.teksts ? `<p>${esc(b.teksts)}</p>` : '') +
-            (b.riski ? `<p class="riski">${esc(b.riski).replace(/\n/g, '<br>')}</p>` : '') +
+            (b.teksts ? `<p>${esc(bezSlogana(b.teksts))}</p>` : '') +
+            (b.riski ? `<p class="riski">${esc(bezSlogana(b.riski)).replace(/\n/g, '<br>')}</p>` : '') +
             (rez && b.izdots ? `<p class="riski">Izdots ${laiks(b.izdots)}</p>` : '')).join('') +
-          `<p class="avots-rinda">${rez ? rezervesAvots(d) : 'Avots: ' + AVOTS}</p></details>`;
+          `<p class="avots-rinda">${rez ? rezervesAvots(d) : 'Avots: ' + AVOTS}</p>` +
+          `<button type="button" class="otra brid-aizvert">${Ik('aizvert')} Aizvērt</button></details>`;  // telefonā: atvērtā josla sedz karti
       josla.hidden = false;
     } catch (e) {
       if (e.name !== 'AbortError') josla.hidden = true;
     }
   }
 
+  document.getElementById('bridinajums')?.addEventListener('click', e => {
+    const d = e.target.closest('.brid-aizvert')?.closest('details');
+    if (d) d.open = false;
+  });
   atjaunot(null);
   return { atjaunot };
 })();
