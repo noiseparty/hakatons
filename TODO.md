@@ -67,6 +67,9 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] Ask Ventspils valstspilsēta + novads to publish the assembly/accommodation parts of CA-plan annexes 4–16 (only cover pages are public; plan p. 48/50 points to them) — added 2026-10-10 03:23 +03:00 by noiseparty
 
+- [ ] Send the data-request letters on Monday (`notes/vestules.md`): VUGD pasts@vugd.gov.lv, Sadales tīkls st@sadalestikls.lv (verify), LVĢMC lvgmc@lvgmc.lv (verify), Rīgas satiksme info@rigassatiksme.lv, LVC lvceli@lvceli.lv, VARAM pasts@varam.gov.lv, VDAA pasts@vdaa.gov.lv, and the 12 municipalities (addresses in the letters file); fill in the team contact first — added 2026-10-10 03:29 +03:00 by noiseparty
+- [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
+
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — @D (`noiseparty/telefoni`) — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
