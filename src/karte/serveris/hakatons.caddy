@@ -19,9 +19,15 @@ map.repo.lv {
 		try_files {path} {path}/ {path}.html
 		# Kešs (notes/atrums.md): faili mainās ar katru main sapludināšanu (bez versiju nosaukumiem), tāpēc īss —
 		# 5 min JS/CSS/JSON/attēliem, HTML vienmēr pārbauda (ETag). /api/* kešu nosaka pats API.
-		@statiski path *.js *.css *.json *.webmanifest *.svg *.png *.webp *.geojson
+		# sw.js — arī vienmēr pārbauda (no-cache): jauna VERSION jāatrod uzreiz (atjaunot.js reģistrē ar
+		# updateViaCache 'none', bet vecāki pārlūki un starpniekserveri skatās šo galveni). Failu nosaukumos nav
+		# satura jaucējvērtību (hash), tāpēc ilgu max-age/immutable nelietojam nevienam failam.
+		@statiski {
+			path *.js *.css *.json *.webmanifest *.svg *.png *.webp *.geojson
+			not path /sw.js
+		}
 		header @statiski Cache-Control "public, max-age=300"
-		@lapas path / *.html
+		@lapas path / *.html /sw.js
 		header @lapas Cache-Control "no-cache"
 		file_server
 	}

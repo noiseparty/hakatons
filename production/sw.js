@@ -1,4 +1,6 @@
-// map.repo.lv bezsaistes režīms (service worker; reģistrē offline.js, tikai https vai localhost).
+// map.repo.lv bezsaistes režīms (service worker; reģistrē atjaunot.js, tikai https vai localhost).
+// Jauna VERSION: install → skipWaiting, activate → vecie shell-* keši prom + clients.claim; atjaunot.js tad rāda
+// "Pieejama jauna versija · Atsvaidzināt" (lapu pati nepārlādē). ?svaigs=1 noņem SW un visus kešus.
 //
 // - Lapa un mūsu JS/CSS/JSON: vispirms tīkls (vienmēr svaigs pēc deploy), bez tīkla — saglabātā kopija.
 //   Tāpēc VERSION jāmaina TIKAI tad, ja mainās šis fails vai SHELL saraksts (citādi pārlūks sw.js neatjauno);
@@ -10,7 +12,7 @@
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
 // - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
 //   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
-const VERSION = '2026-10-10bm';
+const VERSION = '2026-10-10bp';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 // Saraksts ģenerēts: uv run --no-project --python 3.12 src/testi/sw_faili.py --rakstit (no index/info/statuss/api/trukstosie
 // .html un to JS/CSS/JSON atsaucēm). Pēc jauna faila pievienošanas palaidiet to un nomainiet VERSION.
@@ -19,13 +21,13 @@ const SHELL_FAILI = [
   'vendor/leaflet/leaflet.css', 'vendor/leaflet/MarkerCluster.css', 'manifest.webmanifest', 'ikonas/ikona.svg',
   'ikonas/ikona-32.png', 'ikonas/ikona-180.png', 'stils.css', 'demo.css', 'izmainas.css', 'darbvirsma.css',
   'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.markercluster.js', 'pieejamiba.js',
-  'offline.js', 'ikonas.js', 'avoti.js', 'klasifikators.js', 'valoda.js', 'objekta-statuss.js', 'app.js',
-  'marsruts.js', 'zonas.js', 'meklesana.js', 'dalities.js', 'runa.js', 'apaksa.js', 'saraksts.js', 'bridinajumi.js',
-  'zibens.js', 'noverojumi.js', 'prognozes.js', 'celi.js', 'zinot.js', 'demo.js', 'izmainas.js', 'kajene.js',
-  'atskanot.js', 'sheet.js', 'darbvirsma.js', 'statuss.css', 'info.css', 'statuss.js', 'api.css', 'openapi.json',
-  'vendor/leaflet/images/layers.png', 'vendor/leaflet/images/layers-2x.png', 'vendor/leaflet/images/marker-icon.png',
-  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'lr1.json', 'vendor/qrcode.js', 'demo/scenariji.json',
-  'izmainas.json', 'demo/augstumi-ogre.geojson',
+  'atjaunot.js', 'offline.js', 'ikonas.js', 'avoti.js', 'klasifikators.js', 'valoda.js', 'objekta-statuss.js',
+  'app.js', 'marsruts.js', 'zonas.js', 'meklesana.js', 'dalities.js', 'runa.js', 'apaksa.js', 'saraksts.js',
+  'bridinajumi.js', 'zibens.js', 'noverojumi.js', 'prognozes.js', 'celi.js', 'zinot.js', 'demo.js', 'izmainas.js',
+  'kajene.js', 'atskanot.js', 'sheet.js', 'darbvirsma.js', 'statuss.css', 'info.css', 'statuss.js', 'api.css',
+  'openapi.json', 'vendor/leaflet/images/layers.png', 'vendor/leaflet/images/layers-2x.png',
+  'vendor/leaflet/images/marker-icon.png', 'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'lr1.json',
+  'vendor/qrcode.js', 'demo/scenariji.json', 'izmainas.json', 'demo/augstumi-ogre.geojson',
 ];
 const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
@@ -106,7 +108,9 @@ async function api(req) {
 async function shell(req) {
   const c = await caches.open(SHELL);
   try {
-    const r = await tikls(req, 6000);
+    // lapas (HTML) vienmēr pārbauda serverī (ETag), nevis ņem no pārlūka HTTP keša — citādi pēc deploy var redzēt veco lapu
+    const lapa = req.mode === 'navigate' || /(\/|\.html)$/.test(new URL(req.url).pathname);
+    const r = await tikls(lapa ? new Request(req, { cache: 'no-cache' }) : req, 6000);
     if (r.ok && r.type === 'basic') c.put(req, r.clone()).catch(() => {});
     return r;
   } catch (e) {
@@ -150,6 +154,11 @@ async function apgriezt(c, max) {
     if (keys.length > max) await Promise.all(keys.slice(0, keys.length - max + Math.round(max / 10)).map(k => c.delete(k)));
   } finally { apgriez = false; }
 }
+
+// atjaunot.js (statuss.html) jautā aktīvo versiju
+self.addEventListener('message', e => {
+  if (e.data === 'versija' && e.ports[0]) e.ports[0].postMessage({ versija: VERSION });
+});
 
 self.addEventListener('fetch', e => {
   const req = e.request;
