@@ -58,6 +58,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
 
+- [ ] VPS: set `MAP_MOD_TOKEN=<long random>` in `/etc/hakatons/map.env` and `systemctl restart hakatons-map-api` to enable moderation (without it, hiding is off; reports still work) — added 2026-10-10 03:11 +03:00 by noiseparty
+- [ ] Reports: check after merge that the API created table `zinojumi` (`journalctl -u hakatons-map-api | grep zinojumi:` empty) and one report round-trips on the phone — added 2026-10-10 03:11 +03:00 by noiseparty
+- [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
+
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — @D (`noiseparty/telefoni`) — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -65,6 +69,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Community hazard reports ("Ziņot par bīstamību", lacukarte.lv pattern): `zinot.js` form + layer, `/api/zinojumi` (rate limit, URL/profanity filter, ~100 m stored / ~1 km shown, 7 days, auto-hide when disputed), confirm/dispute, `moderacija.html` with `MAP_MOD_TOKEN` — done 2026-10-10 03:11 +03:00 by noiseparty (added 2026-10-10 03:11 +03:00 by noiseparty)
 - [x] Refresh ZVA + IeM IC + GTFS data daily (`valsts_dati.py`, `gtfs.py` + `ielade_visu.sh`, e.g. a systemd timer) — done 2026-10-10 03:00 +03:00 by noiseparty: `hakatons-dati.timer` 04:30 → `atjaunot_visu.sh` (ZVA, IeM IC, VKCP, OSM, OSM noturības punkti, GTFS; static snapshots only when changed), 90 % delete guard + `avoti.atjaunots` in `ielade.py`, "Datu vecums" row on statuss.html (added 2026-10-09 20:48 +03:00 by noiseparty (split from the CC0 layers item 2026-10-10 02:32 +03:00))
 - [x] Classifier: 1 779 generated keywords (LV colloquial/typos, RU, EN), 497-query test set written blind to the keywords, scoring fixes (each word counts once, longer prefix wins ties), 'Vai domājāt' threshold 0.45; top-1 77,3 % → 93,8 % (held-out 82,2 → 89,5 %) — `notes/klasifikators.md` — done 2026-10-10 02:55 +03:00 by noiseparty (added 2026-10-10 02:55 +03:00 by noiseparty)
 - [x] Crisis search: load the planned layers its scenarios already reference — `noturibas_punkts` (heat/charging/water), `udens_punkts`, `uzlades_stacija` (`evakuacijas_punkts` done in #32) — done 2026-10-10 02:54 +03:00 by noiseparty: `noturibas_punkts` = 1 172 OSM candidates (libraries, culture houses, town halls, general schools; status unknown), `udens_punkts` / `uzlades_stacija` = SIMULATED team data with a "SIMULĒTI DATI — prototips" badge; needs the VPS loader run (added 2026-10-09 20:20 +03:00 by noiseparty)

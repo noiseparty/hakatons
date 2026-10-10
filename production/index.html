@@ -69,6 +69,10 @@
       <label class="kat parklajums"><input type="checkbox" id="celu-slanis">
         <span class="punkts" style="background:#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
+      <label class="kat parklajums"><input type="checkbox" id="zinojumu-slanis">
+        <span class="punkts" style="background:#a8a29e"></span>Iedzīvotāju ziņojumi (7 dienas, nav oficiāli)</label>
+      <p id="zinojumu-piezime" class="piezime" aria-live="polite" hidden></p>
+      <button type="button" class="otra zinot-poga" data-darbiba="zinot"><span aria-hidden="true">📣</span> Ziņot par bīstamību</button>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a></p>
@@ -78,6 +82,7 @@
     </section>
   </aside>
   <div id="kartes-laukums">
+    <div id="zinot-josla" class="zinot-josla" role="status" hidden>Pieskarieties kartei vietā, kur ir bīstamība. <button type="button" data-zinot="atcelt-izveli">Atcelt</button></div>
     <div id="karte" role="application" aria-label="Karte"></div>
     <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
       <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
@@ -135,6 +140,7 @@
 <script src="zibens.js"></script>
 <script src="prognozes.js"></script>
 <script src="celi.js"></script>
+<script src="zinot.js"></script>
 <script src="demo.js"></script>
 </body>
 </html>

@@ -377,3 +377,26 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .lemums.lemums-nav { border-left-color: #287a41; background: #ecfdf3; }
 #rez-lemums .avots-rinda, #rez-pasvaldiba .avots-rinda { display: block; margin-bottom: .3rem; }
 .pasvaldiba-rinda { margin: .7rem 0 .1rem; font-size: .85rem; }
+
+/* ==== Ziņot (zinot.js): iedzīvotāju ziņojumi; dialogs izmanto .saraksts-dialogs ==== */
+.zinot-poga { margin-top: .5rem; }
+.zinot-forma { padding: .6rem .85rem .85rem; }
+.zinot-forma fieldset { border: 0; margin: 0; padding: 0; }
+.zinot-forma legend, .zinot-etikete { display: block; font-weight: 600; margin: .6rem 0 .3rem; }
+.zinot-tipi { display: grid; gap: .35rem; }
+.zinot-tipi label { display: flex; align-items: center; gap: .5rem; min-height: 44px; padding: 0 .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); cursor: pointer; }
+.zinot-tipi label:has(input:checked) { border-color: var(--zils); background: var(--zils-gaiss); }
+.zinot-tipi input { width: 1.1rem; height: 1.1rem; margin: 0; }
+.zinot-forma textarea { width: 100%; box-sizing: border-box; font: inherit; padding: .5rem .6rem; border: 1px solid var(--robeza); border-radius: var(--radiuss); }
+.zinot-vieta, .zinot-pogas { display: flex; gap: .5rem; flex-wrap: wrap; }
+.zinot-vieta button, .zinot-pogas button { flex: 1 1 10rem; min-height: 44px; width: auto; margin: 0; }
+.zinot-kopsavilkums { margin: .4rem 0; }
+.zinot-kopsavilkums dt { font-weight: 600; color: var(--teksts2); font-size: .85rem; margin-top: .4rem; }
+.zinot-kopsavilkums dd { margin: 0; }
+.zinot-josla { position: absolute; z-index: 1001; top: 8px; left: 50%; transform: translateX(-50%); max-width: calc(100% - 16px); padding: .5rem .75rem; border-radius: var(--radiuss); background: #1f2933; color: #fff; font-size: .9rem; box-shadow: var(--ena); }
+.zinot-josla button { width: auto; margin-left: .5rem; padding: .3rem .6rem; min-height: 36px; }
+.zinot-izvele { cursor: crosshair; }
+.zinojums-popup p { margin: .3rem 0; }
+.zinojums-popup small { display: block; }
+.zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
+.zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
