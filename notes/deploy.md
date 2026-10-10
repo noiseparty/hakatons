@@ -123,8 +123,8 @@ A full reload from the repo snapshots (no download) is still `bash src/karte/db/
 `sākam …, lietotājs=…, DATI=…`. If it's missing, the failure is in systemd itself (`ExecStartPre`, `User=`,
 `EnvironmentFile=`). After changing the unit: `cp src/karte/serveris/hakatons-dati.* /etc/systemd/system/ && systemctl daemon-reload`.
 
-**Root fallback** (runs the same refresh without systemd, as `deploy`, with the same env file and folders):
+**Root fallback** (runs the same refresh without systemd, as `deploy`, with the same env file and folders; root reads `map.env`, `sudo -E` passes it on):
 
 ```bash
-install -d -o deploy -g deploy /var/lib/hakatons/dati /var/lib/hakatons/ielades && cd /srv/hakatons && sudo -u deploy env $(grep -v '^#' /etc/hakatons/map.env | xargs) HAKATONS_DATI=/var/lib/hakatons/dati HAKATONS_STAVOKLIS=/var/lib/hakatons/ielades bash src/karte/db/atjaunot_visu.sh
+(install -d -o deploy -g deploy /var/lib/hakatons/dati /var/lib/hakatons/ielades && set -a && . /etc/hakatons/map.env && set +a && cd /srv/hakatons && sudo -E -u deploy HAKATONS_DATI=/var/lib/hakatons/dati HAKATONS_STAVOKLIS=/var/lib/hakatons/ielades bash src/karte/db/atjaunot_visu.sh)
 ```
