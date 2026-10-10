@@ -543,7 +543,7 @@
   "/api/pasvaldiba": {
    "get": {
     "summary": "Pašvaldība punktā",
-    "description": "Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.\n\nVPVKAC dati ir no 2022. gada; valstspilsētām tādu nav.",
+    "description": "Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.\n\nVPVKAC dati ir no 2023. gada novembra; valstspilsētām un Ventspils novadam tādu nav, tāpēc kartīte rāda arī UR kontaktus.",
     "parameters": [
      {
       "name": "lat",
@@ -573,7 +573,7 @@
       "licence": "Oficiāls dokuments"
      },
      {
-      "nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)",
+      "nosaukums": "VPVKAC kontakti (2023-11)",
       "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti",
       "licence": "CC0 1.0"
      },
@@ -612,7 +612,7 @@
            "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"
           },
           {
-           "nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)",
+           "nosaukums": "VPVKAC kontakti (2023-11)",
            "licence": "CC0 1.0",
            "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"
           }
