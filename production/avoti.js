@@ -57,7 +57,11 @@ const Avoti = (() => {
   function zimet(saraksts) {
     const ul = document.getElementById('avoti-saraksts');
     if (!ul) return;
-    const atverti = saraksts.filter(a => a.atverts).length, citi = saraksts.length - atverti;
+    // Simulētie prototipa dati (avots "sim-…", komandas izdomāti) nav atvērto datu avoti: tos skaita atsevišķi un rāda
+    // saraksta beigās ar zīmi "SIMULĒTI" (tie paši skaitļi slaidos un trukstosie.html).
+    const simulets = a => /^sim-/.test(a.kods);
+    const sim = saraksts.filter(simulets), isti = saraksts.filter(a => !simulets(a));
+    const atverti = isti.filter(a => a.atverts).length, citi = isti.length - atverti;
     const sk = document.getElementById('avoti-skaits');
     if (sk) sk.textContent = atverti + (citi ? ' · ⚠' : '');
     let kops = document.getElementById('avoti-kopsavilkums');
@@ -66,9 +70,13 @@ const Avoti = (() => {
       kops.id = 'avoti-kopsavilkums';
       ul.before(kops);
     }
-    kops.innerHTML = `<b>${avotuVards(atverti)}</b>${citi ? ` un ${citi} bez atvērtas licences (⚠)` : ''}`;
-    ul.innerHTML = saraksts.map(a => `
-      <li class="avots${a.atverts ? '' : ' bez-licences'}" id="avots-${esc(a.kods)}">
+    kops.innerHTML = `<b>${avotuVards(atverti)}</b>` +
+      (sim.length ? ` · ${sim.length} simulēti prototipa dati` : '') +
+      (citi ? ` · ${citi} bez atvērtas licences ⚠` : '');
+    ul.innerHTML = [...isti, ...sim].map((a, i, visi) => `
+      ${simulets(a) && !simulets(visi[i - 1] || { kods: '' }) ? '<li class="avoti-grupa">Simulēti prototipa dati (nav atvērtie dati; kartē zīme „SIMULĒTI DATI — prototips”)</li>' : ''}
+      <li class="avots${a.atverts ? '' : ' bez-licences'}${simulets(a) ? ' simulets' : ''}" id="avots-${esc(a.kods)}">
+        ${simulets(a) ? '<span class="sim-zime">SIMULĒTI</span>' : ''}
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
         <small>${esc(a.izdevejs)}</small>
         <span class="licence">${a.atverts ? '' : bridinajums + ' · '}${saite(a.licences_url, a.licence)}</span>
