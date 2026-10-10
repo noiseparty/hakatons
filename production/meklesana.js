@@ -469,8 +469,9 @@ const krizesMeklesana = (() => {
     if (no.apraksts === 'no Jums') manaVietaDati(ll, signal);
     pasvaldibaDati(ll, no, signal);
     const vietas = h => { const d = kaste.querySelector('#rez-vietas'); if (d) d.innerHTML = h; };
+    let neizdevas = false;  // /api/objekti neatbildēja — tad nesakām "datos nav", bet "neizdevās ielādēt"
     const tuvakas = (k, n) => iegut('/objekti?' + new URLSearchParams({ kategorijas: k, ...ll, limit: n }), signal)
-      .catch(e => { if (e.name === 'AbortError') throw e; return { features: [] }; });
+      .catch(e => { if (e.name === 'AbortError') throw e; neizdevas = true; return { features: [] }; });
     try {
       const [grupas, drosasF] = await Promise.all([
         Promise.all(kodi.map(k => tuvakas(k, UZ_KATEGORIJU * 2))),
@@ -480,8 +481,9 @@ const krizesMeklesana = (() => {
       const drosasVietas = drosasF.map(g => izveleties(g.features)[0] || null);
       const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
       vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
-        kodi.map((k, i) => grupa(k, grupas[i].features, no)).join('') +
-        (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
+        (neizdevas ? '<p class="piezime kluda">Daļu tuvāko vietu neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža; padoms un 112 ir spēkā.</p>' : '') +
+        kodi.map((k, i) => grupa(k, grupas[i].features, no, neizdevas)).join('') +
+        (drosas.length && !neizdevas ? drosasBloks(drosas, drosasVietas, no) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>');
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
       // Maršruts līdz tuvākajai patvertnei (citādi 24/7 slimnīcai), kas apiet spēkā esošus ceļu slēgumus (marsruts.js)
@@ -532,9 +534,9 @@ const krizesMeklesana = (() => {
       <span class="attalums">${attalums(f.properties.attalums_m)}</span></li>`;
   }
 
-  function grupa(kods, features, no) {
+  function grupa(kods, features, no, neizdevas = false) {
     const k = kategorijas[kods];
-    if (!features.length) return '';
+    if (!features.length) return neizdevas ? '' : `<p class="piezime">${esc(k.nosaukums)}: tuvākā vieta mūsu datos nav zināma.</p>`;
     return `<h3><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</h3>` +
       `<ol class="rez-saraksts">${features.map(f => vienums(f, no)).join('')}</ol>`;
   }
@@ -568,7 +570,12 @@ const krizesMeklesana = (() => {
           sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + '</p>'
         : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b></p>`) +
         `<small class="avots-rinda">${AVOTI_LVGMC.bridinajumi}</small>`;
-    }).catch(() => {});
+    }).catch(e => {
+      const el = kaste.querySelector('#rez-lemums');
+      if (!el || e.name === 'AbortError') return;
+      el.innerHTML = '<p class="lemums lemums-nezinams"><b>LVĢMC brīdinājumus šobrīd neizdevās pārbaudīt.</b> ' +
+        'Skatiet meteo.lv vai klausieties LR1.</p>';
+    });
   }
 
   // Atrašanās vieta pēc GPS: tuvākā VZD adrese (≤ 300 m)
