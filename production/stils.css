@@ -838,6 +838,7 @@ header .soli { color: rgba(255, 255, 255, .85); }
 .lemums-darbiba { margin-top: .4rem; }
 .lemums-darbiba:empty { display: none; }
 .lemums-darbiba .marsruts { margin-top: 0; }
+#rezultati .lemums-darbiba .marsruts a { min-height: 44px; display: inline-flex; align-items: center; }
 p.lemums-vietas-rinda { margin: 0 0 .3rem; font-size: .85rem; color: var(--teksts-galv); }
 .lemums-bloks button.vietas-poga { display: flex; align-items: center; justify-content: center; gap: .4rem; min-height: 44px; margin: 0; }
 .lemums-bloks .vieta-zina { margin-top: .35rem; }
