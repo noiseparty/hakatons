@@ -41,9 +41,9 @@ const Bezsaiste = (() => {
     if (!bez) { josla.hidden = true; return; }
     const kartites = lasitKartites();
     const t = vecakais();
-    josla.innerHTML = `<b>${navigator.onLine ? 'Serveris neatbild' : 'Nav interneta'}</b> — rādām pēdējos saglabātos datus${t ? ` (saglabāti ${esc(t)})` : ''}.` +
-      (flizuTrukst ? ' Šim kartes skatam fona attēli nav saglabāti.' : '') +
-      (kartites.length ? ' Pēdējie rezultāti: ' + kartites.map((k, i) =>
+    josla.innerHTML = `<b>${navigator.onLine ? Valoda.t('Serveris neatbild') : Valoda.t('Nav interneta')}</b> — ${Valoda.t('rādām pēdējos saglabātos datus')}${t ? ` (${Valoda.t('saglabāti {t}', { t: esc(t) })})` : ''}.` +
+      (flizuTrukst ? ' ' + Valoda.t('Šim kartes skatam fona attēli nav saglabāti.') : '') +
+      (kartites.length ? ' ' + Valoda.t('Pēdējie rezultāti') + ': ' + kartites.map((k, i) =>
         `<button type="button" data-kartite="${i}">${esc(k.vaicajums)}</button>`).join(' ') : '');
     josla.hidden = false;
   }
@@ -69,7 +69,7 @@ const Bezsaiste = (() => {
     const kaste = document.getElementById('rezultati');
     if (!kaste || kaste.hidden || kaste.querySelector('.saglabata-kartite')) return;
     const dalas = Object.entries(saglabati).filter(([c]) => NOSAUKUMI[c] && !['kategorijas', 'regioni', 'avoti', 'prognozes', 'zibens'].includes(c))
-      .map(([c, t]) => `${NOSAUKUMI[c]} ${laiks(t)}`);
+      .map(([c, t]) => `${Valoda.t(NOSAUKUMI[c])} ${laiks(t)}`);
     if (!dalas.length) return;
     let p = kaste.querySelector('#rez-kesa');
     if (!p) {
@@ -78,7 +78,7 @@ const Bezsaiste = (() => {
       p.className = 'kesa-rinda';
       kaste.prepend(p);
     }
-    p.textContent = (navigator.onLine ? 'Serveris neatbild' : 'Bez interneta') + ', saglabātie dati: ' + dalas.join(' · ') + '.';
+    p.textContent = (navigator.onLine ? Valoda.t('Serveris neatbild') : Valoda.t('Bez interneta')) + Valoda.t(', saglabātie dati: ') + dalas.join(' · ') + '.';
   }
   document.getElementById('meklet-forma')?.addEventListener('submit', () => {
     if (navigator.onLine) for (const k in saglabati) delete saglabati[k];
@@ -108,8 +108,8 @@ const Bezsaiste = (() => {
 
   function atvertKartiti(k) {
     if (!k || !kaste) return;
-    kaste.innerHTML = `<p class="kesa-rinda saglabata-kartite">Saglabāts rezultāts (${esc(laiks(k.laiks))}), rādīts bez interneta. ` +
-      'Dati var būt novecojuši; ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>' + k.html;
+    kaste.innerHTML = `<p class="kesa-rinda saglabata-kartite">${Valoda.t('Saglabāts rezultāts ({t}), rādīts bez interneta.', { t: esc(laiks(k.laiks)) })} ` +
+      Valoda.t('Dati var būt novecojuši; ja apdraudēta dzīvība vai veselība, zvaniet 112.') + '</p>' + k.html;
     kaste.hidden = false;
     const lauks = document.getElementById('jautajums');
     if (lauks) lauks.value = k.vaicajums;
@@ -152,11 +152,10 @@ const Bezsaiste = (() => {
   }
   poga?.addEventListener('click', async () => {
     if (typeof karte === 'undefined') return;
-    if (!navigator.onLine) { teksts.textContent = 'Nav interneta: apkārtni var saglabāt tikai ar savienojumu.'; teksts.hidden = false; return; }
+    if (!navigator.onLine) { teksts.textContent = Valoda.t('Nav interneta: apkārtni var saglabāt tikai ar savienojumu.'); teksts.hidden = false; return; }
     // bez aktīva service worker lejupielādētie attēli bezsaistē neatvērsies — to nesolām
     if (!navigator.serviceWorker?.controller) {
-      teksts.textContent = 'Bezsaistes kopija šajā pārlūkā vēl nav aktīva (service worker). Atveriet lapu vēlreiz un mēģiniet atkal; ' +
-        'privātajā režīmā bezsaistes kopija nav pieejama.';
+      teksts.textContent = Valoda.t('Bezsaistes kopija šajā pārlūkā vēl nav aktīva (service worker). Atveriet lapu vēlreiz un mēģiniet atkal; privātajā režīmā bezsaistes kopija nav pieejama.');
       teksts.hidden = false;
       return;
     }
@@ -176,7 +175,7 @@ const Bezsaiste = (() => {
         const url = slanis.getTileUrl({ x, y, z });
         try { const r = await fetch(url, { mode: 'cors' }); if (!r.ok) kludas++; } catch { kludas++; }
         gatavs++;
-        if (gatavs % 10 === 0 || !rinda.length) teksts.textContent = `Saglabā kartes attēlus: ${gatavs} / ${flizes.length}…`;
+        if (gatavs % 10 === 0 || !rinda.length) teksts.textContent = Valoda.t('Saglabā kartes attēlus: {g} / {n}…', { g: gatavs, n: flizes.length });
       }
     };
     await Promise.all([darbs(), darbs()]);  // 2 vienlaicīgi — saudzīgi pret OSM serveriem
@@ -184,8 +183,7 @@ const Bezsaiste = (() => {
     await Promise.all(['/api/kategorijas', '/api/regioni', '/api/avoti', '/api/bridinajumi?' + new URLSearchParams(ll),
       '/api/udens?' + new URLSearchParams({ ...ll, limit: 3 }), '/api/pasvaldiba?' + new URLSearchParams(ll)]
       .map(u => fetch(u).catch(() => {})));
-    teksts.textContent = `Saglabāti ${gatavs - kludas} kartes attēli (tuvinājums 12–15) un pamatdati. ` +
-      'Bez interneta šī apkārtne un pēdējie meklēšanas rezultāti atvērsies no saglabātā.';
+    teksts.textContent = Valoda.t('Saglabāti {n} kartes attēli (tuvinājums 12–15) un pamatdati. Bez interneta šī apkārtne un pēdējie meklēšanas rezultāti atvērsies no saglabātā.', { n: gatavs - kludas });
     poga.disabled = false;
   });
 

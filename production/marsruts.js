@@ -23,9 +23,9 @@ const Marsruts = (() => {
     if (!d.dross) return `<b class="marsruts-bistams">${Ik('uzmanibu')} ${esc(d.piezime)}</b>`;
     const t = typeof Valoda !== 'undefined' ? Valoda.t : k => k;
     return `<b>${t('Maršruts')} (${km(d.attalums_m)}, ${min(d.ilgums_s)} ${t(d.veids === 'auto' ? 'ar auto' : 'kājām')}` +
-      `${d.apiet_zonu ? ', apiet slēgto zonu' : d.no_zonas ? ', ved ārā no slēgtās zonas' : ''})</b> — zilā līnija kartē`;
+      `${d.apiet_zonu ? t(', apiet slēgto zonu') : d.no_zonas ? t(', ved ārā no slēgtās zonas') : ''})</b> ${t('— zilā līnija kartē')}`;
   }
-  const avots = d => `<small class="avots-rinda">Maršruts: <a href="${esc(d.avots.url)}" target="_blank" rel="noopener">OSRM (FOSSGIS)</a>, OpenStreetMap (${esc(d.avots.licence)})</small>`;
+  const avots = d => `<small class="avots-rinda">${Valoda.t('Maršruts')}: <a href="${esc(d.avots.url)}" target="_blank" rel="noopener">OSRM (FOSSGIS)</a>, OpenStreetMap (${esc(d.avots.licence)})</small>`;
 
   function zimet(d, slanis) {
     const ll = d.koord.map(([a, b]) => [a, b]);
@@ -45,7 +45,7 @@ const Marsruts = (() => {
     if (!li) return null;
     const vieta = document.createElement('small');
     vieta.className = 'marsruta-rinda';
-    vieta.textContent = 'Meklē maršrutu…';
+    vieta.textContent = Valoda.t('Meklē maršrutu…');
     const piezime = li.querySelector('.marsruta-piezime');
     if (piezime) piezime.replaceWith(vieta); else li.querySelector('.teksts')?.append(vieta);
     try {

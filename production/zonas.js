@@ -27,8 +27,8 @@ const Zonas = (() => {
   const ZONAS = [
     {
       kods: 'pludi', nosaukums: 'plūdu riska zona',
-      apraksts: v => v === 2 ? 'Augsta plūdu varbūtība: applūst vidēji reizi 10 gados (10 % varbūtība gadā)'
-        : 'Plūdu riska zona: applūst vismaz reizi 100 gados (1 % varbūtība gadā)',
+      apraksts: v => Valoda.t(v === 2 ? 'Augsta plūdu varbūtība: applūst vidēji reizi 10 gados (10 % varbūtība gadā)'
+        : 'Plūdu riska zona: applūst vismaz reizi 100 gados (1 % varbūtība gadā)'),
       avots: saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC plūdu riska kartes 2026–2031') + ' · CC0',
       minZoom: 8,
       // slānis 1 = 1 % (100 gadu) applūšana → maskā 1; slani10 = 10 % (10 gadu) → maskā 2 (tumšāks laukums tā iekšpusē;
@@ -60,8 +60,8 @@ const Zonas = (() => {
       skaitit: v => v === 3,  // brīva vai lēna satiksme nav risks; sastrēgums ir (evakuācija, palīdzības piekļuve)
       krasas: v => v === 1 ? [[22, 163, 74, 55], [21, 128, 61]] : v === 2 ? [[245, 158, 11, 70], [180, 83, 9]]
         : v === 3 ? [[220, 38, 38, 80], [153, 27, 27]] : [[120, 113, 108, 50], [87, 83, 78]],
-      legenda: '<span class="skala"><i style="background:#16a34a"></i>brīva <i style="background:#f59e0b"></i>lēna ' +
-        '<i style="background:#dc2626"></i>sastrēgums <i style="background:#a8a29e"></i>nav datu</span>',
+      legenda: () => '<span class="skala"><i style="background:#16a34a"></i>' + Valoda.t('brīva') + ' <i style="background:#f59e0b"></i>' + Valoda.t('lēna') + ' ' +
+        '<i style="background:#dc2626"></i>' + Valoda.t('sastrēgums') + ' <i style="background:#a8a29e"></i>' + Valoda.t('nav datu') + '</span>',
       ieladet: ieladetSatiksmi,
     },
     {
@@ -349,7 +349,7 @@ const Zonas = (() => {
   });
   const slanis = new Slanis({
     tileSize: LIELUMS, zIndex: 250, updateWhenZooming: false, updateWhenIdle: true, keepBuffer: 1,
-    attribution: 'Zonas: ' + saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC') + ', ' + saite('https://transportdata.gov.lv', 'LVC') + ' (CC0)',
+    attribution: Valoda.t('Zonas') + ': ' + saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC') + ', ' + saite('https://transportdata.gov.lv', 'LVC') + ' (CC0)',
   });
 
   // Leģenda kartes stūrī, kamēr kāda zona ieslēgta
@@ -379,21 +379,21 @@ const Zonas = (() => {
     div.classList.toggle('atverta', atverta);
     const poga = div.querySelector('button');
     poga.setAttribute('aria-expanded', atverta);
-    poga.setAttribute('aria-label', atverta ? 'Sakļaut zonu leģendu' : 'Rādīt zonu leģendu');
-    poga.textContent = atverta ? 'Leģenda ▾' : 'Leģenda ▸';
+    poga.setAttribute('aria-label', atverta ? Valoda.t('Sakļaut zonu leģendu') : Valoda.t('Rādīt zonu leģendu'));
+    poga.textContent = Valoda.t('Leģenda') + (atverta ? ' ▾' : ' ▸');
     const z = karte.getZoom();
     div.querySelector('.zonu-legenda-saturs').innerHTML = ZONAS.filter(x => ieslegtas.has(x.kods)).map(x => {
-      if (x.legenda) return x.legenda;
+      if (x.legenda) return typeof x.legenda === 'function' ? x.legenda() : x.legenda;
       return (x.legendas || [[x.svitrot ? 2 : 1, x.nosaukums]]).map(([v, teksts]) => {
         const [a, r] = x.krasas(v), aizp = `rgba(${a.slice(0, 3)},${a[3] / 255})`;
         const fons = x.svitrot?.(v) ? `repeating-linear-gradient(-45deg, rgb(${r}) 0 2px, ${aizp} 2px 6px)` : aizp;
-        return `<span><i style="background:${fons};border-color:rgb(${r})"></i>${esc(teksts)}</span>`;
+        return `<span><i style="background:${fons};border-color:rgb(${r})"></i>${esc(Valoda.t(teksts))}</span>`;
       }).join('');
     }).join('') +
-      (ieslegtas.size >= 2 ? '<span><i class="parklajas"></i>paaugstināts risks (zonas pārklājas)</span>' : '') +
-      (ieslegtas.has('pludi') && z < 8 ? '<small>Tuviniet karti, lai redzētu plūdu zonas</small>' : '') +
-      (gaidaWms && ieslegtas.has('pludi') ? '<small>Ielādē plūdu zonas… LVĢMC serviss var atbildēt līdz minūtei</small>' : '') +
-      (ielade === 'kluda' && ieslegtas.has('pludi') ? '<small>Daļa plūdu zonu neielādējās (LVĢMC serviss neatbild). Pabīdiet karti, lai mēģinātu vēlreiz.</small>' : '');
+      (ieslegtas.size >= 2 ? '<span><i class="parklajas"></i>' + Valoda.t('paaugstināts risks (zonas pārklājas)') + '</span>' : '') +
+      (ieslegtas.has('pludi') && z < 8 ? '<small>' + Valoda.t('Tuviniet karti, lai redzētu plūdu zonas') + '</small>' : '') +
+      (gaidaWms && ieslegtas.has('pludi') ? '<small>' + Valoda.t('Ielādē plūdu zonas… LVĢMC serviss var atbildēt līdz minūtei') + '</small>' : '') +
+      (ielade === 'kluda' && ieslegtas.has('pludi') ? '<small>' + Valoda.t('Daļa plūdu zonu neielādējās (LVĢMC serviss neatbild). Pabīdiet karti, lai mēģinātu vēlreiz.') + '</small>' : '');
   }
 
   function radit(kods, ieslegt) {
@@ -411,6 +411,7 @@ const Zonas = (() => {
   let ielade = '';
   karte.on('moveend', () => { if (!gaidaWms && ielade === 'kluda') { ielade = ''; atjaunotLegendu(); } });
   karte.on('zoomend', atjaunotLegendu);
+  document.addEventListener('valoda-maina', atjaunotLegendu);  // leģenda pārtulkojas uzreiz
 
   // ---- Klikšķis: kuras zonas ir šajā vietā; ja divas vai vairāk riska zonas — brīdinājums par paaugstinātu risku ----
   function zonasVieta(ll) {
@@ -424,7 +425,7 @@ const Zonas = (() => {
       if (zn.wms) { const v = kese[zn.kods]?.[i]; if (v) atrastas.push({ zona: zn, teksts: zn.apraksts(v), skaitas: true }); continue; }
       const sheit = zn.poligoni.filter(pp => formaSatur(pp, ll)).sort((a, b) => b.v - a.v);
       // logs telefonā nedrīkst iziet ārpus ekrāna: no vienas zonas ne vairāk kā 3 ieraksti
-      const teksti = sheit.slice(0, 3).map(pp => pp.teksts).concat(sheit.length > 3 ? [`<small>Šeit vēl ${sheit.length - 3}.</small>`] : []);
+      const teksti = sheit.slice(0, 3).map(pp => pp.teksts).concat(sheit.length > 3 ? [`<small>${Valoda.t('Šeit vēl {n}.', { n: sheit.length - 3 })}</small>`] : []);
       if (sheit.length) atrastas.push({ zona: zn, teksts: teksti.join(zn.atdalitajs || '; '), skaitas: sheit.some(pp => !zn.skaitit || zn.skaitit(pp.v)) });
     }
     return atrastas;
@@ -443,9 +444,9 @@ const Zonas = (() => {
       const augsts = new Set(riski.map(a => a.zona.kods)).size >= 2;
       L.popup({ maxWidth: Math.min(300, karte.getSize().x - 70), maxHeight: Math.max(160, karte.getSize().y - 160) }).setLatLng(e.latlng).setContent(
         '<div class="popup zonu-popup">' +
-        (augsts ? `<b class="paaugstinats">Paaugstināts risks</b><p>Šeit pārklājas: ${riski.map(a => esc(a.zona.nosaukums)).join(' + ')}; ieteicams izvairīties.</p>` : '') +
-        atrastas.map(a => `<p><b>${esc(a.zona.nosaukums[0].toUpperCase() + a.zona.nosaukums.slice(1))}</b><br>${a.teksts}` +
-          `<br><small class="popup-avots">Avots: ${a.zona.avots}</small></p>`).join('') +
+        (augsts ? `<b class="paaugstinats">${Valoda.t('Paaugstināts risks')}</b><p>${Valoda.t('Šeit pārklājas: {z}; ieteicams izvairīties.', { z: riski.map(a => esc(Valoda.t(a.zona.nosaukums))).join(' + ') })}</p>` : '') +
+        atrastas.map(a => `<p><b>${esc(Valoda.t(a.zona.nosaukums)[0].toUpperCase() + Valoda.t(a.zona.nosaukums).slice(1))}</b><br>${a.teksts}` +
+          `<br><small class="popup-avots">${Valoda.t('Avots')}: ${a.zona.avots}</small></p>`).join('') +
         '</div>').openOn(karte);
     }, 0);
   });
@@ -454,7 +455,7 @@ const Zonas = (() => {
   const LIMENI = { 1: 'Dzeltenais', 2: 'Oranžais', 3: 'Sarkanais' };
   const bridForma = (punkti, limenis, paradiba, lidz) => forma([punkti],
     limenis | (/lietus|plūd|vējuzplūd|pali|sastrēg|ūdens/i.test(paradiba) ? 4 : 0),
-    esc(`${LIMENI[limenis] || 'Dzeltenais'} brīdinājums: ${String(paradiba).toLowerCase()}${lidz ? `, līdz ${lidz}` : ''}`));
+    esc(Valoda.t('{l} brīdinājums: {p}', { l: Valoda.t(LIMENI[limenis] || 'Dzeltenais'), p: String(paradiba).toLowerCase() }) + (lidz ? Valoda.t(', līdz {t}', { t: lidz }) : '')));
   // Vispirms /api/prognozes: poligoni tur jau vienkāršoti (~1 km pielaide; neapstrādātais "Latvija" ir ~42 000 virsotņu,
   // ~1 MB) un serverī kešoti 5 min. "Līdz" ņem no tā paša brīdinājuma ziņas virsraksta. Ja prognozes nav pieejamas
   // vai tajās nav poligonu — neapstrādātie no /api/bridinajumi?poligoni=1 (bez brīdinājumiem tā atbilde ir maza).
@@ -506,7 +507,7 @@ const Zonas = (() => {
       arDatiem.add(String(z.kods));
       return [forma(g, lim + 1, satiksmesTeksts(z), { dati: z, nosaukums: z.nosaukums })];
     }).concat((robezas?.features || []).filter(f => f.geometry && !arDatiem.has(String(f.properties?.kods ?? f.id))).map(f =>
-      forma(gredzeni(f.geometry), 4, `${esc(f.properties?.nosaukums)}: nav mērījumu (šajā novadā nav LVC satiksmes uzskaites iekārtu)`,
+      forma(gredzeni(f.geometry), 4, Valoda.t('{n}: nav mērījumu (šajā novadā nav LVC satiksmes uzskaites iekārtu)', { n: esc(f.properties?.nosaukums) }),
         { dati: { limenis: 3 }, nosaukums: f.properties?.nosaukums })));
     // ceļu meteostacijas: temperatūru LVC atvērtajos datos nav — tikai "slidens: jā/nē"
     const slidensKopas = new Set();
@@ -520,20 +521,20 @@ const Zonas = (() => {
       if (!p.lat || !p.lon) continue;
       const lim = Math.min(3, Math.max(0, +p.limenis || 0));
       L.circleMarker([p.lat, p.lon], { radius: 5, color: '#fff', weight: 1.5, fillColor: PUNKTU_KRASAS[lim], fillOpacity: 1 })
-        .bindPopup(`<div class="popup"><b>Satiksmes uzskaites iekārta${p.nosaukums ? ' ' + esc(p.nosaukums) : ''}</b><br>Satiksme: <b>${SATIKSME[lim]}</b>` +
-          (p.atrums != null ? `<br>Ātrums ${Math.round(p.atrums)} km/h${p.atrums_brivs != null ? ` (brīvā plūsmā ~${Math.round(p.atrums_brivs)} km/h)` : ''}` : '') +
-          (p.plusma_h != null ? `<br>${p.plusma_h} transportlīdzekļi stundā` : '') + (p.laiks ? `<br><small>Mērīts ${laiks(p.laiks)}</small>` : '') +
-          `<br><small class="popup-avots">Avots: ${kopasAvots(kopas.merijumi)}</small></div>`).addTo(satiksmesPunkti);
+        .bindPopup(`<div class="popup"><b>${Valoda.t('Satiksmes uzskaites iekārta')}${p.nosaukums ? ' ' + esc(p.nosaukums) : ''}</b><br>${Valoda.t('Satiksme')}: <b>${Valoda.t(SATIKSME[lim])}</b>` +
+          (p.atrums != null ? `<br>${Valoda.t('Ātrums {v} km/h', { v: Math.round(p.atrums) })}${p.atrums_brivs != null ? ` (${Valoda.t('brīvā plūsmā ~{v} km/h', { v: Math.round(p.atrums_brivs) })})` : ''}` : '') +
+          (p.plusma_h != null ? `<br>${Valoda.t('{n} transportlīdzekļi stundā', { n: p.plusma_h })}` : '') + (p.laiks ? `<br><small>${Valoda.t('Mērīts')} ${laiks(p.laiks)}</small>` : '') +
+          `<br><small class="popup-avots">${Valoda.t('Avots')}: ${kopasAvots(kopas.merijumi)}</small></div>`).addTo(satiksmesPunkti);
     }
     for (const b of d.robezas || []) {
       if (!b.lat || !b.lon) continue;
       const min = b.gaidisana_min;
       L.marker([b.lat, b.lon], {
         icon: L.divIcon({ className: 'robezas-ikona', html: `<span>${min == null ? '?' : Math.round(min)}<small>min</small></span>`, iconSize: [40, 28] }),
-        title: `${b.nosaukums}: gaidīšana ${min == null ? 'nav datu' : Math.round(min) + ' min'}`,
-      }).bindPopup(`<div class="popup"><b>Robežpunkts ${esc(b.nosaukums)}</b>${b.virziens ? `<br>Virziens: ${esc(b.virziens)}` : ''}` +
-        `<br>Gaidīšana: ${min == null ? 'nav datu' : `<b>${Math.round(min)} min</b>`}${b.laiks ? `<br><small>Dati: ${laiks(b.laiks)}</small>` : ''}` +
-        `<br><small class="popup-avots">Avots: ${kopasAvots(kopas.robezas)}</small></div>`).addTo(satiksmesPunkti);
+        title: Valoda.t('{n}: gaidīšana {g}', { n: b.nosaukums, g: min == null ? Valoda.t('nav datu') : Math.round(min) + ' min' }),
+      }).bindPopup(`<div class="popup"><b>${Valoda.t('Robežpunkts')} ${esc(b.nosaukums)}</b>${b.virziens ? `<br>${Valoda.t('Virziens')}: ${esc(b.virziens)}` : ''}` +
+        `<br>${Valoda.t('Gaidīšana')}: ${min == null ? Valoda.t('nav datu') : `<b>${Math.round(min)} min</b>`}${b.laiks ? `<br><small>${Valoda.t('Dati')}: ${laiks(b.laiks)}</small>` : ''}` +
+        `<br><small class="popup-avots">${Valoda.t('Avots')}: ${kopasAvots(kopas.robezas)}</small></div>`).addTo(satiksmesPunkti);
     }
     satiksmesDati = d; satiksmesLaiks = Date.now();
     return d;
@@ -542,17 +543,17 @@ const Zonas = (() => {
   const satiksmesPunkti = L.layerGroup();  // uzskaites iekārtas un robežpunkti — kopā ar satiksmes zonām
   function satiksmesTeksts(z) {
     const lim = Math.min(3, Math.max(0, +z.limenis || 0));
-    return `${esc(z.nosaukums)}: <b>${SATIKSME[lim]}</b>` +
-      (z.atrums_vid != null ? `<br>Vidējais ātrums ${Math.round(z.atrums_vid)} km/h` + (z.atrums_brivs != null ? ` (brīvā plūsmā ~${Math.round(z.atrums_brivs)} km/h)` : '') : '') +
-      (z.plusma_h != null ? `<br>${z.plusma_h} transportlīdzekļi stundā` : '') +
-      `<br><small>${z.iekartas != null ? `${z.iekartas} uzskaites iekārtas, ` : ''}${z.merijumi != null ? `${z.merijumi} mērījumi` : ''}${z.laiks ? ', ' + laiks(z.laiks) : ''}</small>`;
+    return `${esc(z.nosaukums)}: <b>${Valoda.t(SATIKSME[lim])}</b>` +
+      (z.atrums_vid != null ? `<br>${Valoda.t('Vidējais ātrums {v} km/h', { v: Math.round(z.atrums_vid) })}` + (z.atrums_brivs != null ? ` (${Valoda.t('brīvā plūsmā ~{v} km/h', { v: Math.round(z.atrums_brivs) })})` : '') : '') +
+      (z.plusma_h != null ? `<br>${Valoda.t('{n} transportlīdzekļi stundā', { n: z.plusma_h })}` : '') +
+      `<br><small>${z.iekartas != null ? Valoda.t('{n} uzskaites iekārtas, ', { n: z.iekartas }) : ''}${z.merijumi != null ? Valoda.t('{n} mērījumi', { n: z.merijumi }) : ''}${z.laiks ? ', ' + laiks(z.laiks) : ''}</small>`;
   }
   function stacijasTeksts(s, kopa) {
-    const nos = s.nosaukums && !/^slippery$/i.test(s.nosaukums) ? esc(s.nosaukums) : 'Ceļa meteostacija';
+    const nos = s.nosaukums && !/^slippery$/i.test(s.nosaukums) ? esc(s.nosaukums) : Valoda.t('Ceļa meteostacija');
     const t = v => `${(+v).toFixed(1).replace('.', ',')} °C`;
-    return `${nos}: slidens — <b>${s.slidens ? 'jā' : 'nē'}</b>` +
-      (s.cela_temp != null ? `<br>Ceļa virsma ${t(s.cela_temp)}${s.gaisa_temp != null ? `, gaiss ${t(s.gaisa_temp)}` : ''}` : '') +
-      (s.laiks ? `<br><small>Dati: ${laiks(s.laiks)}${kopa ? ' · ' + esc(kopa.nosaukums) : ''}</small>` : '');
+    return `${nos}: ${Valoda.t('slidens')} — <b>${Valoda.t(s.slidens ? 'jā' : 'nē')}</b>` +
+      (s.cela_temp != null ? `<br>${Valoda.t('Ceļa virsma')} ${t(s.cela_temp)}${s.gaisa_temp != null ? `, ${Valoda.t('gaiss')} ${t(s.gaisa_temp)}` : ''}` : '') +
+      (s.laiks ? `<br><small>${Valoda.t('Dati')}: ${laiks(s.laiks)}${kopa ? ' · ' + esc(kopa.nosaukums) : ''}</small>` : '');
   }
   async function ieladetSatiksmi() {
     await satiksme();
@@ -580,12 +581,12 @@ const Zonas = (() => {
       && (n.tips !== 'negadijums' || celaSlegts(n))).map(n => {
       const v = celaSlegts(n) ? 2 : 1;
       kopas.add(n.tips);
-      const teksts = `<b>${v === 2 ? 'Ceļš slēgts' : 'Ierobežota satiksme'}: ${n.cels ? esc(n.cels) : 'valsts autoceļš (numurs nav norādīts)'}</b>` +
+      const teksts = `<b>${v === 2 ? Valoda.t('Ceļš slēgts') : Valoda.t('Ierobežota satiksme')}: ${n.cels ? esc(n.cels) : Valoda.t('valsts autoceļš (numurs nav norādīts)')}</b>` +
         `<br>${esc(n.nosaukums)}${n.apraksts ? ': ' + esc(n.apraksts) : ''}` +
-        `<br><small>${n.no ? `Kopš ${datums(n.no)}` : 'Sākums nav zināms'}${n.lidz ? `, līdz ${datums(n.lidz)}` : ', beigu laiks nav zināms'}</small>`;
+        `<br><small>${n.no ? Valoda.t('Kopš {t}', { t: datums(n.no) }) : Valoda.t('Sākums nav zināms')}${n.lidz ? Valoda.t(', līdz {t}', { t: datums(n.lidz) }) : Valoda.t(', beigu laiks nav zināms')}</small>`;
       return n.linija?.length > 1 ? josla(n.linija, CELU_BUFERIS_M, v, teksts) : aplis(+n.lat, +n.lon, CELU_BUFERIS_M, v, teksts);
     });
-    zona('celi').avots = [...kopas].map(t => saite('https://transportdata.gov.lv/card/' + CELU_KARTITES[t], CELU_KOPAS[t] + ' (LVC)')).join(', ') +
+    zona('celi').avots = [...kopas].map(t => saite('https://transportdata.gov.lv/card/' + CELU_KARTITES[t], Valoda.t(CELU_KOPAS[t]) + ' (LVC)')).join(', ') +
       ' · DATEX II, transportdata.gov.lv · CC0';
     return zona('celi').poligoni.length;
   }
@@ -600,10 +601,10 @@ const Zonas = (() => {
     if (!z && !sl) return '';
     const d = z?.dati, lim = d ? Math.min(3, Math.max(0, +d.limenis || 0)) : 3;
     return '<ul class="fakti">' +
-      (z ? `<li><span class="ikona">${Ik('auto')}</span><div><b>Satiksme šajā apvidū</b><span>${lim === 3 ? 'nav mērījumu' : SATIKSME[lim]}` +
-        (d.atrums_vid != null && lim < 3 ? ` (vid. ${Math.round(d.atrums_vid)} km/h)` : '') + `</span>` +
+      (z ? `<li><span class="ikona">${Ik('auto')}</span><div><b>${Valoda.t('Satiksme šajā apvidū')}</b><span>${lim === 3 ? Valoda.t('nav mērījumu') : Valoda.t(SATIKSME[lim])}` +
+        (d.atrums_vid != null && lim < 3 ? ` (${Valoda.t('vid. {v} km/h', { v: Math.round(d.atrums_vid) })})` : '') + `</span>` +
         `<small>${esc(z.nosaukums || '')}${d.laiks ? ', ' + laiks(d.laiks) : ''}</small><small class="avots-rinda">${zona('satiksme').avots}</small></div></li>` : '') +
-      (sl ? `<li><span class="ikona">${Ik('sniegs')}</span><div><b>Slidens ceļš tuvumā</b><span>LVC ziņo par slidenu ceļu ${(sl[1] / 1000).toFixed(0)} km no šīs vietas</span>` +
+      (sl ? `<li><span class="ikona">${Ik('sniegs')}</span><div><b>${Valoda.t('Slidens ceļš tuvumā')}</b><span>${Valoda.t('LVC ziņo par slidenu ceļu {km} km no šīs vietas', { km: (sl[1] / 1000).toFixed(0) })}</span>` +
         `<small class="avots-rinda">${sl[0].avots}</small></div></li>` : '') + '</ul>';
   }
 
@@ -613,7 +614,7 @@ const Zonas = (() => {
     const { id, teksts, krasa, nav } = zn.sledzis;
     const l = document.createElement('label');
     l.className = 'kat parklajums';
-    l.innerHTML = `<input type="checkbox" id="${id}">${Ikonas.formaSvg('kvadrats', krasa, 16)}${esc(teksts)}`;
+    l.innerHTML = `<input type="checkbox" id="${id}">${Ikonas.formaSvg('kvadrats', krasa, 16)}${esc(Valoda.t(teksts))}`;
     pec.after(l);
     pec = l;
     const cb = l.querySelector('input');
@@ -622,14 +623,14 @@ const Zonas = (() => {
       try {
         if (!zn.poligoni.length && !await zn.ieladet()) {
           cb.checked = false;
-          l.lastChild.textContent = `${teksts}: ${nav}`;
+          l.lastChild.textContent = `${Valoda.t(teksts)}: ${Valoda.t(nav)}`;
           return;
         }
-        l.lastChild.textContent = teksts;
+        l.lastChild.textContent = Valoda.t(teksts);
         radit(zn.kods, true);
       } catch {
         cb.checked = false;
-        l.lastChild.textContent = `${teksts}: neizdevās ielādēt`;
+        l.lastChild.textContent = `${Valoda.t(teksts)}: ${Valoda.t('neizdevās ielādēt')}`;
       }
     });
   }

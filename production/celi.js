@@ -9,7 +9,7 @@ const Celi = (() => {
     remonts: { ikona: 'remonts', krasa: '#a16207' },
     slidens: { ikona: 'sniegs', krasa: '#0369a1' },
   };
-  const AVOTS = 'Avots: <a href="https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf" target="_blank" rel="noopener">' +
+  const AVOTS = () => Valoda.t('Avots') + ': <a href="https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf" target="_blank" rel="noopener">' +
     'VSIA „Latvijas Valsts ceļi”, transportdata.gov.lv</a> · CC0';
   const slanis = L.layerGroup();
   const ieslegt = document.getElementById('celu-slanis');
@@ -18,14 +18,14 @@ const Celi = (() => {
 
   const laiks = iso => iso ? new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
   function speka(n) {
-    if (!n.aktivs) return `Sāksies ${laiks(n.no)}` + (n.lidz ? `, līdz ${laiks(n.lidz)}` : '');
-    return n.lidz ? `Spēkā līdz ${laiks(n.lidz)}` : 'Spēkā, beigu laiks nav zināms';
+    if (!n.aktivs) return Valoda.t('Sāksies {t}', { t: laiks(n.no) }) + (n.lidz ? Valoda.t(', līdz {t}', { t: laiks(n.lidz) }) : '');
+    return n.lidz ? Valoda.t('Spēkā līdz {t}', { t: laiks(n.lidz) }) : Valoda.t('Spēkā, beigu laiks nav zināms');
   }
   function popups(n) {
     return `<div class="popup"><b>${Ik(TIPI[n.tips].ikona)} ${esc(n.nosaukums)}${n.cels ? ' · ' + esc(n.cels) : ''}</b>` +
       (n.apraksts ? `<p>${esc(n.apraksts)}</p>` : '') +
-      `<small>${esc(speka(n))}${n.no && n.aktivs ? ` (no ${esc(laiks(n.no))})` : ''}</small>` +
-      `<small class="popup-avots">${AVOTS}</small></div>`;
+      `<small>${esc(speka(n))}${n.no && n.aktivs ? ` (${Valoda.t('no {t}', { t: esc(laiks(n.no)) })})` : ''}</small>` +
+      `<small class="popup-avots">${AVOTS()}</small></div>`;
   }
 
   async function ieladet() {
@@ -33,8 +33,8 @@ const Celi = (() => {
     try { d = await iegut('/celi'); } catch { d = null; }
     if (!ieslegt.checked) return;
     slanis.clearLayers();
-    if (!d) { piezime.textContent = 'Ceļu datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.'; return; }
-    if (!d.konfigurets) { piezime.textContent = 'Ceļu dati pašlaik nav pieejami (avots vēl nav pieslēgts).'; return; }
+    if (!d) { piezime.textContent = Valoda.t('Ceļu datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.'); return; }
+    if (!d.konfigurets) { piezime.textContent = Valoda.t('Ceļu dati pašlaik nav pieejami (avots vēl nav pieslēgts).'); return; }
     for (const n of d.notikumi) {
       const t = TIPI[n.tips];
       if (n.linija) L.polyline(n.linija, { color: t.krasa, weight: 5, opacity: n.aktivs ? .85 : .45, dashArray: n.aktivs ? null : '6 6' })
@@ -43,14 +43,14 @@ const Celi = (() => {
         title: n.nosaukums, keyboard: true, opacity: n.aktivs ? 1 : .6 }).bindPopup(() => popups(n)).addTo(slanis);
     }
     const aktivi = d.notikumi.filter(n => n.aktivs).length;
-    piezime.textContent = (d.notikumi.length ? `Šobrīd ${aktivi} spēkā, ${d.notikumi.length - aktivi} plānoti.` : 'Šobrīd nav ceļu slēgumu vai negadījumu.') +
-      (d.nepieejami?.length ? ' Daļa datu pašlaik nav pieejama.' : '');
+    piezime.textContent = (d.notikumi.length ? Valoda.t('Šobrīd {a} spēkā, {p} plānoti.', { a: aktivi, p: d.notikumi.length - aktivi }) : Valoda.t('Šobrīd nav ceļu slēgumu vai negadījumu.')) +
+      (d.nepieejami?.length ? ' ' + Valoda.t('Daļa datu pašlaik nav pieejama.') : '');
   }
 
   function radit(jaa) {
     ieslegt.checked = jaa;
     clearInterval(taimeris);
-    if (jaa) { slanis.addTo(karte); piezime.textContent = 'Ielādē…'; ieladet(); taimeris = setInterval(ieladet, 5 * 60000); }
+    if (jaa) { slanis.addTo(karte); piezime.textContent = Valoda.t('Ielādē…'); ieladet(); taimeris = setInterval(ieladet, 5 * 60000); }
     else { slanis.remove(); piezime.textContent = ''; }
   }
   ieslegt.addEventListener('change', e => radit(e.target.checked));
@@ -61,10 +61,10 @@ const Celi = (() => {
     const tuvi = (d.notikumi || []).filter(n => n.aktivs && n.tips !== 'remonts');
     if (!tuvi.length) return '';
     const n = tuvi[0];
-    return `<p class="celi-rinda">${Ik(TIPI[n.tips].ikona)} <b>Ceļu satiksme:</b> ${esc(n.nosaukums)}${n.cels ? ' ' + esc(n.cels) : ''}` +
+    return `<p class="celi-rinda">${Ik(TIPI[n.tips].ikona)} <b>${Valoda.t('Ceļu satiksme')}:</b> ${esc(n.nosaukums)}${n.cels ? ' ' + esc(n.cels) : ''}` +
       ` (${attalums(n.attalums_m)})${n.apraksts ? ': ' + esc(n.apraksts) : ''}` +
-      (tuvi.length > 1 ? ` <span class="piezime">Tuvumā vēl ${tuvi.length - 1}.</span>` : '') +
-      ` <small class="avots-rinda">${AVOTS}</small></p>`;
+      (tuvi.length > 1 ? ` <span class="piezime">${Valoda.t('Tuvumā vēl {n}.', { n: tuvi.length - 1 })}</span>` : '') +
+      ` <small class="avots-rinda">${AVOTS()}</small></p>`;
   }
 
   return { radit, rinda, TIPI, popups };  // TIPI un popups lieto arī demo.js (vētras atkārtojums ar īstiem LVC notikumiem)

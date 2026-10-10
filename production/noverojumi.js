@@ -5,7 +5,7 @@ const Noverojumi = (() => {
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const sk = x => x == null ? '–' : String(Math.abs(x) >= 10 ? Math.round(x) : x.toFixed(1)).replace('.', ',');
   const VIRZIENI = ['Z', 'ZA', 'A', 'DA', 'D', 'DR', 'R', 'ZR'];
-  const virziens = g => g == null ? '' : VIRZIENI[Math.round(g / 45) % 8];
+  const virziens = g => g == null ? '' : Valoda.t(VIRZIENI[Math.round(g / 45) % 8]);
   const laiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   const krasa = s => s.vecs || s.brazmas == null ? '#a8a29e' : s.brazmas >= 20 ? '#dc2626' : s.brazmas >= 15 ? '#f97316' : s.brazmas >= 10 ? '#facc15' : '#d6d3d1';
   const slanis = L.layerGroup();
@@ -13,14 +13,14 @@ const Noverojumi = (() => {
   let taimeris = null;
 
   function popups(s, avots) {
-    return `<div class="popup"><b>${esc(s.nosaukums)}</b><small>LVĢMC meteoroloģiskā stacija</small><br>` +
-      (s.vecs ? '<small class="kluda">Mērījums novecojis (vecāks par 3 h)</small><br>' : '') +
-      (s.brazmas != null ? `Brāzmas: <b>${sk(s.brazmas)} m/s</b><br>` : '') +
-      (s.vejs != null ? `Vējš: ${sk(s.vejs)} m/s ${virziens(s.virziens)}<br>` : '') +
-      (s.temp != null ? `Temperatūra: ${sk(s.temp)} °C<br>` : '') +
-      (s.nokrisni_1h != null ? `Nokrišņi stundā: ${sk(s.nokrisni_1h)} mm<br>` : '') +
-      `<small>Mērīts ${esc(laiks(s.laiks))}</small>` +
-      `<small class="popup-avots">Avots: <a href="${esc(avots.url)}" target="_blank" rel="noopener">LVĢMC</a>, ${esc(avots.licence)}</small></div>`;
+    return `<div class="popup"><b>${esc(s.nosaukums)}</b><small>${Valoda.t('LVĢMC meteoroloģiskā stacija')}</small><br>` +
+      (s.vecs ? `<small class="kluda">${Valoda.t('Mērījums novecojis (vecāks par 3 h)')}</small><br>` : '') +
+      (s.brazmas != null ? `${Valoda.t('Brāzmas')}: <b>${sk(s.brazmas)} m/s</b><br>` : '') +
+      (s.vejs != null ? `${Valoda.t('Vējš')}: ${sk(s.vejs)} m/s ${virziens(s.virziens)}<br>` : '') +
+      (s.temp != null ? `${Valoda.t('Temperatūra')}: ${sk(s.temp)} °C<br>` : '') +
+      (s.nokrisni_1h != null ? `${Valoda.t('Nokrišņi stundā')}: ${sk(s.nokrisni_1h)} mm<br>` : '') +
+      `<small>${Valoda.t('Mērīts')} ${esc(laiks(s.laiks))}</small>` +
+      `<small class="popup-avots">${Valoda.t('Avots')}: <a href="${esc(avots.url)}" target="_blank" rel="noopener">LVĢMC</a>, ${esc(avots.licence)}</small></div>`;
   }
 
   function zimet(d) {
@@ -32,12 +32,12 @@ const Noverojumi = (() => {
       L.marker([s.lat, s.lon], {
         icon: L.divIcon({ className: 'noverojums-ikona', iconSize: [izm, izm], iconAnchor: [izm / 2, izm / 2],
           html: `<span style="background:${krasa(s)}" class="${s.vecs ? 'vecs' : ''}">${vertiba}</span>` }),
-        title: s.brazmas != null ? `${s.nosaukums}: brāzmas ${vertiba} m/s` : `${s.nosaukums}: nokrišņu stacija`,
+        title: s.brazmas != null ? Valoda.t('{s}: brāzmas {v} m/s', { s: s.nosaukums, v: vertiba }) : Valoda.t('{s}: nokrišņu stacija', { s: s.nosaukums }),
       }).bindPopup(popups(s, d.avots)).addTo(slanis);
     }
     const m = d.maks_brazmas;
-    teksts.innerHTML = (m ? `Stiprākās brāzmas: ${sk(m.brazmas)} m/s (${esc(m.nosaukums)}, ${esc(laiks(m.laiks))}).` : 'Svaigu mērījumu nav.') +
-      `<br><small>Skaitlis — brāzmas m/s. Avots: <a href="${esc(d.avots.url)}" target="_blank" rel="noopener">LVĢMC novērojumi</a>, ${esc(d.avots.licence)}.</small>`;
+    teksts.innerHTML = (m ? Valoda.t('Stiprākās brāzmas: {v} m/s ({n}, {t}).', { v: sk(m.brazmas), n: esc(m.nosaukums), t: esc(laiks(m.laiks)) }) : Valoda.t('Svaigu mērījumu nav.')) +
+      `<br><small>${Valoda.t('Skaitlis — brāzmas m/s.')} ${Valoda.t('Avots')}: <a href="${esc(d.avots.url)}" target="_blank" rel="noopener">LVĢMC novērojumi</a>, ${esc(d.avots.licence)}.</small>`;
     teksts.hidden = false;
   }
 
@@ -47,7 +47,7 @@ const Noverojumi = (() => {
       if (!r.ok) throw new Error(r.status);
       zimet(await r.json());
     } catch {
-      teksts.textContent = 'Novērojumus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.';
+      teksts.textContent = Valoda.t('Novērojumus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.');
       teksts.hidden = false;
     }
   }
