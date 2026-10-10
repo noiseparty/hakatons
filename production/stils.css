@@ -512,8 +512,8 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats .druka-qr svg { width: 32mm; height: 32mm; flex: none; }
   body.druka-rezultats .druka-qr p { margin: 0 0 .3rem; overflow-wrap: anywhere; }
   /* Viena A4 lapa: kompakts izkārtojums, tuvākās vietas līdz 2 katrā grupā, bez statusa un abonēšanas rindām, bez kartes/soļu joslas */
-  @page { size: A4; margin: 6mm; }
-  body.druka-rezultats #rezultati { font-size: 9pt; line-height: 1.18; }
+  @page { size: A4; margin: 5mm; }
+  body.druka-rezultats #rezultati { font-size: 9pt; line-height: 1.12; }
   body.druka-rezultats #rezultati * { box-shadow: none !important; overflow: visible !important; max-height: none !important; }
   body.druka-rezultats #rezultati > * { margin-top: .1rem; margin-bottom: .1rem; }
   body.druka-rezultats #rezultati .fakti { margin: .1rem 0; }
@@ -536,6 +536,10 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats #rezultati .pludi-metode { display: none !important; }
   body.druka-rezultats #rezultati .padoms { padding: .15rem .4rem; }
   body.druka-rezultats #rezultati .talak { padding: .15rem .4rem; }
+  body.druka-rezultats #rezultati .popup-avots br { display: none !important; }
+  body.druka-rezultats #rezultati .bez-licences::before { content: ' · '; }
+  body.druka-rezultats #rezultati #rez-udens > div > span:not(.udens-statuss) { display: none !important; }
+  body.druka-rezultats #rezultati .krit-zime ~ small, body.druka-rezultats #rezultati .ca-avots + small { margin: 0; }
   body.druka-rezultats #rezultati .pasvaldiba-rinda ~ .pasvaldiba-rinda, body.druka-rezultats #rezultati #rez-augsne,
   body.druka-rezultats #rezultati #rez-udens small:not(.avots-rinda) { display: none !important; }
   body.druka-rezultats .druka-qr { margin-top: .4rem; padding-top: .3rem; }
