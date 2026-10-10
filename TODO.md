@@ -4,6 +4,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 `main` is protected — change this file via a branch + PR, never by pushing to `main`.
 
 ## Pending
+- [ ] Link previews: Open Graph + Twitter card meta tags (og:title, og:description, og:image 1200×630 with the map + verdict, og:url canonical, twitter:card summary_large_image), `<meta name=description>`, favicon set and theme-color, on index.html, info.html, statuss.html, slaidi.html, trukstosie.html; test with a WhatsApp/Telegram/Slack paste and opengraph.xyz — added 2026-10-10 03:16 +03:00 by noiseparty
 - [ ] Ask VUGD / IeM IC to publish the national public shelters list on data.gov.lv with an open license (now shown from 112.lv with ⚠ no license) — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Find the official publication URL of the VM hospital list PDF (`atseviski_dati/12. pielikums…`; the vp.gov.lv copy is 404) and add it to `avoti` — added 2026-10-09 19:09 +03:00 by noiseparty
 - [ ] Check the license of `atseviski_dati/Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` before putting it on the map — added 2026-10-09 20:48 +03:00 by noiseparty
