@@ -45,6 +45,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Sheet handle vs Mazs/Puse/Pilns buttons (UI round 1, item 16): the state buttons sit over the handle centre, so a centre tap hits "Puse" instead of cycling — decide whether the handle should cycle at all (mockup) or the buttons move aside — added 2026-10-10 07:40 +03:00 by noiseparty
 - [ ] Flood-zone legend vs demo place tooltip on 375 px (UI round 1, item 19): legend box can overlap the "Jūsu vieta" tooltip; the "Ielādē plūdu zonas…" line never resolves on the fixture server (no WMS tiles) — check on live and consider collapsing the legend during demo — added 2026-10-10 07:40 +03:00 by noiseparty
 - [ ] slaidi.html on a phone (UI round 1, item 21, rest): slide text scales to 6–8 px at 375 px (projector deck; only the key hint was hidden) — added 2026-10-10 07:40 +03:00 by noiseparty
+- [ ] Translate the entire page when switching between languages (LV/RU/EN) — added 2026-10-10 10:51 +03:00 by krissjanis
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
