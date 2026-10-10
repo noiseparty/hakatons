@@ -180,6 +180,8 @@ lietotāja ievadīto tekstu un piedāvā atbilstošo palīdzības plūsmu.
 | 108 | Čūskas kodums | Ko darīt uzreiz un ko nedarīt | čūska, kodums, indīgs |
 | 109 | Izbrāvušies liellopi | Bars uz ceļa vai laukā, jāapiet | liellopi, izbrāvušies, bars |
 | 110 | Cilvēks iesprūdis (grava, šahta, šaurums) | Neizkļūst pats, jāizsauc glābēji | iesprūdis, šahta, glābēji, 112 |
+| 122 | Ievainots vai slims dzīvnieks | Mājdzīvnieks vai notriekts dzīvnieks — tuvākā veterinārā klīnika (OSM) | dzīvnieks, ievainots, slims, veterinārs, kaķis, suns |
+| 123 | Pazudis mājdzīvnieks | Suns vai kaķis aizbēdzis — kur meklēt, mikročips, klīnikas un patversmes | pazudis suns, kaķis, mājdzīvnieks, mikročips |
 
 ---
 

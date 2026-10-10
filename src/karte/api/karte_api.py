@@ -55,6 +55,7 @@ import sys
 import threading
 import time
 import unicodedata
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -3030,6 +3031,100 @@ def kalendars(q):
     return {"_saturs": ics, "_tips": "text/calendar; charset=utf-8"}
 
 
+# /api/prognoze?lat=&lon= — nākamās ~24 h tuvākajai LVĢMC prognožu vietai (ikstundas fails, CKAN datastore API;
+# tā pati datu kopa kā PROGNOZU_AVOTS, CC0 1.0). Fails sniedz ~25 h uz priekšu; DATUMS — Latvijas vietējais laiks.
+CKAN_API = "https://data.gov.lv/dati/api/3/action/"
+PROGNOZU_STUNDAS_ID = "4e9b37dc-a486-4af1-8964-b370f659811a"  # "Prognožu dati (ikstundas)"
+PROGNOZU_STUNDU_PARAMETRI = {"2": "temp", "6": "brazmas", "7": "nokrisni", "11": "negaiss"}  # °C, m/s, mm/h, %
+PROGNOZE_MIN_STUNDAS = 6  # mazāk atlikušu stundu (fails sen nav atjaunots) — prognozi nerāda
+
+
+def _prognozu_punkti():
+    """Vietas ar ikstundas prognozi (~1300 no ~6400 cities.csv): (CITY_ID, nosaukums, lat, lon)."""
+    parametri = {"resource_id": PROGNOZU_STUNDAS_ID, "distinct": "true", "fields": "CITY_ID", "limit": 32000,
+                 "filters": json.dumps({"PARA_ID": 2})}
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    ar_stundam = {r["CITY_ID"] for r in dati["result"]["records"]}
+    teksts = _lejupieladet(PROGNOZU_VIETAS, timeout=8).decode("utf-8-sig")
+    punkti = [(r["CITY_ID"], r["NOSAUKUMS"], float(r["LAT"]), float(r["LON"]))
+              for r in csv.DictReader(io.StringIO(teksts)) if r.get("LAT") and r.get("LON") and r["CITY_ID"] in ar_stundam]
+    if not punkti:
+        raise ValueError("nav vietu ar ikstundas prognozi")
+    return punkti
+
+
+def _prognoze_stundas(vietas_id):
+    parametri = {
+        "resource_id": PROGNOZU_STUNDAS_ID, "sort": "DATUMS", "limit": 1000, "fields": "PARA_ID,DATUMS,VERTIBA",
+        "filters": json.dumps({"CITY_ID": vietas_id, "PARA_ID": [int(p) for p in PROGNOZU_STUNDU_PARAMETRI]}),
+    }
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    if not dati.get("success"):
+        raise ValueError("datastore_search neizdevās")
+    return [(str(r["PARA_ID"]), str(r["DATUMS"])[:19], r["VERTIBA"]) for r in dati["result"]["records"]]
+
+
+def _prognoze_izdota():
+    dati = json.loads(_lejupieladet(CKAN_API + "resource_show?id=" + PROGNOZU_STUNDAS_ID, timeout=8))
+    laiks = (dati.get("result") or {}).get("last_modified")
+    return laiks[:19] + "Z" if laiks else None  # CKAN: UTC bez zonas
+
+
+def _prognozes_riski(tmin, tmax, nokrisni, brazmas, negaiss):
+    """Riska vārdi pēc PROGNOZU_SLIEKSNI (diennakts sliekšņi derīgi 24 h logam); pirmais — nozīmīgākais."""
+    riski = []
+    lim = _limenis("brazmas", brazmas)
+    if lim is not None:
+        riski.append((lim, "vētra" if lim >= 2 else "stiprs vējš"))
+    lim = _limenis("nokrisni", nokrisni)
+    if lim is not None:
+        veids = "sniegs" if tmax is not None and tmax <= 1 else "lietus"
+        riski.append((lim, ("stiprs " if lim >= 1 else "") + veids))
+    if negaiss is not None and negaiss >= 50:
+        riski.append((1 if negaiss >= 80 else 0, "pērkona negaiss"))
+    lim = _limenis("sals", tmin)
+    if lim is not None:
+        riski.append((lim, "salna" if tmin > -5 else "sals"))
+    lim = _limenis("karstums", tmax)
+    if lim is not None:
+        riski.append((lim, "karstums"))
+    riski.sort(key=lambda r: -r[0])  # stabila kārtošana: vienādā līmenī vējš → nokrišņi → negaiss → sals → karstums
+    return [{"vards": v, "limenis": lim} for lim, v in riski]
+
+
+def prognoze(q):
+    lat, lon = _vieta(q)
+    punkti = _kesots("prognozu_punkti", 6 * 3600, _prognozu_punkti)
+    kx = math.cos(math.radians(lat))
+    vid, nosaukums, plat, plon = min(punkti, key=lambda p: (p[2] - lat) ** 2 + ((p[3] - lon) * kx) ** 2)
+    rindas = _kesots(("prognoze", vid), 1800, lambda: _prognoze_stundas(vid))
+    try:
+        izdota = _kesots("prognoze_izdota", 1800, _prognoze_izdota)
+    except Kluda:
+        izdota = None
+    no = _riga_tagad().strftime("%Y-%m-%dT%H:00:00")
+    stundas = {}  # DATUMS → lauks → vērtība
+    for para, datums, vertiba in rindas:
+        if datums >= no and vertiba not in (None, ""):
+            stundas.setdefault(datums, {})[PROGNOZU_STUNDU_PARAMETRI[para]] = float(vertiba)
+    laiki = sorted(stundas)[:24]
+    vieta = {"id": vid, "nosaukums": nosaukums, "attalums_m": _attalums_m(lat, lon, plat, plon)}
+    if len(laiki) < PROGNOZE_MIN_STUNDAS:
+        return {"prognoze": None, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+    def vertibas(lauks):
+        return [stundas[t][lauks] for t in laiki if lauks in stundas[t]]
+    temp, brazmas, nokrisni, negaiss = vertibas("temp"), vertibas("brazmas"), vertibas("nokrisni"), vertibas("negaiss")
+    p = {
+        "no": laiki[0], "lidz": laiki[-1], "stundas": len(laiki),
+        "tmin": min(temp, default=None), "tmax": max(temp, default=None),
+        "nokrisni_mm": round(sum(nokrisni), 1) if nokrisni else None,
+        "brazmas_max": max(brazmas, default=None), "negaiss_max": max(negaiss, default=None),
+    }
+    p["riski"] = _prognozes_riski(p["tmin"], p["tmax"], p["nokrisni_mm"], p["brazmas_max"], p["negaiss_max"])
+    return {"prognoze": p, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -3056,6 +3151,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
     (re.compile(r"^/api/plusma\.xml$"), plusma, 300),
     (re.compile(r"^/api/kalendars\.ics$"), kalendars, 300),
+    (re.compile(r"^/api/prognoze/?$"), prognoze, 600),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
