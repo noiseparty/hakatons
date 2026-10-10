@@ -2591,15 +2591,18 @@ _nap_kludas_teksts = {}  # vides mainīgais → pēdējās kļūdas īss aprakst
 _nap_faila_id = {}       # vides mainīgais → faila id, ja "1" neder (no metadata/file/info)
 
 
+NAP_MAX_BAITI = 60_000_000  # minūšu mērījumu kopa pārsniedz 10 MB; kešs 120 s, parsē vienreiz
+
+
 def _nap_pieprasit(atslega, kermenis):
     pieprasijums = urllib.request.Request(NAP_BAZE + "/api/v1/get/file/download-file", method="POST",
                                           data=json.dumps(kermenis).encode(), headers={"x-api-key": atslega, **_NAP_GALVENES})
-    with urllib.request.urlopen(pieprasijums, timeout=10) as r:
+    with urllib.request.urlopen(pieprasijums, timeout=30) as r:
         if r.status == 204:  # piem., slidens ceļš vasarā
             return b""
-        saturs = r.read(10_000_001)
-    if len(saturs) > 10_000_000:
-        raise ValueError("NAP atbilde lielāka par 10 MB")
+        saturs = r.read(NAP_MAX_BAITI + 1)
+    if len(saturs) > NAP_MAX_BAITI:
+        raise ValueError(f"NAP atbilde lielāka par {NAP_MAX_BAITI // 1_000_000} MB")
     return saturs
 
 
