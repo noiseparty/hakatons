@@ -1,4 +1,4 @@
-// Bezsaistes režīms (sw.js): reģistrācija, josla "Nav interneta — rādām pēdējos saglabātos datus", rezultāta kartītē
+// Bezsaistes režīms (sw.js): josla "Nav interneta — rādām pēdējos saglabātos datus", rezultāta kartītē
 // rinda par saglabātajiem datiem, pēdējās 3 kartītes (localStorage) un "Saglabāt manu apkārtni" (flīzes z12–15).
 // Lieto app.js globālos (karte, el, stavoklis, pamatkartes) — tikai tad, kad tie ir.
 const Bezsaiste = (() => {
@@ -12,10 +12,7 @@ const Bezsaiste = (() => {
   const laiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-  // Service worker tikai drošā kontekstā (https; localhost — testiem)
-  if ('serviceWorker' in navigator && (location.protocol === 'https:' || ['localhost', '127.0.0.1'].includes(location.hostname))) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
-  }
+  // Service worker reģistrē atjaunot.js (visām lapām; paziņojums par jaunu versiju, ?svaigs=1)
 
   // Atbildes no sw.js keša: atzīmējam galapunktu un laiku
   const fetchOrig = window.fetch.bind(window);

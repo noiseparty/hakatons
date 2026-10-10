@@ -10,14 +10,13 @@ testā tiek atcelti. Pirmo reizi: `uv run --no-project --with playwright playwri
 
 Varianti (--varianti, noklusēti visi trīs; --vietas pieliek vecos 4 vietvārdu punktus "… Rīgā/Ogrē/Rēzeknē/Alūksnes novadā"):
   ar vietu   — atrašanās vieta atļauta (Ogres centrs), vaicājums = pirmais atslēgvārds;
-  bez vietas — atrašanās vieta nav zināma, tas pats vaicājums: jābūt pogai "Noteikt manu atrašanās vietu";
+  bez vietas — atrašanās vieta nav zināma, tas pats vaicājums: vietas no kartes centra + poga "Izmantot manu atrašanās vietu";
   RU         — kā "ar vietu", bet kartītes valoda krievu (localStorage valoda=ru, LV/RU/EN slēdzis).
 Kartītei jāatbilst:
   scenārijs   — parādīts tieši šis scenārijs (citādi pirmais atslēgvārds neved uz savu scenāriju);
-  lēmums      — ar vietu: lēmuma rinda (112 teksts vai LVĢMC brīdinājums šai vietai) kartītes sākumā;
-                bez vietas: 112 teksts vai lūgums noteikt vietu (poga) — bez vietas lēmumu pieņemt nevar;
+  lēmums      — lēmuma bloks (#rez-galvenais: lēmums + nākamā darbība; dzīvības draudos pirms tā 112) ir kartītes sākumā;
   darbība     — vismaz viens nākamais solis: maršruta saite, vietas rinda, 112 teksts vai atrašanās vietas poga;
-  vietas      — vismaz viena vietas rinda vai skaidrs teksts, ka tuvākā nav zināma (tikai ar vietu);
+  vietas      — vismaz viena vietas rinda vai skaidrs teksts, ka tuvākā nav zināma (bez vietas — no kartes centra);
   avots       — katrai vietas rindai ir avota rinda (datu kopa, izdevējs, licence vai CA plāns ar lappusi);
   padoms, tālāk — padoms un "Kas notiks tālāk";
   teksts      — nav "undefined", "null", "NaN", "[object"; nav tukšu virsrakstu;
@@ -81,7 +80,7 @@ PARBAUDE_JS = r"""() => {
     gaida, teksts: k.innerText,
     sapratu: k.querySelector('.sapratu b')?.textContent || '',
     pirmais: pirmais ? (pirmais.id || pirmais.className || pirmais.tagName) : '',
-    lemums: !!k.querySelector('#rez-lemums .lemums'),
+    lemums: !!k.querySelector('#rez-lemums .lemums, #rez-galvenais .lemums-rinda'),
     draudi112: !!k.querySelector('.draudi, .zvanit-teksts'),
     atrastPoga: !!k.querySelector('[data-darbiba="atrast"]'),
     vietuRindas: k.querySelectorAll('#rez-vietas li:not(.tuksa)').length,
@@ -203,7 +202,6 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
     await lapa.wait_for_function("!document.getElementById('jautajums').disabled && typeof Klasifikators !== 'undefined'", timeout=30000)
     if var["geo"]:
         await lapa.wait_for_function("typeof stavoklis !== 'undefined' && !!stavoklis.vieta", timeout=15000)
-    bez_vietas = not var["geo"] and not var["pec"]
 
     async def meklet(q):
         await lapa.fill("#jautajums", q)
@@ -230,14 +228,11 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
         else:
             if m["sapratu"] != s["nosaukums"]:
                 problemas.append(("scenārijs", f"parādīts '{m['sapratu']}'"))
-            if bez_vietas:
-                if not (m["draudi112"] or m["atrastPoga"]):
-                    problemas.append(("lēmums", "bez vietas: nav ne 112 teksta, ne pogas noteikt vietu"))
-            elif not (m["lemums"] or m["draudi112"]) or m["pirmais"] not in ("rez-lemums", "draudi", "zvanit-teksts"):
+            if not (m["lemums"] or m["draudi112"]) or m["pirmais"] not in ("rez-galvenais", "rez-lemums", "draudi", "zvanit-teksts"):
                 problemas.append(("lēmums", f"pirmais elements: {m['pirmais']}, LVĢMC rinda: {m['lemums']}"))
             if not (m["marsrutuSaites"] or m["vietuRindas"] or m["draudi112"] or m["atrastPoga"]):
                 problemas.append(("darbība", "nav ne maršruta, ne vietas, ne 112, ne vietas pogas"))
-            if not bez_vietas and not m["vietuRindas"] and not m["tuksasRindas"] and not any(t in m["teksts"] for t in NAV_ZINAMA):
+            if not m["vietuRindas"] and not m["tuksasRindas"] and not any(t in m["teksts"] for t in NAV_ZINAMA):
                 problemas.append(("vietas", "nav ne vietas, ne teksta, ka tuvākā nav zināma"))
             if m["bezAvota"]:
                 problemas.append(("avots", f"{len(m['bezAvota'])} vietām nav avota rindas: {m['bezAvota'][:3]}"))

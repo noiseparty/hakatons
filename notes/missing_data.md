@@ -2,7 +2,7 @@
 
 Stāvoklis 2026-10-10 rītā. Visi 33 atvērto datu avoti (to skaitā LR1 frekvences: oficiāli fakti (LR / SPRK), nav autortiesību objekts; un 2 bez atvērtas licences ⚠: 112.lv patvertnes, banku bankomātu saraksts; kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir **otra puse**: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: `notes/research/02`, `04`, `05`, `notes/demo-scenariji.md`, `notes/ca-plani-kvalitate.md`, nakts atradumi, apkopoti 2026-10-10.
 
-Īsā versija slaidam: **"Mēs izmantojām 33 atvērto datu avotus. Vēl 30 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
+Īsā versija slaidam: **"Mēs izmantojām 33 atvērto datu avotus. Vēl 35 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
 
 ## 1. Dzīvībai svarīgi, bet nepubliski (TOP prasības)
 
@@ -49,7 +49,19 @@ Stāvoklis 2026-10-10 rītā. Visi 33 atvērto datu avoti (to skaitā LR1 frekve
 | 29 | **"Vāriet ūdeni" paziņojumi** mašīnlasāmā plūsmā | Ūdenssaimniecības, PVD, VI | Paziņojumus publicē tikai kā ziņas pašvaldību vietnēs; nav plūsmas (RSS/CAP), ko pievienot adreses kartītei |
 | 30 | **Bibliotēku, LMT un Tet publiskie Wi-Fi tīklāji** | LNB / pašvaldību bibliotēkas, LMT, Tet | Sakaru krīzē — kur var pieslēgties internetam; operatoru un bibliotēku tīklāju saraksti nav atvērtie dati |
 
-## 4. Kvalitātes problēmas datos, kas ir
+## 4. Naktī uz 2026-10-10 atklātie trūkumi
+
+Pievienots 2026-10-10 pēc nakts darba; katrai rindai ir pierādījums repozitorijā vai oficiālā lapā. Rinda 34 papildina 2. rindu, rinda 35 ir tas pats trūkums, kas 6. rindā, tikai ar skaitļiem, rinda 31 papildina kvalitātes piezīmi par plūdu WMS.
+
+| # | Dati | Kam pieder | Pierādījums | Ko darījām mēs | Prasām |
+|---|---|---|---|---|---|
+| 31 | **Plūdu riska kartes kā ātrs, lejupielādējams slānis** (nevis lēns WMS) | LVĢMC, ĢeoLatvija | Plūdu riska WMS (geo-dpps.viss.gov.lv) 2026-10-10 naktī lielāko daļu laika atbildēja 504 pēc 60 s, parasti 5–30 s uz flīzi (PR #131). Katalogā ir arī vektoru WFS un data.gov.lv 3. cikla karšu datu kopa (3-cikla plūdu riska kartes https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes, CC0), bet WFS katalogā ir atzīmēts CC BY-NC (`notes/research/05`) un mēs to neesam izmēģinājuši; atsevišķa lejupielādējama GeoJSON/GeoTIFF faila mēs neatradām. | Uzbūvējām savu serveri ar flīžu kešatmiņu (`/api/pludi/flize`, 30 dienas, novecojusi flīze kā rezerve) un iepriekšēju uzsildīšanu Ogrei, Jūrmalai un Rīgai | Publicēt plūdu riska zonas kā vienu lejupielādējamu failu (GeoPackage/GeoJSON) ar CC0 un ātru serveri (ĢeoLatvija WMS nav piemērots krīzei) |
+| 32 | **LR1 raidītāju koordinātas** | LVRTC, SIA "Elektroniskie sakari" (regulatora saraksts) | Latvijas Radio frekvenču lapā https://latvijasradio.lsm.lv/lv/par-mums/frekvences/ ir 16 LR1 vietas bez koordinātām; frekvences sakrīt ar regulatora sarakstu https://www.esakari.lv/lv/fm-apraides-staciju-saraksts, bet tajā koordinātu arī nav. LVRTC raidītāju koordinātas nav atvērtie dati. Pēc #129 12 no 16 vietām piesaistītas OSM torņiem (Valmiera un Ventspils pēc LVRTC adresēm PeeringDB un VZD reģistrā), **4 no 16 (Alūksne, Limbaži, Lielauce, Skaista) vēl ir aptuvenas** (apdzīvotas vietas centrs) | Kartē katrai vietai ir etiķete "tornis" vai "aptuvena", avots un pārbaudes datums (`src/info/lr1_frekvences.json`) | Publicēt apraides staciju (raidītāju) koordinātas un jaudas kā atvērtos datus, ar licenci; sakaru krīzē tas ir vienīgais veids, kā zināt, kur uztvert radio |
+| 33 | **VPVKAC centru saraksts ar valstspilsētām un Ventspils novadu** | VARAM / VPVKAC | data.gov.lv kopā `vpvkac-kontakti` (saite https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti, resurss "VPVKAC KONTAKTI 2023-11", CC0) nav valstspilsētu un Ventspils novada centru nevienā versijā (arī 2022-08); tāpēc rezultāta kartītē VPVKAC rindu varam parādīt tikai **18 no 42** pašvaldībām (`notes/pasvaldibu-kontakti.md`). Pēdējie metadati mainīti 2023-12-11, tātad dati ir 3 gadus veci | Pašvaldības kontaktus ņemam no Uzņēmumu reģistra "Publisko personu un iestāžu saraksta" (CC0, katru dienu), kas sedz visas 42; VPVKAC rāda tikai tur, kur tāds ir novada centrā | Atjaunot sarakstu ar visiem centriem un pievienot koordinātas, darba laikus un pakalpojumus vienā kopā |
+| 34 | **CA plānu pielikumi ar pulcēšanās vietām ir norāžu faili vai ierobežoti** | Pašvaldības (Augšdaugava, Dienvidkurzeme, Jelgavas novads, Rēzeknes novads) | 4 mapēs repozitorijā ir **76 norāžu faili**: Augšdaugavas novads 22 no 24, Dienvidkurzemes novads 42 (visi), Jelgavas novads 2, Rēzeknes novads 10 (visi), kas tikai norāda uz kaimiņa kopīgo plānu. Pārbaude 2026-10-10 neatrada jaunus publiskus pielikumus ar pulcēšanās vai izmitināšanas vietām (0 jaunu punktu): Augšdaugavas 4. pielikums un Dienvidkurzemes 7.1–7.3. pielikumi ir atzīmēti kā ierobežoti, Jelgavas novada 5.–8. pielikumu nav ne pilsētas, ne novada vietnē (`notes/ca-stubi.md`) | Izmantojām kaimiņa kopīgā plāna sarakstus, kas jau bija konvertēti (Daugavpils, Liepāja, Rēzekne), un Liepājas/Dienvidkurzemes 12. pielikumu (#107); Jelgavas novada pielikumu punkti kartē nav | Publicēt visus pielikumus mašīnlasāmi vai norādīt, kuri ir ierobežoti, un kāpēc; kopīgajiem plāniem katrai pašvaldībai savu sarakstu |
+| 35 | **Upju līmeņa brīdinājuma un kritiskie sliekšņi atvērtā formā** | LVĢMC (PRIS) | Atvērtajos datos sliekšņu nav; LVĢMC PRIS līmeņi bez licences. Mums ir tikai **3 stacijas**, kurām slieksni publiski min pašvaldības CA plāns: Ogre 22,15 m (Ogres plāns, lpp. 29/31), Pļaviņas 73,04/73,34 m (Aizkraukles plāns, lpp. 21), Liepājas ezers 0,67/1,17 m (Liepājas plāns, lpp. 26); pārējām stacijām statusa nav (`src/karte/db/udens_slieksni.json`). Tā ir tā pati nepilnība, kas 6. rindā, tikai ar skaitli | Rezultāta kartītē krāsots statuss ("paaugstināts" / "kritisks") tikai šīm 3 stacijām, citām rādām tikai līmeni un 24 h tendenci | Pievienot sliekšņus visām hidroloģiskajām stacijām data.gov.lv kopā ar CC0 (skat. 6. rindu) |
+
+## 5. Kvalitātes problēmas datos, kas ir
 
 - **CA plānu koordinātas:** 41 kļūda 42 plānos (piem., Jūrmalas pulcēšanās vieta Nr. 10 Melluži ar 56.064 nevis 56.964 — 100 km Lietuvā). Labojām ar VZD adrešu reģistru. Saraksts: `notes/ca-plani-kvalitate.md`.
 - **Plūdu riska WMS** (geo-dpps) atbild 1–30 s, brīžiem 503/504 — nav piemērots reāllaika lietotnei bez kešatmiņas.
@@ -57,8 +69,8 @@ Stāvoklis 2026-10-10 rītā. Visi 33 atvērto datu avoti (to skaitā LR1 frekve
 - **Hidroloģiskās prognozes** ir m v.j.l. (LAS-2000,5), novērojumi — cm virs staciju nulles; pārrēķina tabula nav publicēta.
 - **Prognožu fails** apdzīvotām vietām ir 16,6 MB dienā bez CORS — jālasa caur savu serveri.
 
-## 5. Ko sakām pitčā (3 teikumi)
+## 6. Ko sakām pitčā (3 teikumi)
 
 1. "Karte strādā uz 33 atvērto datu avotiem — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji."
 2. "Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas."
-3. "Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā."
+3. "Šis saraksts ar 35 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā."

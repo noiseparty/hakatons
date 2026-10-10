@@ -113,14 +113,15 @@ const Darbvirsma = (() => {
     if (ieslegts) return;
     ieslegts = true;
     document.body.classList.add('dv');
+    document.body.classList.remove('panelis-slegts');  // kā datora ielādē (telefonā app.js to pieliek)
     const kreisi = galva.querySelector('.galva-kreisi'), labi = galva.querySelector('.galva-labi');
     kreisi.prepend(zime);
+    if (izmainas) kreisi.prepend(izmainas);  // izmaiņu žurnāls [#] pirms zīmes, kā telefonā
     h1.append(apaksvirsraksts);
     galva.insertBefore(centrs, labi);
     zinotPoga = $('zinot-poga');  // "Ziņot par bīstamību" (zinot.js) — galvenē blakus "Slāņu vadība"
     if (zinotPoga) { zinotVieta = [zinotPoga.parentNode, zinotPoga.nextSibling]; centrs.append(zinotPoga); zinotPoga.classList.add('dv-zinot'); zinotPoga.insertAdjacentHTML('afterbegin', IKONAS.zinot); }
     labi.prepend(parPoga);
-    if (izmainas) labi.append(izmainas);
     galva.after(josla112);
     ievads.querySelector('.dv-forma-vieta').append(forma);
     ievads.append(valsts, pirmais);
@@ -164,6 +165,11 @@ const Darbvirsma = (() => {
     panelis.append(...sekcijas);
     const br = $('bridinajums');
     if (br?.dataset.dvAizverts) { delete br.dataset.dvAizverts; br.hidden = false; }
+    // Kā telefona ielādē (app.js): filtru panelis aizvērts — citādi apaksa.js katrā body klases maiņā saplok lapu
+    document.body.classList.add('panelis-slegts');
+    $('panelis-poga')?.setAttribute('aria-expanded', 'false');
+    // sheet.js uz to pašu platuma maiņu reaģēja pirms mums (meklēšanu pārcēla lapā) — mēs to atlikām galvenē; vēlreiz
+    if (typeof Lapa !== 'undefined' && Lapa) Lapa.novietot();
     setTimeout(() => karte.invalidateSize(), 0);
   }
 

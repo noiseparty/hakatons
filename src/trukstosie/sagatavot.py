@@ -20,11 +20,41 @@ IZLAIST_RINDKOPAS = ("Īsā versija slaidam",)
 UZMANIBU = '<svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg>'
 
 
+# Iekšējie repozitorija ceļi (`notes/…`) publiskajā lapā → dokumenta nosaukums ar saiti uz GitHub, bez ceļa
+REPO = "https://github.com/noiseparty/hakatons/blob/main/"
+DOKUMENTI = {
+    "notes/research/02": ("Latvijas atvērto datu inventārs krīzes kartei", "notes/research/02_latvia_open_data_inventory.md"),
+    "notes/research/04": ("LVĢMC un citi oficiālie dati", "notes/research/04_lvgmc_un_oficialie_dati.md"),
+    "notes/research/05": ("avotu pārbaude 2026-10-10", "notes/research/05_avoti_parbaude_2026-10-10.md"),
+    "notes/demo-scenariji.md": ("demo scenāriju datu pārskats", "notes/demo-scenariji.md"),
+    "notes/ca-plani-kvalitate.md": ("CA plānu kvalitātes pārskats", "notes/ca-plani-kvalitate.md"),
+}
+
+
+def dokumenta_saite(cels):
+    nos, fails = DOKUMENTI.get(cels, (None, None))
+    if not nos:  # nezināms ceļš: rāda tikai faila vārdu bez mapēm un paplašinājuma
+        return html.escape(re.sub(r"\.md$", "", cels.rsplit("/", 1)[-1]).replace("_", " ").replace("-", " "))
+    return f'<a href="{REPO}{fails}" target="_blank" rel="noopener">{html.escape(nos)}</a>'
+
+
+def bez_celiem(teksts):
+    """`notes/research/02`, `04`, `05` → trīs nosaukumi; `notes/x.md` → nosaukums (pirms html.escape)."""
+    def petijumi(m):
+        nri = [m.group(1)] + re.findall(r"`(\d\d)`", m.group(2))
+        return "\0".join(f"notes/research/{n}" for n in nri)
+    teksts = re.sub(r"`notes/research/(\d\d)`((?:, `\d\d`)*)", petijumi, teksts)
+    teksts = re.sub(r"`(notes/[\w./-]+?)`", r"\1", teksts)
+    return teksts
+
+
 def iekļauts(teksts):
-    """Markdown rindiņa → HTML: **treknraksts**, `kods`, ⚠ → ikona; viss pārējais aizsargāts."""
-    t = html.escape(teksts, quote=False).replace("⚠️", "⚠").replace("⚠", UZMANIBU)
+    """Markdown rindiņa → HTML: **treknraksts**, `kods`, ⚠ → ikona, notes/… ceļi → nosaukumi; viss pārējais aizsargāts."""
+    t = html.escape(bez_celiem(teksts), quote=False).replace("⚠️", "⚠").replace("⚠", UZMANIBU)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
-    return re.sub(r"`(.+?)`", r"<code>\1</code>", t)
+    t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
+    t = re.sub(r"notes/[\w./-]*\w", lambda m: dokumenta_saite(m.group(0)), t)
+    return t.replace("\0", ", ")
 
 
 def sunas(rinda):
@@ -96,7 +126,7 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
 <title>Ko vēl vajadzētu publicēt · Krīzes karte</title>
-<meta name="description" content="30 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
+<meta name="description" content="35 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
 <link rel="stylesheet" href="statuss.css">
 <link rel="stylesheet" href="info.css">
 <link rel="canonical" href="https://map.repo.lv/trukstosie.html">
@@ -130,7 +160,7 @@ def main():
 <main class="saturs info trukstosie">
 {ievads}
 {saturs}
-  <p class="piezime drukai">map.repo.lv/trukstosie.html · avots: notes/missing_data.md repozitorijā github.com/noiseparty/hakatons</p>
+  <p class="piezime drukai">map.repo.lv/trukstosie.html · avots: „Trūkstošie dati” repozitorijā github.com/noiseparty/hakatons</p>
 </main>
 <script src="kajene.js"></script>
 </body>

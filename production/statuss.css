@@ -87,3 +87,52 @@ a { color: var(--zils-tumss); }
 
 /* Ikonas no ikonas/ikonas.svg (info.html, trukstosie.html, statuss.html) */
 .ik { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -.2em; }
+
+/* Bezsaistē rādīts pēdējais saglabātais statuss (statuss.js) */
+.bezsaiste { display: inline-block; padding: 1px 8px; margin-right: 4px; border-radius: 999px; background: #1a2b45; color: #fff;
+  font-size: 12px; font-weight: 700; letter-spacing: .02em; }
+
+/* Papildu sadaļas (statuss.js papildu): ārējie avoti, plūdu flīžu kešs, ziņojumi, slāņi pret repozitoriju */
+.sadala {
+  background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena);
+  padding: 12px 14px; margin: 16px 0 10px;
+}
+.sadala h2 { margin: 0; font-size: 16px; line-height: 1.3; }
+.sadala > .apraksts { margin-bottom: 8px; }
+.tabula { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tabula th { text-align: left; font-weight: 600; color: var(--teksts2); font-size: 12px; padding: 6px 6px; border-bottom: 1px solid var(--robeza); }
+.tabula td { padding: 7px 6px; border-bottom: 1px solid var(--robeza); vertical-align: top; }
+.tabula tr:last-child td { border-bottom: 0; }
+.tabula small { display: block; color: var(--teksts2); font-size: 11.5px; }
+.tabula td small { margin-top: 1px; }
+.tabula .sk { text-align: right; font-variant-numeric: tabular-nums; }
+.tabula .pill { font-size: 12px; padding: 1px 8px; }
+.birka { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
+.birka.dzeltena { background: #ffe58a; color: #5c4300; }
+.birka.zala { background: #e3f3e8; color: #1d6b37; }
+.birka.peleka { background: #eceef1; color: #4d5660; }
+.flizes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.flize { background: var(--fons); border-radius: 6px; padding: 8px 10px; min-width: 0; }
+.flize span { display: block; font-size: 12px; color: var(--teksts2); }
+.flize b { display: block; font-size: 18px; line-height: 1.3; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.flize small { display: block; font-size: 11.5px; color: var(--teksts2); }
+@media (min-width: 700px) {
+  .flizes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+/* Šaurā ekrānā tabulas rindas kļūst par kartītēm: katrai šūnai savs nosaukums (data-l) */
+@media (max-width: 699px) {
+  .tabula thead { display: none; }
+  .tabula, .tabula tbody, .tabula tr, .tabula td { display: block; width: 100%; }
+  .tabula tr { padding: 8px 0; border-bottom: 1px solid var(--robeza); }
+  .tabula tr:last-child { border-bottom: 0; }
+  .tabula td { border: 0; padding: 2px 0; display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+  .tabula td[data-l]:not([data-l=""])::before { content: attr(data-l); flex: 0 0 118px; color: var(--teksts2); font-size: 12px; }
+  .tabula td:first-child { display: block; padding-bottom: 4px; }
+  .tabula td:first-child::before { display: none; }
+  .tabula td small { display: inline; }
+  .tabula td.tukss { display: none; }
+  .tabula td:first-child small { display: block; }
+  .tabula .sk { text-align: left; }
+  .tabula.slani td:not(:first-child) { display: inline-flex; width: auto; margin-right: 14px; }
+  .tabula.slani td:not(:first-child)::before { flex: none; }
+}

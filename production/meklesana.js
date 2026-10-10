@@ -38,6 +38,37 @@ const krizesMeklesana = (() => {
 
   let bezDatiem = false;  // /api/kategorijas, /regioni vai /avoti neielādējās (app.js)
 
+  // Soļu josla zem meklēšanas lauka: 1 Jautājums (raksta / tukšs) → 2 Atbilde (kartīte) → 3 Rīcība (maršruts, vieta,
+  // ziņojums). Forma telefonā pārceļas lapā (sheet.js), datorā kreisajā kolonnā (darbvirsma.js) — josla ceļo līdzi.
+  const soluJosla = document.createElement('ol');
+  soluJosla.className = 'soli';
+  soluJosla.setAttribute('aria-label', t('Soļi'));
+  // data-t: valoda.js nomaina uzrakstus, kad mainās kartītes valoda (LV/RU/EN)
+  soluJosla.innerHTML = ['Jautājums', 'Atbilde', 'Rīcība'].map((v, i) =>
+    `<li data-solis="${i + 1}"><span class="solis-nr">${i + 1}</span> <span data-t="${v}">${t(v)}</span></li>`).join('');
+  el('meklet-forma').append(soluJosla);
+  function solis(n) {
+    for (const li of soluJosla.children) {
+      const ir = +li.dataset.solis === n;
+      li.classList.toggle('aktivs', ir);
+      if (ir) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+    }
+  }
+  solis(1);
+  el('jautajums').addEventListener('input', () => solis(1));
+  // 3. solis: maršruta saite, vieta sarakstā, kartes logs ar maršrutu, "Ziņot" (arī galvenē), kad kartīte ir atvērta
+  const RICIBA = '.marsruts a, li[data-lat], [data-darbiba="zinot"], [data-darbiba="saraksts"], [data-darbiba="pludu-zonas"]';
+  document.addEventListener('click', e => {
+    if (kaste.hidden || !e.target.closest) return;
+    if (kaste.contains(e.target) ? e.target.closest(RICIBA) : e.target.closest('[data-darbiba="zinot"], .leaflet-popup .marsruts a')) solis(3);
+  });
+
+  // Simulētie prototipa dati (avots "sim-…", atseviski_dati/*.csv) īstā vaicājuma kartītē nerādās; tikai demo režīmā
+  // (?demo=… vai atvērts demo panelis), un tur ar zīmi "SIMULĒTI DATI — prototips" (objekta-statuss.js).
+  const demoRezims = () => new URLSearchParams(location.search).has('demo') || document.body.classList.contains('demo-aktivs');
+  const simulets = f => /^sim-/.test(f?.properties?.avots || '');
+  const tikaiSimuleti = k => (kategorijas[k]?.avoti || []).length > 0 && kategorijas[k].avoti.every(a => /^sim-/.test(a));
+
   async function sakt(regioniSaraksts, datiNav = false) {
     bezDatiem = datiNav;
     try {
@@ -266,7 +297,7 @@ const krizesMeklesana = (() => {
   // Oriģinālais teksts, ja tas jau ir atpazīts; citādi labotais (vieta un 112 — no abiem)
   function klasificetLabots(teksts) {
     const rez = klasifikators.klasificet(teksts);
-    if (rez.scenariji.length && !rez.aptuveni) return rez;
+    if (rez.scenariji.length) return rez;
     const labots = labot(teksts);
     if (labots === vienk(teksts).trim()) return rez;
     const r2 = klasifikators.klasificet(labots);
@@ -348,6 +379,7 @@ const krizesMeklesana = (() => {
     kaste.innerHTML = '';
     el('jautajums').value = '';
     bridinajumi(null);
+    solis(1);
   }
 
   // Poga "Notīrīt" meklēšanas joslā: viss uz sākumu — lauks, rezultāts un apakšas lapa, piespiedu scenārijs,
@@ -393,8 +425,10 @@ const krizesMeklesana = (() => {
   // app.js: atrašanās vietu neizdevās noteikt — paskaidrojam rezultātos, nevis tikai panelī zem tiem
   function vietaNav(liegta) {
     const zina = kaste.querySelector('.vieta-zina');
-    if (zina) zina.innerHTML = `<span class="kluda">${liegta ? 'Atrašanās vieta nav atļauta.' : 'Atrašanās vietu neizdevās noteikt.'}</span>
-      Pievienojiet vaicājumam adresi vai pilsētu, piem., „${esc(pedejais?.teksts || 'plūdi')} Ogrē” vai „… Brīvības 15 Ogre”.`;
+    if (!zina) return;
+    zina.innerHTML = `<span class="kluda">${t(liegta ? 'Atrašanās vieta nav atļauta.' : 'Atrašanās vietu neizdevās noteikt.')}</span>
+      ${t('vieta_nav', { x: esc(pedejais?.teksts || 'plūdi') })}`;
+    zina.hidden = false;
   }
 
   // Kur meklēt: adrese vaicājumā → vietvārds vaicājumā (reģionu meklet() jau izvēlējās) → mana atrašanās vieta →
@@ -407,7 +441,14 @@ const krizesMeklesana = (() => {
       nosaukums: stavoklis.vieta.adrese ? isaAdrese(stavoklis.vieta.adrese) : 'Jūsu vietā' };
     const r = regioni[stavoklis.regions];
     if (r) return { ...centrs(r), apraksts: `no centra (${r.nosaukums})`, regions: true, nosaukums: r.nosaukums };
-    return null;
+    // Nav ne adreses, ne vietas, ne atrašanās vietas ("cilvēks nav pie samaņas", "redzu dronu"): tuvākās vietas no kartes
+    // centra (nekad tikai padoms), kamēr lietotājs nenospiež "Izmantot manu atrašanās vietu"
+    // Telefonā karte stiepjas zem apakšējās lapas: centrs = redzamās daļas (virs lapas) vidus, nevis konteinera vidus
+    const izm = karte.getSize();
+    const zem = typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes().paddingBottomRight[1] : 0;
+    let c = karte.containerPointToLatLng([izm.x / 2, Math.max(0, izm.y - zem) / 2]);
+    if (!latvija.contains(c)) c = latvija.getCenter();
+    return { lat: c.lat, lon: c.lng, apraksts: 'no kartes centra', regions: true, kartesCentrs: true, nosaukums: 'Kartes centrā' };
   }
   // bridinajumi.js (josla augšā); ja tas neielādējās — bez joslas
   const bridinajumi = (v, n) => { if (typeof Bridinajumi !== 'undefined') Bridinajumi.atjaunot(v, n); };
@@ -447,6 +488,7 @@ const krizesMeklesana = (() => {
       rez.zvanit112 = rez.dzivibas_draudi || !!scenarijs.zvanit112;
     }
     kaste.hidden = false;
+    solis(2);
     rezultatuSlanis.clearLayers();
     if (pieprasijums) pieprasijums.abort();
     pieprasijums = new AbortController();
@@ -481,27 +523,34 @@ const krizesMeklesana = (() => {
     }
     const vieta = adrese ? null : rez.vieta;
     const no = izcelsme(vieta, adrese);
-    if (typeof Dalities !== 'undefined') Dalities.atjaunotUrl(teksts, no);  // adreses joslā ?q=…[&lat=&lon=], lai rezultātu var nosūtīt
-    bridinajumi(no, no?.nosaukums);
+    const centra = !!no.kartesCentrs;  // ne adreses, ne vietas: attālumi no kartes centra, brīdinājumi/prognoze šai vietai nav jēgpilni
+    if (typeof Dalities !== 'undefined') Dalities.atjaunotUrl(teksts, centra ? null : no);  // adreses joslā ?q=…[&lat=&lon=], lai rezultātu var nosūtīt
+    bridinajumi(centra ? null : no, centra ? null : no.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
-    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: no, adrese: adrese?.adrese || null };
+    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: centra ? null : no, adrese: adrese?.adrese || null };
     if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
       uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
       if (uzskaite) zinot(uzskaite.vaicajums);
     }
     const kurTeksts = adrese ? isaAdrese(adrese.adrese) : vieta?.nosaukums;
     const pludi = galvenais && PLUDU_SCENARIJI.has(galvenais.kods);
-    // Lēmums vispirms (112, brīdinājums šai vietai, plūdu zona jā/nē), tad situācija, padoms un vietas
-    const galva = draudi + zvanitTeksts +
-      (no ? '<div id="rez-lemums"></div><div id="rez-prognoze"></div>' + (pludi ? pluduBloks() : '') : '') +
+    const zona = pludi && !centra;  // lēmums = plūdu riska zona jā/nē šai adresei / vietai
+    // Nākamā darbība "Izmantot manu atrašanās vietu": attālumi nav no lietotāja (kartes vai pilsētas centrs) un GPS vēl nav
+    const vajagVietu = !!no.regions && !stavoklis.vieta;
+    // Secība (telefonā pirmais ekrāns): 112 (tikai dzīvības draudi) → lēmums + viena nākamā darbība → ko sapratām →
+    // LVĢMC brīdinājums šai vietai → 24 h prognoze → fakti (plūdu zona, upe) → vietas → padoms → "Kas notiks tālāk"
+    const galva = draudi + lemumaBloks(zona, no, vajagVietu) +
       (galvenais
-        ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
-          (galvenais.padoms ? (typeof Valoda !== 'undefined' ? Valoda.padomiPiezime() : '') + `<p class="padoms" lang="lv">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '')
+        ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>`
         : kurTeksts ? `<p class="sapratu">${t(adrese ? 'Adrese' : 'Vieta')}: <b>${esc(kurTeksts)}</b></p>` +
             '<p class="piezime">' + t('Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.') + '</p>' : '') +
-      (no ? '<p class="piezime" id="rez-mana-vieta" hidden></p>' : '') +
+      zvanitTeksts +
+      (centra ? '' : '<div id="rez-lemums"></div><div id="rez-prognoze"></div>' + (pludi ? pluduBloks() : '')) +
+      (no.regions ? '' : '<p class="piezime" id="rez-mana-vieta" hidden></p>') +
       (bezDatiem ? '<p class="piezime kluda">' + t('Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.') + '</p>' : '');
+    const padoms = galvenais?.padoms ? (typeof Valoda !== 'undefined' ? Valoda.padomiPiezime() : '') +
+      `<p class="padoms" lang="lv">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '';
     const vaiDomaji = citi.length ? `<p class="piezime">${t('Vai domājāt:')}</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
     const beigas = talakBloks(galvenais, no) + vaiDomaji +
@@ -516,8 +565,10 @@ const krizesMeklesana = (() => {
       return;
     }
 
-    // Scenārija slāņi (kas jau ir kartē) + drošās vietas situācijām un vietas/adreses vaicājumiem
-    const kodi = (galvenais?.kategorijas || []).filter(k => kategorijas[k]?.skaits);
+    // Scenārija slāņi (kas jau ir kartē) + drošās vietas situācijām un vietas/adreses vaicājumiem.
+    // Slānis tikai ar simulētiem datiem (uzlādes punkti) īstā vaicājumā netiek ne ieslēgts, ne rādīts kartītē.
+    const demo = demoRezims();
+    const kodi = (galvenais?.kategorijas || []).filter(k => kategorijas[k]?.skaits && (demo || !tikaiSimuleti(k)));
     const arDrosam = !galvenais || galvenais.nr || galvenais.kods === 'patvertne';
     const drosas = arDrosam ? DROSAS.filter(d => !kodi.includes(d.kods)) : [];
     if (kodi.length) {
@@ -529,23 +580,20 @@ const krizesMeklesana = (() => {
     if (galvenais?.kods === 'negaiss' && typeof Zibens !== 'undefined') Zibens.radit(true);  // zibens.js: pēdējās 30 min
     if (kodi.length || jaunsRegions) atjaunot();
 
-    if (!no) {
-      kaste.innerHTML = galva + `<p class="piezime vieta-zina">${kaste.lang !== 'lv' ? t('vieta_zina') : `Lai atrastu tuvākās vietas, pievienojiet adresi vai pilsētu, piem.,
-        „${esc(teksts)} Ogrē” vai „${esc(teksts)} Brīvības 15 Ogre”, vai nosakiet savu atrašanās vietu.`}</p>
-        <button type="button" class="galvena" data-darbiba="atrast">${Ik('vieta')} ${t('Noteikt manu atrašanās vietu')}</button>` + beigas;
-      return;
-    }
-
-    kaste.innerHTML = galva + '<div id="rez-vietas"><p class="piezime">' + t('Meklē tuvākās vietas…') + '</p></div><div id="rez-pasvaldiba"></div>' + beigas;
+    kaste.innerHTML = galva + '<div id="rez-vietas"><p class="piezime">' + t('Meklē tuvākās vietas…') + '</p></div>' + padoms +
+      (centra ? '' : '<div id="rez-pasvaldiba"></div>') + beigas;
     const ll = { lat: no.lat.toFixed(5), lon: no.lon.toFixed(5) };
-    lemumaDati(ll, no, signal);
-    prognozesDati(ll, no, signal);
-    if (pludi) pluduDati(ll, signal);
+    if (!centra) {
+      lemumaDati(ll, no, signal);
+      prognozesDati(ll, no, signal);
+      if (pludi) pluduDati(ll, signal);
+      pasvaldibaDati(ll, no, signal);
+    }
     if (no.apraksts === 'no Jums') manaVietaDati(ll, signal);
-    pasvaldibaDati(ll, no, signal);
     const vietas = h => { const d = kaste.querySelector('#rez-vietas'); if (d) d.innerHTML = h; };
     let neizdevas = false;  // /api/objekti neatbildēja — tad nesakām "datos nav", bet "neizdevās ielādēt"
     const tuvakas = (k, n, papildus = {}) => iegut('/objekti?' + new URLSearchParams({ kategorijas: k, ...ll, limit: n, ...papildus }), signal)
+      .then(d => demo ? d : { ...d, features: (d.features || []).filter(f => !simulets(f)) })
       .catch(e => { if (e.name === 'AbortError') throw e; neizdevas = true; return { features: [] }; });
     try {
       // Bankomāti (nav elektrības, skaidra nauda…): vispirms tuvākais kritiskais (banku saraksts — strādā arī krīzē)
@@ -567,13 +615,15 @@ const krizesMeklesana = (() => {
       const drosasAtl = drosasF.map(g => atlasit(g.features));
       const drosasVietas = drosasAtl.map(a => izveleties(a.derigi)[0] || null);
       const drosasIzlaisti = drosasAtl.map((a, i) => a.izlaisti.filter(x => !drosasVietas[i] || x.f.properties.attalums_m <= drosasVietas[i].properties.attalums_m));
-      const vejs = galvenais && VEJA_SCENARIJI.has(galvenais.kods);
-      vietas((vejs ? vejaBloks() : '') + (laiks ? augsnesBloks() : '') + '<div id="rez-celi"></div><div id="rez-satiksme"></div>' +
+      const vejs = !centra && galvenais && VEJA_SCENARIJI.has(galvenais.kods);
+      const arLaiku = laiks && !centra;
+      vietas((vejs ? vejaBloks() : '') + (arLaiku ? augsnesBloks() : '') + (centra ? '' : '<div id="rez-celi"></div><div id="rez-satiksme"></div>') +
         (neizdevas ? '<p class="piezime kluda">' + t('Daļu tuvāko vietu neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža; padoms un 112 ir spēkā.') + '</p>' : '') +
         kodi.map((k, i) => grupa(k, grupas[i].features, no, neizdevas, izlaisti[i])).join('') +
         (drosas.length && !neizdevas ? drosasBloks(drosas, drosasVietas, no, drosasIzlaisti) : '') +
-        '<p class="piezime">' + t('Attālums taisnā līnijā') + (kaste.lang === 'en' || kaste.lang === 'ru' ? '' : ' ' + esc(no.apraksts)) + '.</p>');
+        '<p class="piezime">' + t('Attālums taisnā līnijā') + (kaste.lang === 'en' || kaste.lang === 'ru' ? (no.regions ? ' ' + aprakstsT(no) : '') : ' ' + esc(no.apraksts)) + '.</p>');
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
+      aizpilditLemumu(lemumaVieta(kodi, grupas, drosas, drosasVietas, rez.dzivibas_draudi), no, zona, galvenais);
       // Maršruts līdz tuvākajai patvertnei (citādi 24/7 slimnīcai), kas apiet spēkā esošus ceļu slēgumus (marsruts.js)
       const merkis = drosasVietas[drosas.findIndex(d => d.kods === 'patvertne')] || drosasVietas[drosas.findIndex(d => d.kods === 'neatliekama_24h')];
       if (merkis && !no.regions && typeof Marsruts !== 'undefined' && merkis.properties.attalums_m < 20000) {
@@ -581,14 +631,16 @@ const krizesMeklesana = (() => {
         Marsruts.rindai(kaste.querySelector(`li[data-lat="${mlat}"][data-lon="${mlon}"]`), [no.lat, no.lon], [mlat, mlon],
           { slanis: rezultatuSlanis, signal });
       }
-      if (laiks) augsnesDati(ll, signal);
+      if (arLaiku) augsnesDati(ll, signal);
       if (vejs) vejaDati(ll, signal);
       // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
-      if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
+      if (!centra && typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
       // zonas.js: satiksme apvidū (LVC) un slidens ceļš tuvumā — rinda tikai tad, ja ir dati
-      if (typeof Zonas !== 'undefined') Zonas.satiksmesRinda(ll).then(h => { const d = kaste.querySelector('#rez-satiksme'); if (d && !signal.aborted) d.innerHTML = h; }, () => {});
+      if (!centra && typeof Zonas !== 'undefined') Zonas.satiksmesRinda(ll).then(h => { const d = kaste.querySelector('#rez-satiksme'); if (d && !signal.aborted) d.innerHTML = h; }, () => {});
     } catch (e) {
-      if (e.name !== 'AbortError') vietas('<p class="piezime kluda">' + t('Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.') + '</p>');
+      if (e.name === 'AbortError') return;
+      vietas('<p class="piezime kluda">' + t('Vietas neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.') + '</p>');
+      aizpilditLemumu(null, no, zona, galvenais);
     }
   }
 
@@ -599,6 +651,78 @@ const krizesMeklesana = (() => {
     let nos = 'oficiālā vietne';
     try { const h = new URL(url).hostname.replace(/^www\./, ''); nos = PADOMU_AVOTI[h] || h; } catch { return ''; }
     return `<small class="avots-rinda padoma-avots">${t('Avots')}: <a href="${esc(url)}" target="_blank" rel="noopener">${esc(nos)}</a></small>`;
+  }
+
+  // ---- Lēmuma bloks kartītes augšā (telefonā redzams pusatvērtā lapā bez ritināšanas) ----
+  // Viena rinda ar lēmumu (ikona + krāsa) un viena nākamā darbība. Plūdiem lēmums = plūdu riska zona jā/nē, darbība =
+  // maršruts uz tuvāko pulcēšanās vietu; citādi lēmums = tuvākā vajadzīgā vieta, darbība = maršruts. Ja attālumi nav no
+  // lietotāja (kartes vai pilsētas centrs), darbība = "Izmantot manu atrašanās vietu".
+  const VIETAS = {
+    evakuacijas_punkts: ['Tuvākā pulcēšanās vieta', 'karogs'], izmitinasana: ['Tuvākā izmitināšanas vieta', 'maja'],
+    patvertne: ['Tuvākā patvertne', 'patvertne'], neatliekama_24h: ['Tuvākā 24/7 neatliekamā palīdzība', 'slimnica'],
+    slimnica: ['Tuvākā ārstniecības iestāde', 'slimnica'], aptieka: ['Tuvākā aptieka', 'zales'], bankomats: ['Tuvākais bankomāts', 'nauda'],
+    policija: ['Tuvākā policija', 'policija'], ugunsdzeseji: ['Tuvākais ugunsdzēsēju depo', 'vugd'], degviela: ['Tuvākā degvielas uzpilde', 'degviela'],
+    noturibas_punkts: ['Tuvākais noturības punkta kandidāts', 'eka'], pietura: ['Tuvākā pietura', 'autobuss'],
+  };
+  const vietasVards = kods => { const [v, ik] = VIETAS[kods] || ['Tuvākā vieta', 'vieta']; return [t(v), ik]; };
+  const vietasPoga = () => `<button type="button" class="galvena vietas-poga" data-darbiba="atrast">${Ik('vieta')} ${t('Izmantot manu atrašanās vietu')}</button>`;
+  // Attāluma izcelsme kartītes valodā: "no kartes centra", "no centra (Ogre)"; citādi (adrese, Jūs) kā izcelsme() to deva
+  const aprakstsT = no => no.kartesCentrs ? t('no kartes centra') : no.regions ? t('no centra ({x})', { x: esc(no.nosaukums) }) : esc(no.apraksts);
+  const lemumaRinda = (tonis, ikona, virsraksts, teksts, piezime = '') =>
+    `<p class="lemums-rinda lemums-${tonis}"><span class="lemums-ikona">${Ik(ikona)}</span>` +
+    `<span class="lemums-teksts"><b>${virsraksts}:</b> ${teksts}${piezime ? ` <small>${piezime}</small>` : ''}</span></p>`;
+  const pirmaisTeikums = s => String(s || '').split(/(?<=[.!?])\s/)[0];
+
+  function lemumaBloks(zona, no, vajagVietu) {
+    const kur = no.regions ? t('{x}, centrs', { x: esc(no.nosaukums) }) : '';
+    const rinda = zona ? lemumaRinda('gaida', 'pludi', t('Plūdu riska zona'), t('pārbauda…'), kur)
+      : lemumaRinda('gaida', 'vieta', t('Tuvākā vieta'), t('meklē…'));
+    return `<section class="lemums-bloks" id="rez-galvenais" aria-label="${t('Lēmums')}">` +
+      `<div id="rez-lemuma-rinda"${zona ? ` data-kur="${kur}"` : ''}>${rinda}</div>` +
+      `<div id="rez-darbiba" class="lemums-darbiba">${vajagVietu ? vietasPoga() : ''}</div>` +
+      (vajagVietu ? '<p class="piezime vieta-zina" hidden></p>' : '') + '</section>';
+  }
+
+  // Lēmuma vieta: dzīvības draudos — 24/7 neatliekamā palīdzība; citādi pirmā scenārija slānī, tad drošās vietas.
+  // Upju stacijas nav vieta, kurp doties; CA plāna vieta > 10 km (citā pašvaldībā) — ņem nākamo (patvertni).
+  function lemumaVieta(kodi, grupas, drosas, drosasVietas, draudi) {
+    const visi = [...kodi.map((k, i) => ({ kods: k, f: grupas[i].features[0] })), ...drosas.map((d, i) => ({ kods: d.kods, f: drosasVietas[i] }))]
+      .filter(x => x.f && x.kods !== 'udens_limenis' &&
+        !(['evakuacijas_punkts', 'izmitinasana'].includes(x.kods) && x.f.properties.attalums_m > 10000));
+    return (draudi && visi.find(x => x.kods === 'neatliekama_24h')) || visi[0] || null;
+  }
+
+  function aizpilditLemumu(x, no, zona, galvenais) {
+    const rinda = kaste.querySelector('#rez-lemuma-rinda'), darbiba = kaste.querySelector('#rez-darbiba');
+    if (!rinda || !darbiba) return;
+    if (!x) {
+      // padoms ir latviski (oficiālais avots) arī RU/EN kartītē
+      const pt = pirmaisTeikums(galvenais?.padoms);
+      if (!zona) rinda.innerHTML = lemumaRinda('info', 'info', t('Ko darīt'),
+        pt ? `<span lang="lv">${esc(pt)}</span>` : t('Ja apdraudēta dzīvība vai veselība, zvaniet 112.'));
+      return;
+    }
+    const p = x.f.properties;
+    const [vards, ikona] = vietasVards(x.kods);
+    const nos = esc(nosaukums(p) || kategorijas[x.kods]?.nosaukums || '');
+    const att = attalums(p.attalums_m) + (no.regions ? ` <small>${aprakstsT(no)}</small>` : '');
+    if (!zona) rinda.innerHTML = lemumaRinda('vieta', ikona, vards, `<b class="lemums-vietas-nos">${nos}</b> · ${att}`);
+    const vietasRinda = zona ? `<p class="lemums-vietas-rinda">${Ik(ikona)} ${vards}: <b>${nos}</b> · ${att}</p>` : '';
+    const poga = darbiba.querySelector('[data-darbiba="atrast"]');
+    if (poga) { if (vietasRinda) poga.insertAdjacentHTML('beforebegin', vietasRinda); return; }
+    const [lon, lat] = x.f.geometry.coordinates;
+    darbiba.innerHTML = vietasRinda + marsrutaSaites(lat, lon, no.regions ? null : no);
+  }
+
+  // Plūdu lēmums: zona (/api/pludi) × upes statuss (/api/udens); pārzīmē, kad pienāk katra no atbildēm
+  function zimetPluduLemumu() {
+    const r = kaste.querySelector('#rez-lemuma-rinda[data-kur]');
+    const z = pluduStavoklis.lemums;
+    if (!r || !z) return;
+    const s = pluduStavoklis.stacija;
+    const kritisks = s?.statuss === 'kritisks';
+    r.innerHTML = lemumaRinda(kritisks && z.tonis !== 'ne' ? 'ja' : z.tonis, 'pludi', t('Plūdu riska zona'), z.teksts +
+      (kritisks ? ` · <b>${t('upe virs kritiskā līmeņa')}</b>` : ''), r.dataset.kur);
   }
 
   // "Kas notiks tālāk": kartītes noslēgums — ko darīt tagad, kas notiks, kur būs ziņas, kad meklēt vēlreiz
@@ -660,9 +784,13 @@ const krizesMeklesana = (() => {
     const p = no.regions ? { ...f.properties, attalums_m: null } : f.properties;
     const i = p.ipasibas || {};
     const [lon, lat] = f.geometry.coordinates;
+    // Pulcēšanās un izmitināšanas vietas (avots ca-plani) izvilka MI no pašvaldību CA plāniem: zīme ar saiti uz plāna lappusi
+    const plans = /^https?:\/\//.test(i.plans_url || '') ? esc(i.plans_url) + (i.lpp ? '#page=' + encodeURIComponent(i.lpp) : '') : '';
     const ca = (i.komentars ? `<small class="ca-avots">${esc(i.komentars)}</small>` : i.vietas ? `<small>${esc(i.vietas)} vietas</small>` :
       i.marsruti ? `<small>${esc(i.marsruti)} maršruti: ${esc(i.marsrutu_saraksts)}</small>` : '') +
-      (/^https?:\/\//.test(i.plans_url || '') ? `<small><a href="${esc(i.plans_url)}" target="_blank" rel="noopener">Atvērt CA plānu${i.lpp ? ` (lpp. ${esc(i.lpp)})` : ''}</a></small>` : '') +
+      (plans && p.avots === 'ca-plani'
+        ? `<small class="mi-zime">${Ik('dokuments')} ${t('izvilkts ar MI no CA plāna')}, <a href="${plans}" target="_blank" rel="noopener">${i.lpp ? t('{x}. lpp.', { x: esc(i.lpp) }) : t('atvērt plānu')}</a></small>`
+        : plans ? `<small><a href="${plans}" target="_blank" rel="noopener">${t('Atvērt CA plānu')}${i.lpp ? ` (${t('{x}. lpp.', { x: esc(i.lpp) })})` : ''}</a></small>` : '') +
       // avots un licence katrai vietai (CA plāna vietām avots jau ir komentārā ar lappusi)
       (p.avots === 'ca-plani' && i.komentars ? '' : Avoti.rinda(p.avots));
     return `<li tabindex="0" data-lat="${lat}" data-lon="${lon}" data-p="${esc(JSON.stringify(p))}">
@@ -801,6 +929,7 @@ const krizesMeklesana = (() => {
   const STATUSA_KLASE = { 'normāls': 'normals', 'paaugstināts': 'paaugstinats', 'kritisks': 'kritisks' };
   const zonuPoga = () => `<button type="button" class="otra udens-zonas-poga" data-darbiba="pludu-zonas">${Ik('pludi')} ${t('Rādīt plūdu zonas kartē')}</button>`;
   function pluduSecinajums() {
+    zimetPluduLemumu();
     const { zona, stacija: s } = pluduStavoklis;
     const bloks = kaste.querySelector('#rez-pludi-bloks');
     if (!bloks || !s || s.statuss === 'normāls') return;
@@ -840,6 +969,9 @@ const krizesMeklesana = (() => {
       if (p.ielade) {
         pluduRinda('rez-pludi', `<b>${Valoda.t('Plūdu riska zona')}</b><span>${meginajums < 2 ? 'Plūdu kartes vēl ielādējas, mēģinām vēlreiz pēc 10 s…'
           : 'Plūdu kartes pašlaik atbild lēni. Plūdu zonas redzamas kartē (slānis ieslēgts).'}</span>`);
+        pluduStavoklis.lemums = meginajums < 2 ? { tonis: 'gaida', teksts: Valoda.t('kartes vēl ielādējas…') }
+          : { tonis: 'nezinams', teksts: Valoda.t('pašlaik nevar pārbaudīt; zonas redzamas kartē') };
+        zimetPluduLemumu();
         if (meginajums < 2) setTimeout(() => { if (!signal.aborted) pluduZona(ll, signal, meginajums + 1); }, 10000);
         return;
       }
@@ -848,9 +980,18 @@ const krizesMeklesana = (() => {
         : p.nepilnigi ? 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.' : `<strong class="nē">${Valoda.t('Nē')}</strong>: ${Valoda.t('nav applūstošā teritorijā (10 %, 1 % un 0,5 % kartes).')}`;
       pluduRinda('rez-pludi', `<b>${Valoda.t('Plūdu riska zona')}</b><span>${t}</span><small class="avots-rinda">${AVOTI_LVGMC.pludi}</small>`);
       pluduStavoklis.zona = p.zona ? true : p.nepilnigi ? undefined : false;
+      // lēmuma rindai īsi: lielākā varbūtība gadā
+      const maks = p.zona ? Math.max(...p.veidi.map(v => +v.varbutiba_proc || 0)) : 0;
+      const proc = String(maks).replace('.', Valoda.aktiva() === 'en' ? '.' : ',');
+      pluduStavoklis.lemums = p.zona ? { tonis: 'ja', teksts: `<strong>${Valoda.t('Jā')}</strong>${maks ? ` (${Valoda.t('{x} % varbūtība gadā', { x: proc })})` : ''}` }
+        : p.nepilnigi ? { tonis: 'nezinams', teksts: Valoda.t('pēc pieejamajām kartēm nē (daļa karšu neatbildēja)') }
+          : { tonis: 'ne', teksts: `<strong>${Valoda.t('Nē')}</strong>, ${Valoda.t('nav applūstošā teritorijā')}` };
       pluduSecinajums();
     }).catch(e => {
-      if (e.name !== 'AbortError') pluduRinda('rez-pludi', '<b>' + t('Plūdu riska zona') + '</b><span>' + t('Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).') + '</span>');
+      if (e.name === 'AbortError') return;
+      pluduRinda('rez-pludi', '<b>' + t('Plūdu riska zona') + '</b><span>' + t('Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).') + '</span>');
+      pluduStavoklis.lemums = { tonis: 'nezinams', teksts: t('neizdevās pārbaudīt; zonas redzamas kartē') };
+      zimetPluduLemumu();
     });
   }
   function pluduUdens(ll, signal) {
