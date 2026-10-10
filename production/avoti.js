@@ -25,6 +25,13 @@ const Avoti = (() => {
       'katru stundu, kavējas ~2–3 h', 82, { ja: 'zibens-slanis' }],
     ['open-meteo', 'Nokrišņi un augsnes mitrums', 'Open-Meteo', CCBY, 'https://open-meteo.com/',
       'Meklēšanas rezultātā (plūdi, lietusgāzes, vētra): nokrišņi pēdējās 26 dienās un augsnes mitrums', 'tiešsaistē', 83, { ja: 'zibens-slanis' }],
+    ['osm-noturiba', 'OpenStreetMap: bibliotēkas, kultūras nami, pašvaldību ēkas, skolas', 'OpenStreetMap līdzstrādnieki',
+      ['ODbL 1.0', 'https://opendatacommons.org/licenses/odbl/1-0/'], 'https://www.openstreetmap.org/copyright',
+      'Noturības punktu kandidāti (statuss nav apstiprināts)', 'pēc ielādes', 71],
+    ['sim-udens', 'Simulēti prototipa dati (komanda): dzeramā ūdens punkti', 'Hakatona komanda', ['Simulēti dati, CC0 1.0', CC0[1]],
+      'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'SIMULĒTI: dzeramā ūdens punkti (prototips, nav reāli)', 'statiski', 95],
+    ['sim-energija', 'Simulēti prototipa dati (komanda): ierīču uzlādes punkti', 'Hakatona komanda', ['Simulēti dati, CC0 1.0', CC0[1]],
+      'https://github.com/noiseparty/hakatons/tree/main/atseviski_dati', 'SIMULĒTI: ierīču uzlādes punkti (prototips, nav reāli)', 'statiski', 96],
     ['opentopomap', 'OpenTopoMap reljefa karte', 'OpenTopoMap (dati: OpenStreetMap līdzstrādnieki, SRTM)',
       ['CC BY-SA 3.0', 'https://creativecommons.org/licenses/by-sa/3.0/'], 'https://opentopomap.org/about', 'Fona karte „Reljefs”', 'tiešsaistē', 91],
   ].map(([kods, nosaukums, izdevejs, [licence, licences_url], datu_kopa_url, lietojums, biezums, kartiba, x = {}]) =>

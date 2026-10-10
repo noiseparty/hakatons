@@ -83,6 +83,7 @@ fi
 if [ "$VISI" = 0 ]; then
   lejupieladet valsts_dati python3 src/karte/db/valsts_dati.py   # ZVA, IeM IC (4), VKCP ūdens ņemšanas vietas
   lejupieladet osm_poi python3 src/karte/db/osm_poi.py           # OSM bankomāti, DUS
+  lejupieladet noturiba python3 src/karte/db/noturibas_punkti.py # OSM noturības punktu kandidāti
   lejupieladet gtfs python3 src/karte/db/gtfs.py                 # pieturas: Rīgas satiksme, ATD, VIVI
 fi
 
@@ -94,6 +95,7 @@ ikdienas iemic-pp iemic_pasvaldibu_policija.csv --kategorija policija --nosaukum
 ikdienas iemic-vugd iemic_vugd_depo.csv --kategorija ugunsdzeseji --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
 ikdienas vkcp-udens vkcp_udens_nemsanas_vietas.csv --kategorija udens_nemsana --nosaukums "{nosaukums}" --lon x --lat y --srid 3059
 ikdienas osm osm_poi.geojson --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
+ikdienas osm-noturiba noturibas_punkti.geojson --kategorija noturibas_punkts --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
 ikdienas rs-gtfs gtfs_rigas_satiksme.csv --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 ikdienas atd-gtfs gtfs_atd.csv --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
 ikdienas vivi-gtfs gtfs_vivi.csv --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
@@ -101,6 +103,9 @@ ikdienas vivi-gtfs gtfs_vivi.csv --kategorija pietura --nosaukums "{nosaukums}" 
 # 3. Statiskie avoti no repozitorija (mainās tikai ar PR): ielādē, ja fails mainījies
 statisks vugd-112 $REPO/patvertnes.geojson --kategorija patvertne --id "{_nr}" --nosaukums "{veids}" --adrese "{iela} {nr}, {vieta}" --apvienot 35
 statisks vm-24h $REPO/slimnicas_24h.geojson --kategorija neatliekama_24h --id "{nr}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+# Simulēti prototipa dati (atseviski_dati/README.md): kartē marķēti "SIMULĒTI DATI — prototips"
+statisks sim-udens atseviski_dati/udens.csv --kategorija udens_punkts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
+statisks sim-energija atseviski_dati/energija.csv --kategorija uzlades_stacija --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 # CA plāni: abi slāņi ir viens avots, tāpēc vienā failā (ca_plani.py vajag kadastra DB, tāpēc to palaiž lokāli un PR)
 CA=/tmp/ca_plani.$$.geojson
 if [ "$PARBAUDE" = 1 ]; then echo "+ apvienot $REPO/ca_pulcesanas_vietas.geojson + $REPO/ca_izmitinasana.geojson > $CA"
