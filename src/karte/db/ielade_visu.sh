@@ -1,32 +1,6 @@
 #!/usr/bin/env bash
-# Ielādē visus kartes punktu avotus datubāzē `map` (VPS). Katrs avots aizvieto savu iepriekšējo saturu.
-# Avotu licences un saites: tabula avoti (shema.sql). Jaunu failu lejupielāde: valsts_dati.py, osm_poi.py, gtfs.py.
+# Ielādē visus kartes punktu avotus no repozitorija momentuzņēmumiem (src/karte/dati) datubāzē `map` (VPS), no jauna.
+# Komandu saraksts ir vienā vietā: atjaunot_visu.sh (ikdienas atjaunošana, hakatons-dati.timer). Šis ir tā režīms --visi:
+# bez lejupielādes, visi avoti neatkarīgi no tā, vai fails mainījies. Avotu licences un saites: tabula avoti (shema.sql).
 # Palaišana (VPS): cd /srv/hakatons && set -a && . /etc/hakatons/map.env && set +a && bash src/karte/db/ielade_visu.sh
-set -euo pipefail
-cd "$(dirname "$0")/../../.."
-D=src/karte/dati
-L="python3 src/karte/db/ielade.py"
-
-psql "$MAP_DB_OWNER_DSN" -q -v ON_ERROR_STOP=1 -f src/karte/db/shema.sql 2>&1 | grep -v NOTICE || true
-
-$L $D/patvertnes.geojson --avots vugd-112 --kategorija patvertne --id "{_nr}" --nosaukums "{veids}" --adrese "{iela} {nr}, {vieta}" --apvienot 35
-$L $D/slimnicas_24h.geojson --avots vm-24h --kategorija neatliekama_24h --id "{nr}" --nosaukums "{nosaukums}" --adrese "{adrese}"
-$L $D/iemic_arstniecibas_iestades.csv --avots iemic-arstniecibas --kategorija slimnica --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y
-$L $D/zva_aptiekas.csv --avots zva-fdu --kategorija aptieka --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y
-$L $D/iemic_vp_iecirkni.csv --avots iemic-vp --kategorija policija --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
-$L $D/iemic_pasvaldibu_policija.csv --avots iemic-pp --kategorija policija --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y
-$L $D/iemic_vugd_depo.csv --avots iemic-vugd --kategorija ugunsdzeseji --nosaukums "{nosaukums}" --adrese "{adrese}" --lon x --lat y --srid 3059
-# CA plāni: abi slāņi ir viens avots, tāpēc ielādē vienā reizē (atkārtota ielāde aizvieto visu avota saturu)
-python3 -c 'import json,sys; f=[x for p in sys.argv[1:] for x in json.load(open(p))["features"]]; json.dump({"type":"FeatureCollection","features":f},sys.stdout)'   $D/ca_pulcesanas_vietas.geojson $D/ca_izmitinasana.geojson > /tmp/ca_plani.geojson
-$L /tmp/ca_plani.geojson --avots ca-plani --kategorija "{kategorija}" --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
-$L $D/osm_poi.geojson --avots osm --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
-$L $D/vkcp_udens_nemsanas_vietas.csv --avots vkcp-udens --kategorija udens_nemsana --nosaukums "{nosaukums}" --lon x --lat y --srid 3059
-$L $D/gtfs_rigas_satiksme.csv --avots rs-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
-$L $D/gtfs_atd.csv --avots atd-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
-$L $D/gtfs_vivi.csv --avots vivi-gtfs --kategorija pietura --nosaukums "{nosaukums}" --lon x --lat y
-$L $D/noturibas_punkti.geojson --avots osm-noturiba --kategorija noturibas_punkts --nosaukums "{name}" --adrese "{adrese}" --apvienot 35
-# Simulēti prototipa dati (atseviski_dati/README.md): kartē marķēti "SIMULĒTI DATI — prototips"
-$L atseviski_dati/udens.csv --avots sim-udens --kategorija udens_punkts --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
-$L atseviski_dati/energija.csv --avots sim-energija --kategorija uzlades_stacija --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
-
-psql "$MAP_DB_OWNER_DSN" -c "select o.avots, a.licence, o.kategorija, count(*) from objekti o join avoti a on a.kods = o.avots group by 1, 2, 3 order by 1, 3"
+exec bash "$(dirname "$0")/atjaunot_visu.sh" --visi "$@"

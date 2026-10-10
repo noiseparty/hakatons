@@ -12,11 +12,13 @@ import collections
 import csv
 import io
 import json
+import os
 import pathlib
 import urllib.request
 import zipfile
 
-DATI = pathlib.Path(__file__).resolve().parents[1] / "dati"
+# HAKATONS_DATI: cita mape (VPS ikdienas atjaunošana raksta /var/lib/hakatons/dati, nevis git kopijā)
+DATI = pathlib.Path(os.environ.get("HAKATONS_DATI") or pathlib.Path(__file__).resolve().parents[1] / "dati")
 UA = {"User-Agent": "map.repo.lv (AI Open Data 2026 hakatons)"}
 CKAN = "https://data.gov.lv/dati/api/3/action/package_show?id="
 VEIDI = {"0": "tramvajs", "1": "metro", "2": "vilciens", "3": "autobuss", "4": "prāmis", "11": "trolejbuss",
