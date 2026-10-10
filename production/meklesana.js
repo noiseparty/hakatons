@@ -753,23 +753,24 @@ const krizesMeklesana = (() => {
   }
 
   // Pašvaldība: CA plāns, tīmekļvietne, pašvaldības tālrunis un e-pasts (UR, CC0) kā teksts — bez tel: saitēm;
-  // VPVKAC centrs (2022) tikai tad, ja UR kontaktu nav
+  // klientu apkalpošanas centrs (VPVKAC, 2023-11) kā atsevišķa rinda tikai pašvaldībām, kurām centrs sarakstā ir
   function pasvaldibaDati(ll, no, signal) {
     iegut('/pasvaldiba?' + new URLSearchParams(ll), signal).then(p => {
       const el = kaste.querySelector('#rez-pasvaldiba');
       if (!el) return;
       const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
-      const k = p.kontakti, c = k ? null : p.vpvkac;
+      const k = p.kontakti, c = p.vpvkac;
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
-        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') +
-        (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
+        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
+        (k?.adrese ? `<p class="pasvaldiba-rinda">Pašvaldības adrese: ${esc(k.adrese)}</p>` : '') +
+        (c ? `<p class="pasvaldiba-rinda">Klientu apkalpošanas centrs: ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
         // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
         `<p class="abonet-rinda">Abonēt brīdinājumus: <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
         ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">Kalendārs</a></p>` +
         `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)` +
         (k ? ' · <a href="https://data.gov.lv/dati/dataset/public-persons-institutions" target="_blank" rel="noopener">Uzņēmumu reģistrs, publisko personu saraksts</a> · CC0' : '') +
-        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : '') + '</small>';
+        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontakti</a>, 2023-11 · CC0' : '') + '</small>';
     }).catch(() => {});
   }
 
