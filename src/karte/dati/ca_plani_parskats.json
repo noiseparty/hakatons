@@ -366,8 +366,8 @@
  {
   "slug": "dienvidkurzemes-novads",
   "pasvaldiba": "Dienvidkurzemes novads",
-  "statuss": "kopigs_plans",
-  "piezime": "All files in this folder (incl. annex 12 'pulcēšanās vietas') are pointer stubs with no content: Dienvidkurzeme shares the Liepāja–Dienvidkurzeme cooperation-territory CA plan (Liepajas-DKN-ST-CAP), whose full conversion is in markdown/liepaja/. Extract lists from the liepaja slug.",
+  "statuss": "dalejs",
+  "piezime": "Assembly points from annex 12 of the shared Liepāja–DKN plan (2026): 40 rows for Dienvidkurzemes novads. The kit's folder only had pointer stubs for this annex, so the text was taken from the official PDF (https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf, sha256 fca5ea92e1da…, text layer) into liepaja-12-pielikums-2026.md. No coordinates in the annex: places geocoded with the VZD address register. Accommodation is still not public (the plan's annex 7 is vehicles, not accommodation). Previously: All files in this folder (incl. annex 12 'pulcēšanās vietas') are pointer stubs with no content: Dienvidkurzeme shares the Liepāja–Dienvidkurzeme cooperation-territory CA plan (Liepajas-DKN-ST-CAP), whose full conversion is in markdown/liepaja/. Extract lists from the liepaja slug.",
   "atsauces": [
    {
     "fails": "dkn-lv_12-pielikums-pulcesanas-vietas.md",
@@ -379,13 +379,18 @@
    }
   ],
   "kludas": [],
-  "neatrasti": [],
+  "neatrasti": [
+   "Grobiņas Dzērves/Baznīcas/Pilskalna/Tirgus laukumi, Lielās ielas un Priežu ielas krustojums, Grobiņa, Dienvidkurzemes novads (lpp. 1): address_not_found",
+   "Gaviezes kultūras centrs, “Ritmi”, Gavieze, Gaviezes pagasts, Dienvidkurzemes novads (lpp. 1): address_not_found",
+   "Rudes stadions, Rudes skola, Rude, Otaņķu pagasts, Dienvidkurzemes novads (lpp. 2): address_not_found",
+   "Kalētu stadions, Kamoliņi- pretī, Kalēti, Kalētu pagasts, Dienvidkurzemes novads (lpp. 2): address_not_found"
+  ],
   "izmesti": [],
   "evakuacijas_punkti": {
-   "atrasti": 0,
+   "atrasti": 40,
    "ar_koord": 0,
-   "geokodeti": 0,
-   "kartē": 0,
+   "geokodeti": 36,
+   "kartē": 36,
    "vietas": 0,
    "dublikati": 0
   },
@@ -870,8 +875,8 @@
  {
   "slug": "liepaja",
   "pasvaldiba": "Liepāja",
-  "statuss": "nav_publicets",
-  "piezime": "Shared Liepāja city + Dienvidkurzeme county (DKN) plan. Chapter 6.2 says assembly-point addresses are 'summarised in the table below' and in annex 12, but no table follows in the conversion (only a visual-elements marker on lpp. 211); accommodation sites are in annex 7 (plan states ~35 000 places). Neither annex is in the folder, so no points could be extracted; the stadium 'Olimpija' mention is a 24 h holding place for prisoners, not a public site.",
+  "statuss": "dalejs",
+  "piezime": "Assembly points from annex 12 of the shared Liepāja–DKN plan (2026): 13 rows for Liepājas valstspilsēta. The kit's folder only had pointer stubs for this annex, so the text was taken from the official PDF (https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf, sha256 fca5ea92e1da…, text layer) into liepaja-12-pielikums-2026.md. No coordinates in the annex: places geocoded with the VZD address register. Accommodation is still not public (the plan's annex 7 is vehicles, not accommodation). Previously: Shared Liepāja city + Dienvidkurzeme county (DKN) plan. Chapter 6.2 says assembly-point addresses are 'summarised in the table below' and in annex 12, but no table follows in the conversion (only a visual-elements marker on lpp. 211); accommodation sites are in annex 7 (plan states ~35 000 places). ",
   "atsauces": [
    {
     "fails": "Liepajas-DKN-ST-CAP_2023ATJ.md",
@@ -891,13 +896,17 @@
    }
   ],
   "kludas": [],
-  "neatrasti": [],
+  "neatrasti": [
+   "Stāvlaukums Kūrmājas prospekta galā, Zvejnieku aleja, Liepāja (lpp. 1): address_not_found",
+   "Jāņa Čakstes laukums, Alejas iela 15, Liepāja (lpp. 1): address_not_found",
+   "Stāvlaukums pie Gaisa tilta, Mežu iela, Liepāja (lpp. 1): address_not_found"
+  ],
   "izmesti": [],
   "evakuacijas_punkti": {
-   "atrasti": 0,
+   "atrasti": 13,
    "ar_koord": 0,
-   "geokodeti": 0,
-   "kartē": 0,
+   "geokodeti": 10,
+   "kartē": 10,
    "vietas": 0,
    "dublikati": 0
   },

@@ -62,11 +62,11 @@ Krīzes kartē https://map.repo.lv izmantojam LVĢMC atvērtos datus (CC0): ūde
 
 ## 4. Pašvaldības — evakuācijas pulcēšanās un pagaidu izmitināšanas vietas
 
-**Kam:** 12 pašvaldības (tabula zemāk; kopīgie plāni — vienai pašvaldībai) · **Temats:** Lūgums publicēt evakuācijas pulcēšanās un izmitināšanas vietas kā atvērtos datus
+**Kam:** 10 pašvaldības (tabula zemāk; kopīgie plāni — vienai pašvaldībai) · **Temats:** Lūgums publicēt evakuācijas pulcēšanās un izmitināšanas vietas kā atvērtos datus
 
 Labdien!
 
-Hakatonā ar MI izlasījām visu 42 pašvaldību civilās aizsardzības plānus un izvilkām 730 pulcēšanās vietas un 579 pagaidu izmitināšanas vietas, katrai ar plāna lappusi. Tās ir kartē https://map.repo.lv. Jūsu pašvaldības plānā šīs vietas ir pielikumos, kas nav publicēti vai ir atzīmēti kā ierobežotas pieejamības (sk. tabulu). Tāpēc iedzīvotājs, kas karti atver krīzē, saņem tuvāko vietu kaimiņu pašvaldībā.
+Hakatonā ar MI izlasījām visu 42 pašvaldību civilās aizsardzības plānus un izvilkām 776 pulcēšanās vietas un 579 pagaidu izmitināšanas vietas, katrai ar plāna lappusi. Tās ir kartē https://map.repo.lv. Jūsu pašvaldības plānā šīs vietas ir pielikumos, kas nav publicēti vai ir atzīmēti kā ierobežotas pieejamības (sk. tabulu). Tāpēc iedzīvotājs, kas karti atver krīzē, saņem tuvāko vietu kaimiņu pašvaldībā.
 
 **Lūdzam:** publicēt vismaz **pulcēšanās vietu** sarakstu (pēc būtības tās ir publiskas vietas, uz kurām jāatnāk ikvienam), ja iespējams arī **pagaidu izmitināšanas vietas**, kā **CSV vai GeoJSON**, piemēram, data.gov.lv vai pašvaldības vietnē. Lauki: nosaukums, adrese, koordinātas (WGS-84), ietilpība (cilvēki), gultas, ēdināšana (jā/nē), piekļūstamība ar ratiņkrēslu. Ja daļa ziņu ir jāierobežo (piem., resursi, kontaktpersonas), lūdzam publicēt pārējo.
 
@@ -78,7 +78,7 @@ Hakatonā ar MI izlasījām visu 42 pašvaldību civilās aizsardzības plānus 
 | Cēsu novads | 12. pielikums (pulcēšanās), 19. (izmitināšana, „Ierobežota pieejamība”) | publicēts plāns „bez pielikumiem” |
 | Jelgavas valstspilsēta un Jelgavas novads (kopīgs plāns, 2 sējumi) | pilsēta: 5. (pulcēšanās), 7. (izmitināšana); novads: 6. un 8. | pielikumi nav publicēti |
 | Jēkabpils novads | 22. pielikums (pulcēšanās), 24. (izmitināšana, ēdināšana) | publicēti tikai daži citi pielikumi |
-| Liepājas valstspilsēta un Dienvidkurzemes novads (kopīgs plāns) | 12. pielikums (pulcēšanās; 6.2. nodaļā tabula nav), 7. (izmitināšana, ~35 000 vietu) | pielikumi nav publicēti |
+| Liepājas valstspilsēta un Dienvidkurzemes novads (kopīgs plāns) | 12. pielikums (pulcēšanās) — **publicēts** (2026, faili.liepaja.lv), kartē 46 vietas; izmitināšanas saraksts (~35 000 vietu) | izmitināšana nav publicēta |
 | Līvānu novads | 7. pielikums (pulcēšanās; „koordinātas tiek paziņotas atsevišķi”) | pielikumi nav publicēti |
 | Siguldas novads | 9. pielikums (pulcēšanās; sarakstā publisks), 5. (izmitināšana, ierobežota) | publicēts tikai 27. pielikums |
 | Valmieras novads | 5. pielikums (pulcēšanās), 7. (izmitināšana), abi „(elektroniski)” | pielikumi nav publicēti |

@@ -7,15 +7,15 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | Number | Slide | Source |
 |---|---|---|
 | ~260 000 lietotāju skāra atslēgumi (22.–23.08.2026) | 1 | LSM 26.08.2026, Sadales tīkls (`notes/demo-scenariji.md` §6) |
-| 42 plāni · 200–800 lpp. · 12 pašvaldības nepublicē sarakstus | 2 | `notes/ca-plani-kvalitate.md` |
+| 42 plāni · 200–800 lpp. · 10 pašvaldības nepublicē sarakstus | 2 | `notes/ca-plani-kvalitate.md` |
 | 282 ģeoprodukti geolatvija.lv | 3 | `notes/research/05` §1 |
 | 3 soļi (vieta → vajadzība → rezultāts) | 5 | criterion 3 sentence |
-| 730 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
+| 776 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
 | Meklētājs: **127 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
 | **25 atvērto datu avoti + 1 ⚠** (panelī 27 + 1, jo 2 ir mūsu simulētie prototipa dati, CC0, ar zīmi „SIMULĒTI”) | 10 | live "Datu avoti" panel, 2026-10-10 |
 | 25 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
 | Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
-| 7 vēstules 19 adresātiem, sūtīšana pirmdien | 13 | `notes/vestules.md` |
+| 7 vēstuļu melnraksti datu turētājiem (nesūtīti) | 13 | `notes/vestules.md` |
 
 Judging criteria → where we answer them: 1 concrete outcome (slides 4–5), 2 only once (3, 6), 3 the 3–6 step flow + summary + ending (slide 5, the sentence in bold), 4 works on a phone (live demo + statuss.html), 5 AI + open data (6–7).
 
@@ -31,7 +31,7 @@ Below: "Kur man iet? Vai mana māja ir plūdu zonā? Kur ir siltums un ūdens?"
 ## 1:00–1:45 · 2. Kāpēc tā ir
 
 **Slide:** 42 pašvaldības · 42 dažādi PDF · 200–800 lpp. katrs · 1 791 karte kā attēls, nevis dati.
-- 12 pašvaldības pulcēšanās un izmitināšanas vietas publiski **nepublicē** (pielikums "ierobežotas pieejamības" vai nav publicēts).
+- 10 pašvaldības pulcēšanās un izmitināšanas vietas publiski **nepublicē** (pielikums "ierobežotas pieejamības" vai nav publicēts).
 - Nevienā plānā nav siltuma, ūdens vai pārtikas izdales punktu, nav radio frekvences.
 
 **Say:** Informācija eksistē, bet ne tādā formā, kas cilvēkam palīdz krīzes brīdī — telefonā, ar 5 % baterijas.
@@ -98,7 +98,7 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 
 ## 6:00–7:15 · 6. Kā izmantots MI
 
-**Slide:** "MI izlasīja 42 plānus un izvilka 730 pulcēšanās vietas un 579 izmitināšanas vietas (104 213 vietas) — ar atsauci uz lappusi."
+**Slide:** "MI izlasīja 42 plānus un izvilka 776 pulcēšanās vietas un 579 izmitināšanas vietas (104 213 vietas) — ar atsauci uz lappusi."
 - MI aģenti (Claude Code) pārveidoja plānu tabulas un tekstu strukturētos datos; katram ierakstam burtisks citāts no plāna, ko skripts pārbauda.
 - Katrs punkts pārbaudīts pret VZD adrešu reģistru un pašvaldības robežu.
 - **Atradām kļūdas oficiāli apstiprinātos plānos:** Jūrmalas pulcēšanās vieta Nr. 10 (Melluži) plānā ir Lietuvā — 56,064 vietā 56,964 (~100 km kļūda; pārbaudīts oriģinālajā PDF, lpp. 85, un VZD adrešu reģistrā — sk. `notes/presentation_ideas.md`). Kopā 41 koordinātu kļūda.
@@ -127,9 +127,9 @@ Count: **25 open + 1 ⚠**. The live "Datu avoti" panel says "27 atvērto datu a
 ## 8:30–9:30 · 8. Kas tālāk / ietekme
 
 **Slide:** Trīs nākamie soļi
-1. **Pašvaldībām:** "Plāna kvalitātes pārskats" — kas trūkst, kur kļūdas (41 koordinātu kļūda, 12 pašvaldības bez publiskām pulcēšanās vietām). Var darbināt katru reizi, kad plāns tiek atjaunots.
+1. **Pašvaldībām:** "Plāna kvalitātes pārskats" — kas trūkst, kur kļūdas (41 koordinātu kļūda, 10 pašvaldības bez publiskām pulcēšanās vietām). Var darbināt katru reizi, kad plāns tiek atjaunots.
 2. **Iedzīvotājiem:** iekļaut 112 Latvija lietotnē / Latvija.gov.lv (VDAA principi: "tikai vienreiz", 3 soļi, kopsavilkums).
-3. **Datu turētājiem:** 7 vēstules 19 adresātiem ir sagatavotas (`notes/vestules.md`) un tiks nosūtītas pirmdien: VUGD (patvertnes CC0, LV-ALERT arhīvs), Sadales tīkls (atslēgumi), LVĢMC (sliekšņi, dziļumi), 12 pašvaldības (pielikumi), Rīgas satiksme (GTFS-Realtime), LVC, VARAM/VDAA. Saraksts: map.repo.lv/trukstosie.html.
+3. **Datu turētājiem:** konkrēti lūgumi ir sagatavoti (`notes/vestules.md`, saraksts map.repo.lv/trukstosie.html): VUGD (patvertnes CC0, LV-ALERT arhīvs), Sadales tīkls (atslēgumi), LVĢMC (sliekšņi, dziļumi), 10 pašvaldības (pielikumi), Rīgas satiksme (GTFS-Realtime), LVC, VARAM/VDAA.
 
 ## 9:30–10:00 · 9. Noslēgums
 
@@ -166,4 +166,4 @@ Count: **25 open + 1 ⚠**. The live "Datu avoti" panel says "27 atvērto datu a
 - **"Patvertņu licence?"** 112.lv sarakstam licence nav norādīta — kartē tas ir atzīmēts ⚠, un VUGD vēstulē lūdzam to publicēt data.gov.lv ar CC0 un ietilpību, pieejamību, dzīvniekiem un statusu.
 - **"Vai izturēs slodzi?"** Savienojumu rinda 5 → 128, kešs bez gaidīšanas: lokālā slodzes testā ar 50 klientiem p95 1,1 s (bija 12,4 s) un 0 savienojuma kļūdu (`notes/slodze.md`). Statiskā lapa ir bez būves soļa.
 - **"Kas ir simulēts?"** Tikai demo scenāriji (zīme „SIMULĀCIJA”) un divi CSV slāņi — dzeramā ūdens un uzlādes punkti (zīme „SIMULĒTI DATI — prototips”). Viss pārējais ir dzīvi atvērtie dati.
-- **"Rīgas sabiedriskais transports?"** Atvērts ir tikai statiskais GTFS (CC0) — to rādām kā pieturas. Reāllaika atvērtu datu nav; vēstule Rīgas satiksmei par GTFS-Realtime ar CC0 ir sagatavota un tiks nosūtīta pirmdien.
+- **"Rīgas sabiedriskais transports?"** Atvērts ir tikai statiskais GTFS (CC0) — to rādām kā pieturas. Reāllaika atvērtu datu nav; lūgums Rīgas satiksmei par GTFS-Realtime ar CC0 ir sagatavots (`notes/vestules.md`).
