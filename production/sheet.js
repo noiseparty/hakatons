@@ -15,7 +15,8 @@ const Lapa = (() => {
   // Ielādes vietturis (pelēkas joslas, nevis "Ielādē…"): saraksta augstums nelec, kad dati atnāk
   const SKELETS = '<li class="skelets-rinda" aria-hidden="true"><span></span><span></span></li>'.repeat(3);
 
-  saturs.insertAdjacentHTML('afterbegin', `
+  // Tukšais stāvoklis (kamēr nav rezultāta): 3 piemēri virs tēmu pogām (meklesana.js pirmaisSkats; stils.css paslēpj)
+  saturs.insertAdjacentHTML('afterbegin', `${krizesMeklesana.pirmaisSkats('Uzrakstiet, kas notiek un kur. Piemēri:')}
     <div class="lapa-temas" role="group" aria-label="Biežākās tēmas">${TEMAS.map(([t, q]) =>
       `<button type="button" data-tema="${esc(q)}" aria-pressed="false"><span>${esc(t)}</span></button>`).join('')}</div>
     <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs">${CILNES.map(([k, t, p], i) =>
@@ -23,7 +24,7 @@ const Lapa = (() => {
     <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
       <h2 class="vizuali-slepts">Meklēšanas rezultāts</h2>
-      <p class="lapa-tukss">Uzrakstiet, kas notiek, vai izvēlieties tēmu augstāk. Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
+      <p class="lapa-tukss">Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
     </div>
     <div id="lapa-slani" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-slani" hidden></div>
     <div id="lapa-situacija" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-situacija" hidden>

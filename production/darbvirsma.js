@@ -51,14 +51,16 @@ const Darbvirsma = (() => {
   centrs.append(nav);
   const parPoga = elements('button', 'dv-par-poga', 'Par datiem &amp; AI', { type: 'button', 'aria-haspopup': 'dialog' });
 
-  const josla112 = elements('div', 'dv-112', `<p class="dv-112-teksts">${IKONAS.info}Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>` +
+  const josla112 = elements('div', 'dv-112', `<p class="dv-112-teksts">${IKONAS.info}<span data-t="Ja apdraudēta dzīvība vai veselība, zvaniet 112.">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</span></p>` +
     '<p class="dv-svaigums" role="status"><span class="dv-punkts"></span><span class="dv-svaigums-teksts">Ielādē datus…</span></p>',
     { role: 'region', 'aria-label': 'Ārkārtas palīdzība' });
 
   const ievads = elements('section', 'dv-ievads', '<h2>Noskaidrojiet situāciju savā adresē</h2><div class="dv-forma-vieta"></div>' +
-    `<button type="button" class="dv-atrast">${IKONAS.vieta}Izmantot manu atrašanās vietu</button>` +
+    `<button type="button" class="dv-atrast">${IKONAS.vieta}<span data-t="Izmantot manu atrašanās vietu">Izmantot manu atrašanās vietu</span></button>` +
     '<div class="dv-cipi" role="group" aria-label="Biežākās situācijas">' +
     CIPI.map(([t, q, sl]) => `<button type="button" class="dv-cips" data-q="${q}"${sl ? ` data-slanis="${sl}"` : ''} aria-pressed="false">${t}</button>`).join('') + '</div>');
+  // Pirmais skats (meklesana.js): ko rakstīt + 3 piemēri; CSS to paslēpj pēc pirmās meklēšanas (body.ir-meklets)
+  const pirmais = elements('div', 'dv-pirmais', krizesMeklesana.pirmaisSkats());
   const valsts = elements('div', 'dv-valsts', '<span class="dv-valsts-nos">Kopējā situācija valstī:</span>' +
     '<span class="dv-valsts-pills" aria-live="polite"><span class="dv-pill dv-pill-skelets" aria-hidden="true"></span></span>');
 
@@ -121,7 +123,7 @@ const Darbvirsma = (() => {
     if (izmainas) labi.append(izmainas);
     galva.after(josla112);
     ievads.querySelector('.dv-forma-vieta').append(forma);
-    ievads.append(valsts);
+    ievads.append(valsts, pirmais);
     panelis.prepend(ievads);
     sekcijas = [...panelis.children].filter(e => e.tagName === 'SECTION' && e.id !== 'meklesana' && e !== ievads);
     atvilktne.querySelector('.dv-atv-saturs').append(...sekcijas);
@@ -158,7 +160,7 @@ const Darbvirsma = (() => {
     galva.insertBefore(forma, galva.querySelector('.galva-labi'));
     if (zinotPoga && zinotVieta) { zinotVieta[0].insertBefore(zinotPoga, zinotVieta[1]); zinotPoga.classList.remove('dv-zinot'); zinotPoga.querySelector('.dv-zinot-ikona')?.remove(); }
     if (izmainas) galva.querySelector('.galva-kreisi').prepend(izmainas);
-    for (const e of [zime, apaksvirsraksts, centrs, parPoga, josla112, valsts, ievads, atvilktne, legenda, situacijasPoga, pilnaPoga, situacija, brAizvert]) e.remove();
+    for (const e of [zime, apaksvirsraksts, centrs, parPoga, josla112, valsts, pirmais, ievads, atvilktne, legenda, situacijasPoga, pilnaPoga, situacija, brAizvert]) e.remove();
     panelis.append(...sekcijas);
     const br = $('bridinajums');
     if (br?.dataset.dvAizverts) { delete br.dataset.dvAizverts; br.hidden = false; }
