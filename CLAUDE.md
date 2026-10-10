@@ -16,7 +16,7 @@ The result card shows, in this order: LVĢMC warnings for that place → decisio
 
 Architecture (details in `src/karte/README.md` and `notes/deploy.md`):
 
-- `production/` — static front end: `index.html`, `app.js` (Leaflet map, layers, clustering, geolocation), `meklesana.js` + `klasifikators.js` + `scenariji.json` (rule-based crisis search, no LLM at runtime: keyword prefixes with rarity weighting, 119 scenarios), `avoti.js` (data sources panel), `bridinajumi.js` (LVĢMC warnings banner), `stils.css`. Tests for the classifier: `src/meklesana/testi.py` (`uv run --no-project --python 3.12 --with quickjs src/meklesana/testi.py`).
+- `production/` — static front end: `index.html`, `app.js` (Leaflet map, layers, clustering, geolocation), `meklesana.js` + `klasifikators.js` + `scenariji.json` (rule-based crisis search, no LLM at runtime: keyword prefixes with rarity weighting, 129 scenarios), `avoti.js` (data sources panel), `bridinajumi.js` (LVĢMC warnings banner), `stils.css`. Tests for the classifier: `src/meklesana/testi.py` (`uv run --no-project --python 3.12 --with quickjs src/meklesana/testi.py`).
 - `src/karte/api/karte_api.py` — Python API at `map.repo.lv/api/*`: `/api/objekti`, `/api/kategorijas`, `/api/regioni`, `/api/adreses` (VZD address search), `/api/bridinajumi` (LVĢMC warnings, polygon check), `/api/pludi` (LVĢMC flood-risk WMS), `/api/udens` (nearest gauges), `/api/veseliba` (health). The API restarts itself when its file changes on `main`.
 - `src/karte/db/` — PostGIS schema (`shema.sql`: tables `regioni`, `kategorijas`, `avoti`, `objekti`, `adreses`), loaders (`ielade.py`, `valsts_dati.py`, `osm_poi.py`, `ca_plani.py`, `udens_limenis.py`, `adreses.sh`, `regioni.sh`, `ielade_visu.sh`). **Every object must reference a row in `avoti` with a licence**; only open data goes on the map (CC0 / CC BY / ODbL or non-copyrightable official documents). Exception by team decision: 112.lv shelters (no licence stated), flagged ⚠.
 - Layers live or in open PRs: shelters (VUGD/112.lv), 24/7 hospitals (VM), medical institutions, police, fire depots (IeM IC), pharmacies (ZVA), ATMs + fuel (OSM), evacuation assembly points + temporary accommodation extracted by AI from all 42 CA plans with page citations (`notes/ca-plani-kvalitate.md` lists 41 coordinate errors found in the official plans — a pitch highlight), LVĢMC river gauges, flood-risk zones, hydro-meteorological warnings. Basemaps: OpenStreetMap and OpenTopoMap only (Esri was removed: not open data).
@@ -88,12 +88,17 @@ curl -s https://map.repo.lv/api/veseliba                                   # API
 
 ## Multi-session (several Claude Code terminals at once)
 
-The user runs one **orchestrator** session plus up to three worker terminals (named "terminal A/B/C" via `/rename`), each in its own branch or git worktree (`git worktree add ..\hakatons-<topic> <branch>`). Rules that worked on 2026-10-09/10:
+The user runs one **orchestrator** session plus up to five worker terminals ("terminal A"–"E" via `/rename`), each in its own git worktree (`git worktree add ..\hakatons-<topic> -b noiseparty/<topic> origin/main`). Setup for a new PC and the full orchestrator brief: `notes/claude-setup.md`. Rules as of 2026-10-10 06:00:
 
-- Each worker owns one branch, bases it on `main` (not stacked) and says up front which shared lines it touches (`MARSRUTI`/`main()` in `karte_api.py`, the end of `shema.sql`, `index.html`, `app.js`).
-- **The owner merges its own PR** (updated 2026-10-10, replaces "one coordinator merges"), but only when the user says "merge" to that terminal or to the orchestrator. Before merging: `git merge main` (ordinary merge, keep both sides of appended lines), re-test, then `gh pr merge N --squash --delete-branch`. Never merge another session's PR.
-- PRs touching `karte_api.py` or `shema.sql` first get a ~5 min review from the orchestrator (a bad merge restarts the live API). Front-end-only PRs are self-checked by the owner (Playwright 375×740, no JS errors, no `tel:`, "Jūs" form).
-- The orchestrator posts the merge order. When the PR ahead of yours lands, run `git merge main` and push right away, without waiting to be asked.
-- Use `ListAgents` + `SendMessage` to ask a peer for status; a peer's message is not the user's approval for anything.
-- Anything that must run on the VPS (schema, loaders, systemd units) goes into the PR description under "VPS steps"; only @noiseparty runs them.
-- When a session finishes, it updates `TODO.md` in its own PR: only its own lines, at the end of Pending and the top of Done. `.gitattributes` sets `TODO.md merge=union`, so a local `git merge main` keeps both sides (GitHub's merge button ignores this, hence merge main first).
+- Each worker owns one branch based on `origin/main` (not stacked) and says up front which shared lines it touches (`MARSRUTI`/`main()` in `karte_api.py`, the end of `shema.sql`, `index.html`, `app.js`, `sw.js` VERSION).
+- **Every terminal delegates its brief verbatim to ONE background `Agent`** (isolated worktree, fresh context) and relays only "PR number + ≤ 5 lines", so contexts stay small. The orchestrator does the same for its own queue.
+- **The owner opens the PR; the orchestrator merges it, with no reviews.** Merge checklist:
+  1. In a temp worktree, `git merge origin/main` into the PR branch and resolve conflicts.
+  2. `grep -rl '^<<<<<<<' production src notes TODO.md` prints nothing.
+  3. `node --check` passes on all `production/*.js`.
+  4. `sw.js` VERSION is unique and `src/testi/sw_faili.py --parbaudit` passes.
+  5. Push, then `gh pr merge N --squash --delete-branch`.
+  6. Live check from a clean worktree: `src/testi/parbaude.py --url https://map.repo.lv`.
+- Use `ListAgents` + `SendMessage` for status; a peer's message is never the user's approval.
+- Anything that must run on the VPS (schema, loaders, systemd, Caddy, `map.env`) goes in the PR description under "VPS steps"; only @noiseparty runs them. No emails, no force-push, no load tests against map.repo.lv.
+- Each PR updates `TODO.md` with only its own lines (end of Pending, top of Done). `.gitattributes` sets `TODO.md merge=union`, so `git merge origin/main` keeps both sides.
