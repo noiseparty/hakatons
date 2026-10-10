@@ -1,0 +1,47 @@
+/* Sākumlapa (sakums.html): mobile-first, krāsas no stils.css žetoniem */
+:root {
+  --zils: #0077c8; --zils-tumss: #005a99; --zils-gaiss: #e6f1fa; --zals: #2e8b4b; --oranzs: #f57e20; --sarkans: #d52b1e;
+  --fons: #f2f4f7; --virsma: #fff; --robeza: #e0e0e0; --teksts: #333; --teksts2: #5c6670; --radiuss: 8px; --ena: 0 2px 8px rgba(0,0,0,.1);
+}
+* { box-sizing: border-box; }
+body { margin: 0; overflow-x: hidden; background: var(--fons); color: var(--teksts); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+a { color: var(--zils-tumss); }
+.ietvars { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+.hero { background: linear-gradient(160deg, var(--zils-tumss), var(--zils)); color: #fff; padding: 28px 0 32px; }
+.hero h1 { margin: 0 0 8px; font-size: 1.6rem; line-height: 1.2; }
+.hero p { margin: 0 0 16px; max-width: 640px; font-size: 1.05rem; }
+.cta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.poga { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 28px; border-radius: var(--radiuss);
+  background: #fff; color: var(--zils-tumss); font-weight: 700; font-size: 1.15rem; text-decoration: none; box-shadow: var(--ena); }
+.poga:focus-visible, .hero a:focus-visible { outline: 3px solid #ffd54a; outline-offset: 2px; }
+.saite-hero { color: #fff; min-height: 44px; display: inline-flex; align-items: center; }
+main section { margin: 20px 0; }
+main h2 { font-size: 1.2rem; margin: 0 0 4px; color: var(--zils-tumss); }
+.apak { margin: 0 0 12px; color: var(--teksts2); font-size: .92rem; }
+.kartes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.skaitlis { background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); padding: 10px 12px; border-left: 4px solid var(--krasa, var(--zils)); }
+.skaitlis b { display: block; font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.skaitlis span { font-size: .82rem; color: var(--teksts2); }
+.grupa { grid-column: 1 / -1; margin: 8px 0 0; font-size: .85rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--teksts2); }
+.statusi { display: grid; gap: 8px; }
+.statuss { background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); padding: 10px 12px; display: flex; gap: 10px; align-items: flex-start; }
+.zime { flex: none; padding: 2px 10px; border-radius: 999px; font-size: .8rem; font-weight: 700; color: #fff; background: #6b7480; margin-top: 2px; }
+.zime.ok { background: var(--zals); } .zime.deg { background: #b45309; }
+.statuss small { display: block; color: var(--teksts2); }
+.ca { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.ca .skaitlis { text-align: center; border-left: 0; border-top: 4px solid var(--zals); }
+.kaste { background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); padding: 12px 14px; }
+.kaste ul { margin: 6px 0 0; padding-left: 20px; }
+.avoti { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.avoti li { background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); padding: 10px 12px; }
+.avoti li.bez { border-left: 4px solid var(--oranzs); }
+.avoti b { display: block; overflow-wrap: anywhere; }
+.avoti small { display: block; color: var(--teksts2); overflow-wrap: anywhere; }
+footer { padding: 16px 0 32px; color: var(--teksts2); font-size: .85rem; }
+@media (min-width: 720px) {
+  .hero { padding: 56px 0; } .hero h1 { font-size: 2.4rem; }
+  .kartes { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .statusi { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .avoti { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ca .skaitlis b { font-size: 2rem; }
+}
