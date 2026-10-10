@@ -61,6 +61,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] VPS: apply the Caddy cache headers from src/karte/serveris/hakatons.caddy (caddy validate + reload) — added 2026-10-10 03:28 +03:00 by noiseparty
+- [ ] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — added 2026-10-10 03:28 +03:00 by noiseparty
 - [ ] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — added 2026-10-10 03:30 +03:00 by noiseparty
 - [ ] Morning: gentle live check after the load-hardening merge (`src/testi/slodze.py --klienti 5 --ilgums 30 --rps 2 --tikai-kesa --statistika`) — added 2026-10-10 03:26 +03:00 by noiseparty
 
@@ -80,6 +82,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Phone performance pass (notes/atrums.md): search usable 3.9 → 1.7 s on Slow 4G, preloads, vendored Leaflet, lazy QR; link previews (Open Graph / Twitter, og.png, canonical, favicons) on all public pages — done 2026-10-10 03:28 +03:00 by noiseparty (added 2026-10-10 03:28 +03:00 by noiseparty)
 - [x] "No dead ends" card audit `src/testi/kartites.py` (127 scenarios × 4 places at 375 px + 5 edge cases); fixed: 8 scenarios whose first keyword led elsewhere, silent verdict line when LVĢMC fails, API failure shown as "no data", empty layers now say so — 476/508 → 508/508, edge cases 3/5 → 5/5 — done 2026-10-10 03:30 +03:00 by noiseparty (added 2026-10-10 03:30 +03:00 by noiseparty)
 - [x] Demo panel: 9 real Latvian events with sourced figures (BRELL 2025, drones Gaigalava 2024 / Rēzekne 2026, Jēkabpils ice-jam flood 2023, Stiklu purvs fire 2018, Ulmaņa gatve warehouse fire 2026, Bauskas iela gas explosion 2026, port scrap-metal fire 2026, DDoS 2025), panel grouped "Reāli notikumi" / "Simulācijas", smoke-cone zones, `vaicajums` for replay (`notes/demo-scenariji.md`) — done 2026-10-10 03:18 +03:00 by noiseparty (added 2026-10-10 03:18 +03:00 by noiseparty)
 - [x] API load hardening for judging day: load-test scripts (live gentle + local with fake upstreams), server queue 128, stale-while-revalidate cache, /api/pludi ≤ 25 s → 202 + card retry, objekti/point LRU, DB concurrency cap, JSON 500, /api/veseliba?statistika=1; results in `notes/slodze.md` — done 2026-10-10 03:26 +03:00 by noiseparty (added 2026-10-10 03:26 +03:00 by noiseparty)

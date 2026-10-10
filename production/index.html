@@ -6,14 +6,35 @@
 <meta name="format-detection" content="telephone=no">
 <title>Latvijas krīzes karte · map.repo.lv</title>
 <meta name="description" content="Uzrakstiet, kas notiek un kur: tuvākās evakuācijas un izmitināšanas vietas, patvertnes, slimnīcas, LVĢMC brīdinājumi un plūdu risks no atvērtajiem datiem.">
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
-      integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
+<!-- Ātrums telefonā (notes/atrums.md): meklēšanai vajadzīgie dati sāk ielādēties uzreiz, nevis pēc visiem skriptiem;
+     Leaflet ir repozitorijā (vendor/leaflet, tie paši faili, kas unpkg) — bez trešās puses savienojuma -->
+<link rel="preload" href="scenariji.json" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="/api/kategorijas" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="/api/regioni" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="/api/avoti" as="fetch" crossorigin="anonymous">
+<link rel="preconnect" href="https://tile.openstreetmap.org">
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="vendor/leaflet/MarkerCluster.css">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="canonical" href="https://map.repo.lv/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Krīzes karte">
+<meta property="og:title" content="Krīzes karte — map.repo.lv">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 20 atvērto datu avoti.">
+<meta property="og:url" content="https://map.repo.lv/">
+<meta property="og:image" content="https://map.repo.lv/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Krīzes karte: meklēšanas rezultāts „plūdi Ogre” ar plūdu zonu, drošajām vietām un maršrutu">
+<meta property="og:locale" content="lv_LV">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Krīzes karte — map.repo.lv">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 20 atvērto datu avoti.">
+<meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="ikonas/ikona-192.png">
+<link rel="icon" href="ikonas/ikona-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="ikonas/ikona-180.png" sizes="180x180">
 <link rel="stylesheet" href="stils.css">
 <link rel="stylesheet" href="demo.css">
 <link rel="stylesheet" href="izmainas.css">
@@ -40,7 +61,7 @@
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><span aria-hidden="true">☰</span> Filtri</button>
   </div>
 </header>
-<div id="bridinajums" class="bridinajums" role="status" hidden></div>
+<div id="bridinajums" class="bridinajums gaida" role="status">Ielādē LVĢMC brīdinājumus…</div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
 <main>
@@ -129,15 +150,13 @@
   </div>
 </main>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
-        integrity="sha256-Hk4dIpcqOSb0hZjgyvFOP+cEmDXUKKNE/tT542ZbNQg=" crossorigin=""></script>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="vendor/leaflet/leaflet.markercluster.js"></script>
 <script>
-  // Ja Leaflet (unpkg.com) neielādējas, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
+  // Ja Leaflet neielādējās, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
   if (!window.L || !L.markerClusterGroup) {
     var kluda = document.getElementById('kartes-kluda');
-    kluda.textContent = 'Karti neizdevās ielādēt (unpkg.com nav pieejams). Pārlādējiet lapu pēc brīža. Ja apdraudēta dzīvība vai veselība, zvaniet 112.';
+    kluda.textContent = 'Karti neizdevās ielādēt. Pārlādējiet lapu pēc brīža. Ja apdraudēta dzīvība vai veselība, zvaniet 112.';
     kluda.hidden = false;
   }
 </script>
@@ -149,7 +168,6 @@
 <script src="marsruts.js"></script>
 <script src="zonas.js"></script>
 <script src="meklesana.js"></script>
-<script src="vendor/qrcode.js"></script>
 <script src="dalities.js"></script>
 <script src="runa.js"></script>
 <script src="apaksa.js"></script>
