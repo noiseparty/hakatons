@@ -3,11 +3,11 @@
 // Lieto app.js globālos (karte, iegut, esc, attalums).
 const Celi = (() => {
   const TIPI = {
-    slegums: { ikona: '⛔', krasa: '#b91c1c' },
-    negadijums: { ikona: '💥', krasa: '#c2410c' },
-    joslas_slegums: { ikona: '⚠️', krasa: '#d97706' },
-    remonts: { ikona: '🚧', krasa: '#a16207' },
-    slidens: { ikona: '❄️', krasa: '#0369a1' },
+    slegums: { ikona: 'slegts', krasa: '#b91c1c' },
+    negadijums: { ikona: 'avarija', krasa: '#c2410c' },
+    joslas_slegums: { ikona: 'uzmanibu', krasa: '#d97706' },
+    remonts: { ikona: 'remonts', krasa: '#a16207' },
+    slidens: { ikona: 'sniegs', krasa: '#0369a1' },
   };
   const AVOTS = 'Avots: <a href="https://transportdata.gov.lv/card/75611a36-e66b-40cf-af2c-69db48c278cf" target="_blank" rel="noopener">' +
     'VSIA „Latvijas Valsts ceļi”, transportdata.gov.lv</a> · CC0';
@@ -22,7 +22,7 @@ const Celi = (() => {
     return n.lidz ? `Spēkā līdz ${laiks(n.lidz)}` : 'Spēkā, beigu laiks nav zināms';
   }
   function popups(n) {
-    return `<div class="popup"><b>${TIPI[n.tips].ikona} ${esc(n.nosaukums)}${n.cels ? ' · ' + esc(n.cels) : ''}</b>` +
+    return `<div class="popup"><b>${Ik(TIPI[n.tips].ikona)} ${esc(n.nosaukums)}${n.cels ? ' · ' + esc(n.cels) : ''}</b>` +
       (n.apraksts ? `<p>${esc(n.apraksts)}</p>` : '') +
       `<small>${esc(speka(n))}${n.no && n.aktivs ? ` (no ${esc(laiks(n.no))})` : ''}</small>` +
       `<small class="popup-avots">${AVOTS}</small></div>`;
@@ -39,7 +39,7 @@ const Celi = (() => {
       const t = TIPI[n.tips];
       if (n.linija) L.polyline(n.linija, { color: t.krasa, weight: 5, opacity: n.aktivs ? .85 : .45, dashArray: n.aktivs ? null : '6 6' })
         .bindPopup(() => popups(n)).addTo(slanis);
-      L.marker([n.lat, n.lon], { icon: L.divIcon({ className: 'celu-ikona', html: `<span style="border-color:${t.krasa}">${t.ikona}</span>`, iconSize: [28, 28] }),
+      L.marker([n.lat, n.lon], { icon: L.divIcon({ className: 'celu-ikona', html: `<span style="background:${t.krasa}">${Ik(t.ikona)}</span>`, iconSize: [44, 44], iconAnchor: [22, 22] }),
         title: n.nosaukums, keyboard: true, opacity: n.aktivs ? 1 : .6 }).bindPopup(() => popups(n)).addTo(slanis);
     }
     const aktivi = d.notikumi.filter(n => n.aktivs).length;
@@ -61,7 +61,7 @@ const Celi = (() => {
     const tuvi = (d.notikumi || []).filter(n => n.aktivs && n.tips !== 'remonts');
     if (!tuvi.length) return '';
     const n = tuvi[0];
-    return `<p class="celi-rinda">${TIPI[n.tips].ikona} <b>Ceļu satiksme:</b> ${esc(n.nosaukums)}${n.cels ? ' ' + esc(n.cels) : ''}` +
+    return `<p class="celi-rinda">${Ik(TIPI[n.tips].ikona)} <b>Ceļu satiksme:</b> ${esc(n.nosaukums)}${n.cels ? ' ' + esc(n.cels) : ''}` +
       ` (${attalums(n.attalums_m)})${n.apraksts ? ': ' + esc(n.apraksts) : ''}` +
       (tuvi.length > 1 ? ` <span class="piezime">Tuvumā vēl ${tuvi.length - 1}.</span>` : '') +
       ` <small class="avots-rinda">${AVOTS}</small></p>`;

@@ -13,7 +13,9 @@ const Prognozes = (() => {
   const kaste = document.getElementById('prognozes');
   let dati = null, diena = null, robezas = null, aktivie = [];
   let riskaKarte = false;  // slēdzis aizvērtai lentei: novadi redzami arī bez paneļa
-  const novaduSlanis = L.geoJSON(null, { style: stils, onEachFeature: (f, l) => l.on('click', e => popups(f, e.latlng)) });
+  // Novadi tikai iekrāso karti: pieskāriens tukšā vietā neko neatver (klikšķis iet cauri uz karti un punktiem).
+  // Novada prognoze un riska iemesli atveras, pieskaroties ziņai lentē (radit()).
+  const novaduSlanis = L.geoJSON(null, { style: stils, interactive: false });
   const bridSlanis = L.layerGroup();
 
   function limenis(r) {
@@ -74,7 +76,7 @@ const Prognozes = (() => {
     if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
-      `<span class="prog-veids">${z.veids === 'bridinajums' ? '⚠ LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? '💨 LVĢMC novērojums tagad' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
+      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
       `<b>${esc(z.virsraksts)}</b><span class="prog-teksts">${esc(z.teksts)}</span>${avots(z.avots)}</li>`).join('') + '</ul>';
   }
 
@@ -122,6 +124,9 @@ const Prognozes = (() => {
       paddingTopLeft: [telefons ? 10 : lapa.offsetWidth + 20, 10],
       paddingBottomRight: [50, telefons ? lapa.offsetHeight + 10 : 10], maxZoom: 10,
     });
+    // skartākā novada prognoze un riska iemesli — logā tā centrā (pirmais sarakstā ir visvairāk skartais)
+    const f = z.regioni?.length && robezas?.features.find(x => x.id === z.regioni[0]);
+    if (f) setTimeout(() => popups(f, L.geoJSON(f).getBounds().getCenter()), 350);
   }
 
   async function ieladet() {

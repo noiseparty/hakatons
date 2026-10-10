@@ -50,7 +50,7 @@
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
-    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><span aria-hidden="true">🎤</span></button>
+    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#mikrofons"></use></svg></button>
     <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
     <button type="submit">Meklēt</button>
     <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
@@ -61,7 +61,7 @@
   <div class="galva-labi">
     <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog">Ziņot</button>
     <p id="statuss" role="status">Ielādē…</p>
-    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><span aria-hidden="true">☰</span> Filtri</button>
+    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#izvelne"></use></svg> Filtri</button>
   </div>
 </header>
 <div id="bridinajums" class="bridinajums gaida" role="status">Ielādē LVĢMC brīdinājumus…</div>
@@ -80,10 +80,10 @@
                aria-label="Meklēt adresi (VZD adrešu reģistrs) vai kartē parādītos objektus" aria-controls="mekl-rezultati">
         <ul id="mekl-rezultati" role="listbox" hidden></ul>
       </div>
-      <button id="atrast" type="button" class="galvena"><span aria-hidden="true">📍</span> Rādīt tuvākos man</button>
-      <button id="tuvaka" type="button" class="otra"><span aria-hidden="true">🏠</span> Tuvākā patvertne</button>
+      <button id="atrast" type="button" class="galvena"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#vieta"></use></svg> Rādīt tuvākos man</button>
+      <button id="tuvaka" type="button" class="otra"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#patvertne"></use></svg> Tuvākā patvertne</button>
       <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot Jūsu atrašanās vietu. Tā netiek saglabāta.</p>
-      <button id="saglabat-apkartni" type="button" class="otra"><span aria-hidden="true">⬇</span> Saglabāt manu apkārtni bezsaistei</button>
+      <button id="saglabat-apkartni" type="button" class="otra"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#lejupielade"></use></svg> Saglabāt manu apkārtni bezsaistei</button>
       <p id="apkartne-teksts" class="piezime" role="status" hidden></p>
     </section>
 
@@ -94,21 +94,21 @@
 
     <section>
       <h2>Slāņi</h2>
-      <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Saraksts: ieslēgto slāņu objekti</button>
+      <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#saraksts"></use></svg> Saraksts: ieslēgto slāņu objekti</button>
       <div id="kategorijas"></div>
       <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
-        <span class="punkts" style="background:#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 gados)</label>
+        <span class="forma-vieta" data-forma="lase" data-krasa="#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 gados)</label>
       <label class="kat parklajums"><input type="checkbox" id="zibens-slanis">
-        <span class="punkts" style="background:#facc15"></span>Zibens (pēdējās 30 min)</label>
+        <span class="forma-vieta" data-ikona="zibens"></span>Zibens (pēdējās 30 min)</label>
       <p id="zibens-teksts" class="piezime zibens-teksts" aria-live="polite" hidden></p>
       <label class="kat parklajums"><input type="checkbox" id="noverojumi-slanis">
-        <span class="punkts" style="background:#f97316"></span>Laikapstākļi tagad (LVĢMC stacijas)</label>
+        <span class="forma-vieta" data-ikona="vejs"></span>Laikapstākļi tagad (LVĢMC stacijas)</label>
       <p id="noverojumi-teksts" class="piezime" aria-live="polite" hidden></p>
       <label class="kat parklajums"><input type="checkbox" id="celu-slanis">
-        <span class="punkts" style="background:#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
+        <span class="forma-vieta" data-forma="kvadrats" data-krasa="#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
       <p id="celu-piezime" class="piezime" aria-live="polite"></p>
       <label class="kat parklajums"><input type="checkbox" id="zinojumu-slanis">
-        <span class="punkts" style="background:#a8a29e"></span>Iedzīvotāju ziņojumi (7 dienas, nav oficiāli)</label>
+        <span class="forma-vieta" data-ikona="zinot"></span>Iedzīvotāju ziņojumi (7 dienas, nav oficiāli)</label>
       <p id="zinojumu-piezime" class="piezime" aria-live="polite" hidden></p>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
@@ -124,10 +124,10 @@
     <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
       <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
       <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
-      <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta">◎</button>
+      <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#atrast"></use></svg></button>
     </div>
     <div id="prognozes" class="prognozes" hidden>
-      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><span aria-hidden="true">⛅</span> <span class="prog-poga-teksts">Prognoze</span></button>
+      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#prognoze"></use></svg> <span class="prog-poga-teksts">Prognoze</span></button>
       <div class="riski-sledzis" role="group" aria-label="Riska karte">
         <span class="riski-nos">Riski:</span>
         <button type="button" data-riski="sodien" aria-pressed="false">Šodien</button>
@@ -164,6 +164,7 @@
   }
 </script>
 <script src="offline.js"></script>
+<script src="ikonas.js"></script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
 <script src="objekta-statuss.js"></script>

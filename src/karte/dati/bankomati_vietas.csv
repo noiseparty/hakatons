@@ -1,0 +1,795 @@
+id,nosaukums,adrese,lat,lon,bankas,skaits,iemaksas,pieejamiba_24h,kritiskais,atm_id
+500-001,Bankomāts · Citadele,"RĪGA, Marupes ielā 10a",56.93209,24.07277,Citadele,1,0,0,0,500-001
+500-002,Bankomāts · Citadele,"RĪGA, Dižozolu iela 2",56.90284,24.09476,Citadele,1,0,0,0,500-002
+500-003,Bankomāts · Citadele,"LIEPĀJA, Ziemeļu ielā 13",56.53506,21.01242,Citadele,1,0,0,0,500-003
+500-004,Bankomāts · Citadele,"CĒSIS, Raunas ielā 13",57.31287,25.27653,Citadele,1,0,1,0,500-004
+500-005,Bankomāts · Citadele,"RĪGA, Kleistu ielā 28",56.94304,24.16563,Citadele,1,0,0,0,500-005
+500-006,Bankomāts · Citadele,"RĪGA, Ķīšezera ielā 6",56.99157,24.1658,Citadele,1,0,0,0,500-006
+500-007,Bankomāts · Citadele,"JELGAVA, Satiksmes iela 35",56.65655,23.69955,Citadele,1,0,0,0,500-007
+500-008,Bankomāts · Citadele,"JELGAVA, Katoļu iela 18",56.64747,23.72637,Citadele,1,0,0,0,500-008
+500-009,Bankomāts · Citadele,"RĪGAS RAJONS, Rīgas raj., Mārupes pag., Lidosta ""RĪGA""",56.9216,23.97943,Citadele,1,0,1,0,500-009
+500-010,Bankomāts · Citadele,"DAUGAVPILS, Aveņu ielā 26",55.90152,26.52734,Citadele,1,0,0,0,500-010
+500-011,Bankomāts · Citadele,"DAUGAVPILS, Smilšu iela 92a",55.88675,26.55375,Citadele,1,0,0,0,500-011
+500-012,Bankomāts · Citadele,"RĪGA, Gobas iela 13",57.03419,24.04856,Citadele,1,0,0,0,500-012
+500-013,Bankomāts · Citadele,"RĪGA, Vestienas ielā 35",56.94267,24.16574,Citadele,1,0,0,0,500-013
+500-014,Bankomāts · Citadele,"RĪGA, Stacijas Laukums 2",56.94675,24.11965,Citadele,1,0,0,0,500-014
+500-016,Bankomāts · Citadele,"JŪRMALA, Dārzkopības iela 19",56.97492,23.8541,Citadele,1,0,0,0,500-016
+500-017,Bankomāts · Citadele,"RĪGA, Tilta ielā 32",56.99555,24.12998,Citadele,1,0,0,0,500-017
+500-018,Bankomāts · Citadele,"RĪGA, Kr. Barona iela 46",56.95427,24.1278,Citadele,1,0,0,0,500-018
+500-019,Bankomāts · Citadele,"TALSI, Dundagas ielā 18",57.24794,22.57869,Citadele,1,0,0,0,500-019
+500-020,Bankomāts · Citadele,"OGRE, Mālkalnes prospēkts 3",56.82178,24.5955,Citadele,1,0,1,0,500-020
+500-021,Bankomāts · Citadele,"RĪGA, Eksporta ielā 1c",56.95565,24.09764,Citadele,1,0,1,0,500-021
+500-022,Bankomāts · Citadele,"RĪGA, Maskavas ielā 250",56.91737,24.17332,Citadele,1,0,1,0,500-022
+500-023,Bankomāts · Citadele,"LIMBAŽI, Rīgas ielā 8",57.51267,24.71614,Citadele,1,0,1,0,500-023
+500-024,Bankomāts · Citadele,"RĪGA, Kuģu ielā 22",56.94212,24.09524,Citadele,1,0,1,0,500-024
+500-025,Bankomāts · Citadele,"RĪGA, Kokneses prospektā 18",57.00123,24.15966,Citadele,1,0,1,0,500-025
+500-026,Bankomāts · Citadele,"RĪGA, Kungu iela 1",56.94784,24.10697,Citadele,1,0,1,0,500-026
+500-027,Bankomāts · Citadele,"RĪGA, A. Dombrovska ielā 23",57.03174,24.10871,Citadele,1,0,1,0,500-027
+500-028,Bankomāts · Citadele,"LĪVĀNI, Rīgas ielā 37A",56.34836,26.17754,Citadele,1,0,1,0,500-028
+500-029,Bankomāts · Citadele,"LUDZA, Stacijas ielā 30",56.54453,27.72075,Citadele,1,0,1,0,500-029
+500-030,Bankomāts · Citadele,"JELGAVA, Brīvības b. 1",56.65716,23.7429,Citadele,1,0,1,0,500-030
+500-031,Bankomāts · Citadele,"RĪGA, A.Saharova ielā 21",56.93816,24.2026,Citadele,1,0,1,0,500-031
+500-032,Bankomāts · Citadele,"RĪGA, Brīvības gatvē 409",56.98955,24.23933,Citadele,1,0,1,0,500-032
+500-033,Bankomāts · Citadele,"SALASPILS, Skolas ielā 4d",56.85527,24.33507,Citadele,1,0,1,0,500-033
+500-034,Bankomāts · Citadele,"RĪGA, Čiekurkalna 1. Līnijā 1, K-1",56.98331,24.15729,Citadele,1,0,1,0,500-034
+500-035,Bankomāts · Citadele,"RĒZEKNE, Atbrīvošanas ielā 112",56.5095,27.33314,Citadele,1,0,1,0,500-035
+500-036,Bankomāts · Citadele,"RĪGA, Ieriķu ielā 41b",56.96629,24.182,Citadele,1,0,1,0,500-036
+500-037,Bankomāts · Citadele,"ĶEKAVA, Rīgas iela 22A",56.8316,24.2329,Citadele,1,0,0,0,500-037
+500-038,Bankomāts · Citadele,"RĪGA, Gailezera iela 8",56.96806,24.23681,Citadele,1,0,0,0,500-038
+500-039,Bankomāts · Citadele,"BALOŽI, Baložu iela 5",56.883,24.14969,Citadele,1,0,0,0,500-039
+500-040,Bankomāts · Citadele,"VENTSPILS, Poruka ielā 16",57.38566,21.5466,Citadele,1,0,0,0,500-040
+500-041,Bankomāts · Citadele,"JĒKABPILS, Rīgas iela 109",56.50148,25.87316,Citadele,1,0,0,0,500-041
+500-042,Bankomāts · Citadele,"RĒZEKNE, Stacijas ielā 20A",56.51805,27.34757,Citadele,1,0,0,0,500-042
+500-043,Bankomāts · Citadele,"MADONA, Rupniecības iela 49",56.8598,26.23143,Citadele,1,0,0,0,500-043
+500-044,Bankomāts · Citadele,"RĪGA, Maza Rencēnu ielā 1",56.92694,24.17946,Citadele,1,0,0,0,500-044
+500-045,Kritiskais bankomāts · Citadele,"RĪGA, Republikas laukums 2a",56.95332,24.10031,Citadele,1,0,0,1,500-045
+500-046,Bankomāts · Citadele,"RĪGA, Grostonas iela 1",56.96432,24.11979,Citadele,1,0,0,0,500-046
+500-047,Bankomāts · Citadele,"RĪGA, Pilsoņu ielā 1K-1",56.93707,24.07087,Citadele,1,0,0,0,500-047
+500-048,Bankomāts · Citadele,"RĪGA, Prāgas iela 1",56.94496,24.11478,Citadele,1,0,0,0,500-048
+500-050,Bankomāts · Citadele,"RĪGA, Duntes ielā 19a",56.98661,24.13302,Citadele,1,0,0,0,500-050
+500-051,Bankomāts · Citadele,"RĪGAS RAJONS, Rīgas raj., Mārupes pag., Lidosta ""RĪGA""",56.92236,23.97914,Citadele,1,0,1,0,500-051
+500-052,Bankomāts · Citadele,"RĪGA, Slokas ielā 115",56.96058,24.03702,Citadele,1,0,0,0,500-052
+500-053,Kritiskais bankomāts · Citadele,"LIEPĀJA, Jaunā ostmala 3/5",56.51494,21.01819,Citadele,1,0,0,1,500-053
+500-055,Bankomāts · Citadele,"Rīga, Brīvības gatve 201",56.90458,24.05491,Citadele,1,0,0,0,500-055
+500-056,Bankomāts · Citadele,"RĪGA, Stirnu ielā 26",56.95868,24.18521,Citadele,1,0,0,0,500-056
+500-057,Bankomāts · Citadele,"DAUGAVPILS, Cietokšņa ielā 60",55.87522,26.52049,Citadele,1,0,1,0,500-057
+500-058,Bankomāts · Citadele,"VENTSPILS, Pils ielā 17",57.39661,21.56788,Citadele,1,0,1,0,500-058
+500-059,Bankomāts · Citadele,"LUDZA, Kr.Barona 41/18",56.54638,27.72468,Citadele,1,0,1,0,500-059
+500-060,Bankomāts · Citadele,"DAUGAVPILS, Stradnieku 103",55.88084,26.55972,Citadele,1,0,1,0,500-060
+500-061,Bankomāts · Citadele,"RĪGA, Dzirnavu ielā 43",56.95737,24.11578,Citadele,1,0,1,0,500-061
+500-063,Bankomāts · Citadele,"RĪGA, Melnsila iela 22",56.94529,24.06518,Citadele,1,0,1,0,500-063
+500-064,Bankomāts · Citadele,"BALVI, Bērzpils ielā 15",57.12876,27.26667,Citadele,1,0,1,0,500-064
+500-065,Bankomāts · Citadele,"RĪGA, Bauskas ielā 86",56.91504,24.11359,Citadele,1,0,1,0,500-065
+500-066,Bankomāts · Citadele,"KRĀSLAVA, Rīgas iela 28",55.89712,27.16189,Citadele,1,0,1,0,500-066
+500-067,Bankomāts · Citadele,"KĀRSAVA, Vienības 53",56.78698,27.67528,Citadele,1,0,1,0,500-067
+500-068,Bankomāts · Citadele,"RĪGA, Brīvības iela 90",56.95962,24.12938,Citadele,1,0,1,0,500-068
+500-069,Bankomāts · Citadele,"BAUSKA, Zaļā ielā 3",56.40704,24.19372,Citadele,1,0,1,0,500-069
+500-070,Bankomāts · Citadele,"RĪGA, Raiņa bulvāris 25",56.9492,24.11732,Citadele,1,0,1,0,500-070
+500-071,Bankomāts · Citadele,"ALŪKSNE, Pils ielā 29",57.42379,27.05138,Citadele,1,0,1,0,500-071
+500-072,Bankomāts · Citadele,"RĪGA, Brīvības gatve 310",56.9789,24.18615,Citadele,1,0,1,0,500-072
+500-073,Bankomāts · Citadele,"VALMIERA, Fabrikas 2",57.53333,25.42345,Citadele,1,0,1,0,500-073
+500-074,Bankomāts · Citadele (2),"LIEPĀJA, Lielā ielā 13",56.50751,21.01066,Citadele,2,1,0,0,500-074 500-118
+500-075,Bankomāts · Citadele,"RĪGA, Nīcgales ielā 2",56.95957,24.17486,Citadele,1,1,0,0,500-075
+500-076,Bankomāts · Citadele,"RĪGA, Dzirnavu ielā 67",56.95449,24.12114,Citadele,1,1,0,0,500-076
+500-077,Kritiskais bankomāts · Citadele,"JŪRMALA, Viestura ielā 22",56.97479,23.85846,Citadele,1,1,0,1,500-077
+500-078,Bankomāts · Citadele,"RĪGA, Audēju ielā 16",56.94815,24.11296,Citadele,1,1,0,0,500-078
+500-079,Bankomāts · Citadele,"RĪGA, Lidoņu ielā 27",56.96878,24.05983,Citadele,1,1,0,0,500-079
+500-080,Bankomāts · Citadele,"JELGAVA, Driksas ielā 4",56.65095,23.72388,Citadele,1,1,0,0,500-080
+500-081,Bankomāts · Citadele (2),"RĪGA, A.Deglava ielā 67",56.95009,24.18733,Citadele,2,1,0,0,500-081 500-085
+500-082,Bankomāts · Citadele,"RĪGA, Mūkusalas  ielā 71",56.92562,24.1058,Citadele,1,1,0,0,500-082
+500-083,Kritiskais bankomāts · Citadele,"RĪGA, Lielirbes ielā 29",56.92945,24.03733,Citadele,1,1,0,1,500-083
+500-084,Bankomāts · Citadele,"RĪGA, Kr. Valdemāra ielā 112",56.97429,24.13672,Citadele,1,1,0,0,500-084
+500-086,Bankomāts · Citadele,"AIZKRAUKLE, Gaismas 35",56.61014,25.25954,Citadele,1,1,0,0,500-086
+500-087,Bankomāts · Citadele,"LIMBAŽI, Rīgas iela 23A",57.50822,24.7145,Citadele,1,1,1,0,500-087
+500-088,Bankomāts · Citadele,"MADONA, Saules ielā 6",56.85169,26.22062,Citadele,1,1,0,0,500-088
+500-089,Kritiskais bankomāts · Citadele,"JĒKABPILS, Brīvības iela 108",56.49495,25.87019,Citadele,1,1,0,1,500-089
+500-090,Kritiskais bankomāts · Citadele,"OGRE, Rīgas ielā 23",56.81649,24.5856,Citadele,1,1,0,1,500-090
+500-092,Bankomāts · Citadele,"JŪRMALA, Talsu šosejā 29, Jūrmala",56.96087,23.61556,Citadele,1,1,0,0,500-092
+500-093,Bankomāts · Citadele,"SIGULDA, Strēlnieku ielā 2",57.1431,24.84438,Citadele,1,1,0,0,500-093
+500-094,Bankomāts · Citadele,"MĀRUPE, Daugavas iela 31",56.97373,24.16318,Citadele,1,1,0,0,500-094
+500-095,Bankomāts · Citadele,"RĪGA, Nometņu iela 64",56.9357,24.07167,Citadele,1,1,0,0,500-095
+500-096,Bankomāts · Citadele,"KULDĪGA, Liepājas iela 44",56.96696,21.9584,Citadele,1,1,0,0,500-096
+500-097,Bankomāts · Citadele,"RĪGA, 13. Janvāra iela 8",56.94647,24.11707,Citadele,1,1,0,0,500-097
+500-098,Bankomāts · Citadele,"RĪGA, Stacijas Laukums 2",56.94687,24.12064,Citadele,1,1,0,0,500-098
+500-099,Bankomāts · Citadele,"LUDZA, Raiņa ielā 40a",56.54078,27.71116,Citadele,1,1,0,0,500-099
+500-100,Bankomāts · Citadele,"JELGAVA, Rīgas 11a",56.66204,23.74688,Citadele,1,1,0,0,500-100
+500-101,Bankomāts · Citadele,"RĪGA, Kurzemes pr. 1a",56.95392,24.03928,Citadele,1,1,0,0,500-101
+500-102,Bankomāts · Citadele,"DAUGAVPILS, Cietokšņa ielā 60",55.87301,26.51821,Citadele,1,1,0,0,500-102
+500-103,Bankomāts · Citadele,"LĪVĀNI, Domes iela 4a",56.35573,26.17435,Citadele,1,1,0,0,500-103
+500-104,Bankomāts · Citadele,"BAUSKA, Pionieru ielā 2",56.40604,24.18777,Citadele,1,1,0,0,500-104
+500-105,Bankomāts · Citadele,"RĪGA, Anniņmuižas bulvārī 40a",56.96053,24.01299,Citadele,1,1,0,0,500-105
+500-106,Kritiskais bankomāts · Citadele (2),"RĪGA, Brīvības gatvē 372",56.98308,24.20251,Citadele,2,1,0,1,500-106 500-151
+500-107,Kritiskais bankomāts · Citadele,"DAUGAVPILS, Rīgas ielā 34",55.87159,26.51868,Citadele,1,1,1,1,500-107
+500-108,Bankomāts · Citadele,"CĒSIS, Valmieras ielā 17A",57.3171,25.2808,Citadele,1,1,0,0,500-108
+500-109,Bankomāts · Citadele,"RĪGA, Lielirbes ielā 29",56.92961,24.03662,Citadele,1,1,0,0,500-109
+500-110,Kritiskais bankomāts · Citadele,"RĒZEKNE, Galdnieku iela 8",56.50199,27.33018,Citadele,1,1,1,1,500-110
+500-111,"Bankomāts · Citadele, Swedbank (3)","RĪGA, Vienības Gatvē 113",56.90821,24.08168,"Citadele, Swedbank",3,1,0,0,500-111 717-042 717-043
+500-112,Bankomāts · Citadele,"RĪGA, Imantas 15,līnija 7",56.94451,24.01206,Citadele,1,1,0,0,500-112
+500-113,Kritiskais bankomāts · Citadele,"JELGAVA, Matera 23/25",56.65101,23.72012,Citadele,1,1,1,1,500-113
+500-114,Kritiskais bankomāts · Citadele,"GULBENE, Rīgas 47",57.17316,26.7569,Citadele,1,1,1,1,500-114
+500-115,Bankomāts · Citadele,"RĪGA, Maskavas ielā 257",56.92354,24.17656,Citadele,1,1,0,0,500-115
+500-116,Bankomāts · Citadele,"RĪGA, Maskavas ielā 257",56.92341,24.17686,Citadele,1,1,0,0,500-116
+500-117,Bankomāts · Citadele,"RĪGA, Republikas laukums 2a",56.95352,24.10066,Citadele,1,1,1,0,500-117
+500-119,Kritiskais bankomāts · Citadele,"TUKUMS, Brīvības laukums 9",56.96636,23.15463,Citadele,1,1,1,1,500-119
+500-120,Bankomāts · Citadele,"BALVI, Brīvības iela 57",57.13277,27.26627,Citadele,1,1,0,0,500-120
+500-121,Bankomāts · Citadele,"VALMIERA, Rīgas ielā 4",57.5387,25.42358,Citadele,1,1,0,0,500-121
+500-122,Bankomāts · Citadele,"RĒZEKNE, Atbrīvošanas alejā 141a",56.52328,27.34037,Citadele,1,1,0,0,500-122
+500-123,Bankomāts · Citadele,"RĪGA, Centrāltirgus iela 3k-2",56.9436,24.11484,Citadele,1,1,0,0,500-123
+500-124,Bankomāts · Citadele,"Dreiliņi, Biķeru ielā 4, Stopiņu novads",56.95124,24.25249,Citadele,1,1,0,0,500-124
+500-125,Bankomāts · Citadele,"RĪGA, Ieriķu ielā 3",56.96657,24.16517,Citadele,1,1,0,0,500-125
+500-126,Bankomāts · Citadele,"JĒKABPILS, Vienības ielā 7",56.4955,25.87825,Citadele,1,1,0,0,500-126
+500-127,Bankomāts · Citadele,"RĪGA, Mīlgrāvja ielā 14",57.02598,24.13934,Citadele,1,1,0,0,500-127
+500-128,Bankomāts · Citadele,"LIEPĀJA, Klaipēdas ielā 62",56.49153,21.00373,Citadele,1,1,0,0,500-128
+500-130,Bankomāts · Citadele,"RĪGA, Maskavas ielā 357",56.9054,24.19164,Citadele,1,1,0,0,500-130
+500-131,Bankomāts · Citadele,"SMILTENE, Kalēju iela7",57.42559,25.8973,Citadele,1,1,0,0,500-131
+500-132,Kritiskais bankomāts · Citadele,"VALMIERA, Diakonāta ielā 6",57.53617,25.42082,Citadele,1,1,1,1,500-132
+500-133,Kritiskais bankomāts · Citadele,"TALSI, Lielā ielā 4",57.24468,22.5875,Citadele,1,1,1,1,500-133
+500-134,Bankomāts · Citadele,"PREIĻI, Rīgas ielā 4D",56.2997,26.70978,Citadele,1,1,0,0,500-134
+500-135,Bankomāts · Citadele,"ĀDAŽI, Rīgas gatvē 5",57.07123,24.32001,Citadele,1,1,0,0,500-135
+500-136,Bankomāts · Citadele,"RĪGA, Āzenes ielā 5",56.94951,24.08266,Citadele,1,1,0,0,500-136
+500-137,Kritiskais bankomāts · Citadele,"VENTSPILS, Lielais prospekts 3/5",57.3877,21.58019,Citadele,1,1,0,1,500-137
+500-138,Bankomāts · Citadele,"SALACGRĪVA, Rīgas iela 13",57.75113,24.35705,Citadele,1,1,0,0,500-138
+500-139,Kritiskais bankomāts · Citadele,"RĪGA, A.Saharova ielā 20a",56.94168,24.20643,Citadele,1,1,0,1,500-139
+500-140,Bankomāts · Citadele,"RĪGA, Vienības Gatvē 194a",56.89692,24.07857,Citadele,1,1,0,0,500-140
+500-141,Bankomāts · Citadele,"SALDUS, Striķu ielā 10C",56.6649,22.49529,Citadele,1,1,0,0,500-141
+500-142,Bankomāts · Citadele,"SALASPILS, Skolas ielā 4e",56.85457,24.33625,Citadele,1,1,0,0,500-142
+500-143,Bankomāts · Citadele,"RĪGA, Jaunmoku ielā 13",56.93113,24.03878,Citadele,1,1,0,0,500-143
+500-144,Bankomāts · Citadele,"RĪGA, Stacijas Laukums 2",56.94686,24.11936,Citadele,1,1,0,0,500-144
+500-147,Bankomāts · Citadele,"Carnikava, Atpūtas iela 1",57.12924,24.27745,Citadele,1,0,0,0,500-147
+500-148,Bankomāts · Citadele,"Daugavpils, Cietokšņa iela 72A",55.87805,26.51357,Citadele,1,1,0,0,500-148
+500-149,Bankomāts · Citadele,"Daugavpils, 18. Novembra iela 136",55.8771,26.55123,Citadele,1,0,0,0,500-149
+500-150,Bankomāts · Citadele,"Rēzekne, Atbrīvošanas aleja 138",56.51456,27.33622,Citadele,1,1,0,0,500-150
+717-001,Bankomāts · Swedbank (3),"Rīga, Ieriķu iela 3",56.96632,24.16123,Swedbank,3,1,0,0,717-001 717-006 717-007
+717-002,Bankomāts · Swedbank (4),"Rīga, Latgales iela 257",56.92425,24.17493,Swedbank,4,1,0,0,717-002 717-003 717-004 717-005
+717-008,Bankomāts · Swedbank (3),"Rīga, Brīvības gatve 372",56.9826,24.20334,Swedbank,3,1,0,0,717-008 717-014 717-016
+717-009,Bankomāts · Swedbank (3),"Rīga, Lielirbes iela 29",56.92977,24.03656,Swedbank,3,1,0,0,717-009 717-010 717-048
+717-011,Bankomāts · Swedbank (3),"Rīga, Mūkusalas iela 71",56.92563,24.10583,Swedbank,3,1,0,0,717-011 717-012 717-013
+717-015,Bankomāts · Swedbank (2),"Rīga, Audēju iela 16",56.94802,24.11272,Swedbank,2,1,0,0,717-015 717-019
+717-017,Bankomāts · Swedbank (2),"Rīga, Dzirnavu iela 67",56.95456,24.12075,Swedbank,2,1,0,0,717-017 717-018
+717-020,Bankomāts · Swedbank (2),"Rīga, Kurzemes prospekts 1a",56.95397,24.0385,Swedbank,2,1,0,0,717-020 717-021
+717-022,Kritiskais bankomāts · Swedbank (2),"Rīga, A. Saharova iela 20A",56.94162,24.20681,Swedbank,2,1,0,1,717-022 717-023
+717-024,Bankomāts · Swedbank,"Rīga, 13. Janvāra iela 8",56.94634,24.11684,Swedbank,1,1,0,0,717-024
+717-025,Kritiskais bankomāts · Swedbank (2),"Jelgava, Driksas iela 4",56.65092,23.7241,Swedbank,2,1,0,1,717-025 717-026
+717-027,Bankomāts · Swedbank,"Liepāja, Klaipēdas iela 62",56.49173,21.00371,Swedbank,1,1,0,0,717-027
+717-028,Kritiskais bankomāts · Swedbank (2),"Ventspils, Kuldīgas iela 25a",57.39214,21.56432,Swedbank,2,1,1,1,717-028 717-029
+717-030,Bankomāts · Swedbank,"Valmiera, Rīgas iela 4",57.53854,25.42377,Swedbank,1,1,0,0,717-030
+717-031,Bankomāts · Swedbank,"Daugavpils, Rīgas iela 9",55.87201,26.51759,Swedbank,1,1,0,0,717-031
+717-032,Kritiskais bankomāts · Swedbank,"Daugavpils, Rīgas iela 22",55.87037,26.51528,Swedbank,1,1,1,1,717-032
+717-033,Bankomāts · Swedbank,"Daugavpils, 18. Novembra iela 136",55.87695,26.55111,Swedbank,1,1,0,0,717-033
+717-034,Bankomāts · Swedbank,"Rēzekne, Kr. Valdemāra iela 16a",56.5139,27.3371,Swedbank,1,1,0,0,717-034
+717-035,Kritiskais bankomāts · Swedbank (2),"Liepāja, Tirgoņu iela 18",56.50676,21.00928,Swedbank,2,1,1,1,717-035 717-036
+717-037,Bankomāts · Swedbank (2),"Jelgava, Katoļu iela 18",56.64749,23.72636,Swedbank,2,1,0,0,717-037 717-038
+717-039,Bankomāts · Swedbank,"Rīga, Rusova iela 1",56.98963,24.16671,Swedbank,1,1,0,0,717-039
+717-040,Bankomāts · Swedbank (2),"Rīga, A. Saharova iela 2",56.93216,24.2018,Swedbank,2,1,0,0,717-040 717-041
+717-044,Bankomāts · Swedbank,"Rīga, Duntes iela 19a",56.98629,24.1327,Swedbank,1,1,0,0,717-044
+717-045,Kritiskais bankomāts · Swedbank (2),"Rīga, A.Dombrovska 23",57.03156,24.10941,Swedbank,2,1,0,1,717-045 717-046
+717-047,Bankomāts · Swedbank,"Smiltene, Atmodas iela 4",57.42099,25.90603,Swedbank,1,1,0,0,717-047
+717-049,Bankomāts · Swedbank (2),"Rīga, A. Deglava iela 67",56.95015,24.18738,Swedbank,2,1,0,0,717-049 717-050
+717-051,"Bankomāts · Swedbank, Luminor (2)","Salaspils, Skolas iela 4e",56.85298,24.3358,"Swedbank, Luminor",2,1,1,0,717-051 814-122
+717-052,"Bankomāts · Swedbank, Luminor (2)","Ādaži, Rīgas gatve 5",57.07121,24.32009,"Swedbank, Luminor",2,1,0,0,717-052 814-002
+717-053,Bankomāts · Swedbank,"Sigulda, Strēlnieku iela 2",57.14332,24.84468,Swedbank,1,1,0,0,717-053
+717-054,"Bankomāts · Swedbank, SEB (2)","Ogre, Rīgas iela 23",56.81648,24.58562,"Swedbank, SEB",2,1,0,0,717-054 900-171
+717-055,Bankomāts · Swedbank (2),"Liepāja, Jaunā Ostmala 3/5",56.51501,21.01822,Swedbank,2,1,0,0,717-055 717-056
+717-057,Bankomāts · Swedbank,"Iecava, Rīgas iela 27",56.59787,24.19692,Swedbank,1,1,0,0,717-057
+717-058,Bankomāts · Swedbank,"Jelgava, Rīgas iela 11a",56.66189,23.74624,Swedbank,1,1,0,0,717-058
+717-059,Bankomāts · Swedbank,"Ķekava, Rīgas iela 22a",56.83185,24.23231,Swedbank,1,1,0,0,717-059
+717-060,Kritiskais bankomāts · Swedbank,"Aizkraukle, Bērzu iela 7",56.60439,25.25471,Swedbank,1,1,1,1,717-060
+717-061,Bankomāts · Swedbank,"Rīga, Kr. Valdemāra iela 112",56.97456,24.13692,Swedbank,1,1,0,0,717-061
+717-062,Kritiskais bankomāts · Swedbank,"Rīga, Tilta iela 32",56.99574,24.13057,Swedbank,1,1,0,1,717-062
+717-063,Bankomāts · Swedbank (2),"Rīga, K. Ulmaņa gatve 88a",56.92912,24.02484,Swedbank,2,1,0,0,717-063 717-064
+717-065,Bankomāts · Swedbank,"Rīga, A. Saharova iela 23a",56.93905,24.20275,Swedbank,1,1,0,0,717-065
+717-066,Bankomāts · Swedbank,"Rīga, Prūšu iela 2",56.91492,24.17779,Swedbank,1,1,0,0,717-066
+717-067,Bankomāts · Swedbank,"Rīga, Grostonas iela 1",56.96468,24.119,Swedbank,1,1,0,0,717-067
+717-068,Bankomāts · Swedbank (2),"Rīga, Stacijas laukums 2",56.94678,24.11928,Swedbank,2,1,1,0,717-068 717-187
+717-069,Bankomāts · Swedbank (2),"Rīga, Slokas iela 115",56.96041,24.03777,Swedbank,2,1,0,0,717-069 717-070
+717-071,Bankomāts · Swedbank,"Rīga, Stacijas laukums 2",56.9469,24.12092,Swedbank,1,1,0,0,717-071
+717-072,Bankomāts · Swedbank,"Dobele, Baznīcas iela 14",56.62475,23.28307,Swedbank,1,1,0,0,717-072
+717-073,Bankomāts · Swedbank,"Rīga, Krasta iela 46",56.93474,24.1428,Swedbank,1,1,0,0,717-073
+717-074,Bankomāts · Swedbank,"Ogre, Mednieku iela 23",56.82524,24.60264,Swedbank,1,1,0,0,717-074
+717-075,Kritiskais bankomāts · Swedbank (2),"Cēsis, Uzvaras bulvāris 12",57.31421,25.27816,Swedbank,2,1,1,1,717-075 717-209
+717-076,Kritiskais bankomāts · Swedbank,"Jelgava, Rīgas iela 48",56.66805,23.7611,Swedbank,1,1,0,1,717-076
+717-077,Kritiskais bankomāts · Swedbank (3),"Daugavpils, Cietokšņa iela 60",55.87394,26.51752,Swedbank,3,1,1,1,717-077 717-141 717-300
+717-078,Bankomāts · Swedbank,"Rīga, Nometņu iela 64",56.93591,24.07253,Swedbank,1,1,0,0,717-078
+717-079,Bankomāts · Swedbank,"Ventspils, Talsu iela 6",57.40192,21.58491,Swedbank,1,1,0,0,717-079
+717-080,Bankomāts · Swedbank,"Cēsis, Jāņa Poruka iela 19",57.31442,25.29395,Swedbank,1,1,0,0,717-080
+717-081,Bankomāts · Swedbank (2),"Rīga, Latgales iela 400",56.89793,24.20434,Swedbank,2,1,0,0,717-081 717-082
+717-083,Kritiskais bankomāts · Swedbank,"Jelgava, Pasta iela 47",56.64837,23.72573,Swedbank,1,1,0,1,717-083
+717-084,Kritiskais bankomāts · Swedbank,"Tukums, Pils iela 15a",56.96595,23.16158,Swedbank,1,1,0,1,717-084
+717-085,Bankomāts · Swedbank,"Rīga, Nīcgales iela 2",56.95934,24.17494,Swedbank,1,1,0,0,717-085
+717-086,Bankomāts · Swedbank,"Madona, Saules iela 6",56.85197,26.22117,Swedbank,1,1,0,0,717-086
+717-087,Bankomāts · Swedbank,"Valmiera, G. Apiņa iela 10a",57.54206,25.41727,Swedbank,1,1,0,0,717-087
+717-088,Bankomāts · Swedbank,"Rīga, Hipokrāta iela 28",56.95954,24.23925,Swedbank,1,1,0,0,717-088
+717-090,Bankomāts · Swedbank,"Rīga, A. Čaka iela 55",56.95462,24.13286,Swedbank,1,1,0,0,717-090
+717-091,Bankomāts · Swedbank,"Rīga, Pilsoņu iela 1",56.93511,24.06925,Swedbank,1,1,0,0,717-091
+717-092,Bankomāts · Swedbank,"Rīga, Imantas 15. līnija 7",56.94463,24.01087,Swedbank,1,1,0,0,717-092
+717-093,Bankomāts · Swedbank,"Rīga, Juglas krastmala 2",56.98945,24.24496,Swedbank,1,1,0,0,717-093
+717-094,Bankomāts · Swedbank,"Rīga, Mārupes iela 10A",56.93277,24.07199,Swedbank,1,1,0,0,717-094
+717-095,Bankomāts · Swedbank,"Jūrmala, Viestura iela 22",56.9747,23.85897,Swedbank,1,1,0,0,717-095
+717-096,Bankomāts · Swedbank,"Kuldīga, Liepājas iela 44",56.96831,21.96104,Swedbank,1,1,0,0,717-096
+717-097,Bankomāts · Swedbank (2),"Ventspils, J. Poruka iela 16",57.38589,21.54633,Swedbank,2,1,1,0,717-097 717-261
+717-098,Bankomāts · Swedbank,"Sigulda, Vidus iela 1",57.15301,24.84799,Swedbank,1,1,0,0,717-098
+717-099,Kritiskais bankomāts · Swedbank,"Saldus, Striķu iela 2",56.66624,22.49388,Swedbank,1,1,1,1,717-099
+717-100,Kritiskais bankomāts · Swedbank (2),"Rīga, Gobas iela 13",57.03419,24.04852,Swedbank,2,1,0,1,717-100 717-156
+717-101,Bankomāts · Swedbank,"Bauska, Pionieru iela 2",56.40651,24.18934,Swedbank,1,1,0,0,717-101
+717-102,Bankomāts · Swedbank,"Rēzekne, Latgales iela 18",56.49961,27.32904,Swedbank,1,1,0,0,717-102
+717-103,Bankomāts · Swedbank,"Rēzekne, Atbrīvošanas aleja 141a",56.5233,27.34039,Swedbank,1,1,0,0,717-103
+717-104,Bankomāts · Swedbank,"Jēkabpils, Vienības iela 7",56.49547,25.87839,Swedbank,1,1,0,0,717-104
+717-105,Bankomāts · Swedbank,"Jēkabpils, Brīvības iela 108",56.49506,25.86994,Swedbank,1,1,0,0,717-105
+717-106,Bankomāts · Swedbank,"Talsi, Dundagas iela 18",57.2475,22.57979,Swedbank,1,1,0,0,717-106
+717-107,Bankomāts · Swedbank,"Talsi, Rīgas iela 8",57.23858,22.5862,Swedbank,1,1,0,0,717-107
+717-108,Bankomāts · Swedbank,"Alūksne, Pils iela 9B",57.42408,27.04998,Swedbank,1,1,0,0,717-108
+717-109,Bankomāts · Swedbank (2),"Olaine, Veselības iela 1",56.78466,23.93641,Swedbank,2,1,1,0,717-109 717-285
+717-110,Bankomāts · Swedbank,"Varakļāni, Pils iela 7d",56.61101,26.75877,Swedbank,1,1,0,0,717-110
+717-111,Bankomāts · Swedbank,"Mārupe, Daugavas iela 31",56.90441,24.05501,Swedbank,1,1,0,0,717-111
+717-112,Bankomāts · Swedbank,"Carnikava, Rīgas iela 14a",57.12862,24.27644,Swedbank,1,1,0,0,717-112
+717-113,Bankomāts · Swedbank,"Koknese, 1905. gada iela 8a",56.6445,25.43382,Swedbank,1,1,0,0,717-113
+717-114,Bankomāts · Swedbank,"Dreiliņi, Biķeru iela 4",56.95113,24.25406,Swedbank,1,1,0,0,717-114
+717-115,Bankomāts · Swedbank,"Rīga, Āzenes iela 5",56.94983,24.08239,Swedbank,1,1,0,0,717-115
+717-116,Bankomāts · Swedbank (2),"Gulbene, Brīvības iela 56",57.1721,26.75225,Swedbank,2,1,0,0,717-116 717-211
+717-117,Bankomāts · Swedbank,"Jūrmala, Strēlnieku prospekts 1",56.96744,23.76987,Swedbank,1,1,0,0,717-117
+717-118,Kritiskais bankomāts · Swedbank (2),"Rīga, Dižozolu iela 2",56.90805,24.09505,Swedbank,2,1,0,1,717-118 717-271
+717-119,Kritiskais bankomāts · Swedbank,"Madona, Rūpniecības iela 49",56.86016,26.23122,Swedbank,1,1,0,1,717-119
+717-121,Bankomāts · Swedbank (2),"Rīga, Lidoņu iela 27",56.96943,24.05981,Swedbank,2,1,1,0,717-121 717-289
+717-122,Bankomāts · Swedbank,"Bauska, Pionieru iela 2",56.40649,24.18927,Swedbank,1,1,0,0,717-122
+717-123,Bankomāts · Swedbank,"Krāslava, Rīgas iela 36",55.89545,27.16457,Swedbank,1,1,0,0,717-123
+717-124,Bankomāts · Swedbank,"Viļāni, Brīvības iela 2",56.54991,26.92211,Swedbank,1,1,0,0,717-124
+717-125,Kritiskais bankomāts · Swedbank,"Jūrmala, Talsu šoseja 25",56.96037,23.61762,Swedbank,1,1,0,1,717-125
+717-126,Bankomāts · Swedbank,"Līvāni, Domes iela 4A",56.35573,26.17439,Swedbank,1,1,0,0,717-126
+717-127,Bankomāts · Swedbank,"Rīga, Matīsa iela 25",56.95731,24.13466,Swedbank,1,1,0,0,717-127
+717-128,Bankomāts · Swedbank,"Aizpute, Zvaigžņu iela 2",56.71901,21.60732,Swedbank,1,1,0,0,717-128
+717-129,Bankomāts · Swedbank,"Rūjiena, Brīvības iela 8",57.8968,25.32605,Swedbank,1,1,0,0,717-129
+717-130,Bankomāts · Swedbank,"Ludza, Latgales iela 61",56.54385,27.71139,Swedbank,1,1,0,0,717-130
+717-131,Bankomāts · Swedbank,"Rīga, A. Deglava iela 110",56.94753,24.19366,Swedbank,1,1,0,0,717-131
+717-132,Bankomāts · Swedbank,"Valmiera, Fabrikas iela 2",57.53365,25.42401,Swedbank,1,1,0,0,717-132
+717-133,Bankomāts · Swedbank,"Rīga, Pulkveža Brieža iela 33a",56.96529,24.10612,Swedbank,1,1,0,0,717-133
+717-134,Bankomāts · Swedbank,"Tukums, Pasta iela 14",56.96749,23.1578,Swedbank,1,1,0,0,717-134
+717-135,Bankomāts · Swedbank,"Saldus, Jelgavas iela 1",56.66633,22.49448,Swedbank,1,1,0,0,717-135
+717-136,Bankomāts · Swedbank,"Rīga, Jaunmoku iela 13",56.93129,24.0397,Swedbank,1,1,0,0,717-136
+717-137,Kritiskais bankomāts · Swedbank,"Limbaži, Stacijas iela 8",57.51361,24.72246,Swedbank,1,1,0,1,717-137
+717-138,Bankomāts · Swedbank,"Rīga, Latgales iela 357",56.90568,24.19132,Swedbank,1,1,0,0,717-138
+717-139,Bankomāts · Swedbank,"Preiļi, Rēzeknes iela 4A",56.29454,26.72541,Swedbank,1,1,0,0,717-139
+717-140,Bankomāts · Swedbank,"Rīga, Anniņmuižas bulvāris 40a",56.96048,24.01255,Swedbank,1,1,0,0,717-140
+717-142,Kritiskais bankomāts · Swedbank,"Rīga, Balasta dambis 15",56.94905,24.08985,Swedbank,1,1,0,1,717-142
+717-143,Bankomāts · Swedbank,"Rīga, Stirnu iela 26",56.95909,24.18581,Swedbank,1,1,0,0,717-143
+717-144,Bankomāts · Swedbank,"Daugavpils, Raipoles iela 11a",55.90029,26.52629,Swedbank,1,1,0,0,717-144
+717-145,Bankomāts · Swedbank,"Rīga, Brīvības gatve 201",56.97391,24.16282,Swedbank,1,1,0,0,717-145
+717-146,Bankomāts · Swedbank,"Rīga, Firsa Sadovņikova iela 14",56.94127,24.13318,Swedbank,1,1,0,0,717-146
+717-147,Bankomāts · Swedbank,"Vangaži, Gaujas iela 10",57.09259,24.54695,Swedbank,1,0,1,0,717-147
+717-148,Kritiskais bankomāts · Swedbank,"Rēzekne, Atmodas iela 6A",56.52417,27.35092,Swedbank,1,0,1,1,717-148
+717-149,Bankomāts · Swedbank,"Lieģi, Parka iela 2",56.57914,21.33598,Swedbank,1,0,0,0,717-149
+717-150,Bankomāts · Swedbank,"Jūrmala, Ventspils šoseja 32 (Sloka)",56.94676,23.62239,Swedbank,1,0,0,0,717-150
+717-151,Bankomāts · Swedbank,"Preiļi, Daugavpils iela 66a",56.2803,26.7213,Swedbank,1,0,0,0,717-151
+717-152,Bankomāts · Swedbank,"Ugāle, ""Stūris""",57.27685,22.02044,Swedbank,1,0,1,0,717-152
+717-153,Kritiskais bankomāts · Swedbank,"Ķekava, Gaismas iela 17C",56.82432,24.2297,Swedbank,1,0,1,1,717-153
+717-155,Bankomāts · Swedbank,"Liepāja, Jūras iela 25/29",56.5109,21.00658,Swedbank,1,0,0,0,717-155
+717-157,Kritiskais bankomāts · Swedbank,"Ainaži, K Valdemāra iela 36",57.86463,24.35854,Swedbank,1,0,1,1,717-157
+717-158,Bankomāts · Swedbank,"Rīga, Matīsa iela 23",56.95725,24.13322,Swedbank,1,0,0,0,717-158
+717-160,Bankomāts · Swedbank,"Rīga, Latgales iela 427b",56.89748,24.21062,Swedbank,1,0,1,0,717-160
+717-161,Bankomāts · Swedbank,"Rīga, Anniņmuižas bulvāris 90",56.95417,24.00793,Swedbank,1,0,1,0,717-161
+717-162,Kritiskais bankomāts · Swedbank,"Ventspils, Baznīcas iela 2",57.39559,21.56732,Swedbank,1,0,1,1,717-162
+717-163,Bankomāts · Swedbank,"Pāvilosta, Dzintaru iela 69",56.88714,21.18913,Swedbank,1,0,0,0,717-163
+717-164,Bankomāts · Swedbank,"Rīga, Vienības gatve 144",56.91016,24.0872,Swedbank,1,0,1,0,717-164
+717-165,Bankomāts · Swedbank,"Rīga, Melnsila iela 22",56.94524,24.06528,Swedbank,1,0,0,0,717-165
+717-166,Bankomāts · Swedbank,"Rīga, Latgales iela 267",56.92028,24.17256,Swedbank,1,0,0,0,717-166
+717-167,Bankomāts · Swedbank,"Balvi, Brīvības iela 57",57.13273,27.2664,Swedbank,1,0,0,0,717-167
+717-168,Bankomāts · Swedbank,"Ikšķile, Skolas iela 4a",56.83814,24.49698,Swedbank,1,0,0,0,717-168
+717-169,Bankomāts · Swedbank,"Staicele, Lielā iela 6",57.83575,24.74631,Swedbank,1,0,1,0,717-169
+717-170,Bankomāts · Swedbank,"Olaine, Stacijas iela 8",56.78588,23.9433,Swedbank,1,0,0,0,717-170
+717-171,Bankomāts · Swedbank,"Rīga, Mūkusalas iela 73",56.92292,24.10685,Swedbank,1,0,0,0,717-171
+717-172,Bankomāts · Swedbank,"Rīga, Lāčplēša iela 70b",56.95002,24.13222,Swedbank,1,0,1,0,717-172
+717-173,Bankomāts · Swedbank,"Loja ""Valma""",57.15372,24.64658,Swedbank,1,0,0,0,717-173
+717-174,Bankomāts · Swedbank,"Ādaži, Rīgas gatve 21",57.07532,24.31885,Swedbank,1,0,0,0,717-174
+717-175,Bankomāts · Swedbank,"Valka, Raiņa iela 7",57.77515,26.02159,Swedbank,1,0,0,0,717-175
+717-176,Bankomāts · Swedbank,"Rīga, Kleistu iela 9",56.96257,24.02207,Swedbank,1,0,1,0,717-176
+717-177,Bankomāts · Swedbank,"Rīga, Baltāsbaznīcas iela 42",57.03667,24.09058,Swedbank,1,0,0,0,717-177
+717-178,Bankomāts · Swedbank,"Salaspils, Skolas iela 4D",56.85434,24.33553,Swedbank,1,0,0,0,717-178
+717-179,Bankomāts · Swedbank,"Mārupe, Upesgrīvas iela 1",56.92624,24.03931,Swedbank,1,0,1,0,717-179
+717-180,Bankomāts · Swedbank,"Tukums, Talsu iela 4",56.96729,23.15244,Swedbank,1,0,1,0,717-180
+717-181,Bankomāts · Swedbank,"Rīga, Dambja iela 10",56.98837,24.13037,Swedbank,1,0,1,0,717-181
+717-182,Bankomāts · Swedbank,"Rīga, Biķernieku iela 143",56.95663,24.23943,Swedbank,1,0,0,0,717-182
+717-183,Kritiskais bankomāts · Swedbank,"Valmiera, Rīgas iela 15",57.53797,25.41931,Swedbank,1,0,1,1,717-183
+717-184,Bankomāts · Swedbank,"Valmiera, Rubenes iela 51",57.54709,25.41969,Swedbank,1,0,1,0,717-184
+717-185,Bankomāts · Swedbank,"Valle, Mazie Melderi",56.51101,24.72565,Swedbank,1,0,0,0,717-185
+717-186,Bankomāts · Swedbank,"Jelgava, Satiksmes iela 35",56.6564,23.7003,Swedbank,1,0,0,0,717-186
+717-188,Bankomāts · Swedbank,"Rīga, Biķernieku iela 16A-91",56.97054,24.18089,Swedbank,1,0,1,0,717-188
+717-189,Bankomāts · Swedbank (2),"Rīga, Prāgas iela 1",56.94505,24.11468,Swedbank,2,0,0,0,717-189 717-247
+717-190,Bankomāts · Swedbank,"Iecava, E.Virzas iela 2",56.59536,24.19896,Swedbank,1,0,0,0,717-190
+717-191,Kritiskais bankomāts · Swedbank,"Rīga, Juglas iela 45",56.97824,24.25329,Swedbank,1,0,1,1,717-191
+717-192,Bankomāts · Swedbank,"Rīga, Mazā Rencēnu iela 1",56.9284,24.18001,Swedbank,1,0,0,0,717-192
+717-193,Kritiskais bankomāts · Swedbank,"Rīga, Kr. Barona iela 46",56.95412,24.12754,Swedbank,1,0,1,1,717-193
+717-194,Kritiskais bankomāts · Swedbank,"Preiļi, Brīvības iela 2",56.29462,26.72347,Swedbank,1,0,1,1,717-194
+717-195,Bankomāts · Swedbank,"Valmiera, Rīgas iela 74",57.5327,25.39351,Swedbank,1,0,0,0,717-195
+717-196,Bankomāts · Swedbank,"Ķegums, Ķeguma prospekts 5c",56.74375,24.71808,Swedbank,1,0,0,0,717-196
+717-197,Bankomāts · Swedbank,"Rēzekne, Pulkveža Brieža iela 26",56.50624,27.33492,Swedbank,1,0,1,0,717-197
+717-198,Bankomāts · Swedbank,"Riebiņi, Saules iela 7",56.33994,26.79979,Swedbank,1,0,0,0,717-198
+717-199,Bankomāts · Swedbank,"Dobele, Muldavas iela 3a",56.62837,23.27994,Swedbank,1,0,0,0,717-199
+717-200,Bankomāts · Swedbank,"Rugāji, Kurmenes iela 36",57.00169,27.13032,Swedbank,1,0,0,0,717-200
+717-201,Bankomāts · Swedbank,"Jelgava, Ausekļa iela 4",56.65649,23.72108,Swedbank,1,0,1,0,717-201
+717-202,Bankomāts · Swedbank,"Jelgava, Rīgas iela 53B",56.66862,23.75812,Swedbank,1,0,0,0,717-202
+717-203,Bankomāts · Swedbank,"Pļaviņas, Daugavas iela 85",56.61779,25.73447,Swedbank,1,0,0,0,717-203
+717-204,Bankomāts · Swedbank,"Rīga, Nīcgales iela 53",56.94517,24.17325,Swedbank,1,0,1,0,717-204
+717-205,Bankomāts · Swedbank,"Rīga, Brīvības iela 188",56.96728,24.14885,Swedbank,1,0,0,0,717-205
+717-206,Kritiskais bankomāts · Swedbank,"Ogre, Brīvības iela 11",56.81612,24.60347,Swedbank,1,0,1,1,717-206
+717-207,Bankomāts · Swedbank,"Jelgava, Rūpniecības iela 77a",56.63674,23.70535,Swedbank,1,0,0,0,717-207
+717-208,Kritiskais bankomāts · Swedbank,"Rēzekne, 18.Novembra iela 16",56.5098,27.3342,Swedbank,1,0,1,1,717-208
+717-210,Bankomāts · Swedbank,"Liepāja, Kārļa Zāles laukums 8",56.51115,21.01689,Swedbank,1,0,0,0,717-210
+717-212,Bankomāts · Swedbank,"Rīga, Kr. Valdemāra iela 62a",56.96603,24.13111,Swedbank,1,0,0,0,717-212
+717-213,"Kritiskais bankomāts · Swedbank, SEB (2)","Daugavpils, Strādnieku iela 103",55.88104,26.55957,"Swedbank, SEB",2,0,1,1,717-213 900-065
+717-214,Bankomāts · Swedbank,"Jūrmala, Raiņa iela 74 (Kauguri)",56.95353,23.61273,Swedbank,1,0,0,0,717-214
+717-215,Kritiskais bankomāts · Swedbank,"Liepāja, Kuršu laukums 11",56.50511,21.0111,Swedbank,1,0,1,1,717-215
+717-216,Kritiskais bankomāts · Swedbank,"Jēkabpils, Viestura iela 34a",56.4903,25.86419,Swedbank,1,0,1,1,717-216
+717-217,Bankomāts · Swedbank,"Rīga, Centrāltirgus iela 3 k-4",56.94375,24.11482,Swedbank,1,0,0,0,717-217
+717-218,Bankomāts · Swedbank,"Lielvārde, Lāčplēša iela 14",56.71807,24.81435,Swedbank,1,0,0,0,717-218
+717-219,Kritiskais bankomāts · Swedbank,"Gulbene, Rīgas iela 47",57.17313,26.75702,Swedbank,1,0,1,1,717-219
+717-220,Bankomāts · Swedbank,"Valmiera, Stacijas iela 11",57.53106,25.43024,Swedbank,1,0,1,0,717-220
+717-221,Kritiskais bankomāts · Swedbank,"Jēkabpils, Brīvības iela 131",56.4954,25.8696,Swedbank,1,0,1,1,717-221
+717-223,Bankomāts · Swedbank,"Jūrmala, Dārzkopības iela 19",56.97513,23.85393,Swedbank,1,0,0,0,717-223
+717-224,Bankomāts · Swedbank,"Daugavpils, Viestura iela 10",55.87127,26.52502,Swedbank,1,0,0,0,717-224
+717-226,Bankomāts · Swedbank,"Špoģi, Šosejas iela 2",56.07565,26.73295,Swedbank,1,0,0,0,717-226
+717-227,Bankomāts · Swedbank,"Tukums, Kurzemes iela 2a",56.97056,23.1649,Swedbank,1,0,1,0,717-227
+717-228,Bankomāts · Swedbank,"Aknīste, Skolas iela 5",56.16163,25.74152,Swedbank,1,0,0,0,717-228
+717-229,Bankomāts · Swedbank,"Ventspils, Tārgales iela 63",57.39999,21.60549,Swedbank,1,0,1,0,717-229
+717-230,Bankomāts · Swedbank,"Pilsrundāle, ""Pilsrundāles veikals""",56.41624,24.02872,Swedbank,1,0,0,0,717-230
+717-231,Bankomāts · Swedbank,"Baltinava, Kārsavas iela 4",56.94594,27.64368,Swedbank,1,0,0,0,717-231
+717-232,Bankomāts · Swedbank,"Cēsis, Valmieras iela 27",57.32018,25.28889,Swedbank,1,0,1,0,717-232
+717-233,Bankomāts · Swedbank,"Rīga, Dammes iela 46",56.96604,24.00957,Swedbank,1,0,1,0,717-233
+717-234,Bankomāts · Swedbank,"Rīga, Brīvības ielas 149",56.96572,24.14325,Swedbank,1,0,1,0,717-234
+717-235,Bankomāts · Swedbank,"Jaunolaine, Baznīcas iela 10",56.80179,23.98503,Swedbank,1,0,1,0,717-235
+717-236,Bankomāts · Swedbank,"Rīga, Tallinas iela  76",56.95754,24.14601,Swedbank,1,0,1,0,717-236
+717-237,Bankomāts · Swedbank,"Jelgava, Matera iela 23/25",56.6508,23.7199,Swedbank,1,0,1,0,717-237
+717-238,Bankomāts · Swedbank,"Rīga, Brīvības gatve 263",56.97879,24.18407,Swedbank,1,0,1,0,717-238
+717-239,Bankomāts · Swedbank,"Ventspils, Celtnieku iela 3-96",57.40825,21.59682,Swedbank,1,0,1,0,717-239
+717-240,Bankomāts · Swedbank,"Rīga, Parādes iela 8",57.04094,24.02905,Swedbank,1,0,0,0,717-240
+717-241,Bankomāts · Swedbank,"Vecvārkava, Vītolu iela 2",56.19962,26.5005,Swedbank,1,0,0,0,717-241
+717-242,Bankomāts · Swedbank,"Sala, Susējas iela 9",56.50763,25.76487,Swedbank,1,0,1,0,717-242
+717-243,Kritiskais bankomāts · Swedbank,"Kuldīga, Pilsētas laukums 4a",56.96922,21.95921,Swedbank,1,0,1,1,717-243
+717-244,Bankomāts · Swedbank,"Ērgļi, Rīgas iela 13",56.89739,25.63508,Swedbank,1,0,0,0,717-244
+717-245,Bankomāts · Swedbank,"Rencēni, Valmieras iela 13",57.72977,25.42904,Swedbank,1,0,0,0,717-245
+717-246,Bankomāts · Swedbank,"Rīga, Nīcgales iela 2",56.95929,24.17481,Swedbank,1,0,1,0,717-246
+717-248,Bankomāts · Swedbank,"Zasa, ""Meijas""",56.29177,25.98215,Swedbank,1,0,0,0,717-248
+717-249,Kritiskais bankomāts · Swedbank,"Daugavpils, Smilšu iela 98a",55.88937,26.55324,Swedbank,1,0,1,1,717-249
+717-250,Bankomāts · Swedbank,"Rīga, Raunas iela 37",56.96838,24.17975,Swedbank,1,0,1,0,717-250
+717-251,Bankomāts · Swedbank,"Rīga, Dzirciema iela 31A",56.95548,24.05266,Swedbank,1,0,0,0,717-251
+717-252,Kritiskais bankomāts · Swedbank,"Liepāja, A.Pumpura iela 5",56.50802,21.01378,Swedbank,1,0,1,1,717-252
+717-254,Bankomāts · Swedbank,"Zaube, ""Kooperatīvs""",56.99665,25.26001,Swedbank,1,0,0,0,717-254
+717-255,Bankomāts · Swedbank,"Iecava, Rīgas iela 14",56.59627,24.19421,Swedbank,1,0,0,0,717-255
+717-256,Bankomāts · Swedbank,"Nereta, Raiņa iela 6",56.20408,25.30783,Swedbank,1,0,0,0,717-256
+717-257,Kritiskais bankomāts · Swedbank,"Bauska, Slimnīcas iela 7",56.40785,24.19585,Swedbank,1,0,1,1,717-257
+717-258,Bankomāts · Swedbank,"Rīga, Mīlgrāvja iela 2",57.02128,24.13533,Swedbank,1,0,1,0,717-258
+717-259,Bankomāts · Swedbank,"Inčukalns, Atmodas iela 4",57.09771,24.68722,Swedbank,1,0,1,0,717-259
+717-260,Kritiskais bankomāts · Swedbank,"Jēkabpils, Rīgas iela 126",56.50177,25.87476,Swedbank,1,0,1,1,717-260
+717-262,Bankomāts · Swedbank,"Rīga, Strēlnieku iela 1",56.9588,24.1061,Swedbank,1,0,1,0,717-262
+717-263,Bankomāts · Swedbank,"Rīga, A.Bieziņa iela 8",56.94532,24.0227,Swedbank,1,0,0,0,717-263
+717-264,Bankomāts · Swedbank,"Plācis, ""Bērzi""",57.36246,24.9775,Swedbank,1,0,0,0,717-264
+717-265,Bankomāts · Swedbank,"Rēzekne, Atbrīvošanas aleja 98",56.50584,27.33045,Swedbank,1,0,1,0,717-265
+717-266,Bankomāts · Swedbank,"Garkalne, Vidzemes šoseja 13",57.04518,24.41535,Swedbank,1,0,0,0,717-266
+717-267,Bankomāts · Swedbank,"Ventspils, Aleksandra iela 16",57.39071,21.56944,Swedbank,1,0,0,0,717-267
+717-268,Kritiskais bankomāts · Swedbank,"Talsi, Lielā iela 2",57.24428,22.59074,Swedbank,1,0,0,1,717-268
+717-269,Bankomāts · Swedbank,"Trikāta, Nākotnes iela 3",57.54428,25.70954,Swedbank,1,0,1,0,717-269
+717-270,Bankomāts · Swedbank,"Kūkas, Kūkas Nr. 3",56.54398,26.09325,Swedbank,1,0,0,0,717-270
+717-272,Bankomāts · Swedbank,"Dobele, Zaļā iela 19",56.61983,23.28438,Swedbank,1,0,1,0,717-272
+717-273,Bankomāts · Swedbank,"Rīga, Dzērvju iela 6",56.93059,24.16694,Swedbank,1,0,1,0,717-273
+717-274,Bankomāts · Swedbank,"Cibla, Eversmuižas iela 1",56.54955,27.88083,Swedbank,1,0,0,0,717-274
+717-275,Bankomāts · Swedbank,"Rīga, Tilta iela 1",56.99489,24.12556,Swedbank,1,0,0,0,717-275
+717-277,Bankomāts · Swedbank,"Skrunda, Ventas iela 16",56.67388,22.01493,Swedbank,1,0,1,0,717-277
+717-278,Bankomāts · Swedbank,"Rīga, K. Ulmaņa gatve 122",56.93985,24.00005,Swedbank,1,0,0,0,717-278
+717-279,Kritiskais bankomāts · Swedbank,"Saulkrasti, Ainažu iela 20",57.26634,24.41475,Swedbank,1,0,1,1,717-279
+717-280,Bankomāts · Swedbank,"Rīga, Elizabetes iela 55",56.95492,24.11769,Swedbank,1,0,0,0,717-280
+717-281,Bankomāts · Swedbank,"Rīga, Ķīpsalas iela 8",56.95559,24.07927,Swedbank,1,0,0,0,717-281
+717-282,Bankomāts · Swedbank,"Rīga, Kalnciema iela 17a",56.94527,24.07231,Swedbank,1,0,1,0,717-282
+717-283,Bankomāts · Swedbank,"Ilūkstē, Pilskalnes ielā 2A",55.97724,26.29625,Swedbank,1,0,1,0,717-283
+717-284,Bankomāts · Swedbank,"Eleja, Lietuvas iela 28",56.41637,23.68358,Swedbank,1,0,0,0,717-284
+717-286,Bankomāts · Swedbank,"Gaujiena, „Gaujas”",57.51725,26.39926,Swedbank,1,0,1,0,717-286
+717-287,Bankomāts · Swedbank,"Saldus, Rīgas iela 1",56.6632,22.49197,Swedbank,1,0,0,0,717-287
+717-288,Bankomāts · Swedbank,"Vecumnieki, Rīgas iela 24b",56.6063,24.52115,Swedbank,1,0,1,0,717-288
+717-290,Kritiskais bankomāts · Swedbank,"Rīga, Juglas krastmala 2",56.98957,24.24509,Swedbank,1,0,1,1,717-290
+717-291,Bankomāts · Swedbank,"Ogre, Vidus prospekts 1",56.81974,24.59167,Swedbank,1,0,1,0,717-291
+717-292,Bankomāts · Swedbank,"Liepāja, Ganību iela 175/177",56.48608,21.017,Swedbank,1,0,0,0,717-292
+717-293,Bankomāts · Swedbank,"Rīga, Gaiļezera iela 8",56.96905,24.23228,Swedbank,1,0,0,0,717-293
+717-294,Kritiskais bankomāts · Swedbank,"Kandava, Abavas iela 4b",57.03806,22.78279,Swedbank,1,0,1,1,717-294
+717-296,Kritiskais bankomāts · Swedbank,"Sigulda, Dārza iela 28",57.15647,24.8725,Swedbank,1,0,1,1,717-296
+717-297,Bankomāts · Swedbank,"Liepāja, Brīvības iela 164",56.5353,21.06077,Swedbank,1,0,0,0,717-297
+717-299,Bankomāts · Swedbank,"Ventspils, Lielais prospekts 3/5",57.38772,21.58021,Swedbank,1,0,0,0,717-299
+717-301,Bankomāts · Swedbank,"Brocēni, Lielcieceres iela 1a",56.68282,22.56718,Swedbank,1,0,1,0,717-301
+717-302,Bankomāts · Swedbank,"Sigulda, Ventas iela 1",57.14178,24.84432,Swedbank,1,0,1,0,717-302
+717-303,Bankomāts · Swedbank,"Smiltene, Baznīcas laukums 2",57.4247,25.9016,Swedbank,1,0,1,0,717-303
+717-304,Bankomāts · Swedbank,"Jūrmala, Talsu šoseja 29 (Kauguri)",56.96089,23.61558,Swedbank,1,0,0,0,717-304
+717-305,Bankomāts · Swedbank,"Jaunmārupe, Mazcenu aleja 5/1",56.87953,23.9458,Swedbank,1,0,0,0,717-305
+717-306,Kritiskais bankomāts · Swedbank,"Engure, Jūras iela 62",57.16272,23.22848,Swedbank,1,0,1,1,717-306
+717-307,Bankomāts · Swedbank,"Rīga, Valērijas Seiles iela 6",56.93755,24.15635,Swedbank,1,0,1,0,717-307
+717-309,Bankomāts · Swedbank,"Ropaži, ""Kastanīši""",56.97315,24.63385,Swedbank,1,0,1,0,717-309
+717-310,Bankomāts · Swedbank,"Mālpils, Nākotnes iela 5",57.01003,24.9554,Swedbank,1,0,1,0,717-310
+717-311,Bankomāts · Swedbank,"Lizums, ""Akācijas""",57.18803,26.37025,Swedbank,1,0,1,0,717-311
+717-312,Kritiskais bankomāts · Swedbank,"Lubāna, O.Kalpaka iela 5",56.90196,26.72195,Swedbank,1,0,1,1,717-312
+717-313,Bankomāts · Swedbank,"Ventspils, J. Poruka iela 5",57.38685,21.54909,Swedbank,1,0,0,0,717-313
+717-314,Bankomāts · Swedbank,"Tukums, Meža iela 22",56.96986,23.16233,Swedbank,1,0,1,0,717-314
+717-315,Kritiskais bankomāts · Swedbank,"Madliena, ""Tirdzniecības centrs""",56.84522,25.15521,Swedbank,1,0,1,1,717-315
+717-316,Bankomāts · Swedbank,"Stende, Brīvības iela 20",57.1457,22.53456,Swedbank,1,0,1,0,717-316
+717-318,Bankomāts · Swedbank,"Grobiņa, Lielā iela 74",56.53511,21.16817,Swedbank,1,0,0,0,717-318
+717-319,Bankomāts · Swedbank,"Piņķi, Rigas iela 5",56.94414,23.91007,Swedbank,1,0,1,0,717-319
+717-320,Bankomāts · Swedbank,"Liepāja, Slimnicas iela 25",56.55269,21.09992,Swedbank,1,0,0,0,717-320
+717-321,Bankomāts · Swedbank,"Nīca, Dārza iela 2A",56.34862,21.06594,Swedbank,1,0,1,0,717-321
+717-322,Bankomāts · Swedbank,"Aizkraukle, Gaismas iela 22",56.60828,25.25996,Swedbank,1,0,0,0,717-322
+717-324,Bankomāts · Swedbank,"Kocēni, Alejas iela 8",57.52028,25.33985,Swedbank,1,0,1,0,717-324
+717-325,Bankomāts · Swedbank,"Naukšēni, ""Strēlnieki""",57.88344,25.45108,Swedbank,1,0,1,0,717-325
+717-326,Bankomāts · Swedbank,"Priekule, Galvenā iela 1",56.44736,21.58517,Swedbank,1,0,1,0,717-326
+717-328,Bankomāts · Swedbank,"Daugavpils, Ģimnāzijas iela 46",55.87197,26.51711,Swedbank,1,0,1,0,717-328
+717-329,Kritiskais bankomāts · Swedbank,"Daugavpils, Šaurā iela 31",55.89402,26.54612,Swedbank,1,0,1,1,717-329
+717-330,Bankomāts · Swedbank,"Kārsava, Vienības iela 72b",56.7816,27.6865,Swedbank,1,0,0,0,717-330
+717-331,Kritiskais bankomāts · Swedbank,Jaunpils „Jāņkrogs”,56.72998,23.01659,Swedbank,1,0,1,1,717-331
+717-332,Bankomāts · Swedbank,"Taurene, ""Lauras""",57.15936,25.66322,Swedbank,1,0,0,0,717-332
+717-333,Bankomāts · Swedbank,"Rīga, Elizabetes iela 71/73",56.95215,24.12057,Swedbank,1,0,1,0,717-333
+717-334,Bankomāts · Swedbank,"Saldus, Brīvības iela 30",56.6688,22.49002,Swedbank,1,0,0,0,717-334
+717-335,Bankomāts · Swedbank,"Rīga, Kurzemes prospekts 141",56.96005,23.99691,Swedbank,1,0,0,0,717-335
+717-336,Bankomāts · Swedbank,"Daugavpils, Sakņu iela 15",55.87401,26.52144,Swedbank,1,0,1,0,717-336
+717-337,Kritiskais bankomāts · Swedbank,"Rīga, Prūšu iela 2b",56.91486,24.17763,Swedbank,1,0,1,1,717-337
+717-338,Bankomāts · Swedbank,"Kroņauce,""Tišas""",56.51299,23.33821,Swedbank,1,0,1,0,717-338
+717-339,Bankomāts · Swedbank,"Baloži, Rīgas iela 14",56.87523,24.11852,Swedbank,1,0,1,0,717-339
+717-340,Bankomāts · Swedbank,"Kalnciems, Vidus iela 1",56.80024,23.61213,Swedbank,1,0,0,0,717-340
+717-341,Bankomāts · Swedbank,"Stopiņu nov., ""Melnais suns""",56.94746,24.35978,Swedbank,1,0,0,0,717-341
+717-342,Bankomāts · Swedbank,"Dagda, Daugavpils iela 8a",56.09435,27.53596,Swedbank,1,0,0,0,717-342
+717-343,Kritiskais bankomāts · Swedbank,"Daugavpils, Arhitektu iela 3",55.89174,26.55979,Swedbank,1,0,0,1,717-343
+717-344,Bankomāts · Swedbank,"Augšlīgatne, Nītaures iela 5",57.18421,25.03413,Swedbank,1,0,0,0,717-344
+717-345,Bankomāts · Swedbank,"Ozolnieki, Meliorācijas iela 2",56.68881,23.79084,Swedbank,1,0,1,0,717-345
+717-346,Bankomāts · Swedbank,"Dundaga, Talsu iela 20",57.50673,22.34928,Swedbank,1,0,0,0,717-346
+717-347,Bankomāts · Swedbank,"Malta, 1. maija iela 72",56.34671,27.1642,Swedbank,1,0,0,0,717-347
+717-348,Bankomāts · Swedbank,"Rauna, Valmieras iela 1a",57.33235,25.609,Swedbank,1,0,1,0,717-348
+717-349,Bankomāts · Swedbank,"Jaunpiebalga, Gaujas iela 25B",57.17733,26.03271,Swedbank,1,0,0,0,717-349
+717-350,Bankomāts · Swedbank,"Skrīveri, Daugavas iela 97",56.64973,25.12081,Swedbank,1,0,0,0,717-350
+717-351,Bankomāts · Swedbank,"Sabile, Ventspils iela 9",57.04586,22.57274,Swedbank,1,0,0,0,717-351
+717-352,Bankomāts · Swedbank,"Bēne, Stacijas iela 10",56.48253,23.06755,Swedbank,1,0,0,0,717-352
+717-353,Bankomāts · Swedbank,"Baldone, Rīgas iela 79 k.1",56.74271,24.39783,Swedbank,1,0,1,0,717-353
+717-354,Kritiskais bankomāts · Swedbank,"Rīga, Ulbrokas iela 4",56.9411,24.21599,Swedbank,1,0,1,1,717-354
+717-355,Bankomāts · Swedbank,"Rīga, Biķernieku iela 160",56.95811,24.25542,Swedbank,1,0,0,0,717-355
+717-356,Bankomāts · Swedbank,"Liepāja, O. Kalpaka iela 74",56.53354,21.00356,Swedbank,1,0,0,0,717-356
+717-358,Bankomāts · Swedbank,"Liepāja, Pulkveža Brieža iela 11",56.55326,21.01645,Swedbank,1,0,0,0,717-358
+717-359,Bankomāts · Swedbank,"Ķekavas novads, ""Džutas""",56.89622,24.13879,Swedbank,1,0,0,0,717-359
+717-360,Bankomāts · Swedbank,"Jaunjelgava, Jelgavas iela 44",56.61763,25.0889,Swedbank,1,0,0,0,717-360
+717-361,Bankomāts · Swedbank,"Rīga, Jaunciema gatve 174",57.04395,24.17374,Swedbank,1,0,0,0,717-361
+717-362,Bankomāts · Swedbank,"Rīga, Dzelzavas iela 6a",56.96351,24.16695,Swedbank,1,0,0,0,717-362
+717-363,Bankomāts · Swedbank,"Suntaži, ""Tautas nams""",56.90419,24.92724,Swedbank,1,0,0,0,717-363
+717-364,Bankomāts · Swedbank,"Paurupes, Rucava, Rucavas pagasts, Dienvidkurzemes novads",56.15924,21.16133,Swedbank,1,0,0,0,717-364
+717-365,Bankomāts · Swedbank,"Brīvības iela 15, Vaiņode",56.41684,21.85468,Swedbank,1,0,0,0,717-365
+717-366,Bankomāts · Swedbank,"Roja, Selgas iela 2",57.5056,22.80112,Swedbank,1,0,0,0,717-366
+717-367,Bankomāts · Swedbank,"Rīga, Skanstes iela 17",56.96799,24.11878,Swedbank,1,1,0,0,717-367
+717-368,Bankomāts · Swedbank,"Aloja, Rīgas iela 1b",57.76619,24.88308,Swedbank,1,0,0,0,717-368
+717-369,Bankomāts · Swedbank,"Rīga, Satekles iela 2B",56.94692,24.11915,Swedbank,1,1,0,0,717-369
+717-370,Bankomāts · Swedbank,"Salacgrīva, Rīgas iela 13",57.75124,24.35722,Swedbank,1,0,0,0,717-370
+717-371,Bankomāts · Swedbank,"Valdemārpils, Lielā iela 6",57.37138,22.59197,Swedbank,1,0,0,0,717-371
+717-372,Bankomāts · Swedbank,"Mazsalaca, Baznīcas iela 2",57.85965,25.05662,Swedbank,1,0,0,0,717-372
+717-374,Bankomāts · Swedbank,"Aizkraukle, Gaismas iela 35",56.61015,25.25876,Swedbank,1,1,0,0,717-374
+717-375,Kritiskais bankomāts · Swedbank,"Talsi, Dundagas iela 21",57.25131,22.57947,Swedbank,1,0,0,1,717-375
+717-376,Bankomāts · Swedbank,"Ape, Stacijas iela 4",57.53885,26.69448,Swedbank,1,0,0,0,717-376
+814-003,Kritiskais bankomāts · Luminor,"Aizkraukle, Gaismas iela 35",56.61019,25.25925,Luminor,1,1,0,1,814-003
+814-004,Bankomāts · Luminor,"Bauska, Pionieru iela 2",56.40578,24.18855,Luminor,1,1,0,0,814-004
+814-005,Bankomāts · Luminor,"Cēsis, Jāņa Poruka iela 19",57.31445,25.29222,Luminor,1,0,0,0,814-005
+814-006,Bankomāts · Luminor,"Cēsis, Valmieras iela 17a",57.31746,25.28153,Luminor,1,1,0,0,814-006
+814-007,Bankomāts · Luminor,"Cēsis, Vienības lauk. 2",57.31396,25.27555,Luminor,1,0,1,0,814-007
+814-008,Bankomāts · Luminor,"Daugavpils, 18.novembra iela 136",55.87712,26.55121,Luminor,1,0,0,0,814-008
+814-009,Bankomāts · Luminor (2),"Daugavpils, Cietokšņa iela 48",55.87178,26.51932,Luminor,2,1,1,0,814-009 814-010
+814-011,Bankomāts · Luminor,"Daugavpils, Cietokšņa iela 60",55.873,26.51833,Luminor,1,1,0,0,814-011
+814-012,Bankomāts · Luminor,"Daugavpils, Cietokšņa iela 60",55.87537,26.52077,Luminor,1,1,0,0,814-012
+814-013,Bankomāts · Luminor,"Daugavpils, Cietokšņa iela 72a",55.87793,26.51356,Luminor,1,1,0,0,814-013
+814-014,Bankomāts · Luminor,"Daugavpils, Raipoles iela 11a",55.90035,26.52642,Luminor,1,0,1,0,814-014
+814-015,Bankomāts · Luminor,"Daugavpils, Rīgas iela 9",55.87129,26.51734,Luminor,1,0,0,0,814-015
+814-016,Bankomāts · Luminor,"Daugavpils, Smilšu iela 92b",55.88685,26.5538,Luminor,1,0,0,0,814-016
+814-017,Kritiskais bankomāts · Luminor,"Daugavpils, Viestura iela 10",55.87116,26.52491,Luminor,1,0,1,1,814-017
+814-018,Kritiskais bankomāts · Luminor,"Dobele, Brīvības iela 30",56.6264,23.28652,Luminor,1,1,0,1,814-018
+814-019,Bankomāts · Luminor,"Grobiņa, Lielā iela 29",56.53539,21.16504,Luminor,1,0,0,0,814-019
+814-020,Bankomāts · Luminor,"Jēkabpils, Vienības iela 7",56.4956,25.87848,Luminor,1,1,0,0,814-020
+814-021,Kritiskais bankomāts · Luminor,"Jēkabpils, Vienības iela 1a",56.49368,25.87474,Luminor,1,0,1,1,814-021
+814-022,Bankomāts · Luminor,"Jelgava, Dobeles šoseja 7",56.65089,23.70692,Luminor,1,0,0,0,814-022
+814-023,Bankomāts · Luminor,"Jelgava, Katoļu iela 18",56.64802,23.72721,Luminor,1,1,0,0,814-023
+814-024,Bankomāts · Luminor,"Jelgava, Rīgas iela 11a",56.6618,23.7465,Luminor,1,1,0,0,814-024
+814-025,Bankomāts · Luminor,"Jelgava, Rīgas iela 48",56.66815,23.76103,Luminor,1,1,0,0,814-025
+814-026,Kritiskais bankomāts · Luminor,"Jelgava, Rūpniecības iela 77a",56.63683,23.7055,Luminor,1,0,1,1,814-026
+814-028,Kritiskais bankomāts · Luminor,"Jūrmala, Jomas iela 36",56.97247,23.79818,Luminor,1,0,1,1,814-028
+814-029,Bankomāts · Luminor,"Jūrmala, Strēlnieku prospekts 1",56.96731,23.76999,Luminor,1,1,0,0,814-029
+814-030,Bankomāts · Luminor,"Jūrmala, Talsu šoseja 29",56.96177,23.61292,Luminor,1,0,0,0,814-030
+814-032,Bankomāts · Luminor,"Ķekava, Rīgas iela 22a",56.83193,24.23227,Luminor,1,1,0,0,814-032
+814-033,Bankomāts · Luminor,"Ķekavas nov., Džutas",56.8958,24.1395,Luminor,1,0,0,0,814-033
+814-034,Bankomāts · Luminor,"Kuldīga, Pilsētas laukums 5",56.96932,21.96169,Luminor,1,1,0,0,814-034
+814-035,Bankomāts · Luminor,"Lielvārde, Lāčplēša iela 23b",56.71697,24.80909,Luminor,1,0,0,0,814-035
+814-036,Bankomāts · Luminor,"Liepāja, Ganību iela 175/177",56.48598,21.01691,Luminor,1,0,0,0,814-036
+814-037,Bankomāts · Luminor,"Liepāja, Jaunā Ostmala 3/5",56.51475,21.01758,Luminor,1,1,0,0,814-037
+814-038,Bankomāts · Luminor,"Liepāja, K.Zāles iela 8",56.51161,21.0172,Luminor,1,0,0,0,814-038
+814-039,Bankomāts · Luminor,"Liepāja, Klaipēdas iela 62",56.49204,21.00363,Luminor,1,1,0,0,814-039
+814-040,Bankomāts · Luminor,"Liepāja, Kuršu iela 7-9",56.50444,21.01014,Luminor,1,0,0,0,814-040
+814-041,Bankomāts · Luminor,"Liepāja, Lielā iela 13",56.50764,21.01057,Luminor,1,0,1,0,814-041
+814-042,Kritiskais bankomāts · Luminor,"Liepāja, O.Kalpaka iela 86",56.53647,21.00253,Luminor,1,0,1,1,814-042
+814-043,Bankomāts · Luminor (2),"Liepāja, Radio iela 16",56.51044,21.01143,Luminor,2,1,1,0,814-043 814-044
+814-047,Bankomāts · Luminor,"Limbaži, Cēsu iela 23",57.51311,24.72122,Luminor,1,1,0,0,814-047
+814-048,Bankomāts · Luminor,"Ludza, Stacijas iela 30",56.54453,27.72089,Luminor,1,0,0,0,814-048
+814-049,Bankomāts · Luminor,"Madona, Rūpniecības iela 49",56.85897,26.23181,Luminor,1,0,0,0,814-049
+814-050,Bankomāts · Luminor,"Mārupe, Pededzes iela 1",56.90535,24.05369,Luminor,1,1,0,0,814-050
+814-051,Bankomāts · Luminor,"Mārupe, Malduguņu iela 2",56.92667,24.03611,Luminor,1,1,0,0,814-051
+814-052,Bankomāts · Luminor (2),"Mārupes nov., Lidosta „Rīga” 10/1",56.92196,23.97929,Luminor,2,1,1,0,814-052 814-053
+814-054,Bankomāts · Luminor,"Mārupes nov., Lidosta „Rīga” 10/1",56.9222,23.97913,Luminor,1,0,1,0,814-054
+814-055,Bankomāts · Luminor,"Ogre, Mednieku iela 21/23",56.8258,24.60308,Luminor,1,0,0,0,814-055
+814-056,Kritiskais bankomāts · Luminor,"Ogre, Rīgas iela 33",56.81777,24.5764,Luminor,1,1,0,1,814-056
+814-057,Bankomāts · Luminor,"Olaine, Zemgales iela 29",56.78448,23.93775,Luminor,1,0,1,0,814-057
+814-058,Bankomāts · Luminor,"Piņķi, Rīgas iela 8",56.9478,23.89923,Luminor,1,0,1,0,814-058
+814-059,Bankomāts · Luminor,"Rēzekne, Atbrīvošanas aleja 138",56.51465,27.33641,Luminor,1,0,0,0,814-059
+814-060,Kritiskais bankomāts · Luminor,"Rēzekne, Galdnieku iela 8",56.50204,27.32997,Luminor,1,1,0,1,814-060
+814-061,Bankomāts · Luminor,"Rīga, A.Deglava iela 160a",56.94365,24.22294,Luminor,1,0,0,0,814-061
+814-062,Bankomāts · Luminor,"Rīga, A.Deglava iela 67",56.95017,24.18727,Luminor,1,1,0,0,814-062
+814-063,Bankomāts · Luminor,"Rīga, A.Dombrovska iela 74",57.03626,24.09757,Luminor,1,0,1,0,814-063
+814-064,Kritiskais bankomāts · Luminor,"Rīga, A.Saharova iela 20a",56.94155,24.20672,Luminor,1,1,0,1,814-064
+814-066,Bankomāts · Luminor,"Rīga, Anniņmuižas bulv. 40a",56.96044,24.01297,Luminor,1,1,0,0,814-066
+814-067,Bankomāts · Luminor,"Rīga, Audēju iela 16",56.94764,24.11312,Luminor,1,1,0,0,814-067
+814-068,Bankomāts · Luminor,"Rīga, Biķernieku iela 143",56.95643,24.23982,Luminor,1,1,0,0,814-068
+814-069,Bankomāts · Luminor,"Rīga, Biķeru iela 4",56.95101,24.25309,Luminor,1,0,0,0,814-069
+814-070,Bankomāts · Luminor,"Rīga, Brīvības gatve 265",56.97908,24.18442,Luminor,1,0,1,0,814-070
+814-071,Bankomāts · Luminor,"Rīga, Brīvības gatve 372",56.98296,24.20294,Luminor,1,1,0,0,814-071
+814-072,Bankomāts · Luminor,"Rīga, Brīvības gatve 372",56.98203,24.20434,Luminor,1,1,0,0,814-072
+814-073,Bankomāts · Luminor,"Rīga, Brīvības iela 90",56.95958,24.12915,Luminor,1,0,1,0,814-073
+814-074,Bankomāts · Luminor,"Rīga, Centrāltirgus iela 3-k.2",56.94403,24.11613,Luminor,1,0,0,0,814-074
+814-075,Bankomāts · Luminor,"Rīga, Duntes iela 19a",56.98642,24.13302,Luminor,1,1,0,0,814-075
+814-076,Bankomāts · Luminor,"Rīga, Dzelzavas iela 74",56.95606,24.19256,Luminor,1,0,1,0,814-076
+814-077,Bankomāts · Luminor,"Rīga, Dzirnavu iela 67",56.95469,24.12069,Luminor,1,1,0,0,814-077
+814-078,Bankomāts · Luminor,"Rīga, Gaiļezera iela 8",56.968,24.23682,Luminor,1,0,0,0,814-078
+814-079,Bankomāts · Luminor,"Rīga, Gobas iela 15c",57.03338,24.04873,Luminor,1,0,1,0,814-079
+814-080,Bankomāts · Luminor,"Rīga, Grēcinieku iela 34",56.94629,24.10579,Luminor,1,0,1,0,814-080
+814-081,Bankomāts · Luminor,"Rīga, Gustava Zemgala gatve 74",56.97582,24.16524,Luminor,1,0,1,0,814-081
+814-082,Bankomāts · Luminor,"Rīga, Ieriķu iela 3",56.96597,24.16299,Luminor,1,1,0,0,814-082
+814-083,Bankomāts · Luminor,"Rīga, Ilūkstes iela 24a",56.94168,24.19584,Luminor,1,0,1,0,814-083
+814-084,Bankomāts · Luminor,"Rīga, Juglas krastmala 2",56.98958,24.24486,Luminor,1,1,0,0,814-084
+814-086,Bankomāts · Luminor,"Rīga, Āzenes iela 5",56.94943,24.08251,Luminor,1,0,0,0,814-086
+814-087,Bankomāts · Luminor,"Rīga, Kaļķu iela 2",56.94803,24.10732,Luminor,1,0,1,0,814-087
+814-088,Bankomāts · Luminor,"Rīga, Kr.Barona iela 3",56.95128,24.12115,Luminor,1,0,1,0,814-088
+814-089,Bankomāts · Luminor,"Rīga, Kr.Valdemāra iela 112",56.97437,24.13677,Luminor,1,1,0,0,814-089
+814-092,Kritiskais bankomāts · Luminor,"Rīga, Kurbada iela 8",56.94752,24.13687,Luminor,1,0,1,1,814-092
+814-093,Bankomāts · Luminor,"Rīga, Kurzemes prospekts 1a",56.9536,24.03792,Luminor,1,1,0,0,814-093
+814-094,Bankomāts · Luminor,"Rīga, Lielirbes iela 29",56.92944,24.0351,Luminor,1,1,0,0,814-094
+814-095,Bankomāts · Luminor,"Rīga, Lubānas iela 117a",56.93219,24.20024,Luminor,1,0,1,0,814-095
+814-096,Bankomāts · Luminor,"Rīga, Mārupes iela 1a",56.93524,24.07093,Luminor,1,1,1,0,814-096
+814-097,Bankomāts · Luminor (2),"Rīga, Latgales iela 257",56.92316,24.17712,Luminor,2,1,0,0,814-097 814-098
+814-099,Bankomāts · Luminor,"Rīga, Latgales iela 357",56.92004,24.19091,Luminor,1,1,0,0,814-099
+814-100,Kritiskais bankomāts · Luminor,"Rīga, Marijas iela 2a",56.94822,24.12079,Luminor,1,1,1,1,814-100
+814-101,Bankomāts · Luminor,"Rīga, Matīsa iela 25",56.95712,24.13335,Luminor,1,1,1,0,814-101
+814-102,Bankomāts · Luminor,"Rīga, Melnsila iela 22",56.94529,24.06501,Luminor,1,0,0,0,814-102
+814-103,Bankomāts · Luminor,"Rīga, Mūkusalas iela 71",56.92644,24.10512,Luminor,1,1,0,0,814-103
+814-104,Bankomāts · Luminor,"Rīga, Mūkusalas iela 73",56.92297,24.10717,Luminor,1,0,0,0,814-104
+814-105,Bankomāts · Luminor,"Rīga, Nīcgales iela 2a",56.95933,24.17569,Luminor,1,0,0,0,814-105
+814-106,Bankomāts · Luminor,"Rīga, P.Brieža iela 33a",56.96504,24.10583,Luminor,1,1,0,0,814-106
+814-107,Bankomāts · Luminor,"Rīga, Prāgas iela 1",56.94492,24.11487,Luminor,1,0,0,0,814-107
+814-108,Bankomāts · Luminor,"Rīga, Rušonu iela 17a",56.91458,24.18417,Luminor,1,0,1,0,814-108
+814-109,Kritiskais bankomāts · Luminor,"Rīga, Rusova iela 1",56.98955,24.16649,Luminor,1,0,0,1,814-109
+814-110,Kritiskais bankomāts · Luminor (2),"Rīga, Skanstes iela 12",56.9706,24.11886,Luminor,2,1,1,1,814-110 814-111
+814-112,Bankomāts · Luminor,"Rīga, Slokas iela 115",56.96071,24.03711,Luminor,1,0,0,0,814-112
+814-113,Bankomāts · Luminor,"Rīga, Stacijas laukums 2",56.94763,24.12129,Luminor,1,1,0,0,814-113
+814-114,Bankomāts · Luminor,"Rīga, Stacijas laukums 2",56.94686,24.11945,Luminor,1,1,0,0,814-114
+814-115,Bankomāts · Luminor,"Rīga, Stirnu iela 26",56.95936,24.18582,Luminor,1,0,0,0,814-115
+814-116,Bankomāts · Luminor,"Rīga, Tilta iela 32",56.99549,24.12995,Luminor,1,0,0,0,814-116
+814-117,Bankomāts · Luminor,"Rīga, Vaļņu iela 2",56.94881,24.11254,Luminor,1,0,1,0,814-117
+814-118,Bankomāts · Luminor,"Rīga, Vienības gatve 194A",56.89664,24.07899,Luminor,1,1,0,0,814-118
+814-119,Bankomāts · Luminor,"Rīga, Zolitūdes iela 34",56.9493,23.99984,Luminor,1,0,1,0,814-119
+814-120,Bankomāts · Luminor,"Rīga, Valdeķu 51a",56.90295,24.09322,Luminor,1,0,1,0,814-120
+814-121,Bankomāts · Luminor,"Salacgrīva, Vidzemes iela 3a",57.75181,24.35878,Luminor,1,0,0,0,814-121
+814-123,Kritiskais bankomāts · Luminor,"Saldus, Apvedceļš 11",56.68232,22.47123,Luminor,1,0,1,1,814-123
+814-124,Bankomāts · Luminor,"Saldus, Brīvības iela 30",56.66842,22.49038,Luminor,1,1,0,0,814-124
+814-125,Bankomāts · Luminor,"Saldus, Jelgavas iela 1",56.66643,22.49444,Luminor,1,0,1,0,814-125
+814-127,Bankomāts · Luminor,"Sigulda, Strēlnieku iela 2",57.14327,24.84459,Luminor,1,1,0,0,814-127
+814-128,Bankomāts · Luminor,"Sigulda, Vidus iela 1",57.15353,24.84792,Luminor,1,0,0,0,814-128
+814-129,Bankomāts · Luminor,"Smiltene, Baznīcas laukums 2",57.42446,25.90389,Luminor,1,0,0,0,814-129
+814-131,Bankomāts · Luminor,"Tukums, Kurzemes iela 36",56.97201,23.15326,Luminor,1,1,0,0,814-131
+814-132,Bankomāts · Luminor,"Valmiera, Rīgas iela 74",57.53285,25.39288,Luminor,1,0,0,0,814-132
+814-133,Bankomāts · Luminor,"Valmiera, G. Apiņa iela 10a",57.5421,25.41697,Luminor,1,0,0,0,814-133
+814-134,Bankomāts · Luminor,"Valmiera, Matīšu šoseja 6",57.54099,25.3996,Luminor,1,0,0,0,814-134
+814-135,Kritiskais bankomāts · Luminor,"Valmiera, Rīgas iela 13",57.53808,25.41976,Luminor,1,1,1,1,814-135
+814-136,Bankomāts · Luminor,"Valmiera, Rīgas iela 4",57.53852,25.42355,Luminor,1,1,0,0,814-136
+814-137,Bankomāts · Luminor,"Valmiera, Stacijas iela 29",57.52694,25.43482,Luminor,1,0,1,0,814-137
+814-138,Kritiskais bankomāts · Luminor,"Ventspils, Aleksandra iela 16/18",57.39034,21.56949,Luminor,1,0,1,1,814-138
+814-139,Bankomāts · Luminor,"Ventspils, Celtnieku iela 17",57.40784,21.59949,Luminor,1,0,0,0,814-139
+814-140,Bankomāts · Luminor,"Ventspils, Ganību iela 22/24",57.38983,21.56266,Luminor,1,1,0,0,814-140
+814-141,Bankomāts · Luminor,"Ventspils, Lidotāju iela 21",57.40272,21.59022,Luminor,1,0,1,0,814-141
+814-142,Bankomāts · Luminor,"Ventspils, Lielais prospekts 3/5",57.3877,21.58032,Luminor,1,1,0,0,814-142
+814-143,Bankomāts · Luminor,"Rīga, A. Dombrovska iela 23",57.03185,24.109,Luminor,1,0,0,0,814-143
+814-144,Bankomāts · Luminor,"Talsi, Rīgas iela 8",57.23882,22.58371,Luminor,1,1,0,0,814-144
+814-145,Bankomāts · Luminor,"Saulkrasti, Ainažu iela 30",57.27243,24.41721,Luminor,1,0,0,0,814-145
+814-146,Bankomāts · Luminor,"Liepāja, Ziemeļu iela 13",56.53523,21.0125,Luminor,1,0,0,0,814-146
+900-001,Bankomāts · SEB,"Rīga, Līvciema iela 46",56.9034,24.10288,SEB,1,0,0,0,900-001
+900-002,Bankomāts · SEB,"Rīga, A.Deglava iela 110",56.94736,24.19362,SEB,1,0,0,0,900-002
+900-003,Bankomāts · SEB,"Viļaka, Balvu iela 5",57.18424,27.67083,SEB,1,0,0,0,900-003
+900-004,Bankomāts · SEB,"Gulbene, Blaumaņa iela 24",57.16818,26.76562,SEB,1,0,0,0,900-004
+900-005,Bankomāts · SEB,"Jūrmala, Jomas iela 37",56.97308,23.79989,SEB,1,0,0,0,900-005
+900-007,Bankomāts · SEB,"Sigulda, Vidzemes šoseja 16",57.14461,24.85955,SEB,1,0,0,0,900-007
+900-008,Bankomāts · SEB,"Rīga, Prāgas iela 1",56.94514,24.11453,SEB,1,0,1,0,900-008
+900-009,Bankomāts · SEB,"Rīga, Duntes iela 19a",56.98668,24.13264,SEB,1,0,0,0,900-009
+900-010,Bankomāts · SEB,"Rīga, Nīcgales iela 2",56.95953,24.17528,SEB,1,0,0,0,900-010
+900-011,Bankomāts · SEB,"Rīga, Hipokrāta iela 2",56.96747,24.24367,SEB,1,0,0,0,900-011
+900-012,Bankomāts · SEB,"Rīga, Biķernieku iela 160",56.95671,24.2541,SEB,1,0,0,0,900-012
+900-013,Bankomāts · SEB,"Daugavpils, Aveņu iela 26",55.90122,26.52743,SEB,1,0,0,0,900-013
+900-014,Bankomāts · SEB,"Liepāja, Klaipēdas iela 104c",56.48727,21.00509,SEB,1,0,0,0,900-014
+900-015,Bankomāts · SEB,"Rīga, A.Saharova iela 2",56.93317,24.20222,SEB,1,0,0,0,900-015
+900-016,Bankomāts · SEB,"Rīga, Stacijas laukums 2a",56.9467,24.11944,SEB,1,0,0,0,900-016
+900-017,Bankomāts · SEB,"Liepāja, Kuršu laukums 7/9",56.50519,21.01106,SEB,1,0,0,0,900-017
+900-018,Bankomāts · SEB,"Preiļi, Rīgas iela 4d",56.29876,26.70697,SEB,1,0,0,0,900-018
+900-019,Bankomāts · SEB,"Saldus, Brīvības iela 30",56.66844,22.49047,SEB,1,0,0,0,900-019
+900-020,Bankomāts · SEB,"Rīga, 13. janvāra iela 8",56.94642,24.11692,SEB,1,0,0,0,900-020
+900-021,Bankomāts · SEB,"Daugavpils, Stacijas iela 129K",55.88451,26.50981,SEB,1,0,0,0,900-021
+900-022,Bankomāts · SEB,"Ādaži, Rīgas gatve 51",57.07524,24.31908,SEB,1,0,0,0,900-022
+900-023,Bankomāts · SEB,"Liepāja, Lielā iela 13",56.5075,21.01078,SEB,1,0,0,0,900-023
+900-024,Bankomāts · SEB,"Rīga, Vienības gatve 194a, k-1",56.89676,24.07848,SEB,1,0,0,0,900-024
+900-025,Bankomāts · SEB,"Garkalnes novads, Siguldas šoseja 6",57.00306,24.28797,SEB,1,0,0,0,900-025
+900-026,Bankomāts · SEB,"Liepāja, Klaipēdas iela 62",56.49167,21.00339,SEB,1,0,0,0,900-026
+900-027,Bankomāts · SEB,"Rīga, Nīcgales iela 46a",56.94463,24.17118,SEB,1,0,0,0,900-027
+900-028,Bankomāts · SEB,"Salacgrīva, Rīgas iela 13",57.75099,24.35716,SEB,1,0,0,0,900-028
+900-029,Bankomāts · SEB,"Rīga, Pilsoņu iela 1 K1",56.93693,24.07095,SEB,1,0,1,0,900-029
+900-030,Bankomāts · SEB,"Rīga, Mūkusalas iela 93",56.91583,24.11893,SEB,1,0,1,0,900-030
+900-031,Bankomāts · SEB,"Rīga, Dzirciema iela 16",56.95364,24.05486,SEB,1,0,1,0,900-031
+900-032,Bankomāts · SEB,"Rīga, Sarkandaugavas 9",56.99853,24.12334,SEB,1,0,0,0,900-032
+900-033,Bankomāts · SEB,"Zilupe, Brīvības iela 32",56.38909,28.12018,SEB,1,0,1,0,900-033
+900-034,Bankomāts · SEB,"Rīga, Spīķeru iela 1",56.9449,24.1202,SEB,1,0,1,0,900-034
+900-035,Bankomāts · SEB,"Rīga, Brīvības gatve 232",56.97327,24.16708,SEB,1,0,1,0,900-035
+900-036,Bankomāts · SEB,"Rīga, Matīsa iela 25",56.95706,24.13386,SEB,1,0,1,0,900-036
+900-037,Bankomāts · SEB,"Rīga, Pilsoņu iela 13",56.93242,24.06908,SEB,1,0,1,0,900-037
+900-038,Bankomāts · SEB,"Rīga, Dižozolu iela 2",56.90284,24.0949,SEB,1,0,0,0,900-038
+900-039,Bankomāts · SEB,"Rīga, A.Dombrovska iela 23",57.03183,24.10914,SEB,1,0,1,0,900-039
+900-040,Bankomāts · SEB,"Rīga, Lidoņu iela 27",56.96869,24.05939,SEB,1,0,0,0,900-040
+900-041,Bankomāts · SEB,"Rīga, A.Saharova iela 14",56.93733,24.20397,SEB,1,0,1,0,900-041
+900-042,Bankomāts · SEB,"Rīga, Brīvības gatve 310",56.97885,24.1861,SEB,1,0,1,0,900-042
+900-043,Bankomāts · SEB,"Rīga, Kr.Barona iela 4",56.94936,24.11778,SEB,1,0,1,0,900-043
+900-044,Bankomāts · SEB,"Rīga, Brīvības iela 90",56.95932,24.12945,SEB,1,0,1,0,900-044
+900-045,Bankomāts · SEB,"Rīga, Brīvības iela 78",56.95872,24.12603,SEB,1,0,1,0,900-045
+900-046,Bankomāts · SEB,"Rīga, Ruses iela 5",56.94811,24.00286,SEB,1,0,1,0,900-046
+900-047,Bankomāts · SEB,"Rīga, Kr.Barona iela 117",56.96428,24.14586,SEB,1,0,1,0,900-047
+900-048,Bankomāts · SEB,"Rīga, Marijas iela 14",56.95025,24.12469,SEB,1,0,1,0,900-048
+900-049,Kritiskais bankomāts · SEB,"Rīga, Juglas krastmala 2",56.98963,24.2448,SEB,1,0,1,1,900-049
+900-050,Bankomāts · SEB,"Rīga, Kalnciema iela 41",56.94241,24.06261,SEB,1,0,1,0,900-050
+900-051,Bankomāts · SEB,"Rīga, Vienības gatve 49",56.92024,24.08822,SEB,1,0,1,0,900-051
+900-052,Bankomāts · SEB,"Ikšķile, Melioratoru 1a",56.8366,24.49918,SEB,1,0,1,0,900-052
+900-053,Kritiskais bankomāts · SEB,"Valmiera, Rīgas iela 40",57.53722,25.41061,SEB,1,0,1,1,900-053
+900-055,Bankomāts · SEB,"Aizkraukle, Spīdolas iela 11",56.60036,25.25267,SEB,1,0,1,0,900-055
+900-056,Bankomāts · SEB,"Valka, Rīgas iela 17",57.77391,26.01964,SEB,1,0,1,0,900-056
+900-057,Kritiskais bankomāts · SEB,"Rēzekne, Maskavas iela 16",56.52664,27.35472,SEB,1,0,1,1,900-057
+900-058,Bankomāts · SEB,"Limbaži, Stacijas iela 22",57.50958,24.72119,SEB,1,0,1,0,900-058
+900-059,Bankomāts · SEB,"Valmiera, Stacijas iela 11",57.53106,25.43025,SEB,1,0,1,0,900-059
+900-060,Bankomāts · SEB,"Tukums, Alīnes iela 1a",56.95767,23.17983,SEB,1,0,1,0,900-060
+900-061,Bankomāts · SEB,"Jaunkalsnava, Pietnieki",56.6888,25.96986,SEB,1,0,1,0,900-061
+900-062,Bankomāts · SEB,"Jelgava, Pasta iela 37",56.65132,23.72272,SEB,1,0,1,0,900-062
+900-063,Bankomāts · SEB,"Talsi, Lielā iela 17",57.24426,22.58996,SEB,1,0,1,0,900-063
+900-064,Bankomāts · SEB,"Ogre, Brīvības iela 15a",56.82131,24.60447,SEB,1,0,1,0,900-064
+900-066,Bankomāts · SEB,"Sigulda, L. Paegles iela 3",57.15708,24.85003,SEB,1,0,1,0,900-066
+900-067,Bankomāts · SEB,"Kuldīga, Liepājas iela 1",56.96858,21.97073,SEB,1,0,1,0,900-067
+900-068,Bankomāts · SEB,"Jēkabpils, Rīgas iela 103a",56.50128,25.87553,SEB,1,0,1,0,900-068
+900-069,Bankomāts · SEB,"Aizkraukle, Druvas iela 2",56.60653,25.26214,SEB,1,0,1,0,900-069
+900-070,Bankomāts · SEB,"Ķegums, Ķeguma prospekts 1a",56.74464,24.72022,SEB,1,0,1,0,900-070
+900-071,Bankomāts · SEB,"Jelgava, Lielā iela 49",56.65092,23.70419,SEB,1,0,1,0,900-071
+900-072,Bankomāts · SEB,"Sigulda, Vidus iela 1",57.15306,24.84788,SEB,1,1,0,0,900-072
+900-073,Bankomāts · SEB,"Ogre, Mālkalnes prospekts 3",56.822,24.5948,SEB,1,0,1,0,900-073
+900-074,Bankomāts · SEB,"Dobele, Krasta iela 7",56.61641,23.28308,SEB,1,0,1,0,900-074
+900-075,Bankomāts · SEB,"Ulbroka, Peldu iela 2",56.93952,24.29165,SEB,1,0,1,0,900-075
+900-076,Bankomāts · SEB,"Krāslava, Rīgas iela 28",55.89613,27.16359,SEB,1,0,1,0,900-076
+900-077,Bankomāts · SEB,"Madona, Saules iela 39b",56.85699,26.22452,SEB,1,0,1,0,900-077
+900-078,Bankomāts · SEB,"Viļāni, Raiņa iela 23k1",56.54985,26.92224,SEB,1,0,1,0,900-078
+900-079,Bankomāts · SEB,"Iecava, Rīgas iela 27",56.59784,24.19697,SEB,1,0,1,0,900-079
+900-080,Bankomāts · SEB,"Limbaži, Rīgas iela 23a",57.50806,24.71456,SEB,1,0,1,0,900-080
+900-081,Bankomāts · SEB,"Strenči, Rīgas iela 7",57.62725,25.68468,SEB,1,0,0,0,900-081
+900-082,Bankomāts · SEB,"Viesīte, Smilšu iela 2",56.34237,25.56762,SEB,1,0,1,0,900-082
+900-083,Bankomāts · SEB,"Cēsis, Piebalgas iela 85",57.29677,25.303,SEB,1,0,1,0,900-083
+900-084,Bankomāts · SEB,"Rūjiena, Brīvības iela 8",57.89738,25.32468,SEB,1,0,1,0,900-084
+900-085,Bankomāts · SEB,"Varakļāni, Rīgas iela 13",56.60964,26.75253,SEB,1,0,1,0,900-085
+900-086,Bankomāts · SEB,"Krāslava, Baznīcas iela 1",55.89747,27.17106,SEB,1,0,1,0,900-086
+900-087,Bankomāts · SEB,"Cesvaine, Pils iela 1A",56.96835,26.30949,SEB,1,0,1,0,900-087
+900-088,Kritiskais bankomāts · SEB,"Liepāja, M. Ķempes iela 9",56.48324,21.02149,SEB,1,0,1,1,900-088
+900-089,Kritiskais bankomāts · SEB,"Ventspils, Talsu iela 6",57.40194,21.5847,SEB,1,0,1,1,900-089
+900-090,Bankomāts · SEB,"Balvi, Brīvības iela 65",57.13081,27.26713,SEB,1,0,1,0,900-090
+900-091,Bankomāts · SEB,"Aglona, Somersetas iela 35",56.13003,27.00861,SEB,1,0,1,0,900-091
+900-092,Bankomāts · SEB,"Dundaga, Talsu iela 1",57.51012,22.35125,SEB,1,0,1,0,900-092
+900-093,Kritiskais bankomāts · SEB,"Valmiera, Tērbatas iela 18",57.54399,25.43098,SEB,1,0,1,1,900-093
+900-094,Bankomāts · SEB,"Cēsis, Bērzaines iela 6",57.31244,25.26353,SEB,1,0,1,0,900-094
+900-095,Bankomāts · SEB,"Alūksne, Tirgotāju ielā 13",57.42079,27.05053,SEB,1,0,1,0,900-095
+900-096,Bankomāts · SEB,"Cēsis, Raiņa iela 26/28",57.30952,25.27699,SEB,1,0,1,0,900-096
+900-097,Bankomāts · SEB,"Smiltene, Daugavas iela 1a",57.42619,25.89947,SEB,1,0,1,0,900-097
+900-098,Bankomāts · SEB,"Ludza, Latgales iela 124",56.54631,27.72574,SEB,1,0,1,0,900-098
+900-099,Bankomāts · SEB,"Mērsrags, Zvejnieku iela 3",57.33644,23.12216,SEB,1,0,1,0,900-099
+900-100,Bankomāts · SEB,"Jēkabpils, Pasta iela 16a",56.49717,25.86675,SEB,1,0,1,0,900-100
+900-102,Kritiskais bankomāts · SEB,"Jēkabpils, Rīgas iela 218h",56.51591,25.85695,SEB,1,0,1,1,900-102
+900-104,Bankomāts · SEB,"Baldone, Rīgas iela 67",56.74248,24.39233,SEB,1,0,1,0,900-104
+900-105,Kritiskais bankomāts · SEB,"Jelgava, Pērnavas iela 4i",56.66828,23.75825,SEB,1,0,1,1,900-105
+900-106,Bankomāts · SEB,"Kuldīga, Gravas iela 1",56.97358,21.95761,SEB,1,0,1,0,900-106
+900-107,Bankomāts · SEB,"Alsunga, Skolas iela 3",56.97962,21.56985,SEB,1,0,1,0,900-107
+900-108,Bankomāts · SEB,"Ragana, Tirgus iela 5",57.18047,24.71297,SEB,1,0,1,0,900-108
+900-109,Bankomāts · SEB,"Olaine, T. Zeiferta iela 6",56.78883,23.94128,SEB,1,0,1,0,900-109
+900-110,Bankomāts · SEB,"Salaspils, Dienvidu iela 7",56.86066,24.36778,SEB,1,0,0,0,900-110
+900-111,Bankomāts · SEB,"Tukums, Eksporta iela 6",56.9528,23.11599,SEB,1,0,1,0,900-111
+900-112,Bankomāts · SEB,"Priekuļi, Cēsu prospekts 44",57.31351,25.35843,SEB,1,0,1,0,900-112
+900-113,Bankomāts · SEB,"Jēkabpils, Brīvības iela 301A",56.49908,25.83761,SEB,1,0,1,0,900-113
+900-114,Bankomāts · SEB,"Daugavpils, Inženieru iela 1",55.89325,26.56081,SEB,1,0,1,0,900-114
+900-115,Bankomāts · SEB,"Vītiņkalni, Inčukalna novads",57.12487,24.65845,SEB,1,0,1,0,900-115
+900-116,Bankomāts · SEB,"Saulkrasti, Ainažu iela 28",57.27292,24.41632,SEB,1,0,1,0,900-116
+900-118,Bankomāts · SEB,"Rīga, Mūkusalas iela 71",56.92715,24.10318,SEB,1,1,0,0,900-118
+900-119,Bankomāts · SEB,"Piņķi, Rīgas iela 23",56.94602,23.92036,SEB,1,1,0,0,900-119
+900-120,Bankomāts · SEB,"Rīga, Lielirbes iela 29",56.92955,24.03751,SEB,1,1,0,0,900-120
+900-121,Bankomāts · SEB,"Rīga, A.Deglava iela 67",56.95017,24.18717,SEB,1,1,0,0,900-121
+900-122,Kritiskais bankomāts · SEB,"Rīga, Stacijas laukums 2a",56.94697,24.12118,SEB,1,1,0,1,900-122
+900-123,Bankomāts · SEB,"Valdlauči, Meistaru iela 1",56.90819,24.14656,SEB,1,1,1,0,900-123
+900-124,Bankomāts · SEB,"Rīga, Āzenes iela 5",56.95002,24.0821,SEB,1,1,0,0,900-124
+900-125,Bankomāts · SEB,"Rīga, Ieriķu iela 3",56.96669,24.16504,SEB,1,1,0,0,900-125
+900-126,Bankomāts · SEB,"Rīga, Brīvības gatve 372",56.98251,24.20366,SEB,1,1,0,0,900-126
+900-127,Bankomāts · SEB,"Rīga, Dzirnavu iela 67",56.95491,24.1216,SEB,1,1,0,0,900-127
+900-128,Bankomāts · SEB,"Rīga, Kurzemes prospekts 1a",56.95393,24.03774,SEB,1,1,0,0,900-128
+900-129,Bankomāts · SEB,"Rīga, Audēju 16",56.94812,24.11264,SEB,1,1,0,0,900-129
+900-130,Bankomāts · SEB,"Rīga, A.Deglava iela 100",56.94873,24.18705,SEB,1,1,0,0,900-130
+900-131,Bankomāts · SEB,"Liepāja, Kārļa Zāles laukums 8",56.51121,21.01697,SEB,1,1,0,0,900-131
+900-132,Bankomāts · SEB,"Rīga, Pulkveža Brieža iela 33a",56.96544,24.10505,SEB,1,1,0,0,900-132
+900-133,Kritiskais bankomāts · SEB,"Rīga, Vaļņu iela 11",56.94989,24.11079,SEB,1,1,1,1,900-133
+900-134,Kritiskais bankomāts · SEB,"Rīga, Nometņu iela 61",56.93608,24.07072,SEB,1,1,0,1,900-134
+900-135,Bankomāts · SEB,"Rīga, Kr.Barona iela 46",56.95419,24.12792,SEB,1,1,0,0,900-135
+900-136,Bankomāts · SEB,"Rīga, Latgales iela 257b",56.92434,24.17611,SEB,1,1,0,0,900-136
+900-137,Bankomāts · SEB,"Rīga, Latgales iela 257b",56.92434,24.17462,SEB,1,1,0,0,900-137
+900-139,Bankomāts · SEB,"Rīga, Slokas iela 115",56.96027,24.03751,SEB,1,1,0,0,900-139
+900-140,Bankomāts · SEB,"Rīga, Jaunmoku iela 13",56.93143,24.03948,SEB,1,1,0,0,900-140
+900-141,Bankomāts · SEB,"Rīga, Stirnu iela 26",56.95839,24.18603,SEB,1,1,0,0,900-141
+900-142,Bankomāts · SEB,"Rīga, Jūrmalas gatve 85",56.95411,24.00638,SEB,1,1,0,0,900-142
+900-143,Bankomāts · SEB,"Rīga, Latgales iela 357",56.90558,24.19181,SEB,1,1,0,0,900-143
+900-144,Bankomāts · SEB,"Ozolnieki, Skolas 1b",56.69194,23.78818,SEB,1,1,0,0,900-144
+900-145,Bankomāts · SEB,"Skrunda, Ventas iela 16",56.67402,22.01353,SEB,1,1,0,0,900-145
+900-146,Bankomāts · SEB,"Valmiera, Rīgas iela 4",57.53874,25.42352,SEB,1,1,0,0,900-146
+900-147,Bankomāts · SEB,"Aizkraukle, Gaismas iela 35",56.61038,25.25948,SEB,1,1,0,0,900-147
+900-148,Kritiskais bankomāts · SEB,"Liepāja, Zivju iela 11/13",56.5058,21.01181,SEB,1,1,1,1,900-148
+900-149,Bankomāts · SEB,"Valka, Rīgas ielā 25",57.77163,26.0164,SEB,1,1,1,0,900-149
+900-150,Kritiskais bankomāts · SEB,"Jūrmala, Talsu šoseja 29",56.96083,23.61536,SEB,1,1,0,1,900-150
+900-151,Bankomāts · SEB,"Ventspils, Lielais prospekts 3/5",57.38763,21.58019,SEB,1,1,0,0,900-151
+900-152,Bankomāts · SEB,"Aizpute, Zvaigžņu iela 2",56.71886,21.60655,SEB,1,1,0,0,900-152
+900-153,Bankomāts · SEB,"Talsi, Rīgas iela 8",57.23879,22.58471,SEB,1,1,0,0,900-153
+900-155,Kritiskais bankomāts · SEB,"Saldus, Jelgavas iela 1",56.66667,22.49507,SEB,1,1,1,1,900-155
+900-156,Bankomāts · SEB,"Balvi, Partizānu iela 8",57.1325,27.26399,SEB,1,1,0,0,900-156
+900-157,Bankomāts · SEB,"Ādaži, Rīgas gatve 5",57.07137,24.32001,SEB,1,1,0,0,900-157
+900-158,Bankomāts · SEB,"Kandava, Lielā iela 1",57.03368,22.78379,SEB,1,1,0,0,900-158
+900-160,Bankomāts · SEB,"Preiļi, Tirgus laukums 4",56.29387,26.72354,SEB,1,1,0,0,900-160
+900-161,Bankomāts · SEB,"Madona, Rūpniecības iela 49",56.85999,26.23118,SEB,1,1,0,0,900-161
+900-162,Bankomāts · SEB,"Jelgava, Rīgas iela 11a",56.66153,23.74572,SEB,1,1,0,0,900-162
+900-163,Bankomāts · SEB,"Salaspils, Skolas iela 4e",56.85431,24.33643,SEB,1,1,0,0,900-163
+900-164,Kritiskais bankomāts · SEB,"Rēzekne, Atbrīvošanas aleja 81",56.50505,27.32922,SEB,1,1,0,1,900-164
+900-165,Bankomāts · SEB,"Madona, Saules iela 6",56.8518,26.22088,SEB,1,1,0,0,900-165
+900-166,Bankomāts · SEB,"Auce, Aspazijas laukums 3",56.46573,22.89504,SEB,1,1,0,0,900-166
+900-167,Bankomāts · SEB,"Ķekava, Rīgas iela 22a",56.83196,24.23215,SEB,1,1,0,0,900-167
+900-168,Bankomāts · SEB,"Daugavpils, Cietokšņa iela 60",55.87306,26.51861,SEB,1,1,0,0,900-168
+900-169,Bankomāts · SEB,"Bauska, Slimnīcas iela 8",56.4075,24.19472,SEB,1,1,1,0,900-169
+900-170,Bankomāts · SEB,"Rēzekne, Atbrīvošanas alejā 138",56.51452,27.33647,SEB,1,1,0,0,900-170
+900-172,Bankomāts · SEB,"Saldus, Jelgavas iela 1",56.66667,22.49508,SEB,1,1,1,0,900-172
+900-173,Bankomāts · SEB,"Talsi, Dundagas iela 18",57.24769,22.57863,SEB,1,1,0,0,900-173
+900-174,Bankomāts · SEB,"Dobele, Brīvības iela 30",56.6278,23.28897,SEB,1,1,0,0,900-174
+900-175,Bankomāts · SEB,"Smiltene, Dārza iela 11",57.42388,25.90852,SEB,1,1,1,0,900-175
+900-176,Kritiskais bankomāts · SEB,"Ogre, Skolas iela 2a",56.8161,24.59964,SEB,1,1,1,1,900-176
+900-177,Bankomāts · SEB,"Tukums, Kurzemes iela 36",56.97197,23.15338,SEB,1,1,0,0,900-177
+900-178,Bankomāts · SEB,"Līvāni, Rīgas iela 89",56.35513,26.17521,SEB,1,1,0,0,900-178
+900-179,Bankomāts · SEB,"Alūksne, Lielā ezera 2a",57.42368,27.04956,SEB,1,1,1,0,900-179
+900-180,Kritiskais bankomāts · SEB,"Cēsis, Pils iela 4",57.31304,25.27364,SEB,1,1,1,1,900-180
+900-181,Bankomāts · SEB,"Kuldīga, Liepājas iela 44",56.96835,21.9609,SEB,1,1,0,0,900-181
+900-182,Bankomāts · SEB,"Lielvārde, Lāčplēša iela 23b",56.71697,24.80918,SEB,1,1,0,0,900-182
+900-183,Bankomāts · SEB,"Liepāja, Jaunā Ostmala 3/5",56.51453,21.01797,SEB,1,1,0,0,900-183
+900-184,Kritiskais bankomāts · SEB,"Jēkabpils, Vecpilsētas laukums 3A",56.49781,25.86659,SEB,1,1,1,1,900-184
+900-185,Bankomāts · SEB,"Krāslava, Brīvības iela 17",55.89626,27.16617,SEB,1,1,0,0,900-185
+900-187,Bankomāts · SEB,"Rīga, Grostonas iela 1",56.96438,24.11978,SEB,1,1,0,0,900-187
+900-188,Bankomāts · SEB,"Rīga, Ieriķu iela 3",56.96599,24.16101,SEB,1,1,0,0,900-188
+900-189,Bankomāts · SEB,"Bauska, Pionieru iela 2",56.40585,24.18836,SEB,1,1,0,0,900-189
+900-190,Kritiskais bankomāts · SEB,"Jelgava, Lielā iela 1",56.65268,23.72961,SEB,1,1,1,1,900-190
+900-191,Bankomāts · SEB,"Rīga, Brīvības gatve 372",56.98213,24.20476,SEB,1,1,0,0,900-191
+900-192,Bankomāts · SEB,"Jēkabpils, Vienības iela 7",56.4955,25.87842,SEB,1,1,0,0,900-192
+900-193,Bankomāts · SEB,"Alūksne, Pils iela 9b",57.42901,27.03979,SEB,1,1,0,0,900-193
+900-194,Bankomāts · SEB,"Tukums, Pasta iela 14",56.96753,23.15741,SEB,1,1,0,0,900-194
+900-195,Bankomāts · SEB,"Sigulda, Strēlnieku iela 2",57.14331,24.84442,SEB,1,1,0,0,900-195
+900-196,Bankomāts · SEB,"Dagda, Alejas iela 4",56.09501,27.53687,SEB,1,1,0,0,900-196
+900-197,Bankomāts · SEB,"Smiltene, Baznīcas laukums 2",57.42419,25.90409,SEB,1,1,0,0,900-197
+900-198,Bankomāts · SEB,"Dobele, Brīvības iela 12",56.6251,23.28035,SEB,1,1,1,0,900-198
+900-199,Bankomāts · SEB,"Ventspils, Poruka iela 16",57.38581,21.54608,SEB,1,1,0,0,900-199
+900-200,Bankomāts · SEB,"Gulbene, Ozolu iela 2a",57.17287,26.75959,SEB,1,1,1,0,900-200
+900-201,Bankomāts · SEB,"Limbaži, Rīgas iela 8",57.51292,24.71574,SEB,1,1,0,0,900-201
+900-202,Kritiskais bankomāts · SEB,"Daugavpils, Rīgas iela 9",55.87187,26.51779,SEB,1,1,0,1,900-202
+900-203,Bankomāts · SEB,"Rīga, K.Valdemāra iela 112",56.97424,24.13565,SEB,1,1,0,0,900-203
+900-204,Bankomāts · SEB,"Ludza, Stacijas iela 30",56.54461,27.72075,SEB,1,1,1,0,900-204
+900-205,Bankomāts · SEB,"Jūrmala, Viestura iela  22",56.97498,23.85864,SEB,1,1,0,0,900-205
+900-206,Bankomāts · SEB,"Rīga, Lielirbes iela 29",56.9296,24.03749,SEB,1,1,0,0,900-206
+900-207,Bankomāts · SEB,"Rīga, Anniņmuižas bulvāris 40A",56.96023,24.01184,SEB,1,1,0,0,900-207
+900-208,Bankomāts · SEB,"Valmiera, Rīgas iela 74",57.5326,25.39318,SEB,1,1,0,0,900-208
+900-209,Bankomāts · SEB,"Rīga, Biķeru iela 4",56.95136,24.25187,SEB,1,1,0,0,900-209
+900-210,Bankomāts · SEB,"Vecpiebalga, Alauksta iela 2",57.0605,25.81661,SEB,1,0,1,0,900-210
+900-211,Bankomāts · SEB,"Carnikava, Atpūtas iela 1",57.12912,24.2773,SEB,1,0,0,0,900-211
+900-212,Kritiskais bankomāts · SEB,"Rīga, Elizabetes iela 95",56.94823,24.12336,SEB,1,1,0,1,900-212
+900-213,Bankomāts · SEB,"Cēsis, Gaujas iela 29",57.3071,25.25318,SEB,1,1,1,0,900-213
+900-214,Bankomāts · SEB,"Rīga, Andreja Saharova iela 30",56.9456,24.20845,SEB,1,0,0,0,900-214
+900-215,Bankomāts · SEB,"Kuldīga, Sūru iela 2",56.96693,21.95872,SEB,1,1,0,0,900-215
+900-216,Bankomāts · SEB,"Liepāja, Ziemeļu iela 10",56.53429,21.0136,SEB,1,0,0,0,900-216

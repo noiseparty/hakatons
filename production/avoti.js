@@ -50,7 +50,7 @@ const Avoti = (() => {
   const datums = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
   // avoti.atjaunots (pēdējā veiksmīgā ielāde, ielade.py): "10.10. 04:31"
   const ielLaiks = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
-  const bridinajums = '⚠ Atvērta licence nav norādīta';
+  const bridinajums = Ik('uzmanibu') + ' Atvērta licence nav norādīta';
 
   const avotuVards = n => `${n} atvērto datu ${n % 10 === 1 && n % 100 !== 11 ? 'avots' : 'avoti'}`;
 
@@ -63,7 +63,7 @@ const Avoti = (() => {
     const sim = saraksts.filter(simulets), isti = saraksts.filter(a => !simulets(a));
     const atverti = isti.filter(a => a.atverts).length, citi = isti.length - atverti;
     const sk = document.getElementById('avoti-skaits');
-    if (sk) sk.textContent = atverti + (citi ? ' · ⚠' : '');
+    if (sk) sk.innerHTML = atverti + (citi ? ' · ' + Ik('uzmanibu') : '');
     let kops = document.getElementById('avoti-kopsavilkums');
     if (!kops) {
       kops = document.createElement('p');
@@ -72,7 +72,7 @@ const Avoti = (() => {
     }
     kops.innerHTML = `<b>${avotuVards(atverti)}</b>` +
       (sim.length ? ` · ${sim.length} simulēti prototipa dati` : '') +
-      (citi ? ` · ${citi} bez atvērtas licences ⚠` : '');
+      (citi ? ` · ${citi} bez atvērtas licences ${Ik('uzmanibu')}` : '');
     ul.innerHTML = [...isti, ...sim].map((a, i, visi) => `
       ${simulets(a) && !simulets(visi[i - 1] || { kods: '' }) ? '<li class="avoti-grupa">Simulēti prototipa dati (nav atvērtie dati; kartē zīme „SIMULĒTI DATI — prototips”)</li>' : ''}
       <li class="avots${a.atverts ? '' : ' bez-licences'}${simulets(a) ? ' simulets' : ''}" id="avots-${esc(a.kods)}">
@@ -80,7 +80,7 @@ const Avoti = (() => {
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
         <small>${esc(a.izdevejs)}</small>
         <span class="licence">${a.atverts ? '' : bridinajums + ' · '}${saite(a.licences_url, a.licence)}</span>
-        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${a.skaits} objekti${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
+        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${daudzskaitlis(a.skaits, 'objekts', 'objekti')}${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
         ${a.atjaunots ? `<small class="atjaunots">Atjaunots ${ielLaiks(a.atjaunots)}</small>` : ''}
         ${a.biezums || BIEZUMS[a.kods] ? `<small>Atjaunošana: ${esc(a.biezums || BIEZUMS[a.kods])}${a.svaigums ? `<span data-svaigums="${esc(a.svaigums)}"></span>` : ''}</small>` : ''}
         ${a.piezime ? `<small class="avota-piezime">${esc(a.piezime)}</small>` : ''}
