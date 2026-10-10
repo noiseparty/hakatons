@@ -496,6 +496,7 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 /* ==== Galvenes "Ziņot" poga (zinot.js); A un D to novieto savos izkārtojumos ==== */
 .galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
 .galvene-poga:hover { background: rgba(0, 0, 0, .32); }
+.galvene-poga .ikona { vertical-align: -4px; margin-right: .3rem; }
 @media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
 
 /* Kopīgie dizaina marķieri (tie paši nosaukumi kā termināļa A datora maketā; vērtības no notes/mockup/*.html) */
@@ -529,41 +530,48 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   .apakstitls { display: block; font-size: .64rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--teksts-blavs);
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .galva-labi { gap: 4px; }
-  #izmainas-poga, #zinot-poga, .par-datiem { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; box-sizing: border-box;
+  header #izmainas-poga, header #zinot-poga, .par-datiem { display: inline-flex; align-items: center; justify-content: center; gap: .3rem; box-sizing: border-box;
     min-width: 44px; min-height: 44px; width: auto; margin: 0; padding: 0 .55rem; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas);
     background: #fff; color: var(--tumsi-zils); font-size: .8rem; font-weight: 700; text-decoration: none; white-space: nowrap; box-shadow: none; }
-  #izmainas-poga { padding: 0; font-size: 1rem; }
-  #izmainas-poga:active, #zinot-poga:active, .par-datiem:active { background: var(--pelks-2); }
+  header #izmainas-poga { padding: 0; font-size: 1rem; }
+  header #izmainas-poga:hover, header #zinot-poga:hover, header #izmainas-poga:active, header #zinot-poga:active, .par-datiem:active { background: var(--pelks-2); }
   body.apaksa-aktiva #panelis-poga, body.apaksa-aktiva header #statuss { display: none; }
   .zvanit-josla { display: flex; align-items: center; gap: .4rem; margin: 0; padding: .3rem max(.8rem, env(safe-area-inset-left)); background: #FEF2F2;
     border-bottom: 1px solid #FECACA; color: var(--brid-sarkans-teksts); font-size: .78rem; font-weight: 700; line-height: 1.3; }
   .zvanit-josla::before { content: '!'; flex: none; display: grid; place-items: center; width: 14px; height: 14px; border: 1.6px solid currentColor;
     border-radius: 50%; font-size: 10px; font-weight: 800; line-height: 1; }
-  /* LVĢMC josla: vienmēr viena rinda un fiksēts augstums (arī ielādes laikā) — karte nelec, kad josla parādās */
-  body.apaksa-aktiva .bridinajums { box-sizing: border-box; height: 44px; padding: 0 .8rem; overflow: hidden; font-size: .82rem; }
-  body.apaksa-aktiva .bridinajums.gaida { display: flex; align-items: center; }
-  body.apaksa-aktiva .bridinajums[hidden] { display: flex; visibility: hidden; }
-  body.apaksa-aktiva .bridinajums:has(details[open]) { height: auto; max-height: 45dvh; overflow-y: auto; }
-  body.apaksa-aktiva .bridinajums summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; height: 44px; line-height: 44px; padding: 0; min-height: 0; }
+  /* LVĢMC un demo josla: sheet.js tās pārceļ kartes augšmalā (.kartes-joslas) — tās pārklāj karti, nevis bīda to uz leju,
+     tāpēc nekas nelec, kad josla parādās; viena rinda, pieskaroties atveras (ritināma, ne augstāka par 45 %) */
+  .kartes-joslas { position: absolute; top: 0; left: 0; right: 0; z-index: 650; display: flex; flex-direction: column; pointer-events: none; }
+  .kartes-joslas > * { pointer-events: auto; box-shadow: var(--ena-vid); }
+  .kartes-joslas .bridinajums { box-sizing: border-box; min-height: 40px; padding: 0 .8rem; font-size: .82rem; border-bottom: 0; }
+  .kartes-joslas .bridinajums[hidden] { display: none; }
+  .kartes-joslas .bridinajums.gaida { display: flex; align-items: center; background: rgba(255, 255, 255, .92); }
+  .kartes-joslas .bridinajums:has(details[open]) { max-height: 45dvh; overflow-y: auto; overscroll-behavior: contain; }
+  .kartes-joslas .bridinajums summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 44px; line-height: 44px; padding: 0; }
+  .kartes-joslas .bridinajums details[open] summary { white-space: normal; line-height: 1.3; padding: .6rem 0; }
+  body.apaksa-aktiva { --joslas-h: 0px; }
+  body.apaksa-aktiva:has(.kartes-joslas > :not([hidden])) { --joslas-h: 48px; }
   body.apaksa-aktiva main { padding: 0; }
   body.apaksa-aktiva #kartes-laukums { flex: 1; height: auto; border-radius: 0; box-shadow: none; }
 
   /* Kartes vadība kā maketā: "Karte | Reljefs" augšā pa kreisi; + − ◎ slāņi labajā pusē */
-  body.apaksa-aktiva .pamatkarte, body.apaksa-aktiva:has(#apaksa:not([hidden])) .pamatkarte { top: 8px; left: 8px; right: auto; bottom: auto;
+  body.apaksa-aktiva .pamatkarte, body.apaksa-aktiva:has(#apaksa:not([hidden])) .pamatkarte { top: calc(8px + var(--joslas-h)); left: 8px; right: auto; bottom: auto;
     padding: 3px; gap: 2px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); box-shadow: var(--ena-vid); }
   body.apaksa-aktiva .pamatkarte button { min-height: 44px; padding: 0 .8rem; border-radius: 4px; font-size: .8rem; font-weight: 700; color: var(--teksts-blavs); background: none; }
   body.apaksa-aktiva .pamatkarte button.aktiva { background: var(--tumsi-zils); color: #fff; }
-  body.apaksa-aktiva .kartes-rikis { top: 8px; right: max(8px, env(safe-area-inset-right)); gap: 6px; }
+  body.apaksa-aktiva .kartes-rikis { top: calc(8px + var(--joslas-h)); right: max(8px, env(safe-area-inset-right)); gap: 6px; }
   body.apaksa-aktiva .kartes-rikis button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas);
     background: #fff; color: var(--tumsi-zils); box-shadow: var(--ena-vid); font-size: 1.35rem; }
   body.apaksa-aktiva .kartes-rikis button:active { background: var(--pelks-2); }
   body.apaksa-aktiva #slani-poga { display: grid; }
   /* Demo cilne kreisajā malā zem "Karte | Reljefs"; demo zīme kartē — centrā */
-  body.apaksa-aktiva #demo-cilne, body.apaksa-aktiva.demo-atverts #demo-cilne { z-index: 1001; top: 64px; left: 0; right: auto; min-height: 44px; border-radius: 0 var(--radiuss) var(--radiuss) 0; }
+  body.apaksa-aktiva #demo-cilne, body.apaksa-aktiva.demo-atverts #demo-cilne { z-index: 999; top: calc(64px + var(--joslas-h)); left: 0; right: auto; min-height: 44px; border-radius: 0 var(--radiuss) var(--radiuss) 0; }
   body.apaksa-aktiva #demo-karte-zime { left: 50%; transform: translateX(-50%); }
 
   /* ---- Apakšējā lapa: augstums un nobīde no apaksa.js (transform), šeit tikai izskats ---- */
-  .apaksa { height: 84dvh; bottom: 0; padding: 0; border-radius: 16px 16px 0 0; box-shadow: var(--ena-liela); border-top: 1px solid var(--pelks-3);
+  .apaksa { height: 84dvh; bottom: -80px; padding: 0;  /* -80px = apaksa.js REZERVE (atsperei virs "Pilns") */
+    border-radius: 16px 16px 0 0; box-shadow: var(--ena-liela); border-top: 1px solid var(--pelks-3);
     transition: transform .34s cubic-bezier(.2, .8, .2, 1); will-change: transform; overflow: hidden; }
   .apaksa.velk { transition: none; }
   .apaksa-augsa { position: relative; flex: none; display: flex; justify-content: center; padding: 14px 0 2px; touch-action: none; cursor: grab; }
@@ -655,6 +663,15 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   .apaksa #rezultati .rez-saraksts li { border-bottom-color: var(--pelks-2); }
   .apaksa #rezultati .rez-saraksts b { color: var(--tumsi-zils); }
 
+  /* Demo: kartes ikonu pieskāriena laukums 44 px (zīmējums paliek 30 px centrā, enkurs — centrs); "▶ Atskaņot" 44 px */
+  .leaflet-marker-icon.demo-ikona { width: 44px !important; height: 44px !important; margin: -22px 0 0 -22px !important; display: grid; place-items: center; }
+  .atskanot-sakt { min-height: 44px; }
+
+  /* Kartes uznirstošie logi nekad nav augstāki par redzamo karti: saturs ritinās, ✕ paliek augšā (44 px) */
+  body.apaksa-aktiva .leaflet-popup-content-wrapper { display: flex; flex-direction: column; max-height: min(60vh, calc(100dvh - 200px - env(safe-area-inset-top))); overflow: hidden; }
+  body.apaksa-aktiva .leaflet-popup-content { overflow-y: auto; overscroll-behavior: contain; margin: 12px 14px; padding-right: 22px; min-height: 0; }
+  body.apaksa-aktiva .leaflet-container a.leaflet-popup-close-button { z-index: 2; width: 44px; height: 44px; font: 24px/44px system-ui, sans-serif; top: 0; right: 0; }
+
   /* Ielādes vietturi (skeleti): pelēka mirdzoša josla teksta vietā */
   .skelets, .skelets-rinda span { color: transparent !important; border-radius: 4px; background: linear-gradient(90deg, var(--pelks-2) 25%, var(--pelks-1) 50%, var(--pelks-2) 75%) 0 0 / 200% 100%;
     animation: skelets 1.2s linear infinite; user-select: none; }
@@ -666,7 +683,11 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   @keyframes skelets { to { background-position: -200% 0; } }
   @media (prefers-reduced-motion: reduce) { .skelets, .skelets-rinda span { animation: none; } .apaksa { transition: none; } }
 }
-@media (max-width: 380px) {
-  .apakstitls { display: none; }
+@media (max-width: 400px) {
+  header #zinot-poga { padding: 0; }
+  header #zinot-poga .ikona { margin: 0; }
   #zinot-poga .teksts { display: none; }
+}
+@media (max-width: 340px) {
+  .apakstitls { display: none; }
 }

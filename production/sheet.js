@@ -32,14 +32,19 @@ const Lapa = (() => {
     </div>`);
 
   // ---- Elementu pārcelšana telefons ↔ dators ----
+  // LVĢMC un demo josla telefonā — kartes augšmalā virs kartes (pārklāj, nevis bīda karti uz leju)
+  el('kartes-laukums').insertAdjacentHTML('afterbegin', '<div class="kartes-joslas" id="kartes-joslas"></div>');
   const PARCELT = [
+    [el('bridinajums'), el('kartes-joslas')],
+    [el('demo-josla'), el('kartes-joslas')],
     [el('meklet-forma'), el('apaksa-meklet')],
     [el('panelis'), el('lapa-slani')],
     [el('statuss'), el('lapa-slani'), 'prepend'],
     [el('prognozes'), lapa.querySelector('.lapa-prognoze')],
   ].filter(([e]) => e).map(([e, kur, k]) => ({ e, kur, k, majas: e.parentElement, pec: e.nextSibling }));
   function novietot() {
-    for (const p of PARCELT) {
+    // atpakaļ — apgrieztā secībā, lai "pec" (nākamais kaimiņš, piem. demo josla aiz LVĢMC joslas) jau ir savā vietā
+    for (const p of telefons.matches ? PARCELT : [...PARCELT].reverse()) {
       if (telefons.matches) {
         if (p.e.parentElement !== p.kur) p.k === 'prepend' ? p.kur.prepend(p.e) : p.kur.append(p.e);
       } else if (p.e.parentElement !== p.majas) p.majas.insertBefore(p.e, p.pec?.parentElement === p.majas ? p.pec : null);
@@ -164,8 +169,19 @@ const Lapa = (() => {
   // ---- Kartes poga "Slāņi" (labajā pusē zem + − ◎) → lapa ar cilni "Kartes slāņi" ----
   el('slani-poga')?.addEventListener('click', () => { cilne('slani'); Apaksa.atvert('puse'); });
 
-  telefons.addEventListener('change', novietot);
+  // Uznirstošie logi: automātiskā pārbīde atstāj vietu zem joslām augšā un virs lapas apakšā; atverot logu, pilna
+  // lapa saplok līdz pusei (citādi logs būtu zem tās)
+  function popupAtstarpes() {
+    if (!telefons.matches) { delete L.Popup.prototype.options.autoPanPaddingTopLeft; delete L.Popup.prototype.options.autoPanPaddingBottomRight; return; }
+    L.Popup.prototype.options.autoPanPaddingTopLeft = L.point(10, 60 + (el('kartes-joslas').offsetHeight || 0));
+    L.Popup.prototype.options.autoPanPaddingBottomRight = L.point(10, 12 + Apaksa.augstums());
+  }
+  lapa.addEventListener('apaksa:stavoklis', popupAtstarpes);
+  karte.on('popupopen', () => { if (telefons.matches && Apaksa.stavoklis() === 'pilna') Apaksa.atvert('puse'); popupAtstarpes(); });
+
+  telefons.addEventListener('change', () => { novietot(); popupAtstarpes(); });
   novietot();
+  popupAtstarpes();
   kopsavilkums();
   setInterval(kopsavilkums, 10 * 60 * 1000);
 

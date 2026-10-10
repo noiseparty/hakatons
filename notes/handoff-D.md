@@ -1,26 +1,7 @@
-# Handoff, terminal D → next session (noiseparty/ui-mobile, WIP, 2026-10-10 ~04:00)
+# Handoff, terminal D → next session (noiseparty/ui-mobile, WIP, 2026-10-10)
 
-**Done (phone ≤ 800 px only; desktop unchanged and checked):**
-- `apaksa.js`: the sheet is always visible on phones; snap 140 px / 52 % / 84 %; pills Mazs/Puse/Pilns; `#apaksa-meklet` slot; the verdict line falls back to the LVĢMC summary.
-- `sheet.js` (new):
-  - moves `#meklet-forma`, `#panelis`, `#statuss` and `#prognozes` into the sheet on phones and back on desktop;
-  - topic chips; summary line from `/api/bridinajumi`;
-  - tabs Rezultāts / Kartes slāņi / Situācija tagad (forecast feed + 5 gauges from `/api/udens` + LVC events from `/api/celi`, around the map centre).
-- `index.html`: shield logo, subtitle, "Par datiem" → `statuss.html` (LV/EN/RU only as a comment), 112 line, `#slani-poga`, `sheet.js`. `sw.js` VERSION `2026-10-10d-lapa` + `sheet.js` in the shell list.
-- `stils.css`: phone block at the end. Map controls: Karte|Reljefs top-left; layers and ◎ first on the right; the Demo tab on the left edge. One-line banners.
-- `src/testi/parbaude.py`: the demo step waits for `domcontentloaded` + the card (not networkidle), so `?demo=pludi-ogre` takes 2.5 s.
-
-**Half-done / red in `parbaude.py` (phone):** the "Prognoze", "Riska karte" and "Datu avoti" steps time out. They click `.prog-poga` and `#panelis-poga`, which on phones now live in the sheet tabs. Update those steps to use `#cilne-situacija` / `#cilne-slani`, or keep visible proxies. The `/api/pludi` Jūrmala 202/25 s is server-side.
-
-**Next 3 steps:**
-1. Fix those 3 parbaude steps, then re-run: `uv run --no-project src/demo/lokali.py --port 8091` + `parbaude.py --url http://127.0.0.1:8091`.
-2. Apply the user's Stitch reference (`notes/mockup/mobile.*`) and the shared CSS variable names from A (`--zils-primars`, `--pelks-1/2/3`, `--sarkans`, `--dzeltens-tumss`, `--zals`, `--radiuss-karte`, `--radiuss-pogas`): warning card, decision block, fact cards, skeleton loading.
-3. Native drag: velocity snap, rubber-band, inner scroll only in FULL. Safe-area insets. In HALF, fitBounds must keep the reference point and nearest place above the sheet (`atstarpes()` in `demo.js`, `zimetKarte()` in `meklesana.js` → paddingBottomRight = `Apaksa.augstums()`).
-
-**Pitfalls:**
-- Bump `sw.js` VERSION when the SHELL list changes.
-- Playwright on localhost needs `service_workers="block"`, or `sw.js` bypasses the `/api` proxy and everything 404s.
-- The LVĢMC WMS must start after `load` (`demo.js` already does this).
-- `data-darbiba="saraksts"` is owned by `saraksts.js`.
-- Don't touch icons (E) or `meklesana.js` (A).
-- Screenshots: `C:\Users\ZX202\kodi\ui-mobile-ekr\`.
+- **Done (phone ≤ 800 px; desktop parbaude 17/17 OK):** `apaksa.js` rewritten. The sheet moves by transform, with touch drag across the whole sheet: velocity snap (0.3 px/ms), rubber-band, content scrolls only in FULL, and pulling down from the top of FULL collapses it. CDP touch tests pass (`ui-mobile-ekr/vilkt*.py`). Mock-up styling uses A's tokens (`:root` block in stils.css): white header with carmine ribbon, `#zinot-poga` with an icon (label hidden ≤ 400 px), 112 line, LVĢMC/demo banners overlaid on the map top (`.kartes-joslas`, no layout shift), Karte|Reljefs pill, pills and chips with 44 px targets, tabs, then the summary line (/api/bridinajumi + /api/prognozes), skeleton loaders. Popups get max-height, inner scroll and a 44 px ✕, plus autoPan padding (sheet.js). New `Apaksa.atstarpes()` is used by meklesana.js/demo.js fitBounds. Demo markers and ▶ Atskaņot are now 44 px.
+- **parbaude.py:** phone steps use the sheet tabs; `service_workers="block"`; new "popupi ekrānā" step. Phone result: 15 OK, 5 warnings. Only the cluster icons (E's `grupasIkona`, 36 and 30 px) are still < 44 px. The API "red" is the server-side /api/pludi 202 at 25 s.
+- **Half-done:** origin/main (#108 ikonas, #109) NOT merged yet. Not done: formaHTML() in the "Kartes slāņi" tab, "Vairāk" collapse for long popup status blocks, real-phone test. Last desktop screenshot compare failed only because a 375-px `ekr.py` prefix bug ("D-" = desktop) hit #jautajums; rerun it.
+- **Next 3:** (1) `git merge origin/main`, resolve stils.css (keep both appended blocks) + sw.js VERSION, use formaHTML() in the layer tab; (2) re-run parbaude + 375×740 screenshots, then open the PR; (3) Task 2 video (src/demo/video.py, notes/video.md storyboard). **Video: not started**, storyboard only in the orchestrator brief.
+- **Pitfalls:** `.apaksa` has `bottom: -80px` = REZERVE in apaksa.js (keep them in sync). `#demo-josla` also has class `.bridinajums`. izmainas.css overrides `#izmainas-poga` unless the selector is `header #…`. Bump the sw.js VERSION on merge. The local server is `src/demo/lokali.py --port 8091`.

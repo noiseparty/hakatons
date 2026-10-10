@@ -123,7 +123,7 @@ const Apaksa = (() => {
     .observe(prognozes, { attributes: true, attributeFilter: ['class'] });
 
   // ---- Vilkšana: pirksts (touch*) visā lapā, pele (pointer*) augšējā joslā ----
-  const SLIEKSNIS = 6, ATRUMS = 0.45;  // px; px/ms — ātrāk par to atlaižot, lapa aizslīd uz nākamo stāvokli virzienā
+  const SLIEKSNIS = 6, ATRUMS = 0.3;  // px; px/ms — ātrāk par to atlaižot, lapa aizslīd uz nākamo stāvokli virzienā
   let v = null;
   function sakt(x, y, t, merkis) {
     v = { x0: x, y0: y, h0: redzamaisPx, punkti: [[y, t]], saturs: !!merkis.closest?.('.apaksa-saturs'), rezims: null };
@@ -149,7 +149,7 @@ const Apaksa = (() => {
     while (v.punkti.length > 2 && t - v.punkti[0][1] > 100) v.punkti.shift();
     return true;
   }
-  function beigt() {
+  function beigt(tBeigas) {
     if (!v) return;
     const b = v;
     v = null;
@@ -158,7 +158,8 @@ const Apaksa = (() => {
     rokturis.dataset.vilkts = '1';  // "click" uzreiz pēc vilkšanas nav pieskāriens
     setTimeout(() => delete rokturis.dataset.vilkts, 350);
     const [y0, t0] = b.punkti[0], [y1, t1] = b.punkti[b.punkti.length - 1];
-    const atr = t1 > t0 ? (y1 - y0) / (t1 - t0) : 0;  // + uz leju
+    // + uz leju; ja pirksts pirms atlaišanas apstājās (> 90 ms bez kustības), ātrums ir 0 — tad uz tuvāko stāvokli
+    const atr = t1 > t0 && !(tBeigas - t1 > 90) ? (y1 - y0) / (t1 - t0) : 0;
     const h = redzamaisPx, augst = STAVOKLI.map(augstumsPx);
     let merkis;
     if (atr > ATRUMS) merkis = [...STAVOKLI].reverse().find(st => augstumsPx(st) < h - 8) || 'peek';
@@ -173,13 +174,13 @@ const Apaksa = (() => {
   lapa.addEventListener('touchmove', e => {
     if (v && kustet(e.touches[0].clientX, e.touches[0].clientY, e.timeStamp) && e.cancelable) e.preventDefault();
   }, { passive: false });
-  lapa.addEventListener('touchend', beigt);
-  lapa.addEventListener('touchcancel', beigt);
+  lapa.addEventListener('touchend', e => beigt(e.timeStamp));
+  lapa.addEventListener('touchcancel', e => beigt(e.timeStamp));
   lapa.querySelector('.apaksa-augsa').addEventListener('pointerdown', e => {
     if (e.pointerType !== 'mouse' || e.button) return;
     sakt(e.clientX, e.clientY, e.timeStamp, e.target);
     const kust = m => kustet(m.clientX, m.clientY, m.timeStamp);
-    const gals = () => { removeEventListener('pointermove', kust); removeEventListener('pointerup', gals); beigt(); };
+    const gals = u => { removeEventListener('pointermove', kust); removeEventListener('pointerup', gals); beigt(u.timeStamp); };
     addEventListener('pointermove', kust);
     addEventListener('pointerup', gals);
   });
@@ -210,6 +211,10 @@ const Apaksa = (() => {
       lapa.hidden = false; iestatit(st);
     },
     stavoklis: () => stavoklis,
+    // fitBounds atstarpes telefonā: augšā joslas + "Karte | Reljefs", labajā pusē kartes pogas, apakšā lapa
+    atstarpes(apaksa = augstums()) {
+      return { paddingTopLeft: [24, (el('kartes-joslas')?.offsetHeight || 0) + 58], paddingBottomRight: [60, apaksa + 16] };
+    },
     atjaunotSpriedumu,
     novietot,
   };
