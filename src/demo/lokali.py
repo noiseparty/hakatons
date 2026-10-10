@@ -10,8 +10,13 @@ dzīvajai vietnei, var darbināt simtiem kartīšu (src/testi/kartites.py --url 
 galapunkta ceļš (vaicājuma parametrus neņem vērā), izņemot:
   /api/objekti   — no viena ierakstīta ?bbox=<visa Latvija>&lat&lon&limit=5000 (pa slāņiem tuvākie): tuvākie pēc
                    kategorijas un attāluma no pieprasījuma lat/lon (attalums_m pārrēķina), vai punkti pieprasītajā bbox;
-  /api/adreses   — vienmēr [] (adrešu meklēšana nav ierakstīta);
-  /api/regioni/X — katram kodam savs fails.
+                   Papildu api_objekti_*.json (pilsētu taisnstūri, src/testi/fiksturas_adreses.py) pievieno kopai;
+  /api/adreses   — DIR/adreses/<q>.json (ierakstīti VZD vaicājumi); citam q — ierakstītās adreses, kurās ir visi q
+                   vārdi (kā karte_api.py LIKE '%vārds%'); bez DIR/adreses — vienmēr [];
+  /api/regioni/X — katram kodam savs fails;
+  punkta galapunkti (?lat&lon, marsruts ?no=) — DIR/punkti/<ceļš>__<lat>_<lon>.json, ja tāds ir ≤ 500 m no
+                   pieprasījuma; citādi parastā fikstura, bet ar --attalums-km K: 404, ja tās punkts ir tālāk par K km
+                   (lai Daugavpils adresei nerāda Ogres ceļu slēgumus).
 --ierakstit N: ja fiksturas nav, to vienreiz paņem no map.repo.lv (secīgi, ne vairāk par N GET kopā) un saglabā.
 Bez fiksturas un bez atļautiem ierakstiem — 404 {"kluda": "nav fiksturas"} (un rinda konsolē).
 """
@@ -34,6 +39,7 @@ GALVENES = ("X-Flize", "Cache-Control", "ETag")
 FIKSTURAS = None      # pathlib.Path vai None
 IERAKSTIT = 0         # cik vēl drīkst ierakstīt no LIVE
 OBJEKTI_VISI = "/api/objekti?bbox=20.9,55.6,28.3,58.1&lat=56.81&lon=24.6&limit=5000"
+ATTALUMS_KM = None    # punkta fiksturu robeža (--attalums-km)
 _slegs = threading.Lock()
 _objekti = None
 
@@ -85,7 +91,10 @@ def objekti(q):
         rez = fikstura("api/objekti", OBJEKTI_VISI)
         if rez is None or rez[0] != 200:
             return None
-        _objekti = json.loads(rez[2])["features"]
+        visi = {f["id"]: f for f in json.loads(rez[2])["features"]}
+        for f in sorted(FIKSTURAS.glob("api_objekti_*.json")):  # pilsētu taisnstūri adrešu pārbaudēm
+            visi.update({x["id"]: x for x in json.loads(json.loads(f.read_text(encoding="utf-8"))["dati"])["features"]})
+        _objekti = list(visi.values())
     kat = {k for k in ",".join(q.get("kategorijas", [""])).split(",") if k}
     feat = [f for f in _objekti if not kat or f["properties"]["kategorija"] in kat]
     if q.get("kritiskais", [""])[0] == "1":
@@ -104,15 +113,75 @@ def objekti(q):
     return 200, "application/json", json.dumps({"type": "FeatureCollection", "features": feat[:limit]}, ensure_ascii=False).encode("utf-8")
 
 
+def vienkarsot(teksts):
+    """Kā karte_api._vienkarsot: mazie burti bez garumzīmēm."""
+    import unicodedata
+    return "".join(c for c in unicodedata.normalize("NFD", teksts.lower()) if not unicodedata.combining(c))
+
+
+def adreses_atslega(q):
+    return re.sub(r"\W+", "_", vienkarsot(q).strip()).strip("_")  # kirilica paliek: "наводнение Rīgas…" ≠ "Rīgas…"
+
+
+def adreses(q):
+    mape = FIKSTURAS / "adreses"
+    teksts, limit = q.get("q", [""])[0], int(q.get("limit", ["8"])[0])
+    if not mape.is_dir():
+        return 200, "application/json", b"[]"
+    f = mape / (adreses_atslega(teksts) + ".json")
+    if f.exists():
+        rindas = json.loads(json.loads(f.read_text(encoding="utf-8"))["dati"])
+    else:  # nav ierakstīts: ierakstītās adreses, kurās ir visi vārdi
+        vardi = [v for v in re.split(r"[\s,]+", vienkarsot(teksts)) if v]
+        visas = {}
+        for x in sorted(mape.glob("*.json")):
+            for r in json.loads(json.loads(x.read_text(encoding="utf-8"))["dati"]):
+                visas[r["kods"]] = r
+        rindas = [r for r in visas.values() if all(v in vienkarsot(r["adrese"]) for v in vardi)]
+    return 200, "application/json", json.dumps(rindas[:limit], ensure_ascii=False).encode("utf-8")
+
+
+def _punkts(q):
+    if "lat" in q and "lon" in q:
+        return float(q["lat"][0]), float(q["lon"][0])
+    if "no" in q:  # /api/marsruts?no=lat,lon&uz=…
+        lat, lon = q["no"][0].split(",")[:2]
+        return float(lat), float(lon)
+    return None
+
+
+def punkta_fikstura(cels, q, pilns_cels):
+    """Punkta galapunkts: tuvākā DIR/punkti fikstura ≤ 500 m, citādi parastā (ar --attalums-km — tikai tuvu)."""
+    vieta = _punkts(q)
+    if vieta is None:
+        return fikstura(cels, pilns_cels)
+    prefikss = _fails(cels).stem + "__"
+    labakais = None
+    for f in (FIKSTURAS / "punkti").glob(prefikss + "*.json"):
+        lat, lon = (float(x) for x in f.stem[len(prefikss):].split("_"))
+        d = _attalums_m(vieta[0], vieta[1], lat, lon)
+        if d <= 500 and (labakais is None or d < labakais[0]):
+            labakais = d, f
+    if labakais:
+        d = json.loads(labakais[1].read_text(encoding="utf-8"))
+        return d["statuss"], d["tips"], d["dati"].encode("utf-8")
+    if ATTALUMS_KM is not None and _fails(cels).exists():
+        ierakstits = _punkts(urllib.parse.parse_qs(urllib.parse.urlsplit(
+            json.loads(_fails(cels).read_text(encoding="utf-8"))["cels"]).query))
+        if ierakstits and _attalums_m(*vieta, *ierakstits) > ATTALUMS_KM * 1000:
+            return None
+    return fikstura(cels, pilns_cels)
+
+
 def no_fiksturam(pilns_cels):
     url = urllib.parse.urlsplit(pilns_cels)
     cels, q = url.path.rstrip("/"), urllib.parse.parse_qs(url.query)
     if cels == "/api/objekti":
         rez = objekti(q)
     elif cels == "/api/adreses":
-        rez = 200, "application/json", b"[]"
+        rez = adreses(q)
     else:
-        rez = fikstura(cels, pilns_cels)
+        rez = punkta_fikstura(cels, q, pilns_cels)
     if rez is None:
         print(f"nav fiksturas: {pilns_cels}", flush=True)
         return 404, "application/json", b'{"kluda": "nav fiksturas"}'
@@ -163,12 +232,14 @@ if __name__ == "__main__":
     a.add_argument("--flizes", help="API plūdu flīzēm, piem. http://127.0.0.1:8920 (lokāls karte_api.py)")
     a.add_argument("--fiksturas", help="mape ar ierakstītām /api atbildēm (piem. src/testi/fiksturas): bez map.repo.lv")
     a.add_argument("--ierakstit", type=int, default=0, help="ar --fiksturas: trūkstošās paņemt no map.repo.lv, ne vairāk par N")
+    a.add_argument("--attalums-km", type=float, help="ar --fiksturas: punkta galapunktam 404, ja fikstura ir tālāk par K km")
     arg = a.parse_args()
     FLIZES = arg.flizes
     if arg.fiksturas:
         FIKSTURAS = pathlib.Path(arg.fiksturas).resolve()
         FIKSTURAS.mkdir(parents=True, exist_ok=True)
         IERAKSTIT = arg.ierakstit
+        ATTALUMS_KM = arg.attalums_km
     class Serveris(http.server.ThreadingHTTPServer):
         request_queue_size = 128  # noklusētās 5: vairākas pārlūka cilnes vienlaikus — skripti nonāk līdz ERR_NO_BUFFER_SPACE
         allow_reuse_address = False  # Windows: citādi otrs serveris klusi "aizņem" to pašu portu

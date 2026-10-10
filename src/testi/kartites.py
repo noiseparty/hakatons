@@ -8,7 +8,9 @@ Bez --url pasniedz šī repo production/ lokāli un /api/* pārsūta uz https://
 tiešām vajag dzīvos datus). Tikai lasa: POST /api/meklejumi netiek sūtīts; ārējie pieprasījumi (fona kartes flīzes u.c.)
 testā tiek atcelti. Pirmo reizi: `uv run --no-project --with playwright playwright install chromium`.
 
-Varianti (--varianti, noklusēti visi trīs; --vietas pieliek vecos 4 vietvārdu punktus "… Rīgā/Ogrē/Rēzeknē/Alūksnes novadā"):
+Varianti (--varianti, noklusēti visi trīs; --vietas pieliek vecos 4 vietvārdu punktus "… Rīgā/Ogrē/Rēzeknē/Alūksnes novadā";
+--adreses — 8 adreses "<atslēgvārds> <adrese>" bez atrašanās vietas, sk. ADRESES un notes/kartites-4.md;
+--ekrans 1280x800 — dators, nevis telefons; --top20 — 20 biežākie scenāriji, sk. TOP20):
   ar vietu   — atrašanās vieta atļauta (Ogres centrs), vaicājums = pirmais atslēgvārds;
   bez vietas — atrašanās vieta nav zināma, tas pats vaicājums: vietas no kartes centra + poga "Izmantot manu atrašanās vietu";
   RU         — kā "ar vietu", bet kartītes valoda krievu (localStorage valoda=ru, LV/RU/EN slēdzis).
@@ -56,6 +58,24 @@ VARIANTI = {
 }
 VIETAS = {"Rīga": "Rīgā", "Ogre": "Ogrē", "Rēzekne": "Rēzeknē", "Alūksnes novads (lauki)": "Alūksnes novadā"}
 GATAVS_S = 4.0
+# --adreses: vaicājuma adrese → (kartītē sagaidāmā adrese vai None = nav atrasta, vajag piezīmi "nav atrasta", vieta,
+# vai tuvākajai upes stacijai ir slieksnis). Fiksturas: src/testi/fiksturas_adreses.py
+ADRESES = {
+    "Brīvības iela 12, Ogre": ("Brīvības iela 12, Ogre", False, "Ogre", True),
+    "Mednieku iela 9, Ogre": ("Mednieku iela 9, Ogre", False, "Ogre", True),
+    "Lielā iela 1, Jelgava": ("Lielā iela 1, Jelgava", False, "Jelgava", False),
+    "Rīgas iela 5, Daugavpils": ("Rīgas iela 2, Daugavpils", True, "Daugavpils", False),  # VZD: nr. 5 nav, atrod 2
+    "Jūras iela 3, Ventspils": ("Jūras iela 3, Ventspils", False, "Ventspils", False),
+    "Baznīcas iela 2, Cēsis": (None, True, "Cēsis", False),  # Cēsīs ir Baznīcas laukums, ne iela
+    "Nekāda iela 99, Ogre": (None, True, "Ogre", True),
+    "Skolas iela 4a, Rēzekne": ("Skolas iela 4A, Rēzekne", False, "Rēzekne", False),
+}
+NAV_ATRASTA = "nav atrasta"  # meklesana.js piezīme, kad adreses VZD reģistrā nav (vai atrasta cita)
+# 20 biežākie: 7 ātrās pogas + /api/meklejumi/top (plūdi, nav elektrības, droni, nav sakaru) + krīzes kodols
+TOP20 = ["patvertne", "medicina", "zales", "ugunsgreks", "policija", "degviela", "nauda", "pludi", "udens_celas",
+         "nav_elektribas", "nav_sakaru", "droni", "evakuacija", "gaisa_trauksme", "vetra_jumts", "negaiss", "nav_udens",
+         "nav_siltuma", "sirdslekme", "autoavarija"]
+EKRANS = (375, 740)
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
@@ -68,7 +88,10 @@ PARBAUDE_JS = r"""() => {
   const vietas = k.querySelector('#rez-vietas');
   const lemums = k.querySelector('#rez-lemums');
   const gaida = (vietas && vietas.textContent.includes(t('Meklē tuvākās vietas…'))) || (lemums && !lemums.textContent.trim())
-    || k.textContent.includes(t('Meklē adresi…'));
+    || k.textContent.includes(t('Meklē adresi…')) || (k.querySelector('#rez-pludi')?.textContent || '').includes(t('Pārbauda…'))
+    || (k.querySelector('#rez-udens')?.textContent || '').includes(t('Ielādē…'));
+  const soli = document.querySelector('.soli');
+  const sr = soli?.getBoundingClientRect();
   const pirmais = [...k.children].find(e => e.textContent.trim() || e.id === 'rez-lemums');
   const virsraksti = [...k.querySelectorAll('h2, h3')].filter(h => !h.textContent.trim()
     || !h.nextElementSibling || !h.nextElementSibling.textContent.trim()).map(h => h.outerHTML.slice(0, 80));
@@ -91,6 +114,13 @@ PARBAUDE_JS = r"""() => {
     talak: !!(k.querySelector('.talak h3')?.textContent || '').trim(),
     virsraksti,
     saites: [...k.querySelectorAll('a')].map(a => a.getAttribute('href')),
+    tel: /href="(tel|sms):/i.test(document.documentElement.innerHTML),
+    pludi: k.querySelector('#rez-pludi')?.innerText || null,
+    lemumaRinda: k.querySelector('#rez-lemuma-rinda')?.innerText || '',
+    udens: k.querySelector('#rez-udens')?.innerText || null,
+    udensStatuss: !!k.querySelector('#rez-udens .udens-statuss'),
+    soli: soli ? { aktivs: soli.querySelector('li.aktivs')?.dataset.solis || null, redzams: sr.width > 0 && sr.height > 0,
+                   kreisa: Math.round(sr.left), laba: Math.round(sr.right) } : null,
     platums: { kreisa: Math.round(r.left), laba: Math.round(r.right), ekrans: innerWidth,
                lapa: document.documentElement.scrollWidth,
                plati: [...k.querySelectorAll('*')].filter(e => { const b = e.getBoundingClientRect();
@@ -158,7 +188,8 @@ def lokals_serveris():
 
 
 async def konteksts(parluks, bazes_url, proxy, geo=None, valoda=None, liegta=False, bojats=None):
-    kw = {"viewport": {"width": 375, "height": 740}, "is_mobile": True, "has_touch": True, "locale": "lv-LV",
+    telefons = EKRANS[0] < 900
+    kw = {"viewport": {"width": EKRANS[0], "height": EKRANS[1]}, "is_mobile": telefons, "has_touch": telefons, "locale": "lv-LV",
           # service worker bloķēts: tas apietu /api pārsūtīšanu un kešotu vecās versijas
           "service_workers": "block"}
     if geo:
@@ -222,6 +253,7 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
         js_kludas.clear()
         q = f"{s['atslegvardi'][0].rstrip('$')} {var['pec']}".strip()
         m, gatavs = await meklet(q)
+        adr = ADRESES.get(var["pec"])
         problemas = []
         if not m:
             problemas.append(("kartīte", "rezultāts neparādījās"))
@@ -249,6 +281,13 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
             sl = sorted({k for h in m["saites"] if (k := saites_kluda(h, bazes_url))})
             if sl:
                 problemas.append(("saites", "; ".join(sl[:3])))
+            if m["tel"]:
+                problemas.append(("tel", "lapā ir tel:/sms: saite"))
+            if not m["soli"] or not m["soli"]["redzams"] or m["soli"]["aktivs"] != "2" \
+                    or m["soli"]["kreisa"] < 0 or m["soli"]["laba"] > m["platums"]["ekrans"]:
+                problemas.append(("soļi", f"soļu josla: {m['soli']}"))
+            if adr:
+                problemas += adreses_problemas(adr, s, m)
             p = m["platums"]
             if p["kreisa"] < 0 or p["laba"] > p["ekrans"] or p["lapa"] > p["ekrans"] or p["plati"]:
                 problemas.append(("ekrāns", f"kartīte {p['kreisa']}–{p['laba']} px, lapa {p['lapa']} px, plati: {p['plati']}"))
@@ -280,10 +319,35 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
             problemas.append(("ātrums", f"gatava pēc {gatavs:.1f} s" if gatavs else "nav gatava 15 s laikā"))
         stats[nos] += 1
         if problemas and args_ekrani and not any(k["punkts"] == nos for k in kludas):
-            await lapa.screenshot(path=str(pathlib.Path(args_ekrani) / f"{nos.split()[0]}_{s['kods']}.png"), full_page=True)
+            fails = re.sub(r"[^A-Za-z0-9_]+", "_", f"{nos}_{s['kods']}_{EKRANS[0]}")
+            await lapa.screenshot(path=str(pathlib.Path(args_ekrani) / f"{fails}.png"), full_page=True)
         for p, d in problemas:
             kludas.append({"punkts": nos, "scenārijs": s["kods"], "vaicājums": q, "pārbaude": p, "detaļas": d})
     await ctx.close()
+
+
+def adreses_problemas(adr, s, m):
+    """Adreses kartīte: adrese atrasta (vai skaidri "nav atrasta" + vieta), plūdu lēmums, upes stacija ar slieksni."""
+    sagaidama, piezime, vieta, slieksnis = adr
+    teksts, pr = m["teksts"], []
+    if sagaidama and sagaidama not in teksts:
+        pr.append(("adrese", f"nav '{sagaidama}': {m['sapratu']!r} · {teksts[:90]!r}"))
+    if piezime != (NAV_ATRASTA in teksts):
+        pr.append(("adrese", f"piezīme '{NAV_ATRASTA}' {'trūkst' if piezime else 'lieka'}: {teksts[:120]!r}"))
+    if not sagaidama and vieta not in teksts:
+        pr.append(("adrese", f"nav atrasta, bet nav arī vietas '{vieta}': {teksts[:120]!r}"))
+    if s["kods"] in ("pludi", "udens_celas"):
+        if not m["pludi"] or not re.search(r"\b(Jā|Nē)\b|neatbild|Neizdevās", m["pludi"]):
+            pr.append(("plūdi", f"zonas rinda: {m['pludi']!r}"))
+        if not re.search(r"Jā|Nē|neatbild|neizdevās|nevar", m["lemumaRinda"]):
+            pr.append(("plūdi", f"lēmuma rinda: {m['lemumaRinda']!r}"))
+        if not m["udens"] or "cm" not in m["udens"]:
+            pr.append(("upe", f"upes rinda: {m['udens']!r}"))
+        elif slieksnis and not m["udensStatuss"]:
+            pr.append(("upe", f"stacijai ir slieksnis, bet nav statusa: {m['udens'][:100]!r}"))
+        elif not slieksnis and not m["udensStatuss"] and "nav publiski pieejami" not in m["udens"]:
+            pr.append(("upe", f"nav ne statusa, ne teksta par slieksni: {m['udens'][:100]!r}"))
+    return pr
 
 
 async def robezgadijumi(parluks, bazes_url, proxy, kludas):
@@ -328,6 +392,10 @@ async def galvena(args):
     scenariji = noteikumi["scenariji"][: args.limits] if args.limits else noteikumi["scenariji"]
     if args.scenariji:
         scenariji = [s for s in scenariji if s["kods"] in args.scenariji.split(",")]
+    if args.top20:
+        scenariji = [s for s in scenariji if s["kods"] in TOP20]
+    global EKRANS
+    EKRANS = tuple(int(x) for x in args.ekrans.lower().split("x"))
     with urllib.request.urlopen(LIVE + "/api/kategorijas" if not args.url else args.url + "/api/kategorijas", timeout=30) as r:
         kategorijas = {k["kods"] for k in json.load(r)}
     srv = None
@@ -339,6 +407,8 @@ async def galvena(args):
     punkti = {n: VARIANTI[n] for n in args.varianti.split(",") if n}
     if args.vietas:
         punkti |= {n: {"geo": None, "valoda": None, "pec": pec} for n, pec in VIETAS.items()}
+    if args.adreses:
+        punkti |= {f"adr {a}": {"geo": None, "valoda": None, "pec": a} for a in ADRESES}
     kludas, stats = [], {n: 0 for n in punkti}
     t0 = time.monotonic()
     async with async_playwright() as p:
@@ -385,5 +455,8 @@ if __name__ == "__main__":
     a.add_argument("--scenariji", help="tikai šie scenāriju kodi (ar komatu)")
     a.add_argument("--varianti", default=",".join(VARIANTI), help=f"ar komatu no: {', '.join(VARIANTI)}")
     a.add_argument("--vietas", action="store_true", help="pievienot 4 vietvārdu punktus (… Rīgā/Ogrē/Rēzeknē/Alūksnes novadā)")
+    a.add_argument("--adreses", action="store_true", help="pievienot 8 adreses (ADRESES; fiksturas: fiksturas_adreses.py)")
+    a.add_argument("--top20", action="store_true", help="tikai 20 biežākie scenāriji (TOP20)")
+    a.add_argument("--ekrans", default="375x740", help="platums x augstums; ≥ 900 px — dators (bez mobilās emulācijas)")
     a.add_argument("--bez-robezgadijumiem", action="store_true")
     sys.exit(asyncio.run(galvena(a.parse_args())))

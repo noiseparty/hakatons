@@ -456,24 +456,40 @@ const krizesMeklesana = (() => {
 
   // Adrese vaicājumā ir tad, ja tajā ir skaitlis (mājas numurs): "plūdi Brīvības 15 Ogre", "aptieka Rīgas iela 5 Cēsīs".
   // Mēģinām garākās vārdu virknes ap numuru (pirms tā ir scenārija vārdi); /api/adreses vajag, lai visi vārdi sakrīt.
+  // Nav atrasta → { neatrasta: "Nekāda iela 99", atlikums } (kartītē to pasaka un rāda pēc vietvārda). Variantam jāsatur
+  // ielas nosaukums (vārds pirms numura; pirms "iela" — vēl viens), un, ja vaicājumā ir vietvārds, adresei jābūt tajā:
+  // citādi "Baznīcas iela 2, Cēsis" atrada Jūrmalu, "Nekāda iela 99, Ogre" — Brīvības ielu 99.
+  const IELAS_VEIDI = /^(iela|iel\.?|gatve|prospekts|prosp\.?|bulvāris|bulv\.?|ceļš|šoseja|laukums|aleja|dambis|krastmala|līnija|šķērsiela)$/i;
   async function atrastAdresi(teksts, signal) {
     const vardi = teksts.replace(/[,;]+/g, ' ').trim().split(/\s+/);
     const nr = vardi.findIndex(v => /\d/.test(v));
     if (nr < 0) return null;
+    const iela = nr === 0 ? 0 : nr - (nr > 1 && IELAS_VEIDI.test(vardi[nr - 1]) ? 2 : 1);  // ielas pirmais vārds
+    const parejie = vardi.filter((x, i) => i < iela || i > nr).join(' ');
+    const vieta = parejie && klasifikators.klasificet(parejie).vieta;  // ne no ielas vārdiem ("Rīgas iela" nav Rīga)
+    const rb = vieta && regioni[vieta.kods]?.bbox;
+    const vietaDer = a => !rb || (a.lon >= rb[0] - 0.05 && a.lon <= rb[2] + 0.05 && a.lat >= rb[1] - 0.05 && a.lat <= rb[3] + 0.05);
     const varianti = [];
-    for (let no = 0; no <= nr; no++) for (let lidz = vardi.length; lidz > nr; lidz--) varianti.push(vardi.slice(no, lidz));
+    for (let no = 0; no <= iela; no++) for (let lidz = vardi.length; lidz > nr; lidz--) varianti.push(vardi.slice(no, lidz));
     varianti.sort((a, b) => b.length - a.length);
+    const adreseTeksts = vardi.slice(iela, nr + 1).join(' ');
     for (const v of varianti.filter(v => v.length >= 2).slice(0, 6)) {
       try {
         const a = await iegut('/adreses?' + new URLSearchParams({ q: v.join(' '), limit: 1 }), signal);
         // atlikums: vaicājums bez adreses vārdiem — no tā nosaka situāciju ("Mednieku iela" nav medības)
-        if (a.length) return { ...a[0], atlikums: vardi.filter(x => !v.includes(x)).join(' ') };
+        if (a.length && vietaDer(a[0])) {
+          // VZD dod tuvāko numuru, ja šāda nav ("Rīgas iela 5" → "Rīgas iela 2"): kartītē to pasaka
+          const numuri = a[0].adrese.split(', ')[0].toLowerCase().split(/\s+/);
+          const cits = !numuri.includes(vardi[nr].toLowerCase()) && !numuri.some(n => vardi[nr].toLowerCase().startsWith(n + '-'));
+          return { ...a[0], atlikums: vardi.filter(x => !v.includes(x)).join(' '), citsNumurs: cits ? adreseTeksts : null };
+        }
       } catch (e) {
         if (e.name === 'AbortError') throw e;
         return null;  // adrešu meklēšana nav pieejama — turpinām ar vietvārdu / atrašanās vietu
       }
     }
-    return null;
+    // "… iela 99" — skaidri adrese: sakām, ka nav atrasta; "zvanīju 112", "3 cilvēki" — nav adrese, klusējam kā līdz šim
+    return IELAS_VEIDI.test(vardi[nr - 1] || '') ? { neatrasta: adreseTeksts, atlikums: parejie } : null;
   }
 
   // scenarijs: izvēlēts ar pogu ("Vai domāji…?") — tad tekstu izmanto tikai vietai un 112.
@@ -508,8 +524,15 @@ const krizesMeklesana = (() => {
         rez = klasificetLabots(adrese.atlikums);
         rez.dzivibas_draudi ||= draudiBija;
         rez.zvanit112 ||= draudiBija;
-      }
+      } else if (adrese?.neatrasta) rez.vieta = klasificetLabots(adrese.atlikums).vieta;  // ne no ielas vārdiem
     }
+    // Adrese nav VZD reģistrā (vai atrasts cits numurs): kartītē skaidri pasakām, un vieta ir vietvārds / atrašanās vieta
+    const neatrasta = adrese?.neatrasta || adrese?.citsNumurs;
+    const adresesPiezime = !neatrasta ? '' : '<p class="piezime adrese-nav">' + (adrese.citsNumurs
+      ? t('Adrese „{a}” VZD adrešu reģistrā nav atrasta; rādām atrasto: {x}.', { a: esc(neatrasta), x: esc(isaAdrese(adrese.adrese)) })
+      : rez.vieta ? t('Adrese „{a}” VZD adrešu reģistrā nav atrasta; rādām pēc vietas: {x}.', { a: esc(neatrasta), x: esc(rez.vieta.nosaukums) })
+        : t('Adrese „{a}” VZD adrešu reģistrā nav atrasta. Pārbaudiet adresi vai izmantojiet savu atrašanās vietu.', { a: esc(neatrasta) })) + '</p>';
+    if (adrese?.neatrasta) adrese = null;
 
     // Vieta kartē: adrese (tad reģiona filtru noņemam) vai vietvārds vaicājumā ("lācis Ogrē") — vienmēr, arī ja
     // scenārijs nav atpazīts vai tam nav slāņu kartē.
@@ -546,7 +569,7 @@ const krizesMeklesana = (() => {
         ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>`
         : kurTeksts ? `<p class="sapratu">${t(adrese ? 'Adrese' : 'Vieta')}: <b>${esc(kurTeksts)}</b></p>` +
             '<p class="piezime">' + t('Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.') + '</p>' : '') +
-      zvanitTeksts +
+      adresesPiezime + zvanitTeksts +
       (centra ? '' : '<div id="rez-lemums"></div><div id="rez-prognoze"></div>' + (pludi ? pluduBloks() : '')) +
       (no.regions ? '' : '<p class="piezime" id="rez-mana-vieta" hidden></p>') +
       (bezDatiem ? '<p class="piezime kluda">' + t('Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.') + '</p>' : '');
@@ -562,7 +585,7 @@ const krizesMeklesana = (() => {
     // Nekas nav atpazīts: ne situācija, ne vieta
     if (!galvenais && !kurTeksts) {
       if (jaunsRegions) atjaunot();
-      kaste.innerHTML = draudi + `<p class="piezime">${t('nesapratam')}</p>` + (draudi ? '' : '<p class="zvanit-teksts">' + t('Ja apdraudēta dzīvība vai veselība, zvaniet 112.') + '</p>') + notiritPoga();
+      kaste.innerHTML = draudi + adresesPiezime + `<p class="piezime">${t('nesapratam')}</p>` + (draudi ? '' : '<p class="zvanit-teksts">' + t('Ja apdraudēta dzīvība vai veselība, zvaniet 112.') + '</p>') + notiritPoga();
       return;
     }
 
