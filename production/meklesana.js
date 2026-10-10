@@ -156,8 +156,13 @@ const krizesMeklesana = (() => {
     ['vzryv', 'sprādziens'], ['trevog', 'trauksme'], ['sirena', 'trauksme'], ['benzin', 'degviela'], ['bankomat', 'bankomāts'],
   ];
   let indekss = [];  // [{ k: atslēgvārds bez garumzīmēm, orig }] — viena vārda, latīņu burtiem, no 3 burtiem
+  // Ātrumam (telefonā katrs taustiņš): atslēgvārdi bez garumzīmēm pa scenārijiem, sagatavoti vienreiz, un jau
+  // labotie vārdi — labotVardu ir tīra funkcija no vārda un indeksa, tāpēc rezultāts nemainās.
+  const normAtsl = new Map();
+  const laboti = new Map();
 
   function izveidotIndeksu(noteikumi) {
+    for (const sc of noteikumi.scenariji) normAtsl.set(sc.kods, sc.atslegvardi.map(a => vienk(a)));
     const redzets = new Set();
     for (const sc of noteikumi.scenariji) for (const a of sc.atslegvardi) {
       const k = vienk(a.replace(/\$$/, '')).trim();
@@ -171,6 +176,8 @@ const krizesMeklesana = (() => {
   // Optimālā virknes salīdzināšana (Damerau-Levenšteins ar blakus burtu apmaiņu); pārtrauc, ja > 1
   function dl1(a, b) {
     if (Math.abs(a.length - b.length) > 1) return 2;
+    // ar vienu labojumu (aizstāšana, ielikšana, dzēšana, blakus burtu maiņa) vismaz viens no šiem sakrīt — ātra atmešana
+    if (a[0] !== b[0] && a[1] !== b[1] && a[1] !== b[0] && a[0] !== b[1]) return 2;
     const d = Array.from({ length: a.length + 1 }, (_, i) => [i]);
     for (let j = 1; j <= b.length; j++) d[0][j] = j;
     for (let i = 1; i <= a.length; i++) {
@@ -187,6 +194,14 @@ const krizesMeklesana = (() => {
   }
 
   function labotVardu(v) {
+    if (!laboti.has(v)) {
+      if (laboti.size > 2000) laboti.clear();
+      laboti.set(v, labotVarduBezKesas(v));
+    }
+    return laboti.get(v);
+  }
+
+  function labotVarduBezKesas(v) {
     if (!/^[a-z]+$/.test(v) || v.length < 4) return v;
     if (indekss.some(x => x.vesels ? v === x.k : v.startsWith(x.k))) return v;  // jau atpazīstams
     // galotne nost: "plūdos" → "plud" → atslēgvārds, kas sākas ar to
@@ -235,7 +250,7 @@ const krizesMeklesana = (() => {
     if (pedejais.length >= 2) {
       const sc = klasifikators.scenariji;
       // atslēgvārds sākas ar rakstāmo vārdu ("plū" → plūdi), tad nosaukumā ir šis vārds
-      const pecAtslegas = sc.filter(s => s.atslegvardi.some(a => vienk(a).startsWith(pedejais)));
+      const pecAtslegas = sc.filter(s => (normAtsl.get(s.kods) || s.atslegvardi.map(vienk)).some(a => a.startsWith(pedejais)));
       const pecNosaukuma = sc.filter(s => vienk(s.nosaukums).split(/[^a-z]+/).some(v => v.startsWith(pedejais)));
       for (const s of [...pecAtslegas, ...pecNosaukuma]) if (!rez.includes(s)) rez.push(s);
     }
