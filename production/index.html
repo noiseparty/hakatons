@@ -39,6 +39,7 @@
 <link rel="stylesheet" href="stils.css">
 <link rel="stylesheet" href="demo.css">
 <link rel="stylesheet" href="izmainas.css">
+<link rel="stylesheet" href="darbvirsma.css">
 </head>
 <body>
 <header>
@@ -49,6 +50,7 @@
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+    <button type="button" id="notirit-meklesanu" class="notirit-poga" aria-label="Notīrīt meklēšanu" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg><span class="notirit-teksts">Notīrīt</span></button>
     <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#mikrofons"></use></svg></button>
     <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
     <button type="submit">Meklēt</button>
@@ -185,5 +187,6 @@
 <script src="izmainas.js"></script>
 <script src="kajene.js"></script>
 <script src="atskanot.js"></script>
+<script src="darbvirsma.js"></script>
 </body>
 </html>
