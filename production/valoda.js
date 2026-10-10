@@ -9,6 +9,7 @@
 const Valoda = (() => {
   const VALODAS = ['lv', 'ru', 'en'];
   const ATSLEGA = 'valoda';
+  const NOS = { lv: 'Latviešu', ru: 'Русский', en: 'English' };
 
   // Atslēga = latviskais teksts (tad meklesana.js paliek lasāms un bez valoda.js nekas nesalūzt);
   // gariem tekstiem — īsa atslēga ar lauku lv. {x} — vieta mainīgajam (Valoda.t(atslēga, { x })).
@@ -303,7 +304,8 @@ const Valoda = (() => {
     document.querySelectorAll('[data-t-placeholder]').forEach(e => { e.placeholder = t(e.dataset.tPlaceholder); });
     document.querySelectorAll('[data-t-title]').forEach(e => { e.title = t(e.dataset.tTitle); });
     document.querySelectorAll('[data-t-aria]').forEach(e => { e.setAttribute('aria-label', t(e.dataset.tAria)); });
-    document.querySelectorAll('.valoda-sledzis button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.valoda === v)));
+    document.querySelectorAll('.valoda-sledzis [data-valoda]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.valoda === v)));
+    document.querySelectorAll('.valoda-sledzis .valoda-poga').forEach(b => { b.firstElementChild.textContent = v.toUpperCase(); b.setAttribute('aria-label', t('Rezultāta valoda') + ': ' + NOS[v]); });
   }
 
   // Meklēšana (meklesana.js) pirms kartītes zīmēšanas: valoda no vaicājuma, ja slēdzī nav izvēlēta
@@ -327,13 +329,42 @@ const Valoda = (() => {
   // Slēdzis mount: map.html galvene (.galva-labi) vai sākumlapas hero (.galva-labi tajā pašā vietā)
   const vietaGalvene = document.querySelector('header .galva-labi');
   if (vietaGalvene) {
+    // Viena poga "LV ▾" + nolaižamais saraksts (listbox); klase valoda-sledzis un [data-valoda] paliek (saraksts.js, druka)
     const sledzis = document.createElement('div');
     sledzis.className = 'valoda-sledzis';
-    sledzis.setAttribute('role', 'group');
-    sledzis.setAttribute('aria-label', 'Valoda / Язык / Language');
-    sledzis.innerHTML = [['lv', 'Latviski'], ['ru', 'По-русски'], ['en', 'English']].map(([v, nos]) =>
-      `<button type="button" data-valoda="${v}" lang="${v}" aria-label="${nos}" aria-pressed="false">${v.toUpperCase()}</button>`).join('');
-    sledzis.addEventListener('click', e => { const b = e.target.closest('button[data-valoda]'); if (b) izveleties(b.dataset.valoda); });
+    sledzis.innerHTML = '<button type="button" class="valoda-poga" aria-haspopup="listbox" aria-expanded="false" aria-label="Valoda / Язык / Language"><span>LV</span><svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>' +
+      '<div class="valoda-saraksts" role="listbox" aria-label="Valoda / Язык / Language" hidden>' +
+      VALODAS.map(v => `<div role="option" tabindex="-1" data-valoda="${v}" lang="${v}" aria-selected="false">${NOS[v]}</div>`).join('') + '</div>';
+    const poga = sledzis.querySelector('.valoda-poga');
+    const saraksts = sledzis.querySelector('.valoda-saraksts');
+    const opcijas = [...saraksts.children];
+    const atvers = (fokuss) => {
+      saraksts.hidden = false; poga.setAttribute('aria-expanded', 'true');
+      if (fokuss !== false) (opcijas.find(o => o.dataset.valoda === aktiva()) || opcijas[0]).focus();
+    };
+    const aizver = (atpakal) => {
+      if (saraksts.hidden) return;
+      saraksts.hidden = true; poga.setAttribute('aria-expanded', 'false');
+      if (atpakal) poga.focus();
+    };
+    poga.addEventListener('click', () => saraksts.hidden ? atvers(false) : aizver(true));
+    poga.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); atvers(); }
+      else if (e.key === 'Escape') aizver(true);
+    });
+    const izvelas = o => { aizver(true); izveleties(o.dataset.valoda); };
+    saraksts.addEventListener('click', e => { const o = e.target.closest('[data-valoda]'); if (o) izvelas(o); });
+    saraksts.addEventListener('keydown', e => {
+      const i = opcijas.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') { e.preventDefault(); opcijas[(i + 1) % opcijas.length].focus(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); opcijas[(i + opcijas.length - 1) % opcijas.length].focus(); }
+      else if (e.key === 'Home') { e.preventDefault(); opcijas[0].focus(); }
+      else if (e.key === 'End') { e.preventDefault(); opcijas[opcijas.length - 1].focus(); }
+      else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (i >= 0) izvelas(opcijas[i]); }
+      else if (e.key === 'Escape') { e.preventDefault(); aizver(true); }
+      else if (e.key === 'Tab') aizver(false);   // Tab neaiztur: saraksts aizveras, fokuss iet tālāk
+    });
+    document.addEventListener('pointerdown', e => { if (!sledzis.contains(e.target)) aizver(false); });
     vietaGalvene.prepend(sledzis);
   }
   lietot();

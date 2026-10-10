@@ -11,11 +11,14 @@
 <style>
   /* LV / RU / EN slēdzis sākumlapas galvenē (stils.css šeit nav ielādēts) */
   .galva-labi { display: flex; justify-content: flex-end; margin: 0 0 8px; }
-  .valoda-sledzis { display: flex; gap: 0; }
-  .valoda-sledzis button { min-width: 40px; height: 36px; padding: 0 6px; border: 1px solid #0077c8; background: #fff; color: #0077c8; font: inherit; font-weight: 700; cursor: pointer; }
-  .valoda-sledzis button:first-child { border-radius: 999px 0 0 999px; }
-  .valoda-sledzis button:last-child { border-radius: 0 999px 999px 0; }
-  .valoda-sledzis button[aria-pressed="true"] { background: #0077c8; color: #fff; }
+  .valoda-sledzis { position: relative; display: flex; }
+  .valoda-poga { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 48px; height: 40px; padding: 0 10px; border: 1px solid #0077c8; border-radius: 999px; background: #fff; color: #0077c8; font: inherit; font-weight: 700; cursor: pointer; }
+  .valoda-saraksts { position: absolute; z-index: 50; top: calc(100% + 4px); right: 0; min-width: 140px; padding: 4px; border: 1px solid #0077c8; border-radius: 8px; background: #fff; color: #101B26; box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+  .valoda-saraksts[hidden] { display: none; }
+  .valoda-saraksts [role="option"] { display: flex; align-items: center; min-height: 44px; padding: 0 12px; border-radius: 6px; cursor: pointer; }
+  .valoda-saraksts [role="option"]:hover, .valoda-saraksts [role="option"]:focus-visible { background: #e6f2fb; outline: 2px solid #0077c8; outline-offset: -2px; }
+  .valoda-saraksts [role="option"][aria-selected="true"] { font-weight: 700; }
+  .valoda-saraksts [role="option"][aria-selected="true"]::after { content: "\2713"; margin-left: auto; padding-left: 12px; }
 </style>
 <link rel="canonical" href="https://map.repo.lv/">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
