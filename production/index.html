@@ -10,6 +10,10 @@
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
       integrity="sha256-YU3qCpj/P06tdPBJGPax0bm6Q1wltfwjsho5TR4+TYc=" crossorigin="">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#0077c8">
+<link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="ikonas/ikona-192.png">
 <link rel="stylesheet" href="stils.css">
 <link rel="stylesheet" href="demo.css">
 </head>
@@ -34,6 +38,7 @@
 </header>
 <div id="bridinajums" class="bridinajums" role="status" hidden></div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
+<div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
 <main>
   <aside id="panelis" aria-label="Meklēšana un kartes slāņi">
     <section id="meklesana">
@@ -50,6 +55,8 @@
       <button id="atrast" type="button" class="galvena"><span aria-hidden="true">📍</span> Rādīt tuvākos man</button>
       <button id="tuvaka" type="button" class="otra"><span aria-hidden="true">🏠</span> Tuvākā patvertne</button>
       <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot Jūsu atrašanās vietu. Tā netiek saglabāta.</p>
+      <button id="saglabat-apkartni" type="button" class="otra"><span aria-hidden="true">⬇</span> Saglabāt manu apkārtni bezsaistei</button>
+      <p id="apkartne-teksts" class="piezime" role="status" hidden></p>
     </section>
 
     <section>
@@ -122,12 +129,16 @@
     kluda.hidden = false;
   }
 </script>
+<script src="offline.js"></script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
 <script src="objekta-statuss.js"></script>
 <script src="app.js"></script>
+<script src="marsruts.js"></script>
 <script src="zonas.js"></script>
 <script src="meklesana.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="dalities.js"></script>
 <script src="runa.js"></script>
 <script src="apaksa.js"></script>
 <script src="saraksts.js"></script>
