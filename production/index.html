@@ -16,10 +16,14 @@
 <link rel="apple-touch-icon" href="ikonas/ikona-192.png">
 <link rel="stylesheet" href="stils.css">
 <link rel="stylesheet" href="demo.css">
+<link rel="stylesheet" href="izmainas.css">
 </head>
 <body>
 <header>
-  <h1>Krīzes karte</h1>
+  <div class="galva-kreisi">
+    <button id="izmainas-poga" type="button" aria-label="Izmaiņu žurnāls" aria-haspopup="dialog" aria-expanded="false" title="Kas jauns">#</button>
+    <h1>Krīzes karte</h1>
+  </div>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
            aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
@@ -157,6 +161,7 @@
 <script src="celi.js"></script>
 <script src="zinot.js"></script>
 <script src="demo.js"></script>
+<script src="izmainas.js"></script>
 <script src="atskanot.js"></script>
 </body>
 </html>

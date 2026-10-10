@@ -53,6 +53,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 
 - [ ] Shelters: the 112.lv data has **no** capacity, wheelchair/step-free, pets or operator fields (only building type, address, entrance coordinates, an empty comment). Ask VUGD to add them when publishing on data.gov.lv; until then the popup says "nav norādīts" and there is no wheelchair filter — added 2026-10-10 02:42 +03:00 by noiseparty
+- [ ] API: `/api/meklejumi/top` answers 503 on the live site ("Biežāk meklētais"; red in `src/testi/parbaude.py`) — added 2026-10-10 02:56 +03:00 by noiseparty
+- [ ] Re-record the backup demo video after the morning freeze (`uv run --no-project --with playwright src/demo/video.py`) — added 2026-10-10 02:56 +03:00 by noiseparty
 - [ ] Offline mode: test on a real phone (airplane mode after one visit; "Pievienot sākuma ekrānam" on Android Chrome and iOS Safari) — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) and ask municipalities to confirm resilience-point statuses — added 2026-10-10 02:54 +03:00 by noiseparty
 
@@ -70,6 +72,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Device matrix of the live site (iPhone SE/14, Pixel 7, Galaxy S9+, iPad Mini; location on/off) + fixes: 44 px tap targets on phones, geolocation JS race, Demo tab covering the forecast ✕ (`notes/telefonu-tests.md`, `src/demo/ierices.py`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
+- [x] All map layers off on page load (search result / demo turn on what they need; "Beigt demo" back to all off) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
+- [x] Changelog: "#" button before "Krīzes karte" opens "Kas jauns" (`production/izmainas.json`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
+- [x] Backup demo video 390×844 + 11 slide screenshots (`src/demo/video.py`, saved outside the repo in `..\demo-video\`) — done 2026-10-10 02:56 +03:00 by noiseparty (added 2026-10-10 02:56 +03:00 by noiseparty)
 - [x] Community hazard reports ("Ziņot par bīstamību", lacukarte.lv pattern): `zinot.js` form + layer, `/api/zinojumi` (rate limit, URL/profanity filter, ~100 m stored / ~1 km shown, 7 days, auto-hide when disputed), confirm/dispute, `moderacija.html` with `MAP_MOD_TOKEN` — done 2026-10-10 03:11 +03:00 by noiseparty (added 2026-10-10 03:11 +03:00 by noiseparty)
 - [x] Pitch replay: "▶ Atskaņot" in the demo panel / `?demo=atskanot[&saraksts=…&ilgums=…]` steps through demo scenarios (default vetra-2026, pludi-ogre, drons, bez-sakariem; 20 s each) with each scenario's search query, progress bar, space / ← / → and buttons, auto "Beigt demo" (`production/atskanot.js`) — done 2026-10-10 03:09 +03:00 by noiseparty (added 2026-10-10 03:09 +03:00 by noiseparty)
 - [x] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — done 2026-10-10 03:10 +03:00 by noiseparty: layer "Laikapstākļi tagad" (`/api/noverojumi`, 34 stations), "Šobrīd brāzmas" feed item, +1 risk for observed gusts ≥ 20 m/s, wind line in storm results, status component (added 2026-10-10 01:39 +03:00 by noiseparty)
