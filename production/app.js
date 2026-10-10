@@ -510,6 +510,16 @@ function izveletiesAdresi(a, atkartot = true) {
   if (atkartot) arMeklesanu(m => m.atkartot());  // meklesana.js
 }
 
+// Jauna meklēšana ar citu vietu ("nav elektrības Rēzekne" pēc "plūdi Mednieku iela 9 Ogre"): iepriekšējā adrese
+// vairs nav atskaites punkts, tās marķieris ar nosaukumu pazūd. GPS atrašanās vietu ("Jūs esat šeit") neaiztiek.
+function atmestAdresi() {
+  if (!stavoklis.vieta?.adrese) return false;
+  stavoklis.vieta = null;
+  if (vietasSlanis) { vietasSlanis.remove(); vietasSlanis = null; }
+  el('vieta-teksts').textContent = 'Pārlūks prasīs atļauju izmantot Jūsu atrašanās vietu. Tā netiek saglabāta.';
+  return true;
+}
+
 function meklesanasRinda(krasa, virsraksts, apaksa, izveleties, kategorija = null) {
   const li = document.createElement('li');
   li.tabIndex = 0;
