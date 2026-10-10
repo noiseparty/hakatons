@@ -48,13 +48,37 @@ def bez_celiem(teksts):
     return teksts
 
 
+SAITE = re.compile(r"\[([^\]\n]+)\]\((https?://[^\s)]+)\)|(https?://[^\s<>()`|]+)")
+
+
+def saites_vieta(teksts):
+    """Markdown [teksts](url) un kailie URL → (teksts ar vietturiem \x01n\x01, [gatavas <a> saites])."""
+    saites = []
+
+    def aizvietot(m):
+        astes = ""
+        if m.group(2):
+            url, nos = m.group(2), m.group(1)
+        else:
+            url = m.group(3).rstrip(".,;:!?")
+            astes = m.group(3)[len(url):]
+            nos = re.sub(r"^https?://(www\.)?", "", url).rstrip("/")
+            if len(nos) > 40:
+                nos = nos[:37].rstrip("/.-") + "…"
+        saites.append(f'<a href="{html.escape(url)}" target="_blank" rel="noopener">{html.escape(nos)}</a>')
+        return f"\x01{len(saites) - 1}\x01{astes}"
+    return SAITE.sub(aizvietot, teksts), saites
+
+
 def iekļauts(teksts):
-    """Markdown rindiņa → HTML: **treknraksts**, `kods`, ⚠ → ikona, notes/… ceļi → nosaukumi; viss pārējais aizsargāts."""
-    t = html.escape(bez_celiem(teksts), quote=False).replace("⚠️", "⚠").replace("⚠", UZMANIBU)
+    """Markdown rindiņa → HTML: **treknraksts**, `kods`, saites, ⚠ → ikona, notes/… ceļi → nosaukumi; viss pārējais aizsargāts."""
+    teksts, saites = saites_vieta(bez_celiem(teksts))
+    t = html.escape(teksts, quote=False).replace("⚠️", "⚠").replace("⚠", UZMANIBU)
     t = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", t)
     t = re.sub(r"`(.+?)`", r"<code>\1</code>", t)
     t = re.sub(r"notes/[\w./-]*\w", lambda m: dokumenta_saite(m.group(0)), t)
-    return t.replace("\0", ", ")
+    t = t.replace("\0", ", ")
+    return re.sub(r"\x01(\d+)\x01", lambda m: saites[int(m.group(1))], t)
 
 
 def sunas(rinda):
@@ -126,7 +150,7 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
 <title>Ko vēl vajadzētu publicēt · Krīzes karte</title>
-<meta name="description" content="30 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
+<meta name="description" content="35 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
 <link rel="stylesheet" href="statuss.css">
 <link rel="stylesheet" href="info.css">
 <link rel="canonical" href="https://map.repo.lv/trukstosie.html">

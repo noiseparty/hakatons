@@ -443,8 +443,6 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   /* lapā: bez ēnas un malām, galva pielīp lapas satura augšā (ritina .apaksa-saturs) */
   .apaksa-saturs > .saraksts { margin: 0 -12px; box-shadow: none; border-radius: 0; background: #fff; }
   .saraksts-galva { padding-top: .2rem; }
-  /* lapa ir par 80 px augstāka par ekrānu (apaksa.js REZERVE atsperei): pēdējās pogas virs ekrāna apakšmalas */
-  .apaksa-saturs > .saraksts .saraksts-darbibas { padding-bottom: calc(80px + .85rem + env(safe-area-inset-bottom)); }
 }
 #saraksts-druka { display: none; }
 @media print {
@@ -737,7 +735,9 @@ body.ir-meklets .dv-pirmais { display: none; }
   body.apaksa-aktiva #demo-karte-zime { left: 50%; transform: translateX(-50%); }
 
   /* ---- Apakšējā lapa: augstums un nobīde no apaksa.js (transform), šeit tikai izskats ---- */
-  .apaksa { height: 84dvh; bottom: -80px; padding: 0;  /* -80px = apaksa.js REZERVE (atsperei virs "Pilns") */
+  /* --apaksa-rezerve = apaksa.js REZERVE (atsperei virs "Pilns"): lapa sniedzas tik tālu zem ekrāna un tikpat liela ir apakšējā
+     atkāpe, tāpēc "Pilns" saturs beidzas pie ekrāna apakšmalas (atkāpe redzama tikai, velkot virs "Pilns") */
+  .apaksa { height: 84dvh; bottom: calc(-1 * var(--apaksa-rezerve, 80px)); padding: 0 0 calc(var(--apaksa-rezerve, 80px) + env(safe-area-inset-bottom));
     border-radius: 16px 16px 0 0; box-shadow: var(--ena-liela); border-top: 1px solid var(--pelks-3);
     transition: transform .34s cubic-bezier(.2, .8, .2, 1); will-change: transform; overflow: hidden; }
   .apaksa.velk { transition: none; }
@@ -751,7 +751,7 @@ body.ir-meklets .dv-pirmais { display: none; }
     color: var(--teksts-blavs); font-size: .68rem; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; }
   .apaksa-stavokli button[aria-pressed="true"] span { background: var(--tumsi-zils); border-color: var(--tumsi-zils); color: #fff; }
   .apaksa-meklet { flex: none; padding: 2px max(12px, env(safe-area-inset-left)) 0; }
-  .apaksa-saturs { padding: 0 max(12px, env(safe-area-inset-left)) calc(96px + env(safe-area-inset-bottom)); overflow-y: hidden; touch-action: pan-x; overscroll-behavior: contain; }
+  .apaksa-saturs { padding: 0 max(12px, env(safe-area-inset-left)) 16px; overflow-y: hidden; touch-action: pan-x; overscroll-behavior: contain; }
   .apaksa[data-stavoklis="pilna"] .apaksa-saturs { overflow-y: auto; touch-action: pan-x pan-y; }
   .apaksa[data-stavoklis="peek"] .apaksa-saturs { visibility: visible; }
 
