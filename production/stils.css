@@ -6,6 +6,23 @@
   --teksts: #333; --teksts2: #666;
   --radiuss: 8px; --ena: 0 2px 8px rgba(0, 0, 0, .1);
 }
+/* Dizaina žetoni no lietotāja Stitch maketa (notes/mockup/desktop.html). Kopīgi datoram (darbvirsma.css) un telefonam;
+   esošie mainīgie augstāk nav pārdefinēti, lai telefona izskats nemainās, kamēr to neizmanto. */
+:root {
+  --tumsi-zils: #172B3F; --tumsi-zils-gaiss: #243E56; --zils-primars: #1E66D5; --karmins: #9E3039;
+  --pelks-1: #F8FAFC; --pelks-2: #EEF2F6; --pelks-3: #D8E1E8; --pelks-robeza-viegla: #E6EDF2;
+  --teksts-galv: #101B26; --teksts-blavs: #506173;
+  --brid-info-fons: #EBF3FA; --brid-info-mala: #8CB3D9; --brid-info-teksts: #134B73;
+  --brid-dzeltens-fons: #FEF9EB; --brid-dzeltens-mala: #D4A12B; --brid-dzeltens-teksts: #7A5300;
+  --brid-oranzs-fons: #FDF3EB; --brid-oranzs-mala: #D66D25; --brid-oranzs-teksts: #8E3E07;
+  --brid-sarkans-fons: #FDF0F0; --brid-sarkans-mala: #BA2525; --brid-sarkans-teksts: #7D1212;
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309; --dzeltens-tumss: #B45309;
+  --gim-transports: #4D7C0F; --gim-udens: #1E66D5;
+  --zals-statuss: #16A34A;
+  --font-stack: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --radiuss-maza: 4px; --radiuss-pogas: 6px; --radiuss-karte: 8px;
+  --ena-maza: 0 1px 2px rgba(16, 27, 38, .05); --ena-vid: 0 4px 12px rgba(16, 27, 38, .08); --ena-liela: 0 8px 24px rgba(16, 27, 38, .12);
+}
 
 html, body { height: 100%; margin: 0; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--teksts); background: var(--fons); }
 body { display: flex; flex-direction: column; }
