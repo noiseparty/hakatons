@@ -1,6 +1,6 @@
 # Plan for the final day (Saturday 2026-10-10)
 
-Updated 2026-10-10 06:21. Everything up to #158 is merged. What happened overnight, the VPS commands and the decisions you need to make are in `notes/stavoklis.md` (top section).
+Updated 2026-10-10 06:30. Everything up to #160 is merged. What happened overnight, the VPS commands and the decisions you need to make are in `notes/stavoklis.md` (top section).
 
 Goal: win. In this order: **the pitch lands**, **the phone demo can't fail**, **every judging criterion is visibly ticked**, **the map looks calm**. Everything else is optional.
 
@@ -33,7 +33,7 @@ The pitch time isn't in the repo; check the organisers' schedule. T = pitch time
 | 07:35 | **VPS steps 1–3** from `notes/stavoklis.md` (data refresh + timer, border key, Caddy), ~15 min. Start step 6 (flood warm-up) in the background right after | step 1 ends with `Gatavs.`; `curl -s https://map.repo.lv/api/veseliba` is `"ok":true` |
 | 07:55 | Full check: `uv run --no-project --python 3.12 src/rits.py` (~5 min) | table all green, or only "pludi BRIDIN" (slow LVĢMC) |
 | 08:05 | Make the three decisions (`notes/stavoklis.md` → "Risks and decisions"): reports licence, flood-files licence, microphone. Tell the orchestrator; it lands any text change as one PR | decisions written in TODO.md |
-| 08:15 | Orchestrator merges what's still open (#157 print, and the running `demo-4`, `kartites-4`, `pitch-cels` if they're green). Set the freeze time = T − 60 min | `gh pr list` empty or parked |
+| 08:15 | Orchestrator merges what's still running (`kartites-4`, `pitch-cels`, this handoff `stavoklis-5`) if green. Set the freeze time = T − 60 min | `gh pr list` empty or parked |
 | 08:30 | **Real phones** (Android Chrome + iPhone Safari): the pitch path, location allowed AND denied, open `?svaigs=1` once, one "Ziņot" up to the summary (submit only if you want), `?demo=vetra-2026`, `?demo=pludi-ogre`, `?demo=nakts` | no dead end; screenshots of anything odd go to a terminal |
 | 09:00 | If `rits.py` step 2 shows a real flood answer: retake slides 02/03 (`uv run --no-project --python 3.12 --with playwright --with pillow src/demo/ekrani.py --tikai 02,03`) and the video (`uv run --no-project --python 3.12 src/rits.py --soli 5`), commit `production/slaidi/*.webp` in a PR | the slide shows "Plūdu riska zona", not a loading bar |
 | 09:30 | **Rehearsal 1** with https://map.repo.lv/slaidi.html: ←/→ to move, **N** speaker notes, **T** timer (target 9:30), **F** fullscreen. Assign speakers per slide (problem + geolatvija / demo / AI + data + next) | under 10:00 |

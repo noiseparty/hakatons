@@ -1,6 +1,6 @@
-# Stāvoklis 2026-10-10 06:21 (morning handoff, pitch day)
+# Stāvoklis 2026-10-10 06:30 (morning handoff, pitch day)
 
-For the user (noiseparty) after sleeping from ~04:30. Overnight the orchestrator merged **#63–#158** (#111–#158 while you slept); nothing is waiting for review. The site works as it is. The steps below make the live database and server match `main`. Update this file whenever the merge state changes; tasks live in `TODO.md`.
+For the user (noiseparty) after sleeping from ~04:30. Overnight the orchestrator merged **#63–#160** (#111–#160 while you slept); nothing is waiting for review. The site works as it is. The steps below make the live database and server match `main`. Update this file whenever the merge state changes; tasks live in `TODO.md`.
 
 ## VPS steps 1–3 (run first, in this order; `src/rits.py` step 7 prints this section)
 
@@ -109,7 +109,7 @@ What red or yellow means:
 - **4 IZLAISTS:** the flood answer wasn't real. Retake later with `src/demo/ekrani.py --tikai 02,03`.
 - **6 KLUDA:** a classifier regression. Don't merge more search changes.
 
-**Panic switch** for a phone or laptop showing an old copy: open https://map.repo.lv/?svaigs=1. It removes the service worker and all caches, then reloads. The bottom of `statuss.html` shows the active offline VERSION; it must equal `VERSION` in `production/sw.js` on main (`2026-10-10ci` at 06:21).
+**Panic switch** for a phone or laptop showing an old copy: open https://map.repo.lv/?svaigs=1. It removes the service worker and all caches, then reloads. The bottom of `statuss.html` shows the active offline VERSION; it must equal `VERSION` in `production/sw.js` on main (`2026-10-10cm` at 06:30).
 
 ## Demo codes (`production/demo/scenariji.json`, 19)
 
@@ -162,7 +162,7 @@ Slides: https://map.repo.lv/slaidi.html (13 slides, ~9:30). Backup video: `C:\Us
 
 Correction: slide 8 (`slaidi.html`) and `pitch.md` still say "96,1 % uz 609 vaicājumiem". Today's run gives 96.2 % on 612 (the test set grew by 3). Both are honest; update only if you touch the slides anyway.
 
-## Merged tonight (#63–#158, grouped)
+## Merged tonight (#63–#160, grouped)
 
 - **UI, phone and desktop:**
   - #73, #139: decision first and the 3-step strip.
@@ -170,7 +170,7 @@ Correction: slide 8 (`slaidi.html`) and `pitch.md` still say "96,1 % uz 609 vaic
   - #113: desktop three columns.
   - #108, #154: SVG sprite icons, marker shapes, 44 px hit areas, nearest-marker tap.
   - #115: Notīrīt. #132: first-visit hint. #137: RU/EN card + switch.
-  - #69, #144: Saraksts list view. #80: share/print with QR.
+  - #69, #144: Saraksts list view. #80, #157, #160: share/print with QR, one A4 page in LV/RU/EN.
   - #138: accessibility, axe 0 violations.
   - #88, #97, #146: phone fixes and performance (search 3.9 → 1.7 s on Slow 4G).
   - Smaller: #102, #104, #109, #153.
@@ -196,7 +196,7 @@ Correction: slide 8 (`slaidi.html`) and `pitch.md` still say "96,1 % uz 609 vaic
   - #134: hotfix for conflict markers from #133.
 - **Docs, pitch, demo:**
   - #71, #74, #135: 13-slide deck, print, QR. #136: 90 s backup video. #142: screenshot retake script.
-  - #94, #143: 12 real crises with sources. #105, #156: replay and demo panel presentation-clean.
+  - #94, #143: 12 real crises with sources. #105, #156, #159: replay and demo panel presentation-clean, own place per replay step, collapsible flood legend.
   - #72, #149, #152: 35 missing datasets + trukstosie.html. #98, #141: Open API docs.
   - #100, #126: honest source count. #106: sources verified. #128: criteria audit.
   - #64, #85, #89, #90, #93, #96, #99, #101, #87: notes and TODO.
@@ -204,10 +204,10 @@ Correction: slide 8 (`slaidi.html`) and `pitch.md` still say "96,1 % uz 609 vaic
   - #68 `parbaude.py`. #145 `rits.py`.
   - #95, #155: card audit (387 cards on recorded fixtures, no dead ends, a source line for every place).
 
-## Open PRs and running work (06:21)
+## Open PRs and running work (06:30)
 
-- **#157** `noiseparty/druka-2`: print on one A4 page in LV/RU/EN, the share link keeps language and decision. Open, not merged.
-- Agents still running in locked worktrees, no PR yet: `noiseparty/demo-4`, `noiseparty/kartites-4`, `noiseparty/pitch-cels`. Check with `gh pr list` before freezing `main`.
+- No open PRs (`gh pr list` empty at 06:30).
+- Agents still running in locked worktrees, no PR yet: `noiseparty/kartites-4`, `noiseparty/pitch-cels` (and this handoff, `noiseparty/stavoklis-5`). Check with `gh pr list` before freezing `main`.
 
 ## Risks and decisions for you
 
