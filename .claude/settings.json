@@ -36,7 +36,20 @@
       "WebFetch(domain:vugd.gov.lv)",
       "WebFetch(domain:videscentrs.lvgmc.lv)",
       "WebFetch(domain:leafletjs.com)",
-      "WebFetch(domain:vdaa.gov.lv)"
+      "WebFetch(domain:vdaa.gov.lv)",
+      "Bash(python *)",
+      "Bash(python3 *)",
+      "Bash(node *)",
+      "Bash(npx *)",
+      "Bash(tesseract *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh pr edit *)",
+      "Bash(git merge *)",
+      "Bash(git worktree *)",
+      "Bash(git push -u origin noiseparty/*)",
+      "Bash(git push origin HEAD:noiseparty/*)",
+      "Bash(curl *)",
+      "WebFetch(domain:*)"
     ],
     "deny": [
       "Bash(git push --force*)",
