@@ -21,6 +21,9 @@ const krizesMeklesana = (() => {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
     bridinajumi: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi" target="_blank" rel="noopener">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · CC0',
+    // rezerves avots (Meteoalarm noteikumi: nosaukt LVĢMC, saite uz meteoalarm.org, atruna par kavēšanos)
+    bridinajumiRezerves: 'LVĢMC brīdinājumi caur <a href="https://www.meteoalarm.org" target="_blank" rel="noopener">Meteoalarm (EUMETNET)</a> · CC BY 4.0. ' +
+      'Iespējama kavēšanās; jaunākā informācija — <a href="https://www.meteoalarm.org" target="_blank" rel="noopener">www.meteoalarm.org</a>.',
   };
   let klasifikators = null;
   let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
@@ -665,13 +668,17 @@ const krizesMeklesana = (() => {
       const el = kaste.querySelector('#rez-lemums');
       if (!el) return;
       const kur = no.regions ? 'šajā apvidū' : 'šai vietai';
-      const sie = (d.bridinajumi || []).filter(b => b.attiecas).sort((a, b) => b.limenis - a.limenis);
-      const lidz = b => b.lidz ? ', līdz ' + new Date(b.lidz).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      // rezerves avots (Meteoalarm, d.rezerves): vieta pārbaudīta pēc pašvaldības; attiecas null — nav zināms, rāda
+      const rez = !!d.rezerves;
+      const sie = (d.bridinajumi || []).filter(b => rez ? b.attiecas !== false : b.attiecas).sort((a, b) => b.limenis - a.limenis);
+      const fmt = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const lidz = b => (b.lidz ? ', līdz ' + fmt(b.lidz) : '') + (rez && b.izdots ? ` (izdots ${fmt(b.izdots)})` : '');
+      const piezime = rez ? ' <small class="rezerves">rezerves avots: Meteoalarm</small>' : '';
       el.innerHTML = (sie.length
         ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}">${Ik('brid')} <b>LVĢMC brīdinājums ${kur}:</b> ` +
-          sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + '</p>'
-        : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b></p>`) +
-        `<small class="avots-rinda">${AVOTI_LVGMC.bridinajumi}</small>`;
+          sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + piezime + '</p>'
+        : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b>${piezime}</p>`) +
+        `<small class="avots-rinda">${rez ? AVOTI_LVGMC.bridinajumiRezerves : AVOTI_LVGMC.bridinajumi}</small>`;
     }).catch(e => {
       const el = kaste.querySelector('#rez-lemums');
       if (!el || e.name === 'AbortError') return;
@@ -722,23 +729,24 @@ const krizesMeklesana = (() => {
   }
 
   // Pašvaldība: CA plāns, tīmekļvietne, pašvaldības tālrunis un e-pasts (UR, CC0) kā teksts — bez tel: saitēm;
-  // VPVKAC centrs (2022) tikai tad, ja UR kontaktu nav
+  // klientu apkalpošanas centrs (VPVKAC, 2023-11) kā atsevišķa rinda tikai pašvaldībām, kurām centrs sarakstā ir
   function pasvaldibaDati(ll, no, signal) {
     iegut('/pasvaldiba?' + new URLSearchParams(ll), signal).then(p => {
       const el = kaste.querySelector('#rez-pasvaldiba');
       if (!el) return;
       const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
-      const k = p.kontakti, c = k ? null : p.vpvkac;
+      const k = p.kontakti, c = p.vpvkac;
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
-        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') +
-        (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
+        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
+        (k?.adrese ? `<p class="pasvaldiba-rinda">Pašvaldības adrese: ${esc(k.adrese)}</p>` : '') +
+        (c ? `<p class="pasvaldiba-rinda">Klientu apkalpošanas centrs: ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
         // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
         `<p class="abonet-rinda">Abonēt brīdinājumus: <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
         ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">Kalendārs</a></p>` +
         `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)` +
         (k ? ' · <a href="https://data.gov.lv/dati/dataset/public-persons-institutions" target="_blank" rel="noopener">Uzņēmumu reģistrs, publisko personu saraksts</a> · CC0' : '') +
-        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : '') + '</small>';
+        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontakti</a>, 2023-11 · CC0' : '') + '</small>';
     }).catch(() => {});
   }
 
