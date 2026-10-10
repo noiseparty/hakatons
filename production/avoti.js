@@ -80,7 +80,7 @@ const Avoti = (() => {
         <b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
         <small>${esc(a.izdevejs)}</small>
         <span class="licence">${a.atverts ? '' : bridinajums + ' · '}${saite(a.licences_url, a.licence)}</span>
-        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${a.skaits} objekti${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
+        <small>Kartē: ${esc(a.lietojums)}${a.skaits ? ` · ${daudzskaitlis(a.skaits, 'objekts', 'objekti')}${a.atjaunots ? '' : `, ielādēts ${datums(a.ieladets)}`}` : ''}</small>
         ${a.atjaunots ? `<small class="atjaunots">Atjaunots ${ielLaiks(a.atjaunots)}</small>` : ''}
         ${a.biezums || BIEZUMS[a.kods] ? `<small>Atjaunošana: ${esc(a.biezums || BIEZUMS[a.kods])}${a.svaigums ? `<span data-svaigums="${esc(a.svaigums)}"></span>` : ''}</small>` : ''}
         ${a.piezime ? `<small class="avota-piezime">${esc(a.piezime)}</small>` : ''}

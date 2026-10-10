@@ -59,6 +59,11 @@ if (matchMedia('(max-width: 800px)').matches) {
   el('panelis-poga').setAttribute('aria-expanded', 'false');
 }
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+// Skaits ar pareizo latviešu skaitli: 1, 21, 101 objekts; 0, 2–20, 111 objekti (vienskaitlis, ja beidzas ar 1, bet ne ar 11).
+// Funkcija (ne const), lai to varētu izsaukt arī avoti.js un saraksts.js.
+function daudzskaitlis(n, viens, vairaki) {
+  return `${n} ${n % 10 === 1 && n % 100 !== 11 ? viens : vairaki}`;
+}
 const statuss = (t, kluda) => { el('statuss').textContent = t; el('statuss').classList.toggle('kluda', !!kluda); };
 
 const stavoklis = { vieta: null, regions: '', kategorijas: new Set() };
@@ -355,7 +360,7 @@ async function atjaunot() {
     if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
     redzamie = gj.features;
     const r = regioni[stavoklis.regions];
-    statuss(`${gj.features.length} objekti${r ? ' · ' + r.nosaukums : ''}`);
+    statuss(`${daudzskaitlis(gj.features.length, 'objekts', 'objekti')}${r ? ' · ' + r.nosaukums : ''}`);
   } catch (e) {
     if (e.name !== 'AbortError') statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
   }
