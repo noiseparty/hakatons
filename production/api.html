@@ -1172,7 +1172,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
 </section>
 <section class="galapunkts" id="api-statuss">
   <h2><span class="metode">GET</span> <code>/api/statuss</code> — Sistēmas statuss</h2>
-  <p>Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.</p>
+  <p>Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).</p>
   
   
   <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
@@ -1360,7 +1360,7 @@ END:VCALENDAR
 </section>
 <section class="galapunkts" id="api-veseliba">
   <h2><span class="metode">GET</span> <code>/api/veseliba</code> — Veselības pārbaude</h2>
-  <p>Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
+  <p>Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
   <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>statistika</code></td><td>integer</td><td>1 — pievienot skaitītājus</td></tr></tbody></table>
   <table><thead><tr><th>Atbildes lauks</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>ok</code></td><td>datubāze atbild</td></tr><tr><td><code>bridinajumi.lvgmc / meteoalarm</code></td><td>spēkā esošo brīdinājumu skaits katrā avotā (null, ja kešā vēl nav)</td></tr><tr><td><code>bridinajumi.lvgmc_atbildeja</code></td><td>kad pēdējo reizi atbildēja LVĢMC (ISO, UTC) vai null</td></tr><tr><td><code>bridinajumi.rezerves_aktivs</code></td><td>true, ja /api/bridinajumi pēdējās 20 min atbildēja no Meteoalarm</td></tr></tbody></table>
   <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
