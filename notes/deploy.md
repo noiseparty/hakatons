@@ -81,6 +81,17 @@ how-to in `src/karte/README.md`. Credentials live only in `/etc/hakatons/map.env
 `map.repo.lv` allows `geolocation=(self)` (the shared Caddy `common` block blocks it for other sites).
 The live Caddy and systemd files are copied in `src/karte/serveris/`; keep them in sync when changing the server.
 
+## Bezsaistes režīms (service worker, `production/sw.js`)
+
+- `production/offline.js` reģistrē `sw.js` tikai https (un localhost testiem). Lapa un mūsu JS/CSS/JSON: **vispirms tīkls**,
+  bez tīkla — saglabātā kopija. Tāpēc parastie `production/` labojumi ir redzami uzreiz, kā līdz šim (VPS nav build soļa).
+- `VERSION` failā `sw.js` jāpalielina **tikai** tad, ja mainās pats `sw.js` vai tā `SHELL_FAILI` saraksts (jauns JS fails
+  index.html) — citādi jaunais fails bezsaistē nebūs saglabāts līdz nākamajai ielādei ar tīklu. Pārlūks `sw.js` atjauno pats.
+- Kešatmiņas: `shell-<VERSION>` (veco izdzēš), `cdn-v1` (Leaflet no unpkg), `flizes-v1` (OSM/OpenTopoMap, ~2500 flīžu),
+  `api-v1` (/api/* ar laiku `x-sw-saglabats`; bezsaistē mainīgie dati ≤ 6 h, vietas un slāņi ≤ 7 dienas).
+- "Saglabāt manu apkārtni" (filtru panelī): flīzes z12–15, ≤ 400 (OSM noteikumi: bez masveida lejupielādes), + pamatdati.
+- Pārbaude: Playwright `context.set_offline()` neietekmē service worker pieprasījumus — testā jāaptur pats serveris
+  (skat. PR „Offline mode”).
 ## Daily data refresh (`hakatons-dati.timer`)
 
 Every day at 04:30 (Europe/Riga) `hakatons-dati.service` runs `src/karte/db/atjaunot_visu.sh`. It:

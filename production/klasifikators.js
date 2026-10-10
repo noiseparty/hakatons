@@ -13,16 +13,21 @@ const Klasifikators = (() => {
     return { teksts: t + (vesels ? ' ' : ''), vardi, svars: vardi, vesels, saknes: t.trim() };
   }
 
+  // Attālums, bet tikai "0, 1 vai vairāk" (vairāk = 2): mums vajag tikai ≤ 1, tāpēc agri pārtraucam
   function levenshtein(a, b) {
+    if (Math.abs(a.length - b.length) > 1) return 2;
+    // ar vienu labojumu vismaz viens no pirmo divu burtu pāriem sakrīt — ātra atmešana (telefonā katrs taustiņš)
+    if (a[0] !== b[0] && a[1] !== b[1] && a[1] !== b[0] && a[0] !== b[1]) return 2;
     let iepr = Array.from({ length: b.length + 1 }, (_, i) => i);
     for (let i = 1; i <= a.length; i++) {
       const rinda = [i];
       for (let j = 1; j <= b.length; j++) {
         rinda[j] = Math.min(iepr[j] + 1, rinda[j - 1] + 1, iepr[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
       }
+      if (Math.min(...rinda) > 1) return 2;
       iepr = rinda;
     }
-    return iepr[b.length];
+    return Math.min(iepr[b.length], 2);
   }
 
   // Viena burta kļūda (dakteri → daktetri) garākiem viena vārda atslēgvārdiem; īsākiem par 6 burtiem
