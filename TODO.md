@@ -26,7 +26,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 - [ ] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — added 2026-10-10 02:47 +03:00 by noiseparty
 - [ ] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — added 2026-10-10 03:28 +03:00 by noiseparty
-- [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
