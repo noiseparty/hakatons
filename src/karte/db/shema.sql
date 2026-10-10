@@ -425,3 +425,36 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ==== Bīstami objekti (Seveso + E-PRTR) un sociālo pakalpojumu sniedzēji (bistami_soc.py; momentuzņēmumi src/karte/dati) ====
+-- Abi slāņi data.gov.lv, CC0 1.0. Koordinātas: E-PRTR no avota GML; Seveso un LM reģistram no VZD adrešu reģistra (CC BY 4.0).
+insert into kategorijas (kods, nosaukums, grupa, krasa, kartiba) values
+  ('bistams_objekts', 'Bīstami objekti (Seveso / E-PRTR)', 'vide', '#d97706', 85),
+  ('soc_pakalpojumi', 'Sociālo pakalpojumu sniedzēji', 'veseliba', '#e11d48', 19)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, grupa = excluded.grupa, krasa = excluded.krasa, kartiba = excluded.kartiba;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('eva-seveso', 'Objekti, kuriem jāizstrādā rūpniecisko avāriju novēršanas programma vai drošības pārskats (Seveso III)',
+   'Enerģētikas un vides aģentūra',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/objekti-kuriem-jaizstrada-rupniecisko-avariju-noversanas-programma-vai-drosibas-parskats',
+   'XLSX 2025. gada 1. pusgads (data.gov.lv) → src/karte/dati/bistami_seveso.geojson (src/karte/db/bistami_soc.py)',
+   'Slānis „Bīstami objekti”: uzņēmumi ar lielu bīstamo vielu daudzumu; krīzē — ķīmiskās avārijas risks apkārtnē',
+   'Avotā nav koordinātu: adreses ģeokodētas ar VZD adrešu reģistru (CC BY 4.0). 24 no 29 atrasti automātiski pēc ielas un numura, 5 — pēc VZD adreses koda (bistami_soc.py RUCINI; Riga fertilizer terminal — tuvākā reģistrētā adrese, ~60 m). Drošības zonu rādiusu atvērtie dati nepublicē.', 75),
+  ('lvgmc-eprtr', 'ES Rūpniecisko vietu reģistrs (E-PRTR / IED), Latvija 2025', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/es-rupniecisko-vietu-registrs',
+   'INSPIRE GML 3_eu_registry_latvia_2025.gml (data.gov.lv) → src/karte/dati/bistami_eprtr.geojson (src/karte/db/bistami_soc.py)',
+   'Slānis „Bīstami objekti”: piesārņojošās rūpnieciskās ražotnes (E-PRTR / IED)',
+   'Tikai ražotnes ar statusu functional (95 punkti); nav obligāti Seveso uzņēmumi. Kompetentās iestādes kontaktdati netiek glabāti.', 76),
+  ('lm-soc', 'Sociālo pakalpojumu sniedzēju reģistrs', 'Labklājības ministrija',
+   'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
+   'https://data.gov.lv/dati/lv/dataset/socialo-pakalpojumu-sniedzeju-registra-dati',
+   'JSON pakalpojumusniedzejudati_20261010.json (data.gov.lv, ikdienas fails) → src/karte/dati/soc_pakalpojumi.geojson (src/karte/db/bistami_soc.py)',
+   'Slānis „Sociālo pakalpojumu sniedzēji”: aprūpes un rehabilitācijas centri, grupu mājas, dienas centri — vietas, kur krīzē vajadzīga prioritāra palīdzība (siltums, evakuācija)',
+   'Tikai statuss „Sniedz” (1009 no 2087 ierakstiem; pārējie izslēgti no reģistra vai plānoti), bez privātuzņēmējiem un individuālajiem komersantiem. Koordinātas no VZD adrešu reģistra pēc adreses koda (1007 no 1009). Tālruņi, e-pasti un vadītāju vārdi netiek glabāti. Momentuzņēmums 2026-10-10.', 77)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
