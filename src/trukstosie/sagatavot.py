@@ -126,7 +126,7 @@ def main():
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
 <title>Ko vēl vajadzētu publicēt · Krīzes karte</title>
-<meta name="description" content="30 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
+<meta name="description" content="35 datu kopas, kas krīzē iedzīvotājam vajadzīgas, bet ko valsts un pašvaldības vēl nepublicē vai publicē bez atvērtas licences.">
 <link rel="stylesheet" href="statuss.css">
 <link rel="stylesheet" href="info.css">
 <link rel="canonical" href="https://map.repo.lv/trukstosie.html">

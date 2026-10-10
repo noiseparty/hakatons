@@ -12,7 +12,7 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | 776 pulcēšanās + 579 izmitināšanas vietas · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 7 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
 | Meklētājs: **129 scenāriji** (`production/scenariji.json`), LV/RU/EN, **96,1 % pareizi uz 609 vaicājumiem**, **91,4 % uz 186 paturētajiem** | 8 | `src/meklesana/testi.py`, run 2026-10-10 05:10 (earlier figures 127 / 95,0 % / 563 / 89,5 % in `notes/klasifikators.md`) |
 | **33 atvērto datu avoti + 2 ⚠** (112.lv patvertnes 781, banku bankomāti 845 / 111 kritiskie); LR1 frekvences (16 raidītāji) skaitītas kā oficiāli fakti (LR / SPRK), nav autortiesību objekts, bez ⚠; 2 simulētie neskaitīti | 9 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 (#132) |
-| 5 no 30 trūkstošajām datu kopām · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md` §1 rows 1–5 |
+| 5 no 35 trūkstošajām datu kopām · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md` §1 rows 1–5 |
 | LR1 radio karte 16 raidītāji · Meteoalarm rezerve | 12 | #116, #125, #129 |
 | 7 vēstuļu melnraksti datu turētājiem (nesūtīti) | 13 | `notes/vestules.md` |
 | Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
