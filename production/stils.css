@@ -140,6 +140,9 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
   #panelis { width: auto; flex: 1; gap: 8px; }
   body.panelis-slegts #panelis { display: none; }
   body.panelis-slegts #kartes-laukums { flex: 1; height: auto; }
+  /* Atvērti filtri: karte mazāka, lai panelī (zem kartes) pietiek vietas slāņu sarakstam */
+  body:not(.panelis-slegts) #kartes-laukums { height: max(180px, 32dvh); }
+  #panelis { min-height: 0; }
 }
 
 #avoti-saraksts { list-style: none; margin: 0; padding: 0; }
