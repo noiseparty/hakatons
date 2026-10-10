@@ -8,10 +8,12 @@ Licences un saites: tabula avoti (shema.sql). Palaišana (lokāli vai VPS, tikai
 
 import csv
 import io
+import os
 import pathlib
 import urllib.request
 
-DATI = pathlib.Path(__file__).resolve().parents[1] / "dati"
+# HAKATONS_DATI: cita mape (VPS ikdienas atjaunošana raksta /var/lib/hakatons/dati, nevis git kopijā)
+DATI = pathlib.Path(os.environ.get("HAKATONS_DATI") or pathlib.Path(__file__).resolve().parents[1] / "dati")
 UA = {"User-Agent": "map.repo.lv (AI Open Data 2026 hakatons)"}
 
 

@@ -13,6 +13,7 @@ Ielāde (VPS; avots osm-noturiba un kategorija noturibas_punkts ir shema.sql):
 """
 
 import json
+import os
 import pathlib
 import re
 import sys
@@ -30,7 +31,8 @@ VEIDI = {
 # Pazīmes, ko pašvaldība varētu apstiprināt (research: notes/research/01_crisis_services_taxonomy.md)
 PAZIMES = ["siltums", "uzlade", "udens", "wifi", "generators"]
 LAUKI = ["name", "operator", "opening_hours", "website", "wheelchair", "building", "amenity"]
-IZEJA = pathlib.Path(__file__).resolve().parents[1] / "dati" / "noturibas_punkti.geojson"
+# HAKATONS_DATI: cita mape (VPS ikdienas atjaunošana raksta /var/lib/hakatons/dati, nevis git kopijā)
+IZEJA = pathlib.Path(os.environ.get("HAKATONS_DATI") or pathlib.Path(__file__).resolve().parents[1] / "dati") / "noturibas_punkti.geojson"
 # Skolas: tikai vispārizglītojošās (nosaukumā "skola", "ģimnāzija", "licejs"…) un ne privātas — OSM "school" ietver arī
 # valodu kursus un autoskolas, kas nav piemērotas patvēruma vietas.
 SKOLA = re.compile(r"(skola|ģimnāzij|licej|tehnikum|koledž)", re.IGNORECASE)
