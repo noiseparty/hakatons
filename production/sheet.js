@@ -9,23 +9,19 @@ const Lapa = (() => {
   const lapa = el('apaksa');
   if (!lapa) return null;
   const saturs = el('apaksa-saturs');
-  const TEMAS = [['Plūdi', 'plūdi'], ['Nav elektrības', 'nav elektrības'], ['Evakuācija', 'evakuācija'], ['Patvertne', 'patvertne'],
-    ['Ārsts', 'ārsts'], ['Ceļi', 'ceļš slēgts'], ['Vētra', 'vētra'], ['Dzeramais ūdens', 'nav ūdens']];
-  const CILNES = [['rezultats', 'Rezultāts', 'Lēmums'], ['slani', 'Kartes slāņi', ''], ['situacija', 'Situācija tagad', 'LVĢMC']];
+  const CILNES = [['rezultats', 'Rezultāts'], ['slani', 'Kartes slāņi'], ['situacija', 'Situācija tagad']];
 
   // Ielādes vietturis (pelēkas joslas, nevis "Ielādē…"): saraksta augstums nelec, kad dati atnāk
   const SKELETS = '<li class="skelets-rinda" aria-hidden="true"><span></span><span></span></li>'.repeat(3);
 
-  // Tukšais stāvoklis (kamēr nav rezultāta): 3 piemēri virs tēmu pogām (meklesana.js pirmaisSkats; stils.css paslēpj)
-  saturs.insertAdjacentHTML('afterbegin', `${krizesMeklesana.pirmaisSkats('Uzrakstiet, kas notiek un kur. Piemēri:')}
-    <div class="lapa-temas" role="group" aria-label="Biežākās tēmas" data-t-aria="Biežākās tēmas">${TEMAS.map(([t, q]) =>
-      `<button type="button" data-tema="${esc(q)}" aria-pressed="false"><span data-t="${esc(t)}">${esc(t)}</span></button>`).join('')}</div>
-    <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs" data-t-aria="Lapas saturs">${CILNES.map(([k, t, p], i) =>
-      `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}"><span data-t="${esc(t)}">${esc(t)}</span>${p ? `<small data-t="${esc(p)}">${esc(p)}</small>` : ''}</button>`).join('')}</div>
+  // Trīs cilnes (Rezultāts · Kartes slāņi · Situācija tagad); piemēru un tēmu pogu lapā vairs nav
+  saturs.insertAdjacentHTML('afterbegin', `
+    <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs" data-t-aria="Lapas saturs">${CILNES.map(([k, t], i) =>
+      `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}"><span data-t="${esc(t)}">${esc(t)}</span></button>`).join('')}</div>
     <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets" data-t="LVĢMC brīdinājumi: ielādē…">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
       <h2 class="vizuali-slepts" data-t="Meklēšanas rezultāts">Meklēšanas rezultāts</h2>
-      <p class="lapa-tukss" data-t="Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.">Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
+      <p class="lapa-tukss" data-t="Rezultāta vēl nav. Augšā ierakstiet, kas notiek un kur — te parādīsies lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.">Rezultāta vēl nav. Augšā ierakstiet, kas notiek un kur — te parādīsies lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
     </div>
     <div id="lapa-slani" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-slani" hidden></div>
     <div id="lapa-situacija" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-situacija" hidden>
@@ -93,22 +89,6 @@ const Lapa = (() => {
   });
   lapa.addEventListener('click', e => { if (e.target.closest('[role="tab"]')) setTimeout(situacijaPogaStavoklis, 0); });
   lapa.addEventListener('apaksa:stavoklis', situacijaPogaStavoklis);
-
-  // ---- Tēmas: viena poga = viena meklēšana ----
-  lapa.querySelector('.lapa-temas').addEventListener('click', e => {
-    const q = e.target.closest('[data-tema]')?.dataset.tema;
-    if (!q) return;
-    atzimetTemu(q);
-    el('jautajums').value = q;
-    el('meklet-forma').requestSubmit();
-  });
-
-  // Aktīvā tēma: tā, ar ko sākas pašreizējais vaicājums (arī ja ierakstīts ar roku)
-  function atzimetTemu(q = el('jautajums').value) {
-    const v = q.trim().toLowerCase();
-    for (const b of lapa.querySelectorAll('[data-tema]')) b.setAttribute('aria-pressed', !!v && v.startsWith(b.dataset.tema));
-  }
-  el('meklet-forma').addEventListener('submit', () => atzimetTemu());
 
   // Gaidīšanas teksti rezultātā ("Meklē adresi…", "Pārbauda…") → pelēka josla (skelets), kamēr atbilde nav atnākusi
   const kaste = el('rezultati');
