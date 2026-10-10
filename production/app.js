@@ -75,8 +75,8 @@ let tuvakaSlanis = null;
 let pieprasijums = null;
 let redzamie = [];  // pēdējā ielāde; pa tiem meklē meklēšanas lauks
 
-async function iegut(cels, signal) {
-  const r = await fetch(API + cels, { signal });
+async function iegut(cels, signal, prioritate) {
+  const r = await fetch(API + cels, prioritate ? { signal, priority: prioritate } : { signal });
   if (!r.ok) throw new Error(r.status);
   return r.json();
 }
@@ -314,7 +314,8 @@ async function atjaunot() {
   if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }
   statuss('Ielādē…');
   try {
-    const gj = await iegut('/objekti?' + q, pieprasijums.signal);
+    // visi slāņa punkti (līdz ~400 KB): zema prioritāte, lai meklēšanas dati (scenariji.json, tuvākās vietas) nāk pirmie
+    const gj = await iegut('/objekti?' + q, pieprasijums.signal, stavoklis.vieta ? undefined : 'low');
     for (const f of gj.features) {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};

@@ -2821,8 +2821,29 @@ class Apstradatajs(BaseHTTPRequestHandler):
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(b)))
         self.send_header("Cache-Control", f"public, max-age={kesot}" if kesot else "no-store")
+        if self.command in ("GET", "HEAD"):  # atvērts API: GET no jebkuras vietnes (api.html); POST — tikai mūsu lapai
+            self.send_header("Access-Control-Allow-Origin", "*")
         self.end_headers()
-        self.wfile.write(b)
+        if self.command != "HEAD":
+            self.wfile.write(b)
+
+    do_HEAD = do_GET
+
+    def do_OPTIONS(self):
+        """CORS preflight tikai GET maršrutiem (POST paliek same-origin)."""
+        cels = urlparse(self.path).path
+        if any(r.match(cels) for r, *_ in MARSRUTI):
+            self.send_response(204)
+            self.send_header("Access-Control-Allow-Origin", "*")
+            self.send_header("Access-Control-Allow-Methods", "GET, HEAD, OPTIONS")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.send_header("Access-Control-Max-Age", "86400")
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+            return
+        self.send_response(204 if any(r.match(cels) for r, _ in POST_MARSRUTI) else 404)
+        self.send_header("Content-Length", "0")
+        self.end_headers()
 
 
 def main():

@@ -62,7 +62,17 @@ const Dalities = (() => {
     return q.createSvgTag({ cellSize: 3, margin: 2, scalable: true, alt: 'QR kods uz šo rezultātu' });
   }
 
-  function drukat() {
+  // vendor/qrcode.js (12 KB) vajag tikai drukāšanai — ielādē pirmajā reizē
+  let qrIelade = null;
+  const ieladetQr = () => qrIelade ||= typeof qrcode !== 'undefined' ? Promise.resolve() : new Promise(gatavs => {
+    const s = document.createElement('script');
+    s.src = 'vendor/qrcode.js';
+    s.onload = s.onerror = () => gatavs();
+    document.head.append(s);
+  });
+
+  async function drukat() {
+    await ieladetQr();
     kaste.querySelector('.druka-galva')?.remove();
     kaste.querySelector('.druka-qr')?.remove();
     const laiks = new Date().toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
