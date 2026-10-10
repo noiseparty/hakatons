@@ -2003,11 +2003,23 @@
   "slug": "ventspils",
   "pasvaldiba": "Ventspils",
   "statuss": "nav_publicets",
-  "piezime": "The only file is a conversion of a scanned 203-page PDF with no text layer (front matter skenets: True); the body is just a warning that text could not be extracted, so no assembly or accommodation lists are available in Markdown. The original PDF would need OCR/visual reading.",
+  "piezime": "Scanned 203-page PDF, OCR'd 2026-10-10 (Tesseract lav, src/karte/dati/ca_plani/ventspils-ocr.md). Sections 3.1.4 and 3.1.7 (lpp. 48, 50) say the permanent assembly points and the temporary accommodation are in annexes 4–16 (one per parish + annex 14 for Ventspils city). In the published file those annexes are only cover pages marked 'IEROBEŽOTAS PIEEJAMĪBAS INFORMĀCIJA' (lpp. 71–83), so no list is public. The only public capacity figure: 150–200 people in residential premises in Ventspils, 30–50 in each county parish (lpp. 50).",
   "atsauces": [
    {
-    "fails": "plans_publiskais_2023.md",
-    "citats": "> **UZMANĪBU:** PDF bez teksta slāņa (skenēts dokuments, 203 lpp.). Automātiska teksta izguve nav iespējama — teksts jāatveido vizuāli (modelim lasot lapas)."
+    "fails": "ventspils-ocr.md",
+    "citats": "iedzīvotāju pulcēšanās vietas (skatīt CAP no 4. līdz 16. pielikumam). Pulcēšanās vietas katrā"
+   },
+   {
+    "fails": "ventspils-ocr.md",
+    "citats": "izglītības iestādēs (skatīt CAP no 4. līdz 16. pielikumam)."
+   },
+   {
+    "fails": "ventspils-ocr.md",
+    "citats": "telpās ir iespējams izmitināt no 150 līdz 200 cilvēku, bet katrā no Ventspils novada pagastiem -"
+   },
+   {
+    "fails": "ventspils-ocr.md",
+    "citats": "VENTSPILS PILSĒTAS INFORMĀCIJA"
    }
   ],
   "kludas": [],

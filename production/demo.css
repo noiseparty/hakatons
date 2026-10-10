@@ -56,8 +56,15 @@ body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 370px; }
 body.demo-aktivs #bridinajums, body.demo-aktivs #prognozes { display: none; }
 
 @media (max-width: 800px) {
-  #demo-cilne { top: 150px; padding: .6rem .35rem; }
-  #demo-panelis { position: fixed; top: auto; left: 0; right: 0; width: auto; max-width: none; height: 52vh; border-radius: 14px 14px 0 0;
+  #demo-cilne { top: 176px; padding: .6rem .6rem; min-width: 44px; }  /* zem 3 × 44 px kartes pogām */
+  /* atvērta prognožu lente (prognozes.js) — cilne neaizsedz tās aizvēršanas pogu */
+  body:has(.prognozes.atverts) #demo-cilne { display: none; }
+  .demo-galva .demo-aizvert { width: 44px; height: 44px; }
+  .demo-atpakal, .demo-saraksts button { min-height: 44px; }
+  .demo-zime { font-size: .75rem; }
+  /* simulētā brīdinājuma josla vienā rindā (pieskaroties atveras) — vairāk vietas kartei */
+  .demo-josla summary { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #demo-panelis { position: fixed; top: auto; left: 0; right: 0; width: auto; max-width: none; height: 52vh; max-height: calc(100vh - 200px); border-radius: 14px 14px 0 0;
     transform: translateY(105%); box-shadow: 0 -4px 14px rgba(0, 0, 0, .2); z-index: 1200; }
   body.demo-atverts #demo-cilne { right: 0; }
   body.demo-atverts .kartes-rikis, body.demo-atverts .pamatkarte { right: 10px; }
