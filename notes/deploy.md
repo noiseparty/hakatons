@@ -128,3 +128,10 @@ A full reload from the repo snapshots (no download) is still `bash src/karte/db/
 ```bash
 (install -d -o deploy -g deploy /var/lib/hakatons/dati /var/lib/hakatons/ielades && set -a && . /etc/hakatons/map.env && set +a && cd /srv/hakatons && sudo -E -u deploy HAKATONS_DATI=/var/lib/hakatons/dati HAKATONS_STAVOKLIS=/var/lib/hakatons/ielades bash src/karte/db/atjaunot_visu.sh)
 ```
+
+## Atvērtā API dokumentācija (`production/api.html`, `production/openapi.json`)
+
+Ģenerē `src/api_docs/sagatavot.py` no `SPEC` (tajā pašā failā) un `src/api_docs/sablons.html`; piemēri ir īstas
+`map.repo.lv` atbildes ģenerēšanas brīdī (≈ 25 GET pieprasījumi). **Pievienojot vai mainot GET galapunktu** `karte_api.py`
+(`MARSRUTI`), papildiniet `SPEC` un palaidiet `uv run --no-project --python 3.12 src/api_docs/sagatavot.py` — skripts
+apstājas, ja `SPEC` un `MARSRUTI` nesakrīt. GET atbildēm `Access-Control-Allow-Origin: *` (karte_api.py), POST — bez CORS.

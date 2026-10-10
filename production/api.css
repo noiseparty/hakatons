@@ -1,0 +1,25 @@
+/* Atvērtā API lapa (api.html; ģenerē src/api_docs/sagatavot.py). Pamats: statuss.css */
+.api { line-height: 1.5; }
+.api h2 { font-size: 1.05rem; margin: 1.2rem 0 .5rem; }
+.api code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .88em; background: #f2f4f7; padding: 0 .25em; border-radius: 3px; overflow-wrap: anywhere; }
+.api pre { overflow-x: auto; max-height: 360px; padding: .6rem .7rem; background: #1c1917; color: #f5f5f4; border-radius: 6px; font-size: .78rem; line-height: 1.4; }
+.api pre code, .api pre { background: #1c1917; }
+.ievads ul { padding-left: 1.2rem; }
+.ievads li { margin: .3rem 0; }
+.raditajs ul { columns: 2 260px; padding-left: 1.2rem; font-size: .9rem; }
+.galapunkts { margin: 1rem 0; padding: .8rem .9rem; background: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0, 0, 0, .08); }
+.galapunkts h2 { margin-top: 0; }
+.metode { display: inline-block; padding: 0 .4rem; font-size: .75rem; font-weight: 700; color: #fff; background: #287a41; border-radius: 4px; vertical-align: middle; }
+.galapunkts table { width: 100%; border-collapse: collapse; font-size: .85rem; margin: .4rem 0; }
+.galapunkts th, .galapunkts td { text-align: left; padding: .3rem .4rem; border-bottom: 1px solid #e7e5e4; vertical-align: top; }
+.galapunkts td small { color: #b91c1c; font-weight: 600; }
+.meta, .piemers { font-size: .85rem; color: #44403c; }
+.statuss { margin-left: .4rem; font-size: .75rem; color: #57534e; }
+details summary { cursor: pointer; font-size: .85rem; color: #005a99; }
+@media (max-width: 600px) {
+  .galapunkts { padding: .6rem; }
+  .galapunkts table, .galapunkts thead, .galapunkts tbody, .galapunkts tr, .galapunkts td, .galapunkts th { display: block; }
+  .galapunkts thead { display: none; }
+  .galapunkts tr { padding: .3rem 0; border-bottom: 1px solid #e7e5e4; }
+  .galapunkts td { border: 0; padding: .1rem 0; }
+}
