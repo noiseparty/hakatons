@@ -116,7 +116,7 @@ function marsrutaSaites(lat, lon, no) {
     ['Waze', `https://www.waze.com/ul?ll=${x}%2C${y}&navigate=yes`],
     ['OSM', `https://www.openstreetmap.org/directions?engine=fossgis_osrm_foot&route=${no ? `${no.lat}%2C${no.lon}` : ''}%3B${x}%2C${y}`]
   ];
-  return '<span class="marsruts"><span>Maršruts:</span>' +
+  return '<span class="marsruts"><span>' + (typeof Valoda !== 'undefined' ? Valoda.t('Maršruts') : 'Maršruts') + ':</span>' +
     saites.map(([nos, url]) => `<a href="${url}" target="_blank" rel="noopener">${nos}</a>`).join('') + '</span>';
 }
 
