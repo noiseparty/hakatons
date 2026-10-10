@@ -193,6 +193,8 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
 .rez-saraksts .ca-avots { color: #57534e; }
 .rez-saraksts li.tuksa { cursor: default; }
 .rez-saraksts .tala { color: #92400e; }
+.izlaists { display: block; margin: .1rem 0 .3rem; color: #92400e; font-size: .8rem; }
+.rez-saraksts small.izlaists { color: #92400e; }
 .fakti { list-style: none; margin: .5rem 0; padding: 0; }
 .fakti li { display: flex; gap: .6rem; padding: .45rem 0; border-bottom: 1px solid #f0f0f0; font-size: .88rem; }
 .fakti .ikona { font-size: 1.2rem; width: 1.6rem; flex: none; text-align: center; }
