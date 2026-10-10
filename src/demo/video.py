@@ -257,7 +257,7 @@ def ierakstit(bazes, izvade, kadri_mape):
 
         def aina3(i):
             rec.turpinat(i)
-            ritinat("#apaksa-saturs", virsraksts("pulcēšan"), 10, 22)
+            ritinat("#apaksa-saturs", virsraksts("pulcēšan"), 10, 30)
             gaidit(1500)
             lapa.evaluate(f"(() => {{ const h = {virsraksts('pulcēšan')}; const s = h && h.nextElementSibling;"
                           " for (const x of s ? s.querySelectorAll('li:first-child .ca-avots, li:first-child .marsruts') : [])"
@@ -265,7 +265,7 @@ def ierakstit(bazes, izvade, kadri_mape):
             gaidit(600)
             foto(i, AINAS[i][0])
             gaidit(1500)
-            ritinat("#apaksa-saturs", virsraksts("patvert") + f" || {virsraksts('Drošās vietas')}", 10, 16)
+            ritinat("#apaksa-saturs", virsraksts("patvert") + f" || {virsraksts('Drošās vietas')}", 10, 28)
             gaidit(1900)
 
         def aina4(i):
@@ -297,9 +297,8 @@ def ierakstit(bazes, izvade, kadri_mape):
             ritinat("#apaksa-saturs", "document.getElementById('rezultati')", 8, 20)
             gaidit(1600)
             foto(i, AINAS[i][0])
-            gaidit(1800)
-            ritinat("#apaksa-saturs", "document.querySelector('#rezultati .padoms') || document.getElementById('rezultati')", 60, 12)
-            gaidit(1500)
+            # bez ritināšanas līdz padomam: 112 kartīte tagad ir gara, tas aizņēma ~11 s un video izauga līdz 110 s
+            gaidit(2600)
 
         def aina6(i):
             atvert(bazes + "?demo=bez-sakariem&regions=100003470", i)
@@ -340,7 +339,7 @@ def ierakstit(bazes, izvade, kadri_mape):
             gaidit(1200)
             foto(i, AINAS[i][0])
             ritinat("#apaksa-saturs", "document.querySelector('#avoti-saraksts li:nth-child(12)') || "
-                    "document.getElementById('avoti')", 8, 7)
+                    "document.getElementById('avoti')", 8, 14)
             gaidit(900)
 
         for i, f in enumerate([aina1, aina2, aina3, aina4, aina5, aina6, aina7]):
