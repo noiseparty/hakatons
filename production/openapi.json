@@ -652,7 +652,7 @@
        "application/json": {
         "example": {
          "avots": "lvgmc-bridinajumi",
-         "laiks_lv": "2026-10-10T03:34",
+         "laiks_lv": "2026-10-10T03:36",
          "bridinajumi": [
           {
            "id": "28210",
@@ -891,7 +891,7 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks_lv": "2026-10-10T03:30",
+         "laiks_lv": "2026-10-10T03:36",
          "prognoze_mainita": "Fri, 09 Oct 2026 20:43:14 GMT",
          "dienas": [
           {
@@ -1388,8 +1388,8 @@
          "minutes": 30,
          "zibeni": [],
          "skaits": 0,
-         "no": "2026-10-10T00:04:20+00:00",
-         "lidz": "2026-10-10T00:34:20+00:00",
+         "no": "2026-10-10T00:06:09+00:00",
+         "lidz": "2026-10-10T00:36:09+00:00",
          "avots": {
           "nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati",
           "licence": "CC BY 4.0",
@@ -2003,7 +2003,7 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks": "2026-10-10T00:34:02+00:00",
+         "laiks": "2026-10-10T00:36:04+00:00",
          "intervals_min": 15,
          "komponenti": [
           {
@@ -2218,23 +2218,23 @@
         "example": {
          "ok": true,
          "statistika": {
-          "db_vaicajumi": 1384,
+          "db_vaicajumi": 1411,
           "db_parslodze": 0,
           "kesa": {
            "statuss": {
-            "no_kesas": 8,
-            "uz_avotu": 4,
-            "novecojusi": 2,
+            "no_kesas": 9,
+            "uz_avotu": 6,
+            "novecojusi": 4,
             "gaidija": 0
            },
            "zibens_fmi": {
-            "no_kesas": 6,
-            "uz_avotu": 4,
-            "novecojusi": 3,
+            "no_kesas": 7,
+            "uz_avotu": 5,
+            "novecojusi": 4,
             "gaidija": 0
            },
            "noverojumi": {
-            "no_kesas": 29,
+            "no_kesas": 32,
             "uz_avotu": 1,
             "novecojusi": 0,
             "gaidija": 0
@@ -2242,7 +2242,7 @@
            "…": "+18 lauki"
           },
           "db_vienlaicigi": 16,
-          "pavedieni": 30
+          "pavedieni": 31
          }
         }
        }
