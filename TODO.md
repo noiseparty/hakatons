@@ -36,7 +36,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Zones: add more zone layers to `production/zonas.js` (e.g. power outages, road closures, 10 % flood probability as a darker shade) — added 2026-10-10 01:50 +03:00 by noiseparty
 - [ ] VPS: apply `src/karte/db/shema.sql` once (new table `meklejumi` for "Biežāk meklētais"; until then the dropdown shows built-in examples and counting is a no-op) — added 2026-10-10 01:36 +03:00 by noiseparty
 - [ ] Result card: "next 24 h at your place" from the LVĢMC hourly place forecast (nearest of 6 427 places; via CKAN datastore_search_sql, not the 70 MB CSV) — added 2026-10-10 01:39 +03:00 by noiseparty
-- [ ] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Meteoalarm CAP feed as fallback/cross-check for the warnings: read the redistribution T&C first (notes/research/04) — added 2026-10-10 01:39 +03:00 by noiseparty
 - [ ] Lightning: feed item in the "Prognoze" panel when a region has strikes in the last 30 min — added 2026-10-10 01:56 +03:00 by noiseparty
 - [ ] Accessibility: test with a real screen reader (NVDA / VoiceOver on a phone); on phones the map comes before the panel visually but after it in Tab order — added 2026-10-10 02:09 +03:00 by noiseparty
@@ -66,6 +65,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — done 2026-10-10 03:10 +03:00 by noiseparty: layer "Laikapstākļi tagad" (`/api/noverojumi`, 34 stations), "Šobrīd brāzmas" feed item, +1 risk for observed gusts ≥ 20 m/s, wind line in storm results, status component (added 2026-10-10 01:39 +03:00 by noiseparty)
 - [x] Shareable and printable result: URL state ?q=&lat=&lon= (opening it restores the result), "Dalīties" (Web Share / copy link) and "Drukāt" (card only, with a QR code from vendored qrcode-generator, MIT) — done 2026-10-10 03:04 +03:00 by noiseparty (added 2026-10-10 03:04 +03:00 by noiseparty)
 - [x] Offline mode: service worker (shell network-first, tiles cache-first, /api network-first with saved time), manifest + icons (add to home screen), offline banner + "saglabātie dati" line in the card, last 3 cards reopen offline, "Saglabāt manu apkārtni" (tiles z12–15) — done 2026-10-10 03:00 +03:00 by noiseparty (added 2026-10-10 03:00 +03:00 by noiseparty)
 - [x] Routes that avoid closed zones: `/api/marsruts` (FOSSGIS OSRM, OSM ODbL; ≤3 alternatives + detour waypoints; demo zones + active LVC closures), drawn in the result card (nearest shelter / 24/7 hospital) and the drone demo; old map-app links stay as fallback — done 2026-10-10 03:00 +03:00 by noiseparty (added 2026-10-10 03:00 +03:00 by noiseparty)
