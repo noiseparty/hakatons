@@ -91,6 +91,7 @@ async function iegut(cels, signal, prioritate) {
   return r.json();
 }
 
+const PIESKARIENS = matchMedia('(pointer: coarse), (max-width: 800px)');
 function grupasIkona(grupa) {
   const skaiti = {};
   for (const m of grupa.getAllChildMarkers()) {
@@ -102,9 +103,11 @@ function grupasIkona(grupa) {
   const dalas = Object.entries(skaiti).sort((a, b) => b[1] - a[1])
     .map(([krasa, k]) => `${krasa} ${lidz}deg ${lidz += k / n * 360}deg`).join(', ');
   const izmers = n < 10 ? 30 : n < 100 ? 36 : n < 1000 ? 44 : 52;
+  // Telefonā pieskaršanās laukums ≥ 44 px: caurspīdīga kaste ap mazāko apli (aplis pats paliek 30 / 36 px)
+  const kaste = PIESKARIENS.matches ? Math.max(44, izmers) : izmers;
   return L.divIcon({
-    html: `<span style="background:conic-gradient(${dalas})"><b>${n < 10000 ? n : Math.round(n / 1000) + 'k'}</b></span>`,
-    className: 'grupa-ikona', iconSize: [izmers, izmers]
+    html: `<span style="width:${izmers}px;height:${izmers}px;background:conic-gradient(${dalas})"><b>${n < 10000 ? n : Math.round(n / 1000) + 'k'}</b></span>`,
+    className: 'grupa-ikona', iconSize: [kaste, kaste]
   });
 }
 
@@ -149,17 +152,26 @@ function atrastMani(pecTam) {
     if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
     if (!stavoklis.regions && !pecTam) karte.setView([lat, lon], 13);
     atjaunot();
-    krizesMeklesana.atkartot();  // meklesana.js
+    arMeklesanu(m => m.atkartot());  // meklesana.js
     if (pecTam) pecTam();
   }, kluda => {
     el('atrast').disabled = false;
     teksts.textContent = kluda.code === kluda.PERMISSION_DENIED
       ? 'Atrašanās vieta nav atļauta. Izvēlieties reģionu vai pilsētu zemāk (vai atļaujiet to pārlūka iestatījumos).'
       : 'Neizdevās noteikt atrašanās vietu. Izvēlieties reģionu vai pilsētu zemāk.';
-    krizesMeklesana.vietaNav(kluda.code === kluda.PERMISSION_DENIED);  // meklesana.js: paskaidro arī rezultātos
+    arMeklesanu(m => m.vietaNav(kluda.code === kluda.PERMISSION_DENIED));  // meklesana.js: paskaidro arī rezultātos
   }, { enableHighAccuracy: true, timeout: 15000, maximumAge: 60000 });
 }
 el('atrast').addEventListener('click', () => atrastMani());
+
+// meklesana.js ielādējas pēc app.js: ja API atbild (vai krīt) ātrāk vai lietotājs paspēj ko izvēlēties, krizesMeklesana vēl
+// nav definēts. Tad izsaukumu atliekam līdz DOMContentLoaded (visi parastie <script> jau izpildīti).
+function arMeklesanu(fn) {
+  if (typeof krizesMeklesana !== 'undefined') { fn(krizesMeklesana); return; }
+  if (document.readyState === 'loading') {
+    addEventListener('DOMContentLoaded', () => { if (typeof krizesMeklesana !== 'undefined') fn(krizesMeklesana); }, { once: true });
+  }
+}
 
 // ---- Tuvākā patvertne: neatkarīgi no filtriem, ar līniju no tevis līdz tai ----
 async function tuvakaPatvertne() {
@@ -212,7 +224,7 @@ function aizpilditRegionus(saraksts) {
 el('regions').addEventListener('change', e => {
   radtRegionu(e.target.value);
   atjaunot();
-  krizesMeklesana.atkartot();  // meklesana.js
+  arMeklesanu(m => m.atkartot());  // meklesana.js
 });
 
 // Arī krīzes meklēšana (meklesana.js), kad vaicājumā ir vietvārds ("patvertne Ogrē").
@@ -495,7 +507,7 @@ function izveletiesAdresi(a, atkartot = true) {
   el('vieta-teksts').textContent = `Saraksts sakārtots pēc attāluma no adreses ${isaAdrese(a.adrese)} (taisnā līnijā).`;
   karte.setView([a.lat, a.lon], 16);
   atjaunot();
-  if (atkartot) krizesMeklesana.atkartot();  // meklesana.js
+  if (atkartot) arMeklesanu(m => m.atkartot());  // meklesana.js
 }
 
 function meklesanasRinda(krasa, virsraksts, apaksa, izveleties, kategorija = null) {
@@ -580,9 +592,9 @@ el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked))
 
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
-    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); krizesMeklesana.sakt(r);
+    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); arMeklesanu(m => m.sakt(r));
   })
   .catch(() => {
     statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
-    krizesMeklesana.sakt([], true);  // padoms un 112 rinda strādā arī bez kartes datiem
+    arMeklesanu(m => m.sakt([], true));  // padoms un 112 rinda strādā arī bez kartes datiem
   });
