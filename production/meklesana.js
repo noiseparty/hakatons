@@ -46,22 +46,51 @@ const krizesMeklesana = (() => {
   document.addEventListener('valoda-maina', () => soluJosla.setAttribute('aria-label', t('Soļi')));
   // data-t: valoda.js nomaina uzrakstus, kad mainās kartītes valoda (LV/RU/EN)
   soluJosla.innerHTML = ['Jautājums', 'Atbilde', 'Rīcība'].map((v, i) =>
-    `<li data-solis="${i + 1}"><span class="solis-nr">${i + 1}</span> <span data-t="${v}">${t(v)}</span></li>`).join('');
+    `<li data-solis="${i + 1}"><button type="button"><span class="solis-nr">${i + 1}</span> <span data-t="${v}">${t(v)}</span></button></li>`).join('');
   kaste.before(soluJosla);  // galvenē ir tikai lauks; soļi stāv virs rezultāta (telefonā sheet.js tos pārceļ cilnē)
   function solis(n) {
     for (const li of soluJosla.children) {
       const ir = +li.dataset.solis === n;
       li.classList.toggle('aktivs', ir);
-      if (ir) li.setAttribute('aria-current', 'step'); else li.removeAttribute('aria-current');
+      if (ir) li.firstElementChild.setAttribute('aria-current', 'step'); else li.firstElementChild.removeAttribute('aria-current');
     }
   }
-  solis(1);
-  el('jautajums').addEventListener('input', () => solis(1));
-  // 3. solis: maršruta saite, vieta sarakstā, kartes logs ar maršrutu, "Ziņot" (arī galvenē), kad kartīte ir atvērta
-  const RICIBA = '.marsruts a, li[data-lat], [data-darbiba="zinot"], [data-darbiba="saraksts"], [data-darbiba="pludu-zonas"]';
-  document.addEventListener('click', e => {
-    if (kaste.hidden || !e.target.closest) return;
-    if (kaste.contains(e.target) ? e.target.closest(RICIBA) : e.target.closest('[data-darbiba="zinot"], .leaflet-popup .marsruts a')) solis(3);
+  // Rezultāta skats: 1 Jautājums (kas notiek? izvēles pogas) · 2 Atbilde (lēmums + vietas) · 3 Rīcība (rīcības plāns).
+  // Visi trīs bloki ir DOM (ielādes atbildes pienāk arī paslēptajos); CSS rāda to, kas atbilst kaste.dataset.skats.
+  function skats(n, ritinat = false) {
+    kaste.dataset.skats = n;
+    solis(n);
+    if (ritinat) soluJosla.scrollIntoView({ block: 'nearest' });
+  }
+  skats(1);
+  el('jautajums').addEventListener('input', () => { if (kaste.hidden) solis(1); });
+  // Soļu josla ir klikšķināma: 1, 2, 3 vienmēr aizved kaut kur (bez rezultāta — uz lauku vai vispārīgo plānu)
+  soluJosla.addEventListener('click', e => {
+    const n = +e.target.closest('li[data-solis]')?.dataset.solis;
+    if (!n) return;
+    if (typeof Apaksa !== 'undefined' && Apaksa.aktiva() && el('apaksa')?.dataset.stavoklis === 'peek') Apaksa.atvert('puse');
+    if (!kaste.querySelector('.rez-skats')) {
+      if (n === 3) {
+        kaste.hidden = false;
+        kaste.innerHTML = '<div class="rez-skats" data-s="3">' + planaBloks(null, null) + '</div>' + notiritPoga();
+        skats(3);
+      } else { skats(1); el('jautajums').focus(); }
+      return;
+    }
+    skats(n, true);
+  });
+  kaste.addEventListener('click', e => {
+    const uz = +e.target.closest('[data-skats-uz]')?.dataset.skatsUz;
+    if (uz) skats(uz, true);
+    if (e.target.closest('[data-kas-cits]')) { skats(1, true); kaste.querySelector('.rez-skats[data-s="1"] .kas-forma input')?.focus(); }
+  });
+  // Brīvais teksts "Kas notiek?": adrese paliek (bāzes teksts), klāt nāk jaunie vārdi
+  kaste.addEventListener('submit', e => {
+    const f = e.target.closest('.kas-forma');
+    if (!f) return;
+    e.preventDefault();
+    const brivs = f.elements.brivs.value.trim();
+    if (brivs && pedejais) meklet(`${pedejais.baze} ${brivs}`, null, pedejais.baze);
   });
 
   // Simulētie prototipa dati (avots "sim-…", atseviski_dati/*.csv) īstā vaicājuma kartītē nerādās; tikai demo režīmā
@@ -383,6 +412,7 @@ const krizesMeklesana = (() => {
     kaste.innerHTML = '';
     el('jautajums').value = '';
     bridinajumi(null);
+    delete kaste.dataset.skats;
     solis(1);
   }
 
@@ -426,7 +456,7 @@ const krizesMeklesana = (() => {
   });
 
   function atkartot() {
-    if (pedejais) meklet(pedejais.teksts, pedejais.scenarijs);
+    if (pedejais) meklet(pedejais.teksts, pedejais.scenarijs, pedejais.baze);
   }
 
   // app.js: atrašanās vietu neizdevās noteikt — paskaidrojam rezultātos, nevis tikai panelī zem tiem
@@ -500,10 +530,10 @@ const krizesMeklesana = (() => {
   }
 
   // scenarijs: izvēlēts ar pogu ("Vai domāji…?") — tad tekstu izmanto tikai vietai un 112.
-  async function meklet(teksts, scenarijs = null) {
+  async function meklet(teksts, scenarijs = null, baze = null) {
     if (!klasifikators) return;
     atzimetMekletu();
-    pedejais = { teksts, scenarijs };
+    pedejais = { teksts, scenarijs, baze: baze ?? teksts };
     kaste.lang = typeof Valoda !== 'undefined' ? Valoda.noteikt(teksts) : 'lv';
     let rez = klasificetLabots(teksts);
     if (scenarijs) {
@@ -511,7 +541,7 @@ const krizesMeklesana = (() => {
       rez.zvanit112 = rez.dzivibas_draudi || !!scenarijs.zvanit112;
     }
     kaste.hidden = false;
-    solis(2);
+    skats(2);
     rezultatuSlanis.clearLayers();
     if (pieprasijums) pieprasijums.abort();
     pieprasijums = new AbortController();
@@ -571,21 +601,18 @@ const krizesMeklesana = (() => {
     const vajagVietu = !!no.regions && !stavoklis.vieta;
     // Secība (telefonā pirmais ekrāns): 112 (tikai dzīvības draudi) → lēmums + viena nākamā darbība → ko sapratām →
     // LVĢMC brīdinājums šai vietai → 24 h prognoze → fakti (plūdu zona, upe) → vietas → padoms → "Kas notiks tālāk"
-    const galva = draudi + lemumaBloks(zona, no, vajagVietu) +
+    const galva = lemumaBloks(zona, no, vajagVietu) +
       (galvenais
         ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>`
         : kurTeksts ? `<p class="sapratu">${t(adrese ? 'Adrese' : 'Vieta')}: <b>${esc(kurTeksts)}</b></p>` +
-            '<p class="piezime">' + t('Uzrakstiet arī, kas notiek, piem., „plūdi”, „nav elektrības”, „evakuācija”.') + '</p>' : '') +
+            jautajumaBloks(kurTeksts, null, true) : '') +
       adresesPiezime + zvanitTeksts +
       (centra ? '' : '<div id="rez-lemums"></div><div id="rez-prognoze"></div>' + (pludi ? pluduBloks() : '')) +
       (no.regions ? '' : '<p class="piezime" id="rez-mana-vieta" hidden></p>') +
       (bezDatiem ? '<p class="piezime kluda">' + t('Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.') + '</p>' : '');
-    const padoms = galvenais?.padoms ? (typeof Valoda !== 'undefined' ? Valoda.padomiPiezime() : '') +
-      `<p class="padoms" lang="lv">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '';
     const vaiDomaji = citi.length ? `<p class="piezime">${t('Vai domājāt:')}</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
-    const beigas = talakBloks(galvenais, no) + vaiDomaji +
-      '<button type="button" class="otra" data-darbiba="saraksts">' + Ik('saraksts') + ' ' + t('Visi kartes objekti sarakstā') + '</button>' +
+    const beigas = '<button type="button" class="otra" data-darbiba="saraksts">' + Ik('saraksts') + ' ' + t('Visi kartes objekti sarakstā') + '</button>' +
       '<button type="button" class="otra" data-darbiba="zinot">' + Ik('zinot') + ' ' + t('Ziņot par bīstamību šeit') + '</button>' +
       (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
 
@@ -611,8 +638,14 @@ const krizesMeklesana = (() => {
     if (galvenais?.kods === 'negaiss' && typeof Zibens !== 'undefined') Zibens.radit(true);  // zibens.js: pēdējās 30 min
     if (kodi.length || jaunsRegions) atjaunot();
 
-    kaste.innerHTML = galva + '<div id="rez-vietas"><p class="piezime">' + t('Meklē tuvākās vietas…') + '</p></div>' + padoms +
-      (centra ? '' : '<div id="rez-pasvaldiba"></div>') + beigas;
+    const uzPlanu = `<button type="button" class="galvena uz-planu" data-skats-uz="3">${Ik('saraksts')} ${t('Rīcības plāns')}` +
+      `${galvenais?.padoms ? `<small lang="lv">${esc(pirmaisTeikums(galvenais.padoms))}</small>` : ''}</button>`;
+    // 3 skati vienā kartītē (stepper): 1 jautājums, 2 atbilde, 3 rīcības plāns; 112 un darbību pogas redzamas vienmēr
+    kaste.innerHTML = draudi +
+      `<div class="rez-skats" data-s="1">${jautajumaBloks(kurTeksts, galvenais, false)}</div>` +
+      `<div class="rez-skats" data-s="2">${galva}<div id="rez-vietas"><p class="piezime">${t('Meklē tuvākās vietas…')}</p></div>` +
+      (centra ? '' : '<div id="rez-pasvaldiba"></div>') + vaiDomaji + uzPlanu + '</div>' +
+      `<div class="rez-skats" data-s="3">${planaBloks(galvenais, no)}</div>` + beigas;
     const ll = { lat: no.lat.toFixed(5), lon: no.lon.toFixed(5) };
     if (!centra) {
       lemumaDati(ll, no, signal);
@@ -771,6 +804,41 @@ const krizesMeklesana = (() => {
     const t = lr1.raiditaji.map(s => ({ s, d: km(s) })).sort((a, b) => a.d - b.d)[0];
     const fr = t.s.lr1.map(f => f.replace('.', ',')).join(' vai ');
     return `<li><b>${Valoda.t('Radio krīzē')}:</b> LR1 ${esc(fr)} FM (tuvākais raidītājs: ${esc(t.s.vieta)}, ~${Math.round(t.d)} km) · ${saite}</li>`;
+  }
+
+  // 1. solis: "Kas notiek?" — vieta jau zināma, tāpēc pogas atkārto meklēšanu ar to pašu adresi + izvēlēto situāciju
+  const CIPI = ['pludi', 'nav_elektribas', 'vetra_jumts', 'ugunsgreks_dzivokli', 'evakuacija', 'nav_udens', 'medicina', 'patvertne'];
+  function jautajumaBloks(kur, galvenais, kompakts) {
+    const sc = kods => klasifikators?.scenariji.find(s => s.kods === kods);
+    const kodi = galvenais && !CIPI.includes(galvenais.kods) ? [galvenais.kods, ...CIPI] : CIPI;
+    const cipi = kodi.map(sc).filter(Boolean).map(s =>
+      `<button type="button" data-cits="${esc(s.kods)}"${galvenais?.kods === s.kods ? ' class="aktivs" aria-pressed="true"' : ' aria-pressed="false"'}>${esc(s.nosaukums)}</button>`).join('');
+    return `<section class="kas-notiek" aria-label="${t('Kas notiek?')}"><h3>${t('Kas notiek?')}</h3>` +
+      (kur ? `<p class="piezime kas-vieta">${Ik('vieta')} ${t('Vieta zināma')}: <b>${esc(kur)}</b>. ${t('Adrese nav jāraksta vēlreiz.')}</p>` : '') +
+      `<div class="atras-pogas kas-cipi">${cipi}<button type="button" data-kas-cits="1">${t('Cits…')}</button></div>` +
+      `<form class="kas-forma"><input type="text" name="brivs" autocomplete="off" maxlength="120" aria-label="${t('Aprakstiet, kas notiek')}" placeholder="${t('Aprakstiet, kas notiek')}">` +
+      `<button type="submit" class="galvena">${t('Rādīt')}</button></form>` +
+      (kompakts ? '' : `<button type="button" class="otra" data-skats-uz="2">${t('Atbilde')} →</button>`) + '</section>';
+  }
+
+  // 3. solis: rīcības plāns — scenārija padoms (ar oficiālo avotu) un "Kas notiks tālāk" soļi numurētā sarakstā.
+  // Situācija vēl nav izvēlēta — īss vispārīgs gatavības plāns (Aizsardzības ministrijas brošūra).
+  const VISPARIGAIS_PLANS = ['Zināt savu evakuācijas vietu un tuvāko patvertni (skatiet atbildi).',
+    'Sagatavot somu: ūdens, zāles, lukturis, uzlādēts tālrunis, radio ar baterijām, dokumenti.',
+    'Klausīties LR1 un sekot LVĢMC brīdinājumiem; sekot pašvaldības norādēm.',
+    'Dzīvības briesmās zvanīt 112.'];
+  function planaBloks(galvenais, no) {
+    const atpakal = `<button type="button" class="otra" data-skats-uz="2">← ${t('Atbilde')}</button>`;
+    if (!galvenais) {
+      return `<section class="ricibas-plans"><h3>${t('Rīcības plāns')}</h3><p class="piezime">${t('Situācija vēl nav izvēlēta; vispārīgs gatavības plāns:')}</p>` +
+        `<div class="talak"><ol lang="lv">${VISPARIGAIS_PLANS.map(x => `<li>${esc(x)}</li>`).join('')}</ol></div>` +
+        padomuAvots('https://www.sargs.lv/lv/buklets-ka-rikoties-krizes-gadijuma') +
+        `<button type="button" class="galvena" data-skats-uz="1">1 · ${t('Kas notiek?')}</button>${no ? atpakal : ''}</section>`;
+    }
+    const padoms = galvenais.padoms ? (typeof Valoda !== 'undefined' ? Valoda.padomiPiezime() : '') +
+      `<p class="padoms" lang="lv">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '';
+    return `<section class="ricibas-plans"><h3>${t('Rīcības plāns')}: ${esc(galvenais.nosaukums)}</h3>${padoms}${talakBloks(galvenais, no)}${atpakal}` +
+      `<button type="button" class="otra" data-skats-uz="1">1 · ${t('Kas notiek?')}</button></section>`;
   }
 
   function talakBloks(scenarijs, no) {

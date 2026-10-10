@@ -1053,3 +1053,24 @@ header .valoda-sledzis button[aria-pressed="true"]::before { background: var(--t
 #pamatkarte-poga svg[hidden] { display: none; }
 /* Telefons: rīkjoslā ir arī pamatkartes poga; + − paslēpti (tuvina ar diviem pirkstiem), lai josla neiekļūst lapā */
 @media (max-width: 600px) { body.apaksa-aktiva #tuvinat, body.apaksa-aktiva #talinat { display: none; } }
+
+/* Rezultāta trīs skati (meklesana.js skats()): kaste.dataset.skats = 1 Jautājums · 2 Atbilde · 3 Rīcība */
+#rezultati .rez-skats { display: none; }
+#rezultati[data-skats="1"] .rez-skats[data-s="1"], #rezultati[data-skats="2"] .rez-skats[data-s="2"], #rezultati[data-skats="3"] .rez-skats[data-s="3"] { display: block; }
+body.druka-rezultats #rezultati .rez-skats { display: block !important; }
+body.druka-rezultats #rezultati .rez-skats[data-s="1"], body.druka-rezultats #rezultati .uz-planu { display: none !important; }
+.soli li button { display: inline-flex; align-items: center; gap: .3rem; min-height: 32px; margin: 0; padding: 0 .15rem; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; white-space: nowrap; }
+.soli li button:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 4px; }
+@media (max-width: 800px) { .soli li button { min-height: 44px; } }
+.kas-notiek { margin: .3rem 0 .6rem; padding: .55rem .65rem; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte); background: #fff; }
+.kas-notiek h3 { margin: 0 0 .3rem; font-size: .95rem; }
+.kas-cipi button { min-height: 36px; }
+.kas-cipi button.aktivs { background: var(--zils-gaiss); border-color: var(--zils); font-weight: 700; }
+.kas-forma { display: flex; gap: .4rem; margin: .5rem 0 0; }
+.kas-forma input { flex: 1; min-width: 0; min-height: 44px; padding: 0 .6rem; font: inherit; border: 1px solid var(--pelks-3); border-radius: var(--radiuss); }
+.kas-forma button { width: auto; min-height: 44px; padding: 0 .9rem; }
+.kas-notiek > .otra { margin-top: .5rem; }
+.uz-planu { display: flex; flex-direction: column; align-items: flex-start; gap: .1rem; margin: .6rem 0 0; min-height: 44px; text-align: left; }
+.uz-planu small { font-weight: 400; opacity: .9; }
+.ricibas-plans h3 { margin: 0 0 .3rem; font-size: 1rem; }
+.ricibas-plans > button { margin-top: .5rem; }
