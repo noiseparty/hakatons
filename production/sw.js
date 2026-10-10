@@ -8,22 +8,31 @@
 // - /api/*: vispirms tīkls; katru veiksmīgo atbildi saglabā ar laiku (galvene x-sw-saglabats). Bez tīkla —
 //   saglabātā, ja nav vecāka par 6 h (mainīgie dati: brīdinājumi, ūdens, ceļi, satiksme…) vai 7 dienām (vietas,
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
-const VERSION = '2026-10-10w';
+// - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
+//   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
+const VERSION = '2026-10-10au';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
+// Saraksts ģenerēts: uv run --no-project --python 3.12 src/testi/sw_faili.py --rakstit (no index/info/statuss/api/trukstosie
+// .html un to JS/CSS/JSON atsaucēm). Pēc jauna faila pievienošanas palaidiet to un nomainiet VERSION.
 const SHELL_FAILI = [
-  './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
-  'avoti.js', 'klasifikators.js', 'app.js', 'zonas.js', 'meklesana.js', 'runa.js', 'apaksa.js', 'saraksts.js',
-  'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json', 'lr1.json', 'darbvirsma.js', 'darbvirsma.css',
-  'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'ikonas.js', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
-  'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
-  'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
-  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json', 'sheet.js',
+  './', 'index.html', 'info.html', 'statuss.html', 'api.html', 'trukstosie.html', 'scenariji.json',
+  'vendor/leaflet/leaflet.css', 'vendor/leaflet/MarkerCluster.css', 'manifest.webmanifest', 'ikonas/ikona.svg',
+  'ikonas/ikona-32.png', 'ikonas/ikona-180.png', 'stils.css', 'demo.css', 'izmainas.css', 'darbvirsma.css',
+  'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.markercluster.js', 'offline.js',
+  'ikonas.js', 'avoti.js', 'klasifikators.js', 'objekta-statuss.js', 'app.js', 'marsruts.js', 'zonas.js',
+  'meklesana.js', 'dalities.js', 'runa.js', 'apaksa.js', 'saraksts.js', 'bridinajumi.js', 'zibens.js',
+  'noverojumi.js', 'prognozes.js', 'celi.js', 'zinot.js', 'demo.js', 'izmainas.js', 'kajene.js', 'atskanot.js',
+  'sheet.js', 'darbvirsma.js', 'statuss.css', 'info.css', 'statuss.js', 'api.css', 'openapi.json',
+  'vendor/leaflet/images/layers.png', 'vendor/leaflet/images/layers-2x.png', 'vendor/leaflet/images/marker-icon.png',
+  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'lr1.json', 'vendor/qrcode.js', 'demo/scenariji.json',
+  'izmainas.json', 'demo/augstumi-ogre.geojson',
 ];
 const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;
 const FLIZU_MAX = 2500;
 const API_MAX = 300;  // saglabātās /api atbildes (ar kartes skatiem); vecākās izmet
-const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes?|augsne|statuss|meklejumi)/;
+const PLUDU_FLIZES = 'pludi-flizes-v1', PLUDU_FLIZU_MAX = 800;
+const API_MAINIGIE = /^\/api\/(bridinajumi|udens|celi|satiksme|zibens|prognozes?|augsne|statuss|meklejumi|noverojumi|zinojumi|veseliba)/;
 const H6 = 6 * 3600e3, D7 = 7 * 24 * 3600e3;
 
 self.addEventListener('install', e => {
@@ -120,6 +129,18 @@ async function kesaVispirms(req, nosaukums, max) {
   return r;
 }
 
+async function pluduFlize(req) {
+  const c = await caches.open(PLUDU_FLIZES);
+  const k = await c.match(req);
+  if (k) return k;
+  const r = await fetch(req);
+  if (r.ok && !/no-store/.test(r.headers.get('Cache-Control') || '')) {
+    await c.put(req, r.clone()).catch(() => {});
+    apgriezt(c, PLUDU_FLIZU_MAX);
+  }
+  return r;
+}
+
 let apgriez = false;
 async function apgriezt(c, max) {
   if (apgriez) return;
@@ -135,6 +156,7 @@ self.addEventListener('fetch', e => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin === location.origin) {
+    if (url.pathname.startsWith('/api/pludi/flize/')) return e.respondWith(pluduFlize(req));
     if (url.pathname.startsWith('/api/')) return e.respondWith(api(req));
     return e.respondWith(shell(req));
   }

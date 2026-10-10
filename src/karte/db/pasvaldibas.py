@@ -6,10 +6,10 @@ Avoti:
   markdown/<slug>/*.md priekšvārds avota_url — CA plāna dokuments (lielākais fails mapē, ne lēmumi);
   Uzņēmumu reģistrs, "Publisko personu un iestāžu saraksts" (data.gov.lv public-persons-institutions, CC0, atjauno katru
     dienu) — pašvaldības oficiālais e-pasts, tālrunis, adrese, tīmekļvietne (visas 42 pašvaldības, arī valstspilsētas);
-  VPVKAC paplašinātā tīkla kontaktpunkti (data.gov.lv vpvkac-kontakti, CC0, 2022. gada augusts) — klientu apkalpošanas
-    centra tālrunis un e-pasts; katrai pašvaldībai viens centrs (pilsētas centrs, ja ir). Valstspilsētām un Ventspils
-    novadam centra nav, tāpēc kartīte izmanto UR kontaktus.
-Palaišana (lokāli; vajag openpyxl): uv run --no-project --with openpyxl src/karte/db/pasvaldibas.py
+  VPVKAC kontakti (data.gov.lv vpvkac-kontakti, CC0, jaunākā versija 2023-11, CSV) — klientu apkalpošanas centra adrese,
+    tālrunis; katrai pašvaldībai viens centrs (pilsētas centrs, ja ir). Valstspilsētām un Ventspils novadam centru
+    sarakstā nav; kartīte tos rāda tikai kā papildu rindu, galvenie kontakti ir UR (42/42). Skat. notes/pasvaldibu-kontakti.md.
+Palaišana (lokāli): uv run --no-project src/karte/db/pasvaldibas.py
 """
 
 import csv
@@ -23,7 +23,7 @@ SAKNE = pathlib.Path(__file__).resolve().parents[3]
 KIT = SAKNE / "ai-open-data-2026-hakatons" / "ca-plani-hakatons"
 DATI = SAKNE / "src" / "karte" / "dati"
 VPVKAC = ("https://data.gov.lv/dati/dataset/efe66739-3a88-47bf-b63c-cd01493ab475/resource/"
-          "4b72d47d-bd80-47cb-8309-ca5f2e761339/download/vpvkac_kontakti_2022_08.xlsx")
+          "5ae1dc82-fd3b-4ea6-b868-34b7e36603c0/download/vpvkac-kontakti_2023_aktual_081123.csv")
 UA = {"User-Agent": "map.repo.lv (AI Open Data 2026 hakatons)"}
 UR = ("https://data.gov.lv/dati/dataset/2e4926ea-8648-44e6-9227-3cb20604ec31/resource/"
       "190ba502-08d1-4c4c-b1b9-b58299bf9a9f/download/ppi_public_persons_institutions.csv")
@@ -47,17 +47,22 @@ def plana_url(slug):
 
 
 def vpvkac_centri():
-    import openpyxl
-    with urllib.request.urlopen(urllib.request.Request(VPVKAC, headers=UA), timeout=120) as r:
-        wb = openpyxl.load_workbook(io.BytesIO(r.read()), read_only=True)
-    centri = []
-    for rinda in wb.worksheets[0].iter_rows(values_only=True):
-        c = [str(x).strip() for x in rinda if x is not None and str(x).strip()]
-        if len(c) >= 5 and c[0].isdigit():  # nr, punkts, pilnais nosaukums, adrese, "Darba laiks:", tālrunis, e-pasts
-            talr = next((x for x in c[4:] if re.fullmatch(r"[\d ,;]+", x)), None)
-            epasts = next((x for x in c[4:] if "@" in x), None)
-            tirs = lambda t: " ".join(t.split())  # noqa: E731
-            centri.append({"punkts": tirs(c[1]), "nosaukums": tirs(c[2]), "adrese": tirs(c[3]), "talrunis": talr, "epasts": epasts})
+    """VPVKAC kontakti 2023-11 (CSV): ieraksta rinda (Nr., nosaukums, adrese), tālāk darba laika rindas ar tālruni/e-pastu."""
+    with urllib.request.urlopen(urllib.request.Request(VPVKAC, headers=UA), timeout=180) as r:
+        teksts = r.read().decode("utf-8-sig")
+    tirs = lambda t: " ".join((t or "").split())  # noqa: E731
+    centri, tagad = [], None
+    for rinda in csv.reader(io.StringIO(teksts, newline=""), delimiter=";"):
+        rinda = rinda + [""] * (12 - len(rinda))
+        if rinda[0].strip().isdigit() and rinda[4].strip():  # nr, ..., jaunais nosaukums, pilnais, īsais, adrese
+            tagad = {"punkts": re.sub(r"\s*VPVKAC.*$", "", tirs(rinda[6])), "nosaukums": tirs(rinda[4]),
+                     "adrese": tirs(rinda[7]), "talrunis": None, "epasts": None}
+            centri.append(tagad)
+        elif tagad:
+            if not tagad["talrunis"] and re.fullmatch(r"[\d ,;+]{6,}", rinda[10].strip()):
+                tagad["talrunis"] = tirs(rinda[10])
+            if not tagad["epasts"] and "@" in rinda[11]:
+                tagad["epasts"] = tirs(rinda[11]).lower()
     return centri
 
 
@@ -92,9 +97,9 @@ def main():
         d = slugi.get(r["pasvaldiba"], {})
         g = gen(r["pasvaldiba"])
         savi = [c for c in centri if g.lower() in c["nosaukums"].lower()]
-        # pašvaldības centra pilsēta ("Ogres novads" → punkts "Ogre"), citādi jebkura pilsēta, citādi pirmais
-        centrs = next((c for c in savi if gen(c["punkts"]) == r["pasvaldiba"].removesuffix(" novads")), None) or \
-            next((c for c in savi if "pilsētas" in c["nosaukums"].lower()), savi[0] if savi else None)
+        # tikai pašvaldības centra pilsētas centrs ("Ogres novads" → punkts "Ogres"); cita pilsēta kartītē maldinātu
+        centrs = next((c for c in savi if c["punkts"] == gen(r["pasvaldiba"].removesuffix(" novads"))
+                       and "pilsētas" in c["nosaukums"].lower()), None)
         rez[r["adresu_registra_kods"]] = {
             "nosaukums": r["pasvaldiba"], "tips": r["tips"], "atvk": r["atvk_kods"],
             "majas_lapa": r["parbaudita_url"] or r["majas_lapa"],
