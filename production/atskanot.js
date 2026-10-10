@@ -26,7 +26,7 @@ const Atskanot = (() => {
   // Josla galvenes rindā (pārklāj galvenes saturu, karte paliek brīva): solis, nosaukums, atpakaļskaitīšana, pogas, progress
   document.querySelector('header').insertAdjacentHTML('beforeend', `
     <div id="atskanot-josla" class="atskanot-josla" role="region" aria-label="Demo atskaņošana" hidden>
-      <span class="demo-zime">SIMULĀCIJA</span>
+      <span class="demo-zime" data-t="SIMULĀCIJA">SIMULĀCIJA</span>
       <span class="atskanot-solis"></span>
       <div class="atskanot-teksts"><b class="atskanot-nos"></b><span class="atskanot-laiks" aria-live="off"></span></div>
       <div class="atskanot-pogas">
