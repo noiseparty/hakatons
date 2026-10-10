@@ -215,3 +215,14 @@
 @media (max-width: 800px) {
   .dv-dialogs { max-width: calc(100vw - 2rem); }  /* dialogs var būt atvērts, kad ekrāns sašaurinās */
 }
+/* Šaurs dators / planšete guļus (801–1100 px): galvene vienā rindā, bez apakšvirsraksta un navigācijas ikonām */
+@media (min-width: 801px) and (max-width: 1100px) {
+  body.dv header { gap: 8px; padding: 8px 12px; }
+  body.dv header h1 { white-space: nowrap; }
+  body.dv .dv-apaksvirsraksts { display: none; }
+  body.dv .dv-nav button { padding: 0 8px; font-size: 13px; white-space: nowrap; }
+  body.dv .dv-nav button svg, body.dv .dv-zinot-ikona { display: none; }
+  body.dv #zinot-poga.dv-zinot { padding: 0 10px; font-size: 13px; white-space: nowrap; }
+  body.dv .dv-par-poga { padding: 0 8px; white-space: nowrap; }
+  body.dv header #statuss { white-space: nowrap; }
+}

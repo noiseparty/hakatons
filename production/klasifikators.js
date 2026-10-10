@@ -87,8 +87,8 @@ const Klasifikators = (() => {
     for (const s of scenariji) for (const r of s.raksti) r.svars /= Math.sqrt(biezums[r.teksts]);
     const draudi = noteikumi.dzivibas_draudi.map(raksts);
     const vietas = sagatavotVietas(regioni, noteikumi.vietu_sinonimi);
-    // "Vai domājāt…?": citi scenāriji, kas sasniedz šo daļu no labākā punktiem (noskaņots ar src/meklesana/vaicajumi.json)
-    const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.45;
+    // "Vai domājāt…?": citi scenāriji, kas ir ne vairāk kā 15 % zem labākā (slieksnis 0.85; src/meklesana/vaicajumi.json)
+    const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.85;
 
     function klasificet(vaicajums) {
       const t = normalizet(vaicajums);
@@ -125,7 +125,7 @@ const Klasifikators = (() => {
       }
       const max = Math.max(...rez.map(x => x.punkti));
       // Pirmais = galvenais; citi ("Vai domāji…?") tikai, ja sasniedz `slieksnis` daļu no labākā. Vienādiem paliek secība failā.
-      const atrasti = rez.filter(x => x.punkti && (x.punkti === max || x.punkti > max * slieksnis))
+      const atrasti = rez.filter(x => x.punkti && x.punkti >= max * slieksnis)
         // vienādiem punktiem — garāks (konkrētāks) atrastais vārda sākums ("бомбоубежищ" pirms "бомб"), tad secība failā
         .sort((a, b) => b.punkti - a.punkti || (b.burti || 0) - (a.burti || 0)).slice(0, 3);
       // "cilvēks neelpo" bez cita scenārija → noklusētais (medicīna)
