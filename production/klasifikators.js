@@ -120,6 +120,26 @@ const Klasifikators = (() => {
     return { teksts: ' ' + vardi.join(' ') + ' ', vieta: labaka.regions };
   }
 
+  // Ielu veidi (normalizēti): vārds pirms tiem ir ielas nosaukums ("Rīgas iela", "Mednieku ielā", "Brīvības gatve"), un
+  // ne ielas veids, ne nosaukums neskaitās scenārijam ("Kuldīgas iela" nav "kūla"). Nosaukumu maskējam tikai, ja tas
+  // izskatās pēc ģenitīva/īpašvārda (beidzas ar patskani vai -s), lai "deg ielā" paliktu "deg".
+  const IELU_VEIDI = new Set('iela ielas ielu ielai ielam prospekts prospekta gatve gatves bulvaris bulvara laukums laukuma krastmala krastmalas aleja alejas dambis dambja'.split(' '));
+  const IELAS_NOSAUKUMS = /[aeius]$/;
+
+  // Vārdi, kas ir vietvārds vai ielas nosaukums/veids: scenārijam tos neskaita. Vietvārds = precīza forma no reģioniem
+  // vai tā celms (≥ 5 burti, bez galotnes) + ≤ 3 burti galotnei ("Kuldīga", "Kuldīgā", "Kuldigas" ← "kuldig").
+  function vietvarduMaska(vardi, vietuVardi, celmi) {
+    const maska = new Set();
+    vardi.forEach((w, i) => {
+      if (vietuVardi.has(w) || celmi.some(c => w.startsWith(c) && w.length <= c.length + 3)) maska.add(i);
+      if (IELU_VEIDI.has(w)) {
+        maska.add(i);
+        if (i > 0 && IELAS_NOSAUKUMS.test(vardi[i - 1])) maska.add(i - 1);
+      }
+    });
+    return maska;
+  }
+
   // noteikumi: scenariji.json saturs. Atgriež sagatavotu klasifikatoru.
   function izveidot(noteikumi, regioni = []) {
     const scenariji = noteikumi.scenariji.map(s => ({ ...s, raksti: s.atslegvardi.map(raksts) }));
@@ -130,6 +150,9 @@ const Klasifikators = (() => {
     const draudi = noteikumi.dzivibas_draudi.map(raksts);
     const vietas = sagatavotVietas(regioni, noteikumi.vietu_sinonimi);
     const vietuVardi = new Set(vietas.map(v => v.forma.trim()).filter(f => !f.includes(' ')));
+    // celmi: vienvārda vietvārdi ≥ 6 burti bez galotnes (kuldiga → kuldig), ≥ 5 burti
+    const celmi = [...new Set(regioni.map(r => normalizet(r.nosaukums).trim()).filter(n => !n.includes(' ') && n.length >= 6)
+      .map(n => n.replace(/(is|us|s|a|e|i|u)$/, '').replace(/[aeiu]$/, '')).filter(c => c.length >= 5))];
     // "Vai domājāt…?": citi scenāriji, kas ir ne vairāk kā 15 % zem labākā (slieksnis 0.85; src/meklesana/vaicajumi.json)
     const slieksnis = noteikumi.vai_domajat_slieksnis ?? 0.85;
 
@@ -227,6 +250,7 @@ const Klasifikators = (() => {
 
     // Atrastie atslēgvārdi tekstā: { pec: [[vārda nr, vārdi, svars, burti, r]] katram scenārijam, draudi, aizņemtie vārdi }
     function atrast(t) {
+      const maska = vietvarduMaska(t.trim().split(' '), vietuVardi, celmi);
       const sakumi = new Set();
       for (let i = 1; i < t.length; i++) if (t[i - 1] === ' ' && t[i] !== ' ') for (let k = 1; k <= 3; k++) sakumi.add(t.substr(i, k));
       const vardaNr = [];
@@ -239,6 +263,7 @@ const Klasifikators = (() => {
           const i = t.indexOf(r.teksts);
           if (i < 0) continue;
           const no = vardaNr[i + 1];
+          if (maska.has(no)) continue;  // vietvārds vai ielas nosaukums
           for (let j = 0; j < r.vardi; j++) aiznemti.add(no + j);
           if (s < 0) draudiAtrasti = true;
           else pec[s].push([no, r.vardi, r.svars, r.saknes.length, nr]);
@@ -258,8 +283,9 @@ const Klasifikators = (() => {
       let arKludu = false;
       // Pilnā labošana (translits, viena kļūda) tikai tad, ja precīzi nav atrasts neviens scenārijs
       const bezLabosanas = atr.pec.some(p => p.length);
+      const vietMaska = vietvarduMaska(vardi, vietuVardi, celmi);
       const jauni = vardi.map((v, i) => {
-        if (atr.aiznemti.has(i) || vietuVardi.has(v)) return v;
+        if (atr.aiznemti.has(i) || vietuVardi.has(v) || vietMaska.has(i)) return v;
         // ja kaut kas jau atrasts, labojam tikai dubultus burtus: citādi pareizi, bet atslēgvārdos neesoši vārdi
         // ("augsta", "daudzi") "labotos" par līdzīgiem atslēgvārdiem ("auksta", "drudzi")
         const l = labotVardu(v, bezLabosanas);
