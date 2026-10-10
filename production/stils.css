@@ -404,7 +404,7 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
 .saraksts-riki select { width: auto; flex: none; min-height: 44px; max-width: 46%; }
 .saraksts-cipi { display: flex; gap: .35rem; margin-top: .45rem; overflow-x: auto; scrollbar-width: thin; padding-bottom: 2px; }
 .saraksts-cipi[hidden] { display: none; }
-.saraksts-cips { display: inline-flex; align-items: center; gap: .3rem; width: auto; flex: none; min-height: 40px; padding: .2rem .65rem;
+.saraksts-cips { display: inline-flex; align-items: center; gap: .3rem; width: auto; flex: none; min-height: 44px; padding: .2rem .65rem;
   border-radius: 999px; font-size: .82rem; white-space: nowrap; }
 .saraksts-cips[aria-pressed="true"] { background: var(--zils-gaiss); border-color: var(--zils); font-weight: 600; }
 .saraksts-cips-skaits { color: var(--teksts2); font-variant-numeric: tabular-nums; }
@@ -512,7 +512,7 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
 
 /* Bezsaiste (offline.js, sw.js): josla, rinda kartītē par saglabātajiem datiem */
 .bezsakaru { padding: .45rem 1rem; background: #1c1917; color: #fff; font-size: .9rem; }
-.bezsakaru button { width: auto; margin: .15rem .2rem 0 0; padding: .25rem .6rem; font-size: .85rem; border-radius: 999px; }
+.bezsakaru button { width: auto; min-height: 44px; margin: .15rem .2rem 0 0; padding: .25rem .6rem; font-size: .85rem; border-radius: 999px; }
 .kesa-rinda { margin: 0 0 .5rem; padding: .4rem .6rem; font-size: .82rem; background: #f5f5f4; border-left: 3px solid #57534e; border-radius: 4px; color: #1c1917; }
 /* Maršruts, kas apiet slēgtās zonas (marsruts.js) */
 .marsruta-rinda { display: block; margin-top: .3rem; font-size: .82rem; }
@@ -582,6 +582,7 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinot-aizvert { width: 44px; height: 44px; flex: none; padding: 0; display: inline-flex; align-items: center; justify-content: center; }
 .zinot-saturs { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: .5rem .9rem; }
 .zinot-saturs > :first-child { margin-top: 0; }
+.zinot-saturs button.otra { min-height: 44px; }
 .zinot-kaja { display: flex; gap: .5rem; flex-wrap: wrap; padding: .5rem .9rem calc(.6rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--robeza); }
 .zinot-kaja:empty { display: none; }
 .zinot-kaja button { flex: 1 1 8rem; min-height: 44px; width: auto; margin: 0; }
