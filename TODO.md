@@ -57,6 +57,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
+- [ ] VPS: apply the Caddy cache headers from src/karte/serveris/hakatons.caddy (caddy validate + reload) — added 2026-10-10 03:28 +03:00 by noiseparty
+- [ ] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — added 2026-10-10 03:28 +03:00 by noiseparty
 
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -65,6 +67,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Phone performance pass (notes/atrums.md): search usable 3.9 → 1.7 s on Slow 4G, preloads, vendored Leaflet, lazy QR; link previews (Open Graph / Twitter, og.png, canonical, favicons) on all public pages — done 2026-10-10 03:28 +03:00 by noiseparty (added 2026-10-10 03:28 +03:00 by noiseparty)
 - [x] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — done 2026-10-10 03:10 +03:00 by noiseparty: layer "Laikapstākļi tagad" (`/api/noverojumi`, 34 stations), "Šobrīd brāzmas" feed item, +1 risk for observed gusts ≥ 20 m/s, wind line in storm results, status component (added 2026-10-10 01:39 +03:00 by noiseparty)
 - [x] Classifier round 2: keystroke time at CPU ×4 max 61 → 28 ms (same results), demo-event keywords + scenarios #120 smoke from a big fire, #121 e-services down, 66 fresh RU/EN/demo queries (81,8 % before fixes), 563-query set 95,0 % — `notes/klasifikators.md` — done 2026-10-10 03:10 +03:00 by noiseparty (added 2026-10-10 03:10 +03:00 by noiseparty)
 - [x] Shareable and printable result: URL state ?q=&lat=&lon= (opening it restores the result), "Dalīties" (Web Share / copy link) and "Drukāt" (card only, with a QR code from vendored qrcode-generator, MIT) — done 2026-10-10 03:04 +03:00 by noiseparty (added 2026-10-10 03:04 +03:00 by noiseparty)
