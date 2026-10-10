@@ -80,7 +80,7 @@ The panel now has two groups. **Reāli notikumi**: what happened in Latvia, with
 
 On the map, zones, smoke cones and markers are still simulated and labelled SIMULĀCIJA; the event coordinates are approximate. Nearest places are live data. The 2026-08 storm replay (`vetra-2026`) moved into the real group.
 
-Each scenario has `vaicajums`, the query the replay mode (`atskanot.js`, #83) runs first. Checked against the live classifier; gaps are listed under the table.
+Each scenario has `vaicajums`, the query the replay mode (`atskanot.js`, #83) runs first. Checked against the classifier on main.
 
 Facts were researched by subagents on 2026-10-10 and checked against the opened sources. Anything only seen in search snippets was left out.
 
@@ -94,11 +94,9 @@ Facts were researched by subagents on 2026-10-10 and checked against the opened 
 | `ulmana-2026` | Warehouse fire, K. Ulmaņa gatve 2, Rīga, 30 Jun 2026 | 3 500 m² in a 40 000 m² complex; ~200 + ~180 evacuated (jauns.lv); close windows, ventilation off (LV portāls) | Smoke cone NNE (assumed SSW wind), accommodation and pharmacy outside the smoke, 24/7 hospital | LVĢMC observations (wind) | LSM English gives "about 450 evacuated" (another figure); we use the jauns.lv split |
 | `bauskas-2026` | Gas explosion, Bauskas iela 15, Rīga, 2 Jan 2026 | 46 evacuated (35 + 11), 2 dead, 2 injured; Gaso call 14:58; heated bus, hotel for 15 days for 16 people (LSM) | Address-level decision "Ēka slēgta", accommodation, 24/7 hospital | Building-closure status from the municipality (none) | A third death and the >€60k aid were seen only in snippets; left out |
 | `meldru-2026` | Scrap-metal fire, Meldru iela 3, port of Rīga, 17–18 Jul 2026 | Call 19:10, out 07:08 (~12 h); 300 m², ~30 000 t; no injuries; windows closed in Vecmīlgrāvis/Vecāķi (LSM) | Smoke cone NE, pharmacy outside the smoke, 24/7 hospital | Wind observations; fire-water points | Same as above |
-| `ddos-2025` | DDoS on gov.lv and eParaksts, 2 Oct 2025 | ~1 h, some resources 1 h 20 min (LSM/LVRTC) | Map unchanged; links to statuss.html and info.html | — | The classifier doesn't know "kiberuzbrukums" / "nestrādā e-pakalpojumi"; `vaicajums` is "nav interneta" |
+| `ddos-2025` | DDoS on gov.lv and eParaksts, 2 Oct 2025 | ~1 h, some resources 1 h 20 min (LSM/LVRTC) | Map unchanged; links to statuss.html and info.html | — | — (`vaicajums` "nestrādā e-pakalpojumi" → `e_pakalpojumi`) |
 
-**Classifier gaps (`production/scenariji.json`, other owner):**
-- "dūmi no noliktavas" → `ieslegts_telpa`; we use "dūmi aizvērt logus Rīga" → `ugunsgreks`.
-- "kiberuzbrukums" and "nestrādā eParaksts" match nothing.
+**Classifier:** after classifier round 2 (#81), every `vaicajums` lands on the right scenario: "dūmi no noliktavas Rīga" → `dumi_ara`, "nestrādā e-pakalpojumi" → `e_pakalpojumi`.
 
 **Smoke cones:** zone type `sektors` in `demo.js`: source, `virziens` (where the smoke goes, degrees from north), `platums`, `garums_m`. Nearest places can be filtered to outside the cone (`arpus`).
 

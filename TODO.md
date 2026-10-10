@@ -57,7 +57,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Re-record the backup demo video after the morning freeze (`uv run --no-project --with playwright src/demo/video.py`) — added 2026-10-10 02:56 +03:00 by noiseparty
 - [ ] Offline mode: test on a real phone (airplane mode after one visit; "Pievienot sākuma ekrānam" on Android Chrome and iOS Safari) — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) and ask municipalities to confirm resilience-point statuses — added 2026-10-10 02:54 +03:00 by noiseparty
-- [ ] Classifier: recognise "kiberuzbrukums" / "nestrādā e-pakalpojumi / eParaksts" and "dūmi no noliktavas" (now → ieslegts_telpa); see `notes/demo-scenariji.md` — added 2026-10-10 03:18 +03:00 by noiseparty
 - [ ] Load fire-water intake points (`udens_nemsana`, VKCP IĢIS, CC0) so fire demos (Stikli, Meldru) can switch them on — added 2026-10-10 03:18 +03:00 by noiseparty
 
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
