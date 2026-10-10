@@ -5,7 +5,7 @@ Galapunkti:
   GET /api/avoti                       datu avoti: izdevējs, licence, saites, skaits, ielādes laiks
   GET /api/regioni                     pašvaldības un pilsētas (bez ģeometrijas, ar bbox)
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
-  GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..
+  GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..[&kritiskais=1]
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
   GET /api/objekti?bbox=minLon,minLat,maxLon,maxLat&kategorijas=..[&regions=..&lat=..&lon=..&limit=..]
                                        kartes skats: tikai punkti taisnstūrī, īsās īpašības (tikai tās, ko rāda logā),
@@ -192,14 +192,16 @@ def objekti(q):
     if (lat is None) != (lon is None):
         raise Kluda(400, "vajag gan lat, gan lon")
     limit = int(_skaitlis(q, "limit", 1, MAX_LIMIT) or 5000)
+    kritiskais = q.get("kritiskais", [""])[0] == "1"  # tikai kritiskie (banku bankomāti: skaidra nauda arī krīzē)
     bbox = _skata_bbox(q)
     if bbox:
         limit = min(limit, BBOX_MAX)
     atslega = (tuple(sorted(kategorijas_)), regions_, None if lat is None else round(lat, 5),
-               None if lon is None else round(lon, 5), limit, bbox)
+               None if lon is None else round(lon, 5), limit, kritiskais, bbox)
     if bbox:
-        return _objektu_kesa.iegut(atslega, lambda: _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox))
-    return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit))
+        return _objektu_kesa.iegut(atslega, lambda: _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox,
+                                                                   kritiskais))
+    return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais))
 
 
 _objektu_kesa = _LRU(64, 30)
@@ -213,6 +215,7 @@ SKATA_IPASIBAS = [
     "limenis_cm", "limenis_m", "izmaina_24h_cm", "udens_temp", "laiks", "piezime", "opening_hours", "darba_laiks",
     "veids", "ligzdas", "operator", "brand", "phone", "komentars", "marsruti", "veidi", "marsrutu_saraksts",
     "apzimejums", "plans_url", "lpp", "statuss", "last_updated",
+    "kritiskais", "bankas", "skaits", "iemaksas", "pieejamiba_24h",  # bankomāti (marķieris un logs)
 ]
 
 
@@ -229,7 +232,7 @@ def _skata_bbox(q):
             math.ceil(e * BBOX_SOLIS) / BBOX_SOLIS, math.ceil(n * BBOX_SOLIS) / BBOX_SOLIS)
 
 
-def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox):
+def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox, kritiskais=False):
     """Punkti taisnstūrī. Ja to ir vairāk par limit — pa slāņiem pārmaiņus (rn), lai retie slāņi (24/7 slimnīcas)
     netiek izspiesti ar pieturām: katrā slānī tuvākie (ar lat/lon) vai pseidonejauša, bet stabila izlase.
     Atgriež gatavu JSON tekstu: kešā aizņem mazāk atmiņas nekā Python objekti."""
@@ -247,7 +250,8 @@ def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox):
              where st_intersects(o.geom, st_makeenvelope(%(w)s, %(s)s, %(e)s, %(n)s, 4326))
                and (o.derigs_lidz is null or o.derigs_lidz > now())
                and (cardinality(%(kat)s::text[]) = 0 or o.kategorija = any(%(kat)s::text[]))
-               and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)),
+               and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)
+               and (not %(krit)s or o.ipasibas->>'kritiskais' = '1')),
            y as (select * from x order by rn, kategorija, id limit %(limit)s + 1),
            z as (select * from y order by rn, kategorija, id limit %(limit)s)
            select json_build_object('type', 'FeatureCollection',
@@ -263,12 +267,12 @@ def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox):
                                        where key = any(%(ipas)s::text[])))))
                       order by attalums_m nulls last, id) from z), '[]'))::text""",
         {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_,
-         "limit": limit, "w": w, "s": s, "e": e, "n": n, "ipas": SKATA_IPASIBAS},
+         "limit": limit, "w": w, "s": s, "e": e, "n": n, "ipas": SKATA_IPASIBAS, "krit": kritiskais},
         timeout="8s",
     )
 
 
-def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
+def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais=False):
     lieto_vietu = lat is not None
     return vaicat(
         """with x as (
@@ -280,6 +284,7 @@ def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
              where (o.derigs_lidz is null or o.derigs_lidz > now())
                and (cardinality(%(kat)s::text[]) = 0 or o.kategorija = any(%(kat)s::text[]))
                and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)
+               and (not %(krit)s or o.ipasibas->>'kritiskais' = '1')
              order by case when %(vieta)s then o.geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) end,
                       o.id
              limit %(limit)s)
@@ -291,7 +296,8 @@ def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
                         'attalums_m', attalums_m, 'ipasibas', ipasibas))
                     order by attalums_m nulls last, id), '[]'))
            from x""",
-        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_, "limit": limit},
+        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_, "limit": limit,
+         "krit": kritiskais},
         timeout="8s",
     )
 

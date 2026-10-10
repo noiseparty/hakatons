@@ -72,7 +72,7 @@ const Saraksts = (() => {
     } else {
       const kartiba = stavoklis.vieta ? 'sakārtoti pēc attāluma (taisnā līnijā)' : 'sakārtoti pēc nosaukuma';
       const izlase = ieladets?.apgriezts ? ' (izlase: pietuviniet karti, lai redzētu visus)' : '';
-      kopsavilkums.textContent = `${saraksts.length} objekti kartes skatā${izlase}, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
+      kopsavilkums.textContent = `${daudzskaitlis(saraksts.length, 'objekts', 'objekti')} kartes skatā${izlase}, ${kartiba}. Slāņi: ${slani.join(', ')}.`;
       paradit(SOLIS);
     }
     dialogs.showModal();

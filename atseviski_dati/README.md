@@ -42,3 +42,13 @@ python3 src/karte/db/ielade.py atseviski_dati/energija.csv \
     --avots sim-energija --kategorija uzlades_stacija --id "{id}" \
     --nosaukums "{nosaukums}" --adrese "{adrese}"
 ```
+
+## Banku bankomātu saraksts (22.09.2026) — repozitorijā NAV
+
+`Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx` (15,5 MB, bankas / Finance Latvia hakatonam): 845 bankomāti, no tiem
+111 kritiskie (skaidra nauda arī krīzes laikā). Licence nav norādīta, tāpēc fails glabājas tikai lokāli (`.gitignore`), bet
+kartē dati ir ar ⚠ (komandas lēmums, kā 112.lv patvertnēm). Kolonnas LONG/LAT failā ir samainītas vietām.
+
+Pārveidošana (vienreiz, lokāli): `uv run --no-project --python 3.12 --with openpyxl src/karte/db/bankomati.py "<ceļš uz xlsx>"`
+→ `src/karte/dati/bankomati_bankas.csv` (katrs bankomāts) un `bankomati_vietas.csv` (viena vieta = viens punkts kartē).
+Ielāde: `atjaunot_visu.sh` (avots `bankas-atm`, kategorija `bankomats`).
