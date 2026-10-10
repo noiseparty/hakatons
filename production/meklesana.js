@@ -360,7 +360,7 @@ const krizesMeklesana = (() => {
     populari.classList.add('ieteikumi');
     el('populari-virsraksts').textContent = 'Ieteikumi';
     popPogas.innerHTML = scenariji.map(s => `<button type="button" data-teksts="${esc(teksts)}" data-kods="${esc(s.kods)}">` +
-      `${esc(s.nosaukums)}${vieta ? ` <small>· ${esc(vieta.nosaukums)}</small>` : ''}</button>`).join('');
+      `${esc(t(s.nosaukums))}${vieta ? ` <small>· ${esc(vieta.nosaukums)}</small>` : ''}</button>`).join('');
     populari.hidden = false;
   }
 
@@ -603,7 +603,7 @@ const krizesMeklesana = (() => {
     // LVĢMC brīdinājums šai vietai → 24 h prognoze → fakti (plūdu zona, upe) → vietas → padoms → "Kas notiks tālāk"
     const galva = lemumaBloks(zona, no, vajagVietu) +
       (galvenais
-        ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>`
+        ? `<p class="sapratu">${t(galvenais.nr ? 'Situācija' : 'Meklēju')}: <b>${esc(t(galvenais.nosaukums))}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>`
         : kurTeksts ? `<p class="sapratu">${t(adrese ? 'Adrese' : 'Vieta')}: <b>${esc(kurTeksts)}</b></p>` +
             jautajumaBloks(kurTeksts, null, true) : '') +
       adresesPiezime + zvanitTeksts +
@@ -611,7 +611,7 @@ const krizesMeklesana = (() => {
       (no.regions ? '' : '<p class="piezime" id="rez-mana-vieta" hidden></p>') +
       (bezDatiem ? '<p class="piezime kluda">' + t('Kartes dati pašlaik nav pieejami: tuvākās vietas nevaram parādīt. Padoms un 112 ir spēkā.') + '</p>' : '');
     const vaiDomaji = citi.length ? `<p class="piezime">${t('Vai domājāt:')}</p><div class="atras-pogas">` +
-      citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
+      citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(t(s.nosaukums))}</button>`).join('') + '</div>' : '';
     const beigas = '<button type="button" class="otra" data-darbiba="saraksts">' + Ik('saraksts') + ' ' + t('Visi kartes objekti sarakstā') + '</button>' +
       '<button type="button" class="otra" data-darbiba="zinot">' + Ik('zinot') + ' ' + t('Ziņot par bīstamību šeit') + '</button>' +
       (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
@@ -812,7 +812,7 @@ const krizesMeklesana = (() => {
     const sc = kods => klasifikators?.scenariji.find(s => s.kods === kods);
     const kodi = galvenais && !CIPI.includes(galvenais.kods) ? [galvenais.kods, ...CIPI] : CIPI;
     const cipi = kodi.map(sc).filter(Boolean).map(s =>
-      `<button type="button" data-cits="${esc(s.kods)}"${galvenais?.kods === s.kods ? ' class="aktivs" aria-pressed="true"' : ' aria-pressed="false"'}>${esc(s.nosaukums)}</button>`).join('');
+      `<button type="button" data-cits="${esc(s.kods)}"${galvenais?.kods === s.kods ? ' class="aktivs" aria-pressed="true"' : ' aria-pressed="false"'}>${esc(t(s.nosaukums))}</button>`).join('');
     return `<section class="kas-notiek" aria-label="${t('Kas notiek?')}"><h3>${t('Kas notiek?')}</h3>` +
       (kur ? `<p class="piezime kas-vieta">${Ik('vieta')} ${t('Vieta zināma')}: <b>${esc(kur)}</b>. ${t('Adrese nav jāraksta vēlreiz.')}</p>` : '') +
       `<div class="atras-pogas kas-cipi">${cipi}<button type="button" data-kas-cits="1">${t('Cits…')}</button></div>` +
@@ -837,7 +837,7 @@ const krizesMeklesana = (() => {
     }
     const padoms = galvenais.padoms ? (typeof Valoda !== 'undefined' ? Valoda.padomiPiezime() : '') +
       `<p class="padoms" lang="lv">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '';
-    return `<section class="ricibas-plans"><h3>${t('Rīcības plāns')}: ${esc(galvenais.nosaukums)}</h3>${padoms}${talakBloks(galvenais, no)}${atpakal}` +
+    return `<section class="ricibas-plans"><h3>${t('Rīcības plāns')}: ${esc(t(galvenais.nosaukums))}</h3>${padoms}${talakBloks(galvenais, no)}${atpakal}` +
       `<button type="button" class="otra" data-skats-uz="1">1 · ${t('Kas notiek?')}</button></section>`;
   }
 
