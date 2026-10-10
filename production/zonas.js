@@ -401,7 +401,7 @@ const Zonas = (() => {
     if (kods === 'satiksme') { if (ieslegt) satiksmesPunkti.addTo(karte); else satiksmesPunkti.remove(); }
     if (ieslegtas.size) {
       if (!karte.hasLayer(slanis)) slanis.addTo(karte); else slanis.redraw();
-      if (!legenda.getContainer()) legenda.addTo(karte);
+      if (!legenda._map) legenda.addTo(karte);  // remove() atstāj _container, tāpēc getContainer() nederēja
       atjaunotLegendu();
     } else {
       slanis.remove();
