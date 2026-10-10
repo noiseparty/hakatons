@@ -8,7 +8,7 @@
   document.body.insertAdjacentHTML('beforeend', `
     <dialog id="izmainas" class="izmainas" aria-labelledby="izmainas-virsraksts">
       <div class="izmainas-galva"><h2 id="izmainas-virsraksts">Kas jauns</h2>
-        <button type="button" class="izmainas-aizvert" aria-label="Aizvērt izmaiņu žurnālu">✕</button></div>
+        <button type="button" class="izmainas-aizvert" aria-label="Aizvērt izmaiņu žurnālu"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg></button></div>
       <div class="izmainas-saturs"><p class="piezime">Ielādē…</p></div>
     </dialog>`);
   const logs = document.getElementById('izmainas');

@@ -20,6 +20,7 @@ const Atskanot = (() => {
 
   let dati = null, solis = -1, sakums = 0, atlikums = ILGUMS, pauze = false, taimeris = null, aktivs = false, paaudze = 0;
   let sakumaPludi = false;  // plūdu slānis pirms atskaņošanas: katrs solis sākas no tā (citādi plūdu meklējums to atstāj ieslēgtu)
+  let sakumaSlani = null;   // slāņi pirms atskaņošanas: Demo.beigt() atjauno tikai pēdējā soļa sākumu (ar iepriekšējā soļa slāņiem)
   const pludiKa = ieslegti => { if (typeof radtPludus === 'function' && el('pludu-slanis') && el('pludu-slanis').checked !== ieslegti) radtPludus(ieslegti); };
 
   // Josla galvenes rindā (pārklāj galvenes saturu, karte paliek brīva): solis, nosaukums, atpakaļskaitīšana, pogas, progress
@@ -65,6 +66,7 @@ const Atskanot = (() => {
     if (!aktivs) {
       if (document.body.classList.contains('demo-aktivs')) Demo.beigt();  // sākts no atvērta scenārija
       sakumaPludi = !!el('pludu-slanis')?.checked;
+      sakumaSlani = typeof stavoklis !== 'undefined' ? new Set(stavoklis.kategorijas) : null;
     }
     aktivs = true;
     josla.hidden = false;
@@ -144,7 +146,16 @@ const Atskanot = (() => {
     josla.classList.remove('pauze');
     document.body.classList.remove('atskano');
     Demo.beigt();
+    // Simulētais vaicājums, kartīte un scenāriju slāņi prom (meklesana.js "Notīrīt": viss uz sākumu), slāņi — kā pirms atskaņošanas
+    el('notirit-meklesanu')?.click();
+    if (sakumaSlani && typeof stavoklis !== 'undefined') {
+      stavoklis.kategorijas = new Set(sakumaSlani);
+      document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });
+      if (typeof atjaunot === 'function') atjaunot();
+    }
+    sakumaSlani = null;
     pludiKa(sakumaPludi);
+    el('jautajums')?.blur();  // "Notīrīt" fokusē lauku — pēc pogas "Beigt demo" tastatūrai nav jāatveras
   }
 
   josla.addEventListener('click', e => {

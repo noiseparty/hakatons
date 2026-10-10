@@ -1,5 +1,5 @@
 // Telefonā (≤ 800 px) apakšējā lapa virs kartes (notes/ui-mockup.md "Mobile"): augšā rokturis un stāvokļu pogas
-// Mazs · Puse · Pilns (140 px · 52 % · 84 %), zem tiem meklēšana; saturu (tēmas, kopsavilkums, cilnes Rezultāts /
+// Mazs · Puse · Pilns (156 px · 52 % · 84 %), zem tiem meklēšana; saturu (tēmas, kopsavilkums, cilnes Rezultāts /
 // Kartes slāņi / Situācija tagad) veido sheet.js. Lapa redzama vienmēr, arī bez rezultāta; karte paliek redzama virs tās.
 // Vilkšana kā lietotnēs: lapa seko pirkstam, pāri robežām "atsperīgi", atlaižot — pēc ātruma uz nākamo stāvokli vai
 // uz tuvāko. Saturs ritinās tikai stāvoklī "Pilns"; tajā, ritinot uz leju no pašas augšas, lapa sāk vilkties uz leju.
@@ -36,7 +36,7 @@ const Apaksa = (() => {
   // ekrāna apakšmalas (bottom: -REZERVE) un tikpat liela ir tās apakšējā atkāpe (padding), tāpēc "Pilns" stāvoklī lapas
   // saturs beidzas tieši pie ekrāna apakšmalas un ritinās līdz savām beigām; atkāpe kļūst redzama tikai, velkot virs "Pilns".
   // Abas vērtības CSS saņem no šejienes (--apaksa-rezerve).
-  const DALA = { puse: 0.52, pilna: 0.84 }, PEEK_PX = 140, REZERVE = 80;
+  const DALA = { puse: 0.52, pilna: 0.84 }, PEEK_PX = 156, REZERVE = 80;  // 156: "Mazs" rāda rokturi, lauku un visu LV/RU/EN rindu (44 px)
   lapa.style.setProperty('--apaksa-rezerve', REZERVE + 'px');
   // Ekrāna (dinamiskā skatvietas) augstums: 100dvh, kur pārlūks to atbalsta (mainās līdzi adreses joslai), citādi innerHeight.
   // Ekrāna tastatūru atsevišķi ņem vērā tastatura() ar visualViewport.

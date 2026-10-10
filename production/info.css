@@ -26,8 +26,8 @@
 .frekvences td { font-variant-numeric: tabular-nums; white-space: nowrap; }
 
 .saraksts { list-style: none; padding-left: 0 !important; }
-.saraksts label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
-.saraksts input { width: 20px; height: 20px; margin: 1px 0 0; flex: none; }
+.saraksts label { display: flex; gap: 10px; align-items: flex-start; min-height: 44px; padding: 6px 0; cursor: pointer; }  /* visa rinda — pieskāriena mērķis */
+.saraksts input { width: 24px; height: 24px; margin: 4px 0 0; flex: none; }
 
 .bloks .avots { margin-top: 10px; font-size: 12.5px; }
 .drukai { font-size: 12.5px; color: var(--teksts2); }

@@ -170,13 +170,20 @@ const Lapa = (() => {
         '<li class="avots-rinda">VSIA „Latvijas Valsts ceļi”, DATEX II (transportdata.gov.lv) · CC0</li>';
     }).catch(() => { celi.innerHTML = '<li class="piezime">Ceļu datus neizdevās ielādēt.</li>'; });
   }
-  // Pieskaroties upei vai ceļa notikumam: karte uz turieni, lapa uz "Mazs", lai redzams
+  // Pieskaroties upei vai ceļa notikumam: karte uz turieni, lapa uz "Mazs", lai redzams; vieta iezīmēta ar apli un
+  // nosaukumu (līmeņu slānis var būt izslēgts — citādi pieskāriens izskatās bez sekām)
+  let izcelums = null;
   lapa.querySelector('#lapa-situacija').addEventListener('click', e => {
     const li = e.target.closest('li[data-lat]');
     if (!li || e.target.closest('a')) return;
-    karte.setView([+li.dataset.lat, +li.dataset.lon], 13);
+    const ll = [+li.dataset.lat, +li.dataset.lon];
+    izcelums?.remove();
+    izcelums = L.circleMarker(ll, { radius: 14, color: '#1E66D5', weight: 3, fill: false, interactive: false })
+      .bindTooltip(li.querySelector('b')?.textContent || '', { permanent: true, direction: 'top', offset: [0, -14] }).addTo(karte);
+    karte.setView(ll, 13);
     Apaksa.atvert('peek');
   });
+  karte.on('click', () => { izcelums?.remove(); izcelums = null; });
   lapa.querySelector('#lapa-situacija').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
   // ---- Kartes poga "Slāņi" (labajā pusē zem + − ◎) → lapa ar cilni "Kartes slāņi" ----
@@ -202,7 +209,9 @@ const Lapa = (() => {
   function popupAtstarpes(augstums) {
     const o = L.Popup.prototype.options;
     if (!telefons.matches) {
-      delete o.autoPanPaddingTopLeft; delete o.autoPanPaddingBottomRight; o.maxWidth = 300;
+      // datorā: logs nepaliek zem "Karte | Reljefs" (augšā pa kreisi, līdz ~48 px) un kartes rīku kolonnas / demo cilnes
+      // (labajā malā, līdz ~56 px) — Leaflet pārbīde pati tur logu tikai kartes laukumā
+      o.autoPanPaddingTopLeft = L.point(10, 60); o.autoPanPaddingBottomRight = L.point(70, 10); o.maxWidth = 300;
       karte.getContainer().style.removeProperty('--popup-augstums');
       return;
     }

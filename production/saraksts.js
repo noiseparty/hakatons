@@ -31,7 +31,7 @@ const Saraksts = (() => {
       <div class="saraksts-galva">
         <div class="saraksts-galva-rinda">
           <h2 id="saraksts-virsraksts" tabindex="-1">${Ik('saraksts')} <span data-t="Vietas kartes skatā"></span></h2>
-          <button type="button" class="saraksts-aizvert">✕</button>
+          <button type="button" class="saraksts-aizvert" aria-label="Aizvērt sarakstu">${Ik('aizvert')}</button>
         </div>
         <p class="saraksts-skaits" role="status" aria-live="polite"></p>
         <div class="saraksts-riki">

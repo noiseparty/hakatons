@@ -153,6 +153,13 @@ const Bezsaiste = (() => {
   poga?.addEventListener('click', async () => {
     if (typeof karte === 'undefined') return;
     if (!navigator.onLine) { teksts.textContent = 'Nav interneta: apkārtni var saglabāt tikai ar savienojumu.'; teksts.hidden = false; return; }
+    // bez aktīva service worker lejupielādētie attēli bezsaistē neatvērsies — to nesolām
+    if (!navigator.serviceWorker?.controller) {
+      teksts.textContent = 'Bezsaistes kopija šajā pārlūkā vēl nav aktīva (service worker). Atveriet lapu vēlreiz un mēģiniet atkal; ' +
+        'privātajā režīmā bezsaistes kopija nav pieejama.';
+      teksts.hidden = false;
+      return;
+    }
     let b = karte.getBounds();
     // tālu attālināta karte → ~10 km ap centru; mazs laukums (telefonā, atvērts panelis) → vismaz ~5 km
     if (karte.getZoom() < 12) b = karte.getCenter().toBounds(10000);

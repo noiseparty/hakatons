@@ -29,7 +29,7 @@ const Demo = (() => {
     <div id="demo-karte-zime" hidden>${ZIME}</div>
     <aside id="demo-panelis" aria-label="Demo scenāriji">
       <div class="demo-galva"><b>Demo scenāriji</b>${ZIME}
-        <button type="button" class="demo-aizvert" aria-label="Aizvērt demo paneli">✕</button></div>
+        <button type="button" class="demo-aizvert" aria-label="Aizvērt demo paneli">${Ik('aizvert')}</button></div>
       <div id="demo-saturs"></div>
     </aside>`);
   el('bridinajums').insertAdjacentHTML('afterend', '<div id="demo-josla" class="bridinajums demo-josla" role="status" hidden></div>');
@@ -112,15 +112,16 @@ const Demo = (() => {
     if (kods) sakt(kods);
     if (b?.dataset.darbiba === 'beigt') beigtLietotajs();
     if (b?.dataset.darbiba === 'demo-saraksts') zimetSarakstu();  // ne "saraksts": to tver saraksts.js
-    if (b?.dataset.darbiba === 'drukat') print();
+    if (b?.dataset.darbiba === 'drukat') { document.body.classList.add('druka-demo'); print(); }  // demo.css drukas stili tikai šeit
     const li = e.target.closest('li[data-lat]');
     if (li && !e.target.closest('a')) {
       const ll = { lat: +li.dataset.lat, lng: +li.dataset.lon };
-      karte.setView(ll, Math.max(karte.getZoom(), 15));
+      karte.setView(ll, Math.max(karte.getZoom(), 15), { animate: false });  // logs — pēc gala skata, ne animācijas vidū
       L.popup().setLatLng(ll).setContent(li.dataset.p ? popupSaturs(JSON.parse(li.dataset.p), ll) : li.dataset.teksts).openOn(karte);
       if (telefons()) atvert(false);
     }
   });
+  addEventListener('afterprint', () => document.body.classList.remove('druka-demo'));
   saturs.addEventListener('change', e => { if (e.target.id === 'demo-regions' && aktivs) sakt(aktivs.sc.kods, e.target.value); });
   saturs.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
@@ -150,7 +151,11 @@ const Demo = (() => {
   // Kartes laukums, ko neaizsedz apakšējā lapa vai telefonā atvērtais panelis (datorā panelis ir kreisajā kolonnā, ne kartē)
   function atstarpes() {
     const atverts = atvertsJa() && telefons();
-    if (typeof Apaksa !== 'undefined' && Apaksa.aktiva()) return Apaksa.atstarpes(Math.max(Apaksa.augstums(), atverts ? panelis.offsetHeight : 0));
+    if (typeof Apaksa !== 'undefined' && Apaksa.aktiva()) {
+      // sānos vairāk vietas: vietas pastāvīgā uzraksta ("Jūsu vieta (Saulkrasti)") puse sniedzas pāri punktam uz abām pusēm
+      const a = Apaksa.atstarpes(Math.max(Apaksa.augstums(), atverts ? panelis.offsetHeight : 0));
+      return { paddingTopLeft: [Math.max(80, a.paddingTopLeft[0]), a.paddingTopLeft[1]], paddingBottomRight: [Math.max(80, a.paddingBottomRight[0]), a.paddingBottomRight[1]] };
+    }
     if (telefons()) return { paddingTopLeft: [20, 20], paddingBottomRight: [20, (atverts ? panelis.offsetHeight : 0) + 20] };
     // dators: augšā "Karte | Reljefs" un SIMULĀCIJA zīme, labajā pusē kartes rīki, apakšā leģenda (darbvirsma.js)
     const legenda = document.querySelector('.dv-legenda');
@@ -243,7 +248,13 @@ const Demo = (() => {
   }
   // Īstā LVĢMC prognožu un brīdinājumu lente (prognozes.js) demo laikā aizvērta un paslēpta (demo.css), lai nejaucas ar simulāciju
   const aizvertPrognozi = () => { if (typeof Prognozes !== 'undefined') Prognozes.atvert(false); };
-  const radit = () => { if (aktivs && skats?.isValid()) karte.fitBounds(skats, { maxZoom: 15, ...atstarpes() }); };
+  // Leaflet klusējot izmet setView/fitBounds, kamēr notiek tuvināšanas animācija (piem., tikko beidzies iepriekšējais
+  // scenārijs vai meklēšanas kartīte pietuvināja karti): tad skatu rāda pēc tās beigām — citādi karte paliek vecajā vietā
+  const radit = () => {
+    if (!aktivs || !skats?.isValid()) return;
+    if (karte._animatingZoom) { karte.once('zoomend', radit); return; }
+    karte.fitBounds(skats, { maxZoom: 15, ...atstarpes() });
+  };
   // app.js: slāņu izvēles rūtiņas un grupu skaiti panelī
   function raditSlanus() {
     document.querySelectorAll('#kategorijas input').forEach(i => { i.checked = stavoklis.kategorijas.has(i.value); });

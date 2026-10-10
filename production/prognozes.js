@@ -73,7 +73,8 @@ const Prognozes = (() => {
   }
 
   function zinasHtml() {
-    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums', 'zibens'].includes(z.veids) || z.datums === diena);
+    // izvēlētās dienas ziņas (arī riska karte tai dienai); brīdinājumi, novērojumi un zibens — vienmēr
+    const z = dati.zinas.filter(z => ['bridinajums', 'noverojums', 'zibens'].includes(z.veids) || z.datums === diena);
     if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
@@ -92,6 +93,12 @@ const Prognozes = (() => {
       b.setAttribute('aria-pressed', iesl);
     }
     kaste.querySelector('.riski-legenda').hidden = !(riskaKarte || kaste.classList.contains('atverts')) || !riskaDiena(diena);
+    // bez novadu robežām (/api/prognozes/robezas neatbildēja) karti iekrāsot nevar — leģendā to pasaka, ne klusē
+    let kluda = kaste.querySelector('.riski-kluda');
+    if (riskaKarte && !robezas) {
+      if (!kluda) { kluda = document.createElement('span'); kluda.className = 'riski-kluda'; kaste.querySelector('.riski-legenda').append(kluda); }
+      kluda.textContent = 'Novadu robežas neizdevās ielādēt — riska karti šobrīd nevar parādīt.';
+    } else kluda?.remove();
     kaste.querySelector('.prog-dienas').innerHTML = dati.dienas.map(d =>
       `<button type="button" data-diena="${d.datums}" aria-pressed="${d.datums === diena}" class="${d.datums === diena ? 'aktiva' : ''}">${esc(d.nosaukums)}</button>`).join('');
     kaste.querySelector('.prog-saturs').innerHTML = zinasHtml() +
@@ -175,6 +182,9 @@ const Prognozes = (() => {
     aktivie = [];
     if (riskaKarte || kaste.classList.contains('atverts')) novaduSlanis.addTo(karte); else novaduSlanis.remove();
     zimet();
+    if (riskaKarte && !robezas) ieladet();  // robežas pirmajā reizē neielādējās — mēģina vēlreiz (zimet() rāda paziņojumu)
+    // telefonā slēdzis ir lapas cilnē "Situācija tagad": lapa uz "Mazs", lai iekrāsotā karte ir redzama
+    if (riskaKarte && typeof Apaksa !== 'undefined' && Apaksa.aktiva() && document.getElementById('apaksa')?.contains(kaste)) Apaksa.atvert('peek');
   });
 
   kaste.querySelector('.prog-poga').addEventListener('click', () => atvert(!kaste.classList.contains('atverts')));

@@ -43,8 +43,8 @@ const Zinot = (() => {
       <small>Vieta rādīta ~1 km precizitātē.</small>
       <div class="zinojums-balsis" data-id="${z.id}">
         ${nobalsots ? '<small>Paldies, Jūsu balsojums ir saskaitīts.</small>'
-          : `<button type="button" class="otra" data-balss="apstiprinat">✓ Apstiprinu</button>
-             <button type="button" class="otra" data-balss="apstridet">✕ Nav taisnība</button>`}
+          : `<button type="button" class="otra" data-balss="apstiprinat">${Ik('ok')} Apstiprinu</button>
+             <button type="button" class="otra" data-balss="apstridet">${Ik('aizvert')} Nav taisnība</button>`}
       </div>
       <small class="popup-avots">${ATRUNA}</small></div>`;
   }

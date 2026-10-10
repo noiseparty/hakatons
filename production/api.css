@@ -2,7 +2,7 @@
 .api { line-height: 1.5; }
 .api h2 { font-size: 1.05rem; margin: 1.2rem 0 .5rem; }
 .api code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; font-size: .88em; background: #f2f4f7; padding: 0 .25em; border-radius: 3px; overflow-wrap: anywhere; }
-.api pre { overflow-x: auto; max-height: 360px; padding: .6rem .7rem; background: #1c1917; color: #f5f5f4; border-radius: 6px; font-size: .78rem; line-height: 1.4; }
+.api pre { white-space: pre-wrap; overflow-wrap: anywhere; overflow-x: auto; max-height: 360px; padding: .6rem .7rem; background: #1c1917; color: #f5f5f4; border-radius: 6px; font-size: .78rem; line-height: 1.4; }
 .api pre code, .api pre { background: #1c1917; }
 .ievads ul { padding-left: 1.2rem; }
 .ievads li { margin: .3rem 0; }

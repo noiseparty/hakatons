@@ -12,7 +12,7 @@
   .dv-zime-logo { display: inline-flex; color: var(--karmins); }
   .dv-zime-logo svg { width: 28px; height: 28px; }
   body.dv header h1 { display: flex; flex-direction: column; font-size: 17px; font-weight: 700; letter-spacing: -.02em; line-height: 1.2; color: var(--tumsi-zils); }
-  .dv-apaksvirsraksts { font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--teksts-blavs); }
+  .dv-apaksvirsraksts { font-size: 12px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--teksts-blavs); }
   .dv-nav { display: flex; gap: 2px; padding: 2px; background: var(--pelks-2); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
   .dv-nav button { display: flex; align-items: center; gap: 8px; width: auto; min-height: 36px; padding: 0 16px; font-size: 14px; font-weight: 600;
     color: var(--teksts-blavs); background: none; border: 0; border-radius: var(--radiuss-maza); transition: background-color .15s, color .15s; }
@@ -68,14 +68,15 @@
   /* ---- Kreisā kolonna: ievads ---- */
   .dv-ievads { padding-bottom: 0 !important; }
   .dv-ievads h2 { margin: 0 0 16px; font-size: 19px; font-weight: 700; letter-spacing: -.01em; color: var(--teksts-galv); }
-  .dv-ievads .meklet-rinda { gap: 8px; }
-  .dv-ievads .meklet-rinda input { height: 48px; padding: 0 16px; font-size: 16px; color: var(--teksts-galv); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
+  .dv-ievads .meklet-rinda { gap: 8px; justify-content: flex-end; }  /* lauks visā platumā, pogas rindā zem tā pa labi */
+  .dv-ievads .meklet-rinda input { flex: 1 1 100%; height: 48px; padding: 0 16px; font-size: 16px; color: var(--teksts-galv); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
+  .dv-ievads .meklet-rinda input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }  /* viena notīrīšanas vadīkla: poga "Notīrīt" */
   .dv-ievads .meklet-rinda input:focus { outline: none; border-color: var(--zils-primars); box-shadow: 0 0 0 3px rgba(30, 102, 213, .15); }
   .dv-ievads .meklet-rinda button[type="submit"] { height: 48px; padding: 0 20px; font-size: 15px; font-weight: 600; background: var(--tumsi-zils); border-color: var(--tumsi-zils); border-radius: var(--radiuss-pogas); }
   .dv-ievads .meklet-rinda button[type="submit"]:hover { background: var(--tumsi-zils-gaiss); }
   .dv-ievads .meklet-rinda .runat { height: 48px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); }
   .dv-ievads .meklet-rinda .runat:hover { background: var(--pelks-2); }
-  .dv-ievads .populari p { margin: 0 0 8px; padding: 0; background: none; border-radius: 0; font-size: 11px; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts-blavs); }
+  .dv-ievads .populari p { margin: 0 0 8px; padding: 0; background: none; border-radius: 0; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts-blavs); }
   .dv-atrast { display: inline-flex; align-items: center; gap: 8px; width: auto; margin-top: 8px; padding: 4px 0; font-size: 13px; font-weight: 600;
     color: var(--zils-primars); background: none; border: 0; }
   .dv-atrast svg { width: 16px; height: 16px; }
@@ -89,7 +90,7 @@
     font-size: 13px; font-weight: 600; background: var(--pelks-2); border-top: 1px solid var(--pelks-3); border-bottom: 1px solid var(--pelks-3); }
   .dv-pirmais { margin: 16px 0 0; padding: 14px 16px; background: var(--pelks-1); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte); }
   .dv-valsts-pills { display: flex; flex-wrap: wrap; gap: 8px; min-height: 22px; }
-  .dv-pill { padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: var(--radiuss-maza); border: 1px solid var(--pelks-3); background: #fff; }
+  .dv-pill { padding: 2px 8px; font-size: 12px; font-weight: 700; letter-spacing: .02em; border-radius: var(--radiuss-maza); border: 1px solid var(--pelks-3); background: #fff; }
   .dv-pill.dzeltens { background: var(--brid-dzeltens-fons); border-color: var(--brid-dzeltens-mala); color: var(--brid-dzeltens-teksts); }
   .dv-pill.oranzs { background: var(--brid-oranzs-fons); border-color: var(--brid-oranzs-mala); color: var(--brid-oranzs-teksts); }
   .dv-pill.sarkans { background: var(--brid-sarkans-fons); border-color: var(--brid-sarkans-mala); color: var(--brid-sarkans-teksts); }
@@ -110,9 +111,9 @@
   body.dv #rezultati .fakti li { display: block; padding: 12px 14px; background: #fff; border: 0; }
   body.dv #rezultati .fakti li:only-child { grid-column: 1 / -1; }
   body.dv #rezultati .fakti .ikona { display: none; }
-  body.dv #rezultati .fakti b { display: block; margin-bottom: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--teksts-blavs); }
+  body.dv #rezultati .fakti b { display: block; margin-bottom: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--teksts-blavs); }
   body.dv #rezultati .fakti span { display: block; font-size: 14px; font-weight: 500; line-height: 1.4; color: var(--teksts-galv); }
-  body.dv #rezultati .fakti small { display: block; margin-top: 4px; font-size: 11px; line-height: 1.4; color: var(--teksts-blavs); }
+  body.dv #rezultati .fakti small { display: block; margin-top: 4px; font-size: 12px; line-height: 1.4; color: var(--teksts-blavs); }
   body.dv #rezultati h3 { margin: 24px 0 8px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--tumsi-zils); }
   body.dv #rezultati .rez-saraksts { display: flex; flex-direction: column; gap: 8px; padding: 0; }
   body.dv #rezultati .rez-saraksts li { padding: 10px 12px; background: var(--pelks-1); border: 1px solid var(--pelks-robeza-viegla); border-radius: var(--radiuss-pogas);
@@ -156,9 +157,9 @@
   .dv-legenda ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
   .dv-legenda li { display: flex; align-items: center; gap: 8px; min-width: 0; color: var(--teksts-galv); }
   .dv-legenda .punkts { flex: none; }
-  .dv-leg-grupa { grid-column: 1 / -1; margin-top: 4px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts-blavs) !important; }
+  .dv-leg-grupa { grid-column: 1 / -1; margin-top: 4px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; color: var(--teksts-blavs) !important; }
   .dv-leg-tukss { grid-column: 1 / -1; color: var(--teksts-blavs) !important; }
-  body.dv .leaflet-bottom.leaflet-left { left: 324px; }  /* mērogs blakus leģendai */
+  body.dv .leaflet-bottom.leaflet-left { left: 352px; }  /* mērogs blakus leģendai (330 px + 16 px mala) */
 
   /* ---- Labā kolonna: Situācija tagad ---- */
   .dv-sit-galva { position: sticky; top: 0; z-index: 1; }
@@ -182,11 +183,11 @@
   .dv-limenis { flex: none; font-size: 12px; font-weight: 700; color: var(--teksts-galv); }
   .dv-pieaug { font-weight: 700; color: var(--brid-sarkans-mala); white-space: nowrap; }
   .dv-slegts { color: var(--brid-sarkans-mala) !important; font-weight: 600; }
-  .dv-cels { display: inline-block; margin-right: 6px; padding: 0 4px; font-size: 11px; font-weight: 700; color: #fff; background: var(--tumsi-zils); border-radius: 3px; }
+  .dv-cels { display: inline-block; margin-right: 6px; padding: 0 4px; font-size: 12px; font-weight: 700; color: #fff; background: var(--tumsi-zils); border-radius: 3px; }
   .dv-sikgrafiks { flex: none; }
   .dv-sikgrafiks path { fill: none; stroke: var(--zils-primars); stroke-width: 1.8; stroke-linecap: round; }
   .dv-sikgrafiks circle { fill: var(--zils-primars); }
-  .dv-bloka-avots { display: block; margin-top: 8px; font-size: 11px; color: var(--teksts-blavs); }
+  .dv-bloka-avots { display: block; margin-top: 8px; font-size: 12px; color: var(--teksts-blavs); }
   .dv-bloka-avots a { color: inherit; }
   .dv-bloks li.dv-tukss { padding: 10px 12px; font-size: 13px; color: var(--teksts-blavs); background: var(--pelks-1); border-radius: var(--radiuss-pogas); }
 

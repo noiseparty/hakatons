@@ -90,6 +90,7 @@ const krizesMeklesana = (() => {
   el('meklet-forma').addEventListener('submit', e => {
     e.preventDefault();
     aizvertPopularos();
+    karte.closePopup();  // iepriekšējā rezultāta logs nepaliek vaļā (un nebīdās ārpus kartes) zem jaunās kartītes
     const teksts = el('jautajums').value.trim();
     if (teksts) { meklet(teksts); raditRezultatus(); } else notirit();
   });
@@ -363,7 +364,9 @@ const krizesMeklesana = (() => {
     if (li && uzskaite && !uzskaite.klikskis) { uzskaite.klikskis = true; zinot(uzskaite.vaicajums, true); }
     if (li && !e.target.closest('a')) {
       const ll = { lat: +li.dataset.lat, lng: +li.dataset.lon };
-      karte.setView(ll, Math.max(karte.getZoom(), 16));
+      // bez animācijas: logs atveras uzreiz, un Leaflet automātiskā pārbīde rēķina pēc gala skata (animācijas laikā
+      // tā logu atstāja zem galvenes un "Karte | Reljefs")
+      karte.setView(ll, Math.max(karte.getZoom(), 16), { animate: false });
       L.popup().setLatLng(ll).setContent(popupSaturs(JSON.parse(li.dataset.p), ll)).openOn(karte);
     }
   });
@@ -408,6 +411,9 @@ const krizesMeklesana = (() => {
     atjaunot();
     history.replaceState(null, '', location.pathname);
     raditNotiritPogu();
+    // datorā pirmais skats (piemēri) atgriežas — citādi kreisā kolonna pēc notīrīšanas paliek tukša
+    document.body.classList.remove('ir-meklets');
+    try { localStorage.removeItem(PIRMA_MEKLESANA); } catch { /* privātais režīms */ }
     el('jautajums').focus();
   }
   notiritPoga2.addEventListener('click', notiritVisu);
@@ -801,7 +807,7 @@ const krizesMeklesana = (() => {
     return `<small class="izlaists">${Ik('uzmanibu')} ${izlaisti.length > 1 ? 'Tuvākie' : 'Tuvākais'} (${v}) ${izlaisti.length > 1 ? 'izlaisti' : 'izlaists'}: ${esc(iemesli)} (dzīvais statuss).</small>`;
   }
 
-  const notiritPoga = () => '<button type="button" class="otra" data-darbiba="notirit"><span aria-hidden="true">✕</span> ' + t('Notīrīt meklēšanu') + '</button>';
+  const notiritPoga = () => '<button type="button" class="otra" data-darbiba="notirit">' + Ik('aizvert') + ' ' + t('Notīrīt meklēšanu') + '</button>';
 
   function vienums(f, no, virsraksts) {
     // attālums no reģiona centra nav "no tevis", tāpēc uznirstošajā logā to nerādām
