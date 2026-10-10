@@ -9,6 +9,12 @@ const Avoti = (() => {
   const TIESSAISTE = [
     ['lvgmc-bridinajumi', 'Hidrometeoroloģiskie brīdinājumi', LVGMC, CC0, 'https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi',
       'Brīdinājumu josla lapas augšā; vai brīdinājums attiecas uz izvēlēto vietu', 'tiešsaistē, kešs 10 min', 76, { svaigums: 'bridinajumi' }],
+    // Tikai tad, kad /api/bridinajumi atbild no rezerves avota (rezerves: true); atsauce un atruna — Meteoalarm noteikumi
+    ['meteoalarm', 'Meteoalarm: LVĢMC brīdinājumi (CAP/Atom plūsma) — rezerves avots', 'LVĢMC, caur Meteoalarm (EUMETNET)', CCBY,
+      'https://www.meteoalarm.org', 'Brīdinājumu josla, kamēr LVĢMC datne nav pieejama', 'tiešsaistē, kavējums ≤ 10 min', 76.5,
+      { rezerves: true, piezime: 'Time delays between this website and the www.meteoalarm.org website are possible. For the most ' +
+        'up-to-date awareness information as published by the participating National Meteorological and Hydrological Services, ' +
+        'please refer to www.meteoalarm.org.' }],
     ['lvgmc-pludi', '3. cikla plūdu postījumu vietu un plūdu riska kartes (2026–2031)', LVGMC + ' / ĢeoLatvija.lv', CC0,
       'https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1',
       'Plūdu riska zonu slānis; vai adrese ir applūstošā teritorijā', 'kartes 2026–2031 ciklam; pārbaude tiešsaistē', 77],
@@ -89,11 +95,15 @@ const Avoti = (() => {
   }
 
   async function ieladet() {
+    // vai brīdinājumi tagad nāk no rezerves avota (Meteoalarm); neizdodas — nē
+    const rezerves = fetch('/api/bridinajumi').then(x => x.ok ? x.json() : {}).then(d => !!d.rezerves).catch(() => false);
     const r = await fetch('/api/avoti');
     if (!r.ok) throw new Error(r.status);
     const noDb = await r.json();
     const kodi = new Set(noDb.map(a => a.kods));
-    const saraksts = [...noDb, ...TIESSAISTE.filter(a => !kodi.has(a.kods) && (!a.ja || document.getElementById(a.ja)))]
+    const arRezervi = await rezerves;
+    const saraksts = [...noDb, ...TIESSAISTE.filter(a => !kodi.has(a.kods) && (!a.ja || document.getElementById(a.ja)) &&
+      (!a.rezerves || arRezervi))]
       .map(a => ({ ...TIESSAISTE.find(t => t.kods === a.kods), ...a }))  // DB rindai paliek biežums un svaigums
       .sort((a, b) => (a.kartiba ?? 100) - (b.kartiba ?? 100));
     pecKoda = Object.fromEntries(saraksts.map(a => [a.kods, a]));

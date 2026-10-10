@@ -21,6 +21,9 @@ const krizesMeklesana = (() => {
     pludi: '<a href="https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1" target="_blank" rel="noopener">LVĢMC plūdu riska kartes 2026–2031</a> · CC0',
     udens: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi" target="_blank" rel="noopener">LVĢMC hidroloģiskie novērojumi</a> · CC0',
     bridinajumi: '<a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi" target="_blank" rel="noopener">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · CC0',
+    // rezerves avots (Meteoalarm noteikumi: nosaukt LVĢMC, saite uz meteoalarm.org, atruna par kavēšanos)
+    bridinajumiRezerves: 'LVĢMC brīdinājumi caur <a href="https://www.meteoalarm.org" target="_blank" rel="noopener">Meteoalarm (EUMETNET)</a> · CC BY 4.0. ' +
+      'Iespējama kavēšanās; jaunākā informācija — <a href="https://www.meteoalarm.org" target="_blank" rel="noopener">www.meteoalarm.org</a>.',
   };
   let klasifikators = null;
   let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
@@ -605,13 +608,17 @@ const krizesMeklesana = (() => {
       const el = kaste.querySelector('#rez-lemums');
       if (!el) return;
       const kur = no.regions ? 'šajā apvidū' : 'šai vietai';
-      const sie = (d.bridinajumi || []).filter(b => b.attiecas).sort((a, b) => b.limenis - a.limenis);
-      const lidz = b => b.lidz ? ', līdz ' + new Date(b.lidz).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      // rezerves avots (Meteoalarm, d.rezerves): vieta pārbaudīta pēc pašvaldības; attiecas null — nav zināms, rāda
+      const rez = !!d.rezerves;
+      const sie = (d.bridinajumi || []).filter(b => rez ? b.attiecas !== false : b.attiecas).sort((a, b) => b.limenis - a.limenis);
+      const fmt = iso => new Date(iso).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+      const lidz = b => (b.lidz ? ', līdz ' + fmt(b.lidz) : '') + (rez && b.izdots ? ` (izdots ${fmt(b.izdots)})` : '');
+      const piezime = rez ? ' <small class="rezerves">rezerves avots: Meteoalarm</small>' : '';
       el.innerHTML = (sie.length
         ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}">${Ik('brid')} <b>LVĢMC brīdinājums ${kur}:</b> ` +
-          sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + '</p>'
-        : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b></p>`) +
-        `<small class="avots-rinda">${AVOTI_LVGMC.bridinajumi}</small>`;
+          sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + piezime + '</p>'
+        : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b>${piezime}</p>`) +
+        `<small class="avots-rinda">${rez ? AVOTI_LVGMC.bridinajumiRezerves : AVOTI_LVGMC.bridinajumi}</small>`;
     }).catch(e => {
       const el = kaste.querySelector('#rez-lemums');
       if (!el || e.name === 'AbortError') return;
