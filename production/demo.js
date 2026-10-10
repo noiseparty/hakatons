@@ -7,7 +7,7 @@
 const Demo = (() => {
   const LIMENI = { 1: ['dzeltens', 'Dzeltenais', '#eab308'], 2: ['oranzs', 'Oranžais', '#ea580c'], 3: ['sarkans', 'Sarkanais', '#b91c1c'] };
   const telefons = () => matchMedia('(max-width: 800px)').matches;
-  const ZIME = '<span class="demo-zime">SIMULĀCIJA</span>';
+  const ZIME = '<span class="demo-zime" data-t="SIMULĀCIJA">SIMULĀCIJA</span>';
   // Paneļa grupas: reālie notikumi pēc krīzes veida (scenārija "tips"), tad simulācijas tajā pašā secībā
   const TIPI = [['pludi', 'Plūdi'], ['vetra', 'Vētra'], ['karstums', 'Karstums'], ['elektriba', 'Elektrība un BRELL'],
     ['drosiba', 'Droni un drošība'], ['ugunsgreks', 'Ugunsgrēki, dūmi, gāze'], ['sakari', 'Sakari un e-pakalpojumi'], ['veseliba', 'Veselība']];
@@ -37,7 +37,7 @@ const Demo = (() => {
   document.querySelector('header').insertAdjacentHTML('beforeend', `
     <div id="demo-galvene" class="demo-galvene" role="region" aria-label="Demo režīms" hidden>${ZIME}
       <b class="demo-galvene-nos"></b>
-      <button type="button" class="demo-galvene-poga" data-darbiba="demo-panelis" aria-controls="demo-panelis" aria-expanded="false">${Ik('saraksts')}<span>Scenāriji</span></button>
+      <button type="button" class="demo-galvene-poga" data-darbiba="demo-panelis" aria-controls="demo-panelis" aria-expanded="false">${Ik('saraksts')}<span data-t="Scenāriji">Scenāriji</span></button>
       <button type="button" class="demo-galvene-poga demo-galvene-beigt" data-darbiba="beigt">${Ik('apturet')}<span>Beigt demo</span></button>
     </div>`);
   const panelis = el('demo-panelis'), saturs = el('demo-saturs'), josla = el('demo-josla'), galvene = el('demo-galvene');
