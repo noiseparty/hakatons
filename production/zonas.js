@@ -354,12 +354,35 @@ const Zonas = (() => {
 
   // Leģenda kartes stūrī, kamēr kāda zona ieslēgta
   const legenda = L.control({ position: 'bottomright' });  // kreisajā pusē ir "Prognoze" panelis (prognozes.js)
-  legenda.onAdd = () => L.DomUtil.create('div', 'zonu-legenda');
+  // Saliekama: poga 44 px + saturs; stāvoklis atmiņā (localStorage), pēc noklusējuma sakļauta zemos ekrānos (< 700 px augstumā)
+  const LEGENDAS_ATSLEGA = 'zonuLegenda';
+  const legendaAtverta = () => {
+    let v = null;
+    try { v = localStorage.getItem(LEGENDAS_ATSLEGA); } catch { /* privātais režīms */ }
+    return v === null ? innerHeight >= 700 : v === '1';
+  };
+  legenda.onAdd = () => {
+    const div = L.DomUtil.create('div', 'zonu-legenda');
+    div.innerHTML = '<button type="button" class="zonu-legenda-poga" aria-controls="zonu-legenda-saturs"></button><div id="zonu-legenda-saturs" class="zonu-legenda-saturs"></div>';
+    L.DomEvent.disableClickPropagation(div);
+    div.querySelector('button').addEventListener('click', () => {
+      const atverta = !div.classList.contains('atverta');
+      try { localStorage.setItem(LEGENDAS_ATSLEGA, atverta ? '1' : '0'); } catch { /* nekas */ }
+      atjaunotLegendu();
+    });
+    return div;
+  };
   function atjaunotLegendu() {
     const div = legenda.getContainer();
     if (!div) return;
+    const atverta = legendaAtverta();
+    div.classList.toggle('atverta', atverta);
+    const poga = div.querySelector('button');
+    poga.setAttribute('aria-expanded', atverta);
+    poga.setAttribute('aria-label', atverta ? 'Sakļaut zonu leģendu' : 'Rādīt zonu leģendu');
+    poga.textContent = atverta ? 'Leģenda ▾' : 'Leģenda ▸';
     const z = karte.getZoom();
-    div.innerHTML = ZONAS.filter(x => ieslegtas.has(x.kods)).map(x => {
+    div.querySelector('.zonu-legenda-saturs').innerHTML = ZONAS.filter(x => ieslegtas.has(x.kods)).map(x => {
       if (x.legenda) return x.legenda;
       return (x.legendas || [[x.svitrot ? 2 : 1, x.nosaukums]]).map(([v, teksts]) => {
         const [a, r] = x.krasas(v), aizp = `rgba(${a.slice(0, 3)},${a[3] / 255})`;

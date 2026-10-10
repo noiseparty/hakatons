@@ -85,6 +85,11 @@ const Atskanot = (() => {
     if (document.body.classList.contains('demo-aktivs')) Demo.beigt();  // iepriekšējais scenārijs: slāņi kā pirms tā
     pludiKa(sakumaPludi);
     const vaicajums = sc.vaicajums || VAICAJUMI[sc.kods];
+    // Katra kartīte stāv uz savas vietas: iepriekšējā soļa adrese/reģions prom, kartes centrs = scenārija `vieta`
+    // (vaicājumi bez vietvārda, piem. "nestrādā e-pakalpojumi", citādi atkārtotu iepriekšējo vietu)
+    if (typeof atmestAdresi === 'function') atmestAdresi();
+    if (typeof stavoklis !== 'undefined' && stavoklis.regions && typeof radtRegionu === 'function') radtRegionu('');
+    if (sc.vieta && typeof karte !== 'undefined') karte.setView([sc.vieta.lat, sc.vieta.lon], 11, { animate: false });
     if (vaicajums && typeof krizesMeklesana !== 'undefined') {
       el('jautajums').value = vaicajums;
       // lēns API nedrīkst aizturēt soli: gaidām līdz 6 s, kartīte ielādējas tālāk pati
