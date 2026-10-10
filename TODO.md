@@ -29,12 +29,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Storm replay (`vetra-2026`): use real LVC road events from `/api/celi` instead of the simulated A7/P103 closure — added 2026-10-10 02:27 +03:00 by noiseparty
 - [ ] VPS: allow the microphone for voice search — copy `src/karte/serveris/hakatons.caddy` (microphone=(self)) to /etc/caddy/sites/ and reload Caddy; until then the "Runāt" button stays hidden — added 2026-10-10 02:43 +03:00 by noiseparty
 - [ ] VPVKAC contacts are from 2022 and have no centres for the state cities and Ventspils novads: find a current official municipal contact list — added 2026-10-10 02:47 +03:00 by noiseparty
-- [ ] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — added 2026-10-10 03:28 +03:00 by noiseparty
 - [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Rīga public-transport traffic layer (`noiseparty/sabiedriskais`, saraksti.lv `gpsdata.ashx?gps`): on hold, waiting for the request parameters from the user (whether to send the site's Referer header); format analysed from the user's HAR captures — added 2026-10-10 03:29 +03:00 by noiseparty
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+- [ ] After the viewport PR is live: regenerate `production/api.html` + `openapi.json` (`src/api_docs/sagatavot.py`) so the new `bbox` parameter shows up in the API docs — added 2026-10-10 04:25 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -64,6 +64,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — done 2026-10-10 04:25 +03:00 by noiseparty: `/api/objekti?bbox=` (ST_Intersects + GiST, ≤ 5000, round-robin sample per layer, `apgriezts`, slim properties, LRU keyed by 0.01° bbox); map refetches on moveend (400 ms) at zoom ≥ 8, country sample (3000) below; all 16 layers 958 KB gz → 104 KB country / 6–60 KB city (added 2026-10-10 03:28 +03:00 by noiseparty)
 - [x] Desktop: merge main into noiseparty/ui-desktop (sw.js VERSION 2026-10-10h-dv), layer legend shows marker shapes via `Ikonas.formaHTML()` (overlays keep colour dots), parbaude.py green locally (dators 17/17 OK) — done 2026-10-10 04:26 +03:00 by noiseparty (added 2026-10-10 04:26 +03:00 by noiseparty)
 - [x] Desktop UI (> 800 px) from the user's Stitch mock-up: light header + 112 bar with data freshness + closable warning strip, three columns (search/chips/national summary/result card · map with legend · "Situācija tagad" with LVĢMC warnings, rising gauges with sparkline, LVC restrictions, click → zoom), "Slāņu vadība" drawer, "Par datiem & AI", collapsible panels / full-width map, shared design tokens in stils.css — `production/darbvirsma.js/.css` — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] zonas.js follow-ups from #48 review: mask cache cap ~64 tiles (now 400 × 1 MB at 512 px), simplify `?poligoni=1` polygons with `_vienkarsot_liniju()` (or reuse `/api/prognozes` polygons), centre the green "brīdinājumu nav" banner line — done 2026-10-10 04:24 +03:00 by noiseparty: LRU mask cache capped at 64 tiles (~17 MB); warning zones read the already simplified `bridinajumu_poligoni` from `/api/prognozes` (Latvia-wide polygon 42 573 → 325 vertices), fallback to `?poligoni=1`; green banner line centred like the details (added 2026-10-10 02:11 +03:00 by noiseparty)

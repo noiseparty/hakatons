@@ -335,19 +335,78 @@ function popupSaturs(p, ll) {
     rindas.join('<br>') + ObjektaStatuss.statuss(p) + marsrutaSaites(ll.lat, ll.lng, stavoklis.vieta) + Avoti.rinda(p.avots) + '</div>';
 }
 
-async function atjaunot() {
+// Ielādējam tikai kartes skata (ar 25 % rezervi) punktus: /api/objekti?bbox=… (≤ 5000; ja vairāk — izlase pa slāņiem
+// un apgriezts: true). Tālu (zoom < 8) — viena izlase visai Latvijai. Pēc pārvietošanas (400 ms pauze) pārlādē tikai,
+// ja skats iziet ārpus ielādētā vai ja izlase bija apgriezta un karte pietuvināta. Punktus salīdzina pēc id: esošie
+// paliek (atvērts logs neaizveras, karte nemirgo), jaunos pievieno, aizgājušos noņem.
+const SKATA_ZOOM = 8, SKATA_LIMITS = 5000, VALSTS_LIMITS = 3000, VALSTS_BBOX = '20.5,55.5,28.5,58.2';
+let ieladets = null;  // { atslega, filtri, robezas, zoom, apgriezts }
+let gaida = null;     // pieprasījuma atslēga, kas vēl ielādējas
+let skataTaimeris = null;
+
+function skataVaicajums() {
+  const filtri = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].sort().join(',') });
+  if (stavoklis.regions) filtri.set('regions', stavoklis.regions);
+  if (stavoklis.vieta) { filtri.set('lat', stavoklis.vieta.lat.toFixed(5)); filtri.set('lon', stavoklis.vieta.lon.toFixed(5)); }
+  const z = karte.getZoom(), q = new URLSearchParams(filtri);
+  if (z < SKATA_ZOOM) {
+    q.set('bbox', VALSTS_BBOX); q.set('limit', VALSTS_LIMITS);
+  } else {
+    // noapaļo uz āru līdz režģim: nelielas pārvietošanas dod to pašu URL (pārlūka un API kešs)
+    const b = karte.getBounds().pad(0.25), solis = z >= 12 ? 0.01 : 0.05;
+    const r = (x, f) => (f(x / solis) * solis).toFixed(2);
+    q.set('bbox', [r(b.getWest(), Math.floor), r(b.getSouth(), Math.floor), r(b.getEast(), Math.ceil), r(b.getNorth(), Math.ceil)].join(','));
+    q.set('limit', SKATA_LIMITS);
+  }
+  const [w, s, e, n] = q.get('bbox').split(',').map(Number);
+  return { q, atslega: q.toString(), filtri: filtri.toString(), robezas: L.latLngBounds([[s, w], [n, e]]) };
+}
+
+// Kartes skatā redzamie ielādētie objekti (statusa skaits, Saraksts)
+const skataObjekti = () => { const b = karte.getBounds(); return redzamie.filter(f => b.contains(f._slanis.getLatLng())); };
+
+function skaitit() {
+  if (!stavoklis.kategorijas.size || !ieladets || gaida) return;
+  const n = skataObjekti().length, r = regioni[stavoklis.regions];
+  // apgriezts: tikai izlase (telefonā rinda ir šaura; Saraksts paskaidro "pietuviniet")
+  statuss(`${daudzskaitlis(n, 'objekts', 'objekti')} ${ieladets.apgriezts ? '· izlase' : 'skatā'}${r ? ' · ' + r.nosaukums : ''}`);
+}
+
+// spiest = false: kartes pārvietošana — pārlādē tikai, ja ielādētais vairs neder
+async function atjaunot(spiest = true) {
+  if (!stavoklis.kategorijas.size) {
+    if (pieprasijums) pieprasijums.abort();
+    objektuSlanis.clearLayers();
+    redzamie = []; ieladets = null; gaida = null;
+    statuss('Slāņi izslēgti');
+    return;
+  }
+  const v = skataVaicajums();
+  if (!spiest) {
+    if (v.atslega === gaida) return;
+    if (!gaida && ieladets && ieladets.filtri === v.filtri && (ieladets.atslega === v.atslega ||
+        (ieladets.robezas.contains(karte.getBounds()) && (!ieladets.apgriezts || karte.getZoom() <= ieladets.zoom)))) {
+      skaitit();
+      return;
+    }
+  }
   if (pieprasijums) pieprasijums.abort();
-  pieprasijums = new AbortController();
-  objektuSlanis.clearLayers();
-  if (!stavoklis.kategorijas.size) { redzamie = []; statuss('Slāņi izslēgti'); return; }
-  const q = new URLSearchParams({ kategorijas: [...stavoklis.kategorijas].join(','), limit: 20000 });
-  if (stavoklis.regions) q.set('regions', stavoklis.regions);
-  if (stavoklis.vieta) { q.set('lat', stavoklis.vieta.lat.toFixed(5)); q.set('lon', stavoklis.vieta.lon.toFixed(5)); }
+  const mans = pieprasijums = new AbortController();
+  gaida = v.atslega;
   statuss('Ielādē…');
   try {
-    // visi slāņa punkti (līdz ~400 KB): zema prioritāte, lai meklēšanas dati (scenariji.json, tuvākās vietas) nāk pirmie
-    const gj = await iegut('/objekti?' + q, pieprasijums.signal, stavoklis.vieta ? undefined : 'low');
+    // zema prioritāte, lai meklēšanas dati (scenariji.json, tuvākās vietas) nāk pirmie
+    const gj = await iegut('/objekti?' + v.q, mans.signal, stavoklis.vieta ? undefined : 'low');
+    const vecie = new Map(redzamie.map(f => [f.id, f]));
+    const jaunie = [], pievienot = [];
     for (const f of gj.features) {
+      const vecs = vecie.get(f.id);
+      if (vecs && vecs.properties.kategorija === f.properties.kategorija) {
+        vecs.properties = f.properties;  // piem., jauns attalums_m; logs to nolasa atverot
+        vecie.delete(f.id);
+        jaunie.push(vecs);
+        continue;
+      }
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
       // forma pēc slāņu grupas (ikonas.js), 44 px pieskāriena laukums; fillColor — grupu apļa krāsām (grupasIkona)
@@ -355,16 +414,28 @@ async function atjaunot() {
       f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k, nos)
         : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: nos }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
+      jaunie.push(f);
+      pievienot.push(f._slanis);
     }
-    objektuSlanis.addLayers(gj.features.map(f => f._slanis));
-    if (!stavoklis.vieta) gj.features.sort(pecNosaukuma);
-    redzamie = gj.features;
-    const r = regioni[stavoklis.regions];
-    statuss(`${daudzskaitlis(gj.features.length, 'objekts', 'objekti')}${r ? ' · ' + r.nosaukums : ''}`);
+    objektuSlanis.removeLayers([...vecie.values()].map(f => f._slanis));
+    objektuSlanis.addLayers(pievienot);
+    if (!stavoklis.vieta) jaunie.sort(pecNosaukuma);
+    redzamie = jaunie;
+    ieladets = { atslega: v.atslega, filtri: v.filtri, robezas: v.robezas, zoom: karte.getZoom(), apgriezts: !!gj.apgriezts };
+    gaida = null;
+    skaitit();
   } catch (e) {
-    if (e.name !== 'AbortError') statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
+    if (e.name === 'AbortError') return;
+    gaida = null;
+    statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
   }
 }
+
+karte.on('moveend', () => {
+  skaitit();
+  clearTimeout(skataTaimeris);
+  skataTaimeris = setTimeout(() => atjaunot(false), 400);
+});
 
 // ---- Pieskāriens blakus punktam (ikonas.js marķieriem ir 44 px laukums; šis — vēl 14 px apkārt) ----
 // Tikai tiešs klikšķis kartē (ne no poligona vai cita slāņa, kas to "nodod" kartei). Grupas aplis uzvedas kā līdz šim.
