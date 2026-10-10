@@ -10,7 +10,7 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | 42 plāni · 200–800 lpp. · 1 791 karte kā attēls · 10 pašvaldības nepublicē sarakstus | 2 | `notes/ca-plani-kvalitate.md` |
 | Upe Ogre 1,53 m zem CA plāna kritiskā 22,15 m (29. lpp.) · pulcēšanās vieta 542 m (121. lpp.) | 4–5 | screenshots 10.10. ~05:00 (live values change) |
 | 776 pulcēšanās + 579 izmitināšanas vietas · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 7 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
-| Meklētājs: **129 scenāriji** (`production/scenariji.json`), LV/RU/EN, **96,1 % pareizi uz 609 vaicājumiem**, **91,4 % uz 186 paturētajiem** | 8 | `src/meklesana/testi.py`, run 2026-10-10 05:10 (earlier figures 127 / 95,0 % / 563 / 89,5 % in `notes/klasifikators.md`) |
+| Meklētājs: **129 scenāriji** (`production/scenariji.json`), LV/RU/EN, **96,2 % pareizi uz 612 vaicājumiem**, **91,4 % uz 186 paturētajiem** | 8 | `src/meklesana/testi.py`, run 2026-10-10 06:29 (earlier figures 127 / 95,0 % / 563 / 89,5 % in `notes/klasifikators.md`) |
 | **33 atvērto datu avoti + 2 ⚠** (112.lv patvertnes 781, banku bankomāti 845 / 111 kritiskie); LR1 frekvences (16 raidītāji) skaitītas kā oficiāli fakti (LR / SPRK), nav autortiesību objekts, bez ⚠; 2 simulētie neskaitīti | 9 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 (#132) |
 | 5 no 35 trūkstošajām datu kopām · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md` §1 rows 1–5 |
 | LR1 radio karte 16 raidītāji · Meteoalarm rezerve | 12 | #116, #125, #129 |
@@ -111,7 +111,7 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 - MI aģenti (Claude Code) pārveidoja plānu tabulas un tekstu strukturētos datos; katram ierakstam burtisks citāts no plāna, ko skripts pārbauda.
 - Katrs punkts pārbaudīts pret VZD adrešu reģistru un pašvaldības robežu.
 - **Atradām kļūdas oficiāli apstiprinātos plānos:** Jūrmalas pulcēšanās vieta Nr. 10 (Melluži) plānā ir Lietuvā — 56,064 vietā 56,964 (~100 km kļūda; pārbaudīts oriģinālajā PDF, lpp. 85, un VZD adrešu reģistrā — sk. `notes/presentation_ideas.md`). Kopā 41 koordinātu kļūda.
-- Krīzes meklētājs saprot brīvu tekstu LV/RU/EN: **129 scenāriji**, **96,1 % pareizi uz 609 vaicājumiem** (bija 77 %; uz neredzētajiem 91,4 %). MI palīdzēja uzrakstīt atslēgvārdus un testus; darbības laikā MI nav — noteikumi, nevis ģenerēts teksts.
+- Krīzes meklētājs saprot brīvu tekstu LV/RU/EN: **129 scenāriji**, **96,2 % pareizi uz 612 vaicājumiem** (bija 77 %; uz neredzētajiem 91,4 %). MI palīdzēja uzrakstīt atslēgvārdus un testus; darbības laikā MI nav — noteikumi, nevis ģenerēts teksts.
 
 **Say:** MI šeit nav čatbots — tas ir auditors. Tas pārvērta dokumentus, ko neviens nelasa, datos, kurus var pārbaudīt — un tas atrada kļūdas, ko neviens nebija pamanījis.
 
@@ -170,7 +170,7 @@ Count (authoritative, 2026-10-10, LR1 reclassified as official facts): **33 open
 - **"Personas dati?"** Atrašanās vieta paliek telefonā. Meklējumus skaitām tikai bez adresēm un cipariem, bez IP un lietotāja datiem.
 - **"Drošība kara laikā?"** Rādām tikai publiski pieejamas vietas; kritiskā infrastruktūra (ģeneratori, apakšstacijas) kartē netiek likta.
 - **"Kā pašvaldība to uztur?"** Plāna atjaunošana → tas pats MI process no jauna → pārskats ar izmaiņām un kļūdām. Valsts datus serveris atjauno pats katru nakti (04:30), un statusa lapa rāda datu vecumu.
-- **"Kāpēc darbības laikā nav LLM?"** Krīzē atbildei jābūt ātrai, vienādai visiem un pārbaudāmai; LLM var izdomāt adresi vai numuru. MI izmantojām tur, kur var pārbaudīt: 42 plānu izvilkšanai ar citātu un lappusi, meklētāja atslēgvārdiem un testiem (96,1 % uz 609 vaicājumiem, 91,4 % uz neredzētajiem). Rezultāts strādā arī bez interneta no saglabātajiem datiem, un nav API izmaksu.
+- **"Kāpēc darbības laikā nav LLM?"** Krīzē atbildei jābūt ātrai, vienādai visiem un pārbaudāmai; LLM var izdomāt adresi vai numuru. MI izmantojām tur, kur var pārbaudīt: 42 plānu izvilkšanai ar citātu un lappusi, meklētāja atslēgvārdiem un testiem (96,2 % uz 612 vaicājumiem, 91,4 % uz neredzētajiem). Rezultāts strādā arī bez interneta no saglabātajiem datiem, un nav API izmaksu.
 - **"Kas notiek, ja LVĢMC (vai cits avots) nedarbojas?"** API rāda pēdējo zināmo vērtību un atjauno fonā (stale-while-revalidate); ja avots nedarbojas, kartīte to pasaka, nevis klusē. map.repo.lv/statuss.html rāda katra avota stāvokli ik 15 min un datu vecumu.
 - **"Ziņojumu un meklējumu privātums?"** Ziņojumiem neglabājam IP; vieta glabāta ~100 m, publiski ~1 km; teksti ar saitēm un rupjībām netiek pieņemti; moderators var paslēpt. Meklējumus skaitām tikai bez cipariem un adresēm, bez IP.
 - **"Patvertņu licence?"** 112.lv sarakstam licence nav norādīta — kartē tas ir atzīmēts ⚠, un VUGD vēstulē lūdzam to publicēt data.gov.lv ar CC0 un ietilpību, pieejamību, dzīvniekiem un statusu.
