@@ -6,9 +6,14 @@ const Dalities = (() => {
   const kaste = document.getElementById('rezultati');
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+  const t = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;
+  const valoda = () => typeof Valoda !== 'undefined' ? Valoda.aktiva() : 'lv';
+  const LOKALE = { lv: 'lv-LV', ru: 'ru-RU', en: 'en-GB' };
+
   function atjaunotUrl(teksts, vieta) {
     if (document.body.classList.contains('demo-aktivs')) return;  // demo saitēm paliek ?demo=
     const q = new URLSearchParams({ q: teksts });
+    if (valoda() !== 'lv') q.set('valoda', valoda());  // RU/EN saite atver kartīti tajā pašā valodā
     if (vieta && !vieta.regions) { q.set('lat', (+vieta.lat).toFixed(4)); q.set('lon', (+vieta.lon).toFixed(4)); }
     history.replaceState(null, '', '?' + q);
   }
@@ -23,13 +28,15 @@ const Dalities = (() => {
   }
 
   const pogas = () => `<div class="dalities-pogas">
-      <button type="button" class="otra" data-darbiba="dalities"><span aria-hidden="true">↗</span> Dalīties</button>
-      <button type="button" class="otra" data-darbiba="drukat">${Ik('drukat')} Drukāt</button>
+      <button type="button" class="otra" data-darbiba="dalities"><span aria-hidden="true">↗</span> ${t('Dalīties')}</button>
+      <button type="button" class="otra" data-darbiba="drukat">${Ik('drukat')} ${t('Drukāt')}</button>
     </div><p class="dalities-zina piezime" role="status" hidden></p>`;
 
   function virsraksts() {
-    const s = kaste.querySelector('.sapratu');
-    return 'Krīzes karte: ' + (s ? s.textContent.replace(/\s+/g, ' ').trim() : 'meklēšanas rezultāts');
+    const rinda = e => e ? e.textContent.replace(/\s+/g, ' ').trim() : '';
+    // lēmums (plūdu zona / tuvākā vieta, citādi brīdinājums) + ko sapratām: kopīgotajā tekstā uzreiz redzams rezultāts
+    const lemums = rinda(kaste.querySelector('#rez-lemuma-rinda')) || rinda(kaste.querySelector('.lemums')), s = rinda(kaste.querySelector('.sapratu'));
+    return t('Krīzes karte') + ': ' + ([lemums, s].filter(Boolean).join(' · ') || t('meklēšanas rezultāts'));
   }
 
   function zinot(teksts) {
@@ -48,9 +55,9 @@ const Dalities = (() => {
     }
     try {
       await navigator.clipboard.writeText(url);
-      zinot('Saite nokopēta. Ielīmējiet to ziņā vai e-pastā.');
+      zinot(t('Saite nokopēta. Ielīmējiet to ziņā vai e-pastā.'));
     } catch {
-      zinot('Nokopējiet saiti no adreses joslas: ' + url);
+      zinot(t('Nokopējiet saiti no adreses joslas:') + ' ' + url);
     }
   }
 
@@ -59,7 +66,7 @@ const Dalities = (() => {
     const q = qrcode(0, 'M');
     q.addData(teksts);
     q.make();
-    return q.createSvgTag({ cellSize: 3, margin: 2, scalable: true, alt: 'QR kods uz šo rezultātu' });
+    return q.createSvgTag({ cellSize: 3, margin: 2, scalable: true, alt: t('QR kods uz šo rezultātu') });
   }
 
   // vendor/qrcode.js (12 KB) vajag tikai drukāšanai — ielādē pirmajā reizē
@@ -71,18 +78,25 @@ const Dalities = (() => {
     document.head.append(s);
   });
 
+  let atvertie = [];
   async function drukat() {
     await ieladetQr();
     kaste.querySelector('.druka-galva')?.remove();
     kaste.querySelector('.druka-qr')?.remove();
-    const laiks = new Date().toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    kaste.insertAdjacentHTML('afterbegin', `<p class="druka-galva">Krīzes karte · map.repo.lv · izdrukāts ${esc(laiks)}</p>`);
-    kaste.insertAdjacentHTML('beforeend', `<div class="druka-qr">${qrSvg(location.href)}<div><p>Atjaunināts rezultāts tiešsaistē:<br>${esc(location.href)}</p>
-      <p>Dati mainās (brīdinājumi, ūdens līmenis). Pirms došanās pārbaudiet tiešsaistē vai klausieties Latvijas Radio 1. Ja apdraudēta dzīvība, zvaniet 112.</p></div></div>`);
+    const laiks = new Date().toLocaleString(LOKALE[valoda()], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    kaste.insertAdjacentHTML('afterbegin', `<p class="druka-galva">Krīzes karte · map.repo.lv · ${t('izdrukāts')} ${esc(laiks)}</p>`);
+    kaste.insertAdjacentHTML('beforeend', `<div class="druka-qr">${qrSvg(location.href)}<div><p>${t('Atjaunināts rezultāts tiešsaistē:')}<br>${esc((() => { try { return decodeURI(location.href); } catch { return location.href; } })())}</p>
+      <p>${t('Dati mainās (brīdinājumi, ūdens līmenis). Pirms došanās pārbaudiet tiešsaistē vai klausieties Latvijas Radio 1. Ja apdraudēta dzīvība, zvaniet 112.')}</p></div></div>`);
+    // drukā viss atvērts: saplocītie "Vairāk" bloki (details) uz papīra citādi paliek paslēpti
+    atvertie = [...kaste.querySelectorAll('details:not([open])')];
+    atvertie.forEach(d => { d.open = true; });
     document.body.classList.add('druka-rezultats');
     window.print();
   }
-  addEventListener('afterprint', () => document.body.classList.remove('druka-rezultats'));
+  addEventListener('afterprint', () => {
+    document.body.classList.remove('druka-rezultats');
+    atvertie.forEach(d => { d.open = false; }); atvertie = [];
+  });
 
   kaste.addEventListener('click', e => {
     const d = e.target.closest('[data-darbiba]')?.dataset.darbiba;
