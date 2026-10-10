@@ -61,9 +61,9 @@ insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, da
    'Nav publicēts data.gov.lv; dati nolasīti no publiskā 112.lv ArcGIS kartes servisa (hakatona komplekts). Atvērta ir tikai Rīgas patvertņu kopa (Rīgas dome, CC BY 4.0).', 10),
   ('vm-24h', 'Slimnīcu saraksts, kurās 24 stundas diennaktī tiek nodrošināta neatliekamā medicīniskā palīdzība', 'Veselības ministrija',
    'Oficiāls dokuments, nav autortiesību objekts (Autortiesību likuma 6. pants)', 'https://likumi.lv/ta/id/5138-autortiesibu-likums', true,
-   null, 'Valsts katastrofu medicīnas plāna 12. pielikums, apstiprināts ar VM 04.03.2026. rīkojumu Nr. 01-01.1/26 (PDF repozitorijā: ai-open-data-2026-hakatons/atseviski_dati/)',
+   'https://www.nmpd.gov.lv/lv/katastrofu-medicinas-plani', 'https://www.nmpd.gov.lv/lv/media/4229/download?attachment (Valsts katastrofu medicīnas plāna 12. pielikums, apstiprināts ar VM 04.03.2026. rīkojumu Nr. 01-01.1/26; publicēja NMPD 09.03.2026.; kopija repozitorijā: ai-open-data-2026-hakatons/atseviski_dati/)',
    'Neatliekamā palīdzība 24/7 (37 slimnīcas): saraksts un nosaukumi',
-   'Koordinātas un adreses no VZD adrešu reģistra; PSKUS un RAKUS uzņemšanas ieejas no OpenStreetMap. Oriģinālā publicēšanas saite vēl jānoskaidro.', 20),
+   'Sarakstu publicē NMPD (Valsts katastrofu medicīnas plāni). Pielikumā ir tikai nosaukumi: koordinātas un adreses no VZD adrešu reģistra; PSKUS un RAKUS uzņemšanas ieejas no OpenStreetMap.', 20),
   ('iemic-arstniecibas', 'VKCP IĢIS – ārstniecības iestāžu adreses', 'Iekšlietu ministrijas Informācijas centrs',
    'CC0 1.0', 'https://creativecommons.org/publicdomain/zero/1.0/', true,
    'https://data.gov.lv/dati/lv/dataset/vkcp-igis-arstniecibas-iestazu-adreses',
@@ -334,3 +334,15 @@ create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
 grant select, insert on zinojumi to map_api;
 grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
 grant usage on sequence zinojumi_id_seq to map_api;
+
+-- ---- Banku bankomāti (src/karte/db/bankomati.py; bankomats kategorija) ----
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('bankas-atm', 'Bankomātu saraksts hakatonam, ar kritiskajiem bankomātiem (22.09.2026)', 'Bankas (SEB, Swedbank, Luminor, Citadele) / Finance Latvia',
+   'Licence nav norādīta', null, false, null,
+   'Kritisko_ATM saraksts_22.09.2026_hakatonam.xlsx (nav repozitorijā) → src/karte/dati/bankomati_bankas.csv, bankomati_vietas.csv (bankomati.py)',
+   'Bankomāti: banka, iemaksas/izmaksas, 24/7 vai ierobežots laiks, kritiskais bankomāts (skaidra nauda arī krīzes laikā)',
+   'Komandas lēmums: rādām ar ⚠, kā 112.lv patvertnes. 845 bankomāti, 111 kritiskie; vienā adresē vairāki — viens punkts. OSM bankomāti ≤ 40 m no šiem (tās pašas bankas vai bez operatora) netiek rādīti.', 21)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;

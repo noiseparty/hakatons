@@ -51,6 +51,9 @@ const Lapa = (() => {
     }
     if (typeof Apaksa !== 'undefined') Apaksa.novietot();  // rezultāts → cilne "Rezultāts" (vai atpakaļ sānu panelī)
     karte.invalidateSize();
+    // Telefonā karte stiepjas arī zem lapas: robežas uz dienvidiem plašākas, lai Latviju var novietot virs lapas
+    // (ar app.js robežām Leaflet karti centrē uz robežu vidu, un Latvija paliek zem lapas)
+    karte.setMaxBounds(telefons.matches ? latvija.pad(0.3).extend([50.5, 24.5]) : latvija.pad(0.3));
   }
 
   // ---- Cilnes ----
@@ -135,8 +138,15 @@ const Lapa = (() => {
 
   // ---- Situācija tagad: prognožu lente (pārcelta), upju līmeņi un ceļu notikumi ap kartes centru ----
   const komats = x => String(x).replace('.', ',');
+  // Redzamās kartes daļas (virs lapas) centrs Latvijas robežās: telefonā karte stiepjas zem lapas, un /api/udens
+  // ārpus Latvijas atbild 400
+  function redzamaisCentrs() {
+    const k = karte.getSize(), h = telefons.matches ? Math.max(40, k.y - Apaksa.augstums()) : k.y;
+    const c = karte.containerPointToLatLng([k.x / 2, h / 2]);
+    return L.latLng(Math.min(Math.max(c.lat, latvija.getSouth()), latvija.getNorth()), Math.min(Math.max(c.lng, latvija.getWest()), latvija.getEast()));
+  }
   async function situacija() {
-    const c = karte.getCenter();
+    const c = redzamaisCentrs();
     const ll = { lat: c.lat.toFixed(4), lon: c.lng.toFixed(4) };
     const upes = el('lapa-upes'), celi = el('lapa-celi');
     iegut('/udens?' + new URLSearchParams({ ...ll, limit: 5 })).then(d => {
@@ -172,7 +182,10 @@ const Lapa = (() => {
   // Uznirstošie logi: automātiskā pārbīde atstāj vietu zem joslām augšā un virs lapas apakšā; atverot logu, pilna
   // lapa saplok līdz pusei (citādi logs būtu zem tās)
   function popupAtstarpes() {
-    if (!telefons.matches) { delete L.Popup.prototype.options.autoPanPaddingTopLeft; delete L.Popup.prototype.options.autoPanPaddingBottomRight; return; }
+    const o = L.Popup.prototype.options;
+    if (!telefons.matches) { delete o.autoPanPaddingTopLeft; delete o.autoPanPaddingBottomRight; o.maxWidth = 300; return; }
+    // platums: saturs + 50 px (malas, vieta ✕) + 10 px katrā pusē nekad nepārsniedz ekrānu (360 px telefons)
+    o.maxWidth = Math.min(300, innerWidth - 76);
     L.Popup.prototype.options.autoPanPaddingTopLeft = L.point(10, 60 + (el('kartes-joslas').offsetHeight || 0));
     L.Popup.prototype.options.autoPanPaddingBottomRight = L.point(10, 12 + Apaksa.augstums());
   }
@@ -180,8 +193,12 @@ const Lapa = (() => {
   karte.on('popupopen', () => { if (telefons.matches && Apaksa.stavoklis() === 'pilna') Apaksa.atvert('puse'); popupAtstarpes(); });
 
   telefons.addEventListener('change', () => { novietot(); popupAtstarpes(); });
+  addEventListener('resize', popupAtstarpes);
   novietot();
   popupAtstarpes();
+  // Sākuma skats telefonā: visa Latvija redzamajā kartes daļā virs lapas (citādi tās centrs paliek zem lapas un augšā
+  // redzama Igaunija). Tikai ja karti vēl neviens nav pārvietojis (?q=, ?demo= un reģions skatu maina vēlāk).
+  if (telefons.matches && karte.getCenter().distanceTo(latvija.getCenter()) < 20000) karte.fitBounds(latvija, Apaksa.atstarpes());
   kopsavilkums();
   setInterval(kopsavilkums, 10 * 60 * 1000);
 

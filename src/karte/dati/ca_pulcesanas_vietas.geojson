@@ -5220,6 +5220,1195 @@
    "type": "Feature",
    "properties": {
     "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Aizputes tirgus laukums (bijušais kinoteātra “AVOTS” laukums)",
+    "adrese": "Zvaigžņu iela 2 blakus, Aizpute, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 1,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 1, | Aizputes tirgus laukums (bijušais kinoteātra “AVOTS” laukums) | Zvaigžņu iela 2 blakus, Aizpute |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Zvaigžņu iela 2B, Aizpute, Dienvidkurzemes nov., LV-3456",
+    "vzd_kods": "102203966",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "izvilkuma_piezime": "Numurācija oriģinālā: DKN saraksts sākas ar „1,” un turpinās ar 25.",
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-1"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.606438,
+     56.720306
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāts laukums (bijušais PMK kultūras centrs)",
+    "adrese": "Padures iela 2, Aizpute, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 25,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 25. | Atklāts laukums (bijušais PMK kultūras centrs) | Padures iela 2, Aizpute |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Padures iela 2, Aizpute, Dienvidkurzemes nov., LV-3456",
+    "vzd_kods": "101451593",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-2"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.59716,
+     56.722897
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Aizputes pagasta Saieta nams",
+    "adrese": "Ziedu iela 2, Rokasbirze, Aizputes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 26,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 26. | Aizputes pagasta Saieta nams | Ziedu iela 2, Rokasbirze, Aizputes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Ziedu iela 2, Rokasbirze, Aizputes pag., Dienvidkurzemes nov., LV-3456",
+    "vzd_kods": "101082726",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-3"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.563579,
+     56.712454
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Kazdangas laukums pie kluba",
+    "adrese": "Pils gatve 4, Kazdanga, Kazdangas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 27,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 27. | Kazdangas laukums pie kluba | Pils gatve 4, Kazdanga, Kazdangas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Pils gatve 4, Kazdanga, Kazdangas pag., Dienvidkurzemes nov., LV-3457",
+    "vzd_kods": "102214302",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-4"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.732679,
+     56.732245
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Apriķu novadpētniecības muzejs",
+    "adrese": "Apriķu skola, Apriķi, Lažas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 28,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 28. | Apriķu novadpētniecības muzejs | Apriķu skola, Apriķi, Lažas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Apriķu skola\", Apriķi, Lažas pag., Dienvidkurzemes nov., LV-3455",
+    "vzd_kods": "103426095",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-5"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.506754,
+     56.802945
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Cīravas pagasta pārvalde, blakus",
+    "adrese": "Gaismas, Cīrava, Cīravas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 29,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 29. | Cīravas pagasta pārvalde, blakus | Gaismas, Cīrava, Cīravas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Gaismas\", Cīrava, Cīravas pag., Dienvidkurzemes nov., LV-3453",
+    "vzd_kods": "104151855",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-6"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.387238,
+     56.736969
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Kalvenes pagasta pārvalde",
+    "adrese": "Skolas iela 21, Kalvene, Kalvenes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 30,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 30. | Kalvenes pagasta pārvalde | Skolas iela 21, Kalvene, Kalvenes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 21, Kalvene, Kalvenes pag., Dienvidkurzemes nov., LV-3443",
+    "vzd_kods": "102681626",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-7"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.737581,
+     56.605148
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Durbes pilsētas laukums pie baznīcas",
+    "adrese": "Skolas iela 1 un Skolas iela 3, Durbe, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 31,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 31. | Durbes pilsētas laukums pie baznīcas | Skolas iela 1 un Skolas iela 3, Durbe |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 1, Durbe, Dienvidkurzemes nov., LV-3440",
+    "vzd_kods": "102204316",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-8"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.369408,
+     56.588695
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Durbes stadions",
+    "adrese": "Zāļu iela 2, Durbe, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 32,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 32. | Durbes stadions | Zāļu iela 2, Durbe |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Zāļu iela 2, Durbe, Dienvidkurzemes nov., LV-3440",
+    "vzd_kods": "105160216",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-9"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.368074,
+     56.587057
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Laukums pie domes ēkas (bijušās domes ēka)",
+    "adrese": "Parka iela 2, Lieģi, Tadaiķu pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 33,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 33. | Laukums pie domes ēkas (bijušās domes ēka) | Parka iela 2, Lieģi, Tadaiķu pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Parka iela 2, Lieģi, Tadaiķu pag., Dienvidkurzemes nov., LV-3447",
+    "vzd_kods": "101466693",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-10"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.335992,
+     56.579147
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Laukums pie Dunalkas sporta halles",
+    "adrese": "“Halle”, Dunalka, Dunalkas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 34,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 34. | Laukums pie Dunalkas sporta halles | “Halle”, Dunalka, Dunalkas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Halle\", Dunalka, Dunalkas pag., Dienvidkurzemes nov., LV-3452",
+    "vzd_kods": "105878485",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-11"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.329417,
+     56.685785
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Stāvlaukums pie Vecpils pagasta pārvaldes (autoceļa paplatinājums, autobusa pieturas vietas)",
+    "adrese": "“Pagastnams”, Vecpils, Vecpils pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 35,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 35. | Stāvlaukums pie Vecpils pagasta pārvaldes (autoceļa paplatinājums, autobusa pieturas vietas) | “Pagastnams”, Vecpils, Vecpils pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Pagastnams\", Vecpils, Vecpils pag., Dienvidkurzemes nov., LV-3441",
+    "vzd_kods": "103328380",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-12"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.494392,
+     56.625081
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Grobiņas pilsētas stadions",
+    "adrese": "Celtnieku iela 29, Grobiņa, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 36,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 36. | Grobiņas pilsētas stadions | Celtnieku iela 29, Grobiņa |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Celtnieku iela 29, Grobiņa, Dienvidkurzemes nov., LV-3430",
+    "vzd_kods": "102205141",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-13"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.168925,
+     56.537953
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāts laukums",
+    "adrese": "Rīgas iela 81, Grobiņa, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 38,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 38. | Atklāts laukums | Rīgas iela 81, Grobiņa |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Rīgas iela 81, Grobiņa, Dienvidkurzemes nov., LV-3430",
+    "vzd_kods": "102207475",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-14"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.190916,
+     56.536691
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Zentas Mauriņas Grobiņas vidusskola Kapsēdes filiāle",
+    "adrese": "Kapsēdes pamatskola, Kapsēde, Medzes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 39,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 39. | Zentas Mauriņas Grobiņas vidusskola Kapsēdes filiāle | Kapsēdes pamatskola, Kapsēde, Medzes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Kapsēdes pamatskola\", Kapsēde, Medzes pag., Dienvidkurzemes nov., LV-3461",
+    "vzd_kods": "105107003",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-15"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.136835,
+     56.596531
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Kultūras nams",
+    "adrese": "Kultūras nams, Kapsēde, Medzes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 40,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 40. | Kultūras nams | Kultūras nams, Kapsēde, Medzes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Kultūras nams\", Kapsēde, Medzes pag., Dienvidkurzemes nov., LV-3461",
+    "vzd_kods": "103928221",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-16"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.135275,
+     56.597716
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Kultūras centrs “Robežnieki”",
+    "adrese": "Liepu iela 1A, Grobiņas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 41,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 41. | Kultūras centrs “Robežnieki” | Liepu iela 1A, Grobiņas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Liepu iela 1A, Robežnieki, Grobiņas pag., Dienvidkurzemes nov., LV-3430",
+    "vzd_kods": "105183331",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-17"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.189901,
+     56.53811
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Zentas Mauriņas Grobiņas vidusskola Bārtas filiāle, PII “Ūdelīte” atklātais laukums",
+    "adrese": "Jaunā skola, Bārta, Bārtas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 43,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 43. | Zentas Mauriņas Grobiņas vidusskola Bārtas filiāle, PII “Ūdelīte” atklātais laukums | Jaunā skola, Bārta, Bārtas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Jaunā skola\", Bārta, Bārtas pag., Dienvidkurzemes nov., LV-3482",
+    "vzd_kods": "106183054",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-18"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.318945,
+     56.349966
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Nīcas stadions",
+    "adrese": "Skolas iela 14, Nīca, Nīcas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 44,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 44. | Nīcas stadions | Skolas iela 14, Nīca, Nīcas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 14, Nīca, Nīcas pag., Dienvidkurzemes nov., LV-3473",
+    "vzd_kods": "103133761",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-19"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.06891,
+     56.346184
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Stadioni, atklāts laukums",
+    "adrese": "Dzintaru iela 107A, Pāvilosta, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 46,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 46. | Stadioni, atklāts laukums | Dzintaru iela 107A, Pāvilosta |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Dzintaru iela 107A, Pāvilosta, Dienvidkurzemes nov., LV-3466",
+    "vzd_kods": "105108745",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-20"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.20634,
+     56.883668
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Laukums pie Pāvilostas pagasta pārvaldes ēkas",
+    "adrese": "Dzintaru iela 73, Pāvilosta, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 47,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 47. | Laukums pie Pāvilostas pagasta pārvaldes ēkas | Dzintaru iela 73, Pāvilosta |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Dzintaru iela 73, Pāvilosta, Dienvidkurzemes nov., LV-3466",
+    "vzd_kods": "101459985",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-21"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.190969,
+     56.887049
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāta vieta pie Sakas pagasta pārvaldes ēkas",
+    "adrese": "Pagasta māja, Saka, Sakas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 48,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 48. | Atklāta vieta pie Sakas pagasta pārvaldes ēkas | Pagasta māja, Saka, Sakas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Pagasta māja\", Saka, Sakas pag., Dienvidkurzemes nov., LV-3466",
+    "vzd_kods": "103410957",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-22"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.222322,
+     56.861901
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Vērgales pagasta Kultūras nams",
+    "adrese": "Pagastmāja, Vērgale, Vērgales pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 49,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 49. | Vērgales pagasta Kultūras nams | Pagastmāja, Vērgale, Vērgales pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Pagastmāja\", Vērgale, Vērgales pag., Dienvidkurzemes nov., LV-3463",
+    "vzd_kods": "105026684",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-23"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.197195,
+     56.698408
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Priekules vidusskolas stadions",
+    "adrese": "Aizputes iela 1, Priekule, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 50,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 50. | Priekules vidusskolas stadions | Aizputes iela 1, Priekule |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Aizputes iela 1, Priekule, Dienvidkurzemes nov., LV-3434",
+    "vzd_kods": "101461692",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-24"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.581294,
+     56.439138
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Stadions pie Priekules Mūzikas mākslas skolas",
+    "adrese": "Skolas iela 12, Priekule, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 51,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 51. | Stadions pie Priekules Mūzikas mākslas skolas | Skolas iela 12, Priekule |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 12, Priekule, Dienvidkurzemes nov., LV-3434",
+    "vzd_kods": "102212075",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-25"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.606703,
+     56.44687
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Gramzdas Tautas nams",
+    "adrese": "Skolas iela 5, Gramzda, Gramzdas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 52,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 52. | Gramzdas Tautas nams | Skolas iela 5, Gramzda, Gramzdas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Skolas iela 5, Gramzda, Gramzdas pag., Dienvidkurzemes nov., LV-3486",
+    "vzd_kods": "106184931",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-26"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.602917,
+     56.367897
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "VSAC “Kurzeme” filiāle “Aizvīķi”",
+    "adrese": "Pansionāts “Aizvīķi”, Aizvīķi, Gramzdas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 53,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 53. | VSAC “Kurzeme” filiāle “Aizvīķi” | Pansionāts “Aizvīķi”, Aizvīķi, Gramzdas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Pansionāts \"Aizvīķi\"\", Aizvīķi, Gramzdas pag., Dienvidkurzemes nov., LV-3487",
+    "vzd_kods": "103793418",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-27"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.726146,
+     56.327537
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Virgas pagasta pārvalde",
+    "adrese": "“Virgas muiža”, Virga, Virgas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 54,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 54. | Virgas pagasta pārvalde | “Virgas muiža”, Virga, Virgas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Virgas muiža\", Virga, Virgas pag., Dienvidkurzemes nov., LV-3433",
+    "vzd_kods": "103820505",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-28"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.414562,
+     56.474512
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Mežupes pamatskola",
+    "adrese": "“Purmsātu muiža”, Purmsāti, Virgas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 55,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 55. | Mežupes pamatskola | “Purmsātu muiža”, Purmsāti, Virgas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Purmsātu muiža\", Purmsāti, Virgas pag., Dienvidkurzemes nov., LV-3485",
+    "vzd_kods": "105755475",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-29"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.525427,
+     56.404908
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Laukumā pie Bunkas pagasta pārvaldes",
+    "adrese": "“Bunkas kultūras nams”, Bunka, Bunkas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 56,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 56. | Laukumā pie Bunkas pagasta pārvaldes | “Bunkas kultūras nams”, Bunka, Bunkas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Bunkas kultūras nams\", Bunka, Bunkas pag., Dienvidkurzemes nov., LV-3446",
+    "vzd_kods": "103786806",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-30"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.501371,
+     56.499094
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Pie Krotes pamatskolas",
+    "adrese": "“Krotes pamatskola”, Krote, Bunkas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 57,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 57. | Pie Krotes pamatskolas | “Krotes pamatskola”, Krote, Bunkas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Krotes pamatskola\", Krote, Bunkas pag., Dienvidkurzemes nov., LV-3444",
+    "vzd_kods": "103786558",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-31"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.544579,
+     56.541629
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Laukumā pie “Tēva Nams”",
+    "adrese": "Saules iela 10, Tadaiķi, Bunkas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 58,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 58. | Laukumā pie “Tēva Nams” | Saules iela 10, Tadaiķi, Bunkas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Saules iela 10, Tadaiķi, Bunkas pag., Dienvidkurzemes nov., LV-3446",
+    "vzd_kods": "102212686",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-32"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.416999,
+     56.528026
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Tirgus laukums",
+    "adrese": "Tirgus laukums, Rucava, Rucavas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 60,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 60. | Tirgus laukums | Tirgus laukums, Rucava, Rucavas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Tirgus laukums\", Rucava, Rucavas pag., Dienvidkurzemes nov., LV-3477",
+    "vzd_kods": "105708563",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-33"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.161364,
+     56.160136
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāts laukums pie Dunikas pagasta pārvaldes ēkas",
+    "adrese": "Purenītes, Sikšņi, Dunikas pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 61,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 61. | Atklāts laukums pie Dunikas pagasta pārvaldes ēkas | Purenītes, Sikšņi, Dunikas pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Purenītes\", Sikšņi, Dunikas pag., Dienvidkurzemes nov., LV-3480",
+    "vzd_kods": "103921346",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-34"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.248685,
+     56.263714
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāts laukums un auto stāvvieta",
+    "adrese": "Brīvības iela 13A, Vaiņode, Vaiņodes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 62,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 62. | Atklāts laukums un auto stāvvieta | Brīvības iela 13A, Vaiņode, Vaiņodes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Brīvības iela 13A, Vaiņode, Vaiņodes pag., Dienvidkurzemes nov., LV-3435",
+    "vzd_kods": "106260210",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-35"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.853507,
+     56.416463
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Atklāts laukums pie ēkas",
+    "adrese": "Embūte 1, Embūtes pagasts, Dienvidkurzemes novads",
+    "pasvaldiba": "Dienvidkurzemes novads",
+    "pasvaldiba_slug": "dienvidkurzemes-novads",
+    "nr_plana": 63,
+    "avots_teksts": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 2,
+    "citats": "| 63. | Atklāts laukums pie ēkas | Embūte 1, Embūtes pagasts |",
+    "izdevejs": "Dienvidkurzemes novads (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "\"Embūte 1\", Embūtes pag., Dienvidkurzemes nov., LV-3436",
+    "vzd_kods": "103350591",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Dienvidkurzemes novada CA plāns, lpp. 2 · vieta noteikta pēc adreses (VZD)",
+    "id": "dienvidkurzemes-novads-evak-36"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.819347,
+     56.50549
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
     "nosaukums": "Dobeles pilsēta Tirgus laukums",
     "adrese": "Tirgus laukums, Dobele, Dobeles novads",
     "pasvaldiba": "Dobeles novads",
@@ -9179,6 +10368,336 @@
     "coordinates": [
      22.23623,
      56.874
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Sabiedriskā transporta galapunkts",
+    "adrese": "Mirdzas Ķempes iela 21, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 2,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 2. | Sabiedriskā transporta galapunkts | Mirdzas Ķempes iela 21 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Mirdzas Ķempes iela 21, Liepāja, LV-3407",
+    "vzd_kods": "106439588",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-1"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.027578,
+     56.481722
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Bibliotēka Zaļā birzs",
+    "adrese": "Talsu iela 39, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 3,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 3. | Bibliotēka Zaļā birzs | Talsu iela 39 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Talsu iela 39, Liepāja, LV-3414",
+    "vzd_kods": "102442707",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-2"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.069652,
+     56.544756
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "LSEZ “Lauma Fabrics” SIA zaļā zona pie galvenajam durvīm",
+    "adrese": "Ziemeļu iela 19, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 4,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 4. | LSEZ “Lauma Fabrics” SIA zaļā zona pie galvenajam durvīm | Ziemeļu iela 19 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Ziemeļu iela 19, Liepāja, LV-3405",
+    "vzd_kods": "101703732",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-3"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.019364,
+     56.536212
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "LOC struktūrvienības Tenisa halles stāvlaukums",
+    "adrese": "Liedaga iela 7, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 5,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 5. | LOC struktūrvienības Tenisa halles stāvlaukums | Liedaga iela 7 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Liedaga iela 7, Liepāja, LV-3416",
+    "vzd_kods": "106797942",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-4"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.000777,
+     56.490576
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Koncertzāles “Lielais Dzintars” stāvlaukums",
+    "adrese": "Dzirnavu iela 3, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 6,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 6. | Koncertzāles “Lielais Dzintars” stāvlaukums | Dzirnavu iela 3 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Dzirnavu iela 3, Liepāja, LV-3401",
+    "vzd_kods": "102404396",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-5"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.009884,
+     56.51224
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Sabiedriskā transporta galapunkts",
+    "adrese": "Ģenerāļa Baloža iela 1C, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 8,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 8. | Sabiedriskā transporta galapunkts | Ģenerāļa Baloža iela 1C |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Ģenerāļa Baloža iela 1C, Liepāja, LV-3414",
+    "vzd_kods": "106154193",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-6"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.012155,
+     56.554517
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Tosmares veikals “TOP” stāvlaukums",
+    "adrese": "Sila iela 3, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 9,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 9. | Tosmares veikals “TOP” stāvlaukums | Sila iela 3 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Sila iela 3, Liepāja, LV-3402",
+    "vzd_kods": "104272435",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-7"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.042388,
+     56.553993
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Sabiedriskā transporta galapunkts",
+    "adrese": "Slimnīcas iela 16, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 10,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 10. | Sabiedriskā transporta galapunkts | Slimnīcas iela 16 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Slimnīcas iela 16, Liepāja, LV-3414",
+    "vzd_kods": "102454006",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-8"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.096202,
+     56.552714
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Annas Tirgus stāvlaukums",
+    "adrese": "Tirgus iela 22, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 12,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 12. | Annas Tirgus stāvlaukums | Tirgus iela 22 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Tirgus iela 22, Liepāja, LV-3401",
+    "vzd_kods": "104477313",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-9"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.013057,
+     56.519065
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "kategorija": "evakuacijas_punkts",
+    "nosaukums": "Liepājas Raiņa vidusskolas stadions",
+    "adrese": "Ganību iela 106, Liepāja",
+    "pasvaldiba": "Liepāja",
+    "pasvaldiba_slug": "liepaja",
+    "nr_plana": 13,
+    "avots_teksts": "Avots: Liepājas CA plāns, lpp. 1",
+    "plans_url": "https://faili.liepaja.lv/CAP/12.-Pielikums.-Pulcēšanās-vietas-un-evakuācijas-koridori-Liepājas-un-DKN-STCAK-2026.pdf",
+    "plans_fails": "liepaja-12-pielikums-2026.md",
+    "lpp": 1,
+    "citats": "| 13. | Liepājas Raiņa vidusskolas stadions | Ganību iela 106 |",
+    "izdevejs": "Liepāja (pašvaldība)",
+    "geokodesana": "varis_address",
+    "adrese_vzd": "Ganību iela 106, Liepāja, LV-3411",
+    "vzd_kods": "102407264",
+    "plana_lat": null,
+    "plana_lon": null,
+    "koord_teksts": null,
+    "karodzini": [],
+    "komentars": "Avots: Liepājas CA plāns, lpp. 1 · vieta noteikta pēc adreses (VZD)",
+    "id": "liepaja-evak-10"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     21.015994,
+     56.497348
     ]
    }
   },

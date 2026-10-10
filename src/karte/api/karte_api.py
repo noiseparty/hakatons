@@ -5,7 +5,7 @@ Galapunkti:
   GET /api/avoti                       datu avoti: izdevējs, licence, saites, skaits, ielādes laiks
   GET /api/regioni                     pašvaldības un pilsētas (bez ģeometrijas, ar bbox)
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
-  GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..
+  GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..[&kritiskais=1]
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
   GET /api/adreses?q=brivibas 15 ogre&limit=8
                                        adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
@@ -189,15 +189,16 @@ def objekti(q):
     if (lat is None) != (lon is None):
         raise Kluda(400, "vajag gan lat, gan lon")
     limit = int(_skaitlis(q, "limit", 1, MAX_LIMIT) or 5000)
+    kritiskais = q.get("kritiskais", [""])[0] == "1"  # tikai kritiskie (banku bankomāti: skaidra nauda arī krīzē)
     atslega = (tuple(sorted(kategorijas_)), regions_, None if lat is None else round(lat, 5),
-               None if lon is None else round(lon, 5), limit)
-    return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit))
+               None if lon is None else round(lon, 5), limit, kritiskais)
+    return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais))
 
 
 _objektu_kesa = _LRU(64, 30)
 
 
-def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
+def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais=False):
     lieto_vietu = lat is not None
     return vaicat(
         """with x as (
@@ -209,6 +210,7 @@ def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
              where (o.derigs_lidz is null or o.derigs_lidz > now())
                and (cardinality(%(kat)s::text[]) = 0 or o.kategorija = any(%(kat)s::text[]))
                and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)
+               and (not %(krit)s or o.ipasibas->>'kritiskais' = '1')
              order by case when %(vieta)s then o.geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) end,
                       o.id
              limit %(limit)s)
@@ -220,7 +222,8 @@ def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
                         'attalums_m', attalums_m, 'ipasibas', ipasibas))
                     order by attalums_m nulls last, id), '[]'))
            from x""",
-        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_, "limit": limit},
+        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_, "limit": limit,
+         "krit": kritiskais},
         timeout="8s",
     )
 
@@ -2547,7 +2550,7 @@ def _pasvaldibas_dati():
 
 
 def pasvaldiba(q):
-    """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne un VPVKAC kontakts
+    """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne, UR kontakti un VPVKAC kontakts
     (src/karte/db/pasvaldibas.py → src/karte/dati/pasvaldibas.json)."""
     lat, lon = _vieta(q)
     kods = _punktu_kesa.iegut(("pasvaldiba", round(lat, 4), round(lon, 4)), lambda: vaicat(
@@ -2561,6 +2564,8 @@ def pasvaldiba(q):
     return {"kods": kods, **dati, "avoti": [
         {"nosaukums": "CA plāni hakatonam (pašvaldību tīmekļvietnes)", "licence": "Oficiāls dokuments",
          "url": "https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons"},
+        {"nosaukums": "Uzņēmumu reģistrs: publisko personu un iestāžu saraksts", "licence": "CC0 1.0",
+         "url": "https://data.gov.lv/dati/dataset/public-persons-institutions"},
         {"nosaukums": "VPVKAC paplašinātā tīkla kontaktpunkti (2022)", "licence": "CC0 1.0",
          "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
 
