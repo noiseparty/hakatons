@@ -35,15 +35,19 @@ const el = id => document.getElementById(id);
 el('tuvinat').addEventListener('click', () => karte.zoomIn());
 el('talinat').addEventListener('click', () => karte.zoomOut());
 el('mana-vieta').addEventListener('click', () => atrastMani());
-document.querySelectorAll('[data-pamats]').forEach(b => b.addEventListener('click', () => {
-  for (const [kods, slanis] of Object.entries(pamatkartes)) {
-    if (kods === b.dataset.pamats) slanis.addTo(karte); else slanis.remove();
-  }
-  document.querySelectorAll('[data-pamats]').forEach(x => {
-    x.classList.toggle('aktiva', x === b);
-    x.setAttribute('aria-pressed', x === b);
-  });
-}));
+// Pamatkartes slēdzis: viena poga kartes rīkjoslā (Karte ⇄ Reljefs), ikona rāda aktīvo fonu; izvēle saglabājas (localStorage)
+function pamatkarte(kods) {
+  for (const [k, slanis] of Object.entries(pamatkartes)) { if (k === kods) slanis.addTo(karte); else slanis.remove(); }
+  const poga = el('pamatkarte-poga');
+  poga.setAttribute('aria-pressed', String(kods === 'reljefs'));
+  poga.dataset.aktiva = kods;
+  poga.querySelector('.ik-karte').toggleAttribute('hidden', kods === 'reljefs');
+  poga.querySelector('.ik-reljefs').toggleAttribute('hidden', kods !== 'reljefs');
+  try { localStorage.setItem('pamatkarte', kods); } catch { /* privātais režīms */ }
+}
+el('pamatkarte-poga').addEventListener('click', () => pamatkarte(el('pamatkarte-poga').dataset.aktiva === 'reljefs' ? 'karte' : 'reljefs'));
+{ let saglabata = null; try { saglabata = localStorage.getItem('pamatkarte'); } catch { /* privātais režīms */ }
+  if (saglabata === 'reljefs') pamatkarte('reljefs'); else el('pamatkarte-poga').dataset.aktiva = 'karte'; }
 el('panelis-poga').addEventListener('click', () => {
   const atverts = !document.body.classList.toggle('panelis-slegts');
   el('panelis-poga').setAttribute('aria-expanded', atverts);

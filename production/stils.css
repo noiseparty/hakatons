@@ -101,21 +101,24 @@ button.otra:hover { background: var(--zils-gaiss); }
 .kartes-rikis { position: absolute; top: 10px; right: 10px; z-index: 500; display: flex; flex-direction: column; gap: 8px; }
 .kartes-rikis button { width: 38px; height: 38px; padding: 0; font-size: 1.25rem; line-height: 1; color: var(--zils); background: var(--virsma); border: 0; box-shadow: var(--ena); }
 .kartes-rikis button:hover { background: var(--zils); color: #fff; }
-.pamatkarte { position: absolute; bottom: 24px; right: 10px; z-index: 500; display: flex; gap: 4px; padding: 4px; background: var(--virsma); border-radius: var(--radiuss); box-shadow: var(--ena); }
-.pamatkarte button { width: auto; padding: .35rem .7rem; font-size: .82rem; border: 0; }
-.pamatkarte button:hover { background: var(--fons); }
-.pamatkarte button.aktiva { background: var(--zils); color: #fff; }
 
 .leaflet-popup-content-wrapper { border-radius: var(--radiuss); }
 .popup b { display: block; margin-bottom: .2rem; color: var(--zils); }
 .popup small { color: var(--teksts2); font-size: .75rem; }  /* >= 12 px ari loga (Leaflet pamats 12 px, small = 83 %) */
 .popup a { display: inline-block; margin-top: .4rem; font-weight: 600; color: var(--zils); }
-.marsruts { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin-top: .4rem; font-size: .75rem; color: var(--teksts2); }
-.marsruts a, .popup .marsruts a { margin: 0; padding: .2rem .55rem; border: 1px solid var(--zils); border-radius: 999px; font-size: .78rem; font-weight: 600; color: var(--zils); text-decoration: none; background: var(--virsma); }
-.marsruts a:hover { background: var(--zils-gaiss); }
-.rez-saraksts .marsruts { gap: 3px; }
+.marsruts { display: flex; flex-wrap: wrap; align-items: center; gap: 0; margin-top: .25rem; font-size: .78rem; color: var(--teksts2); }
+.marsruts > span { margin-right: .35rem; }
+/* Maršruta saites — vienkāršas hipersaites vienā rindā (bez pogu/burbuļu fona), visos platumos */
+.marsruts a, .popup .marsruts a { margin: 0; padding: .15rem .5rem; border: 0; border-radius: 0; background: none; font-size: .8rem; font-weight: 600; color: var(--zils); text-decoration: underline; text-underline-offset: 2px; }
+.marsruts a + a { border-left: 1px solid var(--linija, #d6d3d1); }
+.marsruts a:hover { background: none; text-decoration-thickness: 2px; }
 .rez-saraksts .marsruts a { padding: .1rem .4rem; font-size: .75rem; }
-.popup .marsruts + .popup-avots { margin-top: .5rem; }
+.popup .marsruts + .popup-avots { margin-top: .3rem; }
+/* Punkta logs: mazāk tukšās vietas (Leaflet noklusējums: 13 px lauki, 17 px rindkopu atstarpes) */
+.leaflet-popup-content { margin: 10px 14px 10px 14px; line-height: 1.35; }
+.leaflet-popup-content p { margin: .3rem 0; }
+.popup b { margin-bottom: .1rem; }
+.popup a { margin-top: .2rem; }
 
 /* Punktu grupas (leaflet.markercluster): aplis ar slāņu krāsu proporcijām un skaitu vidū */
 .grupa-ikona { display: grid; place-items: center; }
@@ -305,7 +308,6 @@ strong.nē { color: #287a41; }
   /* Kartes apakšējās vadīklas (mērogs, atsauces, pamatkarte) paceļas virs lapas */
   body.apaksa-aktiva:has(#apaksa:not([hidden])) .leaflet-bottom { bottom: calc(var(--apaksa-h, 0px) + 2px); }
   body.apaksa-aktiva #demo-cilne { z-index: 1001; }  /* demo cilne (demo.js) paliek pieejama arī virs atvērtas lapas */
-  body.apaksa-aktiva:has(#apaksa:not([hidden])) .pamatkarte { bottom: calc(var(--apaksa-h, 0px) + 44px); }
 }
 
 
@@ -588,7 +590,6 @@ body.saraksts-atverts #panelis > :not(#saraksts), body.saraksts-atverts .apaksa-
 @media (max-width: 800px) {
   .meklet-rinda input, .meklet-rinda button, #panelis-poga { min-height: 44px; }
   .kartes-rikis button { width: 44px; height: 44px; }
-  .pamatkarte button { min-height: 44px; }
   .grupa > summary, .kat { min-height: 44px; box-sizing: border-box; }  /* slāņu grupas un rūtiņu rindas (visa rinda ir mērķis) */
   .prog-poga, .prog-dienas button { min-height: 44px; }
   .prog-aizvert { width: 44px; height: 44px; }
@@ -669,7 +670,7 @@ body.saraksts-atverts #panelis > :not(#saraksts), body.saraksts-atverts .apaksa-
 .forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
 .celu-ikona span { color: #fff; }
 .celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
-.kartes-rikis .ik, #mana-vieta .ik { width: 22px; height: 22px; vertical-align: -.25em; }
+.kartes-rikis .ik, #mana-vieta .ik, #pamatkarte-poga .ik { width: 22px; height: 22px; vertical-align: -.25em; }
 .fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
 .demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
 .demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
@@ -771,16 +772,11 @@ body.ir-meklets .dv-pirmais { display: none; }
   body.apaksa-aktiva #kartes-laukums { flex: 1; height: auto; border-radius: 0; box-shadow: none; }
 
   /* Kartes vadība kā maketā: "Karte | Reljefs" augšā pa kreisi; + − ◎ slāņi labajā pusē */
-  body.apaksa-aktiva .pamatkarte, body.apaksa-aktiva:has(#apaksa:not([hidden])) .pamatkarte { top: calc(8px + var(--joslas-h)); left: 8px; right: auto; bottom: auto;
-    padding: 3px; gap: 2px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas); box-shadow: var(--ena-vid); }
-  body.apaksa-aktiva .pamatkarte button { min-height: 44px; padding: 0 .8rem; border-radius: 4px; font-size: .8rem; font-weight: 700; color: var(--teksts-blavs); background: none; }
-  body.apaksa-aktiva .pamatkarte button.aktiva { background: var(--tumsi-zils); color: #fff; }
   body.apaksa-aktiva .kartes-rikis { top: calc(8px + var(--joslas-h)); right: max(8px, env(safe-area-inset-right)); gap: 6px; }
   body.apaksa-aktiva .kartes-rikis button { display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid var(--pelks-3); border-radius: var(--radiuss-pogas);
     background: #fff; color: var(--tumsi-zils); box-shadow: var(--ena-vid); font-size: 1.35rem; }
   body.apaksa-aktiva .kartes-rikis button:active { background: var(--pelks-2); }
   body.apaksa-aktiva #slani-poga { display: grid; }
-  body.apaksa-aktiva:has(#apaksa[data-stavoklis="pilna"]:not([hidden]):not(.velk)) .pamatkarte,
   body.apaksa-aktiva:has(#apaksa[data-stavoklis="pilna"]:not([hidden]):not(.velk)) .kartes-rikis { visibility: hidden; }  /* "Pilns": kartes josla ~16 % — vadīklas tur pārgrieztas */
   /* Zems ekrāns (360 × 640): lapa "Puse" citādi aizsedz slāņu pogu — + − paslēpj (tuvina ar diviem pirkstiem), paliek ◎ un slāņi */
   @media (max-height: 700px) { body.apaksa-aktiva #tuvinat, body.apaksa-aktiva #talinat { display: none; } }
@@ -883,7 +879,7 @@ body.ir-meklets .dv-pirmais { display: none; }
 
   /* Kartes uznirstošie logi nekad nav augstāki par redzamo karti: saturs ritinās, ✕ paliek augšā (44 px) */
   body.apaksa-aktiva .leaflet-popup-content-wrapper { display: flex; flex-direction: column; max-height: min(60vh, calc(100dvh - 200px - env(safe-area-inset-top)), var(--popup-augstums, 100dvh)); overflow: hidden; }
-  body.apaksa-aktiva.popups-atverts #demo-cilne, body.apaksa-aktiva.popups-bez-pillas .pamatkarte { display: none; }  /* sheet.js: kamēr logs atvērts, demo cilne to neaizsedz */
+  body.apaksa-aktiva.popups-atverts #demo-cilne { display: none; }  /* sheet.js: kamēr logs atvērts, demo cilne to neaizsedz */
   body.apaksa-aktiva .leaflet-popup-content { overflow-y: auto; overscroll-behavior: contain; margin: 12px 14px; padding-right: 22px; min-height: 0; }
   body.apaksa-aktiva .leaflet-container a.leaflet-popup-close-button { z-index: 2; width: 44px; height: 44px; font: 24px/44px system-ui, sans-serif; top: 0; right: 0; }
 
@@ -1028,7 +1024,6 @@ header .valoda-sledzis button[aria-pressed="true"]::before { background: var(--t
   .apaksa-stavokli span { padding: 3px 10px; font-size: .7rem; }
   .lapa-temas button { min-height: 40px; }
   .lapa-temas span { padding: 4px 10px; font-size: .78rem; }
-  body.apaksa-aktiva .pamatkarte button { min-height: 40px; padding: 0 .7rem; }
   body.apaksa-aktiva .kartes-rikis button { width: 40px; height: 40px; }
   body.apaksa-aktiva #demo-cilne, body.apaksa-aktiva.demo-atverts #demo-cilne { top: calc(58px + var(--joslas-h)); min-height: 40px; }
 }
@@ -1048,3 +1043,11 @@ header .valoda-sledzis button[aria-pressed="true"]::before { background: var(--t
 .slana-zimite span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .slana-zimite b { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; min-height: 40px; margin: -1px 0; font-size: 1.3rem; line-height: 1; }
 .notirit-visus { padding: 0 .9rem; font-weight: 600; border-color: #b91c1c; color: #b91c1c; }
+
+/* Telefons ≤ 600 px: maršruta saites punkta logā */
+@media (max-width: 600px) {
+  .popup .marsruts a { min-height: 40px; display: inline-flex; align-items: center; padding: 0 .4rem; font-size: .78rem; }
+}
+#pamatkarte-poga svg[hidden] { display: none; }
+/* Telefons: rīkjoslā ir arī pamatkartes poga; + − paslēpti (tuvina ar diviem pirkstiem), lai josla neiekļūst lapā */
+@media (max-width: 600px) { body.apaksa-aktiva #tuvinat, body.apaksa-aktiva #talinat { display: none; } }
