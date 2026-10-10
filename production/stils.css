@@ -490,6 +490,14 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 #avoti-saraksts .simulets { opacity: .9; }
 .sim-zime { display: inline-block; margin-right: .35rem; padding: 0 .4rem; border-radius: 4px; background: #fde68a; color: #713f12; font-size: .7rem; font-weight: 700; letter-spacing: .02em; vertical-align: 1px; }
 
+/* Abonēšana (RSS / kalendārs) rezultāta kartītē un prognožu panelī */
+.abonet-rinda, .prog-abonet { margin: .2rem 0 .3rem; font-size: .82rem; color: var(--teksts2); }
+.abonet-rinda a, .prog-abonet a { color: var(--zils-tumss); }
+/* ==== Galvenes "Ziņot" poga (zinot.js); A un D to novieto savos izkārtojumos ==== */
+.galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
+.galvene-poga:hover { background: rgba(0, 0, 0, .32); }
+@media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
+
 /* Kopīgie dizaina marķieri (tie paši nosaukumi kā termināļa A datora maketā; vērtības no notes/mockup/*.html) */
 :root {
   --tumsi-zils: #172B3F; --tumsi-zils-gaiss: #243E56; --zils-primars: #1E66D5; --karmins: #9E3039;
