@@ -178,7 +178,7 @@ def main():
 <header class="augsa">
   <div class="augsa-iekss">
     <h1>Krīzes karte <span>· Ko vēl vajadzētu publicēt</span></h1>
-    <a class="atpakal" href="./">← Uz karti</a>
+    <a class="atpakal" href="/map">← Uz karti</a>
   </div>
 </header>
 <main class="saturs info trukstosie">

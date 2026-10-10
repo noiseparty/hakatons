@@ -28,7 +28,7 @@ for (const [w, h] of [[375, 740], [1280, 800]]) {
   const p = await ctx.newPage();
   const jsKludas = [];
   p.on('pageerror', e => jsKludas.push(String(e)));
-  await p.goto(`http://127.0.0.1:${PORT}/`, { waitUntil: 'load' });
+  await p.goto(`http://127.0.0.1:${PORT}/map`, { waitUntil: 'load' });
   await p.waitForTimeout(2500);
   const fokuss = () => p.evaluate(() => {
     const a = document.activeElement;

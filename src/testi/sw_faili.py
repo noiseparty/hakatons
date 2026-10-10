@@ -16,7 +16,7 @@ import re
 import sys
 
 PROD = pathlib.Path(__file__).resolve().parents[2] / "production"
-LAPAS = ["index.html", "info.html", "statuss.html", "api.html", "trukstosie.html"]
+LAPAS = ["index.html", "map.html", "info.html", "statuss.html", "api.html", "trukstosie.html"]
 NEVAJAG = {"og.png", "slaidi.html", "moderacija.html", "sw.js"}
 HTML_ATS = re.compile(r'''(?:src|href)\s*=\s*["']([^"'#?]+)''')
 CITAT = re.compile(r'''["'`]([A-Za-z0-9_./-]+\.(?:js|css|json|geojson|svg|png|html|webmanifest))["'`]''')
@@ -63,7 +63,7 @@ def shell_faili():
             f = _faila_cels(baze, a)
             if f and f not in atrasti and f not in rinda:
                 rinda.append(f)
-    return ["./"] + atrasti
+    return ["./", "map"] + atrasti  # / (sākumlapa) un /map (karte, Caddy {path}.html)
 
 
 def _formatet(faili):

@@ -288,7 +288,7 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
                 pieraksts(skats, nos, statuss, f"{ilgums:4.1f} s" + (" · " + " | ".join(sarkani + dzelteni) if sarkani or dzelteni else ""))
 
             def atvert_sakumu():
-                lapa.goto(bazes_url + "/", wait_until="networkidle", timeout=60000)
+                lapa.goto(bazes_url + "/map", wait_until="networkidle", timeout=60000)
             solis("sākumlapa", atvert_sakumu)
 
             for v in VAICAJUMI:
@@ -308,7 +308,7 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
             for kods in DEMO:
                 def demo(kods=kods):
                     # ne "networkidle": LVĢMC plūdu WMS flīzes (pludi-ogre) atbild 5–30 s, bet kartīte gatava ~4 s
-                    lapa.goto(f"{bazes_url}/?demo={kods}", wait_until="domcontentloaded", timeout=60000)
+                    lapa.goto(f"{bazes_url}/map?demo={kods}", wait_until="domcontentloaded", timeout=60000)
                     lapa.wait_for_function("document.body.classList.contains('demo-aktivs') && !!document.querySelector('.demo-kartite')"
                                            " && !document.querySelector('#demo-saturs').textContent.includes('Ielādē tuvākās')", timeout=30000)
                     lapa.wait_for_timeout(800)
@@ -323,7 +323,7 @@ def parluka_parbaude(bazes_url, ekrani, tikai_telefons):
             solis("Beigt demo", beigt)
 
             def prognoze():
-                lapa.goto(bazes_url + "/", wait_until="networkidle", timeout=60000)
+                lapa.goto(bazes_url + "/map", wait_until="networkidle", timeout=60000)
                 lapa.wait_for_selector("#prognozes:not([hidden])", state="attached", timeout=60000)  # telefonā — slēptā cilnē
                 if lapa.locator("#cilne-situacija").is_visible():  # telefonā prognoze ir lapas cilnē "Situācija tagad"
                     lapa.click('.apaksa-stavokli [data-st="pilna"]')

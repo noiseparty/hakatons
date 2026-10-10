@@ -53,7 +53,7 @@ def main():
         lapa = ctx.new_page()
         lapa.on("pageerror", lambda e: kludas.append(str(e)))
         try:
-            lapa.goto(a.url + "/", wait_until="load")
+            lapa.goto(a.url + "/map", wait_until="load")
             lapa.evaluate("navigator.serviceWorker.ready")
             lapa.wait_for_function("!!navigator.serviceWorker.controller", timeout=15000)
             ieraksts("SW aktīvs pirmajā apmeklējumā", versija(lapa) == vecā, versija(lapa))
@@ -89,7 +89,7 @@ def main():
             ieraksts("statuss.html rāda SW versiju", jaunā in t, t)
 
             lapa.evaluate("caches.open('svaigs-marķieris').then(c => c.put('/marķieris', new Response('x')))")
-            lapa.goto(a.url + "/?svaigs=1", wait_until="load")
+            lapa.goto(a.url + "/map?svaigs=1", wait_until="load")
             lapa.wait_for_url(lambda u: "svaigs" not in u, timeout=15000)
             lapa.wait_for_load_state("load")
             k = kesi(lapa)

@@ -1,5 +1,7 @@
 // Sākumlapa: dzīvie skaitļi (/api/kategorijas), plūsmu stāvoklis (/api/veseliba), avoti (/api/avoti + tiešsaistes avoti).
 (() => {
+  // Vecās saites (/?q=…, /#…, ?lat=…) ved uz karti, kas tagad ir /map.
+  if (location.search || location.hash) { location.replace('/map' + location.search + location.hash); return; }
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = id => document.getElementById(id);
   const json = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });

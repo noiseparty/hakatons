@@ -27,7 +27,7 @@ map.repo.lv {
 			not path /sw.js
 		}
 		header @statiski Cache-Control "public, max-age=300"
-		@lapas path / *.html /sw.js
+		@lapas path / /map *.html /sw.js
 		header @lapas Cache-Control "no-cache"
 		file_server
 	}
