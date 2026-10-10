@@ -80,7 +80,7 @@ curl -s https://map.repo.lv/api/veseliba                                   # API
 
 ## Team workflow
 
-- Never commit to `main` directly: branch as `<name>/<topic>`, push, open a PR (details in `README.md`).
+- **Since 2026-10-10 ~10:40 (user decision): no PRs.** `main` has no PR requirement any more. Work on `<name>/<topic>`, then `git pull --rebase origin main` and `git push origin HEAD:main` (never force). A broken push is acceptable; restore from git. This overrides the PR/merge rules below.
 - Dev machines are Windows (PowerShell); `.gitattributes` normalizes to LF.
 - Secrets go in `.env` / `dati/` (gitignored). The repo is public.
 - `TODO.md` is the shared task log (pending / in progress / done, each with timestamp and GitHub username). Follow the `todo` skill (`.claude/skills/todo/SKILL.md`): after finishing a piece of work, mark its task done and add follow-ups in the same commit; never guess the time or user, get them from `Get-Date` and `gh api user --jq .login`.
