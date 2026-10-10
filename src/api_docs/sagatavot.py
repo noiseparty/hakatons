@@ -74,7 +74,7 @@ SPEC = [
     ("/api/pludi", "Plūdu riska zona punktā", "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).",
      [(*LAT, True), (*LON, True)], "?lat=56.81096&lon=24.61059",
      [("LVĢMC 3. cikla plūdu riska kartes (WMS, ĢeoLatvija.lv)", "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1", *CC0)],
-     "Avots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h."),
+     "Secība: LVĢMC karšu kopija PostGIS (metode \"PostGIS kopija\", 10 % un 1 %) → LVĢMC WMS (\"LVĢMC WMS\") ar kešu pēc punkta (~10 m) 7 dienas (\"kešs no HH:MM\"; ja LVĢMC neatbild — arī vecāks, ar novecojis: true) → {zinams: false, iemesls}. WMS ne 6 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Lauki: zinams, zona, veidi, metode, varbutibas (pārbaudītās kartes, %), avota_info."),
     ("/api/udens", "Ūdens līmenis upēs", "Tuvākās LVĢMC hidroloģiskās stacijas: līmenis (cm virs posteņa nulles), izmaiņa 24 h, prognoze 7 dienām.",
      [(*LAT, True), (*LON, True), ("limit", "integer", "1–10, noklusēti 3", "1", False)], "?lat=56.8166&lon=24.6046&limit=2",
      [("LVĢMC hidroloģiskie novērojumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi", *CC0),

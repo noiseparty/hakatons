@@ -17,7 +17,8 @@ Galapunkti:
                                        ?poligoni=1 — arī brīdinājumu apgabali [[lat, lon], ...] (zonas.js)
                                        LVĢMC nav pieejams > 15 min vai > 15 min tukšs → rezerves avots Meteoalarm
                                        (CAP/Atom, kešs 5 min): tā pati forma + "rezerves": true, "atruna", "izdots"
-  GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
+  GET /api/pludi?lat=..&lon=..[&wms=1] vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes): PostGIS kopija
+                                       (pludu_zonas) → LVĢMC WMS ar kešu pludi_kesa (7 d) → {"zinams": false}
   GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
                                        + prognoze 7 dienām (LVĢMC hidroloģiskās prognozes, kešs 1 h)
                                        + slieksnis, kritiskais (m LAS), statuss normāls|paaugstināts|kritisks
@@ -44,7 +45,8 @@ Galapunkti:
   GET /api/kalendars.ics[?regions=..]  brīdinājumi kā iCalendar notikumi (kalendāra lietotnēm)
   GET /api/statuss                     statusa lapa: vietnes, API un datu avotu stāvoklis, 24 h pa 15 min, 7 dienu pieejamība
 
-Brīdinājumi, plūdi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā.
+Brīdinājumi un ūdens līmenis nāk tieši no atvērto datu avotiem (bez datubāzes), kešoti atmiņā; plūdu zonas —
+no PostGIS kopijas (pludu_zonas), ja tās nav — no LVĢMC WMS ar kešu datubāzē (pludi_kesa).
 
 Palaišana: MAP_DB_DSN=postgresql://map_api:...@127.0.0.1/map python3 karte_api.py [ports]
 Tikai standarta bibliotēka + psycopg 3 (Ubuntu: python3-psycopg).
@@ -755,17 +757,48 @@ def _bridinajumu_salidzinajums():
             "rezerves_aktivs": _rezerves_aktivs()}
 
 
-# Plūdu riska zonas: LVĢMC "3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes" (2026–2031), CC0 1.0,
-# WMS caur ĢeoLatvija.lv (geo-dpps.viss.gov.lv). Slāņa nr → atkārtošanās varbūtība gadā, %.
+# Plūdu riska zonas: LVĢMC "3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes" (2026–2031).
+# /api/pludi atbild šādā secībā (lai demo un krīzē atbilde nekad nav "neizdevās"):
+#   a) PostGIS tabula pludu_zonas: lokāla kopija no ĢeoLatvija.lv SHP failiem (src/karte/db/pludu_zonas.py), ja tajā
+#      ir rindas — ~10 ms, nav atkarīga no LVĢMC servisa;
+#   b) citādi LVĢMC WMS GetFeatureInfo (geo-dpps.viss.gov.lv; mēdz atbildēt 1–30 s vai nemaz) ar pastāvīgu kešu
+#      pludi_kesa (koordinātas 4 zīmes ≈ 10 m; derīgs 7 dienas; ja LVĢMC neatbild — arī vecāks, ar "novecojis");
+#   c) nekas nav zināms → 200 {"zinams": false, "iemesls": …}, nevis 503 — kartīte to pasaka godīgi.
+# Atbildē "avots" (avoti.kods) un "metode": "PostGIS kopija" / "LVĢMC WMS" / "kešs no HH:MM".
+# ?wms=1 — izlaist a) (pludi_siltums.py: piepilda kešu un salīdzina ar kopiju). Slāņa nr → varbūtība gadā, %.
 PLUDU_WMS = "https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/"
 PLUDU_SERVISI = [
     ("pavasara pali", "3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092", {"3": 10, "2": 10, "1": 1, "0": 0.5}),
     ("ledus sastrēgumi", "3._cikla_L_558_jIS73E/3322e012-8cb3-4a4c-8acf-a467e25a17b3", {"2": 10, "1": 1, "0": 0.5}),
     ("jūras vējuzplūdi", "3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea", {"2": 10, "1": 1, "0": 0.5}),
 ]
+PLUDU_AVOTI = {  # avoti.kods → kartītes avota rinda
+    "lvgmc-pludi-faili": {"nosaukums": "LVĢMC plūdu riska kartes 2026–2031 (ĢeoLatvija.lv faili)", "licence": "CC BY-SA 4.0",
+                          "url": "https://geolatvija.lv/main?geoProductId=361"},
+    "lvgmc-pludi": {"nosaukums": "LVĢMC plūdu riska kartes 2026–2031", "licence": "CC0 1.0",
+                    "url": "https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1"},
+}
+PLUDU_WMS_VARBUTIBAS = [10, 1, 0.5]  # kuras kartes WMS pārbauda (atbildē "varbutibas")
+PLUDU_TAIMAUTS = 20         # s, viens WMS pieprasījums
+PLUDU_MAX_GAIDIT = 6        # s: lietotājs gaida ne ilgāk (sw.js tīkla taimauts ir 8 s); tad 202 un pārbaude turpinās fonā
+PLUDU_MAX_DARBI = 8         # vienlaicīgas WMS pārbaudes (katra = 3 pieprasījumi); vairāk — kā "neatbild"
+PLUDU_KLUDAS_PAUZE = 60     # s: pēc LVĢMC kļūmes negaidām to vēlreiz — uzreiz kešs vai "nav zināms" (pārbaude iet fonā)
+PLUDU_KESA_DERIGA = 7 * 86400
+PLUDU_KESA_NEPILNIGA = 600  # daļa karšu neatbildēja: tādu atbildi pēc 10 min jautā vēlreiz
+PLUDU_NEATBILD = "LVĢMC plūdu karte šobrīd neatbild"
+PLUDI_SHEMA = """
+create table if not exists pludi_kesa (
+  atslega text primary key,
+  atbilde jsonb not null,
+  laiks   timestamptz not null default now()
+);
+grant select, insert, update on pludi_kesa to map_api;
+"""  # tas pats bloks ir src/karte/db/shema.sql
 _pludu_pavedieni = ThreadPoolExecutor(max_workers=6)
-_pludu_rinda = [0]  # cik WMS pieprasījumu gaida vai iet; virs PLUDU_MAX_RINDA — 503, nevis bezgalīga rinda
-PLUDU_MAX_RINDA = 30
+_pludu_gaidisana = ThreadPoolExecutor(max_workers=PLUDU_MAX_DARBI)
+_pludu_darbi = {}                 # atslēga → Future: viena WMS pārbaude vietai vienlaikus
+_pludu_kluda = [0.0]              # pēdējās LVĢMC kļūmes laiks
+_pludu_kopija = {"ir": None, "parbaudits": 0.0, "varbutibas": []}  # vai pludu_zonas ir rindas (pārbauda ik 5 min)
 
 
 def _pludu_serviss(veids, cels, slani, lat, lon):
@@ -777,54 +810,188 @@ def _pludu_serviss(veids, cels, slani, lat, lon):
         "feature_count": 10,
     }
     url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
-    atrasti = json.loads(_lejupieladet(url, timeout=25)).get("features", [])
+    atrasti = json.loads(_lejupieladet(url, timeout=PLUDU_TAIMAUTS)).get("features", [])
     varbutibas = [slani[f["layerName"]] for f in atrasti if f.get("layerName") in slani]
     return {"veids": veids, "varbutiba_proc": max(varbutibas)} if varbutibas else None
 
 
+def _pludu_proc(v):
+    v = float(v)
+    return int(v) if v.is_integer() else v
+
+
+def _riga_laiks(sekundes):
+    try:
+        from zoneinfo import ZoneInfo
+        return datetime.fromtimestamp(sekundes, ZoneInfo("Europe/Riga"))
+    except Exception:  # bez tzdata (Windows): kā _riga_tagad
+        utc = datetime.fromtimestamp(sekundes, timezone.utc)
+        return utc + timedelta(hours=3 if 3 < utc.month < 11 else 2)
+
+
+def _pludu_kopija_ir():
+    tagad = time.time()
+    if _pludu_kopija["ir"] is not None and tagad - _pludu_kopija["parbaudits"] < 300:
+        return _pludu_kopija["ir"]
+    try:  # kuras varbūtības kopijā ir (pludu_zonas.py noklusēti 10 % un 1 %)
+        varbutibas = vaicat("select json_agg(distinct varbutiba::float8) from pludu_zonas", timeout="5s") or []
+    except (psycopg.Error, Kluda):  # tabulas vēl nav (shēma nav palaista) vai DB nav — tad WMS
+        varbutibas = []
+    varbutibas = sorted((_pludu_proc(v) for v in varbutibas), reverse=True)
+    _pludu_kopija.update(ir=bool(varbutibas), parbaudits=tagad, varbutibas=varbutibas)
+    return bool(varbutibas)
+
+
+def _pludi_postgis(lat, lon):
+    rindas = vaicat("""
+        select coalesce(json_agg(json_build_object('veids', veids, 'varbutiba_proc', v) order by v desc, veids), '[]')
+        from (select veids, max(varbutiba::float8) as v from pludu_zonas
+              where st_intersects(geom, st_setsrid(st_makepoint(%s, %s), 4326)) group by veids) t""",
+                    (lon, lat), timeout="3s")
+    veidi = [{"veids": r["veids"], "varbutiba_proc": _pludu_proc(r["varbutiba_proc"])} for r in rindas]
+    return {"avots": "lvgmc-pludi-faili", "avota_info": PLUDU_AVOTI["lvgmc-pludi-faili"], "zinams": True,
+            "zona": bool(veidi), "veidi": veidi, "nepilnigi": False, "metode": "PostGIS kopija",
+            "varbutibas": _pludu_kopija["varbutibas"]}
+
+
+def _pludu_kesa_lasit(atslega):
+    """(laiks, atbilde) no atmiņas vai pludi_kesa; None, ja nav."""
+    with _kesas_slots:
+        ieraksts = _kesa.get(("pludi", atslega))
+    if ieraksts:
+        return ieraksts
+    try:
+        r = vaicat("""select json_build_object('atbilde', atbilde, 'laiks', extract(epoch from laiks))
+                      from pludi_kesa where atslega = %s""", (atslega,), timeout="2s")
+    except (psycopg.Error, Kluda):
+        return None
+    if not r:
+        return None
+    ieraksts = (float(r["laiks"]), r["atbilde"])
+    with _kesas_slots:
+        _kesa[("pludi", atslega)] = ieraksts
+    return ieraksts
+
+
+def _pludu_kesa_rakstit(atslega, atbilde):
+    with _kesas_slots:
+        _kesa[("pludi", atslega)] = (time.time(), atbilde)
+    if not DSN:
+        return
+    try:
+        with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '3s'")
+            cur.execute("""insert into pludi_kesa (atslega, atbilde, laiks) values (%s, %s::jsonb, now())
+                           on conflict (atslega) do update set atbilde = excluded.atbilde, laiks = excluded.laiks""",
+                        (atslega, json.dumps(atbilde, ensure_ascii=False)))
+    except psycopg.Error as e:
+        print(f"pludi: kešu neizdevās saglabāt ({atslega}): {e}", file=sys.stderr)
+
+
+def _pludu_wms(atslega, lat, lon):
+    """Visi 3 WMS paralēli; ja neatbild neviens — izņēmums. Veiksmīgu atbildi saglabā kešā (arī DB)."""
+    darbi = [_pludu_pavedieni.submit(_pludu_serviss, v, c, s, lat, lon) for v, c, s in PLUDU_SERVISI]
+    veidi, kludas = [], 0
+    for d in darbi:
+        try:
+            r = d.result()
+        except Exception:  # noqa: BLE001  taimauts, 503, formāts
+            kludas += 1
+            continue
+        if r:
+            veidi.append(r)
+    if kludas == len(darbi):
+        _pludu_kluda[0] = time.time()
+        raise RuntimeError("neviens plūdu WMS neatbild")
+    veidi.sort(key=lambda v: -v["varbutiba_proc"])
+    atbilde = {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
+    _pludu_kesa_rakstit(atslega, atbilde)
+    return atbilde
+
+
+def _pludu_darbs(atslega, lat, lon):
+    """Esošā vai jauna WMS pārbaude šai vietai (Future); None, ja jau iet PLUDU_MAX_DARBI pārbaudes."""
+    with _kesas_slots:
+        darbs = _pludu_darbi.get(atslega)
+        if darbs and not darbs.done():
+            return darbs
+        if sum(1 for d in _pludu_darbi.values() if not d.done()) >= PLUDU_MAX_DARBI:
+            return None
+        darbs = _pludu_gaidisana.submit(_pludu_wms, atslega, lat, lon)
+        _pludu_darbi[atslega] = darbs
+
+    def beigas(_d):
+        with _kesas_slots:
+            if _pludu_darbi.get(atslega) is darbs:
+                del _pludu_darbi[atslega]
+    darbs.add_done_callback(beigas)
+    return darbs
+
+
+def _pludu_no_kesas(ieraksts, novecojis):
+    laiks, atbilde = ieraksts
+    lv, sodien = _riga_laiks(laiks), _riga_laiks(time.time())
+    kad = lv.strftime("%H:%M") if lv.date() == sodien.date() else lv.strftime("%d.%m. %H:%M")
+    r = {**atbilde, "avota_info": PLUDU_AVOTI["lvgmc-pludi"], "zinams": True, "metode": f"kešs no {kad}",
+         "varbutibas": PLUDU_WMS_VARBUTIBAS,
+         "laiks": datetime.fromtimestamp(laiks, timezone.utc).isoformat(timespec="seconds")}
+    if novecojis:  # LVĢMC neatbild: pēdējā zināmā atbilde; pārlūks to nekešo (no-store)
+        r.update(novecojis=True, iemesls=PLUDU_NEATBILD, _statuss=200)
+    return r
+
+
+def _pludu_nezinams():
+    # "ielade": true — vecā meklesana.js (pirms šīs versijas) to rāda kā "atbild lēni", nevis kā "nē"
+    return {"_statuss": 200, "avots": "lvgmc-pludi", "avota_info": PLUDU_AVOTI["lvgmc-pludi"], "zinams": False,
+            "iemesls": PLUDU_NEATBILD, "zona": None, "veidi": [], "metode": None, "ielade": True}
+
+
 def pludi(q):
     lat, lon = _vieta(q)
-    lat, lon = round(lat, 3), round(lon, 3)  # ~100 × 60 m; kešs pēc tā (mazāk pieprasījumu uz geo-dpps)
+    if (q.get("wms") or [""])[0] != "1" and _pludu_kopija_ir():
+        try:
+            return _pludi_postgis(lat, lon)
+        except (psycopg.Error, Kluda) as e:  # DB lēna vai nav: tālāk WMS / kešs
+            print(f"pludi: PostGIS neizdevās: {e}", file=sys.stderr)
+    lat, lon = round(lat, 4), round(lon, 4)  # ~10 m; kešs pēc tā
+    atslega = f"{lat:.4f},{lon:.4f}"
+    ieraksts = _pludu_kesa_lasit(atslega)
+    if ieraksts:
+        vecums = time.time() - ieraksts[0]
+        if vecums < (PLUDU_KESA_NEPILNIGA if ieraksts[1].get("nepilnigi") else PLUDU_KESA_DERIGA):
+            return _pludu_no_kesas(ieraksts, novecojis=False)
 
-    def gatavs(_d):
-        with _kesas_slots:
-            _pludu_rinda[0] -= 1
-
-    def parbaudit():
-        with _kesas_slots:
-            if _pludu_rinda[0] + len(PLUDU_SERVISI) > PLUDU_MAX_RINDA:
-                raise Kluda(503, "plūdu pārbaude pārslogota, mēģiniet pēc brīža")
-            _pludu_rinda[0] += len(PLUDU_SERVISI)
-        darbi = [_pludu_pavedieni.submit(_pludu_serviss, v, c, s, lat, lon) for v, c, s in PLUDU_SERVISI]
-        for d in darbi:
-            d.add_done_callback(gatavs)
-        veidi, kludas = [], 0
-        for d in darbi:
-            try:
-                r = d.result()
-            except Exception:
-                kludas += 1
-                continue
-            if r:
-                veidi.append(r)
-        if kludas == len(darbi):
-            raise RuntimeError("neviens plūdu WMS neatbild")
-        veidi.sort(key=lambda v: -v["varbutiba_proc"])
-        return {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
-
-    # serviss mēdz atbildēt 1–30 s (taimauts 25 s); ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min.
-    # Lietotājs gaida ne ilgāk par PLUDU_MAX_GAIDIT s: tad 202, un pārbaude turpinās fonā (nākamais pieprasījums — no kešas).
-    darbs = _pludu_gaidisana.submit(_kesots, ("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
+    darbs = _pludu_darbs(atslega, lat, lon)
+    nesen_kluda = time.time() - _pludu_kluda[0] < PLUDU_KLUDAS_PAUZE
+    if darbs is None or (nesen_kluda and not darbs.done()):
+        # pārslogots vai LVĢMC tikko neatbildēja: negaidām — kešs vai "nav zināms" (pārbaude, ja sākta, iet fonā)
+        return _pludu_no_kesas(ieraksts, novecojis=True) if ieraksts else _pludu_nezinams()
     try:
-        return darbs.result(timeout=PLUDU_MAX_GAIDIT)
+        atbilde = darbs.result(timeout=PLUDU_MAX_GAIDIT)
     except (TimeoutError, concurrent.futures.TimeoutError):
+        if ieraksts:
+            return _pludu_no_kesas(ieraksts, novecojis=True)
+        # pirmā gaidīšana: 202, pārbaude turpinās fonā; kartīte jautā vēlreiz pēc 10 s
         return {"_statuss": 202, "ielade": True, "zinojums": "Plūdu kartes ielādējas, mēģiniet pēc 10 s."}
+    except Exception:  # noqa: BLE001  LVĢMC neatbild
+        return _pludu_no_kesas(ieraksts, novecojis=True) if ieraksts else _pludu_nezinams()
+    return {**atbilde, "avota_info": PLUDU_AVOTI["lvgmc-pludi"], "zinams": True, "metode": "LVĢMC WMS",
+            "varbutibas": PLUDU_WMS_VARBUTIBAS}
+
+
+def _pludi_shema():
+    """API startā: izveido pludi_kesa, ja tās nav (ar MAP_DB_OWNER_DSN); kļūda neaptur API."""
+    if not STATUSS_DSN:
+        return
+    try:
+        with psycopg.connect(STATUSS_DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '10s'")
+            cur.execute(PLUDI_SHEMA)
+    except psycopg.Error as e:
+        print(f"pludi: kešu tabulu neizdevās izveidot: {e}", file=sys.stderr)
 
 
 import concurrent.futures  # noqa: E402
-
-PLUDU_MAX_GAIDIT = 25
-_pludu_gaidisana = ThreadPoolExecutor(max_workers=8)
 
 
 def udens(q):
@@ -3757,6 +3924,7 @@ def main():
     ports = int(sys.argv[1]) if len(sys.argv) > 1 else 8920
     threading.Thread(target=_statuss_cikls, name="statuss", daemon=True).start()
     threading.Thread(target=_zinojumi_shema, name="zinojumi", daemon=True).start()
+    threading.Thread(target=_pludi_shema, name="pludi", daemon=True).start()
     Serveris(("127.0.0.1", ports), Apstradatajs).serve_forever()
 
 

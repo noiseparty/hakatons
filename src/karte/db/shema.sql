@@ -392,3 +392,36 @@ on conflict (kods) do update set
   nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
   licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
   lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
+
+-- ==== Plūdu riska zonas: lokāla kopija (src/karte/db/pludu_zonas.py) un LVĢMC WMS atbilžu kešs (karte_api.py /api/pludi) ====
+-- /api/pludi: a) pludu_zonas (ja ir rindas) → b) LVĢMC WMS + pludi_kesa (7 dienas; ja LVĢMC neatbild — arī vecāks) → c) "nav zināms".
+-- pludu_zonas ielādē pludu_zonas.py ieladet (atjaunot_visu.sh, ja src/karte/dati/pludu_zonas.geojson.gz mainījies);
+-- lielie poligoni sadalīti gabalos (ST_Subdivide), nr = avota poligona nr. failā.
+create table if not exists pludu_zonas (
+  id        bigserial primary key,
+  nr        int not null,             -- avota poligona nr. failā; lielie poligoni sadalīti vairākās rindās
+  veids     text not null,            -- pavasara pali | ledus sastrēgumi | jūras vējuzplūdi
+  varbutiba text not null,
+  geom      geometry(MultiPolygon, 4326) not null
+);
+create index if not exists pludu_zonas_geom_idx on pludu_zonas using gist (geom);
+grant select on pludu_zonas to map_api;
+-- WMS atbildes pēc koordinātām (4 zīmes ≈ 10 m); API to izveido arī pats startā (PLUDI_SHEMA failā karte_api.py)
+create table if not exists pludi_kesa (
+  atslega text primary key,
+  atbilde jsonb not null,
+  laiks   timestamptz not null default now()
+);
+grant select, insert, update on pludi_kesa to map_api;
+
+insert into avoti (kods, nosaukums, izdevejs, licence, licences_url, atverts, datu_kopa_url, lejupielade, lietojums, piezime, kartiba) values
+  ('lvgmc-pludi-faili', '3. cikla Latvijas plūdu postījumu vietu un plūdu riska kartes (2026–2031), SHP faili', 'Latvijas Vides, ģeoloģijas un meteoroloģijas centrs / ĢeoLatvija.lv',
+   'CC BY-SA 4.0', 'https://creativecommons.org/licenses/by-sa/4.0/legalcode.lv', true,
+   'https://geolatvija.lv/main?geoProductId=361',
+   'ĢeoLatvija.lv ģeoprodukta 361 faili Pavasara_pali_3_cikls.zip, Ledus_pludi_3_cikls.zip, Juras_pludi_3_cikls.zip (src/karte/db/pludu_zonas.py) → src/karte/dati/pludu_zonas.geojson.gz → PostGIS pludu_zonas',
+   'Vai adrese ir applūstošā teritorijā (/api/pludi bez LVĢMC WMS)',
+   'Licence no ĢeoLatvija.lv faila lapas (data.gov.lv kopā norādīts CC0 1.0). Kontūras vienkāršotas ar 2 m pielaidi (LKS-92 TM); ūdens dziļuma klases ir maksas dati, kopijā nav.', 78)
+on conflict (kods) do update set
+  nosaukums = excluded.nosaukums, izdevejs = excluded.izdevejs, licence = excluded.licence,
+  licences_url = excluded.licences_url, atverts = excluded.atverts, datu_kopa_url = excluded.datu_kopa_url,
+  lejupielade = excluded.lejupielade, lietojums = excluded.lietojums, piezime = excluded.piezime, kartiba = excluded.kartiba;
