@@ -49,7 +49,7 @@ def main():
         lapa.on("pageerror", lambda e: kludas.append(f"{lapa.url}: {e}"))
 
         # 1) ar tīklu
-        lapa.goto(url + "/", wait_until="load")
+        lapa.goto(url + "/map", wait_until="load")
         lapa.fill("#jautajums", "Ogre, plūdi")
         lapa.press("#jautajums", "Enter")
         try:
@@ -131,7 +131,7 @@ def main():
 
         # 4) ?demo=bez-sakariem bez tīkla
         try:
-            lapa.goto(url + "/?demo=bez-sakariem", wait_until="load", timeout=30000)
+            lapa.goto(url + "/map?demo=bez-sakariem", wait_until="load", timeout=30000)
             lapa.wait_for_timeout(6000)
             d = lapa.evaluate("""() => ({
               demo: !!document.querySelector('.demo-josla, #demo-josla, [class*="demo"]:not(link)'),

@@ -229,7 +229,7 @@ async def punkts(parluks, bazes_url, proxy, nos, var, scenariji, kategorijas, kl
     lapa = await ctx.new_page()
     js_kludas = []
     lapa.on("pageerror", lambda e: js_kludas.append(str(e)[:160]))
-    await lapa.goto(bazes_url + "/", wait_until="networkidle", timeout=60000)
+    await lapa.goto(bazes_url + "/map", wait_until="networkidle", timeout=60000)
     await lapa.wait_for_function("!document.getElementById('jautajums').disabled && typeof Klasifikators !== 'undefined'", timeout=30000)
     if var["geo"]:
         await lapa.wait_for_function("typeof stavoklis !== 'undefined' && !!stavoklis.vieta", timeout=15000)
@@ -365,7 +365,7 @@ async def robezgadijumi(parluks, bazes_url, proxy, kludas):
         lapa = await ctx.new_page()
         js_kludas = []
         lapa.on("pageerror", lambda e: js_kludas.append(str(e)[:160]))
-        await lapa.goto(bazes_url + "/", wait_until="load", timeout=60000)  # ar bojātu API lapa atkārto pieprasījumus
+        await lapa.goto(bazes_url + "/map", wait_until="load", timeout=60000)  # ar bojātu API lapa atkārto pieprasījumus
         await lapa.wait_for_function("!document.getElementById('jautajums').disabled && typeof Klasifikators !== 'undefined'", timeout=30000)
         await lapa.wait_for_timeout(2500)
         await lapa.fill("#jautajums", q)

@@ -1,200 +1,72 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="lv">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="format-detection" content="telephone=no">
-<title>Latvijas krīzes karte · map.repo.lv</title>
-<meta name="description" content="Uzrakstiet, kas notiek un kur: tuvākās evakuācijas un izmitināšanas vietas, patvertnes, slimnīcas, LVĢMC brīdinājumi un plūdu risks no atvērtajiem datiem.">
-<!-- Ātrums telefonā (notes/atrums.md): meklēšanai vajadzīgie dati sāk ielādēties uzreiz, nevis pēc visiem skriptiem;
-     Leaflet ir repozitorijā (vendor/leaflet, tie paši faili, kas unpkg) — bez trešās puses savienojuma -->
-<link rel="preload" href="scenariji.json" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="/api/kategorijas" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="/api/regioni" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="/api/avoti" as="fetch" crossorigin="anonymous">
-<link rel="preconnect" href="https://tile.openstreetmap.org">
-<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
-<link rel="stylesheet" href="vendor/leaflet/MarkerCluster.css">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="alternate" type="application/atom+xml" title="Krīzes karte: brīdinājumi Latvijā" href="/api/plusma.xml">
-<link rel="canonical" href="https://map.repo.lv/">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Krīzes karte">
-<meta property="og:title" content="Krīzes karte — map.repo.lv">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
-<meta property="og:url" content="https://map.repo.lv/">
-<meta property="og:image" content="https://map.repo.lv/og.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Krīzes karte: meklēšanas rezultāts „plūdi Ogre” ar plūdu zonu, drošajām vietām un maršrutu">
-<meta property="og:locale" content="lv_LV">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Krīzes karte — map.repo.lv">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
-<meta name="twitter:image" content="https://map.repo.lv/og.png">
+<title>Krīzes karte · Datu pārskats</title>
+<meta name="description" content="Krīzes karte: viena meklēšana, viens lēmums. Atvērto datu pārskats, dzīvā statusa rādītāji un informācija par MI lietojumu.">
 <meta name="theme-color" content="#0077c8">
+<link rel="stylesheet" href="sakums.css">
+<link rel="canonical" href="https://map.repo.lv/">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">
-<link rel="icon" href="ikonas/ikona-32.png" type="image/png" sizes="32x32">
-<link rel="apple-touch-icon" href="ikonas/ikona-180.png" sizes="180x180">
-<link rel="stylesheet" href="stils.css">
-<link rel="stylesheet" href="demo.css">
-<link rel="stylesheet" href="izmainas.css">
-<link rel="stylesheet" href="darbvirsma.css">
 </head>
 <body>
-<header>
-  <div class="galva-kreisi">
-    <button id="izmainas-poga" type="button" aria-label="Izmaiņu žurnāls" aria-haspopup="dialog" aria-expanded="false" title="Kas jauns">#</button>
-    <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="26" height="26"><path d="M12 2 4 5.2v6.1c0 5 3.4 9.4 8 10.7 4.6-1.3 8-5.7 8-10.7V5.2z" fill="#fff" fill-opacity=".18" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 7v6m0 3.2v.1" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-    <h1>Krīzes karte<small class="apakstitls">Latvija · map.repo.lv</small></h1>
-  </div>
-  <form id="meklet-forma" role="search" class="meklet-rinda">
-    <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
-           aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē" data-t-placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
-    <button type="button" id="notirit-meklesanu" class="notirit-poga" aria-label="Notīrīt meklēšanu" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg><span class="notirit-teksts">Notīrīt</span></button>
-    <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#mikrofons"></use></svg></button>
-    <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
-    <button type="submit" data-t="Meklēt">Meklēt</button>
-    <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
-      <p id="populari-virsraksts">Biežāk meklētais</p>
-      <div class="populari-pogas"></div>
+<header class="hero">
+  <div class="ietvars">
+    <h1>Krīzes karte: viena meklēšana, viens lēmums</h1>
+    <p>Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
+      kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.</p>
+    <div class="cta">
+      <a class="poga" href="/map">Atvērt karti</a>
+      <a class="saite-hero" href="/map">Vai meklēt situāciju</a>
     </div>
-  </form>
-  <div class="galva-labi">
-    <!-- LV / RU / EN slēdzis: valoda.js to ieliek meklēšanas formā (rezultāta kartītes valoda) -->
-    <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog" aria-label="Ziņot par bīstamību"><svg class="ikona" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3 2 20h20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4m0 3v.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="teksts">Ziņot</span></button>
-    <a id="par-datiem" class="par-datiem" href="statuss.html">Par datiem</a>
-    <p id="statuss" role="status">Ielādē…</p>
-    <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#izvelne"></use></svg> Filtri</button>
   </div>
 </header>
-<p class="zvanit-josla" role="region" aria-label="Ārkārtas palīdzība" data-t="Ja apdraudēta dzīvība vai veselība, zvaniet 112.">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
-<div id="bridinajums" class="bridinajums gaida" role="status" aria-live="polite">Ielādē LVĢMC brīdinājumus…</div>
-<div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
-<div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
-<main>
-  <aside id="panelis" aria-label="Meklēšana un kartes slāņi">
-    <section id="meklesana">
-      <h2 class="vizuali-slepts">Meklēšanas rezultāts</h2>
-      <div id="rezultati" aria-live="polite" hidden></div>
-    </section>
+<main class="ietvars">
+  <section aria-labelledby="h-skaiti">
+    <h2 id="h-skaiti">Kas ir kartē</h2>
+    <p class="apak">Dzīvie skaitļi no API: <span id="kops">…</span></p>
+    <div class="kartes" id="kartes" aria-live="polite"><p class="apak">Ielādē…</p></div>
+  </section>
 
-    <section id="vieta">
-      <div class="meklesana">
-        <input id="meklet" type="search" placeholder="Adrese vai nosaukums, piem. Brīvības 15 Ogre" autocomplete="off"
-               aria-label="Meklēt adresi (VZD adrešu reģistrs) vai kartē parādītos objektus" aria-controls="mekl-rezultati">
-        <ul id="mekl-rezultati" role="listbox" hidden></ul>
-      </div>
-      <button id="atrast" type="button" class="galvena"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#vieta"></use></svg> Rādīt tuvākos man</button>
-      <button id="tuvaka" type="button" class="otra"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#patvertne"></use></svg> Tuvākā patvertne</button>
-      <p id="vieta-teksts" class="piezime">Pārlūks prasīs atļauju izmantot Jūsu atrašanās vietu. Tā netiek saglabāta.</p>
-      <button id="saglabat-apkartni" type="button" class="otra"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#lejupielade"></use></svg> Saglabāt manu apkārtni bezsaistei</button>
-      <p id="apkartne-teksts" class="piezime" role="status" hidden></p>
-    </section>
+  <section aria-labelledby="h-statuss">
+    <h2 id="h-statuss">Dzīvo datu plūsmu stāvoklis</h2>
+    <p class="apak" id="statuss-apak">Pārbaude no /api/veseliba.</p>
+    <div class="statusi" id="statusi" aria-live="polite"><p class="apak">Ielādē…</p></div>
+  </section>
 
-    <section>
-      <h2><label for="regions">Reģions vai pilsēta</label></h2>
-      <select id="regions"><option value="">Visa Latvija</option></select>
-    </section>
+  <section aria-labelledby="h-ca">
+    <h2 id="h-ca">Civilās aizsardzības plāni</h2>
+    <p class="apak">Pulcēšanās un izmitināšanas vietas nav atsevišķā atvērtā datu kopā: tās atrodamas tikai pašvaldību plānu PDF failos.</p>
+    <div class="ca">
+      <div class="skaitlis"><b>42</b><span>pašvaldību plāni analizēti ar MI</span></div>
+      <div class="skaitlis"><b>41</b><span>koordinātu kļūdas atrastas oficiālajos plānos</span></div>
+      <div class="skaitlis"><b id="ca-vietas">…</b><span>vietas kartē ar citātu un lappusi</span></div>
+    </div>
+    <p class="apak" style="margin-top:8px">Kļūdainās vietas novietotas pēc VZD adrešu reģistra.
+      <a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">Kļūdu saraksts</a></p>
+  </section>
 
-    <section>
-      <h2>Slāņi</h2>
-      <button type="button" class="otra saraksts-poga" data-darbiba="saraksts"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#saraksts"></use></svg> Saraksts: ieslēgto slāņu objekti</button>
-      <div id="kategorijas"></div>
-      <label class="kat parklajums"><input type="checkbox" id="pludu-slanis">
-        <span class="forma-vieta" data-forma="lase" data-krasa="#2563eb"></span>Plūdu riska zonas (LVĢMC, reizi 100 un 10 gados)</label>
-      <label class="kat parklajums"><input type="checkbox" id="zibens-slanis">
-        <span class="forma-vieta" data-ikona="zibens"></span>Zibens (pēdējās 30 min)</label>
-      <p id="zibens-teksts" class="piezime zibens-teksts" aria-live="polite" hidden></p>
-      <label class="kat parklajums"><input type="checkbox" id="noverojumi-slanis">
-        <span class="forma-vieta" data-ikona="vejs"></span>Laikapstākļi tagad (LVĢMC stacijas)</label>
-      <p id="noverojumi-teksts" class="piezime" aria-live="polite" hidden></p>
-      <label class="kat parklajums"><input type="checkbox" id="celu-slanis">
-        <span class="forma-vieta" data-forma="kvadrats" data-krasa="#b91c1c"></span>Ceļu slēgumi un negadījumi (LVC, tiešsaistē)</label>
-      <p id="celu-piezime" class="piezime" aria-live="polite"></p>
-      <label class="kat parklajums"><input type="checkbox" id="zinojumu-slanis">
-        <span class="forma-vieta" data-ikona="zinot"></span>Iedzīvotāju ziņojumi (7 dienas, nav oficiāli)</label>
-      <p id="zinojumu-piezime" class="piezime" aria-live="polite" hidden></p>
-      <details class="grupa" id="avoti">
-        <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
-        <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a> · <a href="api.html">Atvērtais API</a></p>
-        <p class="piezime trukst"><b>Ko vēl vajadzētu publicēt:</b> 35 datu kopas, kas krīzē vajadzīgas, bet nav atvērtas (patvertņu statuss, elektrības atslēgumi, evakuācijas vietas mašīnlasāmā formā…). <a href="trukstosie.html">Saraksts</a></p>
-        <ul id="avoti-saraksts"></ul>
-      </details>
-    </section>
-  </aside>
-  <div id="kartes-laukums">
-    <div id="karte" role="application" aria-label="Karte"></div>
-    <div class="kartes-rikis" role="group" aria-label="Kartes vadība">
-      <button id="tuvinat" type="button" title="Tuvināt" aria-label="Tuvināt">+</button>
-      <button id="talinat" type="button" title="Tālināt" aria-label="Tālināt">−</button>
-      <button id="mana-vieta" type="button" title="Mana atrašanās vieta" aria-label="Mana atrašanās vieta"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#atrast"></use></svg></button>
-      <button id="slani-poga" type="button" title="Kartes slāņi" aria-label="Kartes slāņi"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="m3 13 9 5 9-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
+  <section aria-labelledby="h-mi">
+    <h2 id="h-mi">Kā tiek izmantots MI</h2>
+    <div class="kaste">
+      <p style="margin:0"><b>Tikai izstrādes laikā, nevis Jūsu meklēšanas brīdī.</b> Darbības laikā nav neviena valodas modeļa izsaukuma.</p>
+      <ul>
+        <li>MI izlasīja 42 pašvaldību CA plānus un izvilka vietas ar burtisku citātu; skripts pārbauda katru citātu pret plāna tekstu.</li>
+        <li>MI palīdzēja izveidot situāciju katalogu un atslēgvārdus.</li>
+        <li>Meklēšana Jūsu pārlūkā darbojas pēc noteikumiem un atslēgvārdiem (latviski, krieviski, angliski), tāpēc rezultāts ir atkārtojams un pārbaudāms.</li>
+      </ul>
     </div>
-    <div id="prognozes" class="prognozes" hidden>
-      <button type="button" class="prog-poga" aria-expanded="false" aria-controls="prog-panelis"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#prognoze"></use></svg> <span class="prog-poga-teksts">Prognoze</span></button>
-      <div class="riski-sledzis" role="group" aria-label="Riska karte">
-        <span class="riski-nos">Riski:</span>
-        <button type="button" data-riski="sodien" aria-pressed="false">Šodien</button>
-        <button type="button" data-riski="rit" aria-pressed="false">Rīt</button>
-      </div>
-      <div class="riski-legenda" aria-label="Riska līmeņi" hidden>
-        <span><i style="background:#fde68a"></i>paaugstināts</span><span><i style="background:#f97316"></i>augsts</span><span><i style="background:#dc2626"></i>ļoti augsts</span>
-      </div>
-      <section id="prog-panelis" class="prog-panelis" aria-label="Prognoze un brīdinājumi" hidden>
-        <div class="prog-galva">
-          <h2>Prognoze un brīdinājumi</h2>
-          <button type="button" class="prog-aizvert" aria-label="Aizvērt prognozi"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg></button>
-        </div>
-        <p class="prog-abonet">Abonēt brīdinājumus visai Latvijai: <a href="/api/plusma.xml" type="application/atom+xml">RSS</a> · <a href="/api/kalendars.ics">Kalendārs</a></p>
-        <div class="prog-dienas" role="group" aria-label="Diena"></div>
-        <div class="prog-saturs" aria-live="polite"></div>
-      </section>
-    </div>
-    <div class="pamatkarte" role="group" aria-label="Pamatkarte">
-      <button type="button" data-pamats="karte" class="aktiva" aria-pressed="true">Karte</button>
-      <button type="button" data-pamats="reljefs" aria-pressed="false">Reljefs</button>
-    </div>
-  </div>
+  </section>
+
+  <section aria-labelledby="h-avoti">
+    <h2 id="h-avoti">Izmantotie datu avoti</h2>
+    <p class="apak" id="avoti-apak">Izdevējs, licence un atjaunošana.</p>
+    <ul class="avoti" id="avoti"><li>Ielādē…</li></ul>
+  </section>
 </main>
-
-<script src="vendor/leaflet/leaflet.js"></script>
-<script src="vendor/leaflet/leaflet.markercluster.js"></script>
-<script src="pieejamiba.js"></script>
-<script>
-  // Ja Leaflet neielādējās, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
-  if (!window.L || !L.markerClusterGroup) {
-    var kluda = document.getElementById('kartes-kluda');
-    kluda.textContent = 'Karti neizdevās ielādēt. Pārlādējiet lapu pēc brīža. Ja apdraudēta dzīvība vai veselība, zvaniet 112.';
-    kluda.hidden = false;
-  }
-</script>
-<script src="atjaunot.js"></script>
-<script src="offline.js"></script>
-<script src="ikonas.js"></script>
-<script src="avoti.js"></script>
-<script src="klasifikators.js"></script>
-<script src="valoda.js"></script>
-<script src="objekta-statuss.js"></script>
-<script src="app.js"></script>
-<script src="marsruts.js"></script>
-<script src="zonas.js"></script>
-<script src="meklesana.js"></script>
-<script src="dalities.js"></script>
-<script src="runa.js"></script>
-<script src="apaksa.js"></script>
-<script src="saraksts.js"></script>
-<script src="bridinajumi.js"></script>
-<script src="zibens.js"></script>
-<script src="noverojumi.js"></script>
-<script src="prognozes.js"></script>
-<script src="celi.js"></script>
-<script src="zinot.js"></script>
-<script src="demo.js"></script>
-<script src="izmainas.js"></script>
-<script src="kajene.js"></script>
-<script src="atskanot.js"></script>
-<script src="sheet.js"></script>
-<script src="darbvirsma.js"></script>
+<footer><div class="ietvars">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026. <a href="/map">Atvērt karti</a> · <a href="info.html">Svarīgi krīzē</a></div></footer>
+<script src="sakums.js"></script>
 </body>
 </html>

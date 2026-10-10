@@ -31,14 +31,14 @@ async function marsruti(ctx) {
 }
 
 const STAVOKLI = [
-  ['index: tukšs', '/', async () => {}],
-  ['index: Ogre, plūdi', '/', async p => {
+  ['index: tukšs', '/map', async () => {}],
+  ['index: Ogre, plūdi', '/map', async p => {
     await p.fill('#jautajums', 'Ogre, plūdi');
     await p.press('#jautajums', 'Enter');
     await p.waitForSelector('#rezultati:not([hidden])');
     await p.waitForTimeout(4000);
   }],
-  ['index: popup', '/', async p => {
+  ['index: popup', '/map', async p => {
     await p.fill('#jautajums', 'Ogre, plūdi');
     await p.press('#jautajums', 'Enter');
     await p.waitForTimeout(4000);
@@ -48,18 +48,18 @@ const STAVOKLI = [
     if (await b.count()) await b.click(); else await p.keyboard.press('Escape');
     await p.waitForTimeout(800);
   }],
-  ['index: Saraksts', '/', async p => {
+  ['index: Saraksts', '/map', async p => {
     await p.fill('#jautajums', 'Ogre, plūdi');
     await p.press('#jautajums', 'Enter');
     await p.waitForTimeout(4000);
     await p.evaluate(() => Saraksts.atvert());
     await p.waitForTimeout(300);
   }],
-  ['index: Datu avoti', '/', async p => {
+  ['index: Datu avoti', '/map', async p => {
     await p.evaluate(() => { if (typeof Lapa !== 'undefined' && Lapa && innerWidth <= 800) { Lapa.cilne('slani'); Apaksa.atvert('pilna'); } document.getElementById('avoti').open = true; });
     await p.waitForTimeout(800);
   }],
-  ['index: Ziņot 1. solis', '/', async p => {
+  ['index: Ziņot 1. solis', '/map', async p => {
     await p.evaluate(() => document.getElementById('zinot-poga').click());
     await p.waitForTimeout(500);
   }],

@@ -24,6 +24,7 @@ import argparse
 import functools
 import http.server
 import json
+import os
 import math
 import pathlib
 import re
@@ -191,6 +192,13 @@ def no_fiksturam(pilns_cels):
 class Apstradatajs(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *a):
         pass
+
+    def translate_path(self, path):
+        # kā Caddy try_files {path} {path}/ {path}.html: /map -> map.html
+        f = super().translate_path(path)
+        if not os.path.exists(f) and os.path.exists(f + ".html"):
+            return f + ".html"
+        return f
 
     def do_GET(self):
         if not self.path.startswith("/api/"):
