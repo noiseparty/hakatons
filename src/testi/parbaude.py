@@ -69,6 +69,10 @@ def api_parbaude(bazes_url):
             dati = r.json()
         except ValueError:
             dati = None
+        if r.status_code == 202:  # avots vēl rēķina (piem., plūdu WMS lēns) — atbilde būs nākamajā pieprasījumā
+            if not kluda_kluss:
+                pieraksts("API", nos, "BRĪDIN.", f"{info} · avots vēl pārbauda (202), mēģiniet pēc brīža")
+            return None, None
         if r.status_code != 200:
             kluda = dati.get("kluda") if isinstance(dati, dict) else r.text[:80]
             if not kluda_kluss:
