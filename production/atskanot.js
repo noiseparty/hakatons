@@ -25,7 +25,7 @@ const Atskanot = (() => {
 
   // Josla galvenes rindā (pārklāj galvenes saturu, karte paliek brīva): solis, nosaukums, atpakaļskaitīšana, pogas, progress
   document.querySelector('header').insertAdjacentHTML('beforeend', `
-    <div id="atskanot-josla" class="atskanot-josla" role="region" aria-label="Demo atskaņošana" hidden>
+    <div id="atskanot-josla" class="atskanot-josla" role="region" aria-label="Demo atskaņošana" data-t-aria="Demo atskaņošana" hidden>
       <span class="demo-zime" data-t="SIMULĀCIJA">SIMULĀCIJA</span>
       <span class="atskanot-solis"></span>
       <div class="atskanot-teksts"><b class="atskanot-nos"></b><span class="atskanot-laiks" aria-live="off"></span></div>
@@ -33,7 +33,7 @@ const Atskanot = (() => {
         <button type="button" data-a="ieprieks" aria-label="Iepriekšējais scenārijs" title="Iepriekšējais (←)">${Ik('atpakal-solis')}</button>
         <button type="button" data-a="pauze" aria-label="Pauze" title="Pauze (atstarpe)">${Ik('pauze')}</button>
         <button type="button" data-a="nakamais" aria-label="Nākamais scenārijs" title="Nākamais (→)">${Ik('uz-prieksu')}</button>
-        <button type="button" data-a="beigt" aria-label="Beigt demo" title="Beigt demo (Escape)">${Ik('apturet')}<span>Beigt demo</span></button>
+        <button type="button" data-a="beigt" aria-label="Beigt demo" title="Beigt demo (Escape)">${Ik('apturet')}<span data-t="Beigt demo">Beigt demo</span></button>
       </div>
       <div class="atskanot-progress" aria-hidden="true"><span></span></div>
     </div>`);

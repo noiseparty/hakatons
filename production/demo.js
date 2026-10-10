@@ -27,18 +27,18 @@ const Demo = (() => {
   laukums.insertAdjacentHTML('beforeend', `
     <button id="demo-cilne" type="button" aria-controls="demo-panelis" aria-expanded="false">Demo</button>
     <div id="demo-karte-zime" hidden>${ZIME}</div>
-    <aside id="demo-panelis" aria-label="Demo scenāriji">
-      <div class="demo-galva"><b>Demo scenāriji</b>${ZIME}
-        <button type="button" class="demo-aizvert" aria-label="Aizvērt demo paneli">${Ik('aizvert')}</button></div>
+    <aside id="demo-panelis" aria-label="Demo scenāriji" data-t-aria="Demo scenāriji">
+      <div class="demo-galva"><b data-t="Demo scenāriji">Demo scenāriji</b>${ZIME}
+        <button type="button" class="demo-aizvert" aria-label="Aizvērt demo paneli" data-t-aria="Aizvērt demo paneli">${Ik('aizvert')}</button></div>
       <div id="demo-saturs"></div>
     </aside>`);
   el('bridinajums').insertAdjacentHTML('afterend', '<div id="demo-josla" class="bridinajums demo-josla" role="status" hidden></div>');
   // Galvenes josla demo laikā (bez atskaņošanas; atskaņošanas josla — atskanot.js — ir tajā pašā vietā)
   document.querySelector('header').insertAdjacentHTML('beforeend', `
-    <div id="demo-galvene" class="demo-galvene" role="region" aria-label="Demo režīms" hidden>${ZIME}
+    <div id="demo-galvene" class="demo-galvene" role="region" aria-label="Demo režīms" data-t-aria="Demo režīms" hidden>${ZIME}
       <b class="demo-galvene-nos"></b>
       <button type="button" class="demo-galvene-poga" data-darbiba="demo-panelis" aria-controls="demo-panelis" aria-expanded="false">${Ik('saraksts')}<span data-t="Scenāriji">Scenāriji</span></button>
-      <button type="button" class="demo-galvene-poga demo-galvene-beigt" data-darbiba="beigt">${Ik('apturet')}<span>Beigt demo</span></button>
+      <button type="button" class="demo-galvene-poga demo-galvene-beigt" data-darbiba="beigt">${Ik('apturet')}<span data-t="Beigt demo">Beigt demo</span></button>
     </div>`);
   const panelis = el('demo-panelis'), saturs = el('demo-saturs'), josla = el('demo-josla'), galvene = el('demo-galvene');
   const atvertsJa = () => document.body.classList.contains('demo-atverts');
