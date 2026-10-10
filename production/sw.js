@@ -10,7 +10,7 @@
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
 // - Plūdu zonu flīzes /api/pludi/flize/…: kešs vispirms, bez 8 s termiņa (LVĢMC caur API atbild līdz 30 s); ≤ 800 flīžu;
 //   "aizņemts" un kļūdas (Cache-Control: no-store) nesaglabā.
-const VERSION = '2026-10-10ak-pludu-flizes';
+const VERSION = '2026-10-10al-pludu-flizes';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
