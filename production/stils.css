@@ -331,6 +331,11 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .zonu-legenda i.parklajas { border-color: #dc2626; background: repeating-linear-gradient(45deg, #b91c1c 0 2px, rgba(127, 29, 29, .47) 2px 6px); }
 .zonu-legenda small { color: #57534e; }
 .zonu-legenda.paslepta { display: none; }
+.zonu-legenda { padding: 0; }
+.zonu-legenda-poga { display: block; width: 100%; min-width: 44px; min-height: 44px; padding: 0 .6rem; border: 0; background: none; font: inherit; font-weight: 600; color: var(--teksts); cursor: pointer; text-align: left; }
+.zonu-legenda-saturs { display: none; flex-direction: column; gap: .2rem; padding: 0 .55rem .4rem; }
+.zonu-legenda.atverta .zonu-legenda-saturs { display: flex; }
+.zonu-legenda:not(.atverta) { max-width: none; }
 .leaflet-bottom.leaflet-right .zonu-legenda { margin-bottom: 52px; }  /* virs pamatkartes slēdža (.pamatkarte) */
 @media (max-width: 800px) { .zonu-legenda { max-width: 180px; } }
 .zonu-popup p { margin: .3rem 0; }
