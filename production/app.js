@@ -766,6 +766,7 @@ function aktivoSlaNuJosla() {
   ];
   kaste.hidden = !rindas.length;
   kaste.innerHTML = rindas.join('') + (rindas.length ? `<button type="button" class="notirit-visus" data-visi="1">${esc(Tulk('Notīrīt visus'))}</button>` : '');
+  slaniSkaits();
 }
 // × (data-kods = kategorija, data-id = pārklājuma slēdzis) un "Notīrīt visus" (data-visi): panelī un darbvirsmas leģendā
 document.addEventListener('click', e => {
@@ -785,8 +786,18 @@ function notiritVisus() {
   slaniURL();
   aktivoSlaNuJosla();
 }
+// Aktīvo slāņu skaits uz pogas "Slāņu vadība" (galvene) un cilnes "Kartes slāņi": .slani-skaits nozīme, .slani-akcents tooltip; body[data-slani]=0 → pulss (stils.css)
+function slaniSkaits() {
+  const n = [...stavoklis.kategorijas].filter(k => kategorijas[k]).length + parklajumuIeejas().length;
+  document.body.dataset.slani = n;
+  for (const b of document.querySelectorAll('.slani-skaits')) { b.textContent = n; b.hidden = !n; b.setAttribute('aria-label', Valoda.t('Ieslēgti slāņi: {n}', { n })); }
+  for (const b of document.querySelectorAll('.slani-akcents')) b.title = n ? '' : Valoda.t('Ieslēdziet slāņus, lai redzētu vietas kartē');
+}
+karte.on('layeradd layerremove', () => setTimeout(slaniSkaits, 250));
+document.addEventListener('valoda-maina', slaniSkaits);
+addEventListener('load', () => setTimeout(slaniSkaits, 300));
 // pēc pārējo change apstrādātājiem (kategoriju stāvoklis atjaunots jau tajos)
-document.addEventListener('change', e => e.target.matches?.('label.parklajums input, #kategorijas input') && setTimeout(() => { slaniURL(); aktivoSlaNuJosla(); }, 0));
+document.addEventListener('change', e => e.target.matches?.('label.parklajums input, #kategorijas input') && setTimeout(() => { slaniURL(); aktivoSlaNuJosla(); slaniSkaits(); }, 0));
 
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {

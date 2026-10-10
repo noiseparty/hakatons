@@ -43,7 +43,7 @@ const Darbvirsma = (() => {
   const zime = elements('span', 'dv-zime-logo', IKONAS.vairogs);
   const apaksvirsraksts = elements('span', 'dv-apaksvirsraksts', '<span data-t="Latvija · map.repo.lv">Latvija · map.repo.lv</span>');
   const nav = elements('nav', 'dv-nav', `<button type="button" data-dv="meklesana" aria-pressed="true">${IKONAS.meklet}<span data-t="Meklēšana &amp; Lēmums">Meklēšana &amp; Lēmums</span></button>` +
-    `<button type="button" data-dv="slani" aria-pressed="false" aria-expanded="false" aria-controls="dv-atvilktne">${IKONAS.slani}<span data-t="Slāņu vadība">Slāņu vadība</span></button>`, { 'aria-label': 'Skats', 'data-t-aria': 'Skats' });
+    `<button type="button" class="slani-akcents" data-dv="slani" aria-pressed="false" aria-expanded="false" aria-controls="dv-atvilktne">${IKONAS.slani}<span data-t="Slāņu vadība">Slāņu vadība</span><span class="slani-skaits" hidden></span></button>`, { 'aria-label': 'Skats', 'data-t-aria': 'Skats' });
   const centrs = elements('div', 'dv-centrs');
   centrs.append(nav);
   const parPoga = elements('button', 'dv-par-poga', '<span data-t="Par datiem &amp; AI">Par datiem &amp; AI</span>', { type: 'button', 'aria-haspopup': 'dialog' });

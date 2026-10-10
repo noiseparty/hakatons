@@ -17,7 +17,7 @@ const Lapa = (() => {
   // Trīs cilnes (Rezultāts · Kartes slāņi · Situācija tagad); piemēru un tēmu pogu lapā vairs nav
   saturs.insertAdjacentHTML('afterbegin', `
     <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs" data-t-aria="Lapas saturs">${CILNES.map(([k, t], i) =>
-      `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}"><span data-t="${esc(t)}">${esc(t)}</span></button>`).join('')}</div>
+      `<button type="button" role="tab" id="cilne-${k}"${k === 'slani' ? ' class="slani-akcents"' : ''} aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}"><span data-t="${esc(t)}">${esc(t)}</span>${k === 'slani' ? '<span class="slani-skaits" hidden></span>' : ''}</button>`).join('')}</div>
     <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets" data-t="LVĢMC brīdinājumi: ielādē…">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
       <h2 class="vizuali-slepts" data-t="Meklēšanas rezultāts">Meklēšanas rezultāts</h2>

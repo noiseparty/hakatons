@@ -1074,3 +1074,29 @@ body.druka-rezultats #rezultati .rez-skats[data-s="1"], body.druka-rezultats #re
 .uz-planu small { font-weight: 400; opacity: .9; }
 .ricibas-plans h3 { margin: 0 0 .3rem; font-size: 1rem; }
 .ricibas-plans > button { margin-top: .5rem; }
+
+/* Akcents: "Slāņu vadība" (galvene, dators) un cilne "Kartes slāņi" (telefons): primārā zilā, atšķirīga no oranžā "Ziņot" un sarkanā 112; skaitītājs = ieslēgto slāņu skaits */
+.slani-skaits { display: inline-flex; align-items: center; justify-content: center; min-width: 20px; height: 20px; padding: 0 6px; box-sizing: border-box; border-radius: 10px;
+  background: #fff; color: var(--zils-primars); font-size: 12px; font-weight: 700; line-height: 1; flex: none; }
+.slani-skaits[hidden] { display: none; }
+@keyframes slani-pulss { 0%, 100% { box-shadow: 0 0 0 0 rgba(30, 102, 213, .55); } 50% { box-shadow: 0 0 0 7px rgba(30, 102, 213, 0); } }
+@media (min-width: 801px) {
+  body.dv .dv-nav { background: none; border: 0; padding: 0; }
+  body.dv .dv-nav button.slani-akcents { color: #fff; background: var(--zils-primars); border-radius: var(--radiuss-pogas); min-height: 44px; padding: 0 16px; white-space: nowrap; }
+  body.dv .dv-nav button.slani-akcents:hover { background: #1856B5; color: #fff; }
+  body.dv .dv-nav button.slani-akcents[aria-pressed="true"] { background: #1856B5; color: #fff; box-shadow: none; }
+  body.dv .dv-nav button.slani-akcents svg { width: 18px; height: 18px; }
+  body.dv[data-slani="0"] .dv-nav button.slani-akcents[aria-pressed="false"] { animation: slani-pulss 2s ease-in-out infinite; }
+}
+@media (max-width: 800px) {
+  .lapa-cilnes [role="tab"].slani-akcents { background: var(--zils-primars); color: #fff; font-weight: 700; border-bottom-color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+  .lapa-cilnes [role="tab"].slani-akcents[aria-selected="true"] { background: #1856B5; color: #fff; border-bottom-color: #fff; }
+  body[data-slani="0"] .lapa-cilnes [role="tab"].slani-akcents[aria-selected="false"] { animation: slani-pulss 2s ease-in-out infinite; }
+}
+@media (prefers-reduced-motion: reduce) { .slani-akcents { animation: none !important; } }
+
+/* Slāņu saraksts (ieslēgtie + izvēles rūtiņas) vienmēr pirmais slāņu panelī / atvilktnē / cilnē; vieta, reģions, avoti un kājene zem tā */
+#lapa-slani #panelis > .slani-sekcija, .dv-atv-saturs > .slani-sekcija { order: -1; }
+#lapa-slani #statuss { order: -2; }
+#lapa-slani #panelis > .kajene { order: 9; }
+.dv-atv-saturs { display: flex; flex-direction: column; }
