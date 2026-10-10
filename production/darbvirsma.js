@@ -269,7 +269,9 @@ const Darbvirsma = (() => {
     const ul = legenda.querySelector('ul');
     const kodi = [...(stavoklis.kategorijas || [])].filter(k => kategorijas[k]);
     const parklajumi = [...document.querySelectorAll('.parklajums input:checked')].map(i => i.closest('label'))
-      .map(l => [l.querySelector('.punkts')?.style.background || '#999', l.textContent.trim()]);
+      .map(l => [l.querySelector('.punkts')?.style.background || '#999', l.textContent.trim(), l.querySelector('input').id]);
+    const T = k => typeof Valoda !== 'undefined' ? Valoda.t(k) : k;
+    const x = (atr, t) => `<button type="button" class="dv-leg-x" ${atr} aria-label="${esc(T('Noņemt slāni'))}: ${esc(t)}">×</button>`;
     if (!kodi.length && !parklajumi.length) {
       ul.innerHTML = `<li class="dv-leg-tukss">${Valoda.t('Neviens slānis nav ieslēgts. Atveriet „Slāņu vadība”.')}</li>`;
       return;
@@ -278,8 +280,9 @@ const Darbvirsma = (() => {
     for (const k of kodi) (pecGrupas[kategorijas[k].grupa] ||= []).push(k);
     // tā pati marķiera forma kā kartē (ikonas.js), nevis tikai krāsa
     ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(Valoda.t(GRUPAS[g] || g))}</li>` +
-      kk.map(k => `<li>${Ikonas.formaHTML(k)}${esc(Valoda.t(kategorijas[k].nosaukums))}</li>`).join('')).join('') +
-      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t]) => `<li><span class="punkts" style="background:${esc(k)}"></span>${esc(t)}</li>`).join('') : '');
+      kk.map(k => `<li>${Ikonas.formaHTML(k)}<span class="dv-leg-nos">${esc(Valoda.t(kategorijas[k].nosaukums))}</span>${x(`data-kods="${esc(k)}"`, kategorijas[k].nosaukums)}</li>`).join('')).join('') +
+      (parklajumi.length ? `<li class="dv-leg-grupa">${Valoda.t('Pārklājumi')}</li>` + parklajumi.map(([k, t, id]) => `<li><span class="punkts" style="background:${esc(k)}"></span><span class="dv-leg-nos">${esc(t)}</span>${x(`data-id="${esc(id)}"`, t)}</li>`).join('') : '') +
+      `<li class="dv-leg-visi"><button type="button" class="notirit-visus" data-visi="1">${esc(T('Notīrīt visus'))}</button></li>`;
   }
   document.addEventListener('change', e => { if (ieslegts && e.target.matches('input[type="checkbox"]')) setTimeout(atjaunotLegendu, 0); });
   let legendasTaimeris = null;  // slāņus maina arī meklēšana (meklesana.js) — leģendu atjauno pēc kartes izmaiņām

@@ -459,6 +459,12 @@ const Zonas = (() => {
   // Vispirms /api/prognozes: poligoni tur jau vienkāršoti (~1 km pielaide; neapstrādātais "Latvija" ir ~42 000 virsotņu,
   // ~1 MB) un serverī kešoti 5 min. "Līdz" ņem no tā paša brīdinājuma ziņas virsraksta. Ja prognozes nav pieejamas
   // vai tajās nav poligonu — neapstrādātie no /api/bridinajumi?poligoni=1 (bez brīdinājumiem tā atbilde ir maza).
+  const Tulk = k => typeof Valoda !== 'undefined' ? Valoda.t(k) : k;
+  // Vai ir spēkā esoši brīdinājumi, kuriem kartē nav ko zīmēt (jūras rajoni, poligonu nav)
+  async function bridinajumiBezRobezam() {
+    const r = await fetch('/api/bridinajumi');
+    return r.ok && ((await r.json()).bridinajumi || []).length > 0;
+  }
   async function ieladetBridinajumus() {
     try {
       const r = await fetch('/api/prognozes');
@@ -623,7 +629,9 @@ const Zonas = (() => {
       try {
         if (!zn.poligoni.length && !await zn.ieladet()) {
           cb.checked = false;
-          l.lastChild.textContent = `${Valoda.t(teksts)}: ${Valoda.t(nav)}`;
+          // Aktīvi brīdinājumi bez robežām (piem., tikai jūras apgabali — Meteoalarm bez poligoniem): nav "šobrīd nav"
+          const bez = zn.kods === 'bridinajumi' && await bridinajumiBezRobezam().catch(() => false);
+          l.lastChild.textContent = `${Valoda.t(teksts)}: ${bez ? Valoda.t('brīdinājums bez robežām — skatīt joslu') : Valoda.t(nav)}`;
           return;
         }
         l.lastChild.textContent = Valoda.t(teksts);
