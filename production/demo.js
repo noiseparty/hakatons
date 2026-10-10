@@ -76,9 +76,6 @@ const Demo = (() => {
     if (d === 'beigt') beigtLietotajs();
     if (d === 'demo-panelis') atvert(!atvertsJa());
   });
-  // Telefonā atvērts uznirstošais logs: demo cilne un SIMULĀCIJA zīme kartē paslēpjas, lai neaizsegtu to
-  karte.on('popupopen', () => document.body.classList.add('demo-popups'));
-  karte.on('popupclose', () => document.body.classList.remove('demo-popups'));
 
   async function ieladet() {
     try {
@@ -154,7 +151,10 @@ const Demo = (() => {
   function atstarpes() {
     const atverts = atvertsJa() && telefons();
     if (typeof Apaksa !== 'undefined' && Apaksa.aktiva()) return Apaksa.atstarpes(Math.max(Apaksa.augstums(), atverts ? panelis.offsetHeight : 0));
-    return telefons() ? { paddingTopLeft: [20, 20], paddingBottomRight: [20, (atverts ? panelis.offsetHeight : 0) + 20] } : { padding: [40, 40] };
+    if (telefons()) return { paddingTopLeft: [20, 20], paddingBottomRight: [20, (atverts ? panelis.offsetHeight : 0) + 20] };
+    // dators: augšā "Karte | Reljefs" un SIMULĀCIJA zīme, labajā pusē kartes rīki, apakšā leģenda (darbvirsma.js)
+    const legenda = document.querySelector('.dv-legenda');
+    return { paddingTopLeft: [40, 64], paddingBottomRight: [72, (legenda?.offsetHeight || 0) + 32] };
   }
 
   // ---- Scenārija sākšana un beigšana ----

@@ -102,7 +102,7 @@ body.demo-aktivs header > :not(#demo-galvene, #atskanot-josla), body.atskano hea
 @media (max-width: 800px) {
   #demo-cilne { top: 176px; padding: .6rem .6rem; min-width: 44px; }  /* zem 3 × 44 px kartes pogām */
   /* demo laikā cilnes vietā ir galvenes poga "Scenāriji"; atvērts uznirstošais logs — cilne un zīme kartē paslēpjas */
-  body.demo-aktivs #demo-cilne, body.demo-popups #demo-cilne, body.demo-popups #demo-karte-zime { display: none; }
+  body.demo-aktivs #demo-cilne, body.popups-atverts #demo-cilne, body.popups-atverts #demo-karte-zime { display: none; }  /* sheet.js */
   #demo-galvene, #atskanot-josla { gap: .3rem; }
   #demo-galvene .demo-zime, #atskanot-josla .demo-zime, .atskanot-laiks { display: none; }  /* SIMULĀCIJA ir kartē; laiku rāda progresa josla */
   /* zīme kartē: "Karte | Reljefs" vietā (demo laikā paslēpts) zem simulētā brīdinājuma joslas — fitBounds augšējā atstarpē,
