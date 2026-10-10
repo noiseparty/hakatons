@@ -8,12 +8,12 @@
 // - /api/*: vispirms tīkls; katru veiksmīgo atbildi saglabā ar laiku (galvene x-sw-saglabats). Bez tīkla —
 //   saglabātā, ja nav vecāka par 6 h (mainīgie dati: brīdinājumi, ūdens, ceļi, satiksme…) vai 7 dienām (vietas,
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
-const VERSION = '2026-10-10h-objekti-skata';
+const VERSION = '2026-10-10p';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
   'avoti.js', 'klasifikators.js', 'app.js', 'zonas.js', 'meklesana.js', 'runa.js', 'apaksa.js', 'saraksts.js',
-  'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json',
+  'bridinajumi.js', 'zibens.js', 'prognozes.js', 'celi.js', 'demo.js', 'atskanot.js', 'offline.js', 'scenariji.json', 'darbvirsma.js', 'darbvirsma.css',
   'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'ikonas.js', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
   'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
   'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
