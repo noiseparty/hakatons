@@ -60,10 +60,12 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Desktop: LV/EN/RU switch from the mock-up (needs translations of UI + scenarios; not built) — added 2026-10-10 04:04 +03:00 by noiseparty
 - [ ] `?demo=pludi-ogre` never reaches network-idle while the LVĢMC flood WMS is slow (also on main) — parbaude.py could wait for the card instead of networkidle — added 2026-10-10 04:04 +03:00 by noiseparty
 - [ ] Water-drop marker: swap Lucide droplet for the user's SVG set (svgrepo 53159 licence could not be verified: HTTP 429) — added 2026-10-10 04:03 +03:00 by noiseparty
+- [ ] Desktop: empty-state hint in the left column before the first search (what to type, example chips) — added 2026-10-10 04:26 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Desktop: merge main into noiseparty/ui-desktop (sw.js VERSION 2026-10-10h-dv), layer legend shows marker shapes via `Ikonas.formaHTML()` (overlays keep colour dots), parbaude.py green locally (dators 17/17 OK) — done 2026-10-10 04:26 +03:00 by noiseparty (added 2026-10-10 04:26 +03:00 by noiseparty)
 - [x] Desktop UI (> 800 px) from the user's Stitch mock-up: light header + 112 bar with data freshness + closable warning strip, three columns (search/chips/national summary/result card · map with legend · "Situācija tagad" with LVĢMC warnings, rising gauges with sparkline, LVC restrictions, click → zoom), "Slāņu vadība" drawer, "Par datiem & AI", collapsible panels / full-width map, shared design tokens in stils.css — `production/darbvirsma.js/.css` — done 2026-10-10 04:04 +03:00 by noiseparty (added 2026-10-10 04:04 +03:00 by noiseparty)
 - [x] Classifier: look at the remaining close pairs (sniegavētra / auto putenī / apmaldījies sniegā; gāzes smaka / noplūde ēkā) and add real user queries from the demo to `src/meklesana/vaicajumi.json` — done 2026-10-10 04:18 +03:00 by noiseparty: 79 LV/RU/EN keywords (gas-smell phrases shared by both gas scenarios; location cues for gas, driving / on-foot cues for snow; notes/klasifikators.md round 3), 14 unique demo queries + 32 close-pair queries in `vaicajumi.json`; full set 571/609 → 585/609, held-out 168/186 → 170/186, no regressions (added 2026-10-10 02:55 +03:00 by noiseparty)
 - [x] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — done 2026-10-10 04:18 +03:00 by noiseparty: `daudzskaitlis(n, "objekts", "objekti")` in app.js, used in the status pill, Datu avoti and the list dialog (added 2026-10-10 03:30 +03:00 by noiseparty)
