@@ -484,3 +484,8 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinojums-popup small { display: block; }
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
 .zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
+
+/* ==== Datu avoti: simulētie prototipa dati atsevišķā grupā (avoti.js) ==== */
+#avoti-saraksts .avoti-grupa { list-style: none; margin: .8rem 0 .2rem; padding-top: .5rem; border-top: 1px solid var(--robeza); font-size: .8rem; font-weight: 600; color: var(--teksts2); }
+#avoti-saraksts .simulets { opacity: .9; }
+.sim-zime { display: inline-block; margin-right: .35rem; padding: 0 .4rem; border-radius: 4px; background: #fde68a; color: #713f12; font-size: .7rem; font-weight: 700; letter-spacing: .02em; vertical-align: 1px; }
