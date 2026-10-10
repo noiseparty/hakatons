@@ -135,7 +135,7 @@ SPEC = [
     ("/api/satiksme", "Satiksme zonās", "Satiksmes līmenis pa pašvaldībām no uzskaites iekārtām (minūšu ātrums), slidenā ceļa vietas, robežu gaidīšana.",
      [], "", [("LVC satiksmes intensitāte un ātrums, slidens ceļš (NAP)", "https://transportdata.gov.lv/", *CC0), MUSU],
      "Brīvas plūsmas ātrums ir novērtējums; zonu apkopojums — atvasināti dati (CC BY 4.0)."),
-    ("/api/statuss", "Sistēmas statuss", "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās.", [], "", [MUSU], None),
+    ("/api/statuss", "Sistēmas statuss", "Vietnes, API un katra datu avota stāvoklis, 24 h pa 15 min, pieejamība 7 dienās; arejie_avoti (pēdējā veiksme, kļūda, keša vecums, rezerve katram ārējam avotam), flizes (plūdu flīžu kešs), zinojumi (skaits, balsis stundā, limita atteikumi), slani (objekti kartē pret repozitorija failu, ieladejams).", [], "", [MUSU], None),
     ("/api/meklejumi/top", "Biežāk meklētais", "Biežāk meklētie atpazītie vaicājumi pēdējās 14 dienās (bez lietotāju datiem).",
      [("n", "integer", "1–10, noklusēti 3", "5", False)], "?n=5", [MUSU], None),
     ("/api/zinojumi", "Iedzīvotāju ziņojumi", "Iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās, vieta noapaļota līdz ~1 km. Katram balsis: apstiprina "
@@ -158,7 +158,7 @@ SPEC = [
      [("regions", "string", "pašvaldības VZD kods vai ATVK; bez tā — visa Latvija", "100016688", False)], "?regions=100016688",
      [("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/")],
      "text/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions)."),
-    ("/api/veseliba", "Veselības pārbaude", "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
+    ("/api/veseliba", "Veselības pārbaude", "Vai API un datubāze atbild, kā arī spēkā esošo brīdinājumu skaits LVĢMC pret Meteoalarm, ārējo avotu stāvoklis (arejie_avoti) un plūdu flīžu keša skaitītāji (flizes); ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
      [("statistika", "integer", "1 — pievienot skaitītājus", "1", False)], "?statistika=1", [MUSU],
      "Nekešo. bridinajumi tiek lasīts tikai no keša (nebloķē); ja Meteoalarm kešs novecojis, to fonā atjauno."),
 ]
