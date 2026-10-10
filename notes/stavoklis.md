@@ -1,5 +1,7 @@
 # Stāvoklis 2026-10-10 06:30 (morning handoff, pitch day)
 
+> **FREEZE 2026-10-10 07:28.** No more merges to `main` until the user says otherwise; open PRs stay open (the UI verification workflow's fix PR on `noiseparty/ui-parbaude` lands only on the user's word). Last live check before the freeze: API 15 OK, phone 20 OK, desktop 17 OK, 0 errors; load probe 5 clients × 30 s all 200, average 130 ms. Merged overnight: #111–#165 (55 PRs incl. one hotfix #134). Final video take 07:16 (88 s, both MP4s in `C:/Users/ZX202/kodi/demo-video/`).
+
 For the user (noiseparty) after sleeping from ~04:30. Overnight the orchestrator merged **#63–#160** (#111–#160 while you slept); nothing is waiting for review. The site works as it is. The steps below make the live database and server match `main`. Update this file whenever the merge state changes; tasks live in `TODO.md`.
 
 ## VPS steps 1–3 (run first, in this order; `src/rits.py` step 7 prints this section)
