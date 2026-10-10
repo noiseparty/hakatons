@@ -658,9 +658,33 @@ function radtPludus(ieslegt) {
 }
 el('pludu-slanis').addEventListener('change', e => radtPludus(e.target.checked));
 
+// /map?slanis=<kods>[,<kods>]: ieslēdz tieši šos slāņus (kodi = /api/kategorijas); nezināmos ignorē; derīgu nav — kā parasti.
+// Ja ir arī ?q= / ?lat=, skatu nosaka meklēšana, nevis slāņu robežas.
+function slaniNoUrl() {
+  const kodi = (new URLSearchParams(location.search).get('slanis') || '').split(',').map(x => x.trim())
+    .filter(x => kategorijas[x] && kategorijas[x].skaits);
+  for (const kods of new Set(kodi)) {
+    const i = el('kategorijas').querySelector(`input[value="${CSS.escape(kods)}"]`);
+    if (!i) continue;
+    i.checked = true;
+    stavoklis.kategorijas.add(kods);
+    i.closest('details.grupa').open = true;
+  }
+  if (stavoklis.kategorijas.size) kopsavilkumi();
+  return stavoklis.kategorijas.size > 0;
+}
+function pieskaritSlaniem() {
+  const p = new URLSearchParams(location.search);
+  if (p.has('q') || p.has('lat') || stavoklis.vieta || !redzamie.length) return;
+  karte.fitBounds(L.latLngBounds(redzamie.map(f => f._slanis.getLatLng())), { padding: [30, 30], maxZoom: 15 });
+}
+
 Promise.all([iegut('/kategorijas'), iegut('/regioni'), Avoti.ieladet()])
   .then(([k, r]) => {
-    aizpilditKategorijas(k); aizpilditRegionus(r); atjaunot(); arMeklesanu(m => m.sakt(r));
+    aizpilditKategorijas(k); aizpilditRegionus(r);
+    const slani = slaniNoUrl();
+    atjaunot().then(() => { if (slani) pieskaritSlaniem(); });
+    arMeklesanu(m => m.sakt(r));
   })
   .catch(() => {
     statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);

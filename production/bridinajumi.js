@@ -17,7 +17,10 @@ const Bridinajumi = (() => {
     const a = b.apgabali || [];
     return a.length > 3 ? `${a.slice(0, 3).join(', ')} u. c. (${a.length})` : b.regioni;
   };
-  let pieprasijums = null;
+  let pieprasijums = null, pedeja = [null, null];
+  // Aizvērtie brīdinājumi (id|līmenis) — tikai atmiņā, līdz lapas pārlādei; jauns vai augstāka līmeņa brīdinājums rādās.
+  const aizvertie = new Set();
+  const atslega = b => b.id + '|' + b.limenis;
   // Poga "Situācija" galvenē: skaits ar aktīvajiem brīdinājumiem Latvijā (krāsa pēc augstākā līmeņa); 0 — nozīme paslēpta
   function nozime(n, max) {
     const e = document.getElementById('situacija-nozime'), poga = document.getElementById('situacija-poga');
@@ -32,6 +35,7 @@ const Bridinajumi = (() => {
 
   async function atjaunot(vieta, nosaukums) {
     const josla = document.getElementById('bridinajums');
+    pedeja = [vieta, nosaukums];
     if (pieprasijums) pieprasijums.abort();
     pieprasijums = new AbortController();
     const q = vieta ? '?' + new URLSearchParams({ lat: (+vieta.lat).toFixed(5), lon: (+vieta.lon).toFixed(5) }) : '';
@@ -40,11 +44,14 @@ const Bridinajumi = (() => {
       if (!r.ok) throw new Error(r.status);
       const d = await r.json(), visi = d.bridinajumi, rez = !!d.rezerves;
       // rezerves avotam attiecas var būt null (vietu neizdevās pārbaudīt): tad brīdinājumu rāda, nevis slēpj
-      const sheit = vieta ? visi.filter(b => rez ? b.attiecas !== false : b.attiecas) : visi;
+      const attiecas = vieta ? visi.filter(b => rez ? b.attiecas !== false : b.attiecas) : visi;
+      const sheit = attiecas.filter(b => !aizvertie.has(atslega(b)));
       const max = Math.max(0, ...sheit.map(b => b.limenis));
       if (!vieta) nozime(visi.length, Math.max(0, ...visi.map(b => b.limenis)));  // skaitlis uz pogas "Situācija" galvenē
       const kur = vieta ? (nosaukums ? esc(nosaukums) : 'Šajā vietā') : 'Latvijā';
       const piezime = rez ? ' <small class="rezerves">(rezerves avots: Meteoalarm)</small>' : '';
+      if (aizvertie.size && !sheit.length) { josla.hidden = true; josla.innerHTML = ''; return; }  // lietotājs aizvēra joslu: arī „brīdinājumu nav” (zaļā) josla vairs neatgriežas, kamēr nav jauna/augstāka līmeņa brīdinājuma
+      josla.dataset.atslegas = JSON.stringify(sheit.map(atslega));
       josla.className = 'bridinajums ' + (max ? LIMENIS[max][0] : 'zals');
       josla.innerHTML = !sheit.length
         ? `<span>${Ik('ok')} ${kur}: LVĢMC brīdinājumu šobrīd nav${vieta && visi.length ? ` <small>(citur Latvijā: ${visi.length})</small>` : ''}${piezime}</span>`
@@ -64,8 +71,12 @@ const Bridinajumi = (() => {
 
   document.getElementById('bridinajums')?.addEventListener('click', e => {
     const d = e.target.closest('.brid-aizvert')?.closest('details');
-    if (d) d.open = false;
+    if (!d) return;
+    d.open = false;
+    try { JSON.parse(e.currentTarget.dataset.atslegas || '[]').forEach(k => aizvertie.add(k)); } catch {}
+    atjaunot(...pedeja);
   });
+  setInterval(() => atjaunot(...pedeja), 5 * 60e3);
   atjaunot(null);
-  return { atjaunot };
+  return { atjaunot, aizvertie };
 })();
