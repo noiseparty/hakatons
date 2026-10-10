@@ -36,6 +36,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Replace the simulated water / charging points with real data (OSM amenity=drinking_water, municipal lists) — added 2026-10-10 02:54 +03:00 by noiseparty
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
+- [ ] Document `/api/prognoze` (next-24 h point forecast) in `production/openapi.json` / `api.html` — added 2026-10-10 04:37 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -62,6 +63,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] Result card: "Nākamās 24 h" line for the queried place (LVĢMC hourly forecast, nearest of ~1300 forecast places): min/max °C, precipitation sum, max gust and a risk word by PROGNOZU_SLIEKSNI (vētra / stiprs vējš / lietus / sniegs / pērkona negaiss / salna / sals / karstums), issue time + source; new `/api/prognoze?lat=&lon=` (CKAN datastore, cached 30 min, timeouts 8 s); feed down → no line; level ≥ 1 adds a line to "Kas notiks tālāk" — done 2026-10-10 04:37 +03:00 by noiseparty (added 2026-10-10 04:37 +03:00 by noiseparty)
 - [x] Classifier: look at the remaining close pairs (sniegavētra / auto putenī / apmaldījies sniegā; gāzes smaka / noplūde ēkā) and add real user queries from the demo to `src/meklesana/vaicajumi.json` — done 2026-10-10 04:18 +03:00 by noiseparty: 79 LV/RU/EN keywords (gas-smell phrases shared by both gas scenarios; location cues for gas, driving / on-foot cues for snow; notes/klasifikators.md round 3), 14 unique demo queries + 32 close-pair queries in `vaicajumi.json`; full set 571/609 → 585/609, held-out 168/186 → 170/186, no regressions (added 2026-10-10 02:55 +03:00 by noiseparty)
 - [x] Header count says "1 objekti" (should be "1 objekts", plural rules in app.js status pill) — done 2026-10-10 04:18 +03:00 by noiseparty: `daudzskaitlis(n, "objekts", "objekti")` in app.js, used in the status pill, Datu avoti and the list dialog (added 2026-10-10 03:30 +03:00 by noiseparty)
 - [x] Banks' ATM list (22.09.2026, licence not stated → ⚠): `bankomati.py` → `bankomati_bankas.csv` (845) + `bankomati_vietas.csv` (794 places, 108 critical), avots `bankas-atm`, OSM duplicates ≤ 40 m removed after each load; triangle markers (critical filled, legend, KRITISKAIS badge), popup bank/deposit/24-7; card lists the nearest critical ATM first; `/api/objekti?kritiskais=1` — done 2026-10-10 04:10 +03:00 by noiseparty (added 2026-10-10 04:10 +03:00 by noiseparty)
