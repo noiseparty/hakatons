@@ -140,6 +140,9 @@ header .populari p { margin: 0 0 .4rem; padding: 0; background: none; border-rad
   #panelis { width: auto; flex: 1; gap: 8px; }
   body.panelis-slegts #panelis { display: none; }
   body.panelis-slegts #kartes-laukums { flex: 1; height: auto; }
+  /* Atvērti filtri: karte mazāka, lai panelī (zem kartes) pietiek vietas slāņu sarakstam */
+  body:not(.panelis-slegts) #kartes-laukums { height: max(180px, 32dvh); }
+  #panelis { min-height: 0; }
 }
 
 #avoti-saraksts { list-style: none; margin: 0; padding: 0; }
@@ -489,3 +492,11 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 #avoti-saraksts .avoti-grupa { list-style: none; margin: .8rem 0 .2rem; padding-top: .5rem; border-top: 1px solid var(--robeza); font-size: .8rem; font-weight: 600; color: var(--teksts2); }
 #avoti-saraksts .simulets { opacity: .9; }
 .sim-zime { display: inline-block; margin-right: .35rem; padding: 0 .4rem; border-radius: 4px; background: #fde68a; color: #713f12; font-size: .7rem; font-weight: 700; letter-spacing: .02em; vertical-align: 1px; }
+
+/* Abonēšana (RSS / kalendārs) rezultāta kartītē un prognožu panelī */
+.abonet-rinda, .prog-abonet { margin: .2rem 0 .3rem; font-size: .82rem; color: var(--teksts2); }
+.abonet-rinda a, .prog-abonet a { color: var(--zils-tumss); }
+/* ==== Galvenes "Ziņot" poga (zinot.js); A un D to novieto savos izkārtojumos ==== */
+.galvene-poga { width: auto; white-space: nowrap; background: rgba(0, 0, 0, .2); color: #fff; border-color: rgba(255, 255, 255, .4); font-weight: 600; }
+.galvene-poga:hover { background: rgba(0, 0, 0, .32); }
+@media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }

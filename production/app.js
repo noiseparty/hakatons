@@ -46,6 +46,11 @@ document.querySelectorAll('[data-pamats]').forEach(b => b.addEventListener('clic
 el('panelis-poga').addEventListener('click', () => {
   const atverts = !document.body.classList.toggle('panelis-slegts');
   el('panelis-poga').setAttribute('aria-expanded', atverts);
+  // Telefonā panelis ir zem kartes un tā augšā ir meklēšana/adrese: atverot ritinām līdz slāņu rūtiņām, citādi tās nav redzamas
+  if (atverts && matchMedia('(max-width: 800px)').matches) {
+    const p = el('panelis'), slani = el('kategorijas').closest('section');
+    p.scrollTop = slani.offsetTop - p.offsetTop;
+  }
   setTimeout(() => karte.invalidateSize(), 200);
 });
 // Telefonā filtru panelis sākumā aizvērts: karte visā augstumā; meklēšanas rezultāti to atver (meklesana.js)

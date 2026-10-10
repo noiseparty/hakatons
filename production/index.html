@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet/MarkerCluster.css">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="alternate" type="application/atom+xml" title="Krīzes karte: brīdinājumi Latvijā" href="/api/plusma.xml">
 <link rel="canonical" href="https://map.repo.lv/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
@@ -57,6 +58,7 @@
     </div>
   </form>
   <div class="galva-labi">
+    <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog">Ziņot</button>
     <p id="statuss" role="status">Ielādē…</p>
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><span aria-hidden="true">☰</span> Filtri</button>
   </div>
@@ -107,7 +109,6 @@
       <label class="kat parklajums"><input type="checkbox" id="zinojumu-slanis">
         <span class="punkts" style="background:#a8a29e"></span>Iedzīvotāju ziņojumi (7 dienas, nav oficiāli)</label>
       <p id="zinojumu-piezime" class="piezime" aria-live="polite" hidden></p>
-      <button type="button" class="otra zinot-poga" data-darbiba="zinot"><span aria-hidden="true">📣</span> Ziņot par bīstamību</button>
       <details class="grupa" id="avoti">
         <summary><span class="grupa-nos">Datu avoti</span><span class="skaits" id="avoti-skaits"></span></summary>
         <p class="piezime">Kartē izmantoti tikai šie avoti. Katra punkta logā redzams tā avots un licence. <a href="statuss.html">Vai avoti darbojas?</a> · <a href="info.html">Svarīgi krīzē</a> · <a href="api.html">Atvērtais API</a></p>
@@ -139,6 +140,7 @@
           <h2>Prognoze un brīdinājumi</h2>
           <button type="button" class="prog-aizvert" aria-label="Aizvērt prognozi">✕</button>
         </div>
+        <p class="prog-abonet">Abonēt brīdinājumus visai Latvijai: <a href="/api/plusma.xml" type="application/atom+xml">RSS</a> · <a href="/api/kalendars.ics">Kalendārs</a></p>
         <div class="prog-dienas" role="group" aria-label="Diena"></div>
         <div class="prog-saturs" aria-live="polite"></div>
       </section>
