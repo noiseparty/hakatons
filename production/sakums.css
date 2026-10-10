@@ -79,6 +79,7 @@ a.skaitlis:focus-visible, .grupa a:focus-visible { outline: 3px solid var(--zils
 .meklet .poga { border: 0; cursor: pointer; min-height: 48px; font-family: inherit; }
 .saite-hero.sek { border: 2px solid rgba(255,255,255,.7); border-radius: var(--radiuss); padding: 0 20px; text-decoration: none; font-weight: 600; }
 @media (min-width: 720px) { .meklet .rinda { flex-direction: row; } .meklet .poga { flex: none; } }
+@media (max-width: 600px) { .saite-hero.sek { display: flex; justify-content: center; width: 100%; box-sizing: border-box; min-height: 48px; } }
 
 /* dzīvo slāņu kartītes */
 .slani { display: grid; grid-template-columns: 1fr; gap: 8px; }
