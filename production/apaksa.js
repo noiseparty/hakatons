@@ -9,7 +9,7 @@ const Apaksa = (() => {
   const telefons = matchMedia('(max-width: 800px)');
   const T = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;
   const STAVOKLI = ['peek', 'puse', 'pilna'];
-  const NOS = { peek: 'Mazs', puse: 'Puse', pilna: 'Pilns' };
+  const NOS = { peek: '30%', puse: '50%', pilna: '100%' };  // lapas augstums (skaitļi; ekrāna lasītājam — aria-label)
   const kaste = el('rezultati');
   const majas = kaste.parentElement;  // #meklesana sānu panelī
   document.body.insertAdjacentHTML('beforeend', `
@@ -19,7 +19,7 @@ const Apaksa = (() => {
           <span class="apaksa-svitra" aria-hidden="true"></span><span class="apaksa-spriedums"></span>
         </button>
         <div class="apaksa-stavokli" role="group" aria-label="Lapas augstums" data-t-aria="Lapas augstums">${STAVOKLI.map(st =>
-          `<button type="button" data-st="${st}" aria-pressed="${st === 'puse'}"><span data-t="${NOS[st]}">${NOS[st]}</span></button>`).join('')}</div>
+          `<button type="button" data-st="${st}" aria-pressed="${st === 'puse'}" data-t-aria="Lapas augstums ${NOS[st]}" aria-label="Lapas augstums ${NOS[st]}"><span>${NOS[st]}</span></button>`).join('')}</div>
       </div>
       <div id="apaksa-saturs" class="apaksa-saturs"></div>
     </section>`);
