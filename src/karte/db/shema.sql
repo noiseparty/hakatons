@@ -316,3 +316,21 @@ on conflict (kods) do update set
 -- ==== Ikdienas atjaunošana (atjaunot_visu.sh, hakatons-dati.timer) ====
 -- Kad avots pēdējo reizi veiksmīgi ielādēts (ielade.py to ieraksta; Datu avoti panelis un statusa lapas "Datu vecums").
 alter table avoti add column if not exists atjaunots timestamptz;
+
+-- ==== Ziņojumi: iedzīvotāju ziņojumi par bīstamību (karte_api.py /api/zinojumi, production/zinot.js) ====
+-- Vieta ~100 m precizitātē (publiski ~1 km), bez IP un personas datiem; CC BY 4.0. API to izveido arī pats startā.
+create table if not exists zinojumi (
+  id         bigserial primary key,
+  tips       text not null check (tips in ('koks', 'cels', 'elektriba', 'udens', 'cits')),
+  apraksts   text not null default '' check (length(apraksts) <= 200),
+  lat        numeric(6, 3) not null check (lat between 55 and 59),
+  lon        numeric(6, 3) not null check (lon between 20 and 29),
+  laiks      timestamptz not null default now(),
+  apstiprina int not null default 0,
+  apstrid    int not null default 0,
+  statuss    text not null default 'jauns' check (statuss in ('jauns', 'redzams', 'slepts'))
+);
+create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
+grant select, insert on zinojumi to map_api;
+grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
+grant usage on sequence zinojumi_id_seq to map_api;

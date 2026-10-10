@@ -58,6 +58,10 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] VPS: install `hakatons-dati.service` + `.timer` (copy from `src/karte/serveris/`, `systemctl daemon-reload`, `systemctl enable --now hakatons-dati.timer`), run it once, check `journalctl -u hakatons-dati` — added 2026-10-10 03:00 +03:00 by noiseparty
 - [ ] After the first daily run: "Datu vecums" on statuss.html green, "Atjaunots …" shown per source in "Datu avoti" — added 2026-10-10 03:00 +03:00 by noiseparty
 
+- [ ] VPS: set `MAP_MOD_TOKEN=<long random>` in `/etc/hakatons/map.env` and `systemctl restart hakatons-map-api` to enable moderation (without it, hiding is off; reports still work) — added 2026-10-10 03:11 +03:00 by noiseparty
+- [ ] Reports: check after merge that the API created table `zinojumi` (`journalctl -u hakatons-map-api | grep zinojumi:` empty) and one report round-trips on the phone — added 2026-10-10 03:11 +03:00 by noiseparty
+- [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
+
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — @D (`noiseparty/telefoni`) — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -65,6 +69,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] Community hazard reports ("Ziņot par bīstamību", lacukarte.lv pattern): `zinot.js` form + layer, `/api/zinojumi` (rate limit, URL/profanity filter, ~100 m stored / ~1 km shown, 7 days, auto-hide when disputed), confirm/dispute, `moderacija.html` with `MAP_MOD_TOKEN` — done 2026-10-10 03:11 +03:00 by noiseparty (added 2026-10-10 03:11 +03:00 by noiseparty)
 - [x] Pitch replay: "▶ Atskaņot" in the demo panel / `?demo=atskanot[&saraksts=…&ilgums=…]` steps through demo scenarios (default vetra-2026, pludi-ogre, drons, bez-sakariem; 20 s each) with each scenario's search query, progress bar, space / ← / → and buttons, auto "Beigt demo" (`production/atskanot.js`) — done 2026-10-10 03:09 +03:00 by noiseparty (added 2026-10-10 03:09 +03:00 by noiseparty)
 - [x] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — done 2026-10-10 03:10 +03:00 by noiseparty: layer "Laikapstākļi tagad" (`/api/noverojumi`, 34 stations), "Šobrīd brāzmas" feed item, +1 risk for observed gusts ≥ 20 m/s, wind line in storm results, status component (added 2026-10-10 01:39 +03:00 by noiseparty)
 - [x] Classifier round 2: keystroke time at CPU ×4 max 61 → 28 ms (same results), demo-event keywords + scenarios #120 smoke from a big fire, #121 e-services down, 66 fresh RU/EN/demo queries (81,8 % before fixes), 563-query set 95,0 % — `notes/klasifikators.md` — done 2026-10-10 03:10 +03:00 by noiseparty (added 2026-10-10 03:10 +03:00 by noiseparty)
