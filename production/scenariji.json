@@ -1006,7 +1006,7 @@
     {
       "kods": "nav_sakaru", "nr": 92, "grupa": "H", "nosaukums": "Mobilo sakaru tīkls nedarbojas",
       "kategorijas": ["noturibas_punkts"], "zvanit112": false, "talak": "elektriba",
-      "padoms": "112 var iziet caur citu operatoru tīklu. Mēģiniet SMS. Informāciju klausieties LR1 radio. Ja nekas nedarbojas, dodieties uz tuvāko noturības punktu.",
+      "padoms": "112 var iziet caur citu operatoru tīklu. Mēģiniet SMS. Informāciju klausieties LR1 radio. Ja nekas nedarbojas, dodieties uz tuvāko noturības punktu. Ja map.repo.lv jau esat atvēris, karte un pēdējie rezultāti atvērsies arī bez interneta.",
       "atslegvardi": ["nav zonas", "nav signāl", "nav tīkl", "sakari nedarb", "nav sakar", "nav interneta", "нет связи", "нет сети", "no signal", "no network", "no internet", "tīkls nedarb", "sakaru tīkl", "telefons nestrādā",
         "nav uztveršan", "pazudis tīkl", "mobilais tīkl", "nav wifi", "nevaru piezvanīt", "nevar piezvanīt",
         "neiet cauri", "не ловит", "сеть пропал", "связь пропал", "нет интернет", "нет сигнал", "no service",
