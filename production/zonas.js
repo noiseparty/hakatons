@@ -100,10 +100,18 @@ const Zonas = (() => {
 
   // Plūdu flīze caur API (diska kešs): XYZ z = Leaflet z − 1, jo Leaflet flīze ir 512 px. X-Flize: aiznemts (API rindā
   // jau 4 pieprasījumi uz LVĢMC) — vēlreiz pēc 2, 4, 6 s; 404 — API bez šī galapunkta (vecāka versija) → tiešais WMS.
-  let bezApiFlizem = false;
+  // Reizē ≤ 3 flīžu pieprasījumi: kamēr LVĢMC neatbild, tie gaida līdz 25 s un HTTP/1.1 pārlūkā aizņemtu visus 6
+  // savienojumus ar mūsu serveri (lapas JS un pārējais API tad stāvētu rindā).
+  let bezApiFlizem = false, flizesCela = 0;
+  const flizuRinda = [];
+  async function flizesPieprasijums(url) {
+    while (flizesCela >= 3) await new Promise(ok => flizuRinda.push(ok));
+    flizesCela++;
+    try { return await fetch(url); } finally { flizesCela--; flizuRinda.shift()?.(); }
+  }
   async function apiFlize(s, coords) {
     for (let reize = 0; reize < 4; reize++) {
-      const r = await fetch(`${PLUDU_FLIZE}${s.paka}/${coords.z - 1}/${coords.x}/${coords.y}.png`);
+      const r = await flizesPieprasijums(`${PLUDU_FLIZE}${s.paka}/${coords.z - 1}/${coords.x}/${coords.y}.png`);
       if (r.status === 404) { bezApiFlizem = true; return null; }
       if (!r.ok) throw new Error('plūdu flīze ' + r.status);
       if (r.headers.get('X-Flize') !== 'aiznemts') return createImageBitmap(await r.blob());
