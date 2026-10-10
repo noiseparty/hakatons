@@ -29,7 +29,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Water level danger colours: ask LVĢMC for permission to use PRIS thresholds (`videscentrs.lvgmc.lv/data/pris_stations`, level_3/2/1) — added 2026-10-09 20:34 +03:00 by noiseparty
 - [ ] Result card: municipality civil-protection phone / plan link (from `pasvaldibas.csv`); nearest address for a GPS location — added 2026-10-10 00:21 +03:00 by noiseparty
 - [ ] Water level: 14-day forecast from data.gov.lv "Hidroloģiskās prognozes" (CC0) in the result card — added 2026-10-10 00:21 +03:00 by noiseparty
-- [ ] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Ask the 12 municipalities whose lists are in unpublished annexes (Cēsis, Sigulda, Valmiera, Liepāja, Jelgava …, see notes/ca-plani-kvalitate.md) for the annexes or open data — added 2026-10-10 00:08 +03:00 by noiseparty
 - [ ] Load LVĢMC observations (data.gov.lv `hidrometeorologiskie-noverojumi`, CC0) to show real gust maxima, e.g. for the 22–23.08.2026 storm replay — added 2026-10-10 01:58 +03:00 by noiseparty
 - [ ] Offline mode: service worker + cached data/tiles for the user's area (demo 7 can only say "print it now") — added 2026-10-10 01:58 +03:00 by noiseparty
@@ -63,6 +62,8 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Reports: check after merge that the API created table `zinojumi` (`journalctl -u hakatons-map-api | grep zinojumi:` empty) and one report round-trips on the phone — added 2026-10-10 03:11 +03:00 by noiseparty
 - [ ] Reports: votes are only de-duplicated in the browser (localStorage, no IP stored); consider a per-report hourly cap if abused — added 2026-10-10 03:11 +03:00 by noiseparty
 
+- [ ] Ask Ventspils valstspilsēta + novads to publish the assembly/accommodation parts of CA-plan annexes 4–16 (only cover pages are public; plan p. 48/50 points to them) — added 2026-10-10 03:23 +03:00 by noiseparty
+
 ## In progress
 - [ ] Per-region risk assessment from real-time weather (wind, precipitation, ice, flood levels) → colour regions by risk level — @E (`noiseparty/riski`) — added 2026-10-09 23:20 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 - [ ] Real-phone test (Android + iPhone) of the search result card: location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — @D (`noiseparty/telefoni`) — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -70,6 +71,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Border waiting times (`ROBEZAS_LAIKS`) feed + traffic rows on the status page — @B (`noiseparty/satiksme-2`) — added 2026-10-10 02:27 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
 
 ## Done
+- [x] OCR the Ventspils CA plan (scanned PDF, 203 pp.) to extract its assembly/accommodation lists — done 2026-10-10 03:23 +03:00 by noiseparty: OCR'd (Tesseract lav) → `src/karte/dati/ca_plani/ventspils-ocr.md`; the lists are in annexes 4–16, which are only 'ierobežotas pieejamības' cover pages in the public file (lpp. 71–83), so **nothing to extract**; ventspils.json + ca-plani-kvalitate.md now cite this (added 2026-10-10 00:08 +03:00 by noiseparty)
 - [x] Community hazard reports ("Ziņot par bīstamību", lacukarte.lv pattern): `zinot.js` form + layer, `/api/zinojumi` (rate limit, URL/profanity filter, ~100 m stored / ~1 km shown, 7 days, auto-hide when disputed), confirm/dispute, `moderacija.html` with `MAP_MOD_TOKEN` — done 2026-10-10 03:11 +03:00 by noiseparty (added 2026-10-10 03:11 +03:00 by noiseparty)
 - [x] Pitch replay: "▶ Atskaņot" in the demo panel / `?demo=atskanot[&saraksts=…&ilgums=…]` steps through demo scenarios (default vetra-2026, pludi-ogre, drons, bez-sakariem; 20 s each) with each scenario's search query, progress bar, space / ← / → and buttons, auto "Beigt demo" (`production/atskanot.js`) — done 2026-10-10 03:09 +03:00 by noiseparty (added 2026-10-10 03:09 +03:00 by noiseparty)
 - [x] Show live LVĢMC observations (current gusts, "LIETUS" phenomena text) on the map — split from "current weather" — done 2026-10-10 03:10 +03:00 by noiseparty: layer "Laikapstākļi tagad" (`/api/noverojumi`, 34 stations), "Šobrīd brāzmas" feed item, +1 risk for observed gusts ≥ 20 m/s, wind line in storm results, status component (added 2026-10-10 01:39 +03:00 by noiseparty)
