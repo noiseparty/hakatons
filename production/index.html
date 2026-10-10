@@ -13,28 +13,35 @@
 <link rel="icon" href="favicon.ico" sizes="32x32">
 </head>
 <body>
+<a class="izlaist" href="#saturs">Uz saturu</a>
 <header class="hero">
   <div class="ietvars">
     <h1>Krīzes karte: viena meklēšana, viens lēmums</h1>
     <p>Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
       kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.</p>
+    <form class="meklet" role="search" id="meklet" action="/map" method="get">
+      <label for="vaicajums" data-t>Kas Jums vajadzīgs?</label>
+      <div class="rinda">
+        <input id="vaicajums" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē" data-t-placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+        <button type="submit" class="poga" data-t>Meklēt</button>
+      </div>
+    </form>
     <div class="cta">
-      <a class="poga" href="/map">Atvērt karti</a>
-      <a class="saite-hero" href="/map">Vai meklēt situāciju</a>
+      <a class="saite-hero sek" href="/map" data-t>Atvērt karti</a>
     </div>
   </div>
 </header>
-<main class="ietvars">
+<main class="ietvars" id="saturs">
   <section aria-labelledby="h-skaiti">
     <h2 id="h-skaiti">Kas ir kartē</h2>
     <p class="apak">Dzīvie skaitļi no API: <span id="kops">…</span></p>
-    <div class="kartes" id="kartes" aria-live="polite"><p class="apak">Ielādē…</p></div>
+    <div class="kartes" id="kartes" aria-live="polite" aria-busy="true"><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div><div class="skaitlis sk"><b>&nbsp;</b><span>&nbsp;</span></div></div>
   </section>
 
   <section aria-labelledby="h-statuss">
     <h2 id="h-statuss">Dzīvo datu plūsmu stāvoklis</h2>
     <p class="apak" id="statuss-apak">Pārbaude no /api/veseliba.</p>
-    <div class="statusi" id="statusi" aria-live="polite"><p class="apak">Ielādē…</p></div>
+    <div class="statusi" id="statusi" aria-live="polite" aria-busy="true"><div class="statuss sk"><span class="zime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><div><b>&nbsp;</b><small>&nbsp;</small></div></div><div class="statuss sk"><span class="zime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><div><b>&nbsp;</b><small>&nbsp;</small></div></div><div class="statuss sk"><span class="zime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><div><b>&nbsp;</b><small>&nbsp;</small></div></div><div class="statuss sk"><span class="zime">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><div><b>&nbsp;</b><small>&nbsp;</small></div></div></div>
   </section>
 
   <section aria-labelledby="h-ca">
@@ -64,10 +71,11 @@
   <section aria-labelledby="h-avoti">
     <h2 id="h-avoti">Izmantotie datu avoti</h2>
     <p class="apak" id="avoti-apak">Izdevējs, licence un atjaunošana.</p>
-    <ul class="avoti" id="avoti"><li>Ielādē…</li></ul>
+    <p class="brid" role="note"><b>&#9888; Atsevišķs gadījums:</b> 112.lv patvertņu datiem izdevējs nav norādījis licenci. Tie ir kartē pēc komandas lēmuma un atzīmēti ar &#9888;; pārējie avoti ir atvērti vai oficiāli dokumenti bez autortiesībām.</p>
+    <ul class="avoti" id="avoti" aria-busy="true"><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li><li class="sk"><b>&nbsp;</b><small>&nbsp;</small><small>&nbsp;</small></li></ul>
   </section>
 </main>
-<footer><div class="ietvars">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026. <a href="/map">Atvērt karti</a> · <a href="info.html">Svarīgi krīzē</a></div></footer>
+<footer><div class="ietvars">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026. <a href="/map">Atvērt karti</a> · <a href="info.html">Svarīgi krīzē</a> · <a href="#">Uz augšu</a></div></footer>
 <script src="sakums.js"></script>
 </body>
 </html>

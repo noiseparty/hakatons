@@ -45,3 +45,37 @@ footer { padding: 16px 0 32px; color: var(--teksts2); font-size: .85rem; }
   .avoti { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ca .skaitlis b { font-size: 2rem; }
 }
+
+/* skeletoni, zīmes, kartīšu detaļas */
+.sk b, .sk small, .sk span, .sk .zime { background: linear-gradient(90deg, #e6e9ee 25%, #f4f6f8 50%, #e6e9ee 75%); background-size: 200% 100%; animation: mirdz 1.2s linear infinite; border-radius: 4px; color: transparent; }
+.sk { min-height: 64px; }
+@keyframes mirdz { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .sk b, .sk small, .sk span, .sk .zime { animation: none; } }
+.izlaist { position: absolute; left: -999px; } .izlaist:focus { left: 8px; top: 8px; z-index: 9; background: #fff; padding: 8px 12px; }
+.brid { margin: 0 0 12px; padding: 10px 12px; background: #fff4e5; border-left: 4px solid var(--oranzs); border-radius: var(--radiuss); font-size: .92rem; }
+.zimes { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.avoti .zime { margin: 0; font-size: .78rem; overflow-wrap: anywhere; }
+.avoti .zime a { color: #fff; }
+.avoti .zime.skaits { background: var(--zils-tumss); }
+.avoti details { margin-top: 4px; } .avoti summary { cursor: pointer; min-height: 32px; color: var(--zils-tumss); font-size: .85rem; }
+.avoti a { overflow-wrap: anywhere; }
+
+/* kartītes kā saites uz karti */
+a.skaitlis { position: relative; display: block; min-height: 56px; padding-right: 28px; color: inherit; text-decoration: none; }
+a.skaitlis span { display: block; overflow-wrap: anywhere; }
+.bulta { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-style: normal; font-size: 1.4rem; color: var(--zils-tumss); transition: transform .15s; }
+a.skaitlis:hover, a.skaitlis:focus-visible { background: var(--zils-gaiss); box-shadow: 0 2px 10px rgba(0,119,200,.35); }
+a.skaitlis:hover .bulta, a.skaitlis:focus-visible .bulta { transform: translate(3px, -50%); }
+a.skaitlis:focus-visible, .grupa a:focus-visible { outline: 3px solid var(--zils); outline-offset: 2px; }
+.grupa a { display: inline-flex; align-items: center; gap: 4px; min-height: 40px; color: inherit; text-decoration: none; }
+.grupa a:hover { color: var(--zils-tumss); text-decoration: underline; }
+
+/* hero meklēšana */
+.meklet { margin: 0 0 14px; max-width: 640px; }
+.meklet label { display: block; margin-bottom: 6px; font-weight: 600; }
+.meklet .rinda { display: flex; flex-direction: column; gap: 8px; }
+.meklet input { width: 100%; min-height: 48px; padding: 0 14px; border: 0; border-radius: var(--radiuss); font: inherit; color: var(--teksts); background: #fff; }
+.meklet input:focus-visible { outline: 3px solid #ffd54a; outline-offset: 2px; }
+.meklet .poga { border: 0; cursor: pointer; min-height: 48px; font-family: inherit; }
+.saite-hero.sek { border: 2px solid rgba(255,255,255,.7); border-radius: var(--radiuss); padding: 0 20px; text-decoration: none; font-weight: 600; }
+@media (min-width: 720px) { .meklet .rinda { flex-direction: row; } .meklet .poga { flex: none; } }

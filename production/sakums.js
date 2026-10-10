@@ -14,13 +14,19 @@
   async function skaiti() {
     try {
       const k = await json('/api/kategorijas');
-      let html = '', g = '', kops = 0;
-      for (const c of k) {
-        if (c.grupa !== g) { g = c.grupa; html += `<h3 class="grupa">${esc(GRUPAS[g] || g)}</h3>`; }
-        kops += c.skaits || 0;
-        html += `<div class="skaitlis" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(c.nosaukums)}</span></div>`;
+      let html = '', kops = 0;
+      const grupas = [];
+      for (const c of k) { let x = grupas.find(y => y.g === c.grupa); if (!x) grupas.push(x = { g: c.grupa, k: [] }); x.k.push(c); }
+      const saite_karte = ids => '/map?slanis=' + ids.map(encodeURIComponent).join(',');
+      for (const x of grupas) {
+        const nos = GRUPAS[x.g] || x.g;
+        html += `<h3 class="grupa"><a href="${esc(saite_karte(x.k.map(c => c.kods)))}" aria-label="Atvērt kartē grupu: ${esc(nos)}">${esc(nos)} <i aria-hidden="true">›</i></a></h3>`;
+        for (const c of x.k) {
+          kops += c.skaits || 0;
+          html += `<a class="skaitlis" href="${esc(saite_karte([c.kods]))}" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(c.nosaukums)}</span><i class="bulta" aria-hidden="true">›</i></a>`;
+        }
       }
-      $('kartes').innerHTML = html;
+      $('kartes').innerHTML = html; $('kartes').removeAttribute('aria-busy');
       $('kops').textContent = `${nf(kops)} objekti ${k.length} kategorijās`;
       const ca = k.filter(c => c.kods === 'evakuacijas_punkts' || c.kods === 'izmitinasana').reduce((s, c) => s + c.skaits, 0);
       $('ca-vietas').textContent = nf(ca);
@@ -38,7 +44,7 @@
     try {
       const v = await json('/api/veseliba');
       const a = v.arejie_avoti || {};
-      $('statusi').innerHTML = PLUSMAS.map(([nos, kodi, ipasa]) => {
+      $('statusi').removeAttribute('aria-busy'); $('statusi').innerHTML = PLUSMAS.map(([nos, kodi, ipasa]) => {
         const kn = kodi.filter(k => k in a);
         const slikti = kn.filter(k => a[k] === 'traucejumi' || a[k] === 'nedarbojas');
         const ok = kn.length > 0 && slikti.length === 0;
@@ -73,17 +79,33 @@
   const dat = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
   async function avoti() {
     let db = [];
-    try { db = await json('/api/avoti'); } catch (e) { /* rādām vismaz tiešsaistes avotus */ }
+    try { db = await json('/api/avoti'); } catch (e) { $('avoti-apak').textContent = 'Avotu saraksts no datubāzes īslaicīgi nav pieejams; zemāk tiešsaistes avoti.'; }
     const isti = db.filter(a => !/^sim-/.test(a.kods)), sim = db.filter(a => /^sim-/.test(a.kods));
     const visi = [...isti, ...TIESI.filter(t => !isti.some(a => a.nosaukums === t.nosaukums))];
     const atverti = visi.filter(a => a.atverts).length;
     $('avoti-apak').textContent = `${atverti} atvērto datu avoti ar licenci` + (visi.length > atverti ? `, ${visi.length - atverti} bez skaidri norādītas atvērtas licences` : '') +
       (sim.length ? `; ${sim.length} simulēti prototipa dati nav iekļauti.` : '.');
-    $('avoti').innerHTML = visi.map(a => `<li class="${a.atverts ? '' : 'bez'}"><b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
+    $('avoti').removeAttribute('aria-busy');
+    $('avoti').innerHTML = visi.map(a => {
+      const sk = a.skaits ? `<span class="zime skaits">${nf(a.skaits)} objekti</span>` : '';
+      const lic = a.atverts ? `<span class="zime ok">${saite(a.licences_url, a.licence)}</span>` : `<span class="zime deg">&#9888; ${esc(a.licence || 'Licence nav norādīta')}</span>`;
+      const kad = a.atjaunots ? dat(a.atjaunots) : a.ieladets ? dat(a.ieladets) + ' (ielāde)' : a.biezums || 'nav norādīts';
+      return `<li class="${a.atverts ? '' : 'bez'}"><b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
       <small>Izdevējs: ${esc(a.izdevejs)}</small>
-      <small>Licence: ${saite(a.licences_url, a.licence)}</small>
-      <small>Atjaunots: ${esc(a.atjaunots ? dat(a.atjaunots) : a.ieladets ? dat(a.ieladets) + ' (ielāde)' : a.biezums || 'nav norādīts')}</small></li>`).join('');
+      <span class="zimes">${lic}${sk}</span>
+      ${a.lietojums ? `<small>Kartē: ${esc(a.lietojums)}</small>` : ''}
+      <small>Atjaunots: ${esc(kad)}</small>
+      ${a.piezime ? `<details><summary>Piezīme par avotu</summary><small>${esc(a.piezime)}</small></details>` : ''}</li>`;
+    }).join('');
   }
+
+  const forma = $('meklet');
+  if (forma) forma.addEventListener('submit', e => {
+    e.preventDefault();
+    const q = $('vaicajums').value.trim();
+    if (!q) { $('vaicajums').focus(); return; }
+    location.href = '/map?q=' + encodeURIComponent(q);
+  });
 
   skaiti(); statuss(); avoti();
 })();
