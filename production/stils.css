@@ -747,7 +747,7 @@ body.ir-meklets .dv-pirmais { display: none; }
   #lapa-rezultats:has(#rezultati:not([hidden])) .lapa-tukss { display: none; }
   .apaksa-saturs > .pirmais-skats { margin: 6px 0 2px; gap: 6px; }
   .apaksa-saturs > .pirmais-skats .ps-ievads { font-size: .82rem; font-weight: 500; color: var(--teksts-blavs); }
-  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 40px; font-size: .85rem; }
+  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 44px; font-size: .85rem; }  /* pieskāriena laukums 44 px */
   .apaksa-saturs > .pirmais-skats .ps-dati { display: none; }  /* telefonā vieta lēmumam; avoti ir katrā rezultāta rindā */
   .apaksa-saturs:has(#rezultati:not([hidden])) > .pirmais-skats { display: none; }
   #lapa-slani #panelis { display: flex !important; flex-direction: column; width: auto; padding: 0; gap: 8px; overflow: visible; }
