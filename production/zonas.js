@@ -2,13 +2,16 @@
 // Visas ieslēgtās zonas zīmē viens kanvas flīžu slānis: katrai zonai sava aizpildījuma krāsa un skaidra robeža;
 // kur pārklājas divas vai vairākas riska zonas — "paaugstināts risks" (tumšāks, svītrots laukums ar sarkanu robežu).
 // Plūdu zonas: LVĢMC WMS (geo-dpps.viss.gov.lv, CC0). Ģeometriju serviss nedod (nav WFS, GetFeatureInfo bez
-// ģeometrijas), tāpēc WMS attēlu pārvēršam maskā: necaurspīdīgs pikselis = zonā. Serviss atļauj CORS no map.repo.lv.
+// ģeometrijas), tāpēc WMS attēlu pārvēršam maskā: necaurspīdīgs pikselis = zonā. Flīzes nāk caur mūsu API ar diska kešu
+// (/api/pludi/flize/<paka>/<z>/<x>/<y>.png, karte_api.py), jo WMS atbild 5–30 s; ja API to vēl nezina (404) — tieši no
+// WMS kā agrāk (serviss atļauj CORS no map.repo.lv).
 // Brīdinājumi: /api/bridinajumi?poligoni=1 (LVĢMC, data.gov.lv, CC0).
 // Satiksme, ceļu meteostacijas, robežpunkti: /api/satiksme (LVC, transportdata.gov.lv, CC0); satiksmes zonas ir
 // novadi un valstspilsētas (/api/prognozes/robezas, VZD CC BY 4.0).
 // Lieto: app.js (radtPludus), meklesana.js (satiksmeRinda — rinda rezultātu kartītē).
 const Zonas = (() => {
   const PLUDU_WMS = 'https://geo-dpps.viss.gov.lv/api/DPPSPackage/client/';
+  const PLUDU_FLIZE = '/api/pludi/flize/';
   const LIELUMS = 512;  // lielas flīzes: 4× mazāk pieprasījumu lēnajam WMS (atbild ~5 s neatkarīgi no izmēra)
   const SLIDENS_M = 15000;  // ceļu meteostacijas "zona": rādiuss ap staciju
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -26,11 +29,12 @@ const Zonas = (() => {
       apraksts: 'Plūdu riska zona: applūst vismaz reizi 100 gados (1 % varbūtība gadā)',
       avots: saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC plūdu riska kartes 2026–2031') + ' · CC0',
       minZoom: 8,
-      // slānis 1 = 1 % (100 gadu) applūšana; pārklājums [dienvidi, rietumi, ziemeļi, austrumi] — ārpus tā nepieprasām
+      // slānis 1 = 1 % (100 gadu) applūšana; pārklājums [dienvidi, rietumi, ziemeļi, austrumi] — ārpus tā nepieprasām;
+      // paka — nosaukums API flīzēm (karte_api.py PLUDU_PAKAS ar tiem pašiem ceļiem un pārklājumiem)
       wms: [
-        { cels: '3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092', slanis: '1', robezas: [55.76, 20.88, 57.67, 27.92] },  // pavasara pali
-        { cels: '3._cikla_L_558_jIS73E/3322e012-8cb3-4a4c-8acf-a467e25a17b3', slanis: '1', robezas: [56.38, 23.95, 56.64, 26.01] },  // ledus sastrēgumi
-        { cels: '3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea', slanis: '1', robezas: [56.06, 20.84, 57.88, 24.49] },  // jūras vējuzplūdi
+        { paka: 'pali', cels: '3._cikla_L_557_7iFPTq/b7ad025f-833a-4b4f-a845-d5cec9d24092', slanis: '1', robezas: [55.76, 20.88, 57.67, 27.92] },  // pavasara pali
+        { paka: 'ledus', cels: '3._cikla_L_558_jIS73E/3322e012-8cb3-4a4c-8acf-a467e25a17b3', slanis: '1', robezas: [56.38, 23.95, 56.64, 26.01] },  // ledus sastrēgumi
+        { paka: 'juras', cels: '3._cikla_L_556_karVbb/cc6f2ed3-dbfb-42d0-98e1-4d9f10f57fea', slanis: '1', robezas: [56.06, 20.84, 57.88, 24.49] },  // jūras vējuzplūdi
       ],
       krasas: () => [[37, 99, 235, 90], [29, 78, 216]],
     },
@@ -88,6 +92,20 @@ const Zonas = (() => {
     return { nw, se };
   }
 
+  // Plūdu flīze caur API (diska kešs): XYZ z = Leaflet z − 1, jo Leaflet flīze ir 512 px. X-Flize: aiznemts (API rindā
+  // jau 4 pieprasījumi uz LVĢMC) — vēlreiz pēc 2, 4, 6 s; 404 — API bez šī galapunkta (vecāka versija) → tiešais WMS.
+  let bezApiFlizem = false;
+  async function apiFlize(s, coords) {
+    for (let reize = 0; reize < 4; reize++) {
+      const r = await fetch(`${PLUDU_FLIZE}${s.paka}/${coords.z - 1}/${coords.x}/${coords.y}.png`);
+      if (r.status === 404) { bezApiFlizem = true; return null; }
+      if (!r.ok) throw new Error('plūdu flīze ' + r.status);
+      if (r.headers.get('X-Flize') !== 'aiznemts') return createImageBitmap(await r.blob());
+      await new Promise(ok => setTimeout(ok, 2000 * (reize + 1)));
+    }
+    throw new Error('plūdu flīžu rinda pilna');
+  }
+
   // WMS flīze EPSG:3857 tieši Leaflet flīzes robežās (bez izkropļojumiem); serviss mēdz atbildēt lēni — vienreiz atkārtojam
   async function wmsMaska(z, coords) {
     const { nw, se } = flizesRobezas(coords);
@@ -99,12 +117,14 @@ const Zonas = (() => {
     for (const s of z.wms) {
       const [d, r, zi, a2] = s.robezas;
       if (se.lat > zi || nw.lat < d || se.lng < r || nw.lng > a2) continue;
-      const url = PLUDU_WMS + s.cels + '?' + new URLSearchParams({
-        service: 'WMS', version: '1.3.0', request: 'GetMap', layers: s.slanis, styles: '', crs: 'EPSG:3857',
-        bbox: [a.x, b.y, b.x, a.y].join(','), width: LIELUMS, height: LIELUMS, format: 'image/png', transparent: 'TRUE',
-      });
-      let img;
-      try { img = await attels(url); } catch { img = await attels(url + '&r=1'); }
+      let img = bezApiFlizem ? null : await apiFlize(s, coords);
+      if (!img) {
+        const url = PLUDU_WMS + s.cels + '?' + new URLSearchParams({
+          service: 'WMS', version: '1.3.0', request: 'GetMap', layers: s.slanis, styles: '', crs: 'EPSG:3857',
+          bbox: [a.x, b.y, b.x, a.y].join(','), width: LIELUMS, height: LIELUMS, format: 'image/png', transparent: 'TRUE',
+        });
+        try { img = await attels(url); } catch { img = await attels(url + '&r=1'); }
+      }
       ctx.clearRect(0, 0, LIELUMS, LIELUMS);
       ctx.drawImage(img, 0, 0);
       const px = ctx.getImageData(0, 0, LIELUMS, LIELUMS).data;
@@ -262,7 +282,7 @@ const Zonas = (() => {
     },
   });
   const slanis = new Slanis({
-    tileSize: LIELUMS, zIndex: 250, updateWhenZooming: false, keepBuffer: 1,
+    tileSize: LIELUMS, zIndex: 250, updateWhenZooming: false, updateWhenIdle: true, keepBuffer: 1,
     attribution: 'Zonas: ' + saite('https://data.gov.lv/dati/lv/dataset/3-cikla-latvijas-pldu-postjumu-vietu-un-pldu-riska-kartes1', 'LVĢMC') + ', ' + saite('https://transportdata.gov.lv', 'LVC') + ' (CC0)',
   });
 

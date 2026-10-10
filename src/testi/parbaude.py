@@ -34,8 +34,9 @@ DEMO = ["vejs", "vetra", "drons", "nakts", "pludi-ogre", "vetra-2026", "bez-saka
 OGRE = (56.8166, 24.6072)            # rezerve, ja adrešu meklēšana neatbild
 JURMALA = (56.964556, 23.735869)     # Melluži, Dubultu prospekts 105 (CA plānā kļūdaini 56.064556)
 LENS_S = 5.0
-# Zināmi, nekaitīgi pieprasījumi: LVĢMC plūdu WMS flīzes ārpus zonām mēdz atbildēt 404; POST skaitīšana
-IGNORET = [re.compile(r"geo-dpps\.viss\.gov\.lv"), re.compile(r"/api/meklejumi$")]
+# Zināmi, nekaitīgi pieprasījumi: LVĢMC plūdu WMS flīzes ārpus zonām mēdz atbildēt 404 (caur API flīžu kešu — 502, ja
+# LVĢMC 25 s neatbild; zonas.js tad rāda "daļa plūdu zonu neielādējās"); POST skaitīšana
+IGNORET = [re.compile(r"geo-dpps\.viss\.gov\.lv"), re.compile(r"/api/pludi/flize/"), re.compile(r"/api/meklejumi$")]
 TU_FORMAS = re.compile(r"(?<![\wĀ-ſ])(tu|tev|tevi|tavs|tava|tavu|tavā|tavi|tavas|tavam|tavai|tavus|tavās|tavos)"
                        r"(?![\wĀ-ſ])", re.IGNORECASE)
 
