@@ -465,6 +465,13 @@ const krizesMeklesana = (() => {
         (drosas.length ? drosasBloks(drosas, drosasVietas, no) : '') +
         '<p class="piezime">Attālums taisnā līnijā ' + esc(no.apraksts) + '.</p>');
       zimetKarte([...grupas.map(g => g.features), ...drosasVietas.filter(Boolean).map(f => [f])], no, vieta);
+      // Maršruts līdz tuvākajai patvertnei (citādi 24/7 slimnīcai), kas apiet spēkā esošus ceļu slēgumus (marsruts.js)
+      const merkis = drosasVietas[drosas.findIndex(d => d.kods === 'patvertne')] || drosasVietas[drosas.findIndex(d => d.kods === 'neatliekama_24h')];
+      if (merkis && !no.regions && typeof Marsruts !== 'undefined' && merkis.properties.attalums_m < 20000) {
+        const [mlon, mlat] = merkis.geometry.coordinates;
+        Marsruts.rindai(kaste.querySelector(`li[data-lat="${mlat}"][data-lon="${mlon}"]`), [no.lat, no.lon], [mlat, mlon],
+          { slanis: rezultatuSlanis, signal });
+      }
       if (laiks) augsnesDati(ll, signal);
       // celi.js: spēkā esošs ceļa slēgums vai negadījums ~5 km rādiusā — viena rinda; bez datiem nekā nerāda
       if (typeof Celi !== 'undefined') Celi.rinda(ll, signal).then(h => { const d = kaste.querySelector('#rez-celi'); if (d) d.innerHTML = h; }, () => {});
@@ -594,7 +601,8 @@ const krizesMeklesana = (() => {
       const prognoze = pr ? `<small>Prognoze ${pr.dienas} dienām${ps !== s ? ` (${esc(ps.nosaukums)}, ${attalums(ps.attalums_m)})` : ''}: ` +
         `<b>${esc(pr.virziens)}</b> (${pr.izmaina_cm > 0 ? '+' : ''}${cm(pr.izmaina_cm)} cm pēc modeļa)` +
         (pr.josla_50_cm ? `, līmenis ~${cm(pr.josla_50_cm[0])}…${cm(pr.josla_50_cm[1])} cm (50 % varbūtība)` : '') +
-        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` : '';
+        `. <a href="https://data.gov.lv/dati/lv/dataset/hidrologiskas-prognozes" target="_blank" rel="noopener">LVĢMC hidroloģiskās prognozes</a> · CC0</small>` :
+        '<small>LVĢMC ūdens līmeņa prognoze tuvākajām stacijām nav (to dod ~35 no 74 stacijām).</small>';
       const izm = s.izmaina_24h_cm;
       const tend = izm == null ? '' : izm > 0 ? `, 24 h: ↑ +${izm} cm` : izm < 0 ? `, 24 h: ↓ −${Math.abs(izm)} cm` : ', 24 h: nemainās';
       const laiks = new Date(s.laiks).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
