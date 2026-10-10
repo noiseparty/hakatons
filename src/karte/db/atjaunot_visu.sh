@@ -68,9 +68,21 @@ lejupieladet() {  # lejupieladet <nosaukums> <komanda…>; kļūda neaptur pār�
   if ! darit "${@:2}"; then KLUDAS+=("$1"); echo "KĻŪDA: lejupielāde $*" >&2; fi
 }
 
-: "${MAP_DB_OWNER_DSN:?iestati MAP_DB_OWNER_DSN (/etc/hakatons/map.env)}"
-SAKUMS=$(mktemp); trap 'rm -f "$SAKUMS" /tmp/ca_plani.$$.geojson' EXIT
-[ "$PARBAUDE" = 1 ] || mkdir -p "$JAUNI"
+echo "sākam $(date '+%F %T'), lietotājs=$(id -un), DATI=$JAUNI, STAVOKLIS=$STAVOKLIS, mape=$(pwd)$([ "$PARBAUDE" = 1 ] && echo ', tikai pārbaude')"
+if [ -z "${MAP_DB_OWNER_DSN:-}" ]; then
+  echo "KĻŪDA: nav MAP_DB_OWNER_DSN. Ielādējiet vidi: set -a && . /etc/hakatons/map.env && set +a" \
+       "(systemd: EnvironmentFile=/etc/hakatons/map.env)" >&2
+  exit 1
+fi
+for k in python3 psql sha256sum; do
+  command -v "$k" >/dev/null || { echo "KĻŪDA: nav komandas $k" >&2; exit 1; }
+done
+SAKUMS=$(mktemp) || { echo "KĻŪDA: mktemp neizdevās" >&2; exit 1; }
+trap 'rm -f "$SAKUMS" /tmp/ca_plani.$$.geojson' EXIT
+if [ "$PARBAUDE" = 0 ]; then
+  mkdir -p "$JAUNI" "$STAVOKLIS" || { echo "KĻŪDA: nevar izveidot $JAUNI / $STAVOKLIS (lietotājs $(id -un))" >&2; exit 1; }
+  [ -w "$JAUNI" ] || { echo "KĻŪDA: $JAUNI nav rakstāms lietotājam $(id -un)" >&2; exit 1; }
+fi
 
 # 0. Shēma (idempotenta; arī jaunas tabulas un avoti.atjaunots)
 if [ "$PARBAUDE" = 1 ]; then echo "+ psql \$MAP_DB_OWNER_DSN -f src/karte/db/shema.sql"

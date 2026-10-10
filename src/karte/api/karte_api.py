@@ -2563,6 +2563,171 @@ def pasvaldiba(q):
          "url": "https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti"}]}
 
 
+# ==== Ziņojumi: iedzīvotāju ziņojumi par bīstamību (production/zinot.js, moderacija.html) — sākums ====
+# Pēc lacukarte.lv parauga (notes/research/05 §5): ziņojums = tips + īss teksts + vieta. Glabā vietu ~100 m precizitātē
+# (3 zīmes aiz komata), publiski rāda ~1 km (2 zīmes). IP un citus personas datus neglabā. Rāda pēdējās 7 dienas,
+# statuss jauns/redzams; paslēpj, ja apstrīdējuši vairāk nekā apstiprinājuši + 2. Licence: CC BY 4.0.
+# Tabulu izveido API startā ar MAP_DB_OWNER_DSN (shēma VPS netiek palaista pati); tas pats bloks ir shema.sql.
+# Moderācija: MAP_MOD_TOKEN (vides mainīgais) — POST ķermenī, nevis URL; bez tā moderācija ir izslēgta.
+
+ZINOJUMU_TIPI = {"koks": "Nokritis koks", "cels": "Neizbraucams ceļš", "elektriba": "Bojāta elektrolīnija",
+                 "udens": "Applūdums", "cits": "Cita bīstamība"}
+ZINOJUMI_DIENAS = 7
+ZINOJUMI_MINUTE = 10    # jauni ziņojumi minūtē (viss process)
+ZINOJUMU_BALSIS_MINUTE = 60
+ZINOJUMI_LICENCE = {"nosaukums": "Iedzīvotāju ziņojumi (map.repo.lv)", "licence": "CC BY 4.0",
+                    "licences_url": "https://creativecommons.org/licenses/by/4.0/"}
+ZINOJUMI_ATRUNA = "Iedzīvotāju ziņojumi, nav oficiāla informācija, CC BY 4.0. Ja apdraudēta dzīvība, zvaniet 112."
+ZINOJUMI_SHEMA = """
+create table if not exists zinojumi (
+  id         bigserial primary key,
+  tips       text not null check (tips in ('koks', 'cels', 'elektriba', 'udens', 'cits')),
+  apraksts   text not null default '' check (length(apraksts) <= 200),
+  lat        numeric(6, 3) not null check (lat between 55 and 59),
+  lon        numeric(6, 3) not null check (lon between 20 and 29),
+  laiks      timestamptz not null default now(),
+  apstiprina int not null default 0,
+  apstrid    int not null default 0,
+  statuss    text not null default 'jauns' check (statuss in ('jauns', 'redzams', 'slepts'))
+);
+create index if not exists zinojumi_laiks_idx on zinojumi (laiks);
+grant select, insert on zinojumi to map_api;
+grant update (apstiprina, apstrid, statuss) on zinojumi to map_api;
+grant usage on sequence zinojumi_id_seq to map_api;
+"""  # tas pats bloks ir src/karte/db/shema.sql
+# Teksti ar saitēm un rupjībām netiek pieņemti (vienkāršs filtrs; moderators var paslēpt pārējo)
+_ZINOJUMU_AIZLIEGTS = re.compile(
+    r"https?:|www\.|\.(com|lv|ru|net|org)\b|<|>"
+    r"|\b(pis[aiut]\w*|pizd\w*|bļa\w*|blja\w*|hui\w*|huj\w*|fuck\w*|shit\w*|bitch\w*|"
+    r"хуй\w*|хуе\w*|пизд\w*|бля\w*|сука\w*|ебат\w*|еба\w*)", re.I)
+_zinojumi_slots = threading.Lock()
+_zinojumi_logi = {"jauni": [0.0, 0], "balsis": [0.0, 0]}
+
+
+def _zinojumi_shema():
+    """API startā: izveido tabulu, ja tās nav (ar MAP_DB_OWNER_DSN); kļūda neaptur API."""
+    if not STATUSS_DSN:
+        return
+    try:
+        with psycopg.connect(STATUSS_DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '10s'")
+            cur.execute(ZINOJUMI_SHEMA)
+    except psycopg.Error as e:
+        print(f"zinojumi: tabulu neizdevās izveidot: {e}", file=sys.stderr)
+
+
+def _zinojumi_atlauts(kas, cik):
+    with _zinojumi_slots:
+        logs, tagad = _zinojumi_logi[kas], time.time()
+        if tagad - logs[0] >= 60:
+            logs[:] = [tagad, 0]
+        if logs[1] >= cik:
+            return False
+        logs[1] += 1
+        return True
+
+
+def _zinojumi_db(sql, params=()):
+    """Rakstīšana kā map_api (insert / update tikai atļautajās kolonnās)."""
+    try:
+        with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute("set statement_timeout = '3s'")
+            cur.execute(sql, params)
+            return cur.fetchone()
+    except psycopg.Error as e:
+        print(f"zinojumi: {e}", file=sys.stderr)
+        raise Kluda(503, "ziņojumus pašlaik nevar saglabāt") from None
+
+
+def zinojumi(q):
+    """GET /api/zinojumi?bbox=minLon,minLat,maxLon,maxLat[&dienas=1..7] — publiskie ziņojumi, vieta ~1 km."""
+    dienas = int(_skaitlis(q, "dienas", 1, ZINOJUMI_DIENAS) or ZINOJUMI_DIENAS)
+    bbox = q.get("bbox", [""])[0]
+    try:
+        x1, y1, x2, y2 = (float(v) for v in bbox.split(",")) if bbox else (20, 55, 29, 59)
+    except ValueError:
+        raise Kluda(400, "bbox: minLon,minLat,maxLon,maxLat") from None
+    try:
+        saraksts = vaicat(
+            """select coalesce(json_agg(json_build_object('id', id, 'tips', tips, 'apraksts', apraksts,
+                      'lat', round(lat, 2), 'lon', round(lon, 2), 'laiks', laiks, 'apstiprina', apstiprina,
+                      'apstrid', apstrid, 'statuss', statuss) order by laiks desc), '[]')
+               from zinojumi
+               where statuss in ('jauns', 'redzams') and apstrid <= apstiprina + 2
+                 and laiks > now() - make_interval(days => %s)
+                 and lon between %s and %s and lat between %s and %s""",
+            (dienas, x1, x2, y1, y2), timeout="2s")
+    except psycopg.Error:
+        saraksts = None  # tabulas vēl nav vai DB nav pieejama
+    return {"avots": ZINOJUMI_LICENCE, "atruna": ZINOJUMI_ATRUNA, "dienas": dienas, "tipi": ZINOJUMU_TIPI,
+            "pieejams": saraksts is not None, "zinojumi": saraksts or []}
+
+
+def zinojumi_pievienot(dati):
+    """POST /api/zinojumi {tips, apraksts, lat, lon} → 201 {id, …}."""
+    if not isinstance(dati, dict):
+        raise Kluda(400, "vajag JSON objektu")
+    tips = dati.get("tips")
+    if tips not in ZINOJUMU_TIPI:
+        raise Kluda(400, "nezināms ziņojuma tips")
+    apraksts = " ".join(str(dati.get("apraksts") or "").split())
+    if len(apraksts) > 200:
+        raise Kluda(400, "apraksts: ne garāks par 200 zīmēm")
+    if _ZINOJUMU_AIZLIEGTS.search(apraksts):
+        raise Kluda(400, "apraksts: bez saitēm un rupjībām")
+    try:
+        lat, lon = round(float(dati.get("lat")), 3), round(float(dati.get("lon")), 3)
+    except (TypeError, ValueError):
+        raise Kluda(400, "vajag lat un lon") from None
+    if not (55 <= lat <= 59 and 20 <= lon <= 29):
+        raise Kluda(400, "vieta nav Latvijā")
+    if not _zinojumi_atlauts("jauni", ZINOJUMI_MINUTE):
+        raise Kluda(429, "pārāk daudz ziņojumu, mēģiniet pēc minūtes")
+    rinda = _zinojumi_db("insert into zinojumi (tips, apraksts, lat, lon) values (%s, %s, %s, %s) returning id, laiks",
+                         (tips, apraksts, lat, lon))
+    return 201, {"id": rinda[0], "tips": tips, "apraksts": apraksts, "lat": round(lat, 2), "lon": round(lon, 2),
+                 "laiks": rinda[1].isoformat(), "apstiprina": 0, "apstrid": 0, "statuss": "jauns"}
+
+
+def _moderators(dati):
+    import hmac
+    gaidits = os.environ.get("MAP_MOD_TOKEN", "")
+    dots = str(dati.get("token") or "") if isinstance(dati, dict) else ""
+    if not gaidits or not hmac.compare_digest(dots.encode(), gaidits.encode()):
+        raise Kluda(403, "nav moderatora tiesību")
+
+
+def zinojumi_darbiba(dati, zid, darbiba):
+    """POST /api/zinojumi/<id>/apstiprinat|apstridet (visi) un /slept|radit (moderators, {token})."""
+    if darbiba in ("slept", "radit"):
+        _moderators(dati)
+        rinda = _zinojumi_db("update zinojumi set statuss = %s where id = %s returning id, statuss",
+                             ("slepts" if darbiba == "slept" else "redzams", int(zid)))
+    else:
+        if not _zinojumi_atlauts("balsis", ZINOJUMU_BALSIS_MINUTE):
+            raise Kluda(429, "pārāk daudz balsojumu, mēģiniet pēc minūtes")
+        kolonna = "apstiprina" if darbiba == "apstiprinat" else "apstrid"
+        rinda = _zinojumi_db(f"update zinojumi set {kolonna} = {kolonna} + 1 where id = %s and statuss <> 'slepts'"
+                             " returning apstiprina, apstrid", (int(zid),))
+    if rinda is None:
+        raise Kluda(404, "ziņojums nav atrasts")
+    return 200, ({"id": rinda[0], "statuss": rinda[1]} if darbiba in ("slept", "radit")
+                 else {"id": int(zid), "apstiprina": rinda[0], "apstrid": rinda[1]})
+
+
+def zinojumi_moderacija(dati):
+    """POST /api/zinojumi/moderacija {token} → pēdējās 30 dienas, arī paslēptie, vieta ~100 m."""
+    _moderators(dati)
+    rindas = _zinojumi_db(
+        """select coalesce(json_agg(json_build_object('id', id, 'tips', tips, 'apraksts', apraksts, 'lat', lat,
+                  'lon', lon, 'laiks', laiks, 'apstiprina', apstiprina, 'apstrid', apstrid, 'statuss', statuss)
+                  order by laiks desc), '[]')
+           from zinojumi where laiks > now() - interval '30 days'""")
+    return 200, {"zinojumi": rindas[0], "tipi": ZINOJUMU_TIPI}
+
+# ==== Ziņojumi — beigas ====
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -2586,9 +2751,13 @@ MARSRUTI = [
     (re.compile(r"^/api/satiksme/?$"), satiksme, 60),
     (re.compile(r"^/api/statuss/?$"), statuss, 60),
     (re.compile(r"^/api/meklejumi/top/?$"), meklejumi_top, 60),
+    (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
+    (re.compile(r"^/api/zinojumi/?$"), zinojumi_pievienot),
+    (re.compile(r"^/api/zinojumi/moderacija/?$"), zinojumi_moderacija),
+    (re.compile(r"^/api/zinojumi/(\d{1,12})/(apstiprinat|apstridet|slept|radit)/?$"), zinojumi_darbiba),
 ]
 
 
@@ -2620,7 +2789,7 @@ class Apstradatajs(BaseHTTPRequestHandler):
 
     def do_POST(self):
         cels = urlparse(self.path).path
-        funkcija = next((f for r, f in POST_MARSRUTI if r.match(cels)), None)
+        funkcija, m = next(((f, m) for r, f in POST_MARSRUTI if (m := r.match(cels))), (None, None))
         if funkcija is None:
             return self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
         try:
@@ -2630,9 +2799,15 @@ class Apstradatajs(BaseHTTPRequestHandler):
         if not 0 <= garums <= 2000:
             return self._atbilde(413, {"kluda": "pārāk garš pieprasījums"}, 0)
         try:
-            funkcija(json.loads(self.rfile.read(garums) or b"{}"))
+            dati = json.loads(self.rfile.read(garums) or b"{}")
         except (ValueError, UnicodeDecodeError):
-            pass  # nederīgs JSON — neskaitām
+            dati = None  # nederīgs JSON: meklejumi to neskaita, zinojumi atbild 400
+        try:
+            rez = funkcija(dati, *m.groups())
+            if isinstance(rez, tuple):  # (statuss, dati) — galapunkts atbild ar saturu (zinojumi)
+                return self._atbilde(*rez, 0)
+        except Kluda as e:
+            return self._atbilde(e.statuss, {"kluda": str(e)}, 0)
         except psycopg.Error as e:
             self.log_error("db: %s", e)  # statistika nav svarīgāka par meklēšanu: tik un tā 204
         self.send_response(204)
@@ -2655,6 +2830,7 @@ def main():
         sys.exit("Nav MAP_DB_DSN")
     ports = int(sys.argv[1]) if len(sys.argv) > 1 else 8920
     threading.Thread(target=_statuss_cikls, name="statuss", daemon=True).start()
+    threading.Thread(target=_zinojumi_shema, name="zinojumi", daemon=True).start()
     Serveris(("127.0.0.1", ports), Apstradatajs).serve_forever()
 
 

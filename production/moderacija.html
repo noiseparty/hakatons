@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="format-detection" content="telephone=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Ziņojumu moderācija · Krīzes karte</title>
+<link rel="stylesheet" href="statuss.css">
+<link rel="stylesheet" href="info.css">
+<style>
+  .mod-forma { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 12px; }
+  .mod-forma input { flex: 1 1 14rem; font: inherit; padding: 10px; border: 1px solid #c9ced6; border-radius: 8px; min-height: 44px; }
+  .mod-forma button, .mod-z button { font: inherit; font-weight: 600; min-height: 44px; padding: 8px 14px; border-radius: 8px; border: 1px solid var(--zils); background: #fff; color: var(--zils-tumss); cursor: pointer; }
+  .mod-z { margin-top: 10px; padding: 12px 14px; background: #fff; border-radius: 8px; box-shadow: var(--ena); }
+  .mod-z.slepts { opacity: .6; }
+  .mod-z p { margin: 4px 0; }
+  .mod-meta { font-size: 13px; color: var(--teksts2); }
+  .mod-zinas { min-height: 1.2em; }
+  .vizuali-slepts { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<header class="augsa">
+  <div class="augsa-iekss">
+    <h1>Krīzes karte <span>· Ziņojumu moderācija</span></h1>
+    <a class="atpakal" href="./">← Uz karti</a>
+  </div>
+</header>
+<main class="saturs">
+  <p class="ievads">Iedzīvotāju ziņojumi pēdējās 30 dienās, arī paslēptie. Vajadzīgs moderatora atslēgas vārds (MAP_MOD_TOKEN serverī).</p>
+  <form class="mod-forma" id="mod-forma">
+    <label class="vizuali-slepts" for="mod-token">Atslēgas vārds</label>
+    <input id="mod-token" type="password" autocomplete="current-password" placeholder="Atslēgas vārds" required>
+    <button type="submit">Ielādēt</button>
+  </form>
+  <p id="mod-zinas" class="mod-zinas" role="status" aria-live="polite"></p>
+  <section id="mod-saraksts" aria-label="Ziņojumi"></section>
+</main>
+<script>
+(() => {
+  // Atslēgas vārdu tur tikai šīs cilnes atmiņā (sessionStorage) un sūta POST ķermenī, nevis URL.
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const el = id => document.getElementById(id);
+  const token = () => el('mod-token').value;
+  el('mod-token').value = sessionStorage.getItem('mod-token') || '';
+  const post = (cels, dati) => fetch(cels, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(dati) });
+
+  async function ieladet() {
+    sessionStorage.setItem('mod-token', token());
+    el('mod-zinas').textContent = 'Ielādē…';
+    const r = await post('/api/zinojumi/moderacija', { token: token() });
+    if (r.status === 403) { el('mod-zinas').textContent = 'Nepareizs atslēgas vārds vai moderācija serverī nav ieslēgta.'; return; }
+    if (!r.ok) { el('mod-zinas').textContent = 'Neizdevās ielādēt (' + r.status + ').'; return; }
+    const d = await r.json();
+    el('mod-zinas').textContent = d.zinojumi.length + ' ziņojumi.';
+    el('mod-saraksts').innerHTML = d.zinojumi.map(z => `
+      <article class="mod-z${z.statuss === 'slepts' ? ' slepts' : ''}" data-id="${z.id}">
+        <p><b>#${z.id} · ${esc(d.tipi[z.tips] || z.tips)}</b> — ${esc(z.statuss)}</p>
+        <p>${z.apraksts ? esc(z.apraksts) : '<i>bez apraksta</i>'}</p>
+        <p class="mod-meta">${new Date(z.laiks).toLocaleString('lv-LV')} · ${esc(z.lat)}, ${esc(z.lon)} ·
+          apstiprina ${z.apstiprina}, apstrīd ${z.apstrid} ·
+          <a href="https://www.openstreetmap.org/?mlat=${esc(z.lat)}&amp;mlon=${esc(z.lon)}#map=17/${esc(z.lat)}/${esc(z.lon)}" target="_blank" rel="noopener">kartē (OSM)</a></p>
+        <button type="button" data-darbiba="${z.statuss === 'slepts' ? 'radit' : 'slept'}">${z.statuss === 'slepts' ? 'Rādīt atkal' : 'Paslēpt'}</button>
+      </article>`).join('');
+  }
+
+  el('mod-forma').addEventListener('submit', e => { e.preventDefault(); ieladet(); });
+  el('mod-saraksts').addEventListener('click', async e => {
+    const b = e.target.closest('[data-darbiba]');
+    if (!b) return;
+    b.disabled = true;
+    const id = b.closest('[data-id]').dataset.id;
+    const r = await post(`/api/zinojumi/${encodeURIComponent(id)}/${b.dataset.darbiba}`, { token: token() });
+    await ieladet();
+    el('mod-zinas').textContent = r.ok ? `#${id}: ${b.dataset.darbiba === 'slept' ? 'paslēpts' : 'atkal redzams'}.` : `#${id}: neizdevās (${r.status}).`;
+  });
+  if (token()) ieladet();
+})();
+</script>
+</body>
+</html>
