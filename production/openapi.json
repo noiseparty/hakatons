@@ -652,7 +652,7 @@
        "application/json": {
         "example": {
          "avots": "lvgmc-bridinajumi",
-         "laiks_lv": "2026-10-10T03:36",
+         "laiks_lv": "2026-10-10T03:37",
          "bridinajumi": [
           {
            "id": "28210",
@@ -1829,7 +1829,7 @@
        "application/json": {
         "example": {
          "avots": "lvc-nap",
-         "laiks": "2026-10-10T00:34:21+00:00",
+         "laiks": "2026-10-10T00:36:51+00:00",
          "kopas": {
           "vietas": {
            "konfigurets": true,
@@ -1900,7 +1900,7 @@
            "limenis": 1,
            "limenis_teksts": "lēns",
            "atrums_vid": 45.1,
-           "atrums_brivs": 80.0,
+           "atrums_brivs": 85.1,
            "plusma_h": 5,
            "merijumi": 3,
            "iekartas": 3,
@@ -1919,7 +1919,7 @@
            "limenis": 0,
            "limenis_teksts": "brīvs",
            "atrums_vid": 82.5,
-           "atrums_brivs": 80.0,
+           "atrums_brivs": 82.5,
            "plusma_h": 3,
            "merijumi": 2,
            "iekartas": 2,
@@ -1935,7 +1935,7 @@
            "nosaukums": null,
            "zona": "100016606",
            "atrums": 82.1,
-           "atrums_brivs": 80.0,
+           "atrums_brivs": 94.3,
            "plusma_h": 1,
            "limenis": 0,
            "limenis_teksts": "brīvs",
@@ -1948,7 +1948,7 @@
            "nosaukums": null,
            "zona": "100016784",
            "atrums": 89.1,
-           "atrums_brivs": 80.0,
+           "atrums_brivs": 89.1,
            "plusma_h": 2,
            "limenis": 0,
            "limenis_teksts": "brīvs",
@@ -1956,19 +1956,7 @@
           },
           "… (+75)"
          ],
-         "stacijas": [
-          {
-           "id": "662653c6e44f14a1fe01c428",
-           "lat": 57.16879,
-           "lon": 24.96795,
-           "nosaukums": "Slippery",
-           "slidens": true,
-           "cela_temp": null,
-           "gaisa_temp": null,
-           "laiks": "2026-10-10T00:20:00.000Z",
-           "avots": "slidens_meteo"
-          }
-         ],
+         "stacijas": [],
          "robezas": [],
          "piezime": "Līmenis: vidējais ātrums pret brīvas plūsmas ātrumu iekārtā (≥ 75 % brīvs, ≥ 50 % lēns, citādi sastrēgums). Brīvas plūsmas ātrums ir novērtē…"
         }
@@ -2218,23 +2206,23 @@
         "example": {
          "ok": true,
          "statistika": {
-          "db_vaicajumi": 1411,
+          "db_vaicajumi": 1428,
           "db_parslodze": 0,
           "kesa": {
            "statuss": {
-            "no_kesas": 9,
-            "uz_avotu": 6,
-            "novecojusi": 4,
+            "no_kesas": 10,
+            "uz_avotu": 7,
+            "novecojusi": 5,
             "gaidija": 0
            },
            "zibens_fmi": {
             "no_kesas": 7,
-            "uz_avotu": 5,
-            "novecojusi": 4,
+            "uz_avotu": 6,
+            "novecojusi": 5,
             "gaidija": 0
            },
            "noverojumi": {
-            "no_kesas": 32,
+            "no_kesas": 33,
             "uz_avotu": 1,
             "novecojusi": 0,
             "gaidija": 0
@@ -2242,7 +2230,7 @@
            "…": "+18 lauki"
           },
           "db_vienlaicigi": 16,
-          "pavedieni": 31
+          "pavedieni": 30
          }
         }
        }

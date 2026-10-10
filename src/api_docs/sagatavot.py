@@ -234,8 +234,7 @@ def main():
         "servers": [{"url": BAZE}],
         "paths": openapi_celi,
     }
-    (SAKNE / "production" / "openapi.json").write_text(json.dumps(openapi, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="
-")
+    (SAKNE / "production" / "openapi.json").write_text(json.dumps(openapi, ensure_ascii=False, indent=1) + "\n", encoding="utf-8", newline="\n")
 
     saturs = "".join(kartites)
     raditajs = "".join(f'<li><a href="#{re.sub(r"[^a-z0-9]+", "-", s[0].lower()).strip("-")}"><code>{html.escape(s[0])}</code></a> — {html.escape(s[1])}</li>' for s in SPEC)
@@ -243,8 +242,7 @@ def main():
     lapa = (SAKNE / "src" / "api_docs" / "sablons.html").read_text(encoding="utf-8")
     lapa = lapa.replace("{{RADITAJS}}", raditajs).replace("{{GALAPUNKTI}}", saturs).replace("{{POST}}", post) \
         .replace("{{SKAITS}}", str(len(SPEC)))
-    (SAKNE / "production" / "api.html").write_text(lapa, encoding="utf-8", newline="
-")
+    (SAKNE / "production" / "api.html").write_text(lapa, encoding="utf-8", newline="\n")
     print(f"production/api.html, production/openapi.json: {len(SPEC)} galapunkti", file=sys.stderr)
 
 
