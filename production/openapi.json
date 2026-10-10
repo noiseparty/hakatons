@@ -652,7 +652,7 @@
        "application/json": {
         "example": {
          "avots": "lvgmc-bridinajumi",
-         "laiks_lv": "2026-10-10T03:45",
+         "laiks_lv": "2026-10-10T03:46",
          "bridinajumi": [
           {
            "id": "28210",
@@ -1829,7 +1829,7 @@
        "application/json": {
         "example": {
          "avots": "lvc-nap",
-         "laiks": "2026-10-10T00:44:55+00:00",
+         "laiks": "2026-10-10T00:45:57+00:00",
          "kopas": {
           "vietas": {
            "konfigurets": true,
@@ -1888,25 +1888,6 @@
          },
          "zonas": [
           {
-           "kods": "100016487",
-           "nosaukums": "Cēsu novads",
-           "bbox": [
-            24.78512,
-            56.92608,
-            26.16638,
-            57.50563
-           ],
-           "tips": "regions",
-           "limenis": 1,
-           "limenis_teksts": "lēns",
-           "atrums_vid": 54.2,
-           "atrums_brivs": 83.9,
-           "plusma_h": 1,
-           "merijumi": 1,
-           "iekartas": 1,
-           "laiks": "2026-10-10T00:39:00.000Z"
-          },
-          {
            "kods": "100016630",
            "nosaukums": "Aizkraukles novads",
            "bbox": [
@@ -1918,12 +1899,31 @@
            "tips": "regions",
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "atrums_vid": 91.3,
-           "atrums_brivs": 91.3,
-           "plusma_h": 3,
+           "atrums_vid": 77.0,
+           "atrums_brivs": 90.5,
+           "plusma_h": 2,
            "merijumi": 2,
            "iekartas": 2,
-           "laiks": "2026-10-10T00:35:00.000Z"
+           "laiks": "2026-10-10T00:39:00.000Z"
+          },
+          {
+           "kods": "100016462",
+           "nosaukums": "Augšdaugavas novads",
+           "bbox": [
+            25.82043,
+            55.67468,
+            26.98455,
+            56.20823
+           ],
+           "tips": "regions",
+           "limenis": 0,
+           "limenis_teksts": "brīvs",
+           "atrums_vid": 97.5,
+           "atrums_brivs": 97.5,
+           "plusma_h": 2,
+           "merijumi": 2,
+           "iekartas": 3,
+           "laiks": "2026-10-10T00:33:00.000Z"
           },
           "… (+28)"
          ],
@@ -1934,12 +1934,12 @@
            "lon": 24.38794,
            "nosaukums": null,
            "zona": "100016606",
-           "atrums": 95.6,
+           "atrums": 90.1,
            "atrums_brivs": 95.9,
-           "plusma_h": 3,
+           "plusma_h": 1,
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "laiks": "2026-10-10T00:40:00.000Z"
+           "laiks": "2026-10-10T00:43:00.000Z"
           },
           {
            "id": "68ca545e23ee40cfa9508f1f",
@@ -1947,12 +1947,12 @@
            "lon": 24.31899,
            "nosaukums": null,
            "zona": "100016784",
-           "atrums": 89.6,
-           "atrums_brivs": 89.6,
-           "plusma_h": 4,
+           "atrums": 92.9,
+           "atrums_brivs": 92.9,
+           "plusma_h": 2,
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "laiks": "2026-10-10T00:40:00.000Z"
+           "laiks": "2026-10-10T00:43:00.000Z"
           },
           "… (+75)"
          ],
@@ -1991,7 +1991,7 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks": "2026-10-10T00:44:09+00:00",
+         "laiks": "2026-10-10T00:46:04+00:00",
          "intervals_min": 15,
          "komponenti": [
           {
@@ -2005,16 +2005,16 @@
             "licences_url": null
            },
            "stavoklis": "darbojas",
-           "zinojums": "Atbild 0,1 s",
-           "parbaudits": "2026-10-10T03:39:17+03:00",
-           "ilgums_ms": 66,
+           "zinojums": "Atbild 0,0 s",
+           "parbaudits": "2026-10-10T03:45:20+03:00",
+           "ilgums_ms": 26,
            "joslas": [
             {
-             "sakums": "2026-10-09T00:45:00+00:00",
+             "sakums": "2026-10-09T01:00:00+00:00",
              "stavoklis": null
             },
             {
-             "sakums": "2026-10-09T01:00:00+00:00",
+             "sakums": "2026-10-09T01:15:00+00:00",
              "stavoklis": null
             },
             "… (+94)"
@@ -2028,15 +2028,15 @@
            "avots": null,
            "stavoklis": "darbojas",
            "zinojums": "19056 objekti kartē",
-           "parbaudits": "2026-10-10T03:39:17+03:00",
-           "ilgums_ms": 134,
+           "parbaudits": "2026-10-10T03:45:20+03:00",
+           "ilgums_ms": 60,
            "joslas": [
             {
-             "sakums": "2026-10-09T00:45:00+00:00",
+             "sakums": "2026-10-09T01:00:00+00:00",
              "stavoklis": null
             },
             {
-             "sakums": "2026-10-09T01:00:00+00:00",
+             "sakums": "2026-10-09T01:15:00+00:00",
              "stavoklis": null
             },
             "… (+94)"
@@ -2301,11 +2301,11 @@
         "example": {
          "ok": true,
          "statistika": {
-          "db_vaicajumi": 544,
+          "db_vaicajumi": 587,
           "db_parslodze": 0,
           "kesa": {
            "prognozes_atbilde": {
-            "no_kesas": 64,
+            "no_kesas": 68,
             "uz_avotu": 2,
             "novecojusi": 1,
             "gaidija": 1
@@ -2317,7 +2317,7 @@
             "gaidija": 0
            },
            "bridinajumi": {
-            "no_kesas": 126,
+            "no_kesas": 134,
             "uz_avotu": 1,
             "novecojusi": 0,
             "gaidija": 0
@@ -2325,7 +2325,7 @@
            "…": "+18 lauki"
           },
           "db_vienlaicigi": 16,
-          "pavedieni": 29
+          "pavedieni": 28
          }
         }
        }
