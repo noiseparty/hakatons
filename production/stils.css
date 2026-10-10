@@ -488,6 +488,27 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .zinojums-balsis { display: flex; gap: .4rem; flex-wrap: wrap; margin: .4rem 0; }
 .zinojums-balsis button { width: auto; flex: 1 1 auto; min-height: 40px; padding: .35rem .6rem; }
 
+/* ==== Ikonas un marķieru formas (ikonas.js, ikonas/ikonas.svg: Meteocons MIT + Lucide ISC) ==== */
+/* Kopīgie tokeni (A pievieno tos pašus stils.css sākumā; sapludinot paliek viens): grupu kontūru krāsas */
+:root {
+  --gim-drosas: #0F766E; --gim-veseliba: #7E22CE; --gim-infra: #334155; --gim-bistam: #B45309;
+  --zils-primars: #1E66D5; --gim-udens: #1E66D5; --gim-transports: #4D7C0F;
+  --radiuss-pogas: 6px; --ena-maza: 0 1px 3px rgba(0, 0, 0, .2);
+}
+.ik { display: inline-block; width: 1.15em; height: 1.15em; vertical-align: -.22em; flex: none; }
+.ik-rinda, .forma-rinda { flex: none; margin-right: .1rem; vertical-align: -.2em; }
+.kat .forma-rinda, .kat .ik-rinda { width: 18px; height: 18px; }
+.forma-markeris { display: grid; place-items: center; background: none; border: 0; }
+.forma-markeris svg { filter: drop-shadow(0 0 1.2px #fff) drop-shadow(0 0 1.2px #fff) drop-shadow(0 1px 2px rgba(0, 0, 0, .35)); }
+.celu-ikona span { color: #fff; }
+.celu-ikona .ik { width: 16px; height: 16px; vertical-align: 0; }
+.kartes-rikis .ik, #mana-vieta .ik { width: 22px; height: 22px; vertical-align: -.25em; }
+.fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
+.demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
+.demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
+.tuvuma-izvele { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
+.tuvuma-izvele button { display: flex; align-items: center; gap: .45rem; min-height: 44px; text-align: left; }
+.tuvuma-izvele button svg.forma { width: 20px; height: 20px; flex: none; }
 /* ==== Datu avoti: simulētie prototipa dati atsevišķā grupā (avoti.js) ==== */
 #avoti-saraksts .avoti-grupa { list-style: none; margin: .8rem 0 .2rem; padding-top: .5rem; border-top: 1px solid var(--robeza); font-size: .8rem; font-weight: 600; color: var(--teksts2); }
 #avoti-saraksts .simulets { opacity: .9; }
@@ -501,8 +522,7 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .galvene-poga:hover { background: rgba(0, 0, 0, .32); }
 @media (max-width: 800px) { .galvene-poga { padding: .4rem .55rem; min-height: 44px; } }
 
-/* Bankomāti (app.js Trijsturis): leģenda un zīme "KRITISKAIS" uznirstošajā logā */
+/* Bankomāti (app.js bankomataMarkieris, forma no ikonas.js): leģenda un zīme "KRITISKAIS" uznirstošajā logā */
 .slana-legenda { margin: .1rem 0 .4rem 1.6rem; font-size: .78rem; color: var(--teksts2); display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .4rem; }
-.slana-legenda .tri { position: relative; display: inline-block; width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-bottom: 10px solid; }
-.slana-legenda .tri i { position: absolute; left: -3px; top: 4px; width: 0; height: 0; border-left: 3px solid transparent; border-right: 3px solid transparent; border-bottom: 5px solid #fff; }
+.forma-markeris.kritiskais svg { filter: drop-shadow(0 0 1.5px #fff) drop-shadow(0 0 1.5px #fff) drop-shadow(0 1px 3px rgba(0, 0, 0, .5)); }
 .krit-zime { display: inline-block; padding: 0 .35rem; font-size: .7rem; font-weight: 700; letter-spacing: .03em; color: #fff; background: #1d4ed8; border-radius: 3px; }

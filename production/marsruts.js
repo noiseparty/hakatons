@@ -20,7 +20,7 @@ const Marsruts = (() => {
   }
 
   function teksts(d) {
-    if (!d.dross) return `<b class="marsruts-bistams">⚠ ${esc(d.piezime)}</b>`;
+    if (!d.dross) return `<b class="marsruts-bistams">${Ik('uzmanibu')} ${esc(d.piezime)}</b>`;
     return `<b>Maršruts (${km(d.attalums_m)}, ${min(d.ilgums_s)} ${d.veids === 'auto' ? 'ar auto' : 'kājām'}` +
       `${d.apiet_zonu ? ', apiet slēgto zonu' : d.no_zonas ? ', ved ārā no slēgtās zonas' : ''})</b> — zilā līnija kartē`;
   }

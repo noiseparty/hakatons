@@ -51,7 +51,7 @@ const Demo = (() => {
   function zimetSarakstu() {
     if (!dati) return;
     const poga = s => `<li><button type="button" data-demo="${esc(s.kods)}"
-        ${aktivs?.sc.kods === s.kods ? 'aria-current="true"' : ''}><span class="demo-ikona-l">${s.ikona}</span>
+        ${aktivs?.sc.kods === s.kods ? 'aria-current="true"' : ''}><span class="demo-ikona-l">${Ikonas.no(s.ikona)}</span>
         <span><b>${esc(s.nosaukums)}</b><small>${esc(s.isi)}</small></span></button></li>`;
     const grupa = (virsraksts, apraksts, saraksts) => saraksts.length
       ? `<h3 class="demo-grupa">${virsraksts}</h3><p class="piezime">${apraksts}</p><ul class="demo-saraksts">${saraksts.map(poga).join('')}</ul>` : '';
@@ -62,7 +62,7 @@ const Demo = (() => {
         dati.scenariji.filter(s => s.grupa !== 'reals')) +
       (aktivs ? beigtPoga() : '');
   }
-  const beigtPoga = () => '<button type="button" class="galvena demo-beigt" data-darbiba="beigt">■ Beigt demo, rādīt īsto karti</button>';
+  const beigtPoga = () => '<button type="button" class="galvena demo-beigt" data-darbiba="beigt">' + Ik('apturet') + ' Beigt demo, rādīt īsto karti</button>';
 
   saturs.addEventListener('click', e => {
     const b = e.target.closest('button');
@@ -103,7 +103,7 @@ const Demo = (() => {
     : zona.tips === 'sektors' ? metri(zona.centrs, ll) <= zona.garums_m && Math.abs(((virziens(zona.centrs, ll) - zona.virziens + 540) % 360) - 180) <= zona.platums / 2
     : false;
   const ll = f => [f.geometry.coordinates[1], f.geometry.coordinates[0]];
-  const ikona = (teksts, klase = '') => L.divIcon({ html: `<span>${teksts}</span>`, className: 'demo-ikona ' + klase, iconSize: [30, 30] });
+  const ikona = (teksts, klase = '') => L.divIcon({ html: `<span>${Ikonas.no(teksts) || esc(teksts)}</span>`, className: 'demo-ikona ' + klase, iconSize: [30, 30] });
 
   // Kartes laukums, ko neaizsedz panelis (labajā malā vai telefonā apakšā)
   function atstarpes() {
@@ -157,7 +157,7 @@ const Demo = (() => {
     const robezas = L.latLngBounds([]);
     if (vieta) {
       robezas.extend([vieta.lat, vieta.lon]);
-      L.marker([vieta.lat, vieta.lon], { icon: ikona('📍', 'demo-es'), zIndexOffset: 1000 })
+      L.marker([vieta.lat, vieta.lon], { icon: ikona('vieta', 'demo-es'), zIndexOffset: 1000 })
         .bindTooltip(esc(vieta.nosaukums), { permanent: true, direction: 'top', offset: [0, -14] }).addTo(slanis);
     }
     zimetZonas(sc, robezas);
@@ -228,7 +228,7 @@ const Demo = (() => {
       .toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
     const kur = r ? r.nosaukums : (b.regioni || []).map(k => regioni[k]?.nosaukums).filter(Boolean).join(', ');
     josla.className = 'bridinajums demo-josla ' + klase;
-    josla.innerHTML = `<details><summary>${ZIME} ⚠ ${b.vards ? esc(b.vards) : vards + ' brīdinājums'}: ${esc(b.paradiba.toLowerCase())}` +
+    josla.innerHTML = `<details><summary>${ZIME} ${Ik('brid')} ${b.vards ? esc(b.vards) : vards + ' brīdinājums'}: ${esc(b.paradiba.toLowerCase())}` +
       `${kur ? ` (${esc(kur)})` : ''}, līdz ${lidz}</summary><p>${esc(b.teksts)}</p><p class="riski">${esc(b.riski)}</p>` +
       `<p class="avots-rinda">Šis brīdinājums ir izdomāts demo vajadzībām; īstie LVĢMC brīdinājumi parādās šeit, kad demo beidzas.</p></details>`;
     josla.hidden = false;
@@ -296,7 +296,7 @@ const Demo = (() => {
     const k = kategorijas[f.properties.kategorija] || {};
     const m = teksts
       ? L.marker([lat, lon], { icon: ikona(krasa, 'demo-pelekots') }).bindPopup(`<div class="popup">${ZIME}<b>${esc(teksts)}</b></div>` + popupSaturs(f.properties, { lat, lng: lon }))
-      : L.circleMarker([lat, lon], { radius: 11, color: '#1c1917', weight: 3, fillColor: k.krasa || '#57534e', fillOpacity: 1 })
+      : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija, k.krasa, 30), title: nosaukums(f.properties) || k.nosaukums || '', zIndexOffset: 500 })
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
     m.addTo(slanis);
   }
@@ -311,8 +311,8 @@ const Demo = (() => {
       iekšā.forEach(f => atzimet(f, '✕', p.teksts));
       const strada = visi.find(f => !iekšā.includes(f));
       if (strada) { atzimet(strada); if (strada.properties.attalums_m < 30000) punkti.push(ll(strada)); }
-      return strada ? vienums(strada, vieta, `${p.ikona} ${esc(p.nos)}`, `<small class="tala">Tuvumā nestrādā: ${iekšā.length} (pelēkie ✕ kartē)</small>`)
-        : tuksa(`${p.ikona} ${esc(p.nos)}`, `Tuvākajos ${visi.length} nav neviena ārpus elektrības zonas.`);
+      return strada ? vienums(strada, vieta, `${Ikonas.no(p.ikona)} ${esc(p.nos)}`, `<small class="tala">Tuvumā nestrādā: ${iekšā.length} (pelēkie ✕ kartē)</small>`)
+        : tuksa(`${Ikonas.no(p.ikona)} ${esc(p.nos)}`, `Tuvākajos ${visi.length} nav neviena ārpus elektrības zonas.`);
     }));
 
     const saraksts = await Promise.all((sc.tuvakie || []).map(async t => {
@@ -322,7 +322,7 @@ const Demo = (() => {
       const prom = zonas.find(z => z.id === t.prom_no);
       // prom no zonas: patvertne, kas ir tālāk no zonas centra nekā Jūs (neved cauri zonai), citādi tuvākā ārpus tās
       const f = (prom && visi.find(f => metri(prom.centrs, ll(f)) > metri(prom.centrs, [vieta.lat, vieta.lon]) + 300)) || visi[0];
-      const virsraksts = `${t.ikona} ${esc(t.nos)}`;
+      const virsraksts = `${Ikonas.no(t.ikona)} ${esc(t.nos)}`;
       if (!f) return tuksa(virsraksts, 'Datos nav atrasta. Jautājiet pašvaldībai.');
       atzimet(f);
       if (f.properties.attalums_m < 30000 || t.linija) punkti.push(ll(f));
@@ -359,8 +359,8 @@ const Demo = (() => {
         let fs = await tuvakie(d.kategorija, vieta, d.n, regions);
         if (!fs.length) fs = await tuvakie(d.kategorija, vieta, 1);  // reģionā nav — tuvākā ārpus tā
         fs.forEach(f => atzimet(f));
-        return fs.length ? fs.map((f, i) => vienums(f, null, i ? '' : `${d.ikona} ${esc(d.nos)}`)).join('')
-          : tuksa(`${d.ikona} ${esc(d.nos)}`, 'Datos nav atrasta. Jautājiet pašvaldībai.');
+        return fs.length ? fs.map((f, i) => vienums(f, null, i ? '' : `${Ikonas.no(d.ikona)} ${esc(d.nos)}`)).join('')
+          : tuksa(`${Ikonas.no(d.ikona)} ${esc(d.nos)}`, 'Datos nav atrasta. Jautājiet pašvaldībai.');
       }));
       dalas.unshift(`<p class="piezime demo-legenda"><span class="demo-nez"></span> Pelēkie punkti (${nez.length}): aptiekas, bankomāti, DUS, upju posteņi, kuru stāvoklis nav zināms.</p>`);
       dalas.push(`<h3>Kur doties bez telefona</h3><ol class="rez-saraksts drosas">${doties.join('')}</ol>` +
@@ -376,10 +376,10 @@ const Demo = (() => {
       <select id="demo-regions">${sc.regionu_izvele.map(k => `<option value="${k}" ${r?.kods === k ? 'selected' : ''}>${esc(regioni[k]?.nosaukums || k)}</option>`).join('')}</select></label>` : '';
     return `<button type="button" class="otra demo-atpakal" data-darbiba="demo-saraksts">← Visi scenāriji</button>
       <article class="demo-kartite">
-        <p class="demo-virsraksts">${ZIME}${sc.laiks ? `<span class="demo-laiks">🕒 ${esc(sc.laiks)}</span>` : ''}</p>
-        <h2>${sc.ikona} ${esc(sc.nosaukums)}</h2>
+        <p class="demo-virsraksts">${ZIME}${sc.laiks ? `<span class="demo-laiks">${Ik('pulkstenis')} ${esc(sc.laiks)}</span>` : ''}</p>
+        <h2>${Ikonas.no(sc.ikona)} ${esc(sc.nosaukums)}</h2>
         ${regionuIzvele}
-        ${sc.draudi ? `<p class="draudi">⚠ ${esc(sc.draudi)}</p>` : ''}
+        ${sc.draudi ? `<p class="draudi">${Ik('uzmanibu')} ${esc(sc.draudi)}</p>` : ''}
         ${sc.lemums ? `<p class="demo-lemums">${esc(sc.lemums)}</p>` : ''}
         ${sc.grupa === 'reals' ? `<p class="demo-reals">Reāls notikums: ${esc(sc.datums)}. Skaitļi — no avotiem zemāk; kartes zonas un notikumi — simulācija.</p>` : ''}
         <h3>${sc.grupa === 'reals' ? 'Kas notika' : 'Kas notiek'}</h3><ul class="demo-notiek">${sc.notiek.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
@@ -389,9 +389,9 @@ const Demo = (() => {
         ${sc.zvanit112 && !sc.draudi ? '<p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>' : ''}
         ${(sc.zonas || []).some(z => z.tips === 'geojson') ? '<p class="piezime kluda demo-zonu-kluda" hidden>Reljefa slāni neizdevās ielādēt.</p>' : ''}
         ${tuvakas}
-        ${sc.fakti ? `<h3>${sc.grupa === 'reals' ? 'Skaitļi un avoti' : 'Reālie skaitļi'}</h3><ul class="fakti">${sc.fakti.map(f => `<li><span class="ikona">${f.ikona}</span><div><b>${esc(f.virsraksts)}</b>
+        ${sc.fakti ? `<h3>${sc.grupa === 'reals' ? 'Skaitļi un avoti' : 'Reālie skaitļi'}</h3><ul class="fakti">${sc.fakti.map(f => `<li><span class="ikona">${Ikonas.no(f.ikona)}</span><div><b>${esc(f.virsraksts)}</b>
           <span>${esc(f.teksts)}</span><small class="avots-rinda">Avots: ${avotaSaite(f.avots)}</small></div></li>`).join('')}</ul>` : ''}
-        ${sc.druka ? '<button type="button" class="otra demo-druka" data-darbiba="drukat">🖨 Drukāt vai saglabāt PDF (bezsaistei)</button>' : ''}
+        ${sc.druka ? '<button type="button" class="otra demo-druka" data-darbiba="drukat">' + Ik('drukat') + ' Drukāt vai saglabāt PDF (bezsaistei)</button>' : ''}
         <p class="avots-rinda demo-avoti">Simulēts: ${sc.bridinajums ? 'brīdinājums, ' : ''}notikumi${sc.zonas || sc.linijas ? ', zonas kartē' : ''}.
           Dati: ${avoti.map(avotaSaite).join('; ')}.</p>
       </article>` + beigtPoga();

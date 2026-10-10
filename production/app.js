@@ -139,7 +139,7 @@ function atrastMani(pecTam) {
       L.circle([lat, lon], { radius: accuracy, color: '#1d4ed8', weight: 1, fillOpacity: .08, interactive: false }),
       L.circleMarker([lat, lon], { radius: 8, color: '#fff', weight: 3, fillColor: '#1d4ed8', fillOpacity: 1 }).bindTooltip('Tu esi šeit')
     ]).addTo(karte);
-    el('atrast').textContent = '📍 Atjaunot manu atrašanās vietu';
+    el('atrast').innerHTML = Ik('vieta') + ' Atjaunot manu atrašanās vietu';
     teksts.textContent = 'Meklēšanas rezultāti sakārtoti pēc attāluma no Jums (taisnā līnijā).';
     if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
     if (!stavoklis.regions && !pecTam) karte.setView([lat, lon], 13);
@@ -247,10 +247,10 @@ function aizpilditKategorijas(saraksts) {
     div.dataset.grupa = grupa;
     div.innerHTML = `<summary><span class="grupa-nos">${esc(GRUPAS[grupa] || grupa)}</span><span class="skaits"></span></summary>` + k.map(k => `
       <label class="kat"><input type="checkbox" value="${esc(k.kods)}" ${k.skaits ? '' : 'disabled'}>
-        <span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">⚠</span>'}
+        ${Ikonas.formaHTML(k.kods)}${esc(k.nosaukums)}${k.avoti.every(Avoti.atverts) ? '' : ' <span class="bez-licences" title="Avotam nav norādīta atvērta licence (skat. Datu avoti)">' + Ik('uzmanibu') + '</span>'}
         <span class="skaits">${k.skaits}</span></label>` + (k.kods === 'bankomats' ? `<p class="slana-legenda">
-        <span class="tri pilns" style="border-bottom-color:${esc(k.krasa)}"></span> kritiskais (strādā arī krīzē, banku saraksts)
-        <span class="tri" style="border-bottom-color:${esc(k.krasa)}"><i></i></span> cits bankomāts</p>` : '')).join('');
+        ${Ikonas.formaSvg('bankomats', k.krasa, 16, 'forma-rinda')} kritiskais (strādā arī krīzē, banku saraksts)
+        ${Ikonas.formaSvg('bankomats', '#fff', 16, 'forma-rinda')} cits bankomāts</p>` : '')).join('');
     kaste.append(div);
   }
   kaste.querySelectorAll('input').forEach(i => { if (i.checked) stavoklis.kategorijas.add(i.value); });
@@ -292,29 +292,15 @@ function udensLimenis(i) {
   return r.join('<br>');
 }
 
-// Trīsstūra marķieris (kanvā un SVG): bankomāti. Kritiskais (banku saraksts) — pilns trīsstūris, citi — balts ar
-// krāsainu kontūru. fillColor paliek slāņa krāsa, lai grupu aplis (grupasIkona) skaita pareizi.
-const Trijsturis = L.CircleMarker.extend({
-  _updatePath() {
-    const p = this._point, r = this._radius, ctx = this._renderer._ctx;
-    const virsotnes = [[p.x, p.y - r * 1.2], [p.x + r * 1.1, p.y + r * .8], [p.x - r * 1.1, p.y + r * .8]];
-    if (ctx) {  // L.Canvas
-      if (!this._renderer._drawing || this._empty()) return;
-      ctx.beginPath();
-      virsotnes.forEach(([x, y], i) => (i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)));
-      ctx.closePath();
-      this._renderer._fillStroke(ctx, this);
-    } else {  // L.SVG
-      this._renderer._setPath(this, 'M' + virsotnes.map(v => v.join(' ')).join('L') + 'Z');
-    }
-  },
-});
-function bankomataMarkieris(ll, p, k) {
+// Bankomāta marķieris = tā pati trīsstūra forma no ikonas.js. Kritiskais (banku saraksts) — pilns, lielāks trīsstūris
+// slāņa krāsā ar klasi "kritiskais"; citi — balts trīsstūris. fillColor paliek slāņa krāsa, lai grupu aplis (grupasIkona) skaita pareizi.
+function bankomataMarkieris(ll, p, k, title = '') {
   const krit = (p.ipasibas || {}).kritiskais === '1';
   const krasa = k.krasa || '#1d4ed8';
-  return new Trijsturis(ll, krit
-    ? { radius: 8, color: '#fff', weight: 1.5, fillColor: krasa, fillOpacity: 1, kritiskais: true }
-    : { radius: 6, color: krasa, weight: 2, fillColor: '#fff', fillOpacity: 1, grupasKrasa: krasa });
+  const ikona = Ikonas.markeris('bankomats', krit ? krasa : '#fff', krit ? 32 : 24);
+  ikona.options.className += krit ? ' kritiskais' : ' bankomats-cits';
+  return L.marker(ll, { icon: ikona, fillColor: krasa, grupasKrasa: krasa, kritiskais: krit, title,
+    zIndexOffset: krit ? 1000 : 0 });
 }
 
 function popupSaturs(p, ll) {
@@ -359,8 +345,10 @@ async function atjaunot() {
     for (const f of gj.features) {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
-      f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k)
-        : L.circleMarker([lat, lon], { radius: 6, color: '#fff', weight: 1.5, fillColor: k.krasa || '#57534e', fillOpacity: .9 }))
+      // forma pēc slāņu grupas (ikonas.js), 44 px pieskāriena laukums; fillColor — grupu apļa krāsām (grupasIkona)
+      const nos = nosaukums(f.properties) || k.nosaukums || '';
+      f._slanis = (f.properties.kategorija === 'bankomats' ? bankomataMarkieris([lat, lon], f.properties, k, nos)
+        : L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija), fillColor: k.krasa || '#57534e', title: nos }))
         .bindPopup(() => popupSaturs(f.properties, { lat, lng: lon }));
     }
     objektuSlanis.addLayers(gj.features.map(f => f._slanis));
@@ -372,6 +360,33 @@ async function atjaunot() {
     if (e.name !== 'AbortError') statuss('Datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.', true);
   }
 }
+
+// ---- Pieskāriens blakus punktam (ikonas.js marķieriem ir 44 px laukums; šis — vēl 14 px apkārt) ----
+// Tikai tiešs klikšķis kartē (ne no poligona vai cita slāņa, kas to "nodod" kartei). Grupas aplis uzvedas kā līdz šim.
+const PIESKARIENA_PIELAIDE = 22 + 14;
+karte.on('click', e => {
+  // klikšķis no poligona (piem., prognožu novads) — tuvumā esošs punkts svarīgāks; no cita marķiera — nē
+  if ((e.propagatedFrom && !(e.propagatedFrom instanceof L.Path)) || !karte.hasLayer(objektuSlanis)) return;
+  const tuvuma = [];
+  objektuSlanis.eachLayer(m => {
+    if (!m.getLatLng || objektuSlanis.getVisibleParent(m) !== m) return;
+    const d = karte.latLngToContainerPoint(m.getLatLng()).distanceTo(e.containerPoint);
+    if (d <= PIESKARIENA_PIELAIDE) tuvuma.push([d, m]);
+  });
+  if (!tuvuma.length) return;
+  tuvuma.sort((a, b) => a[0] - b[0]);
+  if (tuvuma.length === 1) { tuvuma[0][1].openPopup(); return; }
+  const izvele = tuvuma.slice(0, 8);
+  const saturs = document.createElement('div');
+  saturs.className = 'popup tuvuma-izvele';
+  saturs.innerHTML = '<b>Šeit ir vairākas vietas</b>' + izvele.map(([, m], i) =>
+    `<button type="button" class="otra" data-i="${i}">${m.options.icon?.options.html || ''}<span>${esc(m.options.title || 'Objekts')}</span></button>`).join('');
+  saturs.addEventListener('click', ev => {
+    const b = ev.target.closest('[data-i]');
+    if (b) izvele[+b.dataset.i][1].openPopup();
+  });
+  L.popup().setLatLng(e.latlng).setContent(saturs).openOn(karte);
+});
 
 // ---- Meklēšana pa kartē ielādētajiem objektiem (bez garumzīmēm, pēc nosaukuma, adreses, slāņa) ----
 const MEKL_GARUMS = 8;
@@ -398,18 +413,18 @@ function izveletiesAdresi(a, atkartot = true) {
       .bindTooltip(isaAdrese(a.adrese), { permanent: true, direction: 'top', offset: [0, -8] })
   ]).addTo(karte);
   if (tuvakaSlanis) { tuvakaSlanis.remove(); tuvakaSlanis = null; }
-  el('atrast').textContent = '📍 Rādīt tuvākos man';
+  el('atrast').innerHTML = Ik('vieta') + ' Rādīt tuvākos man';
   el('vieta-teksts').textContent = `Saraksts sakārtots pēc attāluma no adreses ${isaAdrese(a.adrese)} (taisnā līnijā).`;
   karte.setView([a.lat, a.lon], 16);
   atjaunot();
   if (atkartot) krizesMeklesana.atkartot();  // meklesana.js
 }
 
-function meklesanasRinda(krasa, virsraksts, apaksa, izveleties) {
+function meklesanasRinda(krasa, virsraksts, apaksa, izveleties, kategorija = null) {
   const li = document.createElement('li');
   li.tabIndex = 0;
   li.setAttribute('role', 'option');
-  li.innerHTML = `<span class="punkts" style="background:${esc(krasa)}"></span>
+  li.innerHTML = `${kategorija ? Ikonas.formaHTML(kategorija) : Ik('vieta', 'ik-zils')}
     <span class="teksts"><b>${esc(virsraksts)}</b><small>${esc(apaksa)}</small></span>`;
   li.addEventListener('click', izveleties);
   li.addEventListener('keydown', e => { if (e.key === 'Enter') izveleties(); });
@@ -466,7 +481,7 @@ function meklet() {
     const k = kategorijas[p.kategorija] || {};
     ul.append(meklesanasRinda(k.krasa, nosaukums(p) || k.nosaukums, p.adrese || k.nosaukums, () => {
       ul.hidden = true; el('meklet').value = nosaukums(p) || p.adrese || ''; atvertObjektu(f);
-    }));
+    }, p.kategorija));
   }
   if (!atrasti.length) objektuGrupa.textContent = 'Kartē · nekas ieslēgtajos slāņos';
   ul.hidden = false;
