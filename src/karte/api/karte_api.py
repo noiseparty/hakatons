@@ -72,12 +72,46 @@ class Kluda(Exception):
         self.statuss = statuss
 
 
+DB_VIENLAICIGI = int(os.environ.get("MAP_DB_VIENLAICIGI", "16"))
+_db_sloti = threading.BoundedSemaphore(DB_VIENLAICIGI)
+_statistika = {"db_vaicajumi": 0, "db_parslodze": 0, "kesa": {}}  # /api/veseliba?statistika=1
+
+
 def vaicat(sql, params=(), timeout="10s"):
-    with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
-        cur.execute(f"set statement_timeout = '{timeout}'")
-        cur.execute(sql, params)
-        rinda = cur.fetchone()
-        return rinda[0] if rinda else None
+    # ≤ DB_VIENLAICIGI vaicājumi reizē; ja 10 s neatbrīvojas — 503, nevis savienojumu lavīna uz Postgres
+    if not _db_sloti.acquire(timeout=10):
+        _statistika["db_parslodze"] += 1
+        raise Kluda(503, "serveris pārslogots, mēģiniet pēc brīža")
+    try:
+        _statistika["db_vaicajumi"] += 1
+        with psycopg.connect(DSN, connect_timeout=5) as conn, conn.cursor() as cur:
+            cur.execute(f"set statement_timeout = '{timeout}'")
+            cur.execute(sql, params)
+            rinda = cur.fetchone()
+            return rinda[0] if rinda else None
+    finally:
+        _db_sloti.release()
+
+
+class _LRU:
+    """Mazs atmiņas kešs ar derīguma laiku (sekundes) un ierakstu skaita robežu; vecākos izmet."""
+    def __init__(self, max_ieraksti, sekundes):
+        from collections import OrderedDict
+        self.dati, self.max, self.sek, self.slots = OrderedDict(), max_ieraksti, sekundes, threading.Lock()
+
+    def iegut(self, atslega, funkcija):
+        with self.slots:
+            ieraksts = self.dati.get(atslega)
+            if ieraksts and time.time() - ieraksts[0] < self.sek:
+                self.dati.move_to_end(atslega)
+                return ieraksts[1]
+        vertiba = funkcija()
+        with self.slots:
+            self.dati[atslega] = (time.time(), vertiba)
+            self.dati.move_to_end(atslega)
+            while len(self.dati) > self.max:
+                self.dati.popitem(last=False)
+        return vertiba
 
 
 def kategorijas(_q):
@@ -153,7 +187,15 @@ def objekti(q):
     if (lat is None) != (lon is None):
         raise Kluda(400, "vajag gan lat, gan lon")
     limit = int(_skaitlis(q, "limit", 1, MAX_LIMIT) or 5000)
+    atslega = (tuple(sorted(kategorijas_)), regions_, None if lat is None else round(lat, 5),
+               None if lon is None else round(lon, 5), limit)
+    return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit))
 
+
+_objektu_kesa = _LRU(64, 30)
+
+
+def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit):
     lieto_vietu = lat is not None
     return vaicat(
         """with x as (
@@ -177,6 +219,7 @@ def objekti(q):
                     order by attalums_m nulls last, id), '[]'))
            from x""",
         {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_, "limit": limit},
+        timeout="8s",
     )
 
 
@@ -224,15 +267,27 @@ def _kesots(atslega, sekundes, funkcija):
         return ieraksts, bool(ieraksts) and time.time() - ieraksts[0] < ilgums(ieraksts[1])
 
     ieraksts, svaigs = no_kesas()
+    st = _statistika["kesa"].setdefault(atslega[0] if isinstance(atslega, tuple) else atslega,
+                                        {"no_kesas": 0, "uz_avotu": 0, "novecojusi": 0, "gaidija": 0})
     if svaigs:
+        st["no_kesas"] += 1
         return ieraksts[1]
     with _kesas_slots:
         slots = _atslegu_sloti.setdefault(atslega, threading.Lock())
+    if ieraksts:
+        # stale-while-revalidate: lietotājs negaida avotu; atjauno viens fona pavediens (ja jau atjauno — nekas)
+        st["novecojusi"] += 1
+        if slots.acquire(blocking=False):
+            threading.Thread(target=_kesot_fona, args=(atslega, slots, funkcija, ilgums, st), daemon=True).start()
+        return ieraksts[1]
+    if slots.locked():
+        st["gaidija"] += 1
     with slots:
         ieraksts, svaigs = no_kesas()
         if svaigs:
             return ieraksts[1]
         try:
+            st["uz_avotu"] += 1
             vertiba = funkcija()
         except Exception as e:  # tīkls, formāts
             if ieraksts:
@@ -248,6 +303,22 @@ def _kesots(atslega, sekundes, funkcija):
                 _atslegu_sloti.clear()
             _kesa[atslega] = (time.time(), vertiba)
         return vertiba
+
+
+def _kesot_fona(atslega, slots, funkcija, ilgums, st):
+    """Novecojušas vērtības atjaunošana fonā (slots jau paņemts). Kļūda: paliek vecā vērtība, nākamais mēģinājums pēc minūtes."""
+    try:
+        st["uz_avotu"] += 1
+        vertiba = funkcija()
+        with _kesas_slots:
+            _kesa[atslega] = (time.time(), vertiba)
+    except Exception:  # noqa: BLE001
+        with _kesas_slots:
+            ieraksts = _kesa.get(atslega)
+            if ieraksts:
+                _kesa[atslega] = (time.time() - ilgums(ieraksts[1]) + 60, ieraksts[1])
+    finally:
+        slots.release()
 
 
 def _lejupieladet(url, timeout=20):
@@ -404,8 +475,19 @@ def pludi(q):
         veidi.sort(key=lambda v: -v["varbutiba_proc"])
         return {"avots": "lvgmc-pludi", "zona": bool(veidi), "veidi": veidi, "nepilnigi": kludas > 0}
 
-    # serviss mēdz atbildēt 1–30 s (taimauts 25 s); ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min
-    return _kesots(("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
+    # serviss mēdz atbildēt 1–30 s (taimauts 25 s); ja kāds neatbildēja, atbilde ir nepilnīga un to kešojam tikai 10 min.
+    # Lietotājs gaida ne ilgāk par PLUDU_MAX_GAIDIT s: tad 202, un pārbaude turpinās fonā (nākamais pieprasījums — no kešas).
+    darbs = _pludu_gaidisana.submit(_kesots, ("pludi", lat, lon), lambda v: 600 if v["nepilnigi"] else 86400, parbaudit)
+    try:
+        return darbs.result(timeout=PLUDU_MAX_GAIDIT)
+    except (TimeoutError, concurrent.futures.TimeoutError):
+        return {"_statuss": 202, "ielade": True, "zinojums": "Plūdu kartes ielādējas, mēģiniet pēc 10 s."}
+
+
+import concurrent.futures  # noqa: E402
+
+PLUDU_MAX_GAIDIT = 25
+_pludu_gaidisana = ThreadPoolExecutor(max_workers=8)
 
 
 def udens(q):
@@ -1347,8 +1429,11 @@ def noverojumi(q):
 # ---- /Laikapstākļi tagad ----
 
 
-def veseliba(_q):
-    return {"ok": vaicat("select true")}
+def veseliba(q):
+    rez = {"ok": vaicat("select true", timeout="2s")}
+    if q.get("statistika", [""])[0] == "1":
+        rez["statistika"] = {**_statistika, "db_vienlaicigi": DB_VIENLAICIGI, "pavedieni": threading.active_count()}
+    return rez
 
 
 # ---- Ceļu slēgumi un negadījumi: GET /api/celi (LVC DATEX II caur NAP transportdata.gov.lv, CC0) ----
@@ -2439,13 +2524,16 @@ def statuss(_q):
 def adreses_tuvaka(q):
     """Tuvākā VZD adrese (≤ 300 m) atrašanās vietai: "Jūsu atrašanās vieta: ~Brīvības iela 15, Ogre"."""
     lat, lon = _vieta(q)
-    return vaicat(
+    return _punktu_kesa.iegut(("tuvaka", round(lat, 4), round(lon, 4)), lambda: vaicat(
         """select coalesce((select json_build_object('adrese', adrese, 'kods', kods, 'attalums_m', d) from (
              select adrese, kods, round(st_distance(geom::geography,
                     st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326)::geography))::int as d
              from adreses order by geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) limit 1) a
            where d <= 300), '{}'::json)""",
-        {"lat": lat, "lon": lon}, timeout="2s")
+        {"lat": lat, "lon": lon}, timeout="2s"))
+
+
+_punktu_kesa = _LRU(2000, 3600)
 
 
 PASVALDIBAS_FAILS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "dati", "pasvaldibas.json")
@@ -2460,8 +2548,9 @@ def pasvaldiba(q):
     """Pašvaldība punktā (regioni: novads vai valstspilsēta) + CA plāns, tīmekļvietne un VPVKAC kontakts
     (src/karte/db/pasvaldibas.py → src/karte/dati/pasvaldibas.json)."""
     lat, lon = _vieta(q)
-    kods = vaicat("""select kods from regioni where tips in ('novads', 'valstspilseta')
-                     and st_contains(geom, st_setsrid(st_makepoint(%s, %s), 4326)) limit 1""", (lon, lat), timeout="2s")
+    kods = _punktu_kesa.iegut(("pasvaldiba", round(lat, 4), round(lon, 4)), lambda: vaicat(
+        """select kods from regioni where tips in ('novads', 'valstspilseta')
+           and st_contains(geom, st_setsrid(st_makepoint(%s, %s), 4326)) limit 1""", (lon, lat), timeout="2s"))
     if not kods:
         raise Kluda(404, "vieta nav nevienā pašvaldībā")
     dati = _kesots("pasvaldibas", 3600, _pasvaldibas_dati).get(kods)
@@ -2515,12 +2604,18 @@ class Apstradatajs(BaseHTTPRequestHandler):
                 continue
             try:
                 rez = funkcija(*m.groups()) if m.groups() else funkcija(q)
+                if isinstance(rez, dict) and "_statuss" in rez:  # piem., 202 "ielādējas"
+                    statuss = rez.pop("_statuss")
+                    return self._atbilde(statuss, rez, 0)
                 return self._atbilde(200, rez, kesot)
             except Kluda as e:
                 return self._atbilde(e.statuss, {"kluda": str(e)}, 0)
             except psycopg.Error as e:
                 self.log_error("db: %s", e)
                 return self._atbilde(503, {"kluda": "datubāze nav pieejama"}, 0)
+            except Exception as e:  # noqa: BLE001 — klientam vienmēr JSON, nevis pārtraukts savienojums
+                self.log_error("kļūda %s: %r", url.path, e)
+                return self._atbilde(500, {"kluda": "iekšēja kļūda"}, 0)
         self._atbilde(404, {"kluda": "nav šāda galapunkta"}, 0)
 
     def do_POST(self):
@@ -2560,7 +2655,12 @@ def main():
         sys.exit("Nav MAP_DB_DSN")
     ports = int(sys.argv[1]) if len(sys.argv) > 1 else 8920
     threading.Thread(target=_statuss_cikls, name="statuss", daemon=True).start()
-    ThreadingHTTPServer(("127.0.0.1", ports), Apstradatajs).serve_forever()
+    Serveris(("127.0.0.1", ports), Apstradatajs).serve_forever()
+
+
+class Serveris(ThreadingHTTPServer):
+    request_queue_size = 128  # noklusēti 5: slodzē savienojumi tiek atteikti (Caddy 502)
+    daemon_threads = True
 
 
 if __name__ == "__main__":

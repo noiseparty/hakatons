@@ -602,7 +602,18 @@ const krizesMeklesana = (() => {
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
   function pluduDati(ll, signal) {
+    pluduZona(ll, signal, 0);
+    pluduUdens(ll, signal);
+  }
+  // /api/pludi atbild ne ilgāk par 25 s; ja LVĢMC karšu serviss vēl rēķina — 202 {ielade}: vēlreiz pēc 10 s (≤ 2 reizes)
+  function pluduZona(ll, signal, meginajums) {
     iegut('/pludi?' + new URLSearchParams(ll), signal).then(p => {
+      if (p.ielade) {
+        pluduRinda('rez-pludi', `<b>Plūdu riska zona</b><span>${meginajums < 2 ? 'Plūdu kartes vēl ielādējas, mēģinām vēlreiz pēc 10 s…'
+          : 'Plūdu kartes pašlaik atbild lēni. Plūdu zonas redzamas kartē (slānis ieslēgts).'}</span>`);
+        if (meginajums < 2) setTimeout(() => { if (!signal.aborted) pluduZona(ll, signal, meginajums + 1); }, 10000);
+        return;
+      }
       const t = p.zona
         ? `<strong class="jā">Jā</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${String(v.varbutiba_proc).replace('.', ',')} % varbūtība gadā)`).join(', ')}`
         : p.nepilnigi ? 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.' : '<strong class="nē">Nē</strong>: nav applūstošā teritorijā (10 %, 1 % un 0,5 % kartes).';
@@ -610,6 +621,8 @@ const krizesMeklesana = (() => {
     }).catch(e => {
       if (e.name !== 'AbortError') pluduRinda('rez-pludi', '<b>Plūdu riska zona</b><span>Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts).</span>');
     });
+  }
+  function pluduUdens(ll, signal) {
     iegut('/udens?' + new URLSearchParams({ ...ll, limit: 3 }), signal).then(d => {
       const s = d.stacijas[0];
       if (!s) throw new Error('nav');
