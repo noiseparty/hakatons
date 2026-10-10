@@ -934,9 +934,5 @@ const krizesMeklesana = (() => {
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
-<<<<<<< HEAD
-  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, konteksts: () => konteksts };
-=======
-  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats };
->>>>>>> origin/main
+  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats, konteksts: () => konteksts };
 })();
