@@ -107,5 +107,45 @@
     location.href = '/map?q=' + encodeURIComponent(q);
   });
 
-  skaiti(); statuss(); avoti();
+
+  // Dzīvie slāņi: katra plūsma ielādējas atsevišķi, kļūda vienā neaptur pārējos.
+  // Atslēgas (?slanis=): udens_limenis = kategorijas kods; celu / zibens / zinojumu / bridinajumi = pārklājumu slāņi (app.js ids "<atslēga>-slanis").
+  const T = (k, m) => (typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k);
+  const SLANI = [
+    { nos: 'Aktīvie brīdinājumi', vien: 'LVĢMC / Meteoalarm', saite: '/map?slanis=bridinajumi',
+      get: async () => { const d = await json('/api/bridinajumi'); return { n: (d.bridinajumi || []).length, rezerve: !!d.rezerves }; } },
+    { nos: 'Ceļu notikumi', vien: 'LVC', saite: '/map?slanis=celu',
+      get: async () => { const d = await json('/api/celi'); if (d.konfigurets === false) throw new Error('nekonfigurets'); return { n: (d.notikumi || []).length, daleji: d.nepieejami > 0 }; } },
+    { nos: 'Zibens pēdējās 30 min', vien: 'FMI', saite: '/map?slanis=zibens',
+      get: async () => { const d = await json('/api/zibens'); return { n: d.skaits ?? (d.zibeni || []).length }; } },
+    { nos: 'Upju līmeņa mērītāji', vien: 'LVĢMC', saite: '/map?slanis=udens_limenis',
+      get: async () => { const k = await json('/api/kategorijas'); const c = k.find(x => x.kods === 'udens_limenis'); if (!c) throw new Error('nav'); return { n: c.skaits }; } },
+  ];
+  async function slani() {
+    const el = $('slani');
+    const kartes = await Promise.all(SLANI.map(async s => {
+      let r = null;
+      try { r = await s.get(); } catch (e) { /* kritums zemāk */ }
+      const ok = !!r, deg = ok && (r.rezerve || r.daleji);
+      const zime = !ok ? ['deg', 'nav pieejams'] : deg ? ['deg', r.rezerve ? 'rezerves avots' : 'daļēji pieejams'] : ['ok', 'tiešraide'];
+      return `<a class="slanis" href="${esc(s.saite)}"><b>${ok ? nf(r.n) : '–'}</b><span>${esc(T(s.nos))} <small>${esc(s.vien)}</small></span>` +
+        `<em class="zime ${zime[0]}">${esc(T(zime[1]))}</em><i class="bulta" aria-hidden="true">›</i></a>`;
+    }));
+    el.innerHTML = kartes.join(''); el.removeAttribute('aria-busy');
+  }
+
+  // Iedzīvotāju ziņojumi: lietotāju radīts saturs, nav oficiāls avots
+  async function zinojumuAvots() {
+    const ul = $('zinojumu-avots');
+    let d = null;
+    try { d = await json('/api/zinojumi'); } catch (e) { /* skaits nav obligāts */ }
+    const lic = d?.avots?.licence || 'CC BY 4.0', url = d?.avots?.licences_url || 'https://creativecommons.org/licenses/by/4.0/';
+    ul.innerHTML = `<li class="bez"><b>${esc(T('Iedzīvotāju ziņojumi'))}</b>
+      <small>${esc(T('Izdevējs'))}: ${esc(T('paši iedzīvotāji caur map.repo.lv; netiek pārbaudīti pirms publicēšanas, moderācija pēc fakta'))}</small>
+      <span class="zimes"><span class="zime deg">&#9888; ${esc(T('Nav oficiāls avots'))}</span><span class="zime">${saite(url, lic)}</span>${Array.isArray(d?.zinojumi) ? `<span class="zime skaits">${nf(d.zinojumi.length)} ${esc(T('pēdējās 7 dienās'))}</span>` : ''}</span>
+      <small>${esc(T('Kartē: pelēki punkti ar ~1 km precizitāti, pēdējās 7 dienas. Tas nav oficiāls brīdinājums; ja apdraudēta dzīvība, zvaniet 112.'))}</small>
+      <small><a href="/map?slanis=zinojumu">${esc(T('Atvērt slāni kartē'))}</a></small></li>`;
+  }
+
+  slani(); zinojumuAvots(); skaiti(); statuss(); avoti();
 })();

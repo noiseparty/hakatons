@@ -20,18 +20,25 @@
     <p>Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
       kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.</p>
     <form class="meklet" role="search" id="meklet" action="/map" method="get">
-      <label for="vaicajums" data-t>Kas Jums vajadzīgs?</label>
+      <label for="vaicajums" data-t="Kas Jums vajadzīgs?">Kas Jums vajadzīgs?</label>
       <div class="rinda">
         <input id="vaicajums" name="q" type="search" autocomplete="off" enterkeyhint="search" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē" data-t-placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
-        <button type="submit" class="poga" data-t>Meklēt</button>
+        <button type="submit" class="poga" data-t="Meklēt">Meklēt</button>
       </div>
     </form>
     <div class="cta">
-      <a class="saite-hero sek" href="/map" data-t>Atvērt karti</a>
+      <a class="saite-hero sek" href="/map" data-t="Atvērt karti">Atvērt karti</a>
     </div>
   </div>
 </header>
 <main class="ietvars" id="saturs">
+  <section aria-labelledby="h-slani">
+    <h2 id="h-slani" data-t="Kas notiek tagad">Kas notiek tagad</h2>
+    <p class="apak" data-t="Dzīvie slāņi: skaits un datu plūsmas stāvoklis. Pieskarieties, lai atvērtu kartē.">Dzīvie slāņi: skaits un datu plūsmas stāvoklis. Pieskarieties, lai atvērtu kartē.</p>
+    <div class="slani" id="slani" aria-live="polite" aria-busy="true"><div class="slanis sk"><b>&nbsp;</b><span>&nbsp;</span><small>&nbsp;</small></div><div class="slanis sk"><b>&nbsp;</b><span>&nbsp;</span><small>&nbsp;</small></div><div class="slanis sk"><b>&nbsp;</b><span>&nbsp;</span><small>&nbsp;</small></div><div class="slanis sk"><b>&nbsp;</b><span>&nbsp;</span><small>&nbsp;</small></div></div>
+    <ul class="avoti" id="zinojumu-avots" style="margin-top:8px"></ul>
+  </section>
+
   <section aria-labelledby="h-skaiti">
     <h2 id="h-skaiti">Kas ir kartē</h2>
     <p class="apak">Dzīvie skaitļi no API: <span id="kops">…</span></p>
@@ -76,6 +83,7 @@
   </section>
 </main>
 <footer><div class="ietvars">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026. <a href="/map">Atvērt karti</a> · <a href="info.html">Svarīgi krīzē</a> · <a href="#">Uz augšu</a></div></footer>
+<script src="valoda.js"></script>
 <script src="sakums.js"></script>
 </body>
 </html>
