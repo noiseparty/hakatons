@@ -455,7 +455,7 @@ const krizesMeklesana = (() => {
     const pludi = galvenais && PLUDU_SCENARIJI.has(galvenais.kods);
     // Lēmums vispirms (112, brīdinājums šai vietai, plūdu zona jā/nē), tad situācija, padoms un vietas
     const galva = draudi + zvanitTeksts +
-      (no ? '<div id="rez-lemums"></div>' + (pludi ? pluduBloks() : '') : '') +
+      (no ? '<div id="rez-lemums"></div><div id="rez-prognoze"></div>' + (pludi ? pluduBloks() : '') : '') +
       (galvenais
         ? `<p class="sapratu">${galvenais.nr ? 'Situācija' : 'Meklēju'}: <b>${esc(galvenais.nosaukums)}</b>${kurTeksts ? ' · ' + esc(kurTeksts) : ''}</p>` +
           (galvenais.padoms ? `<p class="padoms">${esc(galvenais.padoms)}${padomuAvots(galvenais.padomu_avots)}</p>` : '')
@@ -501,6 +501,7 @@ const krizesMeklesana = (() => {
     kaste.innerHTML = galva + '<div id="rez-vietas"><p class="piezime">Meklē tuvākās vietas…</p></div><div id="rez-pasvaldiba"></div>' + beigas;
     const ll = { lat: no.lat.toFixed(5), lon: no.lon.toFixed(5) };
     lemumaDati(ll, no, signal);
+    prognozesDati(ll, no, signal);
     if (pludi) pluduDati(ll, signal);
     if (no.apraksts === 'no Jums') manaVietaDati(ll, signal);
     pasvaldibaDati(ll, no, signal);
@@ -644,6 +645,37 @@ const krizesMeklesana = (() => {
       el.innerHTML = '<p class="lemums lemums-nezinams"><b>LVĢMC brīdinājumus šobrīd neizdevās pārbaudīt.</b> ' +
         'Skatiet meteo.lv vai klausieties LR1.</p>';
     });
+  }
+
+  // "Nākamās 24 h": LVĢMC ikstundas prognoze tuvākajai prognožu vietai (/api/prognoze) — temperatūra, nokrišņi,
+  // brāzmas un viens riska vārds pēc sliekšņiem. Avots nav pieejams vai prognoze par īsu — rindu nerāda (bez kļūdas).
+  function prognozesDati(ll, no, signal) {
+    iegut('/prognoze?' + new URLSearchParams(ll), signal).then(d => {
+      const el = kaste.querySelector('#rez-prognoze');
+      const p = d.prognoze;
+      if (!el || !p || p.tmin == null) return;
+      const sk = x => String(Math.abs(x) >= 10 || x === Math.round(x) ? Math.round(x) : (+x).toFixed(1)).replace('.', ',');
+      const gr = x => (Math.round(x) > 0 ? '+' : Math.round(x) < 0 ? '−' : '') + Math.abs(Math.round(x));  // −3…+5 °C
+      const stunda = t => t.slice(11, 16);
+      const virsr = p.stundas >= 23 ? 'Nākamās 24 h' : `Nākamās ${p.stundas} h (līdz ${stunda(p.lidz)})`;
+      const r = p.riski?.[0];
+      const vieta = d.vieta?.nosaukums ? ` (${esc(d.vieta.nosaukums)}${d.vieta.attalums_m > 1500 ? ', ' + attalums(d.vieta.attalums_m) : ''})` : '';
+      const dalas = [Math.round(p.tmin) === Math.round(p.tmax) ? `${gr(p.tmin)} °C` : `${gr(p.tmin)}…${gr(p.tmax)} °C`];
+      if (p.nokrisni_mm != null) dalas.push(p.nokrisni_mm >= 0.1 ? `nokrišņi ${sk(p.nokrisni_mm)} mm` : 'bez nokrišņiem');
+      if (p.brazmas_max != null) dalas.push(`brāzmas līdz ${sk(p.brazmas_max)} m/s`);
+      const izdota = d.izdota ? new Date(d.izdota).toLocaleString('lv-LV', { timeZone: 'Europe/Riga', day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
+      const avots = d.avots || {};
+      el.innerHTML = `<p class="prognoze-rinda">${Ik('prognoze')} <b>${virsr}</b>${vieta}: ${dalas.join(', ')}` +
+        ` — <b class="risks risks-${r ? r.limenis : 0}">${r ? esc(p.riski.map(x => x.vards).join(', ')) : 'bez būtiskiem riskiem'}</b></p>` +
+        `<small class="avots-rinda"><a href="${esc(avots.url || 'https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa')}" target="_blank" rel="noopener">LVĢMC prognoze</a>` +
+        `${izdota ? ', izdota ' + esc(izdota) : ''} · ${esc(avots.licence || 'CC0 1.0')}. Prognoze, nevis brīdinājums.</small>`;
+      // "Kas notiks tālāk": ja gaidāms risks, pirmajā vietā atgādinājums par laikapstākļiem
+      const ol = kaste.querySelector('.talak ol');
+      if (r && r.limenis >= 1 && ol) {
+        ol.insertAdjacentHTML('afterbegin', `<li><b>Laikapstākļi:</b> ${p.stundas >= 23 ? 'nākamajās 24 h' : 'līdz ' + stunda(p.lidz)} — ${esc(r.vards)} (LVĢMC prognoze). ` +
+          'Sekojiet LVĢMC brīdinājumiem un meklējiet vēlreiz, ja situācija mainās.</li>');
+      }
+    }).catch(() => {});
   }
 
   // Atrašanās vieta pēc GPS: tuvākā VZD adrese (≤ 300 m)
