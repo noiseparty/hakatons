@@ -499,7 +499,10 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats #panelis, body.druka-rezultats #meklesana, body.druka-rezultats #apaksa,
   body.druka-rezultats #apaksa-saturs, body.druka-rezultats main { display: block !important; position: static !important;
     height: auto !important; max-height: none !important; overflow: visible !important; transform: none !important; box-shadow: none !important; }
-  body.druka-rezultats #rezultati { position: absolute; left: 0; top: 0; width: 100%; padding: 0; font-size: 11pt; color: #000; }
+  /* viss, kas nav kartīte un nav tās priekštecis, ir ārā no plūsmas (citādi paslēptie bloki atstāj tukšu laukumu lapas augšā) */
+  body.druka-rezultats *:not(#rezultati):not(#rezultati *):not(:has(#rezultati)):not(.druka-galva):not(.druka-qr) { display: none !important; }
+  html:has(body.druka-rezultats), body.druka-rezultats, body.druka-rezultats *:has(#rezultati) { min-height: 0 !important; height: auto !important; padding: 0 !important; margin: 0 !important; background: #fff !important; border: 0 !important; }
+  body.druka-rezultats #rezultati { position: static; width: 100%; margin: 0; padding: 0; font-size: 11pt; color: #000; }
   body.druka-rezultats #rezultati button, body.druka-rezultats #rezultati .marsruts, body.druka-rezultats #rezultati .atras-pogas,
   body.druka-rezultats #rezultati .dalities-zina, body.druka-rezultats #rezultati .piezime:empty { display: none !important; }
   body.druka-rezultats #rezultati a { color: #000; text-decoration: none; }
@@ -508,6 +511,36 @@ body.saraksts-atverts .apaksa-meklet { display: none !important; }
   body.druka-rezultats .druka-qr { display: flex; gap: 12px; align-items: flex-start; margin-top: 1rem; padding-top: .5rem; border-top: 1px solid #999; font-size: 9pt; break-inside: avoid; }
   body.druka-rezultats .druka-qr svg { width: 32mm; height: 32mm; flex: none; }
   body.druka-rezultats .druka-qr p { margin: 0 0 .3rem; overflow-wrap: anywhere; }
+  /* Viena A4 lapa: kompakts izkārtojums, tuvākās vietas līdz 2 katrā grupā, bez statusa un abonēšanas rindām, bez kartes/soļu joslas */
+  @page { size: A4; margin: 6mm; }
+  body.druka-rezultats #rezultati { font-size: 9pt; line-height: 1.18; }
+  body.druka-rezultats #rezultati * { box-shadow: none !important; overflow: visible !important; max-height: none !important; }
+  body.druka-rezultats #rezultati > * { margin-top: .1rem; margin-bottom: .1rem; }
+  body.druka-rezultats #rezultati .fakti { margin: .1rem 0; }
+  body.druka-rezultats #rezultati .padoms { margin: .1rem 0; }
+  body.druka-rezultats #rezultati h3 { margin: .35rem 0 .1rem; font-size: 9.5pt; }
+  body.druka-rezultats #rezultati .lemums, body.druka-rezultats #rezultati .prognoze-rinda { padding: .2rem .4rem; font-size: 9.5pt; }
+  body.druka-rezultats #rezultati .fakti li, body.druka-rezultats #rezultati .rez-saraksts li { padding: .15rem .2rem; gap: .3rem; }
+  body.druka-rezultats #rezultati .rez-saraksts b, body.druka-rezultats #rezultati .rez-saraksts small, body.druka-rezultats #rezultati .fakti small,
+  body.druka-rezultats #rezultati .avots-rinda { font-size: 9pt; }
+  body.druka-rezultats #rezultati .rez-saraksts li:nth-child(n+3):not(.tuksa) { display: none !important; }
+  body.druka-rezultats #rezultati .obj-statuss, body.druka-rezultats #rezultati .statuss-vairak, body.druka-rezultats #rezultati .abonet-rinda,
+  body.druka-rezultats #rezultati .valoda-sledzis, body.druka-rezultats #rezultati .solu-josla, body.druka-rezultats #rezultati .pasvaldiba-adrese,
+  body.druka-rezultats #rezultati [data-darbiba], body.druka-rezultats #rezultati .dalities-pogas { display: none !important; }
+  body.druka-rezultats #rezultati .padoms, body.druka-rezultats #rezultati .talak { padding: .3rem .5rem; margin: .2rem 0; }
+  body.druka-rezultats #demo-panelis, body.druka-rezultats aside:not(#rezultati *), body.druka-rezultats .zinot-panelis { display: none !important; }
+  body.druka-rezultats #rezultati .piezime:not(.kluda):not(.valoda-padomi) { display: none !important; }
+  body.druka-rezultats #rezultati .talak .valoda-padomi { display: none !important; }
+  body.druka-rezultats #rezultati .talak li, body.druka-rezultats #rezultati .talak ol { margin: 0 !important; padding-top: 0 !important; padding-bottom: 0 !important; }
+  body.druka-rezultats #rezultati .talak h3 { margin: 0 0 .1rem; }
+  body.druka-rezultats #rezultati .pludi-metode { display: none !important; }
+  body.druka-rezultats #rezultati .padoms { padding: .15rem .4rem; }
+  body.druka-rezultats #rezultati .talak { padding: .15rem .4rem; }
+  body.druka-rezultats #rezultati .pasvaldiba-rinda ~ .pasvaldiba-rinda, body.druka-rezultats #rezultati #rez-augsne,
+  body.druka-rezultats #rezultati #rez-udens small:not(.avots-rinda) { display: none !important; }
+  body.druka-rezultats .druka-qr { margin-top: .4rem; padding-top: .3rem; }
+  body.druka-rezultats .druka-qr svg { width: 16mm; height: 16mm; }
+  body.druka-rezultats .druka-galva { margin: 0 0 .2rem; }
 }
 
 /* Bezsaiste (offline.js, sw.js): josla, rinda kartītē par saglabātajiem datiem */
