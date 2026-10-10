@@ -20,7 +20,7 @@
 <main class="saturs api">
   <section class="ievads">
     <p><b>Mēs ne tikai lietojam atvērtos datus — mēs tos arī publicējam.</b> Viss, ko rāda karte, ir pieejams kā atvērts
-      JSON API: 23 galapunkti, katram avots, licence un keša laiks. Bez atslēgas, bez reģistrācijas.</p>
+      JSON API: 25 galapunkti, katram avots, licence un keša laiks. Bez atslēgas, bez reģistrācijas.</p>
     <ul>
       <li><b>Licence.</b> Mūsu atvasinātie dati (biežāk meklētais, iedzīvotāju ziņojumi, satiksmes zonas, pašvaldību
         apkopojums, statuss) — <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, atsauce „map.repo.lv”.
@@ -38,7 +38,7 @@
 const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas pēc attāluma (properties.attalums_m)</pre>
   </section>
 
-  <nav class="raditajs" aria-label="Galapunkti"><h2>Galapunkti</h2><ul><li><a href="#api-kategorijas"><code>/api/kategorijas</code></a> — Kartes slāņi</li><li><a href="#api-avoti"><code>/api/avoti</code></a> — Datu avoti</li><li><a href="#api-regioni"><code>/api/regioni</code></a> — Pašvaldības un pilsētas</li><li><a href="#api-regioni-kods"><code>/api/regioni/{kods}</code></a> — Reģiona robeža</li><li><a href="#api-objekti"><code>/api/objekti</code></a> — Punkti kartē</li><li><a href="#api-adreses"><code>/api/adreses</code></a> — Adrešu meklēšana</li><li><a href="#api-adreses-tuvaka"><code>/api/adreses/tuvaka</code></a> — Tuvākā adrese</li><li><a href="#api-pasvaldiba"><code>/api/pasvaldiba</code></a> — Pašvaldība punktā</li><li><a href="#api-bridinajumi"><code>/api/bridinajumi</code></a> — LVĢMC brīdinājumi</li><li><a href="#api-pludi"><code>/api/pludi</code></a> — Plūdu riska zona punktā</li><li><a href="#api-udens"><code>/api/udens</code></a> — Ūdens līmenis upēs</li><li><a href="#api-prognozes"><code>/api/prognozes</code></a> — Laika prognoze pa novadiem</li><li><a href="#api-prognozes-robezas"><code>/api/prognozes/robezas</code></a> — Novadu robežas prognozei</li><li><a href="#api-zibens"><code>/api/zibens</code></a> — Zibens</li><li><a href="#api-augsne"><code>/api/augsne</code></a> — Nokrišņi un augsnes mitrums</li><li><a href="#api-marsruts"><code>/api/marsruts</code></a> — Maršruts</li><li><a href="#api-noverojumi"><code>/api/noverojumi</code></a> — Laikapstākļi tagad</li><li><a href="#api-celi"><code>/api/celi</code></a> — Ceļu slēgumi un negadījumi</li><li><a href="#api-satiksme"><code>/api/satiksme</code></a> — Satiksme zonās</li><li><a href="#api-statuss"><code>/api/statuss</code></a> — Sistēmas statuss</li><li><a href="#api-meklejumi-top"><code>/api/meklejumi/top</code></a> — Biežāk meklētais</li><li><a href="#api-zinojumi"><code>/api/zinojumi</code></a> — Iedzīvotāju ziņojumi</li><li><a href="#api-veseliba"><code>/api/veseliba</code></a> — Veselības pārbaude</li></ul></nav>
+  <nav class="raditajs" aria-label="Galapunkti"><h2>Galapunkti</h2><ul><li><a href="#api-kategorijas"><code>/api/kategorijas</code></a> — Kartes slāņi</li><li><a href="#api-avoti"><code>/api/avoti</code></a> — Datu avoti</li><li><a href="#api-regioni"><code>/api/regioni</code></a> — Pašvaldības un pilsētas</li><li><a href="#api-regioni-kods"><code>/api/regioni/{kods}</code></a> — Reģiona robeža</li><li><a href="#api-objekti"><code>/api/objekti</code></a> — Punkti kartē</li><li><a href="#api-adreses"><code>/api/adreses</code></a> — Adrešu meklēšana</li><li><a href="#api-adreses-tuvaka"><code>/api/adreses/tuvaka</code></a> — Tuvākā adrese</li><li><a href="#api-pasvaldiba"><code>/api/pasvaldiba</code></a> — Pašvaldība punktā</li><li><a href="#api-bridinajumi"><code>/api/bridinajumi</code></a> — LVĢMC brīdinājumi</li><li><a href="#api-pludi"><code>/api/pludi</code></a> — Plūdu riska zona punktā</li><li><a href="#api-udens"><code>/api/udens</code></a> — Ūdens līmenis upēs</li><li><a href="#api-prognozes"><code>/api/prognozes</code></a> — Laika prognoze pa novadiem</li><li><a href="#api-prognozes-robezas"><code>/api/prognozes/robezas</code></a> — Novadu robežas prognozei</li><li><a href="#api-zibens"><code>/api/zibens</code></a> — Zibens</li><li><a href="#api-augsne"><code>/api/augsne</code></a> — Nokrišņi un augsnes mitrums</li><li><a href="#api-marsruts"><code>/api/marsruts</code></a> — Maršruts</li><li><a href="#api-noverojumi"><code>/api/noverojumi</code></a> — Laikapstākļi tagad</li><li><a href="#api-celi"><code>/api/celi</code></a> — Ceļu slēgumi un negadījumi</li><li><a href="#api-satiksme"><code>/api/satiksme</code></a> — Satiksme zonās</li><li><a href="#api-statuss"><code>/api/statuss</code></a> — Sistēmas statuss</li><li><a href="#api-meklejumi-top"><code>/api/meklejumi/top</code></a> — Biežāk meklētais</li><li><a href="#api-zinojumi"><code>/api/zinojumi</code></a> — Iedzīvotāju ziņojumi</li><li><a href="#api-plusma-xml"><code>/api/plusma.xml</code></a> — Abonēt: Atom/RSS plūsma</li><li><a href="#api-kalendars-ics"><code>/api/kalendars.ics</code></a> — Abonēt: kalendārs</li><li><a href="#api-veseliba"><code>/api/veseliba</code></a> — Veselības pārbaude</li></ul></nav>
 
   
 <section class="galapunkts" id="api-kategorijas">
@@ -342,7 +342,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
  &quot;avots&quot;: &quot;lvgmc-bridinajumi&quot;,
- &quot;laiks_lv&quot;: &quot;2026-10-10T03:37&quot;,
+ &quot;laiks_lv&quot;: &quot;2026-10-10T03:46&quot;,
  &quot;bridinajumi&quot;: [
   {
    &quot;id&quot;: &quot;28210&quot;,
@@ -402,13 +402,13 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   {
    &quot;stacija&quot;: &quot;HD073401&quot;,
    &quot;nosaukums&quot;: &quot;Ogre&quot;,
-   &quot;limenis_cm&quot;: 55,
-   &quot;limenis_m&quot;: 20.61,
+   &quot;limenis_cm&quot;: 56,
+   &quot;limenis_m&quot;: 20.62,
    &quot;nulle_m&quot;: 20.06,
    &quot;izmaina_24h_cm&quot;: 0,
    &quot;udens_temp&quot;: null,
-   &quot;laiks&quot;: &quot;2026-10-09T23:00:00Z&quot;,
-   &quot;derigs_lidz&quot;: &quot;2026-10-10T05:00:00+00:00&quot;,
+   &quot;laiks&quot;: &quot;2026-10-10T00:00:00Z&quot;,
+   &quot;derigs_lidz&quot;: &quot;2026-10-10T06:00:00+00:00&quot;,
    &quot;lat&quot;: 56.8128,
    &quot;lon&quot;: 24.6417,
    &quot;attalums_m&quot;: 2297,
@@ -418,13 +418,13 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   {
    &quot;stacija&quot;: &quot;HD073418&quot;,
    &quot;nosaukums&quot;: &quot;Stariņi&quot;,
-   &quot;limenis_cm&quot;: -32,
-   &quot;limenis_m&quot;: 23.15,
+   &quot;limenis_cm&quot;: -31,
+   &quot;limenis_m&quot;: 23.16,
    &quot;nulle_m&quot;: 23.47,
-   &quot;izmaina_24h_cm&quot;: 1,
-   &quot;udens_temp&quot;: 11.1,
-   &quot;laiks&quot;: &quot;2026-10-09T23:00:00Z&quot;,
-   &quot;derigs_lidz&quot;: &quot;2026-10-10T05:00:00+00:00&quot;,
+   &quot;izmaina_24h_cm&quot;: 2,
+   &quot;udens_temp&quot;: 11.0,
+   &quot;laiks&quot;: &quot;2026-10-10T00:00:00Z&quot;,
+   &quot;derigs_lidz&quot;: &quot;2026-10-10T06:00:00+00:00&quot;,
    &quot;lat&quot;: 56.868056,
    &quot;lon&quot;: 24.61,
    &quot;attalums_m&quot;: 5731,
@@ -458,7 +458,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/prognozes"><code>/api/prognozes</code></a>
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
- &quot;laiks_lv&quot;: &quot;2026-10-10T03:36&quot;,
+ &quot;laiks_lv&quot;: &quot;2026-10-10T03:44&quot;,
  &quot;prognoze_mainita&quot;: &quot;Fri, 09 Oct 2026 20:43:14 GMT&quot;,
  &quot;dienas&quot;: [
   {
@@ -908,8 +908,8 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
  &quot;minutes&quot;: 30,
  &quot;zibeni&quot;: [],
  &quot;skaits&quot;: 0,
- &quot;no&quot;: &quot;2026-10-10T00:06:09+00:00&quot;,
- &quot;lidz&quot;: &quot;2026-10-10T00:36:09+00:00&quot;,
+ &quot;no&quot;: &quot;2026-10-10T00:14:52+00:00&quot;,
+ &quot;lidz&quot;: &quot;2026-10-10T00:44:52+00:00&quot;,
  &quot;avots&quot;: {
   &quot;nosaukums&quot;: &quot;Ilmatieteen laitos (FMI) atvērtie dati&quot;,
   &quot;licence&quot;: &quot;CC BY 4.0&quot;,
@@ -1107,7 +1107,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
  &quot;avots&quot;: &quot;lvc-nap&quot;,
- &quot;laiks&quot;: &quot;2026-10-10T00:36:51+00:00&quot;,
+ &quot;laiks&quot;: &quot;2026-10-10T00:45:57+00:00&quot;,
  &quot;kopas&quot;: {
   &quot;vietas&quot;: {
    &quot;konfigurets&quot;: true,
@@ -1166,25 +1166,6 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
  },
  &quot;zonas&quot;: [
   {
-   &quot;kods&quot;: &quot;100016534&quot;,
-   &quot;nosaukums&quot;: &quot;Jelgavas novads&quot;,
-   &quot;bbox&quot;: [
-    23.39246,
-    56.32052,
-    24.12297,
-    56.89573
-   ],
-   &quot;tips&quot;: &quot;regions&quot;,
-   &quot;limenis&quot;: 1,
-   &quot;limenis_teksts&quot;: &quot;lēns&quot;,
-   &quot;atrums_vid&quot;: 45.1,
-   &quot;atrums_brivs&quot;: 85.1,
-   &quot;plusma_h&quot;: 5,
-   &quot;merijumi&quot;: 3,
-   &quot;iekartas&quot;: 3,
-   &quot;laiks&quot;: &quot;2026-10-10T00:30:00.000Z&quot;
-  },
-  {
    &quot;kods&quot;: &quot;100016630&quot;,
    &quot;nosaukums&quot;: &quot;Aizkraukles novads&quot;,
    &quot;bbox&quot;: [
@@ -1196,12 +1177,31 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;tips&quot;: &quot;regions&quot;,
    &quot;limenis&quot;: 0,
    &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
-   &quot;atrums_vid&quot;: 82.5,
-   &quot;atrums_brivs&quot;: 82.5,
-   &quot;plusma_h&quot;: 3,
+   &quot;atrums_vid&quot;: 77.0,
+   &quot;atrums_brivs&quot;: 90.5,
+   &quot;plusma_h&quot;: 2,
    &quot;merijumi&quot;: 2,
    &quot;iekartas&quot;: 2,
-   &quot;laiks&quot;: &quot;2026-10-10T00:27:00.000Z&quot;
+   &quot;laiks&quot;: &quot;2026-10-10T00:39:00.000Z&quot;
+  },
+  {
+   &quot;kods&quot;: &quot;100016462&quot;,
+   &quot;nosaukums&quot;: &quot;Augšdaugavas novads&quot;,
+   &quot;bbox&quot;: [
+    25.82043,
+    55.67468,
+    26.98455,
+    56.20823
+   ],
+   &quot;tips&quot;: &quot;regions&quot;,
+   &quot;limenis&quot;: 0,
+   &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
+   &quot;atrums_vid&quot;: 97.5,
+   &quot;atrums_brivs&quot;: 97.5,
+   &quot;plusma_h&quot;: 2,
+   &quot;merijumi&quot;: 2,
+   &quot;iekartas&quot;: 3,
+   &quot;laiks&quot;: &quot;2026-10-10T00:33:00.000Z&quot;
   },
   &quot;… (+28)&quot;
  ],
@@ -1212,12 +1212,12 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;lon&quot;: 24.38794,
    &quot;nosaukums&quot;: null,
    &quot;zona&quot;: &quot;100016606&quot;,
-   &quot;atrums&quot;: 82.1,
-   &quot;atrums_brivs&quot;: 94.3,
+   &quot;atrums&quot;: 90.1,
+   &quot;atrums_brivs&quot;: 95.9,
    &quot;plusma_h&quot;: 1,
    &quot;limenis&quot;: 0,
    &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
-   &quot;laiks&quot;: &quot;2026-10-10T00:30:00.000Z&quot;
+   &quot;laiks&quot;: &quot;2026-10-10T00:43:00.000Z&quot;
   },
   {
    &quot;id&quot;: &quot;68ca545e23ee40cfa9508f1f&quot;,
@@ -1225,12 +1225,12 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;lon&quot;: 24.31899,
    &quot;nosaukums&quot;: null,
    &quot;zona&quot;: &quot;100016784&quot;,
-   &quot;atrums&quot;: 89.1,
-   &quot;atrums_brivs&quot;: 89.1,
+   &quot;atrums&quot;: 92.9,
+   &quot;atrums_brivs&quot;: 92.9,
    &quot;plusma_h&quot;: 2,
    &quot;limenis&quot;: 0,
    &quot;limenis_teksts&quot;: &quot;brīvs&quot;,
-   &quot;laiks&quot;: &quot;2026-10-10T00:31:00.000Z&quot;
+   &quot;laiks&quot;: &quot;2026-10-10T00:43:00.000Z&quot;
   },
   &quot;… (+75)&quot;
  ],
@@ -1248,7 +1248,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/statuss"><code>/api/statuss</code></a>
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
- &quot;laiks&quot;: &quot;2026-10-10T00:36:04+00:00&quot;,
+ &quot;laiks&quot;: &quot;2026-10-10T00:46:04+00:00&quot;,
  &quot;intervals_min&quot;: 15,
  &quot;komponenti&quot;: [
   {
@@ -1262,16 +1262,16 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
     &quot;licences_url&quot;: null
    },
    &quot;stavoklis&quot;: &quot;darbojas&quot;,
-   &quot;zinojums&quot;: &quot;Atbild 0,6 s&quot;,
-   &quot;parbaudits&quot;: &quot;2026-10-10T03:30:01+03:00&quot;,
-   &quot;ilgums_ms&quot;: 599,
+   &quot;zinojums&quot;: &quot;Atbild 0,0 s&quot;,
+   &quot;parbaudits&quot;: &quot;2026-10-10T03:45:20+03:00&quot;,
+   &quot;ilgums_ms&quot;: 26,
    &quot;joslas&quot;: [
     {
-     &quot;sakums&quot;: &quot;2026-10-09T00:45:00+00:00&quot;,
+     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
      &quot;stavoklis&quot;: null
     },
     {
-     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
+     &quot;sakums&quot;: &quot;2026-10-09T01:15:00+00:00&quot;,
      &quot;stavoklis&quot;: null
     },
     &quot;… (+94)&quot;
@@ -1285,15 +1285,15 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;avots&quot;: null,
    &quot;stavoklis&quot;: &quot;darbojas&quot;,
    &quot;zinojums&quot;: &quot;19056 objekti kartē&quot;,
-   &quot;parbaudits&quot;: &quot;2026-10-10T03:30:01+03:00&quot;,
-   &quot;ilgums_ms&quot;: 218,
+   &quot;parbaudits&quot;: &quot;2026-10-10T03:45:20+03:00&quot;,
+   &quot;ilgums_ms&quot;: 60,
    &quot;joslas&quot;: [
     {
-     &quot;sakums&quot;: &quot;2026-10-09T00:45:00+00:00&quot;,
+     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
      &quot;stavoklis&quot;: null
     },
     {
-     &quot;sakums&quot;: &quot;2026-10-09T01:00:00+00:00&quot;,
+     &quot;sakums&quot;: &quot;2026-10-09T01:15:00+00:00&quot;,
      &quot;stavoklis&quot;: null
     },
     &quot;… (+94)&quot;
@@ -1347,6 +1347,77 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
  &quot;zinojumi&quot;: []
 }</pre></details>
 </section>
+<section class="galapunkts" id="api-plusma-xml">
+  <h2><span class="metode">GET</span> <code>/api/plusma.xml</code> — Abonēt: Atom/RSS plūsma</h2>
+  <p>Pašvaldības (vai visas Latvijas) situācija kā Atom 1.0 plūsma jebkurai RSS lietotnei: LVĢMC brīdinājumi, rītdienas prognoze (brāzmas ≥ 15 m/s vai nokrišņi ≥ 15 mm), upes, kas 24 h kāpušas &gt; 10 cm, LVC slēgumi un negadījumi, zibens pēdējās 30 min. Katrā ierakstā avots un licence; ieraksta &lt;id&gt; ir stabils.</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>regions</code></td><td>string</td><td>pašvaldības VZD kods (no /api/regioni) vai ATVK; bez tā — visa Latvija</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/organization/lvgmc">LVĢMC brīdinājumi, prognozes, hidroloģiskie novērojumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://transportdata.gov.lv/">LVC ceļu notikumi (NAP)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://en.ilmatieteenlaitos.fi/open-data">FMI zibens</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ; <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> application/atom+xml; apkopojums CC BY 4.0, ierakstu dati — avota licence.</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/plusma.xml?regions=100016688"><code>/api/plusma.xml?regions=100016688</code></a>
+    <span class="statuss">paraugs (izdomāti dati; dzīvajā vietnē vēl nav)</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>&lt;?xml version=&quot;1.0&quot; ?&gt;
+&lt;feed xmlns=&quot;http://www.w3.org/2005/Atom&quot; xml:lang=&quot;lv&quot;&gt;
+ &lt;id&gt;tag:map.repo.lv,2026:plusma:100016688&lt;/id&gt;
+ &lt;title&gt;Krīzes karte: Ogres novads — brīdinājumi un situācija&lt;/title&gt;
+ &lt;subtitle&gt;LVĢMC brīdinājumi, rītdienas prognoze, upju līmenis, ceļu slēgumi un zibens no atvērtajiem datiem.&lt;/subtitle&gt;
+ &lt;link rel=&quot;self&quot; href=&quot;https://map.repo.lv/api/plusma.xml?regions=100016688&quot;/&gt;
+ &lt;link rel=&quot;alternate&quot; href=&quot;https://map.repo.lv/?regions=100016688&quot;/&gt;
+ &lt;updated&gt;2026-10-10T00:44:30Z&lt;/updated&gt;
+ &lt;author&gt;
+  &lt;name&gt;map.repo.lv&lt;/name&gt;
+  &lt;uri&gt;https://map.repo.lv/&lt;/uri&gt;
+ &lt;/author&gt;
+ &lt;rights&gt;Apkopojums CC BY 4.0 (map.repo.lv); dati — katra ieraksta avota licence.&lt;/rights&gt;
+ &lt;entry&gt;
+  &lt;id&gt;tag:map.repo.lv,2026:udens:HD073401:2026-10-10&lt;/id&gt;
+  &lt;title&gt;Ogre: ūdens līmenis 24 h cēlies par 25 cm (tagad 80 cm)&lt;/title&gt;
+  &lt;updated&gt;2026-10-10T00:44:30Z&lt;/updated&gt;
+  &lt;link rel=&quot;alternate&quot; href=&quot;https://map.repo.lv/?regions=100016688&quot;/&gt;
+  &lt;summary&gt;Līmenis cm virs posteņa nulles. Bīstamības līmeņi nav atvērtie dati.
+
+Avots: LVĢMC hidroloģiskie novērojumi (https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-noverojumi) · CC0 1.0. Ja apdraudēta dzīvība, zvaniet 112.&lt;/summary&gt;
+ &lt;/entry&gt;
+ &lt;entry&gt;
+  &lt;id&gt;tag:map.repo.lv,2026:zibens:100016688:2026101000&lt;/id&gt;
+  &lt;title&gt;Zibens pēdējās 30 min: 2 izlādes (Ogres novads)&lt;/title&gt;
+  &lt;updated&gt;2026-10-10T00:44:30Z&lt;/updated&gt;
+  &lt;link rel=&quot;alternate&quot; href=&quot;https://map.repo.lv/?regions=100016688&quot;/&gt;
+  &lt;summary&gt;Negaisa laikā turieties prom no kokiem un ūdens; ja apdraudēta dzīvība, zvaniet 112.
+…
+</pre></details>
+</section>
+<section class="galapunkts" id="api-kalendars-ics">
+  <h2><span class="metode">GET</span> <code>/api/kalendars.ics</code> — Abonēt: kalendārs</h2>
+  <p>LVĢMC brīdinājumi pašvaldībai kā iCalendar notikumi (sākums–beigas) — pievienojiet kā abonētu kalendāru (Google, Apple, Outlook).</p>
+  <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>regions</code></td><td>string</td><td>pašvaldības VZD kods vai ATVK; bez tā — visa Latvija</td></tr></tbody></table>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi">LVĢMC hidrometeoroloģiskie brīdinājumi</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a><br>
+     <b>Kešs:</b> 5 min (Cache-Control) <br><b>Piezīme:</b> text/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions).</p>
+  <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/kalendars.ics?regions=100016688"><code>/api/kalendars.ics?regions=100016688</code></a>
+    <span class="statuss">paraugs (izdomāti dati; dzīvajā vietnē vēl nav)</span></p>
+  <details><summary>Atbildes piemērs (saīsināts)</summary><pre>BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//map.repo.lv//Krizes karte//LV
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:Brīdinājumi: Ogres novads
+X-PUBLISHED-TTL:PT30M
+REFRESH-INTERVAL;VALUE=DURATION:PT30M
+BEGIN:VEVENT
+UID:28210-100016688@map.repo.lv
+DTSTAMP:20261010T004430Z
+DTSTART:20261009T110000Z
+DTEND:20261010T030000Z
+SUMMARY:Dzeltens brīdinājums: vējš (Latvija)\, līdz 10.10. 06:00
+DESCRIPTION:Brāzmās līdz 20–24 m/s\; koki\, vadi\; uzmanieties.\n\nESI
+  INFORMĒTS par stipru vēju!\n\nAvots: LVĢMC hidrometeoroloģiskie brīd
+ inājumi · CC0 1.0. Ja apdraudēta dzīvība\, zvaniet 112.
+URL:https://map.repo.lv/?regions=100016688
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR
+…
+</pre></details>
+</section>
 <section class="galapunkts" id="api-veseliba">
   <h2><span class="metode">GET</span> <code>/api/veseliba</code> — Veselības pārbaude</h2>
   <p>Vai API un datubāze atbild; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).</p>
@@ -1358,23 +1429,23 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
  &quot;ok&quot;: true,
  &quot;statistika&quot;: {
-  &quot;db_vaicajumi&quot;: 1428,
+  &quot;db_vaicajumi&quot;: 587,
   &quot;db_parslodze&quot;: 0,
   &quot;kesa&quot;: {
-   &quot;statuss&quot;: {
-    &quot;no_kesas&quot;: 10,
-    &quot;uz_avotu&quot;: 7,
-    &quot;novecojusi&quot;: 5,
+   &quot;prognozes_atbilde&quot;: {
+    &quot;no_kesas&quot;: 68,
+    &quot;uz_avotu&quot;: 2,
+    &quot;novecojusi&quot;: 1,
+    &quot;gaidija&quot;: 1
+   },
+   &quot;prognozu_regioni&quot;: {
+    &quot;no_kesas&quot;: 1,
+    &quot;uz_avotu&quot;: 1,
+    &quot;novecojusi&quot;: 0,
     &quot;gaidija&quot;: 0
    },
-   &quot;zibens_fmi&quot;: {
-    &quot;no_kesas&quot;: 7,
-    &quot;uz_avotu&quot;: 6,
-    &quot;novecojusi&quot;: 5,
-    &quot;gaidija&quot;: 0
-   },
-   &quot;noverojumi&quot;: {
-    &quot;no_kesas&quot;: 33,
+   &quot;bridinajumi&quot;: {
+    &quot;no_kesas&quot;: 134,
     &quot;uz_avotu&quot;: 1,
     &quot;novecojusi&quot;: 0,
     &quot;gaidija&quot;: 0
@@ -1382,7 +1453,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;…&quot;: &quot;+18 lauki&quot;
   },
   &quot;db_vienlaicigi&quot;: 16,
-  &quot;pavedieni&quot;: 30
+  &quot;pavedieni&quot;: 28
  }
 }</pre></details>
 </section>

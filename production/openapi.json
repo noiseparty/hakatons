@@ -652,7 +652,7 @@
        "application/json": {
         "example": {
          "avots": "lvgmc-bridinajumi",
-         "laiks_lv": "2026-10-10T03:37",
+         "laiks_lv": "2026-10-10T03:46",
          "bridinajumi": [
           {
            "id": "28210",
@@ -814,13 +814,13 @@
           {
            "stacija": "HD073401",
            "nosaukums": "Ogre",
-           "limenis_cm": 55,
-           "limenis_m": 20.61,
+           "limenis_cm": 56,
+           "limenis_m": 20.62,
            "nulle_m": 20.06,
            "izmaina_24h_cm": 0,
            "udens_temp": null,
-           "laiks": "2026-10-09T23:00:00Z",
-           "derigs_lidz": "2026-10-10T05:00:00+00:00",
+           "laiks": "2026-10-10T00:00:00Z",
+           "derigs_lidz": "2026-10-10T06:00:00+00:00",
            "lat": 56.8128,
            "lon": 24.6417,
            "attalums_m": 2297,
@@ -830,13 +830,13 @@
           {
            "stacija": "HD073418",
            "nosaukums": "Stariņi",
-           "limenis_cm": -32,
-           "limenis_m": 23.15,
+           "limenis_cm": -31,
+           "limenis_m": 23.16,
            "nulle_m": 23.47,
-           "izmaina_24h_cm": 1,
-           "udens_temp": 11.1,
-           "laiks": "2026-10-09T23:00:00Z",
-           "derigs_lidz": "2026-10-10T05:00:00+00:00",
+           "izmaina_24h_cm": 2,
+           "udens_temp": 11.0,
+           "laiks": "2026-10-10T00:00:00Z",
+           "derigs_lidz": "2026-10-10T06:00:00+00:00",
            "lat": 56.868056,
            "lon": 24.61,
            "attalums_m": 5731,
@@ -891,7 +891,7 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks_lv": "2026-10-10T03:36",
+         "laiks_lv": "2026-10-10T03:44",
          "prognoze_mainita": "Fri, 09 Oct 2026 20:43:14 GMT",
          "dienas": [
           {
@@ -1388,8 +1388,8 @@
          "minutes": 30,
          "zibeni": [],
          "skaits": 0,
-         "no": "2026-10-10T00:06:09+00:00",
-         "lidz": "2026-10-10T00:36:09+00:00",
+         "no": "2026-10-10T00:14:52+00:00",
+         "lidz": "2026-10-10T00:44:52+00:00",
          "avots": {
           "nosaukums": "Ilmatieteen laitos (FMI) atvērtie dati",
           "licence": "CC BY 4.0",
@@ -1829,7 +1829,7 @@
        "application/json": {
         "example": {
          "avots": "lvc-nap",
-         "laiks": "2026-10-10T00:36:51+00:00",
+         "laiks": "2026-10-10T00:45:57+00:00",
          "kopas": {
           "vietas": {
            "konfigurets": true,
@@ -1888,25 +1888,6 @@
          },
          "zonas": [
           {
-           "kods": "100016534",
-           "nosaukums": "Jelgavas novads",
-           "bbox": [
-            23.39246,
-            56.32052,
-            24.12297,
-            56.89573
-           ],
-           "tips": "regions",
-           "limenis": 1,
-           "limenis_teksts": "lēns",
-           "atrums_vid": 45.1,
-           "atrums_brivs": 85.1,
-           "plusma_h": 5,
-           "merijumi": 3,
-           "iekartas": 3,
-           "laiks": "2026-10-10T00:30:00.000Z"
-          },
-          {
            "kods": "100016630",
            "nosaukums": "Aizkraukles novads",
            "bbox": [
@@ -1918,12 +1899,31 @@
            "tips": "regions",
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "atrums_vid": 82.5,
-           "atrums_brivs": 82.5,
-           "plusma_h": 3,
+           "atrums_vid": 77.0,
+           "atrums_brivs": 90.5,
+           "plusma_h": 2,
            "merijumi": 2,
            "iekartas": 2,
-           "laiks": "2026-10-10T00:27:00.000Z"
+           "laiks": "2026-10-10T00:39:00.000Z"
+          },
+          {
+           "kods": "100016462",
+           "nosaukums": "Augšdaugavas novads",
+           "bbox": [
+            25.82043,
+            55.67468,
+            26.98455,
+            56.20823
+           ],
+           "tips": "regions",
+           "limenis": 0,
+           "limenis_teksts": "brīvs",
+           "atrums_vid": 97.5,
+           "atrums_brivs": 97.5,
+           "plusma_h": 2,
+           "merijumi": 2,
+           "iekartas": 3,
+           "laiks": "2026-10-10T00:33:00.000Z"
           },
           "… (+28)"
          ],
@@ -1934,12 +1934,12 @@
            "lon": 24.38794,
            "nosaukums": null,
            "zona": "100016606",
-           "atrums": 82.1,
-           "atrums_brivs": 94.3,
+           "atrums": 90.1,
+           "atrums_brivs": 95.9,
            "plusma_h": 1,
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "laiks": "2026-10-10T00:30:00.000Z"
+           "laiks": "2026-10-10T00:43:00.000Z"
           },
           {
            "id": "68ca545e23ee40cfa9508f1f",
@@ -1947,12 +1947,12 @@
            "lon": 24.31899,
            "nosaukums": null,
            "zona": "100016784",
-           "atrums": 89.1,
-           "atrums_brivs": 89.1,
+           "atrums": 92.9,
+           "atrums_brivs": 92.9,
            "plusma_h": 2,
            "limenis": 0,
            "limenis_teksts": "brīvs",
-           "laiks": "2026-10-10T00:31:00.000Z"
+           "laiks": "2026-10-10T00:43:00.000Z"
           },
           "… (+75)"
          ],
@@ -1991,7 +1991,7 @@
       "content": {
        "application/json": {
         "example": {
-         "laiks": "2026-10-10T00:36:04+00:00",
+         "laiks": "2026-10-10T00:46:04+00:00",
          "intervals_min": 15,
          "komponenti": [
           {
@@ -2005,16 +2005,16 @@
             "licences_url": null
            },
            "stavoklis": "darbojas",
-           "zinojums": "Atbild 0,6 s",
-           "parbaudits": "2026-10-10T03:30:01+03:00",
-           "ilgums_ms": 599,
+           "zinojums": "Atbild 0,0 s",
+           "parbaudits": "2026-10-10T03:45:20+03:00",
+           "ilgums_ms": 26,
            "joslas": [
             {
-             "sakums": "2026-10-09T00:45:00+00:00",
+             "sakums": "2026-10-09T01:00:00+00:00",
              "stavoklis": null
             },
             {
-             "sakums": "2026-10-09T01:00:00+00:00",
+             "sakums": "2026-10-09T01:15:00+00:00",
              "stavoklis": null
             },
             "… (+94)"
@@ -2028,15 +2028,15 @@
            "avots": null,
            "stavoklis": "darbojas",
            "zinojums": "19056 objekti kartē",
-           "parbaudits": "2026-10-10T03:30:01+03:00",
-           "ilgums_ms": 218,
+           "parbaudits": "2026-10-10T03:45:20+03:00",
+           "ilgums_ms": 60,
            "joslas": [
             {
-             "sakums": "2026-10-09T00:45:00+00:00",
+             "sakums": "2026-10-09T01:00:00+00:00",
              "stavoklis": null
             },
             {
-             "sakums": "2026-10-09T01:00:00+00:00",
+             "sakums": "2026-10-09T01:15:00+00:00",
              "stavoklis": null
             },
             "… (+94)"
@@ -2174,6 +2174,101 @@
     }
    }
   },
+  "/api/plusma.xml": {
+   "get": {
+    "summary": "Abonēt: Atom/RSS plūsma",
+    "description": "Pašvaldības (vai visas Latvijas) situācija kā Atom 1.0 plūsma jebkurai RSS lietotnei: LVĢMC brīdinājumi, rītdienas prognoze (brāzmas ≥ 15 m/s vai nokrišņi ≥ 15 mm), upes, kas 24 h kāpušas > 10 cm, LVC slēgumi un negadījumi, zibens pēdējās 30 min. Katrā ierakstā avots un licence; ieraksta <id> ir stabils.\n\napplication/atom+xml; apkopojums CC BY 4.0, ierakstu dati — avota licence.",
+    "parameters": [
+     {
+      "name": "regions",
+      "in": "query",
+      "required": false,
+      "description": "pašvaldības VZD kods (no /api/regioni) vai ATVK; bez tā — visa Latvija",
+      "schema": {
+       "type": "string"
+      },
+      "example": "100016688"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC brīdinājumi, prognozes, hidroloģiskie novērojumi",
+      "url": "https://data.gov.lv/dati/lv/organization/lvgmc",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "LVC ceļu notikumi (NAP)",
+      "url": "https://transportdata.gov.lv/",
+      "licence": "CC0 1.0"
+     },
+     {
+      "nosaukums": "FMI zibens",
+      "url": "https://en.ilmatieteenlaitos.fi/open-data",
+      "licence": "CC BY 4.0"
+     },
+     {
+      "nosaukums": "map.repo.lv (atvasināti dati)",
+      "url": "https://github.com/noiseparty/hakatons",
+      "licence": "CC BY 4.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "Atom 1.0",
+      "content": {
+       "application/atom+xml": {}
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
+  "/api/kalendars.ics": {
+   "get": {
+    "summary": "Abonēt: kalendārs",
+    "description": "LVĢMC brīdinājumi pašvaldībai kā iCalendar notikumi (sākums–beigas) — pievienojiet kā abonētu kalendāru (Google, Apple, Outlook).\n\ntext/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions).",
+    "parameters": [
+     {
+      "name": "regions",
+      "in": "query",
+      "required": false,
+      "description": "pašvaldības VZD kods vai ATVK; bez tā — visa Latvija",
+      "schema": {
+       "type": "string"
+      },
+      "example": "100016688"
+     }
+    ],
+    "x-avoti": [
+     {
+      "nosaukums": "LVĢMC hidrometeoroloģiskie brīdinājumi",
+      "url": "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi",
+      "licence": "CC0 1.0"
+     }
+    ],
+    "x-kesa-sekundes": 300,
+    "responses": {
+     "200": {
+      "description": "iCalendar",
+      "content": {
+       "text/calendar": {}
+      }
+     },
+     "400": {
+      "description": "Nederīgs parametrs: {kluda}"
+     },
+     "503": {
+      "description": "Avots vai datubāze nav pieejama: {kluda}"
+     }
+    }
+   }
+  },
   "/api/veseliba": {
    "get": {
     "summary": "Veselības pārbaude",
@@ -2206,23 +2301,23 @@
         "example": {
          "ok": true,
          "statistika": {
-          "db_vaicajumi": 1428,
+          "db_vaicajumi": 587,
           "db_parslodze": 0,
           "kesa": {
-           "statuss": {
-            "no_kesas": 10,
-            "uz_avotu": 7,
-            "novecojusi": 5,
+           "prognozes_atbilde": {
+            "no_kesas": 68,
+            "uz_avotu": 2,
+            "novecojusi": 1,
+            "gaidija": 1
+           },
+           "prognozu_regioni": {
+            "no_kesas": 1,
+            "uz_avotu": 1,
+            "novecojusi": 0,
             "gaidija": 0
            },
-           "zibens_fmi": {
-            "no_kesas": 7,
-            "uz_avotu": 6,
-            "novecojusi": 5,
-            "gaidija": 0
-           },
-           "noverojumi": {
-            "no_kesas": 33,
+           "bridinajumi": {
+            "no_kesas": 134,
             "uz_avotu": 1,
             "novecojusi": 0,
             "gaidija": 0
@@ -2230,7 +2325,7 @@
            "…": "+18 lauki"
           },
           "db_vienlaicigi": 16,
-          "pavedieni": 30
+          "pavedieni": 28
          }
         }
        }
