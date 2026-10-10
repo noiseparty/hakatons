@@ -910,10 +910,10 @@ const krizesMeklesana = (() => {
     }).catch(() => {});
   }
 
-  // Plūdu scenārijiem: plūdu riska zona adresē (LVĢMC WMS caur /api/pludi; lēns, līdz 15 s) un tuvākās upes līmenis
+  // Plūdu scenārijiem: plūdu riska zona adresē (/api/pludi: LVĢMC karšu kopija vai WMS) un tuvākās upes līmenis
   function pluduBloks() {
     return `<ul class="fakti" id="rez-pludi-bloks">
-      <li id="rez-pludi"><span class="ikona">${Ik('pludi')}</span><div><b>${t('Plūdu riska zona')}</b><span>${t('Pārbauda… (līdz 15 s)')}</span></div></li>
+      <li id="rez-pludi"><span class="ikona">${Ik('pludi')}</span><div><b>${t('Plūdu riska zona')}</b><span>${t('Pārbauda…')}</span></div></li>
       <li id="rez-udens"><span class="ikona">${Ik('limenis')}</span><div><b>${t('Tuvākā upe vai ezers')}</b><span>${t('Ielādē…')}</span></div></li></ul>`;
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
@@ -963,9 +963,32 @@ const krizesMeklesana = (() => {
     return `<span class="udens-statuss udens-${STATUSA_KLASE[s.statuss]}"><b>${STATUSA_NOS[s.statuss]}</b> · ${esc(s.vieta || s.nosaukums)}: ` +
       `${mLv(s.limenis_m)} m${att}${tend}</span>${pr ? `<small>${pr}</small>` : ''}${avots ? `<small>${avots}</small>` : ''}`;
   }
-  // /api/pludi atbild ne ilgāk par 25 s; ja LVĢMC karšu serviss vēl rēķina — 202 {ielade}: vēlreiz pēc 10 s (≤ 2 reizes)
+  // /api/pludi: LVĢMC karšu kopija PostGIS (uzreiz) → LVĢMC WMS ar kešu → {zinams: false}. API gaida ≤ 6 s; ja LVĢMC
+  // vēl rēķina — 202 {ielade}: vēlreiz pēc 10 s (≤ 2 reizes). Ja LVĢMC neatbild, bet atbilde saglabāta — {novecojis}.
+  const proc = v => String(v).replace('.', ',') + ' %';
+  const METODES = { 'PostGIS kopija': 'LVĢMC karšu kopija mūsu datubāzē', 'LVĢMC WMS': 'LVĢMC karšu serviss, tikko' };
+  function pluduTeksts(p) {
+    if (p.zona) return `<strong class="jā">Jā</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${proc(v.varbutiba_proc)} varbūtība gadā)`).join(', ')}`;
+    if (p.nepilnigi) return 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.';
+    const k = (p.varbutibas?.length ? p.varbutibas : [10, 1, 0.5]).map(proc);
+    return `<strong class="nē">Nē</strong>: nav applūstošā teritorijā (${k.length > 1 ? k.slice(0, -1).join(', ') + ' un ' + k[k.length - 1] : k[0]} kartes).`;
+  }
+  function pluduAvots(p) {
+    const a = p.avota_info;
+    const avots = a && p.avots === 'lvgmc-pludi-faili'
+      ? `<a href="${esc(a.url)}" target="_blank" rel="noopener">${esc(a.nosaukums)}</a> · ${esc(a.licence)}` : AVOTI_LVGMC.pludi;
+    const m = p.metode ? METODES[p.metode] || (p.metode.startsWith('kešs no ') ? 'saglabātā LVĢMC atbilde no ' + p.metode.slice(8) : p.metode) : '';
+    return `<small class="avots-rinda">${avots}</small>` + (m ? `<small class="avots-rinda pludi-metode">Pārbaudīts: ${esc(m)}</small>` : '');
+  }
   function pluduZona(ll, signal, meginajums) {
     iegut('/pludi?' + new URLSearchParams(ll), signal).then(p => {
+      if (p.zinams === false) {  // LVĢMC neatbild, un saglabātas atbildes šai vietai nav (pirms p.ielade: tas ir arī šeit)
+        pluduRinda('rez-pludi', `<b>Plūdu riska zona</b><span>${esc(p.iemesls || 'LVĢMC plūdu karte šobrīd neatbild')}, un šai vietai saglabātas atbildes nav. ` +
+          'Mēģiniet pēc brīža; plūdu zonu slānis kartē ir ieslēgts.</span>' + pluduAvots(p));
+        pluduStavoklis.lemums = { tonis: 'nezinams', teksts: 'LVĢMC plūdu karte šobrīd neatbild' };
+        zimetPluduLemumu();
+        return;
+      }
       if (p.ielade) {
         pluduRinda('rez-pludi', `<b>${Valoda.t('Plūdu riska zona')}</b><span>${meginajums < 2 ? 'Plūdu kartes vēl ielādējas, mēģinām vēlreiz pēc 10 s…'
           : 'Plūdu kartes pašlaik atbild lēni. Plūdu zonas redzamas kartē (slānis ieslēgts).'}</span>`);
@@ -975,10 +998,8 @@ const krizesMeklesana = (() => {
         if (meginajums < 2) setTimeout(() => { if (!signal.aborted) pluduZona(ll, signal, meginajums + 1); }, 10000);
         return;
       }
-      const t = p.zona
-        ? `<strong class="jā">${Valoda.t('Jā')}</strong>: ${p.veidi.map(v => `${esc(v.veids)} (${String(v.varbutiba_proc).replace('.', ',')} % varbūtība gadā)`).join(', ')}`
-        : p.nepilnigi ? 'Pēc pieejamajām kartēm nē, bet daļa karšu neatbildēja.' : `<strong class="nē">${Valoda.t('Nē')}</strong>: ${Valoda.t('nav applūstošā teritorijā (10 %, 1 % un 0,5 % kartes).')}`;
-      pluduRinda('rez-pludi', `<b>${Valoda.t('Plūdu riska zona')}</b><span>${t}</span><small class="avots-rinda">${AVOTI_LVGMC.pludi}</small>`);
+      const t = p.novecojis ? `${esc(p.iemesls || 'LVĢMC plūdu karte šobrīd neatbild')}; pēdējais zināmais: ${pluduTeksts(p)}` : pluduTeksts(p);
+      pluduRinda('rez-pludi', `<b>${Valoda.t('Plūdu riska zona')}</b><span>${t}</span>${pluduAvots(p)}`);
       pluduStavoklis.zona = p.zona ? true : p.nepilnigi ? undefined : false;
       // lēmuma rindai īsi: lielākā varbūtība gadā
       const maks = p.zona ? Math.max(...p.veidi.map(v => +v.varbutiba_proc || 0)) : 0;

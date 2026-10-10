@@ -138,6 +138,22 @@ elif ! python3 -c 'import json,sys; f=[x for p in sys.argv[1:] for x in json.loa
 fi
 [ -n "$CA" ] && statisks ca-plani "$CA" --kategorija "{kategorija}" --id "{id}" --nosaukums "{nosaukums}" --adrese "{adrese}"
 
+# Plūdu riska zonas: /api/pludi lokālā kopija (PostGIS pludu_zonas; pludu_zonas.py, nevis ielade.py), ja fails mainījies
+PLUDI=$REPO/pludu_zonas.geojson.gz
+PLUDU_SHA=$( { [ -f "$PLUDI" ] && sha256sum "$PLUDI" || echo parbaude; } | cut -d' ' -f1)
+if [ "$PARBAUDE" = 0 ] && [ ! -f "$PLUDI" ]; then
+  echo "lvgmc-pludi-faili: $PLUDI nav (41,6 MB, nav git: pludu_zonas.py lejupieladet + scp), izlaiž"
+elif [ "$VISI" = 0 ] && [ "$(cat "$STAVOKLIS/lvgmc-pludi-faili.sha256" 2>/dev/null)" = "$PLUDU_SHA" ]; then
+  echo "lvgmc-pludi-faili: nav mainījies, izlaiž"
+else
+  darit python3 src/karte/db/pludu_zonas.py ieladet "$PLUDI"; k=$?
+  if [ "$k" = 0 ]; then [ "$PARBAUDE" = 1 ] || echo "$PLUDU_SHA" > "$STAVOKLIS/lvgmc-pludi-faili.sha256"
+  elif [ "$k" = 3 ]; then echo "BRĪDINĀJUMS: lvgmc-pludi-faili — < 90 % no iepriekšējā; vecā tabula paliek" >&2
+  else KLUDAS+=(lvgmc-pludi-faili); echo "KĻŪDA: plūdu zonu ielāde (kods $k)" >&2; fi
+fi
+# Plūdu kešs pludi_kesa demo adresēm (LVĢMC WMS caur vietējo API, ?wms=1) + salīdzinājums ar kopiju; kļūda neaptur
+darit python3 src/karte/db/pludi_siltums.py || echo "BRĪDINĀJUMS: pludi_siltums — skat. izvadi augstāk" >&2
+
 if [ "$PARBAUDE" = 0 ]; then
   psql "$MAP_DB_OWNER_DSN" -c "select a.kods, a.atjaunots, count(o.id) from avoti a left join objekti o on o.avots = a.kods group by 1, 2 order by 1"
 fi

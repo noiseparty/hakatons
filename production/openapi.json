@@ -753,7 +753,7 @@
   "/api/pludi": {
    "get": {
     "summary": "Plūdu riska zona punktā",
-    "description": "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).\n\nAvots atbild 1–30 s: ja ne 25 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Kešs pēc punkta (~100 m) 24 h.",
+    "description": "Vai punkts ir applūstošā teritorijā (pavasara pali, ledus sastrēgumi, jūras vējuzplūdi; 10 %, 1 %, 0,5 % varbūtība gadā).\n\nSecība: LVĢMC karšu kopija PostGIS (metode \"PostGIS kopija\", 10 % un 1 %) → LVĢMC WMS (\"LVĢMC WMS\") ar kešu pēc punkta (~10 m) 7 dienas (\"kešs no HH:MM\"; ja LVĢMC neatbild — arī vecāks, ar novecojis: true) → {zinams: false, iemesls}. WMS ne 6 s laikā — HTTP 202 {ielade: true}, mēģiniet pēc 10 s. Lauki: zinams, zona, veidi, metode, varbutibas (pārbaudītās kartes, %), avota_info.",
     "parameters": [
      {
       "name": "lat",
