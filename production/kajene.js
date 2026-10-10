@@ -3,12 +3,13 @@
 // un "Kas jauns" logu (izmainas.js). Slaidos (slaidi.html) tā pati rinda ir pēdējā slaidā.
 (() => {
   const kartesLapa = !!document.getElementById('panelis');
+  const uz = kartesLapa ? '' : 'map';  // kartes lapā tikai #…, lai neiet caur sākumlapu (/ → /map pāradresācija)
   const k = document.createElement('footer');
   k.className = 'kajene';
   k.innerHTML = `
     <nav aria-label="Lapas saites" data-t-aria="Lapas saites">
-      <a href="./#datu-avoti" data-t="Par datiem">Par datiem</a> · <a href="statuss.html" data-t="Statuss">Statuss</a> · <a href="info.html" data-t="Svarīgi">Svarīgi</a> ·
-      <a href="./#kas-jauns" title="Kas jauns (izmaiņu žurnāls)" aria-label="Kas jauns" data-t-title="Kas jauns (izmaiņu žurnāls)" data-t-aria="Kas jauns">#</a>
+      <a href="${uz}#datu-avoti" data-t="Par datiem">Par datiem</a> · <a href="statuss.html" data-t="Statuss">Statuss</a> · <a href="info.html" data-t="Svarīgi">Svarīgi</a> ·
+      <a href="${uz}#kas-jauns" title="Kas jauns (izmaiņu žurnāls)" aria-label="Kas jauns" data-t-title="Kas jauns (izmaiņu žurnāls)" data-t-aria="Kas jauns">#</a>
     </nav>
     <p><span data-t="Dati: katram avotam sava licence, norādīta pie avota (CC0, CC BY 4.0, ODbL vai oficiāls dokuments);">Dati: katram avotam sava licence, norādīta pie avota (CC0, CC BY 4.0, ODbL vai oficiāls dokuments);</span>
       <svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#uzmanibu"></use></svg> <span data-t="patvertņu sarakstam licence nav norādīta.">patvertņu sarakstam licence nav norādīta.</span> <span data-t="Iedzīvotāju ziņojumi — CC BY 4.0.">Iedzīvotāju ziņojumi — CC BY 4.0.</span> map.repo.lv · <span data-t="AI atvērto datu hakatons 2026.">AI atvērto datu hakatons 2026.</span></p>`;
