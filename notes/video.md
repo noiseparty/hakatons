@@ -48,3 +48,14 @@ uv run --no-project --with playwright --with pillow --with imageio-ffmpeg src/de
 - **Checks at the end:** ffprobe duration and size (warns outside 85–95 s), and the pixel standard deviation of each still (warns below 8, which would mean a blank image).
 - The flood-zone line depends on LVĢMC's WMS. When it does not answer, the card says honestly "Neizdevās pārbaudīt. Plūdu zonas redzamas kartē (slānis ieslēgts)", and that is what gets recorded. The script cannot force a yes/no answer.
 - Old outputs from the previous script (`01-…11-*.png`, `.webm`) are moved to `vecais/`, not deleted.
+- The script deletes `_kadri/` and same-named stills before recording. To keep a previous take, move it by hand first (e.g. `vecais/2026-10-10-0514/`).
+
+## Takes
+
+| When (Riga) | Result |
+|---|---|
+| 2026-10-10 05:14 | 92.3 s. Kept in `vecais/2026-10-10-0514/` (with its `_kadri/`). |
+| 2026-10-10 07:10 | 109.7 s, over the limit. The cards have grown since 05:14: the scroll to the advice in scene 5 alone took ~11 s (scene 5 was 24 s). Kept in `vecais/2026-10-10-0710-110s/`, not for use. |
+| **2026-10-10 07:16 (final)** | **88.3 s** both MP4s (vertical 22.4 MB, horizontal 13.4 MB), all 7 scenes ok on the first attempt, no stills blank. Flood row in scenes 2 and 4 shows a real answer: "Nē: nav applūstošā teritorijā", from the cached LVĢMC answer (05:58 / 06:11). Script changes: scene 5 no longer scrolls to the advice (stays on the 112 block), scenes 3 and 7 scroll faster. Scene lengths: 7.7, 13.6, 11.6, 13.7, 10.1, 11.8, 14.6 s + 5 s end card. |
+
+Deck screenshots (`src/demo/ekrani.py`) retaken at 07:16–07:18: 01, 02, 03, 06, 07, 08 updated. 04 and 05 (address) showed "Pārbauda…" in the flood row three times running, so the old files were kept.
