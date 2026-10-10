@@ -264,9 +264,10 @@ const Darbvirsma = (() => {
       return;
     }
     const pecGrupas = {};
-    for (const k of kodi) (pecGrupas[kategorijas[k].grupa] ||= []).push(kategorijas[k]);
+    for (const k of kodi) (pecGrupas[kategorijas[k].grupa] ||= []).push(k);
+    // tā pati marķiera forma kā kartē (ikonas.js), nevis tikai krāsa
     ul.innerHTML = Object.entries(pecGrupas).map(([g, kk]) => `<li class="dv-leg-grupa">${esc(GRUPAS[g] || g)}</li>` +
-      kk.map(k => `<li><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</li>`).join('')).join('') +
+      kk.map(k => `<li>${Ikonas.formaHTML(k)}${esc(kategorijas[k].nosaukums)}</li>`).join('')).join('') +
       (parklajumi.length ? '<li class="dv-leg-grupa">Pārklājumi</li>' + parklajumi.map(([k, t]) => `<li><span class="punkts" style="background:${esc(k)}"></span>${esc(t)}</li>`).join('') : '');
   }
   document.addEventListener('change', e => { if (ieslegts && e.target.matches('input[type="checkbox"]')) setTimeout(atjaunotLegendu, 0); });
