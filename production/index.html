@@ -16,6 +16,7 @@
 <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
 <link rel="stylesheet" href="vendor/leaflet/MarkerCluster.css">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="alternate" type="application/atom+xml" title="Krīzes karte: brīdinājumi Latvijā" href="/api/plusma.xml">
 <link rel="canonical" href="https://map.repo.lv/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
@@ -139,6 +140,7 @@
           <h2>Prognoze un brīdinājumi</h2>
           <button type="button" class="prog-aizvert" aria-label="Aizvērt prognozi">✕</button>
         </div>
+        <p class="prog-abonet">Abonēt brīdinājumus visai Latvijai: <a href="/api/plusma.xml" type="application/atom+xml">RSS</a> · <a href="/api/kalendars.ics">Kalendārs</a></p>
         <div class="prog-dienas" role="group" aria-label="Diena"></div>
         <div class="prog-saturs" aria-live="polite"></div>
       </section>
