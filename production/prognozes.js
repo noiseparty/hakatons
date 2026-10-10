@@ -2,7 +2,8 @@
 // Novadi kartē iekrāsoti pēc izvēlētās dienas prognozes (mūsu sliekšņi, NAV oficiāls brīdinājums); brīdinājumu
 // poligoni — raustīta līnija. Pieskaroties ziņai, karte pietuvina skartos novadus. Izmanto `karte` no app.js.
 // Riska karte (šodien / rīt): novadi pēc servera riska līmeņa 0–3 (/api/prognozes "riski": LVĢMC brīdinājumi,
-// brāzmas, nokrišņi, zibens, slideni ceļi) — slēdzis redzams arī aizvērtai lentei.
+// brāzmas, nokrišņi, zibens, slideni ceļi) — slēdzis redzams arī aizvērtai lentei. Ziņa "zibens" (oranža) — katram novadam
+// ar zibeni pēdējās 30 min (FMI, CC BY 4.0); serveris to atjauno ik minūti.
 const Prognozes = (() => {
   const KRASAS = { 0: '#bae6fd', 1: '#facc15', 2: '#f97316', 3: '#dc2626' };
   const LIMENI = { 0: 'ievērībai', 1: 'dzeltenais līmenis', 2: 'oranžais līmenis', 3: 'sarkanais līmenis' };
@@ -72,11 +73,11 @@ const Prognozes = (() => {
   }
 
   function zinasHtml() {
-    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums'].includes(z.veids) || z.datums === diena);
+    const z = dati.zinas.filter(z => ['bridinajums', 'riski', 'noverojums', 'zibens'].includes(z.veids) || z.datums === diena);
     if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
-      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
+      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'zibens' ? Ik('zibens') + ' Zibens tagad' + (z.vieta ? ' · ' + esc(z.vieta) : '') : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
       `<b>${esc(z.virsraksts)}</b><span class="prog-teksts">${esc(z.teksts)}</span>${avots(z.avots)}</li>`).join('') + '</ul>';
   }
 
