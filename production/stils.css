@@ -544,6 +544,20 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
 .fakti .ikona .ik { width: 1.5rem; height: 1.5rem; }
 .demo-ikona span .ik { width: 18px; height: 18px; vertical-align: 0; }
 .demo-ikona-l .ik { width: 1.6rem; height: 1.6rem; }
+
+/* Pirmais skats (meklesana.js pirmaisSkats): ko rakstīt, 3 piemēri, kas uzreiz meklē, un rinda par datiem.
+   Datorā kreisajā kolonnā līdz pirmajai meklēšanai; telefonā lapas tukšais stāvoklis, kamēr nav rezultāta. */
+.pirmais-skats { display: flex; flex-direction: column; gap: 8px; }
+.pirmais-skats p { margin: 0; }
+.ps-ievads { font-size: .9rem; font-weight: 600; color: var(--teksts-galv); }
+.ps-cipi { display: flex; flex-wrap: wrap; gap: 6px; }
+.ps-cips { display: inline-flex; align-items: center; gap: 6px; width: auto; min-height: 44px; padding: 0 12px; font-size: .9rem; font-weight: 500;
+  color: var(--teksts-galv); background: #fff; border: 1px solid var(--pelks-3); border-radius: 999px; text-align: left; }
+.ps-cips:hover, .ps-cips:focus-visible { background: var(--zils-gaiss); border-color: var(--zils); }
+.ps-cips .ik { width: 18px; height: 18px; color: var(--tumsi-zils); }
+.ps-dati { display: flex; gap: 6px; font-size: .8rem; line-height: 1.4; color: var(--teksts-blavs); }
+.ps-dati .ik { margin-top: .1em; }
+body.ir-meklets .dv-pirmais { display: none; }
 .tuvuma-izvele { display: flex; flex-direction: column; gap: 4px; min-width: 200px; }
 .tuvuma-izvele button { display: flex; align-items: center; gap: .45rem; min-height: 44px; text-align: left; }
 .tuvuma-izvele button svg.forma { width: 20px; height: 20px; flex: none; }
@@ -697,6 +711,11 @@ body.demo-atverts .atskanot-josla { left: 12px; right: 372px; width: auto; max-w
   .lapa-cilne { padding-top: .1rem; }
   .lapa-tukss { margin: .5rem 0; font-size: .88rem; color: var(--teksts-blavs); }
   #lapa-rezultats:has(#rezultati:not([hidden])) .lapa-tukss { display: none; }
+  .apaksa-saturs > .pirmais-skats { margin: 6px 0 2px; gap: 6px; }
+  .apaksa-saturs > .pirmais-skats .ps-ievads { font-size: .82rem; font-weight: 500; color: var(--teksts-blavs); }
+  .apaksa-saturs > .pirmais-skats .ps-cips { min-height: 40px; font-size: .85rem; }
+  .apaksa-saturs > .pirmais-skats .ps-dati { display: none; }  /* telefonā vieta lēmumam; avoti ir katrā rezultāta rindā */
+  .apaksa-saturs:has(#rezultati:not([hidden])) > .pirmais-skats { display: none; }
   #lapa-slani #panelis { display: flex !important; flex-direction: column; width: auto; padding: 0; gap: 8px; overflow: visible; }
   #lapa-slani #panelis > section { box-shadow: none; border: 1px solid var(--pelks-3); }
   #lapa-slani #statuss { display: inline-block; margin: 0 0 .5rem; padding: .2rem .65rem; border-radius: 999px; background: var(--pelks-2); color: var(--teksts-blavs); font-size: .8rem; }

@@ -43,7 +43,21 @@ const Apaksa = (() => {
     redzamaisPx = h;
     const pilna = augstumsPx('pilna');
     lapa.style.height = (pilna + REZERVE) + 'px';
-    lapa.style.transform = `translate3d(0, ${Math.round(pilna - h)}px, 0)`;
+    lapa.style.transform = `translate3d(0, ${Math.round(pilna - h - klaviaturaPx)}px, 0)`;
+  }
+
+  // Ekrāna tastatūra (meklēšanas lauks lapā ir fokusā): visualViewport kļūst zemāks par logu. Lapu paceļam virs
+  // tastatūras un tās augšmalu turam 56 px zem redzamās daļas augšas — lauks un pirmā rinda zem tā (ieteikumi,
+  // biežāk meklētais, piemēri) paliek redzami. Pārlūkiem bez visualViewport nekas nemainās.
+  const TASTATURA_MIN = 120, VIRS_LAPAS = 56;
+  let klaviaturaPx = 0;
+  function tastatura() {
+    const vv = window.visualViewport, f = document.activeElement;
+    const kb = vv && redzama() && lapa.contains(f) && f.matches('input, textarea') ? Math.round(innerHeight - vv.height - vv.offsetTop) : 0;
+    klaviaturaPx = kb > TASTATURA_MIN ? kb : 0;
+    lapa.classList.toggle('ar-tastaturu', !!klaviaturaPx);
+    if (v) return;  // vilkšanas laikā lapa seko pirkstam
+    novietotPx(klaviaturaPx ? Math.max(PEEK_PX, Math.min(augstumsPx('pilna'), vv.height - VIRS_LAPAS)) : augstumsPx(stavoklis));
   }
 
   function iestatit(jauns) {
@@ -199,7 +213,11 @@ const Apaksa = (() => {
   karte.on('dragstart', () => { if (redzama() && stavoklis === 'pilna') iestatit('puse'); });
 
   telefons.addEventListener('change', novietot);
-  addEventListener('resize', () => { if (redzama() && !v) novietotPx(augstumsPx(stavoklis)); atjaunotAugstumu(); });
+  addEventListener('resize', () => { if (redzama() && !v) tastatura(); atjaunotAugstumu(); });
+  window.visualViewport?.addEventListener('resize', tastatura);
+  window.visualViewport?.addEventListener('scroll', tastatura);
+  lapa.addEventListener('focusin', tastatura);
+  lapa.addEventListener('focusout', () => setTimeout(tastatura, 0));
   novietot();
 
   return {
