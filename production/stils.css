@@ -377,3 +377,9 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .lemums.lemums-nav { border-left-color: #287a41; background: #ecfdf3; }
 #rez-lemums .avots-rinda, #rez-pasvaldiba .avots-rinda { display: block; margin-bottom: .3rem; }
 .pasvaldiba-rinda { margin: .7rem 0 .1rem; font-size: .85rem; }
+
+/* Maršruts, kas apiet slēgtās zonas (marsruts.js) */
+.marsruta-rinda { display: block; margin-top: .3rem; font-size: .82rem; }
+.marsruta-rinda b { color: #0059a6; }
+.marsruta-rinda .marsruts-bistams { color: var(--sarkans); }
+.marsruta-rinda .avots-rinda { display: block; font-size: .72rem; }

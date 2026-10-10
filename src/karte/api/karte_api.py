@@ -22,6 +22,8 @@ Galapunkti:
   GET /api/prognozes/robezas           novadu un valstspilsētu robežas (vienkāršotas) kartes iekrāsošanai
   GET /api/zibens                      zibens pēdējās 30 min (FMI, CC BY 4.0) + LVĢMC 24 h zibens režģis (CC0, kavējas 2–3 h)
   GET /api/augsne?lat=..&lon=..        nokrišņi pēdējās 26 dienās + augsnes mitrums (Open-Meteo, CC BY 4.0; nav brīdinājums)
+  GET /api/marsruts?no=lat,lon&uz=lat,lon&veids=kajam|auto&izvairities=c:lat,lon,r|lat,lon;lat,lon;…
+                                       maršruts (FOSSGIS OSRM, OSM ODbL), kas apiet zonas un spēkā esošus LVC slēgumus
   GET /api/veseliba                    pārbaude
   GET /api/celi?bbox=..|lat=..&lon=..&r=5000
                                        ceļu slēgumi, negadījumi, remontdarbi, slidens ceļš (LVC DATEX II caur NAP, CC0)
@@ -1037,6 +1039,184 @@ def augsne(q):
 
 
 # ---- /Zibens un augsne ----
+
+
+# ---- Maršruts, kas apiet slēgtās zonas: GET /api/marsruts ----
+# Maršrutētājs: FOSSGIS OSRM (routing.openstreetmap.de; tas pats, ko lieto openstreetmap.org "Ceļa norādes"), dati
+# OpenStreetMap (ODbL). router.project-osrm.org demo prot tikai auto profilu, tāpēc kājāmgājējiem — FOSSGIS. Lietošana
+# ir viegla: viens pieprasījums vienlaikus, taimauts 8 s, kešs 10 min pēc noapaļotiem punktiem un zonām.
+# Zonas: ?izvairities=c:lat,lon,r|lat,lon;lat,lon;... (aplis metros vai poligons) + spēkā esošie LVC ceļu slēgumi 20 km
+# rādiusā (tikai no /api/celi kešas). Ja neviena no ≤ 3 alternatīvām neapiet zonas, mēģina caur punktiem ap zonu;
+# ja arī tas neizdodas — taisna līnija ar norādi "nav droša maršruta".
+MARSRUTA_SERVERI = {"kajam": "https://routing.openstreetmap.de/routed-foot/route/v1/driving/",
+                    "auto": "https://routing.openstreetmap.de/routed-car/route/v1/driving/"}
+MARSRUTA_AVOTS = {"nosaukums": "FOSSGIS OSRM (routing.openstreetmap.de), OpenStreetMap dati", "licence": "ODbL 1.0",
+                  "url": "https://routing.openstreetmap.de/about.html"}
+_marsruta_slots = threading.Lock()
+CELA_SLEGUMA_BUFERIS_M = 30
+
+
+def _zonas_no_teksta(teksts):
+    zonas = []
+    for dala in [x for x in (teksts or "").split("|") if x][:6]:
+        try:
+            if dala.startswith("c:"):
+                lat, lon, r = (float(v) for v in dala[2:].split(","))
+                if 55 <= lat <= 59 and 20 <= lon <= 29 and 10 <= r <= 20000:
+                    zonas.append({"tips": "aplis", "centrs": (lat, lon), "r": r})
+            else:
+                punkti = [tuple(float(v) for v in p.split(",")) for p in dala.split(";") if p][:80]
+                if len(punkti) >= 3 and all(55 <= a <= 59 and 20 <= b <= 29 for a, b in punkti):
+                    zonas.append({"tips": "poligons", "punkti": punkti})
+        except ValueError:
+            raise Kluda(400, "izvairities: c:lat,lon,r vai lat,lon;lat,lon;…, atdalītas ar |") from None
+    return zonas
+
+
+def _attalums_lidz_nogrieznim(p, a, b):
+    """Metri no punkta p līdz nogrieznim a–b (vietējā plaknē)."""
+    kx = 111320 * math.cos(math.radians(p[0]))
+    ax, ay, bx, by, px, py = a[1] * kx, a[0] * 110540, b[1] * kx, b[0] * 110540, p[1] * kx, p[0] * 110540
+    dx, dy = bx - ax, by - ay
+    t = 0 if dx == dy == 0 else max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
+    return math.hypot(px - ax - t * dx, py - ay - t * dy)
+
+
+def _zona(z, p):
+    if z["tips"] == "aplis":
+        return _attalums_m(p[0], p[1], *z["centrs"]) <= z["r"]
+    if z["tips"] == "linija":
+        return any(_attalums_lidz_nogrieznim(p, a, b) <= CELA_SLEGUMA_BUFERIS_M for a, b in zip(z["punkti"], z["punkti"][1:]))
+    return _punkts_poligona(p[0], p[1], z["punkti"])
+
+
+def _celu_slegumu_zonas(no):
+    with _kesas_slots:
+        ieraksts = _kesa.get(("celi", "slegums"))
+    zonas = []
+    tagad = datetime.now(timezone.utc)
+    for n in (ieraksts[1] if ieraksts else None) or []:
+        punkti = n.get("linija") or [(n["lat"], n["lon"])]
+        sakums, beigas = _datex_laiks(n.get("no")), _datex_laiks(n.get("lidz"))
+        if (sakums and sakums > tagad) or (beigas and beigas < tagad):
+            continue
+        if min(_attalums_m(no[0], no[1], la, lo) for la, lo in punkti) > 20000:
+            continue
+        zonas.append({"tips": "linija", "punkti": [tuple(p) for p in punkti] if len(punkti) > 1 else [tuple(punkti[0])] * 2,
+                      "nosaukums": n.get("nosaukums") or "Ceļa slēgums"})
+    return zonas[:30]
+
+
+def _skart_zonas(koord, zonas):
+    """Zonas, kurās maršruts iebrauc. Ja sākums (vai galamērķis) ir zonā, sākuma (beigu) posms tajā ir atļauts — no
+    zonas jāiziet; aizliegts ir tajā atgriezties. Punktus starp virsotnēm pārbauda ik ~25 m."""
+    blivi = []
+    for a, b in zip(koord, koord[1:]):
+        n = max(1, int(_attalums_m(a[0], a[1], b[0], b[1]) // 25))
+        blivi += [(a[0] + (b[0] - a[0]) * i / n, a[1] + (b[1] - a[1]) * i / n) for i in range(n)]
+    blivi.append(koord[-1])
+    skartas = []
+    for z in zonas:
+        iek = [_zona(z, p) for p in blivi]
+        i, j = 0, len(iek)
+        while i < j and iek[i]:
+            i += 1
+        while j > i and iek[j - 1]:
+            j -= 1
+        # iziešana no zonas (vai ieiešana galamērķī) nedrīkst iet tuvāk zonas centram par 100 m — nevis cauri tai
+        centrs = z["centrs"] if z["tips"] == "aplis" else             (sum(p[0] for p in z["punkti"]) / len(z["punkti"]), sum(p[1] for p in z["punkti"]) / len(z["punkti"]))             if z["tips"] == "poligons" else None
+        cauri = False
+        if centrs:
+            att = [_attalums_m(p[0], p[1], *centrs) for p in blivi]
+            cauri = (i and min(att[:i]) < att[0] - 100) or (j < len(att) and min(att[j:]) < att[-1] - 100)
+        if any(iek[i:j]) or cauri:
+            skartas.append(z)
+    return skartas
+
+
+def _osrm(veids, punkti, alternativas):
+    url = MARSRUTA_SERVERI[veids] + ";".join(f"{lon:.6f},{lat:.6f}" for lat, lon in punkti) + \
+        f"?overview=full&geometries=geojson&steps=false&alternatives={'3' if alternativas else 'false'}"
+    if not _marsruta_slots.acquire(timeout=10):
+        raise Kluda(503, "maršrutētājs aizņemts, mēģiniet pēc brīža")
+    try:
+        d = json.loads(_lejupieladet(url, timeout=8))
+    finally:
+        _marsruta_slots.release()
+    if d.get("code") != "Ok":
+        raise RuntimeError(d.get("code"))
+    return [{"koord": [(lat, lon) for lon, lat in r["geometry"]["coordinates"]], "attalums_m": round(r["distance"]),
+             "ilgums_s": round(r["duration"])} for r in d["routes"]]
+
+
+def _apvedceli(z, no, uz):
+    """Starppunkti ap zonu: aplim — abās pusēs perpendikulāri virzienam no→uz (1,35 r); poligonam — paplašinātā bbox stūri."""
+    if z["tips"] == "aplis":
+        (clat, clon), r = z["centrs"], z["r"] * 1.35
+        kx = 111320 * math.cos(math.radians(clat))
+        dx, dy = (uz[1] - no[1]) * kx, (uz[0] - no[0]) * 110540
+        garums = math.hypot(dx, dy) or 1
+        nx, ny = -dy / garums, dx / garums
+        return [(clat + s * ny * r / 110540, clon + s * nx * r / kx) for s in (1, -1)]
+    lats = [p[0] for p in z["punkti"]]
+    lons = [p[1] for p in z["punkti"]]
+    dl, dn = (max(lats) - min(lats)) * 0.2 + 0.002, (max(lons) - min(lons)) * 0.2 + 0.003
+    return [(min(lats) - dl, min(lons) - dn), (min(lats) - dl, max(lons) + dn),
+            (max(lats) + dl, min(lons) - dn), (max(lats) + dl, max(lons) + dn)]
+
+
+def marsruts(q):
+    def punkts(vards):
+        try:
+            lat, lon = (float(v) for v in q.get(vards, [""])[0].split(","))
+        except ValueError:
+            raise Kluda(400, f"{vards}=lat,lon") from None
+        if not (55 <= lat <= 59 and 20 <= lon <= 29):
+            raise Kluda(400, f"{vards}: ārpus Latvijas")
+        return round(lat, 4), round(lon, 4)
+    no, uz = punkts("no"), punkts("uz")
+    veids = q.get("veids", ["kajam"])[0]
+    if veids not in MARSRUTA_SERVERI:
+        raise Kluda(400, "veids: kajam vai auto")
+    if _attalums_m(*no, *uz) > 60000:
+        raise Kluda(400, "pārāk tālu (> 60 km)")
+    teksts = q.get("izvairities", [""])[0][:4000]
+    zonas = _zonas_no_teksta(teksts) + _celu_slegumu_zonas(no)
+
+    def aprekinat():
+        alt = _osrm(veids, [no, uz], True)
+        izvele, apiet = None, False
+        skartas_pirmaja = _skart_zonas(alt[0]["koord"], zonas) if zonas else []
+        for r in alt:
+            if not zonas or not _skart_zonas(r["koord"], zonas):
+                izvele, apiet = r, r is not alt[0] or False
+                break
+        if not izvele and skartas_pirmaja:
+            kandidati = []
+            for via in _apvedceli(skartas_pirmaja[0], no, uz)[:4]:
+                try:
+                    r = _osrm(veids, [no, via, uz], False)[0]
+                except (Kluda, RuntimeError, OSError, ValueError):
+                    continue
+                if not _skart_zonas(r["koord"], zonas):
+                    kandidati.append(r)
+            if kandidati:
+                izvele, apiet = min(kandidati, key=lambda r: r["attalums_m"]), True
+        if izvele:
+            return {"dross": True, "apiet_zonu": apiet or bool(skartas_pirmaja), "veids": veids,
+                    "no_zonas": any(_zona(z, no) for z in zonas if z["tips"] != "linija"),
+                    "attalums_m": izvele["attalums_m"], "ilgums_s": izvele["ilgums_s"],
+                    "koord": [[round(a, 5), round(b, 5)] for a, b in _vienkarsot_liniju(izvele["koord"], 0.00004)],
+                    "zonas": len(zonas), "avots": MARSRUTA_AVOTS}
+        return {"dross": False, "apiet_zonu": False, "veids": veids, "attalums_m": _attalums_m(*no, *uz), "ilgums_s": None,
+                "koord": [list(no), list(uz)], "zonas": len(zonas), "avots": MARSRUTA_AVOTS,
+                "piezime": "Nav droša maršruta bez slēgtās zonas — izvairieties no tās un sekojiet dienestu norādēm."}
+
+    atslega = ("marsruts", veids, no, uz, teksts, len(zonas))
+    return _kesots(atslega, 600, aprekinat)
+
+
+# ---- /Maršruts ----
 
 
 def veseliba(_q):
@@ -2143,6 +2323,7 @@ MARSRUTI = [
     (re.compile(r"^/api/prognozes/robezas/?$"), prognozu_robezas, 86400),
     (re.compile(r"^/api/zibens/?$"), zibens, 60),
     (re.compile(r"^/api/augsne/?$"), augsne, 3600),
+    (re.compile(r"^/api/marsruts/?$"), marsruts, 600),
     (re.compile(r"^/api/veseliba/?$"), veseliba, 0),
     (re.compile(r"^/api/celi/?$"), celi, 120),
     (re.compile(r"^/api/satiksme/?$"), satiksme, 60),
