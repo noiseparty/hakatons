@@ -35,6 +35,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
 - [ ] After the viewport PR is live: regenerate `production/api.html` + `openapi.json` (`src/api_docs/sagatavot.py`) so the new `bbox` parameter shows up in the API docs — added 2026-10-10 04:25 +03:00 by noiseparty
+- [ ] LR1 map: pin the 6 approximate sites (Valmiera, Ventspils, Alūksne, Limbaži, Lielauce, Skaista) to the actual LVRTC towers once a second source confirms them (LVRTC coverage pages or an OSM tag fix), then rerun `python src/info/radio_karte.py` — added 2026-10-10 04:33 +03:00 by noiseparty
 
 ## Rītā (lietotājs, VPS / telefons)
 - [ ] Real phones (Android Chrome + iPhone Safari): search result card, location allowed/denied, address in the query, "Ogre, plūdi", "cilvēks nav pie samaņas", popups, filters — added 2026-10-10 01:01 +03:00 by noiseparty; started 2026-10-10 02:27 +03:00
@@ -64,6 +65,7 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 ## In progress
 
 ## Done
+- [x] LR1 radio map on info.html ("Radio krīzē") + nearest-transmitter line in the result card — done 2026-10-10 04:33 +03:00 by noiseparty: `src/info/lr1_frekvences.json` (16 official LR1 sites, 22 frequencies, all matched against the Elektroniskie sakari FM station list), static SVG by `src/info/radio_karte.py`, `production/lr1.json`; 10 sites at OSM tower objects, 6 at town/village centre (hollow dot, "aptuvena") (added 2026-10-10 04:33 +03:00 by noiseparty)
 - [x] "Notīrīt" button in the search bar + one shared status block for shelters / evacuation points / accommodation / resilience points (`ObjektaStatuss.statusaBloks`) — done 2026-10-10 04:28 +03:00 by noiseparty: Notīrīt (sprite icon `aizvert`, Esc in an empty field) clears field, card, sheet, location marker, all URL params, every category and overlay toggle and the region filter without moving the map; shelter popups list the 5 status flags "nav zināms" (6 h freshness) + capacity / wheelchair / pets "nav norādīts", source + ⚠ licence via `Avoti.rinda` (added 2026-10-10 04:28 +03:00 by noiseparty)
 - [x] Slim the all-layers /api/objekti payload (~420 KB) or load by viewport — done 2026-10-10 04:25 +03:00 by noiseparty: `/api/objekti?bbox=` (ST_Intersects + GiST, ≤ 5000, round-robin sample per layer, `apgriezts`, slim properties, LRU keyed by 0.01° bbox); map refetches on moveend (400 ms) at zoom ≥ 8, country sample (3000) below; all 16 layers 958 KB gz → 104 KB country / 6–60 KB city (added 2026-10-10 03:28 +03:00 by noiseparty)
 - [x] Desktop: merge main into noiseparty/ui-desktop (sw.js VERSION 2026-10-10h-dv), layer legend shows marker shapes via `Ikonas.formaHTML()` (overlays keep colour dots), parbaude.py green locally (dators 17/17 OK) — done 2026-10-10 04:26 +03:00 by noiseparty (added 2026-10-10 04:26 +03:00 by noiseparty)
