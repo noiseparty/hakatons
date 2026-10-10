@@ -31,3 +31,7 @@ Screenshots of the mock-ups are in the user's chat (not in the repo).
 - **Marker shapes by group**, so layers are distinguishable at a glance: medical = **cross**; infrastructure = **triangle**; water = **drop** (the user will provide the SVG library for these in a later prompt); transport = **square**; shelters and critical services = **circle**.
 - **Replace every emoji** used in the UI (banner, layer list, popups, result card, status page, demo panel, feed) with icons from https://github.com/basmilius/meteocons (MIT): weather, warnings, lightning, wind, rain, thermometer, moon/sun for night scenarios. Ship as an inline SVG sprite in production/ (no CDN), with `aria-hidden` and a text label next to each.
 - Order: first UI task once the night's feature work is done.
+
+## Mock-up source files (added 2026-10-10 03:40)
+
+`notes/mockup/desktop.html` + `desktop.png` and `notes/mockup/mobile.html` + `mobile.png` are the Google Stitch exports. User's rule: **keep the functions and structure exactly as in the mock-ups; everything else (spacing, hierarchy, states, motion, touch targets, map readability) must be improved — "the UX must be impeccable"**. Tokens seen in the exports: primary blue `#1E66D5`, slate greys `#F1F5F9 / #E2E8F0 / #334155`, red `#B91C1C` (mobile `#BA2525`), amber `#B45309` (mobile orange `#D66D25`), green `#16A34A`, `--font-stack` variable; rounded cards and pill chips.
