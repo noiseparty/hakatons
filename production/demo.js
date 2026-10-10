@@ -109,7 +109,7 @@ const Demo = (() => {
   function atstarpes() {
     if (!document.body.classList.contains('demo-atverts')) return { padding: [40, 40] };
     return telefons()
-      ? { paddingTopLeft: [20, 20], paddingBottomRight: [20, panelis.offsetHeight + 20] }
+      ? (typeof Apaksa !== 'undefined' && Apaksa.aktiva() ? Apaksa.atstarpes(panelis.offsetHeight) : { paddingTopLeft: [20, 20], paddingBottomRight: [20, panelis.offsetHeight + 20] })
       : { paddingTopLeft: [30, 30], paddingBottomRight: [panelis.offsetWidth + 30, 30] };
   }
 

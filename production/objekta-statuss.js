@@ -35,8 +35,48 @@ const ObjektaStatuss = (() => {
       vertibas.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`).join('') + '</ul></span>';
   }
 
+  // Viens kopīgs statusa bloks patvertnēm, evakuācijas un izmitināšanas vietām un noturības punktiem — visur vienāds.
+  // Pazīmes (siltums, uzlāde, ūdens, wifi, ģenerators) ir "nav zināms", ja nav svaigu (≤ 6 h) ziņu; patvertnēm,
+  // evakuācijas un izmitināšanas vietām vēl ietilpība, pieejamība ratiņkrēslam un dzīvnieki — "nav norādīts", ja datos nav.
+  // Citiem slāņiem — iepriekšējais statuss() (piem., simulētie ūdens/uzlādes punkti).
+  const BLOKA_KATEGORIJAS = new Set(['patvertne', 'evakuacijas_punkts', 'izmitinasana', 'noturibas_punkts']);
+  const AR_VIETU_ZINAM = new Set(['patvertne', 'evakuacijas_punkts', 'izmitinasana']);
+  const jaNe = v => v === true || /^(ir|jā|ja|yes|limited|daļēji)$/i.test(String(v ?? '')) ? 'ir'
+    : v === false || /^(nav|nē|ne|no)$/i.test(String(v ?? '')) ? 'nav' : (v == null || v === '' ? null : String(v));
+
+  function vietasZinas(i) {
+    const n = +(i.ietilpiba ?? i.vietas);
+    const ratini = jaNe(i.ratinkresls ?? i.wheelchair);
+    const dzivnieki = jaNe(i.dzivnieki ?? i.majdzivnieki);
+    return [
+      ['ietilpība', Number.isFinite(n) && n > 0 ? `${n} vietas` : null],
+      ['pieejamība ratiņkrēslam', ratini],
+      ['dzīvnieki', dzivnieki],
+    ];
+  }
+
+  function statusaBloks(p, isi = false) {
+    if (!BLOKA_KATEGORIJAS.has(p?.kategorija)) return statuss(p, isi);
+    const i = p.ipasibas || {};
+    const ir = svaigs(i.last_updated) && i.statuss && typeof i.statuss === 'object';
+    const pazimes = Object.entries(PAZIMES).map(([k, nos]) => [nos, ir ? (i.statuss[k] ?? 'nav zināms') : 'nav zināms']);
+    const vietas = AR_VIETU_ZINAM.has(p.kategorija) ? vietasZinas(i) : [];
+    const virsraksts = ir ? `Statuss (atjaunots ${esc(new Date(i.last_updated).toLocaleString('lv-LV'))})`
+      : `<b>Statuss nav apstiprināts</b> (nav ziņu pēdējās ${SVAIGS_H} h)`;
+    if (isi) {
+      const dalas = [ir ? pazimes.map(([n, v]) => `${n} — ${esc(v)}`).join(', ') : 'siltums, uzlāde, ūdens, wifi, ģenerators — nav zināms'];
+      const zinamas = vietas.filter(([, v]) => v), nezinamas = vietas.filter(([, v]) => !v);
+      if (zinamas.length) dalas.push(zinamas.map(([n, v]) => n === 'ietilpība' ? esc(v) : `${n} — ${esc(v)}`).join(', '));
+      if (nezinamas.length) dalas.push(nezinamas.map(([n]) => n).join(', ') + ' — nav norādīts');
+      return `<small class="obj-statuss statusa-bloks">${virsraksts}: ${dalas.join('; ')}.</small>`;
+    }
+    return `<span class="obj-statuss statusa-bloks">${virsraksts}:<ul>` +
+      pazimes.map(([n, v]) => `<li>${n}: ${esc(v)}</li>`).join('') +
+      vietas.map(([n, v]) => `<li>${n}: ${v ? esc(v) : 'nav norādīts'}</li>`).join('') + '</ul></span>';
+  }
+
   // Ūdens / uzlādes punktu "veids" logā (citiem slāņiem veids jau ir nosaukumā vai nav vajadzīgs)
   const raditVeidu = p => simulets(p) || p?.kategorija === 'noturibas_punkts';
 
-  return { simulets, svaigs, zime, statuss, raditVeidu, SVAIGS_H };
+  return { simulets, svaigs, zime, statuss, statusaBloks, raditVeidu, SVAIGS_H };
 })();

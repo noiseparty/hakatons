@@ -7,6 +7,9 @@ Galapunkti:
   GET /api/regioni/<kods>              reģiona robeža (GeoJSON Feature, vienkāršota)
   GET /api/objekti?kategorijas=a,b&regions=<kods>&lat=..&lon=..&limit=..[&kritiskais=1]
                                        punkti (GeoJSON); ar lat/lon sakārtoti pēc attāluma
+  GET /api/objekti?bbox=minLon,minLat,maxLon,maxLat&kategorijas=..[&regions=..&lat=..&lon=..&limit=..]
+                                       kartes skats: tikai punkti taisnstūrī, īsās īpašības (tikai tās, ko rāda logā),
+                                       ≤ 5000; ja vairāk — vienmērīga izlase pa slāņiem un "apgriezts": true
   GET /api/adreses?q=brivibas 15 ogre&limit=8
                                        adrešu meklēšana (VZD); bez garumzīmēm, pēc vārdu daļām
   GET /api/bridinajumi?lat=..&lon=..   LVĢMC hidrometeoroloģiskie brīdinājumi (spēkā esošie); ar lat/lon —
@@ -53,6 +56,7 @@ import sys
 import threading
 import time
 import unicodedata
+import urllib.parse
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
@@ -191,12 +195,83 @@ def objekti(q):
         raise Kluda(400, "vajag gan lat, gan lon")
     limit = int(_skaitlis(q, "limit", 1, MAX_LIMIT) or 5000)
     kritiskais = q.get("kritiskais", [""])[0] == "1"  # tikai kritiskie (banku bankomāti: skaidra nauda arī krīzē)
+    bbox = _skata_bbox(q)
+    if bbox:
+        limit = min(limit, BBOX_MAX)
     atslega = (tuple(sorted(kategorijas_)), regions_, None if lat is None else round(lat, 5),
-               None if lon is None else round(lon, 5), limit, kritiskais)
+               None if lon is None else round(lon, 5), limit, kritiskais, bbox)
+    if bbox:
+        return _objektu_kesa.iegut(atslega, lambda: _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox,
+                                                                   kritiskais))
     return _objektu_kesa.iegut(atslega, lambda: _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais))
 
 
 _objektu_kesa = _LRU(64, 30)
+
+# Kartes skats (?bbox=): augšējā robeža un ipasibas atslēgas, ko rāda punkta logs un saraksts (production/app.js
+# popupSaturs, objekta-statuss.js, saraksts.js). Pārējās (citāti, plāna faila ceļi, VZD kodi…) kartei nav vajadzīgas;
+# rezultāta kartīte un ārējie lietotāji bez bbox saņem pilnās īpašības kā līdz šim.
+BBOX_MAX = 5000
+BBOX_SOLIS = 100  # taisnstūri paplašina līdz 0,01° režģim: tuvi skati dala vienu keša ierakstu
+SKATA_IPASIBAS = [
+    "limenis_cm", "limenis_m", "izmaina_24h_cm", "udens_temp", "laiks", "piezime", "opening_hours", "darba_laiks",
+    "veids", "ligzdas", "operator", "brand", "phone", "komentars", "marsruti", "veidi", "marsrutu_saraksts",
+    "apzimejums", "plans_url", "lpp", "statuss", "last_updated",
+    "kritiskais", "bankas", "skaits", "iemaksas", "pieejamiba_24h",  # bankomāti (marķieris un logs)
+]
+
+
+def _skata_bbox(q):
+    if "bbox" not in q:
+        return None
+    try:
+        w, s, e, n = (float(x) for x in q["bbox"][0].split(","))
+    except ValueError:
+        raise Kluda(400, "bbox: vajag minLon,minLat,maxLon,maxLat") from None
+    if not (-180 <= w < e <= 180 and -90 <= s < n <= 90):
+        raise Kluda(400, "bbox: ārpus robežām")
+    return (math.floor(w * BBOX_SOLIS) / BBOX_SOLIS, math.floor(s * BBOX_SOLIS) / BBOX_SOLIS,
+            math.ceil(e * BBOX_SOLIS) / BBOX_SOLIS, math.ceil(n * BBOX_SOLIS) / BBOX_SOLIS)
+
+
+def _objekti_skata(kategorijas_, regions_, lat, lon, limit, bbox, kritiskais=False):
+    """Punkti taisnstūrī. Ja to ir vairāk par limit — pa slāņiem pārmaiņus (rn), lai retie slāņi (24/7 slimnīcas)
+    netiek izspiesti ar pieturām: katrā slānī tuvākie (ar lat/lon) vai pseidonejauša, bet stabila izlase.
+    Atgriež gatavu JSON tekstu: kešā aizņem mazāk atmiņas nekā Python objekti."""
+    lieto_vietu = lat is not None
+    w, s, e, n = bbox
+    return vaicat(
+        """with x as (
+             select o.id, o.kategorija, o.nosaukums, o.adrese, o.avots, o.ipasibas, o.derigs_no, o.derigs_lidz, o.geom,
+                    case when %(vieta)s then round(st_distance(o.geom::geography,
+                         st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326)::geography))::int end as attalums_m,
+                    row_number() over (partition by o.kategorija order by
+                         case when %(vieta)s then o.geom <-> st_setsrid(st_makepoint(%(lon)s, %(lat)s), 4326) end,
+                         (o.id * 2654435761) %% 4294967296, o.id) as rn
+             from objekti o
+             where st_intersects(o.geom, st_makeenvelope(%(w)s, %(s)s, %(e)s, %(n)s, 4326))
+               and (o.derigs_lidz is null or o.derigs_lidz > now())
+               and (cardinality(%(kat)s::text[]) = 0 or o.kategorija = any(%(kat)s::text[]))
+               and (%(reg)s = '' or o.pasvaldiba_kods = %(reg)s or o.pilseta_kods = %(reg)s)
+               and (not %(krit)s or o.ipasibas->>'kritiskais' = '1')),
+           y as (select * from x order by rn, kategorija, id limit %(limit)s + 1),
+           z as (select * from y order by rn, kategorija, id limit %(limit)s)
+           select json_build_object('type', 'FeatureCollection',
+                    'apgriezts', (select count(*) from y) > %(limit)s,
+                    'features', coalesce((select json_agg(
+                      json_build_object('type', 'Feature', 'id', id,
+                        'geometry', json_build_object('type', 'Point', 'coordinates',
+                          json_build_array(round(st_x(geom)::numeric, 5), round(st_y(geom)::numeric, 5))),
+                        'properties', json_strip_nulls(json_build_object('kategorija', kategorija,
+                          'nosaukums', nosaukums, 'adrese', adrese, 'avots', avots, 'attalums_m', attalums_m,
+                          'derigs_no', derigs_no, 'derigs_lidz', derigs_lidz,
+                          'ipasibas', (select coalesce(jsonb_object_agg(key, value), '{}') from jsonb_each(ipasibas)
+                                       where key = any(%(ipas)s::text[])))))
+                      order by attalums_m nulls last, id) from z), '[]'))::text""",
+        {"vieta": lieto_vietu, "lat": lat or 0, "lon": lon or 0, "kat": kategorijas_, "reg": regions_,
+         "limit": limit, "w": w, "s": s, "e": e, "n": n, "ipas": SKATA_IPASIBAS, "krit": kritiskais},
+        timeout="8s",
+    )
 
 
 def _objekti_vaicat(kategorijas_, regions_, lat, lon, limit, kritiskais=False):
@@ -3101,6 +3176,100 @@ def kalendars(q):
     return {"_saturs": ics, "_tips": "text/calendar; charset=utf-8"}
 
 
+# /api/prognoze?lat=&lon= — nākamās ~24 h tuvākajai LVĢMC prognožu vietai (ikstundas fails, CKAN datastore API;
+# tā pati datu kopa kā PROGNOZU_AVOTS, CC0 1.0). Fails sniedz ~25 h uz priekšu; DATUMS — Latvijas vietējais laiks.
+CKAN_API = "https://data.gov.lv/dati/api/3/action/"
+PROGNOZU_STUNDAS_ID = "4e9b37dc-a486-4af1-8964-b370f659811a"  # "Prognožu dati (ikstundas)"
+PROGNOZU_STUNDU_PARAMETRI = {"2": "temp", "6": "brazmas", "7": "nokrisni", "11": "negaiss"}  # °C, m/s, mm/h, %
+PROGNOZE_MIN_STUNDAS = 6  # mazāk atlikušu stundu (fails sen nav atjaunots) — prognozi nerāda
+
+
+def _prognozu_punkti():
+    """Vietas ar ikstundas prognozi (~1300 no ~6400 cities.csv): (CITY_ID, nosaukums, lat, lon)."""
+    parametri = {"resource_id": PROGNOZU_STUNDAS_ID, "distinct": "true", "fields": "CITY_ID", "limit": 32000,
+                 "filters": json.dumps({"PARA_ID": 2})}
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    ar_stundam = {r["CITY_ID"] for r in dati["result"]["records"]}
+    teksts = _lejupieladet(PROGNOZU_VIETAS, timeout=8).decode("utf-8-sig")
+    punkti = [(r["CITY_ID"], r["NOSAUKUMS"], float(r["LAT"]), float(r["LON"]))
+              for r in csv.DictReader(io.StringIO(teksts)) if r.get("LAT") and r.get("LON") and r["CITY_ID"] in ar_stundam]
+    if not punkti:
+        raise ValueError("nav vietu ar ikstundas prognozi")
+    return punkti
+
+
+def _prognoze_stundas(vietas_id):
+    parametri = {
+        "resource_id": PROGNOZU_STUNDAS_ID, "sort": "DATUMS", "limit": 1000, "fields": "PARA_ID,DATUMS,VERTIBA",
+        "filters": json.dumps({"CITY_ID": vietas_id, "PARA_ID": [int(p) for p in PROGNOZU_STUNDU_PARAMETRI]}),
+    }
+    dati = json.loads(_lejupieladet(CKAN_API + "datastore_search?" + urllib.parse.urlencode(parametri), timeout=8))
+    if not dati.get("success"):
+        raise ValueError("datastore_search neizdevās")
+    return [(str(r["PARA_ID"]), str(r["DATUMS"])[:19], r["VERTIBA"]) for r in dati["result"]["records"]]
+
+
+def _prognoze_izdota():
+    dati = json.loads(_lejupieladet(CKAN_API + "resource_show?id=" + PROGNOZU_STUNDAS_ID, timeout=8))
+    laiks = (dati.get("result") or {}).get("last_modified")
+    return laiks[:19] + "Z" if laiks else None  # CKAN: UTC bez zonas
+
+
+def _prognozes_riski(tmin, tmax, nokrisni, brazmas, negaiss):
+    """Riska vārdi pēc PROGNOZU_SLIEKSNI (diennakts sliekšņi derīgi 24 h logam); pirmais — nozīmīgākais."""
+    riski = []
+    lim = _limenis("brazmas", brazmas)
+    if lim is not None:
+        riski.append((lim, "vētra" if lim >= 2 else "stiprs vējš"))
+    lim = _limenis("nokrisni", nokrisni)
+    if lim is not None:
+        veids = "sniegs" if tmax is not None and tmax <= 1 else "lietus"
+        riski.append((lim, ("stiprs " if lim >= 1 else "") + veids))
+    if negaiss is not None and negaiss >= 50:
+        riski.append((1 if negaiss >= 80 else 0, "pērkona negaiss"))
+    lim = _limenis("sals", tmin)
+    if lim is not None:
+        riski.append((lim, "salna" if tmin > -5 else "sals"))
+    lim = _limenis("karstums", tmax)
+    if lim is not None:
+        riski.append((lim, "karstums"))
+    riski.sort(key=lambda r: -r[0])  # stabila kārtošana: vienādā līmenī vējš → nokrišņi → negaiss → sals → karstums
+    return [{"vards": v, "limenis": lim} for lim, v in riski]
+
+
+def prognoze(q):
+    lat, lon = _vieta(q)
+    punkti = _kesots("prognozu_punkti", 6 * 3600, _prognozu_punkti)
+    kx = math.cos(math.radians(lat))
+    vid, nosaukums, plat, plon = min(punkti, key=lambda p: (p[2] - lat) ** 2 + ((p[3] - lon) * kx) ** 2)
+    rindas = _kesots(("prognoze", vid), 1800, lambda: _prognoze_stundas(vid))
+    try:
+        izdota = _kesots("prognoze_izdota", 1800, _prognoze_izdota)
+    except Kluda:
+        izdota = None
+    no = _riga_tagad().strftime("%Y-%m-%dT%H:00:00")
+    stundas = {}  # DATUMS → lauks → vērtība
+    for para, datums, vertiba in rindas:
+        if datums >= no and vertiba not in (None, ""):
+            stundas.setdefault(datums, {})[PROGNOZU_STUNDU_PARAMETRI[para]] = float(vertiba)
+    laiki = sorted(stundas)[:24]
+    vieta = {"id": vid, "nosaukums": nosaukums, "attalums_m": _attalums_m(lat, lon, plat, plon)}
+    if len(laiki) < PROGNOZE_MIN_STUNDAS:
+        return {"prognoze": None, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+    def vertibas(lauks):
+        return [stundas[t][lauks] for t in laiki if lauks in stundas[t]]
+    temp, brazmas, nokrisni, negaiss = vertibas("temp"), vertibas("brazmas"), vertibas("nokrisni"), vertibas("negaiss")
+    p = {
+        "no": laiki[0], "lidz": laiki[-1], "stundas": len(laiki),
+        "tmin": min(temp, default=None), "tmax": max(temp, default=None),
+        "nokrisni_mm": round(sum(nokrisni), 1) if nokrisni else None,
+        "brazmas_max": max(brazmas, default=None), "negaiss_max": max(negaiss, default=None),
+    }
+    p["riski"] = _prognozes_riski(p["tmin"], p["tmax"], p["nokrisni_mm"], p["brazmas_max"], p["negaiss_max"])
+    return {"prognoze": p, "vieta": vieta, "izdota": izdota, "avots": PROGNOZU_AVOTS}
+
+
 MARSRUTI = [
     (re.compile(r"^/api/kategorijas/?$"), kategorijas, 300),
     (re.compile(r"^/api/avoti/?$"), avoti, 300),
@@ -3127,6 +3296,7 @@ MARSRUTI = [
     (re.compile(r"^/api/zinojumi/?$"), zinojumi, 15),
     (re.compile(r"^/api/plusma\.xml$"), plusma, 300),
     (re.compile(r"^/api/kalendars\.ics$"), kalendars, 300),
+    (re.compile(r"^/api/prognoze/?$"), prognoze, 600),
 ]
 POST_MARSRUTI = [
     (re.compile(r"^/api/meklejumi/?$"), meklejumi_pievienot),
