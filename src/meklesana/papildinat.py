@@ -106,7 +106,7 @@ def vaicajumi(dir_):
                 slikti += 1
                 continue
             redzeti.add(normalizet(v["q"]))
-            visi.append({k: v[k] for k in ("q", "scenarijs", "pienemami", "tips", "vieta") if k in v})
+            visi.append({k: v[k] for k in ("q", "scenarijs", "pienemami", "tips", "vieta", "demo") if k in v})
     VAICAJUMI.write_text("[\n" + ",\n".join(json.dumps(v, ensure_ascii=False) for v in visi) + "\n]\n",
                          encoding="utf-8", newline="\n")
     print(f"{len(visi)} vaicājumi ({slikti} izmesti: nezināms kods vai dublikāts)")

@@ -43,3 +43,51 @@ alternatīva tagad redzama 26/50 gadījumos (bija 14/50). Cena: skaidrajiem liek
 Krīzē trūkstoša izeja maksā vairāk nekā lieka poga; rādām labāko + līdz 2 alternatīvām. Atlikušās kļūdas lielākoties
 ir patiešām tuvi scenāriji (sniegavētra / auto putenī / apmaldījies sniegā, gāzes smaka / gāzes noplūde ēkā).
 Faila izmērs: 78 → 113 KB (gzip 23 → 36 KB).
+
+## 2. kārta (2026-10-10 nakts): ātrums, demo notikumi, jauni RU/EN vaicājumi
+
+**Ātrums.** Pārbaudījām ar Playwright 375×740 un 4× palēninātu CPU; laiku mērījām katram taustiņa nospiedumam
+(80 ms aizturētais ieteikumu izsaukums). Pirms labojuma: mediāna 10,1 ms, p90 26,5 ms, max 61 ms. Klasifikatora
+uzbūve aizņem 27 ms, `klasificet` 1–2 ms; 392 ms ilgais uzdevums ielādē ir karte, ne meklēšana. Lēni bija
+neatpazīti vārdi ("elek", "e-paraksts …"), jo tad strādā aptuvenā meklēšana un labošana. Abas salīdzināja vārdu
+ar katru atslēgvārdu pilnā Levenšteina matricā, un katrā taustiņā no jauna normalizēja ~3 200 atslēgvārdus.
+Labojumi nemaina rezultātu:
+- normalizētie atslēgvārdi sagatavoti vienreiz;
+- labotie vārdi kešoti (tīra funkcija);
+- pirms matricas ātra pārbaude: ar vienu labojumu kāds no pāriem a₀=b₀, a₁=b₁, a₁=b₀, a₀=b₁ sakrīt;
+- matricu pārtrauc, tiklīdz rindas minimums > 1.
+
+Pēc tam: mediāna 3,4 ms, p90 9,7 ms, max 28 ms (< 30 ms), tāpēc statisks JSON indekss nav vajadzīgs.
+
+**Demo notikumi un jauni scenāriji.** Astoņi reālie notikumi no demo paneļa:
+- BRELL atslēgšanās → `nav_elektribas` ("brell", "энергосистем", "свет пропал");
+- droni ar šūnu apraidi → `droni`. "šūnu apraide" vairs nav pie `viltota_trauksme`: tas ir oficiālais kanāls;
+  aizdomīgu ziņu atpazīst pēc "vai … ir īsta";
+- ledus sastrēgums → `pludi`;
+- Stiklu purva kūdras ugunsgrēks → `meza_ugunsgreks` ("purvs deg", "болот", "peat");
+- gāzes sprādziens → `spradziens`.
+
+Divu situāciju nebija, tāpēc pievienoti scenāriji (arī `notes/SCENARIJI.md`):
+- **#120 "Dūmi no liela ugunsgrēka tuvumā"** (noliktava, osta, metāllūžņi): ejiet iekšā, aizveriet logus,
+  izslēdziet ventilāciju, neejiet skatīties;
+- **#121 "Valsts e-pakalpojumi nedarbojas"** (eParaksts, Latvija.gov.lv, EDS, DDoS): iestāžu un CERT.LV
+  paziņojumi, kodus saitēs no SMS nevadiet, steidzami — pa tālruni vai klātienē.
+
+Vispārīgos vārdus "dūmi nāk" un "smoke coming" pie #120 nelikām: tie pārņēma dūmus kāpņu telpā.
+
+**Jauni vaicājumi un skaitļi.** Opus aģents bez piekļuves atslēgvārdiem uzrakstīja 66 jaunus vaicājumus:
+50 RU/EN (16 par demo notikumiem) un 16 LV par demo notikumiem. **Pirms jebkādiem labojumiem tie bija 54/66
+= 81,8 %.** Tas ir godīgākais vispārināšanas novērtējums; vājākie ir jauni RU/EN formulējumi. Pēc 11 vārdu
+robu aizpildīšanas tie ir 65/66. Kopā tagad 563 vaicājumi, pareizi 95,0 %, un vecie 125/125 un 121/121 testi
+zaļi. Sākotnējo 497 vaicājumu paturētie 30 % joprojām nav skatīti: 89,5 %. `testi.py` tagad rāda paturētos
+atsevišķi (172, 90,7 %), un `-v` izdrukā tikai dev kļūdas. Ap 20 no tiem 172 ir no jaunajiem 66, kurus mēs
+redzējām, tāpēc tīrais skaitlis ir 89,5 %.
+
+**Kas paliek divdomīgs (apzināti nelabots).** Šiem atšķirību nosaka konteksts, nevis vārds, un papildu vārdi tikai
+pielāgotos testam. Abas atbildes dod drošu padomu, un otrā parādās "Vai domājāt":
+- sniegavētra / auto putenī / apmaldījies sniegā ("blizzard on the highway", "sniegavētra braucu");
+- "nezinu kur esmu" bez vietas (mežs / pilsēta / lauki);
+- gāzes smaka / gāzes noplūde ēkā ("kāpņu telpā smird pēc gāzes");
+- "vējš plēš kokus, kur slēpties" (patvertne ir pieņemama atbilde);
+- "bērnam krampji un augsta temperatūra" (medicīna);
+- "vecmamma sabruka un neelpo" (sabruk = ēka). Šeit 112 rinda parādās jebkurā gadījumā.
