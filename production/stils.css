@@ -356,6 +356,9 @@ header :focus-visible, .bridinajums.oranzs :focus-visible, .bridinajums.sarkans 
 .populari.ieteikumi small { color: var(--teksts2); }
 .meklet-rinda .runat { min-width: 44px; padding: 0 .5rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: 1.15rem; }
 .meklet-rinda .runat[hidden] { display: none; }
+.meklet-rinda .notirit-poga { min-width: 44px; padding: 0 .5rem; display: inline-flex; align-items: center; gap: .25rem; background: var(--virsma); color: var(--teksts); border-color: transparent; font-size: .9rem; }
+.meklet-rinda .notirit-poga[hidden] { display: none; }
+@media (max-width: 480px) { .meklet-rinda .notirit-teksts { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } }
 .meklet-rinda .runat.klausas { background: #fee2e2; border-color: var(--sarkans); animation: runa-pulss 1.2s ease-in-out infinite; }
 @keyframes runa-pulss { 50% { box-shadow: 0 0 0 6px rgba(213, 43, 30, .25); } }
 @media (prefers-reduced-motion: reduce) { .meklet-rinda .runat.klausas { animation: none; } }
