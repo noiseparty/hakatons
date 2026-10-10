@@ -15,59 +15,60 @@
 <body>
 <header class="hero">
   <div class="ietvars">
-    <h1>Krīzes karte: viena meklēšana, viens lēmums</h1>
-    <p>Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
+    <h1 data-t="Krīzes karte: viena meklēšana, viens lēmums">Krīzes karte: viena meklēšana, viens lēmums</h1>
+    <p data-t="Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā, kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.">Aprakstiet situāciju vienā rindā vai norādiet savu atrašanās vietu, un Jūs saņemsiet vienu rezultātu: vai adrese ir plūdu zonā,
       kur ir tuvākā patvertne, pulcēšanās vieta vai slimnīca, kādi brīdinājumi ir spēkā. Katram datu punktam ir norādīts avots un licence.</p>
     <div class="cta">
-      <a class="poga" href="/map">Atvērt karti</a>
-      <a class="saite-hero" href="/map">Vai meklēt situāciju</a>
+      <a class="poga" href="/map" data-t="Atvērt karti">Atvērt karti</a>
+      <a class="saite-hero" href="/map" data-t="Vai meklēt situāciju">Vai meklēt situāciju</a>
     </div>
   </div>
 </header>
 <main class="ietvars">
   <section aria-labelledby="h-skaiti">
-    <h2 id="h-skaiti">Kas ir kartē</h2>
-    <p class="apak">Dzīvie skaitļi no API: <span id="kops">…</span></p>
-    <div class="kartes" id="kartes" aria-live="polite"><p class="apak">Ielādē…</p></div>
+    <h2 id="h-skaiti" data-t="Kas ir kartē">Kas ir kartē</h2>
+    <p class="apak"><span data-t="Dzīvie skaitļi no API:">Dzīvie skaitļi no API:</span> <span id="kops">…</span></p>
+    <div class="kartes" id="kartes" aria-live="polite"><p class="apak" data-t="Ielādē…">Ielādē…</p></div>
   </section>
 
   <section aria-labelledby="h-statuss">
-    <h2 id="h-statuss">Dzīvo datu plūsmu stāvoklis</h2>
-    <p class="apak" id="statuss-apak">Pārbaude no /api/veseliba.</p>
-    <div class="statusi" id="statusi" aria-live="polite"><p class="apak">Ielādē…</p></div>
+    <h2 id="h-statuss" data-t="Dzīvo datu plūsmu stāvoklis">Dzīvo datu plūsmu stāvoklis</h2>
+    <p class="apak" id="statuss-apak" data-t="Pārbaude no /api/veseliba.">Pārbaude no /api/veseliba.</p>
+    <div class="statusi" id="statusi" aria-live="polite"><p class="apak" data-t="Ielādē…">Ielādē…</p></div>
   </section>
 
   <section aria-labelledby="h-ca">
-    <h2 id="h-ca">Civilās aizsardzības plāni</h2>
-    <p class="apak">Pulcēšanās un izmitināšanas vietas nav atsevišķā atvērtā datu kopā: tās atrodamas tikai pašvaldību plānu PDF failos.</p>
+    <h2 id="h-ca" data-t="Civilās aizsardzības plāni">Civilās aizsardzības plāni</h2>
+    <p class="apak" data-t="Pulcēšanās un izmitināšanas vietas nav atsevišķā atvērtā datu kopā: tās atrodamas tikai pašvaldību plānu PDF failos.">Pulcēšanās un izmitināšanas vietas nav atsevišķā atvērtā datu kopā: tās atrodamas tikai pašvaldību plānu PDF failos.</p>
     <div class="ca">
-      <div class="skaitlis"><b>42</b><span>pašvaldību plāni analizēti ar MI</span></div>
-      <div class="skaitlis"><b>41</b><span>koordinātu kļūdas atrastas oficiālajos plānos</span></div>
-      <div class="skaitlis"><b id="ca-vietas">…</b><span>vietas kartē ar citātu un lappusi</span></div>
+      <div class="skaitlis"><b>42</b><span data-t="pašvaldību plāni analizēti ar MI">pašvaldību plāni analizēti ar MI</span></div>
+      <div class="skaitlis"><b>41</b><span data-t="koordinātu kļūdas atrastas oficiālajos plānos">koordinātu kļūdas atrastas oficiālajos plānos</span></div>
+      <div class="skaitlis"><b id="ca-vietas">…</b><span data-t="vietas kartē ar citātu un lappusi">vietas kartē ar citātu un lappusi</span></div>
     </div>
-    <p class="apak" style="margin-top:8px">Kļūdainās vietas novietotas pēc VZD adrešu reģistra.
-      <a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">Kļūdu saraksts</a></p>
+    <p class="apak" style="margin-top:8px"><span data-t="Kļūdainās vietas novietotas pēc VZD adrešu reģistra.">Kļūdainās vietas novietotas pēc VZD adrešu reģistra.</span>
+      <a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener" data-t="Kļūdu saraksts">Kļūdu saraksts</a></p>
   </section>
 
   <section aria-labelledby="h-mi">
-    <h2 id="h-mi">Kā tiek izmantots MI</h2>
+    <h2 id="h-mi" data-t="Kā tiek izmantots MI">Kā tiek izmantots MI</h2>
     <div class="kaste">
-      <p style="margin:0"><b>Tikai izstrādes laikā, nevis Jūsu meklēšanas brīdī.</b> Darbības laikā nav neviena valodas modeļa izsaukuma.</p>
+      <p style="margin:0"><b data-t="Tikai izstrādes laikā, nevis Jūsu meklēšanas brīdī.">Tikai izstrādes laikā, nevis Jūsu meklēšanas brīdī.</b> <span data-t="Darbības laikā nav neviena valodas modeļa izsaukuma.">Darbības laikā nav neviena valodas modeļa izsaukuma.</span></p>
       <ul>
-        <li>MI izlasīja 42 pašvaldību CA plānus un izvilka vietas ar burtisku citātu; skripts pārbauda katru citātu pret plāna tekstu.</li>
-        <li>MI palīdzēja izveidot situāciju katalogu un atslēgvārdus.</li>
-        <li>Meklēšana Jūsu pārlūkā darbojas pēc noteikumiem un atslēgvārdiem (latviski, krieviski, angliski), tāpēc rezultāts ir atkārtojams un pārbaudāms.</li>
+        <li data-t="MI izlasīja 42 pašvaldību CA plānus un izvilka vietas ar burtisku citātu; skripts pārbauda katru citātu pret plāna tekstu.">MI izlasīja 42 pašvaldību CA plānus un izvilka vietas ar burtisku citātu; skripts pārbauda katru citātu pret plāna tekstu.</li>
+        <li data-t="MI palīdzēja izveidot situāciju katalogu un atslēgvārdus.">MI palīdzēja izveidot situāciju katalogu un atslēgvārdus.</li>
+        <li data-t="Meklēšana Jūsu pārlūkā darbojas pēc noteikumiem un atslēgvārdiem (latviski, krieviski, angliski), tāpēc rezultāts ir atkārtojams un pārbaudāms.">Meklēšana Jūsu pārlūkā darbojas pēc noteikumiem un atslēgvārdiem (latviski, krieviski, angliski), tāpēc rezultāts ir atkārtojams un pārbaudāms.</li>
       </ul>
     </div>
   </section>
 
   <section aria-labelledby="h-avoti">
-    <h2 id="h-avoti">Izmantotie datu avoti</h2>
-    <p class="apak" id="avoti-apak">Izdevējs, licence un atjaunošana.</p>
-    <ul class="avoti" id="avoti"><li>Ielādē…</li></ul>
+    <h2 id="h-avoti" data-t="Izmantotie datu avoti">Izmantotie datu avoti</h2>
+    <p class="apak" id="avoti-apak" data-t="Izdevējs, licence un atjaunošana.">Izdevējs, licence un atjaunošana.</p>
+    <ul class="avoti" id="avoti"><li data-t="Ielādē…">Ielādē…</li></ul>
   </section>
 </main>
-<footer><div class="ietvars">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026. <a href="/map">Atvērt karti</a> · <a href="info.html">Svarīgi krīzē</a></div></footer>
+<footer><div class="ietvars"><span data-t="Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026.">Krīzes karte, VARAM/LATA mākslīgā intelekta atvērto datu hakatons 2026.</span> <a href="/map" data-t="Atvērt karti">Atvērt karti</a> · <a href="info.html" data-t="Svarīgi krīzē">Svarīgi krīzē</a></div></footer>
+<script src="valoda.js"></script>
 <script src="sakums.js"></script>
 </body>
 </html>

@@ -84,7 +84,7 @@ const Dalities = (() => {
     kaste.querySelector('.druka-galva')?.remove();
     kaste.querySelector('.druka-qr')?.remove();
     const laiks = new Date().toLocaleString(LOKALE[valoda()], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-    kaste.insertAdjacentHTML('afterbegin', `<p class="druka-galva">Krīzes karte · map.repo.lv · ${t('izdrukāts')} ${esc(laiks)}</p>`);
+    kaste.insertAdjacentHTML('afterbegin', `<p class="druka-galva">${t('Krīzes karte')} · map.repo.lv · ${t('izdrukāts')} ${esc(laiks)}</p>`);
     kaste.insertAdjacentHTML('beforeend', `<div class="druka-qr">${qrSvg(location.href)}<div><p>${t('Atjaunināts rezultāts tiešsaistē:')}<br>${esc((() => { try { return decodeURI(location.href); } catch { return location.href; } })())}</p>
       <p>${t('Dati mainās (brīdinājumi, ūdens līmenis). Pirms došanās pārbaudiet tiešsaistē vai klausieties Latvijas Radio 1. Ja apdraudēta dzīvība, zvaniet 112.')}</p></div></div>`);
     // drukā viss atvērts: saplocītie "Vairāk" bloki (details) uz papīra citādi paliek paslēpti

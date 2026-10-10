@@ -1,30 +1,46 @@
 // Sākumlapa: dzīvie skaitļi (/api/kategorijas), plūsmu stāvoklis (/api/veseliba), avoti (/api/avoti + tiešsaistes avoti).
+// Teksti iet caur Valoda.t (LV/RU/EN); pēc slēdža maiņas ('valoda-maina') viss tiek pārzīmēts no jau ielādētajiem datiem.
 (() => {
   // Vecās saites (/?q=…, /#…, ?lat=…) ved uz karti, kas tagad ir /map.
   if (location.search || location.hash) { location.replace('/map' + location.search + location.hash); return; }
   const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   const $ = id => document.getElementById(id);
-  const json = u => fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); });
-  const nf = n => Number(n).toLocaleString('lv-LV');
-  const saite = (u, t) => /^https?:\/\//.test(u || '') ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a>` : esc(t);
-  const kluda = (id, t) => { $(id).innerHTML = `<p class="apak">${t} Mēģiniet vēlreiz vēlāk.</p>`; };
+  const t = (k, m) => typeof Valoda !== 'undefined' ? Valoda.t(k, m) : k;
+  const LOKALE = { lv: 'lv-LV', ru: 'ru-RU', en: 'en-GB' };
+  const loc = () => LOKALE[typeof Valoda !== 'undefined' ? Valoda.aktiva() : 'lv'] || 'lv-LV';
+  // Tīkla atbildes saglabā, lai valodas maiņa nepieprasa tās no jauna
+  const atbildes = new Map();
+  const json = u => {
+    if (!atbildes.has(u)) atbildes.set(u, fetch(u).then(r => { if (!r.ok) throw new Error(u + ' ' + r.status); return r.json(); }));
+    return atbildes.get(u);
+  };
+  const nf = n => Number(n).toLocaleString(loc());
+  const saite = (u, tekst) => /^https?:\/\//.test(u || '') ? `<a href="${esc(u)}" target="_blank" rel="noopener">${esc(tekst)}</a>` : esc(tekst);
+  const kluda = (id, tekst) => { $(id).innerHTML = `<p class="apak">${esc(tekst)}</p>`; };
 
-  const GRUPAS = { patvertnes: 'Patvertnes un drošās vietas', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra', vide: 'Ūdens un vide', transports: 'Transports' };
+  const GRUPAS = {
+    patvertnes: 'Patvertnes un drošās vietas', veseliba: 'Veselība', infrastruktura: 'Infrastruktūra',
+    vide: 'Ūdens un vide', transports: 'Transports',
+  };
 
   async function skaiti() {
     try {
       const k = await json('/api/kategorijas');
       let html = '', g = '', kops = 0;
       for (const c of k) {
-        if (c.grupa !== g) { g = c.grupa; html += `<h3 class="grupa">${esc(GRUPAS[g] || g)}</h3>`; }
+        if (c.grupa !== g) { g = c.grupa; html += `<h3 class="grupa">${esc(GRUPAS[g] ? t(GRUPAS[g]) : g)}</h3>`; }
         kops += c.skaits || 0;
-        html += `<div class="skaitlis" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(c.nosaukums)}</span></div>`;
+        html += `<div class="skaitlis" style="--krasa:${/^#[0-9a-f]{3,8}$/i.test(c.krasa) ? c.krasa : '#0077c8'}"><b>${nf(c.skaits)}</b><span>${esc(t(c.nosaukums))}</span></div>`;
       }
       $('kartes').innerHTML = html;
-      $('kops').textContent = `${nf(kops)} objekti ${k.length} kategorijās`;
+      $('kops').textContent = t('{n} objekti {k} kategorijās', { n: nf(kops), k: k.length });
       const ca = k.filter(c => c.kods === 'evakuacijas_punkts' || c.kods === 'izmitinasana').reduce((s, c) => s + c.skaits, 0);
       $('ca-vietas').textContent = nf(ca);
-    } catch (e) { kluda('kartes', 'Skaitļus neizdevās ielādēt.'); $('kops').textContent = 'nav pieejami'; $('ca-vietas').textContent = '1300+'; }
+    } catch (e) {
+      kluda('kartes', t('Skaitļus neizdevās ielādēt. Mēģiniet vēlreiz vēlāk.'));
+      $('kops').textContent = t('nav pieejami');
+      $('ca-vietas').textContent = '1300+';
+    }
   }
 
   // /api/veseliba arejie_avoti vērtības: darbojas | traucejumi | nedarbojas | nav_datu
@@ -42,14 +58,14 @@
         const kn = kodi.filter(k => k in a);
         const slikti = kn.filter(k => a[k] === 'traucejumi' || a[k] === 'nedarbojas');
         const ok = kn.length > 0 && slikti.length === 0;
-        let piez = ok ? `${kn.filter(k => a[k] === 'darbojas').length} no ${kn.length} avotiem darbojas` :
-          kn.length ? `Traucējumi: ${slikti.length} no ${kn.length} avotiem` : 'Nav informācijas';
-        if (ipasa === 'bridinajumi' && v.bridinajumi?.rezerves_aktivs) piez += '. LVĢMC datne nav pieejama, brīdinājumi nāk no Meteoalarm rezerves avota';
-        return `<div class="statuss"><span class="zime ${ok ? 'ok' : 'deg'}">${ok ? 'Darbojas' : 'Traucēts'}</span><div><b>${esc(nos)}</b><small>${esc(piez)}</small></div></div>`;
+        let piez = ok ? t('{n} no {m} avotiem darbojas', { n: kn.filter(k => a[k] === 'darbojas').length, m: kn.length }) :
+          kn.length ? t('Traucējumi: {n} no {m} avotiem', { n: slikti.length, m: kn.length }) : t('Nav informācijas');
+        if (ipasa === 'bridinajumi' && v.bridinajumi?.rezerves_aktivs) piez += t('. LVĢMC datne nav pieejama, brīdinājumi nāk no Meteoalarm rezerves avota');
+        return `<div class="statuss"><span class="zime ${ok ? 'ok' : 'deg'}">${esc(t(ok ? 'Darbojas' : 'Traucēts'))}</span><div><b>${esc(t(nos))}</b><small>${esc(piez)}</small></div></div>`;
       }).join('');
-      if (v.bridinajumi?.lvgmc_atbildeja) $('statuss-apak').textContent = 'Pārbaude no /api/veseliba; LVĢMC pēdējā atbilde ' +
-        new Date(v.bridinajumi.lvgmc_atbildeja).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) + '.';
-    } catch (e) { kluda('statusi', 'Statusu neizdevās ielādēt.'); }
+      if (v.bridinajumi?.lvgmc_atbildeja) $('statuss-apak').textContent = t('Pārbaude no /api/veseliba; LVĢMC pēdējā atbilde {x}.', {
+        x: new Date(v.bridinajumi.lvgmc_atbildeja).toLocaleString(loc(), { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) });
+    } catch (e) { kluda('statusi', t('Statusu neizdevās ielādēt. Mēģiniet vēlreiz vēlāk.')); }
   }
 
   // Avoti, ko API ņem tieši no izdevēja (tie paši, kas avoti.js sarakstā TIESSAISTE)
@@ -70,20 +86,23 @@
     ['VPVKAC kontaktpunkti', 'VPVKAC tīkls (data.gov.lv)', CC0, 'https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti', '2022. gada dati'],
   ].map(([nosaukums, izdevejs, [licence, licences_url], datu_kopa_url, biezums]) => ({ nosaukums, izdevejs, licence, licences_url, datu_kopa_url, biezums, atverts: true }));
 
-  const dat = iso => iso ? new Date(iso).toLocaleDateString('lv-LV') : '';
+  const dat = iso => iso ? new Date(iso).toLocaleDateString(loc()) : '';
   async function avoti() {
     let db = [];
     try { db = await json('/api/avoti'); } catch (e) { /* rādām vismaz tiešsaistes avotus */ }
     const isti = db.filter(a => !/^sim-/.test(a.kods)), sim = db.filter(a => /^sim-/.test(a.kods));
-    const visi = [...isti, ...TIESI.filter(t => !isti.some(a => a.nosaukums === t.nosaukums))];
+    const visi = [...isti, ...TIESI.filter(x => !isti.some(a => a.nosaukums === x.nosaukums))];
     const atverti = visi.filter(a => a.atverts).length;
-    $('avoti-apak').textContent = `${atverti} atvērto datu avoti ar licenci` + (visi.length > atverti ? `, ${visi.length - atverti} bez skaidri norādītas atvērtas licences` : '') +
-      (sim.length ? `; ${sim.length} simulēti prototipa dati nav iekļauti.` : '.');
+    $('avoti-apak').textContent = t('{n} atvērto datu avoti ar licenci', { n: atverti }) +
+      (visi.length > atverti ? t(', {m} bez skaidri norādītas atvērtas licences', { m: visi.length - atverti }) : '') +
+      (sim.length ? t('; {n} simulēti prototipa dati nav iekļauti.', { n: sim.length }) : '.');
     $('avoti').innerHTML = visi.map(a => `<li class="${a.atverts ? '' : 'bez'}"><b>${saite(a.datu_kopa_url, a.nosaukums)}</b>
-      <small>Izdevējs: ${esc(a.izdevejs)}</small>
-      <small>Licence: ${saite(a.licences_url, a.licence)}</small>
-      <small>Atjaunots: ${esc(a.atjaunots ? dat(a.atjaunots) : a.ieladets ? dat(a.ieladets) + ' (ielāde)' : a.biezums || 'nav norādīts')}</small></li>`).join('');
+      <small>${esc(t('Izdevējs'))}: ${esc(a.izdevejs)}</small>
+      <small>${esc(t('Licence'))}: ${saite(a.licences_url, a.licence)}</small>
+      <small>${esc(t('Atjaunots'))}: ${esc(a.atjaunots ? dat(a.atjaunots) : a.ieladets ? dat(a.ieladets) + t(' (ielāde)') : t(a.biezums || 'nav norādīts'))}</small></li>`).join('');
   }
 
-  skaiti(); statuss(); avoti();
+  function renderAll() { skaiti(); statuss(); avoti(); }
+  document.addEventListener('valoda-maina', renderAll);
+  renderAll();
 })();
