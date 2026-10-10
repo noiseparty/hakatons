@@ -87,6 +87,7 @@
   .dv-cips[aria-pressed="true"] { color: #fff; background: var(--tumsi-zils); border-color: var(--tumsi-zils); }
   .dv-valsts { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin: 16px -24px 0; padding: 12px 24px;
     font-size: 13px; font-weight: 600; background: var(--pelks-2); border-top: 1px solid var(--pelks-3); border-bottom: 1px solid var(--pelks-3); }
+  .dv-pirmais { margin: 16px 0 0; padding: 14px 16px; background: var(--pelks-1); border: 1px solid var(--pelks-3); border-radius: var(--radiuss-karte); }
   .dv-valsts-pills { display: flex; flex-wrap: wrap; gap: 8px; min-height: 22px; }
   .dv-pill { padding: 2px 8px; font-size: 11px; font-weight: 700; letter-spacing: .02em; border-radius: var(--radiuss-maza); border: 1px solid var(--pelks-3); background: #fff; }
   .dv-pill.dzeltens { background: var(--brid-dzeltens-fons); border-color: var(--brid-dzeltens-mala); color: var(--brid-dzeltens-teksts); }

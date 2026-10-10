@@ -298,8 +298,8 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
   <h2><span class="metode">GET</span> <code>/api/pasvaldiba</code> — Pašvaldība punktā</h2>
   <p>Pašvaldība (novads vai valstspilsēta): CA plāna saite, tīmekļvietne, VPVKAC kontakts.</p>
   <table><thead><tr><th>Parametrs</th><th>Tips</th><th>Nozīme</th></tr></thead><tbody><tr><td><code>lat</code> <small>obligāts</small></td><td>number</td><td>platums (WGS-84), Latvijā 55–59</td></tr><tr><td><code>lon</code> <small>obligāts</small></td><td>number</td><td>garums (WGS-84), Latvijā 20–29</td></tr></tbody></table>
-  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons">Pašvaldību CA plāni (oficiāli dokumenti)</a> · <a href="https://likumi.lv/ta/id/5138-autortiesibu-likums">Oficiāls dokuments</a> ; <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti">VPVKAC paplašinātā tīkla kontaktpunkti (2022)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
-     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> VPVKAC dati ir no 2022. gada; valstspilsētām tādu nav.</p>
+  <p class="meta"><b>Avots un licence:</b> <a href="https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons">Pašvaldību CA plāni (oficiāli dokumenti)</a> · <a href="https://likumi.lv/ta/id/5138-autortiesibu-likums">Oficiāls dokuments</a> ; <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti">VPVKAC kontakti (2023-11)</a> · <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0 1.0</a> ; <a href="https://github.com/noiseparty/hakatons">map.repo.lv (atvasināti dati)</a> · <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a><br>
+     <b>Kešs:</b> 60 min (Cache-Control) <br><b>Piezīme:</b> VPVKAC dati ir no 2023. gada novembra; valstspilsētām un Ventspils novadam tādu nav, tāpēc kartīte rāda arī UR kontaktus.</p>
   <p class="piemers"><b>Piemērs:</b> <a href="https://map.repo.lv/api/pasvaldiba?lat=56.8166&amp;lon=24.6046"><code>/api/pasvaldiba?lat=56.8166&amp;lon=24.6046</code></a>
     <span class="statuss">HTTP 200</span></p>
   <details><summary>Atbildes piemērs (saīsināts)</summary><pre>{
@@ -325,7 +325,7 @@ const { features } = await r.json();   // tuvākās 3 patvertnes, sakārtotas p�
    &quot;url&quot;: &quot;https://github.com/lata-org/ai-open-data-2026-hakatons/tree/main/ca-plani-hakatons&quot;
   },
   {
-   &quot;nosaukums&quot;: &quot;VPVKAC paplašinātā tīkla kontaktpunkti (2022)&quot;,
+   &quot;nosaukums&quot;: &quot;VPVKAC kontakti (2023-11)&quot;,
    &quot;licence&quot;: &quot;CC0 1.0&quot;,
    &quot;url&quot;: &quot;https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti&quot;
   }

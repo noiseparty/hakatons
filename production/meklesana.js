@@ -65,6 +65,29 @@ const krizesMeklesana = (() => {
   // Saglabāto tekstu nerāda: "atpazits" apgalvo klients, tāpēc katru vaicājumu klasificē vēlreiz un rāda tikai
   // scenārija nosaukumu (+ vietu) no klasifikatora; neatpazītos vai tikai aptuveni atpazītos izmet.
   const POPULARI_REZERVE = ['nav elektrības', 'plūdi ogrē', 'tuvākā patvertne'];
+
+  // Pirmais skats (pirms pirmās meklēšanas): ko rakstīt, 3 piemēri, kas uzreiz meklē, un rinda par datiem.
+  // Datorā — kreisajā kolonnā (darbvirsma.js), pazūd pēc pirmās meklēšanas (atceras pārlūkā, body.ir-meklets);
+  // telefonā — lapas tukšais stāvoklis virs tēmu pogām (sheet.js), redzams, kamēr nav rezultāta.
+  const PIEMERI = [['Ogre, plūdi', 'pludi'], ['nav elektrības Rēzekne', 'zibens'], ['cilvēks nav pie samaņas', 'pleksteris']];
+  const PIRMA_MEKLESANA = 'pirma-meklesana';
+  try { if (localStorage.getItem(PIRMA_MEKLESANA)) document.body.classList.add('ir-meklets'); } catch { /* privātais režīms */ }
+  function atzimetMekletu() {
+    if (document.body.classList.contains('ir-meklets')) return;
+    document.body.classList.add('ir-meklets');
+    try { localStorage.setItem(PIRMA_MEKLESANA, '1'); } catch { /* privātais režīms */ }
+  }
+  const pirmaisSkats = (ievads = 'Uzrakstiet vienā rindā, kas notiek un kur: pilsēta, adrese ar mājas numuru vai „Rādīt tuvākos man”.') =>
+    `<div class="pirmais-skats" role="group" aria-label="Piemēri, kā meklēt"><p class="ps-ievads">${ievads}</p>` +
+    `<div class="ps-cipi">${PIEMERI.map(([q, ik]) => `<button type="button" class="ps-cips" data-piemers="${esc(q)}">${Ik(ik)}<span>${esc(q)}</span></button>`).join('')}</div>` +
+    `<p class="ps-dati">${Ik('info')}<span>Atbildi saliekam no atvērtajiem datiem: LVĢMC brīdinājumi un plūdu kartes, VZD adreses, ` +
+    'pašvaldību civilās aizsardzības plāni, slimnīcas un patvertnes. Katrai rindai ir avots un licence.</span></p></div>';
+  document.addEventListener('click', e => {
+    const q = e.target.closest('[data-piemers]')?.dataset.piemers;
+    if (!q || el('jautajums').disabled) return;
+    el('jautajums').value = q;
+    el('meklet-forma').requestSubmit();
+  });
   const populari = el('populari');
   const popPogas = populari.querySelector('.populari-pogas');
   let popularie = null, popularieLaiks = 0, popIelade = null;
@@ -412,6 +435,7 @@ const krizesMeklesana = (() => {
   // scenarijs: izvēlēts ar pogu ("Vai domāji…?") — tad tekstu izmanto tikai vietai un 112.
   async function meklet(teksts, scenarijs = null) {
     if (!klasifikators) return;
+    atzimetMekletu();
     pedejais = { teksts, scenarijs };
     let rez = klasificetLabots(teksts);
     if (scenarijs) {
@@ -732,23 +756,24 @@ const krizesMeklesana = (() => {
   }
 
   // Pašvaldība: CA plāns, tīmekļvietne, pašvaldības tālrunis un e-pasts (UR, CC0) kā teksts — bez tel: saitēm;
-  // VPVKAC centrs (2022) tikai tad, ja UR kontaktu nav
+  // klientu apkalpošanas centrs (VPVKAC, 2023-11) kā atsevišķa rinda tikai pašvaldībām, kurām centrs sarakstā ir
   function pasvaldibaDati(ll, no, signal) {
     iegut('/pasvaldiba?' + new URLSearchParams(ll), signal).then(p => {
       const el = kaste.querySelector('#rez-pasvaldiba');
       if (!el) return;
       const saite = (url, t) => /^https?:\/\//.test(url || '') ? ` · <a href="${esc(url)}" target="_blank" rel="noopener">${t}</a>` : '';
-      const k = p.kontakti, c = k ? null : p.vpvkac;
+      const k = p.kontakti, c = p.vpvkac;
       el.innerHTML = `<p class="pasvaldiba-rinda">${no.regions ? 'Pašvaldība' : 'Jūsu pašvaldība'}: <b>${esc(p.nosaukums)}</b>` +
         saite(p.ca_plans_url || p.ca_lapa, 'CA plāns') + saite(p.majas_lapa, 'tīmekļvietne') +
-        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') +
-        (c?.talrunis ? ` · VPVKAC ${esc(c.punkts)}: tālr. ${esc(c.talrunis)}` : '') + '</p>' +
+        (k?.talrunis ? ` · tālr. ${esc(k.talrunis.replace(/^\+371/, ''))}` : '') + (k?.epasts ? ` · ${esc(k.epasts)}` : '') + '</p>' +
+        (k?.adrese ? `<p class="pasvaldiba-rinda">Pašvaldības adrese: ${esc(k.adrese)}</p>` : '') +
+        (c ? `<p class="pasvaldiba-rinda">Klientu apkalpošanas centrs: ${esc(c.adrese)}${c.talrunis ? ` · tālr. ${esc(c.talrunis)}` : ''}</p>` : '') +
         // abonēšana bez lietotnes: Atom plūsma un kalendārs šai pašvaldībai (karte_api.py /api/plusma.xml, /api/kalendars.ics)
         `<p class="abonet-rinda">Abonēt brīdinājumus: <a href="/api/plusma.xml?regions=${encodeURIComponent(p.kods)}" type="application/atom+xml">RSS</a>` +
         ` · <a href="/api/kalendars.ics?regions=${encodeURIComponent(p.kods)}">Kalendārs</a></p>` +
         `<small class="avots-rinda">Pašvaldību CA plāni (oficiāli dokumenti)` +
         (k ? ' · <a href="https://data.gov.lv/dati/dataset/public-persons-institutions" target="_blank" rel="noopener">Uzņēmumu reģistrs, publisko personu saraksts</a> · CC0' : '') +
-        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontaktpunkti</a>, 2022 · CC0' : '') + '</small>';
+        (c ? ' · <a href="https://data.gov.lv/dati/lv/dataset/vpvkac-kontakti" target="_blank" rel="noopener">VPVKAC kontakti</a>, 2023-11 · CC0' : '') + '</small>';
     }).catch(() => {});
   }
 
@@ -909,5 +934,9 @@ const krizesMeklesana = (() => {
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
+<<<<<<< HEAD
   return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, konteksts: () => konteksts };
+=======
+  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats };
+>>>>>>> origin/main
 })();
