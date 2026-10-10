@@ -63,12 +63,13 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 - [ ] Water-drop marker: swap Lucide droplet for the user's SVG set (svgrepo 53159 licence could not be verified: HTTP 429) — added 2026-10-10 04:03 +03:00 by noiseparty
 - [ ] Phone: cluster icons (`grupasIkona`, 36 / 30 px) are below the 44 px tap target; parbaude.py warns on every phone step — added 2026-10-10 04:36 +03:00 by noiseparty
 - [ ] Phone popups: "Vairāk" collapse for long live-status blocks in a place popup (popups already scroll inside, max 60 vh) — added 2026-10-10 04:36 +03:00 by noiseparty
-- [ ] Demo video (Task 2): `src/demo/video.py` + `notes/video.md` storyboard; not started — added 2026-10-10 04:36 +03:00 by noiseparty
 - [ ] Desktop: empty-state hint in the left column before the first search (what to type, example chips) — added 2026-10-10 04:26 +03:00 by noiseparty
+- [ ] Live JS error seen once while recording the demo video: `krizesMeklesana is not defined` on a fresh load of map.repo.lv (geolocation callback in app.js before meklesana.js is ready?); the scene was retaken automatically — added 2026-10-10 05:14 +03:00 by noiseparty
 
 ## In progress
 
 ## Done
+- [x] Demo video (Task 2): 90 s backup video with a story, 7 Latvian captions, vertical 1080×1920 + landscape 1920×1080 MP4, captions.srt and 7 slide stills (`src/demo/video.py`, storyboard `notes/video.md`; output outside the repo in `..\demo-video\`) — done 2026-10-10 05:14 +03:00 by noiseparty (added 2026-10-10 04:36 +03:00 by noiseparty)
 - [x] Result card: "Nākamās 24 h" line for the queried place (LVĢMC hourly forecast, nearest of ~1300 forecast places): min/max °C, precipitation sum, max gust and a risk word by PROGNOZU_SLIEKSNI (vētra / stiprs vējš / lietus / sniegs / pērkona negaiss / salna / sals / karstums), issue time + source; new `/api/prognoze?lat=&lon=` (CKAN datastore, cached 30 min, timeouts 8 s); feed down → no line; level ≥ 1 adds a line to "Kas notiks tālāk" — done 2026-10-10 04:37 +03:00 by noiseparty (added 2026-10-10 04:37 +03:00 by noiseparty)
 - [x] Drinking-water points & boil-water notices layer (OSM + municipal manual entry) — done 2026-10-10 04:35 +03:00 by noiseparty: branch noiseparty/osm-slani: points from OSM (456); boil-water notices have no feed anywhere (missing_data #29) (added 2026-10-09 18:36 +03:00 by noiseparty)
 - [x] Find open data on veterinary clinics (PVD register / OSM `amenity=veterinary`), add a layer and link it to animal-related queries in the crisis search — done 2026-10-10 04:35 +03:00 by noiseparty: branch noiseparty/osm-slani: `veterinars` layer = 113 OSM `amenity=veterinary` (avots osm-vet, group Veselība); new scenarios 122 „Ievainots vai slims dzīvnieks” and 123 „Pazudis mājdzīvnieks” show the nearest clinics (added 2026-10-09 23:20 +03:00 by noiseparty)
