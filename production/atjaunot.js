@@ -55,7 +55,7 @@
     const el = document.getElementById('sw-versija');
     if (!el) return;
     const v = await versija();
-    el.textContent = v ? `Bezsaistes kopijas (service worker) versija: ${v}.` : 'Bezsaistes kopija (service worker) šajā pārlūkā nav aktīva.';
+    el.textContent = v ? Valoda.t('Bezsaistes kopijas (service worker) versija: {v}.', { v }) : Valoda.t('Bezsaistes kopija (service worker) šajā pārlūkā nav aktīva.');
     el.hidden = false;
   }
 
@@ -78,9 +78,9 @@
     const p = document.createElement('div');
     p.className = 'jauna-versija';
     p.setAttribute('role', 'status');
-    p.innerHTML = '<span>Pieejama jauna versija</span>' +
-      '<button type="button" class="jv-atsvaidzinat"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#atkartot"></use></svg>Atsvaidzināt</button>' +
-      '<button type="button" class="jv-aizvert" aria-label="Aizvērt paziņojumu"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg></button>';
+    p.innerHTML = `<span>${Valoda.t('Pieejama jauna versija')}</span>` +
+      `<button type="button" class="jv-atsvaidzinat"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#atkartot"></use></svg>${Valoda.t('Atsvaidzināt')}</button>` +
+      `<button type="button" class="jv-aizvert" aria-label="${Valoda.t('Aizvērt paziņojumu')}"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg></button>`;
     p.querySelector('.jv-aizvert').addEventListener('click', () => p.remove());
     p.querySelector('.jv-atsvaidzinat').addEventListener('click', () => {
       // meklējumu saglabājam: pēc pārlādes ?q= to atver vēlreiz

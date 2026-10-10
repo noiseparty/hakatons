@@ -13,23 +13,23 @@ const Zibens = (() => {
     slanis.clearLayers();
     for (const s of d.rezgis_24h?.sunas || []) {
       L.circleMarker([s.lat, s.lon], { radius: Math.min(4 + Math.sqrt(s.skaits) * 2, 16), color: '#57534e', weight: 1, fillColor: '#a8a29e', fillOpacity: 0.35 })
-        .bindPopup(`<div class="popup"><b>Zibens 5×5 km šūnā: ${s.skaits}</b>pēdējās 24 h, pēdējais ${esc(s.pedejais?.slice(11, 16))}` +
-          `<small class="popup-avots">Kavējas ~2–3 h. ${avots(d.rezgis_avots)}</small></div>`).addTo(slanis);
+        .bindPopup(`<div class="popup"><b>${Valoda.t('Zibens 5×5 km šūnā: {n}', { n: s.skaits })}</b>${Valoda.t('pēdējās 24 h, pēdējais {t}', { t: esc(s.pedejais?.slice(11, 16)) })}` +
+          `<small class="popup-avots">${Valoda.t('Kavējas ~2–3 h.')} ${avots(d.rezgis_avots)}</small></div>`).addTo(slanis);
     }
     const tagad = Date.now();
     for (const z of d.zibeni || []) {
       const min = (tagad - new Date(z.laiks)) / 60000;
       const krasa = min <= 10 ? '#dc2626' : min <= 20 ? '#f97316' : '#facc15';
       L.circleMarker([z.lat, z.lon], { radius: 6, color: '#1c1917', weight: 1, fillColor: krasa, fillOpacity: Math.max(0.35, 1 - min / 40) })
-        .bindPopup(`<div class="popup"><b>${Ik('zibens')} Zibens ${pulkstenis(z.laiks)}</b>pirms ${Math.max(0, Math.round(min))} min` +
-          `${z.strava != null ? `, strāva ${Math.round(z.strava)} kA` : ''}<small class="popup-avots">Zibens: ${avots(d.avots)}</small></div>`)
+        .bindPopup(`<div class="popup"><b>${Ik('zibens')} ${Valoda.t('Zibens {t}', { t: pulkstenis(z.laiks) })}</b>${Valoda.t('pirms {n} min', { n: Math.max(0, Math.round(min)) })}` +
+          `${z.strava != null ? Valoda.t(', strāva {v} kA', { v: Math.round(z.strava) }) : ''}<small class="popup-avots">${Valoda.t('Zibens')}: ${avots(d.avots)}</small></div>`)
         .addTo(slanis);
     }
     const n = d.skaits, min = d.minutes || 30;
-    teksts.innerHTML = (n == null ? `Pēdējo ${min} min dati nav pieejami.`
-      : n === 0 ? `Pēdējās ${min} min zibens nav reģistrēts.`
-      : `Pēdējās ${min} min: ${n} zibens izlāde${n % 10 === 1 && n % 100 !== 11 ? '' : 's'}, pēdējā ${pulkstenis(d.zibeni[n - 1].laiks)}.`) +
-      `<br><small>Zibens: ${avots(d.avots)}${d.rezgis_24h?.sunas.length ? `; pelēki apļi — 24 h, ${avots(d.rezgis_avots)} (kavējas ~2–3 h)` : ''}.</small>`;
+    teksts.innerHTML = (n == null ? Valoda.t('Pēdējo {m} min dati nav pieejami.', { m: min })
+      : n === 0 ? Valoda.t('Pēdējās {m} min zibens nav reģistrēts.', { m: min })
+      : Valoda.t(n % 10 === 1 && n % 100 !== 11 ? 'Pēdējās {m} min: {n} zibens izlāde, pēdējā {t}.' : 'Pēdējās {m} min: {n} zibens izlādes, pēdējā {t}.', { m: min, n, t: pulkstenis(d.zibeni[n - 1].laiks) })) +
+      `<br><small>${Valoda.t('Zibens')}: ${avots(d.avots)}${d.rezgis_24h?.sunas.length ? Valoda.t('; pelēki apļi — 24 h, {a} (kavējas ~2–3 h)', { a: avots(d.rezgis_avots) }) : ''}.</small>`;
     teksts.hidden = false;
   }
 
@@ -39,7 +39,7 @@ const Zibens = (() => {
       if (!r.ok) throw new Error(r.status);
       zimet(await r.json());
     } catch (e) {
-      teksts.textContent = 'Zibens datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.';
+      teksts.textContent = Valoda.t('Zibens datus neizdevās ielādēt. Mēģiniet vēlreiz pēc brīža.');
       teksts.hidden = false;
     }
   }

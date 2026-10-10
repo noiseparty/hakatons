@@ -58,34 +58,34 @@ const Prognozes = (() => {
     const lim = limenis(d);
     const rd = riskaDiena(diena), risks = rd && dati.riski?.[f.id];
     const iemesli = risks ? risks.iemesli.filter(i => i.diena === rd) : [];
-    const riskaHtml = risks ? `<span class="riska-limenis riska-${risks[rd]}">Risks ${esc(dn.toLowerCase())}: ${RISKA_NOS[risks[rd]]}</span>` +
+    const riskaHtml = risks ? `<span class="riska-limenis riska-${risks[rd]}">${Valoda.t('Risks {d}: {r}', { d: esc(dn.toLowerCase()), r: Valoda.t(RISKA_NOS[risks[rd]]) })}</span>` +
       (iemesli.length ? '<ul class="riska-iemesli">' + iemesli.map(i => `<li>${esc(i.teksts)}${i.klat ? ` (+${i.limenis})` : ''} — ` +
         `<a href="${esc(i.avots.url)}" target="_blank" rel="noopener">${esc(i.avots.nosaukums)}</a>, ${esc(i.avots.licence)}</li>`).join('') + '</ul>'
-        : '<small>Brīdinājumu un sliekšņu pārsniegumu nav.</small><br>') : '';
+        : `<small>${Valoda.t('Brīdinājumu un sliekšņu pārsniegumu nav.')}</small><br>`) : '';
     // logs nedrīkst palikt zem pogas / slēdža / leģendas kartes augšā
     const virs = kaste.classList.contains('atverts') ? 10 : kaste.getBoundingClientRect().bottom - karte.getContainer().getBoundingClientRect().top + 10;
     L.popup({ autoPanPaddingTopLeft: [10, Math.max(10, virs)], maxWidth: 300 }).setLatLng(ll).setContent(`<div class="popup"><b>${esc(r.nosaukums)}</b>${riskaHtml}${esc(dn)}: ${esc(d.laiks || '')}<br>` +
-      `${sk(d.tmin)}…${sk(d.tmax)} °C · brāzmas līdz ${sk(d.brazmas)} m/s${d.brazmas_vieta ? ` (${esc(d.brazmas_vieta)})` : ''}<br>` +
-      `nokrišņi līdz ${sk(d.nokrisni)} mm${d.nokrisni_vieta ? ` (${esc(d.nokrisni_vieta)})` : ''}` +
-      `${lim != null && !risks ? `<br><small>Pēc mūsu sliekšņiem: ${LIMENI[lim]}</small>` : ''}` +
-      `<span class="popup-avots">${avots({ url: 'https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa', nosaukums: `LVĢMC prognoze, ${d.vietas} apdzīvotas vietas`, licence: 'CC0 1.0' })}</span></div>`)
+      `${sk(d.tmin)}…${sk(d.tmax)} °C · ${Valoda.t('brāzmas līdz')} ${sk(d.brazmas)} m/s${d.brazmas_vieta ? ` (${esc(d.brazmas_vieta)})` : ''}<br>` +
+      `${Valoda.t('nokrišņi līdz')} ${sk(d.nokrisni)} mm${d.nokrisni_vieta ? ` (${esc(d.nokrisni_vieta)})` : ''}` +
+      `${lim != null && !risks ? `<br><small>${Valoda.t('Pēc mūsu sliekšņiem')}: ${Valoda.t(LIMENI[lim])}</small>` : ''}` +
+      `<span class="popup-avots">${avots({ url: 'https://data.gov.lv/dati/lv/dataset/meteorologiskas-prognozes-apdzivotam-vietam-jaunaka-datu-kopa', nosaukums: Valoda.t('LVĢMC prognoze, {n} apdzīvotas vietas', { n: d.vietas }), licence: 'CC0 1.0' })}</span></div>`)
       .openOn(karte);
   }
 
   function zinasHtml() {
     // izvēlētās dienas ziņas (arī riska karte tai dienai); brīdinājumi, novērojumi un zibens — vienmēr
     const z = dati.zinas.filter(z => ['bridinajums', 'noverojums', 'zibens'].includes(z.veids) || z.datums === diena);
-    if (!z.length) return '<p class="piezime">Šai dienai ziņu nav.</p>';
+    if (!z.length) return '<p class="piezime">' + Valoda.t('Šai dienai ziņu nav.') + '</p>';
     return '<ul class="prog-saraksts">' + z.map(z => `<li class="prog-zina lim-${z.limenis}" data-i="${dati.zinas.indexOf(z)}"` +
       `${z.bbox ? ' tabindex="0"' : ''}>` +
-      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' LVĢMC brīdinājums' : z.veids === 'riski' ? 'Riska karte · ' + RISKA_NOS[z.limenis] + ' risks' : z.veids === 'noverojums' ? Ik('vejs') + ' LVĢMC novērojums tagad' : z.veids === 'zibens' ? Ik('zibens') + ' Zibens tagad' + (z.vieta ? ' · ' + esc(z.vieta) : '') : z.veids === 'kopsavilkums' ? 'Prognoze' : 'Prognoze · ' + LIMENI[z.limenis]}</span>` +
+      `<span class="prog-veids">${z.veids === 'bridinajums' ? Ik('brid') + ' ' + Valoda.t('LVĢMC brīdinājums') : z.veids === 'riski' ? Valoda.t('Riska karte · {r} risks', { r: Valoda.t(RISKA_NOS[z.limenis]) }) : z.veids === 'noverojums' ? Ik('vejs') + ' ' + Valoda.t('LVĢMC novērojums tagad') : z.veids === 'zibens' ? Ik('zibens') + ' ' + Valoda.t('Zibens tagad') + (z.vieta ? ' · ' + esc(z.vieta) : '') : z.veids === 'kopsavilkums' ? Valoda.t('Prognoze') : Valoda.t('Prognoze') + ' · ' + Valoda.t(LIMENI[z.limenis])}</span>` +
       `<b>${esc(z.virsraksts)}</b><span class="prog-teksts">${esc(z.teksts)}</span>${avots(z.avots)}</li>`).join('') + '</ul>';
   }
 
   function zimet() {
     const bridinajumi = dati.zinas.filter(z => z.veids === 'bridinajums').length;
     const svarigas = dati.zinas.filter(z => z.limenis >= 1 && (z.veids === 'bridinajums' || z.datums === dati.dienas[0]?.datums || z.datums === dati.dienas[1]?.datums)).length;
-    kaste.querySelector('.prog-poga-teksts').textContent = `Prognoze${svarigas ? ' · ' + svarigas : ''}`;
+    kaste.querySelector('.prog-poga-teksts').textContent = `${Valoda.t('Prognoze')}${svarigas ? ' · ' + svarigas : ''}`;
     kaste.querySelector('.prog-poga').classList.toggle('ir-bridinajumi', bridinajumi > 0);
     for (const b of kaste.querySelectorAll('[data-riski]')) {
       const iesl = riskaKarte && dati.riska_dienas?.[b.dataset.riski] === diena;
@@ -97,20 +97,20 @@ const Prognozes = (() => {
     let kluda = kaste.querySelector('.riski-kluda');
     if (riskaKarte && !robezas) {
       if (!kluda) { kluda = document.createElement('span'); kluda.className = 'riski-kluda'; kaste.querySelector('.riski-legenda').append(kluda); }
-      kluda.textContent = 'Novadu robežas neizdevās ielādēt — riska karti šobrīd nevar parādīt.';
+      kluda.textContent = Valoda.t('Novadu robežas neizdevās ielādēt — riska karti šobrīd nevar parādīt.');
     } else kluda?.remove();
     kaste.querySelector('.prog-dienas').innerHTML = dati.dienas.map(d =>
       `<button type="button" data-diena="${d.datums}" aria-pressed="${d.datums === diena}" class="${d.datums === diena ? 'aktiva' : ''}">${esc(d.nosaukums)}</button>`).join('');
     kaste.querySelector('.prog-saturs').innerHTML = zinasHtml() +
       (riskaDiena(diena)
-        ? `<p class="piezime">Riska karte (šodien un rīt): augstākais no LVĢMC brīdinājuma krāsas, brāzmām (no 15 / 20 / 25 m/s) ` +
-          `un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC); +1 par ledu LVĢMC brīdinājumā; ` +
-          `+1 / +2, ja upes līmenis paaugstināts / kritisks pret CA plāna slieksni (Ogre, Pļaviņas, Liepājas ezers). ` +
-          `Sliekšņi ir mūsu heuristika, tas <b>nav oficiāls brīdinājums</b>. Pieskarieties novadam, lai redzētu iemeslus. `
-        : `<p class="piezime">Krāsas kartē: dienas lielākās brāzmas, nokrišņi un temperatūra novadā pēc LVĢMC prognozes 6 427 vietām; ` +
-          `sliekšņi ir mūsu (dzeltens ≈ brāzmas no 20 m/s vai nokrišņi no 15 mm), tas <b>nav oficiāls brīdinājums</b>. `) +
-      `Raustīta līnija: spēkā esoša LVĢMC brīdinājuma teritorija.` +
-      `${dati.prognoze_mainita ? ` Prognoze atjaunota ${esc(new Date(dati.prognoze_mainita).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }))}.` : ''}</p>`;
+        ? `<p class="piezime">${Valoda.t('Riska karte (šodien un rīt): augstākais no LVĢMC brīdinājuma krāsas, brāzmām (no 15 / 20 / 25 m/s) ')}` +
+          `${Valoda.t('un nokrišņiem (no 15 / 30 mm) pēc LVĢMC prognozes 6 427 vietām; šodien +1 par zibeni pēdējās 30 min (FMI) un slideniem ceļiem (LVC); +1 par ledu LVĢMC brīdinājumā; ')}` +
+          `${Valoda.t('+1 / +2, ja upes līmenis paaugstināts / kritisks pret CA plāna slieksni (Ogre, Pļaviņas, Liepājas ezers). ')}` +
+          `${Valoda.t('Sliekšņi ir mūsu heuristika, tas <b>nav oficiāls brīdinājums</b>. Pieskarieties novadam, lai redzētu iemeslus. ')}`
+        : `<p class="piezime">${Valoda.t('Krāsas kartē: dienas lielākās brāzmas, nokrišņi un temperatūra novadā pēc LVĢMC prognozes 6 427 vietām; ')}` +
+          `${Valoda.t('sliekšņi ir mūsu (dzeltens ≈ brāzmas no 20 m/s vai nokrišņi no 15 mm), tas <b>nav oficiāls brīdinājums</b>. ')}`) +
+      `${Valoda.t('Raustīta līnija: spēkā esoša LVĢMC brīdinājuma teritorija.')}` +
+      `${dati.prognoze_mainita ? ` ${Valoda.t('Prognoze atjaunota')} ${esc(new Date(dati.prognoze_mainita).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }))}.` : ''}</p>`;
     novaduSlanis.setStyle(stils);
   }
 
@@ -214,6 +214,7 @@ const Prognozes = (() => {
   // Meklējot rezultāts ir galvenais: lente aizveras, lai neaizsedz karti
   document.getElementById('meklet-forma')?.addEventListener('submit', () => atvert(false));
 
+  document.addEventListener('valoda-maina', () => { if (dati) zimet(); });  // panelis un ziņas pārtulkojas uzreiz
   ieladet().then(() => { if (dati && !matchMedia('(max-width: 800px)').matches) atvert(true); });
   setInterval(ieladet, 15 * 60 * 1000);
   return { atvert, ieladet };
