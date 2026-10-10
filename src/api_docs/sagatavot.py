@@ -108,6 +108,20 @@ SPEC = [
     ("/api/zinojumi", "Iedzīvotāju ziņojumi", "Apstiprinātie iedzīvotāju ziņojumi (nav oficiāla informācija) pēdējās dienās.",
      [("dienas", "integer", "1–7", "7", False), ("bbox", "string", "minLon,minLat,maxLon,maxLat", "", False)], "",
      [("Iedzīvotāju ziņojumi (map.repo.lv)", "https://map.repo.lv/", *CCBY)], "Ja apdraudēta dzīvība, zvaniet 112."),
+    ("/api/plusma.xml", "Abonēt: Atom/RSS plūsma", "Pašvaldības (vai visas Latvijas) situācija kā Atom 1.0 plūsma jebkurai RSS "
+     "lietotnei: LVĢMC brīdinājumi, rītdienas prognoze (brāzmas ≥ 15 m/s vai nokrišņi ≥ 15 mm), upes, kas 24 h kāpušas > 10 cm, "
+     "LVC slēgumi un negadījumi, zibens pēdējās 30 min. Katrā ierakstā avots un licence; ieraksta <id> ir stabils.",
+     [("regions", "string", "pašvaldības VZD kods (no /api/regioni) vai ATVK; bez tā — visa Latvija", "100016688", False)],
+     "?regions=100016688",
+     [("LVĢMC brīdinājumi, prognozes, hidroloģiskie novērojumi", "https://data.gov.lv/dati/lv/organization/lvgmc", "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/"),
+      ("LVC ceļu notikumi (NAP)", "https://transportdata.gov.lv/", "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/"),
+      ("FMI zibens", "https://en.ilmatieteenlaitos.fi/open-data", *CCBY), MUSU],
+     "application/atom+xml; apkopojums CC BY 4.0, ierakstu dati — avota licence."),
+    ("/api/kalendars.ics", "Abonēt: kalendārs", "LVĢMC brīdinājumi pašvaldībai kā iCalendar notikumi (sākums–beigas) — "
+     "pievienojiet kā abonētu kalendāru (Google, Apple, Outlook).",
+     [("regions", "string", "pašvaldības VZD kods vai ATVK; bez tā — visa Latvija", "100016688", False)], "?regions=100016688",
+     [("LVĢMC hidrometeoroloģiskie brīdinājumi", "https://data.gov.lv/dati/lv/dataset/hidrometeorologiskie-bridinajumi", "CC0 1.0", "https://creativecommons.org/publicdomain/zero/1.0/")],
+     "text/calendar; laiki UTC; UID stabils (brīdinājuma id + reģions)."),
     ("/api/veseliba", "Veselības pārbaude", "Vai API un datubāze atbild; ar statistika=1 — keša un datubāzes skaitītāji (skat. zemāk).",
      [("statistika", "integer", "1 — pievienot skaitītājus", "1", False)], "?statistika=1", [MUSU], None),
 ]
@@ -125,7 +139,7 @@ def marsruti():
     bloks = teksts[teksts.index("MARSRUTI = ["):teksts.index("POST_MARSRUTI")]
     rez = {}
     for raksts, kesot in re.findall(r're\.compile\(r"\^([^"]+)\$"\), \w+, (\d+)\)', bloks):
-        cels = raksts.replace("/?", "").replace("([^/]+)", "{kods}")
+        cels = raksts.replace("/?", "").replace("([^/]+)", "{kods}").replace("\\.", ".")
         rez[cels] = int(kesot)
     return rez
 
@@ -150,12 +164,26 @@ def saisinat(v, dzilums=0):
     return v
 
 
+PARAUGI = SAKNE / "src" / "api_docs" / "paraugi"
+
+
+def paraugs(cels):
+    """Saglabāts paraugs (izdomāti dati) galapunktam, kas vēl nav dzīvajā vietnē."""
+    f = PARAUGI / (cels.rsplit("/", 1)[-1] + ".txt")
+    return f.read_text(encoding="utf-8") if f.exists() else None
+
+
 def piemers(cels, vaicajums):
     url = BAZE + (vaicajums if vaicajums.startswith("/api/") else cels + vaicajums)
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "map.repo.lv api_docs"}), timeout=40) as r:
-            return url, r.status, saisinat(json.loads(r.read()))
+            saturs = r.read()
+            if "json" not in (r.headers.get("Content-Type") or ""):  # Atom, iCalendar: pirmās rindas
+                return url, r.status, "\n".join(saturs.decode("utf-8", "replace").splitlines()[:28]) + "\n…"
+            return url, r.status, saisinat(json.loads(saturs))
     except urllib.error.HTTPError as e:
+        if e.code == 404 and paraugs(cels):
+            return url, "paraugs (izdomāti dati; dzīvajā vietnē vēl nav)", paraugs(cels)
         try:
             return url, e.code, saisinat(json.loads(e.read()))
         except ValueError:
@@ -206,8 +234,8 @@ def main():
   <p class="meta"><b>Avots un licence:</b> {' ; '.join(lic(x) for x in avoti)}<br>
      <b>Kešs:</b> {kesas_teksts(kesas[cels])} (Cache-Control) {f'<br><b>Piezīme:</b> {html.escape(piezime)}' if piezime else ''}</p>
   <p class="piemers"><b>Piemērs:</b> <a href="{html.escape(piem_url)}"><code>{html.escape(piem_url.replace(BAZE, ''))}</code></a>
-    {f'<span class="statuss">HTTP {statuss}</span>' if statuss else ''}</p>
-  {f'<details><summary>Atbildes piemērs (saīsināts)</summary><pre>{html.escape(json.dumps(atbilde, ensure_ascii=False, indent=1))}</pre></details>' if atbilde is not None else ''}
+    {f'<span class="statuss">{"HTTP " if isinstance(statuss, int) else ""}{html.escape(str(statuss))}</span>' if statuss else ''}</p>
+  {f'<details><summary>Atbildes piemērs (saīsināts)</summary><pre>{html.escape(atbilde if isinstance(atbilde, str) else json.dumps(atbilde, ensure_ascii=False, indent=1))}</pre></details>' if atbilde is not None else ''}
 </section>""")
         oparam = []
         for p in param:
@@ -218,8 +246,10 @@ def main():
         openapi_celi[cels] = {"get": {
             "summary": virsraksts, "description": apraksts + (f"\n\n{piezime}" if piezime else ""), "parameters": oparam,
             "x-avoti": [{"nosaukums": x[0], "url": x[1], "licence": x[2]} for x in avoti], "x-kesa-sekundes": kesas[cels],
-            "responses": {"200": {"description": "JSON", "content": {"application/json": (
-                {"example": atbilde} if atbilde is not None and statuss == 200 else {})}},
+            "responses": {"200": ({"description": "Atom 1.0", "content": {"application/atom+xml": {}}} if cels.endswith(".xml") else
+                                  {"description": "iCalendar", "content": {"text/calendar": {}}} if cels.endswith(".ics") else
+                                  {"description": "JSON", "content": {"application/json": (
+                                      {"example": atbilde} if atbilde is not None and statuss == 200 else {})}}),
                 **({"202": {"description": "Avots vēl rēķina: {ielade: true}, mēģiniet pēc 10 s"}} if cels == "/api/pludi" else {}),
                 "400": {"description": "Nederīgs parametrs: {kluda}"}, "503": {"description": "Avots vai datubāze nav pieejama: {kluda}"}}}}
 

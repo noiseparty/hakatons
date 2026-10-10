@@ -35,7 +35,7 @@ Stāvoklis 2026-10-10 rītā. Visi 25 atvērto datu avoti (un 1 bez atvērtas li
 |---|---|---|---|
 | 16 | **Noturības punkti** (siltums, uzlāde, ūdens, wifi, ģenerators) — bibliotēkas, kultūras nami, skolas | Pašvaldības / VARAM | Scenāriji "nav elektrības", "aukstums"; mēs rādām OSM ēkas ar "statuss nav zināms" |
 | 17 | **Dzeramā ūdens ņemšanas punkti un "vāriet ūdeni" paziņojumi** | Pašvaldību ūdenssaimniecības, VI | Ūdensapgādes krīze; šobrīd tikai komandas simulēti dati (100 punkti, marķēti) |
-| 18 | **Degvielas stacijas ar ģeneratoriem; bankomātu un POS termināļu darbības statuss** | EM, bankas, Finance Latvia | 22.–23.08.2026: skaidra nauda nebija pieejama; saraksti nav publiski |
+| 18 | **Degvielas stacijas ar ģeneratoriem; bankomātu un POS termināļu darbības statuss** | EM, bankas, Finance Latvia | 22.–23.08.2026: skaidra nauda nebija pieejama; saraksti nav publiski. Komandai minētais „Kritisko ATM saraksts” (22.09.2026, „hakatonam”) nav repozitorijā, un tā izcelsme un licence nav zināma, tāpēc kartē netiek rādīts (pārbaudīts 2026-10-10) |
 | 19 | **Slēgtās / bīstamās zonas** (droni, sprādzienbīstamība, ķīmiskais piesārņojums) kā poligoni | VUGD, NBS, VP | Scenārijs "drons": rādām tikai simulētu zonu |
 | 20 | **Dūmu / gaisa kvalitātes brīdinājumi reāllaikā** pie ugunsgrēkiem | LVĢMC, VUGD | Pārdaugavas noliktavas ugunsgrēks 30.06.2026, Vecmīlgrāvis 17.07.2026: "aizveriet logus" tikai ziņās |
 | 21 | **Meklēšanas / glābšanas aktīvās zonas un pazudušie cilvēki** | VP, VUGD | Lai cilvēki zinātu, kur palīdzība jau strādā |
