@@ -45,3 +45,17 @@ footer { padding: 16px 0 32px; color: var(--teksts2); font-size: .85rem; }
   .avoti { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .ca .skaitlis b { font-size: 2rem; }
 }
+
+/* skeletoni, zīmes, kartīšu detaļas */
+.sk b, .sk small, .sk span, .sk .zime { background: linear-gradient(90deg, #e6e9ee 25%, #f4f6f8 50%, #e6e9ee 75%); background-size: 200% 100%; animation: mirdz 1.2s linear infinite; border-radius: 4px; color: transparent; }
+.sk { min-height: 64px; }
+@keyframes mirdz { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .sk b, .sk small, .sk span, .sk .zime { animation: none; } }
+.izlaist { position: absolute; left: -999px; } .izlaist:focus { left: 8px; top: 8px; z-index: 9; background: #fff; padding: 8px 12px; }
+.brid { margin: 0 0 12px; padding: 10px 12px; background: #fff4e5; border-left: 4px solid var(--oranzs); border-radius: var(--radiuss); font-size: .92rem; }
+.zimes { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0; }
+.avoti .zime { margin: 0; font-size: .78rem; overflow-wrap: anywhere; }
+.avoti .zime a { color: #fff; }
+.avoti .zime.skaits { background: var(--zils-tumss); }
+.avoti details { margin-top: 4px; } .avoti summary { cursor: pointer; min-height: 32px; color: var(--zils-tumss); font-size: .85rem; }
+.avoti a { overflow-wrap: anywhere; }
