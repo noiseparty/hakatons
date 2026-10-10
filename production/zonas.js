@@ -440,10 +440,10 @@ const Zonas = (() => {
     if (!z && !sl) return '';
     const d = z?.dati, lim = d ? Math.min(3, Math.max(0, +d.limenis || 0)) : 3;
     return '<ul class="fakti">' +
-      (z ? `<li><span class="ikona">🚗</span><div><b>Satiksme šajā apvidū</b><span>${lim === 3 ? 'nav mērījumu' : SATIKSME[lim]}` +
+      (z ? `<li><span class="ikona">${Ik('auto')}</span><div><b>Satiksme šajā apvidū</b><span>${lim === 3 ? 'nav mērījumu' : SATIKSME[lim]}` +
         (d.atrums_vid != null && lim < 3 ? ` (vid. ${Math.round(d.atrums_vid)} km/h)` : '') + `</span>` +
         `<small>${esc(z.nosaukums || '')}${d.laiks ? ', ' + laiks(d.laiks) : ''}</small><small class="avots-rinda">${zona('satiksme').avots}</small></div></li>` : '') +
-      (sl ? `<li><span class="ikona">🧊</span><div><b>Slidens ceļš tuvumā</b><span>LVC ziņo par slidenu ceļu ${(sl[1] / 1000).toFixed(0)} km no šīs vietas</span>` +
+      (sl ? `<li><span class="ikona">${Ik('sniegs')}</span><div><b>Slidens ceļš tuvumā</b><span>LVC ziņo par slidenu ceļu ${(sl[1] / 1000).toFixed(0)} km no šīs vietas</span>` +
         `<small class="avots-rinda">${sl[0].avots}</small></div></li>` : '') + '</ul>';
   }
 
@@ -453,7 +453,7 @@ const Zonas = (() => {
     const { id, teksts, krasa, nav } = zn.sledzis;
     const l = document.createElement('label');
     l.className = 'kat parklajums';
-    l.innerHTML = `<input type="checkbox" id="${id}"><span class="punkts" style="background:${krasa}"></span>${esc(teksts)}`;
+    l.innerHTML = `<input type="checkbox" id="${id}">${Ikonas.formaSvg('kvadrats', krasa, 16)}${esc(teksts)}`;
     pec.after(l);
     pec = l;
     const cb = l.querySelector('input');

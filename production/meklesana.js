@@ -7,10 +7,10 @@ const krizesMeklesana = (() => {
   const UZ_KATEGORIJU = 3;
   // Drošās vietas: rāda situācijām un vietas/adreses vaicājumiem. Tukšai kategorijai — norāde uz patvertni.
   const DROSAS = [
-    { kods: 'evakuacijas_punkts', nos: 'Evakuācijas pulcēšanās vieta', ikona: '🚩', aizstat: true },
-    { kods: 'izmitinasana', nos: 'Izmitināšanas vieta', ikona: '🏠', aizstat: true },
-    { kods: 'patvertne', nos: 'Tuvākā patvertne', ikona: '🛡️' },
-    { kods: 'neatliekama_24h', nos: '24/7 neatliekamā palīdzība', ikona: '🏥' },
+    { kods: 'evakuacijas_punkts', nos: 'Evakuācijas pulcēšanās vieta', ikona: 'karogs', aizstat: true },
+    { kods: 'izmitinasana', nos: 'Izmitināšanas vieta', ikona: 'maja', aizstat: true },
+    { kods: 'patvertne', nos: 'Tuvākā patvertne', ikona: 'patvertne' },
+    { kods: 'neatliekama_24h', nos: '24/7 neatliekamā palīdzība', ikona: 'slimnica' },
   ];
   const PLUDU_SCENARIJI = new Set(['pludi', 'udens_celas']);
   // Nokrišņu un augsnes konteksta rinda (Open-Meteo caur /api/augsne): plūdiem, lietusgāzēm un vētrām
@@ -380,7 +380,7 @@ const krizesMeklesana = (() => {
 
     // Dzīvības draudi — uzreiz, pirms jebkādas ielādes (teksts, bez pogām un saitēm)
     const draudi = rez.dzivibas_draudi
-      ? '<p class="draudi">⚠ Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt: dispečers palīdzēs, ko darīt.</p>' : '';
+      ? '<p class="draudi">' + Ik('uzmanibu') + ' Izklausās, ka apdraudēta dzīvība. Zvaniet 112 tūlīt: dispečers palīdzēs, ko darīt.</p>' : '';
     const zvanitTeksts = !rez.dzivibas_draudi && rez.zvanit112 ? '<p class="zvanit-teksts">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>' : '';
 
     let adrese = null;
@@ -430,8 +430,8 @@ const krizesMeklesana = (() => {
     const vaiDomaji = citi.length ? `<p class="piezime">Vai domājāt:</p><div class="atras-pogas">` +
       citi.map(s => `<button type="button" data-cits="${esc(s.kods)}">${esc(s.nosaukums)}</button>`).join('') + '</div>' : '';
     const beigas = talakBloks(galvenais) + vaiDomaji +
-      '<button type="button" class="otra" data-darbiba="saraksts"><span aria-hidden="true">☰</span> Visi kartes objekti sarakstā</button>' +
-      '<button type="button" class="otra" data-darbiba="zinot"><span aria-hidden="true">📣</span> Ziņot par bīstamību šeit</button>' +
+      '<button type="button" class="otra" data-darbiba="saraksts">' + Ik('saraksts') + ' Visi kartes objekti sarakstā</button>' +
+      '<button type="button" class="otra" data-darbiba="zinot">' + Ik('zinot') + ' Ziņot par bīstamību šeit</button>' +
       (typeof Dalities !== 'undefined' ? Dalities.pogas() : '') + notiritPoga();
 
     // Nekas nav atpazīts: ne situācija, ne vieta
@@ -458,7 +458,7 @@ const krizesMeklesana = (() => {
     if (!no) {
       kaste.innerHTML = galva + `<p class="piezime vieta-zina">Lai atrastu tuvākās vietas, pievienojiet adresi vai pilsētu, piem.,
         „${esc(teksts)} Ogrē” vai „${esc(teksts)} Brīvības 15 Ogre”, vai nosakiet savu atrašanās vietu.</p>
-        <button type="button" class="galvena" data-darbiba="atrast"><span aria-hidden="true">📍</span> Noteikt manu atrašanās vietu</button>` + beigas;
+        <button type="button" class="galvena" data-darbiba="atrast">${Ik('vieta')} Noteikt manu atrašanās vietu</button>` + beigas;
       return;
     }
 
@@ -537,7 +537,7 @@ const krizesMeklesana = (() => {
   function grupa(kods, features, no, neizdevas = false) {
     const k = kategorijas[kods];
     if (!features.length) return neizdevas ? '' : `<p class="piezime">${esc(k.nosaukums)}: tuvākā vieta mūsu datos nav zināma.</p>`;
-    return `<h3><span class="punkts" style="background:${esc(k.krasa)}"></span>${esc(k.nosaukums)}</h3>` +
+    return `<h3>${Ikonas.formaHTML(kods)}${esc(k.nosaukums)}</h3>` +
       `<ol class="rez-saraksts">${features.map(f => vienums(f, no)).join('')}</ol>`;
   }
 
@@ -545,7 +545,7 @@ const krizesMeklesana = (() => {
   // tukša rinda: norāde uz tuvāko patvertni (tā ir tajā pašā sarakstā).
   function drosasBloks(drosas, vietas, no) {
     const rindas = drosas.map((d, i) => {
-      const virsraksts = `<span class="drosa-nos"><span aria-hidden="true">${d.ikona}</span> ${esc(d.nos)}</span>`;
+      const virsraksts = `<span class="drosa-nos">${Ik(d.ikona)} ${esc(d.nos)}</span>`;
       const f = vietas[i];
       if (f && d.aizstat && f.properties.attalums_m > 10000) {
         return vienums(f, no, virsraksts + '<small class="tala">Tuvākā mūsu datos ir tālu, citā pašvaldībā. Jautājiet savai pašvaldībai vai izmantojiet tuvāko patvertni.</small>');
@@ -566,7 +566,7 @@ const krizesMeklesana = (() => {
       const sie = (d.bridinajumi || []).filter(b => b.attiecas).sort((a, b) => b.limenis - a.limenis);
       const lidz = b => b.lidz ? ', līdz ' + new Date(b.lidz).toLocaleString('lv-LV', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' }) : '';
       el.innerHTML = (sie.length
-        ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}"><span aria-hidden="true">⚠</span> <b>LVĢMC brīdinājums ${kur}:</b> ` +
+        ? `<p class="lemums bridinajums-${esc(sie[0].krasa.toLowerCase())}">${Ik('brid')} <b>LVĢMC brīdinājums ${kur}:</b> ` +
           sie.map(b => `${esc(b.krasa)} — ${esc(b.paradiba)}${lidz(b)}`).join('; ') + '</p>'
         : `<p class="lemums lemums-nav"><b>LVĢMC brīdinājumu ${kur} nav.</b></p>`) +
         `<small class="avots-rinda">${AVOTI_LVGMC.bridinajumi}</small>`;
@@ -612,8 +612,8 @@ const krizesMeklesana = (() => {
   // Plūdu scenārijiem: plūdu riska zona adresē (LVĢMC WMS caur /api/pludi; lēns, līdz 15 s) un tuvākās upes līmenis
   function pluduBloks() {
     return `<ul class="fakti" id="rez-pludi-bloks">
-      <li id="rez-pludi"><span class="ikona" aria-hidden="true">🌊</span><div><b>Plūdu riska zona</b><span>Pārbauda… (līdz 15 s)</span></div></li>
-      <li id="rez-udens"><span class="ikona" aria-hidden="true">📏</span><div><b>Tuvākā upe vai ezers</b><span>Ielādē…</span></div></li></ul>`;
+      <li id="rez-pludi"><span class="ikona">${Ik('pludi')}</span><div><b>Plūdu riska zona</b><span>Pārbauda… (līdz 15 s)</span></div></li>
+      <li id="rez-udens"><span class="ikona">${Ik('limenis')}</span><div><b>Tuvākā upe vai ezers</b><span>Ielādē…</span></div></li></ul>`;
   }
   function pluduRinda(id, saturs) { const li = kaste.querySelector('#' + id); if (li) li.querySelector('div').innerHTML = saturs; }
   function pluduDati(ll, signal) {
@@ -662,7 +662,7 @@ const krizesMeklesana = (() => {
 
   // Vējš tagad tuvākajā LVĢMC stacijā (ar brāzmām)
   function vejaBloks() {
-    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">💨</span><div><b>Vējš tagad</b><span>Ielādē…</span></div></li></ul>`;
+    return `<ul class="fakti"><li id="rez-vejs"><span class="ikona">${Ik('vejs')}</span><div><b>Vējš tagad</b><span>Ielādē…</span></div></li></ul>`;
   }
   function vejaDati(ll, signal) {
     iegut('/noverojumi?' + new URLSearchParams({ ...ll, limit: 8 }), signal).then(d => {
@@ -681,7 +681,7 @@ const krizesMeklesana = (() => {
 
   // Nokrišņi pēdējās 26 dienās + augsnes mitrums: konteksts (cik ūdens zeme vēl var uzņemt), nevis brīdinājums
   function augsnesBloks() {
-    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">🌧️</span><div><b>Nokrišņi un augsne</b><span>Ielādē…</span></div></li></ul>`;
+    return `<ul class="fakti"><li id="rez-augsne"><span class="ikona">${Ik('lietus')}</span><div><b>Nokrišņi un augsne</b><span>Ielādē…</span></div></li></ul>`;
   }
   function augsnesDati(ll, signal) {
     const avots = '<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> · CC BY 4.0';
@@ -704,7 +704,7 @@ const krizesMeklesana = (() => {
     for (const f of grupas.flat()) {
       const [lon, lat] = f.geometry.coordinates;
       const k = kategorijas[f.properties.kategorija] || {};
-      L.circleMarker([lat, lon], { radius: 10, color: '#1c1917', weight: 2.5, fillColor: k.krasa || '#57534e', fillOpacity: 1 })
+      L.marker([lat, lon], { icon: Ikonas.markeris(f.properties.kategorija, k.krasa, 30), title: nosaukums(f.properties) || k.nosaukums || '', zIndexOffset: 500 })
         .bindPopup(() => popupSaturs(no.regions ? { ...f.properties, attalums_m: null } : f.properties, { lat, lng: lon }))
         .addTo(rezultatuSlanis);
     }
