@@ -8,7 +8,7 @@
 // - /api/*: vispirms tīkls; katru veiksmīgo atbildi saglabā ar laiku (galvene x-sw-saglabats). Bez tīkla —
 //   saglabātā, ja nav vecāka par 6 h (mainīgie dati: brīdinājumi, ūdens, ceļi, satiksme…) vai 7 dienām (vietas,
 //   slāņi, adreses); atbildei pievieno x-sw-no-kesas: 1, lai lapa var rādīt "saglabāts <laiks>".
-const VERSION = '2026-10-10ak-castubi';
+const VERSION = '2026-10-10ao-pieejamiba';
 const SHELL = 'shell-' + VERSION, API = 'api-v1', FLIZES = 'flizes-v1', CDN = 'cdn-v1';
 const SHELL_FAILI = [
   './', 'index.html', 'stils.css', 'demo.css', 'info.html', 'info.css', 'api.html', 'api.css', 'statuss.html', 'statuss.css', 'statuss.js',
@@ -17,7 +17,7 @@ const SHELL_FAILI = [
   'objekta-statuss.js', 'marsruts.js', 'dalities.js', 'noverojumi.js', 'vendor/qrcode.js', 'ikonas.js', 'ikonas/ikonas.svg', 'vendor/leaflet/leaflet.js', 'vendor/leaflet/leaflet.css',
   'vendor/leaflet/leaflet.markercluster.js', 'vendor/leaflet/MarkerCluster.css',
   'demo/scenariji.json', 'demo/augstumi-ogre.geojson', 'manifest.webmanifest', 'ikonas/ikona.svg',
-  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json', 'sheet.js',
+  'ikonas/ikona-192.png', 'ikonas/ikona-512.png', 'izmainas.css', 'izmainas.js', 'izmainas.json', 'sheet.js', 'pieejamiba.js',
 ];
 const CDN_FAILI = [];  // Leaflet tagad ir vendor/leaflet (SHELL_FAILI)
 const FLIZU_HOSTI = /(^|\.)tile\.openstreetmap\.org$|(^|\.)tile\.opentopomap\.org$/;

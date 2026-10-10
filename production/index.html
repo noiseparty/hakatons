@@ -68,8 +68,8 @@
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#izvelne"></use></svg> Filtri</button>
   </div>
 </header>
-<p class="zvanit-josla">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
-<div id="bridinajums" class="bridinajums gaida" role="status">Ielādē LVĢMC brīdinājumus…</div>
+<p class="zvanit-josla" role="region" aria-label="Ārkārtas palīdzība">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
+<div id="bridinajums" class="bridinajums gaida" role="status" aria-live="polite">Ielādē LVĢMC brīdinājumus…</div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
 <main>
@@ -161,6 +161,7 @@
 
 <script src="vendor/leaflet/leaflet.js"></script>
 <script src="vendor/leaflet/leaflet.markercluster.js"></script>
+<script src="pieejamiba.js"></script>
 <script>
   // Ja Leaflet neielādējās, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
   if (!window.L || !L.markerClusterGroup) {

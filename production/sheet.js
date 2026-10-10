@@ -22,10 +22,12 @@ const Lapa = (() => {
       `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}">${esc(t)}${p ? `<small>${esc(p)}</small>` : ''}</button>`).join('')}</div>
     <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
+      <h2 class="vizuali-slepts">Meklēšanas rezultāts</h2>
       <p class="lapa-tukss">Uzrakstiet, kas notiek, vai izvēlieties tēmu augstāk. Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
     </div>
     <div id="lapa-slani" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-slani" hidden></div>
     <div id="lapa-situacija" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-situacija" hidden>
+      <h2 class="vizuali-slepts">Situācija tagad</h2>
       <div class="lapa-prognoze"></div>
       <h3>Upju līmeņi kartes centra tuvumā</h3><ul class="lapa-saraksts" id="lapa-upes">${SKELETS}</ul>
       <h3>Ceļi (LVC)</h3><ul class="lapa-saraksts" id="lapa-celi">${SKELETS}</ul>
