@@ -334,7 +334,7 @@ const Klasifikators = (() => {
       };
     }
 
-    return { klasificet, scenariji, labotVardu };
+    return { klasificet, scenariji, labotVardu, vietMaska: vardi => vietvarduMaska(vardi, vietuVardi, celmi) };
   }
 
   return { izveidot, normalizet, vietvarduFormas };

@@ -292,7 +292,8 @@ const krizesMeklesana = (() => {
   function labot(teksts) {
     let t = ' ' + vienk(teksts).replace(/[^\p{L}\p{N}]+/gu, ' ').trim() + ' ';
     for (const [no, uz] of TRANSLITS) t = t.replace(new RegExp(' ' + no + '[a-z]*', 'g'), ' ' + vienk(uz));
-    return t.trim().split(' ').map(labotVardu).join(' ');
+    const vardi = t.trim().split(' '), maska = klasifikators?.vietMaska ? klasifikators.vietMaska(vardi) : new Set();
+    return vardi.map((w, i) => maska.has(i) ? w : labotVardu(w)).join(' ');  // vietvārdus un ielu nosaukumus nelabo (Madona ≠ ķīmiska avārija)
   }
 
   // Oriģinālais teksts, ja tas jau ir atpazīts; citādi labotais (vieta un 112 — no abiem)
