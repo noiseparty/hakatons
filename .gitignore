@@ -48,3 +48,6 @@ api-data-samples/
 
 # Banku bankomātu saraksts (15 MB, licence nav norādīta) — tikai lokāli; repozitorijā CSV (src/karte/dati/bankomati_*.csv)
 atseviski_dati/*.xlsx
+
+# Plūdu zonu kopija (41,6 MB > 40 MB repozitorija robeža): pludu_zonas.py lejupieladet → scp uz VPS (src/karte/README.md)
+src/karte/dati/pludu_zonas.geojson.gz

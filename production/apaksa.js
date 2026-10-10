@@ -31,10 +31,23 @@ const Apaksa = (() => {
   const aktiva = () => telefons.matches;
   const redzama = () => aktiva() && !lapa.hidden;
 
-  // Redzamais augstums pēc stāvokļa. Lapa pati vienmēr ir "Pilns" augstumā (+ REZERVE atsperei uz augšu) un tiek
-  // nobīdīta ar transform — tā vilkšana nepārrēķina izkārtojumu katrā kadrā.
+  // Redzamais augstums pēc stāvokļa. Lapa pati vienmēr ir "Pilns" augstumā + REZERVE un tiek nobīdīta ar transform — tā
+  // vilkšana nepārrēķina izkārtojumu katrā kadrā. REZERVE ir tikai atsperei virs "Pilns": lapa sniedzas REZERVE px zem
+  // ekrāna apakšmalas (bottom: -REZERVE) un tikpat liela ir tās apakšējā atkāpe (padding), tāpēc "Pilns" stāvoklī lapas
+  // saturs beidzas tieši pie ekrāna apakšmalas un ritinās līdz savām beigām; atkāpe kļūst redzama tikai, velkot virs "Pilns".
+  // Abas vērtības CSS saņem no šejienes (--apaksa-rezerve).
   const DALA = { puse: 0.52, pilna: 0.84 }, PEEK_PX = 140, REZERVE = 80;
-  const augstumsPx = st => st === 'peek' ? PEEK_PX : Math.round(innerHeight * DALA[st]);
+  lapa.style.setProperty('--apaksa-rezerve', REZERVE + 'px');
+  // Ekrāna (dinamiskā skatvietas) augstums: 100dvh, kur pārlūks to atbalsta (mainās līdzi adreses joslai), citādi innerHeight.
+  // Ekrāna tastatūru atsevišķi ņem vērā tastatura() ar visualViewport.
+  const dvh = window.CSS?.supports?.('height', '100dvh') ? document.createElement('div') : null;
+  if (dvh) {
+    dvh.setAttribute('aria-hidden', 'true');
+    dvh.style.cssText = 'position:fixed;top:0;left:0;width:0;height:100dvh;visibility:hidden;pointer-events:none';
+    document.body.append(dvh);
+  }
+  const ekranaH = () => dvh?.offsetHeight || innerHeight;
+  const augstumsPx = st => st === 'peek' ? PEEK_PX : Math.round(ekranaH() * DALA[st]);
   const augstums = () => redzama() ? augstumsPx(stavoklis) : 0;
   // Rezultāta kartītes vieta: sheet.js cilne "Rezultāts", citādi lapas saturs
   const rezVieta = () => el('lapa-rezultats') || saturs;
@@ -57,7 +70,10 @@ const Apaksa = (() => {
     klaviaturaPx = kb > TASTATURA_MIN ? kb : 0;
     lapa.classList.toggle('ar-tastaturu', !!klaviaturaPx);
     if (v) return;  // vilkšanas laikā lapa seko pirkstam
-    novietotPx(klaviaturaPx ? Math.max(PEEK_PX, Math.min(augstumsPx('pilna'), vv.height - VIRS_LAPAS)) : augstumsPx(stavoklis));
+    const h = klaviaturaPx ? Math.max(PEEK_PX, Math.min(augstumsPx('pilna'), vv.height - VIRS_LAPAS)) : augstumsPx(stavoklis);
+    // ar tastatūru lapa ir zemāka par "Pilns": saturs (ieteikumi) beidzas pie tastatūras augšmalas, nevis aiz tās
+    lapa.style.paddingBottom = klaviaturaPx ? `calc(${REZERVE + augstumsPx('pilna') - h}px + env(safe-area-inset-bottom))` : '';
+    novietotPx(h);
   }
 
   function iestatit(jauns) {
