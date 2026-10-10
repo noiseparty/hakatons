@@ -18,7 +18,11 @@ Galapunkti:
                                        LVĢMC nav pieejams > 15 min vai > 15 min tukšs → rezerves avots Meteoalarm
                                        (CAP/Atom, kešs 5 min): tā pati forma + "rezerves": true, "atruna", "izdots"
   GET /api/pludi?lat=..&lon=..         vai vieta ir plūdu riska zonā (LVĢMC 3. cikla kartes, WMS GetFeatureInfo)
-  GET /api/udens?lat=..&lon=..&limit=3 tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
+  GET /api/pludi/flize/<paka>/<z>/<x>/<y>.png
+                                       plūdu zonu WMS flīze 512 px (paka: pali | ledus | juras, + "10" = 10 %
+                                       varbūtība; XYZ, EPSG:3857),
+                                       diska kešs 30 dienas ($HAKATONS_DATI/flizes); galvene X-Flize
+  GET /api/udens?lat=..&lon=..&limit=3tuvākās LVĢMC hidroloģiskās stacijas ar ūdens līmeni un izmaiņu 24 h
                                        + prognoze 7 dienām (LVĢMC hidroloģiskās prognozes, kešs 1 h)
                                        + slieksnis, kritiskais (m LAS), statuss normāls|paaugstināts|kritisks
                                        stacijām ar slieksni CA plānā (src/karte/db/udens_slieksni.json), citām null
@@ -825,6 +829,238 @@ import concurrent.futures  # noqa: E402
 
 PLUDU_MAX_GAIDIT = 25
 _pludu_gaidisana = ThreadPoolExecutor(max_workers=8)
+
+
+# ---- Plūdu zonu flīzes: GET /api/pludi/flize/<paka>/<z>/<x>/<y>.png (LVĢMC WMS GetMap caur diska kešu) ----
+# geo-dpps.viss.gov.lv atbild 5–30 s uz flīzi un mēdz 504, tāpēc flīzes glabājam diskā: $HAKATONS_DATI/flizes
+# (noklusēti /var/lib/hakatons/dati/flizes; ja tur nevar rakstīt — pagaidu mape), 30 dienas, kopā ≤ 500 MB (vecākās dzēš).
+# paka: pali | ledus | juras (1 %) un pali10 | ledus10 | juras10 (10 % varbūtība). z/x/y — standarta XYZ (EPSG:3857,
+# 2^z flīzes katrā asī); attēls 512 × 512 px = zonas.js flīze (LIELUMS) kartes tālummaiņā z + 1. WMS pieprasām ar EPSG:3857 bbox tieši tāpat kā zonas.js līdz šim (flīzes robežās, bez izkropļojumiem).
+# Uz LVĢMC ≤ 4 pieprasījumi reizē; kas 5 s netiek pie kārtas — 1×1 caurspīdīgs PNG ar no-store (X-Flize: aiznemts).
+# Neizdevies pieprasījums: 60 s to flīzi neprasām (502, X-Flize: kluda); ja diskā ir novecojusi flīze, atdodam to.
+# Galvene X-Flize: kesa | jauna | veca | tukss (ārpus paketes pārklājuma) | aiznemts | kluda (zonas.js, pludi_silda.py).
+
+import hashlib  # noqa: E402
+import struct  # noqa: E402
+import tempfile  # noqa: E402
+import urllib.error  # noqa: E402
+import zlib  # noqa: E402
+
+_PLUDU_PARKLAJUMI = {  # [dienvidi, rietumi, ziemeļi, austrumi]; tas pats zonas.js wms[].robezas
+    "pali": (PLUDU_SERVISI[0][1], (55.76, 20.88, 57.67, 27.92)),   # pavasara pali
+    "ledus": (PLUDU_SERVISI[1][1], (56.38, 23.95, 56.64, 26.01)),  # ledus sastrēgumi
+    "juras": (PLUDU_SERVISI[2][1], (56.06, 20.84, 57.88, 24.49)),  # jūras vējuzplūdi
+}
+# paka → (WMS ceļš, slāņi, pārklājums): <paka> = 1 % (100 gadu) applūšana, <paka>10 = 10 % (slāņi kā PLUDU_SERVISI)
+PLUDU_PAKAS = {
+    **{p: (c, "1", b) for p, (c, b) in _PLUDU_PARKLAJUMI.items()},
+    **{p + "10": (c, "2,3" if p == "pali" else "2", b) for p, (c, b) in _PLUDU_PARKLAJUMI.items()},
+}
+FLIZE_PX = 512
+FLIZE_Z = (5, 18)
+FLIZU_TTL = 30 * 86400
+FLIZU_MAX_BAITI = 500 * 1024 * 1024
+FLIZU_TAIMAUTS = 25
+FLIZU_GAIDIT_RINDA = 5
+FLIZU_NEVEIKSME_S = 60
+FLIZES_CELS = re.compile(r"^/api/pludi/flize/([a-z0-9]{1,12})/(\d{1,2})/(\d{1,7})/(\d{1,7})\.png$")
+_flizu_sloti = threading.BoundedSemaphore(4)
+_flizu_slots = threading.Lock()
+_flizu_procesa = {}     # (paka, z, x, y) → threading.Event: viena un tā pati flīze no LVĢMC tikai vienreiz
+_flizu_neveiksmes = {}  # (paka, z, x, y) → laiks, līdz kuram to neprasām
+_flizu_mape_kese = [None, False]  # [mape, vai jau meklēta]
+_flizu_tirisana = [0.0, 0]        # [pēdējās tīrīšanas laiks, ierakstītas flīzes kopš tās]
+
+
+def _png_1x1():
+    def gabals(tips, dati):
+        return struct.pack(">I", len(dati)) + tips + dati + struct.pack(">I", zlib.crc32(tips + dati) & 0xFFFFFFFF)
+    return (b"\x89PNG\r\n\x1a\n" + gabals(b"IHDR", struct.pack(">IIBBBBB", 1, 1, 8, 6, 0, 0, 0))
+            + gabals(b"IDAT", zlib.compress(b"\x00\x00\x00\x00\x00")) + gabals(b"IEND", b""))
+
+
+TUKSA_FLIZE = _png_1x1()
+_FLIZE_AIZNEMTS = (200, TUKSA_FLIZE, "aiznemts", 0)
+_MERK_O = math.pi * 6378137.0  # EPSG:3857 pasaules mala, m (20037508.34…)
+
+
+def xyz_bbox_3857(z, x, y):
+    """XYZ flīze → (minx, miny, maxx, maxy) metros, EPSG:3857 (y = 0 ir ziemeļos)."""
+    s = 2 * _MERK_O / (1 << z)
+    return (-_MERK_O + x * s, _MERK_O - (y + 1) * s, -_MERK_O + (x + 1) * s, _MERK_O - y * s)
+
+
+def xyz_bbox_4326(z, x, y):
+    """XYZ flīze → (dienvidi, rietumi, ziemeļi, austrumi) grādos, EPSG:4326."""
+    n = 1 << z
+
+    def platums(yy):
+        return math.degrees(math.atan(math.sinh(math.pi * (1 - 2 * yy / n))))
+    return (platums(y + 1), x / n * 360 - 180, platums(y), (x + 1) / n * 360 - 180)
+
+
+def _flizu_mape():
+    if _flizu_mape_kese[1]:
+        return _flizu_mape_kese[0]
+    for mape in (os.path.join(os.environ.get("HAKATONS_DATI", "/var/lib/hakatons/dati"), "flizes"),
+                 os.path.join(tempfile.gettempdir(), "hakatons-flizes")):
+        try:
+            os.makedirs(mape, exist_ok=True)
+            parbaude = os.path.join(mape, f".rakstams-{os.getpid()}-{threading.get_ident()}")
+            with open(parbaude, "wb") as f:
+                f.write(b"1")
+            os.remove(parbaude)
+        except OSError:
+            continue
+        _flizu_mape_kese[:] = [mape, True]
+        return mape
+    _flizu_mape_kese[:] = [None, True]  # bez diska keša: flīzes tikai caur (ierobežoti)
+    return None
+
+
+def _flizu_lasit(cels):
+    """→ (baiti, vecums sekundēs) vai None."""
+    if not cels:
+        return None
+    try:
+        vecums = time.time() - os.stat(cels).st_mtime
+        with open(cels, "rb") as f:
+            return f.read(), vecums
+    except OSError:
+        return None
+
+
+def _dzest(cels):
+    try:
+        os.remove(cels)
+    except OSError:
+        pass
+
+
+def _flizu_tirit(mape):
+    """Dzēš flīzes, kas vecākas par 2 × TTL (līdz tam tās vēl der, ja LVĢMC neatbild), un vecākās, līdz kopā ≤ 90 % no
+    FLIZU_MAX_BAITI."""
+    faili, kopa, tagad = [], 0, time.time()
+    for sakne, _mapes, nosaukumi in os.walk(mape):
+        for n in nosaukumi:
+            cels = os.path.join(sakne, n)
+            try:
+                st = os.stat(cels)
+            except OSError:
+                continue
+            vecums = tagad - st.st_mtime
+            if vecums > 2 * FLIZU_TTL or (n.endswith(".tmp") and vecums > 600):
+                _dzest(cels)
+                continue
+            faili.append((st.st_mtime, st.st_size, cels))
+            kopa += st.st_size
+    if kopa > FLIZU_MAX_BAITI:
+        faili.sort()
+        for _laiks, izmers, cels in faili:
+            if kopa <= FLIZU_MAX_BAITI * 0.9:
+                break
+            _dzest(cels)
+            kopa -= izmers
+    return kopa
+
+
+def _flizu_rakstit(cels, dati, mape):
+    if not cels:
+        return
+    try:
+        os.makedirs(os.path.dirname(cels), exist_ok=True)
+        pagaidu = f"{cels}.{threading.get_ident()}.tmp"
+        with open(pagaidu, "wb") as f:
+            f.write(dati)
+        os.replace(pagaidu, cels)
+    except OSError as e:
+        print(f"flīžu kešs: nevar ierakstīt {cels}: {e!r}", file=sys.stderr)
+        return
+    with _flizu_slots:  # tīrīšana fonā: pirmajā ierakstā pēc starta, tad ik pēc 500 flīzēm vai stundas
+        _flizu_tirisana[1] += 1
+        if _flizu_tirisana[0] and _flizu_tirisana[1] < 500 and time.time() - _flizu_tirisana[0] < 3600:
+            return
+        _flizu_tirisana[:] = [time.time(), 0]
+    threading.Thread(target=_flizu_tirit, args=(mape,), name="flizu-tirisana", daemon=True).start()
+
+
+def _flizes_lejupielade(paka, z, x, y):
+    cels, slanis, _parklajums = PLUDU_PAKAS[paka]
+    minx, miny, maxx, maxy = xyz_bbox_3857(z, x, y)
+    parametri = {
+        "service": "WMS", "version": "1.3.0", "request": "GetMap", "layers": slanis, "styles": "", "crs": "EPSG:3857",
+        "bbox": f"{minx:.3f},{miny:.3f},{maxx:.3f},{maxy:.3f}", "width": FLIZE_PX, "height": FLIZE_PX,
+        "format": "image/png", "transparent": "TRUE",
+    }
+    url = PLUDU_WMS + cels + "?" + "&".join(f"{k}={v}" for k, v in parametri.items())
+    dati = _lejupieladet(url, timeout=FLIZU_TAIMAUTS)
+    if not dati.startswith(b"\x89PNG\r\n\x1a\n"):  # WMS ServiceException (XML) ar 200
+        raise ValueError(f"WMS neatdeva PNG: {dati[:120]!r}")
+    return dati
+
+
+def _flizu_skaitit(veids):
+    with _flizu_slots:
+        f = _statistika.setdefault("flizes", {})
+        f[veids] = f.get(veids, 0) + 1
+
+
+def pludu_flize(paka, z, x, y):
+    """→ (HTTP statuss, PNG baiti, X-Flize veids, Cache-Control max-age; 0 = no-store)."""
+    if paka not in PLUDU_PAKAS:
+        raise Kluda(404, "nav šādas plūdu paketes (" + ", ".join(PLUDU_PAKAS) + ")")
+    z, x, y = int(z), int(x), int(y)
+    if not (FLIZE_Z[0] <= z <= FLIZE_Z[1] and 0 <= x < 1 << z and 0 <= y < 1 << z):
+        raise Kluda(404, f"flīze ārpus robežām (z {FLIZE_Z[0]}–{FLIZE_Z[1]})")
+    d, r, zi, a = PLUDU_PAKAS[paka][2]
+    s2, w2, n2, a2 = xyz_bbox_4326(z, x, y)
+    if s2 > zi or n2 < d or w2 > a or a2 < r:
+        return 200, TUKSA_FLIZE, "tukss", 86400
+    mape = _flizu_mape()
+    cels = os.path.join(mape, paka, str(z), str(x), f"{y}.png") if mape else None
+    atslega = (paka, z, x, y)
+    veca = _flizu_lasit(cels)
+    if veca and veca[1] < FLIZU_TTL:
+        return 200, veca[0], "kesa", 86400
+    rezerve = (200, veca[0], "veca", 3600) if veca else None
+    with _flizu_slots:
+        if _flizu_neveiksmes.get(atslega, 0) > time.time():
+            return rezerve or (502, TUKSA_FLIZE, "kluda", 0)
+        notikums = _flizu_procesa.get(atslega)
+        ipasnieks = notikums is None
+        if ipasnieks:
+            notikums = _flizu_procesa[atslega] = threading.Event()
+            notikums.rez = None
+    if not ipasnieks:  # to pašu flīzi jau lejupielādē cits pieprasījums — gaidām tā rezultātu
+        notikums.wait(FLIZU_GAIDIT_RINDA + FLIZU_TAIMAUTS + 5)
+        return notikums.rez or rezerve or _FLIZE_AIZNEMTS
+    rez = None
+    try:
+        if not _flizu_sloti.acquire(timeout=FLIZU_GAIDIT_RINDA):
+            rez = rezerve or _FLIZE_AIZNEMTS
+        else:
+            try:
+                dati = _flizes_lejupielade(paka, z, x, y)
+            except Exception as e:  # noqa: BLE001 — taimauts, 504, ne-PNG: 60 s neprasām
+                print(f"plūdu flīze {paka}/{z}/{x}/{y}: {e!r}", file=sys.stderr)
+                with _flizu_slots:
+                    tagad = time.time()
+                    if len(_flizu_neveiksmes) > 5000:
+                        for k in [k for k, t in _flizu_neveiksmes.items() if t < tagad]:
+                            del _flizu_neveiksmes[k]
+                    _flizu_neveiksmes[atslega] = tagad + FLIZU_NEVEIKSME_S
+                rez = rezerve or (502, TUKSA_FLIZE, "kluda", 0)
+            else:
+                _flizu_rakstit(cels, dati, mape)
+                rez = (200, dati, "jauna", 86400)
+            finally:
+                _flizu_sloti.release()
+    finally:
+        notikums.rez = rez
+        with _flizu_slots:
+            _flizu_procesa.pop(atslega, None)
+        notikums.set()
+    return rez
 
 
 def udens(q):
@@ -3654,6 +3890,8 @@ class Apstradatajs(BaseHTTPRequestHandler):
     def do_GET(self):
         url = urlparse(self.path)
         q = parse_qs(url.query)
+        if m := FLIZES_CELS.match(url.path):  # PNG, nevis JSON — atsevišķi no MARSRUTI (un api_docs)
+            return self._flize(*m.groups())
         for raksts, funkcija, kesot in MARSRUTI:
             m = raksts.match(url.path)
             if not m:
@@ -3731,6 +3969,34 @@ class Apstradatajs(BaseHTTPRequestHandler):
         self.end_headers()
         if self.command != "HEAD":
             self.wfile.write(b)
+
+    def _flize(self, *g):
+        try:
+            statuss, dati, veids, kesot = pludu_flize(*g)
+        except Kluda as e:
+            return self._atbilde(e.statuss, {"kluda": str(e)}, 0)
+        except Exception as e:  # noqa: BLE001
+            self.log_error("plūdu flīze %s: %r", "/".join(g), e)
+            statuss, dati, veids, kesot = 500, TUKSA_FLIZE, "kluda", 0
+        _flizu_skaitit(veids)
+        etag = '"' + hashlib.sha1(dati).hexdigest()[:20] + '"'
+        prasa = [t.strip().removeprefix("W/") for t in (self.headers.get("If-None-Match") or "").split(",")]
+        neizmainita = statuss == 200 and kesot and etag in prasa
+        self.send_response(304 if neizmainita else statuss)
+        self.send_header("Cache-Control", f"public, max-age={kesot}" if kesot else "no-store")
+        if kesot:
+            self.send_header("ETag", etag)
+        self.send_header("X-Flize", veids)
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Expose-Headers", "X-Flize")
+        if neizmainita:
+            self.end_headers()
+            return
+        self.send_header("Content-Type", "image/png")
+        self.send_header("Content-Length", str(len(dati)))
+        self.end_headers()
+        if self.command != "HEAD":
+            self.wfile.write(dati)
 
     do_HEAD = do_GET
 

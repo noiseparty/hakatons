@@ -28,6 +28,7 @@ const krizesMeklesana = (() => {
   let klasifikators = null;
   let talakGimenes = {};        // scenariji.json talak_gimenes: "Kas notiks tālāk" soļi pa scenāriju ģimenēm
   let pedejais = null;          // { teksts, scenarijs } — atkārto, kad mainās atrašanās vieta vai reģions
+  let konteksts = null;         // { kods, nosaukums, vieta, adrese } pēdējam rezultātam — zinot.js aizpilda ziņojumu ("tikai vienreiz")
   let pieprasijums = null;
   const rezultatuSlanis = L.layerGroup().addTo(karte);
   const kaste = el('rezultati');
@@ -93,6 +94,29 @@ const krizesMeklesana = (() => {
   // Saglabāto tekstu nerāda: "atpazits" apgalvo klients, tāpēc katru vaicājumu klasificē vēlreiz un rāda tikai
   // scenārija nosaukumu (+ vietu) no klasifikatora; neatpazītos vai tikai aptuveni atpazītos izmet.
   const POPULARI_REZERVE = ['nav elektrības', 'plūdi ogrē', 'tuvākā patvertne'];
+
+  // Pirmais skats (pirms pirmās meklēšanas): ko rakstīt, 3 piemēri, kas uzreiz meklē, un rinda par datiem.
+  // Datorā — kreisajā kolonnā (darbvirsma.js), pazūd pēc pirmās meklēšanas (atceras pārlūkā, body.ir-meklets);
+  // telefonā — lapas tukšais stāvoklis virs tēmu pogām (sheet.js), redzams, kamēr nav rezultāta.
+  const PIEMERI = [['Ogre, plūdi', 'pludi'], ['nav elektrības Rēzekne', 'zibens'], ['cilvēks nav pie samaņas', 'pleksteris']];
+  const PIRMA_MEKLESANA = 'pirma-meklesana';
+  try { if (localStorage.getItem(PIRMA_MEKLESANA)) document.body.classList.add('ir-meklets'); } catch { /* privātais režīms */ }
+  function atzimetMekletu() {
+    if (document.body.classList.contains('ir-meklets')) return;
+    document.body.classList.add('ir-meklets');
+    try { localStorage.setItem(PIRMA_MEKLESANA, '1'); } catch { /* privātais režīms */ }
+  }
+  const pirmaisSkats = (ievads = 'Uzrakstiet vienā rindā, kas notiek un kur: pilsēta, adrese ar mājas numuru vai „Rādīt tuvākos man”.') =>
+    `<div class="pirmais-skats" role="group" aria-label="Piemēri, kā meklēt"><p class="ps-ievads">${ievads}</p>` +
+    `<div class="ps-cipi">${PIEMERI.map(([q, ik]) => `<button type="button" class="ps-cips" data-piemers="${esc(q)}">${Ik(ik)}<span>${esc(q)}</span></button>`).join('')}</div>` +
+    `<p class="ps-dati">${Ik('info')}<span>Atbildi saliekam no atvērtajiem datiem: LVĢMC brīdinājumi un plūdu kartes, VZD adreses, ` +
+    'pašvaldību civilās aizsardzības plāni, slimnīcas un patvertnes. Katrai rindai ir avots un licence.</span></p></div>';
+  document.addEventListener('click', e => {
+    const q = e.target.closest('[data-piemers]')?.dataset.piemers;
+    if (!q || el('jautajums').disabled) return;
+    el('jautajums').value = q;
+    el('meklet-forma').requestSubmit();
+  });
   const populari = el('populari');
   const popPogas = populari.querySelector('.populari-pogas');
   let popularie = null, popularieLaiks = 0, popIelade = null;
@@ -342,6 +366,7 @@ const krizesMeklesana = (() => {
   function notirit() {
     if (typeof Dalities !== 'undefined') Dalities.notiritUrl();
     pedejais = null;
+    konteksts = null;
     uzskaite = null;
     if (pieprasijums) pieprasijums.abort();
     rezultatuSlanis.clearLayers();
@@ -449,6 +474,7 @@ const krizesMeklesana = (() => {
   // scenarijs: izvēlēts ar pogu ("Vai domāji…?") — tad tekstu izmanto tikai vietai un 112.
   async function meklet(teksts, scenarijs = null) {
     if (!klasifikators) return;
+    atzimetMekletu();
     pedejais = { teksts, scenarijs };
     let rez = klasificetLabots(teksts);
     if (scenarijs) {
@@ -496,6 +522,7 @@ const krizesMeklesana = (() => {
     bridinajumi(centra ? null : no, centra ? null : no.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
+    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: no, adrese: adrese?.adrese || null };
     if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
       uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
       if (uzskaite) zinot(uzskaite.vaicajums);
@@ -1039,5 +1066,5 @@ const krizesMeklesana = (() => {
   // Enter rezultātu sarakstā = klikšķis
   kaste.addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('li[data-lat]')) e.target.click(); });
 
-  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi };
+  return { sakt, atkartot, meklet, vietaNav, labot, ieteikumi, pirmaisSkats, konteksts: () => konteksts };
 })();

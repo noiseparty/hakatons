@@ -133,7 +133,7 @@ def main():
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Krīzes karte">
 <meta property="og:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta property="og:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta property="og:url" content="https://map.repo.lv/trukstosie.html">
 <meta property="og:image" content="https://map.repo.lv/og.png">
 <meta property="og:image:width" content="1200">
@@ -142,7 +142,7 @@ def main():
 <meta property="og:locale" content="lv_LV">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ko vēl vajadzētu publicēt — Krīzes karte">
-<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 32 atvērto datu avoti.">
+<meta name="twitter:description" content="Viena meklēšana — viens lēmums: patvertne, plūdu zona, evakuācija, brīdinājumi. 33 atvērto datu avoti.">
 <meta name="twitter:image" content="https://map.repo.lv/og.png">
 <meta name="theme-color" content="#0077c8">
 <link rel="icon" href="ikonas/ikona.svg" type="image/svg+xml">

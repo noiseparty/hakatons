@@ -1,8 +1,8 @@
 # Trūkstošie dati: ko valsts un pašvaldības vēl nepublicē (pitch materiāls)
 
-Stāvoklis 2026-10-10 rītā. Visi 32 atvērto datu avoti (un 3 bez atvērtas licences ⚠: 112.lv patvertnes, banku bankomātu saraksts, LR1 frekvences; kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir **otra puse**: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: `notes/research/02`, `04`, `05`, `notes/demo-scenariji.md`, `notes/ca-plani-kvalitate.md`, nakts atradumi, apkopoti 2026-10-10.
+Stāvoklis 2026-10-10 rītā. Visi 33 atvērto datu avoti (to skaitā LR1 frekvences: oficiāli fakti (LR / SPRK), nav autortiesību objekts; un 2 bez atvērtas licences ⚠: 112.lv patvertnes, banku bankomātu saraksts; kā arī 2 simulēti prototipa dati), ko karte izmanto, ir uzskaitīti https://map.repo.lv (panelis "Datu avoti"). Šis saraksts ir **otra puse**: dati, kas krīzē iedzīvotājam ir vajadzīgi, bet ko neviens nepublicē vai publicē bez atvērtas licences. Katrai rindai: kam dati pieder, kāpēc vajag, ko prasām. Avoti: `notes/research/02`, `04`, `05`, `notes/demo-scenariji.md`, `notes/ca-plani-kvalitate.md`, nakts atradumi, apkopoti 2026-10-10.
 
-Īsā versija slaidam: **"Mēs izmantojām 32 atvērto datu avotus. Vēl 30 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
+Īsā versija slaidam: **"Mēs izmantojām 33 atvērto datu avotus. Vēl 30 datu kopas valstī eksistē, bet nav publiskas. Lūk, saraksts."**
 
 ## 1. Dzīvībai svarīgi, bet nepubliski (TOP prasības)
 
@@ -59,6 +59,6 @@ Stāvoklis 2026-10-10 rītā. Visi 32 atvērto datu avoti (un 3 bez atvērtas li
 
 ## 5. Ko sakām pitčā (3 teikumi)
 
-1. "Karte strādā uz 32 atvērto datu avotiem — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji."
+1. "Karte strādā uz 33 atvērto datu avotiem — un katra no tām ir pluss, kā prasa vērtēšanas kritēriji."
 2. "Bet patvertņu saraksts nav atvērts, elektrības atslēgumiem nav API, 10 pašvaldības evakuācijas vietas tur PDF pielikumos, un reāllaika zibens dati mums nāk no Somijas."
 3. "Šis saraksts ar 30 datu kopām ir mūsu lūgums datu turētājiem: publicējiet, un karte tās parādīs nākamajā dienā."

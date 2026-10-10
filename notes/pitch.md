@@ -12,7 +12,7 @@ Slides: `production/slaidi.html` (https://map.repo.lv/slaidi.html; ← → keys,
 | 3 soļi (vieta → vajadzība → rezultāts) | 5 | criterion 3 sentence |
 | 776 pulcēšanās + 579 izmitināšanas vietas (104 213 vietas) · 41 koordinātu kļūda · Jūrmala Nr. 10 Lietuvā | 9 | `notes/ca-plani-kvalitate.md`, `notes/presentation_ideas.md` |
 | Meklētājs: **129 scenāriji**, LV/RU/EN, **95,0 % pareizi uz 563 vaicājumiem** (bija 77,3 %); **89,5 % uz neredzētajiem** | 9 | `notes/klasifikators.md` (say both numbers; 95 % includes queries used for tuning) |
-| **32 atvērto datu avoti + 3 ⚠** (112.lv patvertnes, banku bankomāti, LR1 frekvences); panelī vēl 2 mūsu simulētie prototipa dati ar zīmi „SIMULĒTI” (neskaitām) | 10 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 |
+| **33 atvērto datu avoti + 2 ⚠** (112.lv patvertnes, banku bankomāti; LR1 frekvences skaitām kā oficiālus faktus); panelī vēl 2 mūsu simulētie prototipa dati ar zīmi „SIMULĒTI” (neskaitām) | 10 | `src/karte/db/shema.sql` avoti + `production/avoti.js` TIESSAISTE, 2026-10-10 |
 | 30 trūkstošās datu kopas · Ventspils saraksti ierobežoti pat ar OCR | 11 | `notes/missing_data.md`, #90 |
 | Slodze: p95 1,1 s pie 50 klientiem (bija 12,4 s), 0 savienojuma kļūdu | Q&A | `notes/slodze.md` (local harness with fake sources) |
 | 7 vēstuļu melnraksti datu turētājiem (nesūtīti) | 13 | `notes/vestules.md` |
@@ -117,7 +117,7 @@ Backup if venue Wi-Fi fails: screen recording on the laptop + screenshots in the
 
 ## 7:15–8:30 · 7. Atvērtie dati
 
-**Slide (criterion 5, one line on top):** "32 atvērto datu avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL vai oficiāls dokuments (Autortiesību likuma 6. p.). Trīs izņēmumi atklāti atzīmēti ⚠."
+**Slide (criterion 5, one line on top):** "33 atvērto datu avoti, katrs ar licenci: CC0, CC BY 4.0, ODbL, oficiāls dokuments vai oficiāli fakti (Autortiesību likuma 6. p.). Divi izņēmumi atklāti atzīmēti ⚠."
 
 Grid, each with licence:
 - **VZD** adrešu reģistrs (CC BY 4.0) · **42 pašvaldību CA plāni** (oficiāls dokuments) · **VM** 24/7 slimnīcas (oficiāls dokuments)
@@ -126,13 +126,13 @@ Grid, each with licence:
 - **FMI** zibens, pēdējās 30 min (CC BY 4.0) · **Open-Meteo** nokrišņi un augsne (CC BY 4.0) · **LVC** ceļu notikumi un satiksme caur NAP (CC0)
 - **VKCP IĢIS** ūdens ņemšanas vietas (CC0) · **GTFS** Rīgas satiksme, ATD autobusi, VIVI vilcieni (CC0) — 3
 - **UR** publisko personu un iestāžu saraksts — pašvaldību kontakti (CC0) · **VPVKAC** kontaktpunkti (CC0)
-- **OpenStreetMap** (ODbL), 6 slāņi: bankomāti un DUS, noturības punktu kandidāti, dzeramais ūdens, bezmaksas Wi-Fi, elektroauto uzlāde, veterinārās klīnikas · **OpenStreetMap** karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA)
-- ⚠ VUGD/112.lv patvertnes (781) · ⚠ banku bankomātu saraksts (845, Finance Latvia) · ⚠ Latvijas Radio LR1 frekvences (16 raidītāji) — licence nav norādīta
+- **OpenStreetMap** (ODbL), 6 slāņi: bankomāti un DUS, noturības punktu kandidāti, dzeramais ūdens, bezmaksas Wi-Fi, elektroauto uzlāde, veterinārās klīnikas · **OpenStreetMap** karšu fons (ODbL) · **OpenTopoMap** reljefs (CC BY-SA) · **Latvijas Radio** LR1 frekvences, 16 raidītāji (oficiāli fakti (LR / SPRK), nav autortiesību objekts: sabiedriskā raidītāja un regulatora (esakari.lv) saraksta fakti, ne darbs)
+- ⚠ VUGD/112.lv patvertnes (781) · ⚠ banku bankomātu saraksts (845, Finance Latvia) — licence nav norādīta
 - (extra, demo only, not in the count) **LĢIA** 20 m augstuma modelis (CC BY 4.0), demo scenārijā "Plūdi Ogrē"
 
-Count (authoritative, 2026-10-10 night): **32 open + 3 ⚠**. Sum of the grid: VZD 1 + CA plāni 1 + VM 1 + IeM IC 4 + ZVA 1 + LVĢMC 7 + FMI 1 + Open-Meteo 1 + LVC/NAP 1 (one publisher feed: events, traffic, border wait, slippery roads) + VKCP 1 + GTFS 3 + UR 1 + VPVKAC 1 + OSM 6 + OSM karšu fons 1 + OpenTopoMap 1 = 32. One count = one row in the "Datu avoti" panel (`shema.sql` avoti + `avoti.js` TIESSAISTE); the panel counts the same way and lists the 2 **simulated** prototype sets (water and charging points, marked "SIMULĒTI DATI — prototips") separately, not in the 32. Not counted: LĢIA DEM (demo only), the OSRM route service (OSM data), our own residents' reports (CC BY 4.0). Until the VPS applies `shema.sql` from #110/#118 the live panel shows fewer rows (osm-udens, osm-wifi, osm-ev, osm-vet, bankas-atm missing). Slide version: `production/slaidi.html` slide 10.
+Count (authoritative, 2026-10-10, LR1 reclassified as official facts): **33 open + 2 ⚠**. Sum of the grid: VZD 1 + CA plāni 1 + VM 1 + IeM IC 4 + ZVA 1 + LVĢMC 7 + FMI 1 + Open-Meteo 1 + LVC/NAP 1 (one publisher feed: events, traffic, border wait, slippery roads) + VKCP 1 + GTFS 3 + UR 1 + VPVKAC 1 + OSM 6 + OSM karšu fons 1 + OpenTopoMap 1 + LR1 frekvences 1 = 33. One count = one row in the "Datu avoti" panel (`shema.sql` avoti + `avoti.js` TIESSAISTE); the panel counts the same way and lists the 2 **simulated** prototype sets (water and charging points, marked "SIMULĒTI DATI — prototips") separately, not in the 33. Not counted: LĢIA DEM (demo only), the OSRM route service (OSM data), our own residents' reports (CC BY 4.0). Until the VPS applies `shema.sql` from #110/#118 the live panel shows fewer rows (osm-udens, osm-wifi, osm-ev, osm-vet, bankas-atm missing). Slide version: `production/slaidi.html` slide 10.
 
-**Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes, banku bankomāti, radio frekvences), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
+**Say:** Katrs punkts kartē rāda savu avotu un licenci. Kur licences nav (patvertnes, banku bankomāti), mēs to atklāti norādām — un aicinām VUGD to publicēt data.gov.lv. Un statusa lapā redzams, vai katrs avots šobrīd atbild.
 
 ## 8:30–9:30 · 8. Kas tālāk / ietekme
 
