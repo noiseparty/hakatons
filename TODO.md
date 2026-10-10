@@ -32,7 +32,6 @@ Team task log. **Read `README.md` → "Working together" first** (git workflow +
 
 - [ ] CA plans: check every `markdown/<slug>/` for pointer stubs ("norāde uz kopīgo failu") whose original PDF is published — Liepāja/DKN was missed this way — added 2026-10-10 04:04 +03:00 by noiseparty
 - [ ] After the VPS loads osm-udens / osm-wifi / osm-ev / osm-vet: add them to `STATUSS_IKDIENAS_AVOTI` in karte_api.py (status page "Datu vecums") and update the source count in pitch/slides (25 → 29 open sources; missing_data now 30 rows) — added 2026-10-10 04:35 +03:00 by noiseparty
-- [ ] After #108 (ikonas.js) merges: put `veterinars` in `krusts`, `udens_punkts` stays `lase`, `ev_uzlade` in `kvadrats`, `wifi_punkts` in `trijsturis` (GRUPAS in ikonas.js) — added 2026-10-10 04:35 +03:00 by noiseparty
 - [ ] After the viewport PR is live: regenerate `production/api.html` + `openapi.json` (`src/api_docs/sagatavot.py`) so the new `bbox` parameter shows up in the API docs — added 2026-10-10 04:25 +03:00 by noiseparty
 - [ ] LR1 map: pin the 6 approximate sites (Valmiera, Ventspils, Alūksne, Limbaži, Lielauce, Skaista) to the actual LVRTC towers once a second source confirms them (LVRTC coverage pages or an OSM tag fix), then rerun `python src/info/radio_karte.py` — added 2026-10-10 04:33 +03:00 by noiseparty
 
