@@ -1,5 +1,5 @@
 // Telefonā (≤ 800 px) apakšējās lapas saturs pēc lietotāja maketa (notes/ui-mockup.md "Mobile"):
-// meklēšana → tēmu pogas → kopsavilkums "2 oranži · 5 dzelteni · Atjaunots …" → cilnes
+// meklēšana → tēmu pogas → cilnes → kopsavilkums "2 oranži · 5 dzelteni · Atjaunots …"; cilnes:
 // Rezultāts (Lēmums) · Kartes slāņi · Situācija tagad (LVĢMC).
 // Telefonā meklēšanas forma, slāņu panelis (#panelis) un prognožu lente (#prognozes) tiek pārcelti lapā; datorā — atpakaļ
 // savās vietās (nekas nemainās). Lieto apaksa.js (Apaksa), app.js globālos (karte, el, esc, iegut, attalums) un Prognozes.
@@ -12,20 +12,23 @@ const Lapa = (() => {
     ['Ārsts', 'ārsts'], ['Ceļi', 'ceļš slēgts'], ['Vētra', 'vētra'], ['Dzeramais ūdens', 'nav ūdens']];
   const CILNES = [['rezultats', 'Rezultāts', 'Lēmums'], ['slani', 'Kartes slāņi', ''], ['situacija', 'Situācija tagad', 'LVĢMC']];
 
+  // Ielādes vietturis (pelēkas joslas, nevis "Ielādē…"): saraksta augstums nelec, kad dati atnāk
+  const SKELETS = '<li class="skelets-rinda" aria-hidden="true"><span></span><span></span></li>'.repeat(3);
+
   saturs.insertAdjacentHTML('afterbegin', `
     <div class="lapa-temas" role="group" aria-label="Biežākās tēmas">${TEMAS.map(([t, q]) =>
-      `<button type="button" data-tema="${esc(q)}">${esc(t)}</button>`).join('')}</div>
-    <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite">LVĢMC brīdinājumi: ielādē…</p>
+      `<button type="button" data-tema="${esc(q)}" aria-pressed="false"><span>${esc(t)}</span></button>`).join('')}</div>
     <div class="lapa-cilnes" role="tablist" aria-label="Lapas saturs">${CILNES.map(([k, t, p], i) =>
       `<button type="button" role="tab" id="cilne-${k}" aria-controls="lapa-${k}" aria-selected="${!i}" tabindex="${i ? -1 : 0}">${esc(t)}${p ? `<small>${esc(p)}</small>` : ''}</button>`).join('')}</div>
+    <p class="lapa-kopsavilkums" id="lapa-kopsavilkums" aria-live="polite" aria-busy="true"><span class="skelets">LVĢMC brīdinājumi: ielādē…</span></p>
     <div id="lapa-rezultats" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-rezultats">
       <p class="lapa-tukss">Uzrakstiet, kas notiek, vai izvēlieties tēmu augstāk. Rezultātā: lēmums Jūsu vietai, tuvākās drošās vietas un ko darīt.</p>
     </div>
     <div id="lapa-slani" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-slani" hidden></div>
     <div id="lapa-situacija" class="lapa-cilne" role="tabpanel" aria-labelledby="cilne-situacija" hidden>
       <div class="lapa-prognoze"></div>
-      <h3>Upju līmeņi kartes centra tuvumā</h3><ul class="lapa-saraksts" id="lapa-upes"><li class="piezime">Ielādē…</li></ul>
-      <h3>Ceļi (LVC)</h3><ul class="lapa-saraksts" id="lapa-celi"><li class="piezime">Ielādē…</li></ul>
+      <h3>Upju līmeņi kartes centra tuvumā</h3><ul class="lapa-saraksts" id="lapa-upes">${SKELETS}</ul>
+      <h3>Ceļi (LVC)</h3><ul class="lapa-saraksts" id="lapa-celi">${SKELETS}</ul>
     </div>`);
 
   // ---- Elementu pārcelšana telefons ↔ dators ----
@@ -71,30 +74,58 @@ const Lapa = (() => {
   lapa.querySelector('.lapa-temas').addEventListener('click', e => {
     const q = e.target.closest('[data-tema]')?.dataset.tema;
     if (!q) return;
+    atzimetTemu(q);
     el('jautajums').value = q;
     el('meklet-forma').requestSubmit();
   });
 
+  // Aktīvā tēma: tā, ar ko sākas pašreizējais vaicājums (arī ja ierakstīts ar roku)
+  function atzimetTemu(q = el('jautajums').value) {
+    const v = q.trim().toLowerCase();
+    for (const b of lapa.querySelectorAll('[data-tema]')) b.setAttribute('aria-pressed', !!v && v.startsWith(b.dataset.tema));
+  }
+  el('meklet-forma').addEventListener('submit', () => atzimetTemu());
+
+  // Gaidīšanas teksti rezultātā ("Meklē adresi…", "Pārbauda…") → pelēka josla (skelets), kamēr atbilde nav atnākusi
+  const kaste = el('rezultati');
+  new MutationObserver(() => {
+    for (const e of kaste.querySelectorAll('p.piezime, #rezultati .fakti li > div > span')) {
+      e.classList.toggle('skelets', /^(Meklē|Pārbauda|Ielādē)[^.]*…/.test(e.textContent.trim()));
+    }
+  }).observe(kaste, { childList: true, subtree: true, characterData: true });
+
   // ---- Kopsavilkums: LVĢMC brīdinājumu skaits pēc līmeņa + atjaunošanas laiks ----
   const LIM = { 3: ['sarkans', 'sarkani'], 2: ['oranžs', 'oranži'], 1: ['dzeltens', 'dzelteni'] };
+  // Brīdinājumi — /api/bridinajumi; ja to nav, prognozes (/api/prognozes) šodienas augstākais risks. Laiks — jaunākais no abiem.
+  const RISKS = { 1: 'paaugstināts', 2: 'augsts', 3: 'ļoti augsts' };
   async function kopsavilkums() {
     const p = el('lapa-kopsavilkums');
-    try {
-      const d = await iegut('/bridinajumi');
-      const sk = {};
-      for (const b of d.bridinajumi) sk[b.limenis] = (sk[b.limenis] || 0) + 1;
-      const dalas = [3, 2, 1].filter(l => sk[l]).map(l => `${sk[l]} ${LIM[l][sk[l] === 1 ? 0 : 1]}`);
-      const laiks = d.laiks_lv ? new Date(d.laiks_lv) : null;
-      const sodien = laiks && laiks.toDateString() === new Date().toDateString();
-      const kad = laiks ? `Atjaunots ${sodien ? 'šodien ' : laiks.toLocaleDateString('lv-LV', { day: '2-digit', month: '2-digit' }) + ' '}${laiks.toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' })}` : '';
-      const t = (dalas.length ? 'LVĢMC: ' + dalas.join(' · ') : 'LVĢMC brīdinājumu nav') + (kad ? ' · ' + kad : '');
-      p.textContent = t;
-      p.dataset.limenis = Math.max(0, ...Object.keys(sk).map(Number));
-      lapa.dataset.kopsavilkums = dalas.length ? `Latvijā: ${dalas.join(', ')} brīdinājumi` : 'Latvijā LVĢMC brīdinājumu nav';
-      if (typeof Apaksa !== 'undefined') Apaksa.atjaunotSpriedumu();
-    } catch {
+    const [b, pr] = await Promise.allSettled([iegut('/bridinajumi'), iegut('/prognozes')]);
+    if (b.status !== 'fulfilled') {
       p.textContent = 'LVĢMC brīdinājumus neizdevās ielādēt.';
+      p.removeAttribute('aria-busy');
+      return;
     }
+    const sk = {};
+    for (const x of b.value.bridinajumi) sk[x.limenis] = (sk[x.limenis] || 0) + 1;
+    const limeni = [3, 2, 1].filter(l => sk[l]);
+    const dalas = limeni.map(l => `${sk[l]} ${LIM[l][sk[l] === 1 ? 0 : 1]}`);
+    const riski = pr.status === 'fulfilled' ? (pr.value.zinas || []).filter(z => z.veids === 'riski' && z.diena === 'Šodien') : [];
+    const risks = Math.max(0, ...riski.map(z => z.limenis || 0));
+    const laiki = [b.value.laiks_lv, pr.value?.laiks_lv].filter(Boolean).map(t => new Date(t)).filter(t => !isNaN(t));
+    const laiks = laiki.length ? new Date(Math.max(...laiki)) : null;
+    const sodien = laiks && laiks.toDateString() === new Date().toDateString();
+    const kad = laiks ? `Atjaunots ${sodien ? 'šodien' : laiks.toLocaleDateString('lv-LV', { day: '2-digit', month: '2-digit' })} ` +
+      laiks.toLocaleTimeString('lv-LV', { hour: '2-digit', minute: '2-digit' }) : '';
+    const kreisi = limeni.length
+      ? limeni.map(l => `<span class="kops-lim" data-limenis="${l}">${sk[l]} ${LIM[l][sk[l] === 1 ? 0 : 1]}</span>`).join('')
+      : `<span class="kops-lim" data-limenis="0">Brīdinājumu nav</span>` + (risks ? `<span class="kops-lim" data-limenis="${risks}">Šodien ${RISKS[risks]} risks</span>` : '');
+    p.innerHTML = `<span class="kops-kreisi" title="LVĢMC hidrometeoroloģiskie brīdinājumi">${kreisi}</span>${kad ? `<span class="kops-laiks">${esc(kad)}</span>` : ''}`;
+    p.setAttribute('aria-label', 'LVĢMC: ' + (dalas.length ? dalas.join(', ') + ' brīdinājumi' : 'brīdinājumu nav') + (kad ? '. ' + kad : ''));
+    p.removeAttribute('aria-busy');
+    p.dataset.limenis = Math.max(0, ...limeni);
+    lapa.dataset.kopsavilkums = dalas.length ? `Latvijā: ${dalas.join(', ')} brīdinājumi` : 'Latvijā LVĢMC brīdinājumu nav';
+    if (typeof Apaksa !== 'undefined') Apaksa.atjaunotSpriedumu();
   }
 
   // ---- Situācija tagad: prognožu lente (pārcelta), upju līmeņi un ceļu notikumi ap kartes centru ----
@@ -118,7 +149,7 @@ const Lapa = (() => {
       celi.innerHTML = `<li class="lapa-celi-kopa">Latvijā tagad: ${Object.entries(veidi).map(([k, v]) => `${esc(k)} ${v}`).join(' · ') || 'notikumu nav'}</li>` +
         n.slice(0, 5).map(x => `<li tabindex="0" data-lat="${x.lat}" data-lon="${x.lon}"><b>${esc(x.nosaukums)}</b>` +
           `<span>${esc((x.apraksts || '').slice(0, 120))}</span><small>${attalums(Math.round(x.m))} no kartes centra</small></li>`).join('') +
-        '<li class="avots-rinda">LVC, DATEX II (NAP)</li>';
+        '<li class="avots-rinda">VSIA „Latvijas Valsts ceļi”, DATEX II (transportdata.gov.lv) · CC0</li>';
     }).catch(() => { celi.innerHTML = '<li class="piezime">Ceļu datus neizdevās ielādēt.</li>'; });
   }
   // Pieskaroties upei vai ceļa notikumam: karte uz turieni, lapa uz "Mazs", lai redzams
