@@ -522,7 +522,7 @@ const krizesMeklesana = (() => {
     bridinajumi(centra ? null : no, centra ? null : no.nosaukums);
 
     const [galvenais, ...citi] = rez.scenariji;
-    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: no, adrese: adrese?.adrese || null };
+    konteksts = { kods: galvenais?.kods || null, nosaukums: galvenais?.nosaukums || '', vieta: centra ? null : no, adrese: adrese?.adrese || null };
     if (!scenarijs) {  // "Vai domājāt" pogas atkārto to pašu tekstu — neskaitām otrreiz
       uzskaite = galvenais ? { vaicajums: adrese ? adrese.atlikums : teksts, klikskis: false } : null;
       if (uzskaite) zinot(uzskaite.vaicajums);

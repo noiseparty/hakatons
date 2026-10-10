@@ -109,7 +109,7 @@ const Avoti = (() => {
       <li>Pulcēšanās un izmitināšanas vietas izvilka MI no 42 pašvaldību CA plāniem: katrai burtisks citāts un lappuse, ko skripts pārbauda pret plānu.</li>
       <li>Pārbaudē atradām 41 koordinātu kļūdu oficiālajos plānos; šīs vietas novietotas pēc VZD adrešu reģistra
         (<a href="https://github.com/noiseparty/hakatons/blob/main/notes/ca-plani-kvalitate.md" target="_blank" rel="noopener">kļūdu saraksts</a>).</li>
-      <li>Pārējais: ${esc(avotuVards(atverti))} ar licenci (saraksts zemāk); katrai vietai kartītē avots un licence.</li></ul>`;
+      <li>Kopā: ${esc(avotuVards(atverti))} ar licenci (saraksts zemāk); katrai vietai kartītē avots un licence.</li></ul>`;
     kops.innerHTML = `<b>${avotuVards(atverti)}</b>` +
       (sim.length ? ` · ${sim.length} simulēti prototipa dati` : '') +
       (citi ? ` · ${citi} bez atvērtas licences ${Ik('uzmanibu')}` : '');
