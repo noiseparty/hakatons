@@ -50,26 +50,26 @@
   </div>
   <form id="meklet-forma" role="search" class="meklet-rinda">
     <input id="jautajums" type="search" maxlength="300" autocomplete="off" enterkeyhint="search"
-           aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
+           aria-label="Kas Jums vajadzīgs? Kas notiek un kur?" placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē" data-t-placeholder="Kas Jums vajadzīgs? Piem.: plūdi Ogrē">
     <button type="button" id="notirit-meklesanu" class="notirit-poga" aria-label="Notīrīt meklēšanu" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#aizvert"></use></svg><span class="notirit-teksts">Notīrīt</span></button>
     <button type="button" id="runat" class="runat" aria-label="Runāt" aria-pressed="false" aria-haspopup="menu" aria-expanded="false" hidden><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#mikrofons"></use></svg></button>
     <div id="runa-valodas" class="runa-valodas" role="menu" aria-label="Runas valoda" hidden></div>
-    <button type="submit">Meklēt</button>
+    <button type="submit" data-t="Meklēt">Meklēt</button>
     <div id="populari" class="populari" role="group" aria-labelledby="populari-virsraksts" hidden>
       <p id="populari-virsraksts">Biežāk meklētais</p>
       <div class="populari-pogas"></div>
     </div>
   </form>
   <div class="galva-labi">
-    <!-- LV / EN / RU valodu slēdzis (makets) vēl nav veidots: meklēšana jau saprot LV/RU/EN -->
+    <!-- LV / RU / EN slēdzis: valoda.js to ieliek meklēšanas formā (rezultāta kartītes valoda) -->
     <button id="zinot-poga" type="button" class="galvene-poga" data-darbiba="zinot" aria-haspopup="dialog" aria-label="Ziņot par bīstamību"><svg class="ikona" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M12 3 2 20h20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v4m0 3v.1" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg><span class="teksts">Ziņot</span></button>
     <a id="par-datiem" class="par-datiem" href="statuss.html">Par datiem</a>
     <p id="statuss" role="status">Ielādē…</p>
     <button id="panelis-poga" type="button" aria-controls="panelis" aria-expanded="true"><svg class="ik" aria-hidden="true" focusable="false"><use href="ikonas/ikonas.svg#izvelne"></use></svg> Filtri</button>
   </div>
 </header>
-<p class="zvanit-josla">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
-<div id="bridinajums" class="bridinajums gaida" role="status">Ielādē LVĢMC brīdinājumus…</div>
+<p class="zvanit-josla" role="region" aria-label="Ārkārtas palīdzība" data-t="Ja apdraudēta dzīvība vai veselība, zvaniet 112.">Ja apdraudēta dzīvība vai veselība, zvaniet 112.</p>
+<div id="bridinajums" class="bridinajums gaida" role="status" aria-live="polite">Ielādē LVĢMC brīdinājumus…</div>
 <div id="kartes-kluda" class="kartes-kluda" role="alert" hidden></div>
 <div id="bezsakaru" class="bezsakaru" role="status" hidden></div>
 <main>
@@ -160,6 +160,7 @@
 
 <script src="vendor/leaflet/leaflet.js"></script>
 <script src="vendor/leaflet/leaflet.markercluster.js"></script>
+<script src="pieejamiba.js"></script>
 <script>
   // Ja Leaflet neielādējās, karte nestrādā — skaidrs paziņojums, nevis tukša lapa
   if (!window.L || !L.markerClusterGroup) {
@@ -172,6 +173,7 @@
 <script src="ikonas.js"></script>
 <script src="avoti.js"></script>
 <script src="klasifikators.js"></script>
+<script src="valoda.js"></script>
 <script src="objekta-statuss.js"></script>
 <script src="app.js"></script>
 <script src="marsruts.js"></script>
