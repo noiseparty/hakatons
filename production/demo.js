@@ -64,7 +64,7 @@ const Demo = (() => {
     const kods = b?.dataset.demo;
     if (kods) sakt(kods);
     if (b?.dataset.darbiba === 'beigt') beigt();
-    if (b?.dataset.darbiba === 'saraksts') zimetSarakstu();
+    if (b?.dataset.darbiba === 'demo-saraksts') zimetSarakstu();  // ne "saraksts": to tver saraksts.js
     if (b?.dataset.darbiba === 'drukat') print();
     const li = e.target.closest('li[data-lat]');
     if (li && !e.target.closest('a')) {
@@ -123,7 +123,11 @@ const Demo = (() => {
       atjaunot();
       if (!stavoklis.kategorijas.size) statuss('Demo · simulācija');  // nevis "Izvēlies vismaz vienu slāni"
     }
-    radtPludus(!!sc.pludi || saglabats.pludi);
+    // Plūdu zonas (LVĢMC WMS, atbild 5–30 s) tikai pēc lapas "load": citādi saite ?demo=pludi-… gaida flīzes, pirms lapa ielādēta;
+    // kartīte un reljefa slānis parādās uzreiz, zonu leģenda (zonas.js) rāda "Ielādē zonas…"
+    const pludi = !!sc.pludi || saglabats.pludi;
+    if (!pludi || document.readyState === 'complete') radtPludus(pludi);
+    else addEventListener('load', () => setTimeout(() => { if (aktivs?.sc === sc) radtPludus(true); }, 0), { once: true });
 
     const r = regions ? regioni[regions] : null;
     const vieta = sc.vieta || (r && { lat: (r.bbox[1] + r.bbox[3]) / 2, lon: (r.bbox[0] + r.bbox[2]) / 2, nosaukums: r.nosaukums + ', centrs' });
@@ -343,7 +347,7 @@ const Demo = (() => {
     const avoti = (sc.avoti || []).map(k => dati.avoti[k]).filter(Boolean);
     const regionuIzvele = sc.regionu_izvele ? `<label class="demo-regions">Teritorija bez elektrības un sakariem
       <select id="demo-regions">${sc.regionu_izvele.map(k => `<option value="${k}" ${r?.kods === k ? 'selected' : ''}>${esc(regioni[k]?.nosaukums || k)}</option>`).join('')}</select></label>` : '';
-    return `<button type="button" class="otra demo-atpakal" data-darbiba="saraksts">← Visi scenāriji</button>
+    return `<button type="button" class="otra demo-atpakal" data-darbiba="demo-saraksts">← Visi scenāriji</button>
       <article class="demo-kartite">
         <p class="demo-virsraksts">${ZIME}${sc.laiks ? `<span class="demo-laiks">🕒 ${esc(sc.laiks)}</span>` : ''}</p>
         <h2>${sc.ikona} ${esc(sc.nosaukums)}</h2>
